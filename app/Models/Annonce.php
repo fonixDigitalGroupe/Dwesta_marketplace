@@ -1,0 +1,355 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Str;
+
+class Annonce extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'vendeur_id',
+        'categorie_id',
+        'type',
+        'titre',
+        'slug',
+        'prix',
+        'description',
+        'type_livraison',
+        'disponibilite',
+        'nb_photos',
+        'video_achetee',
+        'statut',
+        'raison_rejet',
+        'publiee_le',
+        'expire_le',
+        'vues',
+    ];
+
+    protected $casts = [
+        'prix' => 'decimal:2',
+        'nb_photos' => 'integer',
+        'video_achetee' => 'boolean',
+        'vues' => 'integer',
+        'publiee_le' => 'datetime',
+        'expire_le' => 'datetime',
+    ];
+
+    // Types d'annonces
+    const TYPE_PRODUIT = 'produit';
+    const TYPE_SERVICE = 'service';
+    const TYPE_IMMOBILIER = 'immobilier';
+    const TYPE_VEHICULE = 'vehicule';
+
+    // Statuts
+    const STATUT_BROUILLON = 'brouillon';
+    const STATUT_EN_ATTENTE = 'en_attente';
+    const STATUT_PUBLIEE = 'publiee';
+    const STATUT_REJETEE = 'rejetee';
+    const STATUT_EXPIREE = 'expiree';
+
+    // Disponibilité
+    const DISPONIBILITE_EN_STOCK = 'en_stock';
+    const DISPONIBILITE_RUPTURE_STOCK = 'rupture_stock';
+    const DISPONIBILITE_SUR_COMMANDE = 'sur_commande';
+
+    /**
+     * Relation avec le vendeur
+     */
+    public function vendeur(): BelongsTo
+    {
+        return $this->belongsTo(Vendeur::class);
+    }
+
+    /**
+     * Relation avec la catégorie
+     */
+    public function categorie(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'categorie_id');
+    }
+
+    /**
+     * Alias pour la relation catégorie (nom anglais)
+     */
+    public function category(): BelongsTo
+    {
+        return $this->categorie();
+    }
+
+    /**
+     * Relation avec les médias (photos/vidéos)
+     */
+    public function medias(): HasMany
+    {
+        return $this->hasMany(AnnonceMedia::class)->orderBy('ordre');
+    }
+
+    /**
+     * Relation avec les photos uniquement
+     */
+    public function photos(): HasMany
+    {
+        return $this->hasMany(AnnonceMedia::class)
+            ->where('type', 'photo')
+            ->orderBy('ordre');
+    }
+
+    /**
+     * Relation avec la vidéo
+     */
+    public function video(): HasOne
+    {
+        return $this->hasOne(AnnonceMedia::class)
+            ->where('type', 'video');
+    }
+
+    /**
+     * Relation avec les options payantes
+     */
+    public function options(): HasOne
+    {
+        return $this->hasOne(AnnonceOption::class);
+    }
+
+    /**
+     * Relation avec les variantes (tailles, couleurs, etc.)
+     */
+    public function variantes(): HasMany
+    {
+        return $this->hasMany(AnnonceVariante::class);
+    }
+
+    /**
+     * Relation avec les avis clients
+     */
+    public function avis(): HasMany
+    {
+        return $this->hasMany(Avis::class);
+    }
+
+    /**
+     * Relation avec les avis approuvés uniquement
+     */
+    public function avisApprouves(): HasMany
+    {
+        return $this->hasMany(Avis::class)->where('statut', Avis::STATUT_APPROUVE);
+    }
+
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function cartItems(): HasMany
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    /**
+     * Obtenir la note moyenne de l'annonce
+     */
+    public function getNoteMoyenneAttribute(): float
+    {
+        $avisApprouves = $this->avisApprouves;
+        if ($avisApprouves->count() === 0) {
+            return 0;
+        }
+        return round($avisApprouves->avg('note'), 1);
+    }
+
+    /**
+     * Obtenir le nombre d'avis approuvés
+     */
+    public function getNombreAvisAttribute(): int
+    {
+        return $this->avisApprouves()->count();
+    }
+
+    /**
+     * Relations avec les types spécifiques
+     */
+    public function produit(): HasOne
+    {
+        return $this->hasOne(AnnonceProduit::class);
+    }
+
+    public function service(): HasOne
+    {
+        return $this->hasOne(AnnonceService::class);
+    }
+
+    public function immobilier(): HasOne
+    {
+        return $this->hasOne(AnnonceImmobilier::class);
+    }
+
+    public function vehicule(): HasOne
+    {
+        return $this->hasOne(AnnonceVehicule::class);
+    }
+
+    /**
+     * Vérifier si l'annonce est publiée
+     */
+    public function estPubliee(): bool
+    {
+        return $this->statut === self::STATUT_PUBLIEE;
+    }
+
+    /**
+     * Vérifier si l'annonce est expirée
+     */
+    public function estExpiree(): bool
+    {
+        return $this->expire_le && $this->expire_le->isPast();
+    }
+
+    /**
+     * Vérifier si l'annonce est en brouillon
+     */
+    public function estBrouillon(): bool
+    {
+        return $this->statut === self::STATUT_BROUILLON;
+    }
+
+    /**
+     * Obtenir la photo principale
+     */
+    public function photoPrincipale(): ?AnnonceMedia
+    {
+        return $this->photos()->where('est_principale', true)->first()
+            ?? $this->photos()->first();
+    }
+
+    /**
+     * Incrémenter le compteur de vues
+     */
+    public function incrementerVues(): void
+    {
+        $this->increment('vues');
+    }
+
+    /**
+     * Vérifier si l'annonce a l'option "À la Une" active
+     */
+    public function aLaUneActive(): bool
+    {
+        if (!$this->relationLoaded('options')) {
+            $this->load('options');
+        }
+        return $this->options && $this->options->aLaUneActive();
+    }
+
+    /**
+     * Vérifier si l'annonce a l'option "Urgent" active
+     */
+    public function urgentActive(): bool
+    {
+        if (!$this->relationLoaded('options')) {
+            $this->load('options');
+        }
+        return $this->options && $this->options->urgentActive();
+    }
+
+    /**
+     * Vérifier si l'annonce a l'option "Vidéo" active
+     */
+    public function videoActive(): bool
+    {
+        if (!$this->relationLoaded('options')) {
+            $this->load('options');
+        }
+        return $this->options && $this->options->videoActive();
+    }
+
+    /**
+     * Alias pour aLaUneActive()
+     */
+    public function estALaUne(): bool
+    {
+        return $this->aLaUneActive();
+    }
+
+    /**
+     * Alias pour urgentActive()
+     */
+    public function estUrgent(): bool
+    {
+        return $this->urgentActive();
+    }
+
+    /**
+     * Scopes
+     */
+    public function scopePubliees($query)
+    {
+        return $query->where('statut', self::STATUT_PUBLIEE)
+            ->whereNotNull('publiee_le')
+            ->where(function ($q) {
+                $q->whereNull('expire_le')
+                    ->orWhere('expire_le', '>', now());
+            });
+    }
+
+    public function scopeParType($query, string $type)
+    {
+        return $query->where('type', $type);
+    }
+
+    public function scopeParCategorie($query, int $categorieId)
+    {
+        return $query->where('categorie_id', $categorieId);
+    }
+
+    /**
+     * Scope pour les annonces "À la Une"
+     */
+    public function scopeALaUne($query)
+    {
+        return $query->whereHas('options', function ($q) {
+            $q->where('a_la_une', true)
+                ->where(function ($q2) {
+                    $q2->whereNull('a_la_une_expire_le')
+                        ->orWhere('a_la_une_expire_le', '>', now());
+                });
+        });
+    }
+
+    /**
+     * Scope pour les annonces "Urgent"
+     */
+    public function scopeUrgentes($query)
+    {
+        return $query->whereHas('options', function ($q) {
+            $q->where('urgent', true)
+                ->where(function ($q2) {
+                    $q2->whereNull('urgent_expire_le')
+                        ->orWhere('urgent_expire_le', '>', now());
+                });
+        });
+    }
+
+    /**
+     * Générer un slug unique
+     */
+    public static function generateSlug(string $titre, ?int $ignoreId = null): string
+    {
+        $slug = Str::slug($titre);
+        $originalSlug = $slug;
+        $counter = 1;
+
+        while (self::where('slug', $slug)->where('id', '!=', $ignoreId)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+}
