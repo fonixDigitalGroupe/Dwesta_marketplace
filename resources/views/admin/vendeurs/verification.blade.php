@@ -1,96 +1,77 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Vérification des Vendeurs')
 
+@section('breadcrumbs')
+    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <a href="{{ route('admin.dashboard') }}">Administration</a>
+    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+    <span style="color: var(--mady-red); font-weight: 700;">Vérifications</span>
+@endsection
+
 @section('content')
-<div style="max-width: 1200px; margin: 3rem auto; padding: 2rem;">
-    <div style="background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
-            <h1 style="color: #333; margin: 0;">Vérification des Vendeurs</h1>
-            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                <a href="{{ route('dashboard') }}" style="display: inline-block; background: #6c757d; color: white; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 4px; font-weight: 500;">
-                    Dashboard
-                </a>
-                <a href="{{ route('profile.show') }}" style="display: inline-block; background: #17a2b8; color: white; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 4px; font-weight: 500;">
-                    Mon profil
-                </a>
-            </div>
-        </div>
+<div class="card-pro" style="overflow: hidden;">
+    
+    <!-- Header -->
+    <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--slate-100); background: #fff;">
+        <h1 style="font-size: 1.25rem; font-weight: 800; color: var(--slate-900); letter-spacing: -0.02em; margin-bottom: 0.25rem;">Vérification des Vendeurs</h1>
+        <p style="font-size: 0.875rem; color: var(--slate-500); font-weight: 500;">Validez l'identité et les documents des marchands en attente d'approbation.</p>
+    </div>
 
-        @if(session('success'))
-            <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 4px; margin-bottom: 2rem; border: 1px solid #c3e6cb;">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div style="background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 4px; margin-bottom: 2rem; border: 1px solid #f5c6cb;">
-                {{ session('error') }}
-            </div>
-        @endif
-
+    <!-- Table content -->
+    <div style="padding: 0;">
         @if($vendeursEnAttente->count() > 0)
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
-                            <th style="padding: 1rem; text-align: left; color: #333; font-weight: 600;">Vendeur</th>
-                            <th style="padding: 1rem; text-align: left; color: #333; font-weight: 600;">Type</th>
-                            <th style="padding: 1rem; text-align: left; color: #333; font-weight: 600;">Date de demande</th>
-                            <th style="padding: 1rem; text-align: left; color: #333; font-weight: 600;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($vendeursEnAttente as $vendeur)
-                            <tr style="border-bottom: 1px solid #dee2e6;">
-                                <td style="padding: 1rem;">
-                                    <div>
-                                        <strong style="color: #333;">{{ $vendeur->user->prenom }} {{ $vendeur->user->nom ?? '' }}</strong>
-                                        <div style="color: #666; font-size: 0.875rem; margin-top: 0.25rem;">
-                                            {{ $vendeur->user->email }}
-                                        </div>
-                                        @if($vendeur->estProfessionnel() && $vendeur->professionnel)
-                                            <div style="color: #666; font-size: 0.875rem; margin-top: 0.25rem;">
-                                                {{ $vendeur->professionnel->nom_entreprise }}
-                                            </div>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td style="padding: 1rem;">
-                                    @if($vendeur->estParticulier())
-                                        <span style="background: #e3f2fd; color: #1976d2; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; font-weight: 500;">
-                                            Particulier
-                                        </span>
-                                    @else
-                                        <span style="background: #fff3e0; color: #f57c00; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.875rem; font-weight: 500;">
-                                            Professionnel
-                                        </span>
-                                    @endif
-                                </td>
-                                <td style="padding: 1rem; color: #666;">
-                                    {{ $vendeur->created_at->format('d/m/Y H:i') }}
-                                </td>
-                                <td style="padding: 1rem;">
-                                    <a href="{{ route('admin.vendeurs.verification.show', $vendeur) }}" style="display: inline-block; background: #EF3B2D; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 4px; font-size: 0.875rem;">
-                                        Vérifier
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <div style="margin-top: 2rem;">
-                {{ $vendeursEnAttente->links() }}
-            </div>
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background: var(--slate-50); border-bottom: 1px solid var(--slate-100);">
+                        <th style="padding: 1rem 2rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate-500);">Vendeur / Utilisateur</th>
+                        <th style="padding: 1rem 2rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate-500);">Type de Compte</th>
+                        <th style="padding: 1rem 2rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate-500);">Date de Demande</th>
+                        <th style="padding: 1rem 2rem; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--slate-500); text-align: right;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($vendeursEnAttente as $vendeur)
+                    <tr style="border-bottom: 1px solid var(--slate-100); transition: background 0.2s;" onmouseover="this.style.background='var(--slate-50)'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 1.25rem 2rem;">
+                            <div style="font-weight: 700; color: var(--slate-900); font-size: 0.9375rem;">{{ $vendeur->user->prenom }} {{ $vendeur->user->nom ?? '' }}</div>
+                            <div style="font-size: 0.75rem; color: var(--slate-400); font-weight: 500;">{{ $vendeur->user->email }}</div>
+                            @if($vendeur->estProfessionnel() && $vendeur->professionnel)
+                                <div style="font-size: 0.75rem; color: var(--mady-red); font-weight: 700; margin-top: 4px;">🏢 {{ $vendeur->professionnel->nom_entreprise }}</div>
+                            @endif
+                        </td>
+                        <td style="padding: 1.25rem 2rem;">
+                            @if($vendeur->estParticulier())
+                                <span style="display: inline-flex; align-items: center; padding: 4px 12px; background: #e0f2fe; color: #0369a1; border-radius: 20px; font-size: 0.75rem; font-weight: 800;">Particulier</span>
+                            @else
+                                <span style="display: inline-flex; align-items: center; padding: 4px 12px; background: #fef3c7; color: #b45309; border-radius: 20px; font-size: 0.75rem; font-weight: 800;">Professionnel</span>
+                            @endif
+                        </td>
+                        <td style="padding: 1.25rem 2rem; color: var(--slate-500); font-size: 0.8125rem; font-weight: 600;">
+                            {{ $vendeur->created_at->format('d/m/Y H:i') }}
+                        </td>
+                        <td style="padding: 1.25rem 2rem; text-align: right;">
+                            <a href="{{ route('admin.vendeurs.verification.show', $vendeur) }}" class="btn-pro-primary" style="padding: 8px 16px; font-size: 0.75rem;">
+                                Examiner le dossier
+                            </a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         @else
-            <div style="text-align: center; padding: 3rem; color: #666;">
-                <p style="font-size: 1.125rem; margin-bottom: 0.5rem;">Aucun vendeur en attente de vérification</p>
-                <p style="font-size: 0.875rem;">Tous les vendeurs ont été vérifiés.</p>
+            <div style="padding: 4rem; text-align: center; color: var(--slate-400); font-weight: 500;">
+                <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-bottom: 1rem; opacity: 0.3;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <p style="font-size: 1rem; font-weight: 700; color: var(--slate-900);">Aucun vendeur en attente</p>
+                <p style="font-size: 0.875rem;">Tous les dossiers ont été traités avec succès.</p>
             </div>
         @endif
     </div>
+
+    @if($vendeursEnAttente->hasPages())
+    <div style="padding: 1.5rem 2rem; border-top: 1px solid var(--slate-100); background: var(--slate-50);">
+        {{ $vendeursEnAttente->links() }}
+    </div>
+    @endif
 </div>
 @endsection
-

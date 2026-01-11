@@ -17,8 +17,8 @@ class SearchController extends Controller
         $query = Annonce::publiees()->with(['photos', 'category', 'vendeur.user', 'options']);
 
         // Recherche textuelle
-        if ($request->filled('q')) {
-            $searchTerm = $request->q;
+        $searchTerm = $request->q ?? $request->search;
+        if ($searchTerm) {
             $query->where(function($q) use ($searchTerm) {
                 $q->where('titre', 'LIKE', "%{$searchTerm}%")
                   ->orWhere('description', 'LIKE', "%{$searchTerm}%");
@@ -45,6 +45,44 @@ class SearchController extends Controller
         if ($request->filled('etat')) {
             $etats = is_array($request->etat) ? $request->etat : [$request->etat];
             $query->whereIn('etat', $etats);
+        }
+
+        // Filtres Spécifiques Immobilier
+        if ($request->category == 'immobilier' || str_contains($request->category ?? '', 'immobilier')) {
+            if ($request->filled('pieces')) {
+                $query->whereHas('immobilier', function($q) use ($request) {
+                    $q->where('pieces', '>=', $request->pieces);
+                });
+            }
+            if ($request->filled('surface_min')) {
+                $query->whereHas('immobilier', function($q) use ($request) {
+                    $q->where('surface', '>=', $request->surface_min);
+                });
+            }
+            if ($request->filled('type_transaction')) {
+                $query->whereHas('immobilier', function($q) use ($request) {
+                    $q->where('type_transaction', $request->type_transaction);
+                });
+            }
+        }
+
+        // Filtres Spécifiques Véhicules
+        if ($request->category == 'vehicules' || str_contains($request->category ?? '', 'vehicule')) {
+            if ($request->filled('marque')) {
+                $query->whereHas('vehicule', function($q) use ($request) {
+                    $q->where('marque', 'LIKE', "%{$request->marque}%");
+                });
+            }
+            if ($request->filled('km_max')) {
+                $query->whereHas('vehicule', function($q) use ($request) {
+                    $q->where('kilometrage', '<=', $request->km_max);
+                });
+            }
+            if ($request->filled('boite')) {
+                $query->whereHas('vehicule', function($q) use ($request) {
+                    $q->where('boite_vitesse', $request->boite);
+                });
+            }
         }
 
         // Filtre par type de vendeur (Pro/Particulier)
@@ -79,7 +117,7 @@ class SearchController extends Controller
         // Données pour la sidebar de filtres
         $categories = Category::whereNull('parent_id')->with('enfantsActifs')->get();
         
-        return view('search.index', compact('annonces', 'categories'));
+        return view('search.index', compact('annonces', 'categories', 'category'));
     }
 
     /**

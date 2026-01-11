@@ -57,6 +57,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'telephone_verified_at' => 'datetime',
             'password' => 'hashed',
+            'date_de_naissance' => 'date',
         ];
     }
 
@@ -97,5 +98,52 @@ class User extends Authenticatable implements MustVerifyEmail
     public function creditTransactions()
     {
         return $this->hasMany(CreditTransaction::class);
+    }
+
+    /**
+     * Conversations où l'utilisateur est user1
+     */
+    public function conversationsAsUser1()
+    {
+        return $this->hasMany(Conversation::class, 'user1_id');
+    }
+
+    /**
+     * Conversations où l'utilisateur est user2
+     */
+    public function conversationsAsUser2()
+    {
+        return $this->hasMany(Conversation::class, 'user2_id');
+    }
+
+    /**
+     * Obtenir toutes les conversations de l'utilisateur
+     */
+    public function getConversationsAttribute()
+    {
+        return Conversation::where('user1_id', $this->id)
+            ->orWhere('user2_id', $this->id)
+            ->orderBy('last_message_at', 'desc')
+            ->get();
+    }
+
+    public function messagesSent()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function reviewsWritten()
+    {
+        return $this->hasMany(Review::class, 'reviewer_id');
+    }
+
+    public function reviewsReceived()
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(Annonce::class, 'favorites', 'user_id', 'annonce_id')->withTimestamps();
     }
 }

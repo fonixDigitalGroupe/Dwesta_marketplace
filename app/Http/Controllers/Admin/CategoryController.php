@@ -15,17 +15,32 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        // Charger toutes les catégories avec leurs enfants récursivement
-        $categories = Category::racines()
-            ->with(['enfants' => function ($query) {
-                $query->orderBy('ordre')->with(['enfants' => function ($q) {
-                    $q->orderBy('ordre');
-                }]);
-            }])
-            ->orderBy('ordre')
-            ->get();
+        return redirect()->route('admin.categories.l1');
+    }
 
-        return view('admin.categories.index', compact('categories'));
+    public function indexL1()
+    {
+        $categories = Category::racines()->parOrdre()->paginate(10);
+        return view('admin.categories.index', compact('categories'))->with('level', 1);
+    }
+
+    public function indexL2()
+    {
+        $categories = Category::whereIn('parent_id', Category::racines()->pluck('id'))
+            ->with('parent')
+            ->parOrdre()
+            ->paginate(10);
+        return view('admin.categories.index', compact('categories'))->with('level', 2);
+    }
+
+    public function indexL3()
+    {
+        $parentIds = Category::whereIn('parent_id', Category::racines()->pluck('id'))->pluck('id');
+        $categories = Category::whereIn('parent_id', $parentIds)
+            ->with('parent.parent')
+            ->parOrdre()
+            ->paginate(10);
+        return view('admin.categories.index', compact('categories'))->with('level', 3);
     }
 
     /**
@@ -33,11 +48,10 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        // Récupérer toutes les catégories actives (pas seulement les racines)
-        // pour permettre de créer des sous-catégories à n'importe quel niveau
-        $categories = Category::actives()->parOrdre()->get();
+        // Récupérer l'arborescence complète pour le menu de sélection du parent
+        $categoriesTree = Category::getArborescence();
         
-        return view('admin.categories.create', compact('categories'));
+        return view('admin.categories.create', compact('categoriesTree'));
     }
 
     /**
@@ -66,7 +80,7 @@ class CategoryController extends Controller
             'actif' => $request->boolean('actif', true),
         ]);
 
-        return redirect()->route('admin.categories.index')
+        return redirect()->route('admin.categories.l' . ($request->parent_id ? (Category::find($request->parent_id)->parent_id ? '3' : '2') : '1'))
             ->with('success', 'Catégorie créée avec succès.');
     }
 
@@ -85,18 +99,10 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        // Récupérer toutes les catégories actives (pas seulement les racines)
-        // pour permettre de changer le parent à n'importe quel niveau
-        // Exclure la catégorie elle-même et ses descendants pour éviter les boucles
-        $excludedIds = $this->getDescendantIds($category);
-        $excludedIds[] = $category->id;
+        // Récupérer l'arborescence pour le menu de sélection du parent
+        $categoriesTree = Category::getArborescence();
 
-        $categories = Category::actives()
-            ->parOrdre()
-            ->whereNotIn('id', $excludedIds)
-            ->get();
-
-        return view('admin.categories.edit', compact('category', 'categories'));
+        return view('admin.categories.edit', compact('category', 'categoriesTree'));
     }
 
     /**
@@ -157,7 +163,7 @@ class CategoryController extends Controller
             'actif' => $request->boolean('actif', $category->actif),
         ]);
 
-        return redirect()->route('admin.categories.index')
+        return redirect()->route('admin.categories.l' . ($category->parent_id ? ($category->parent->parent_id ? '3' : '2') : '1'))
             ->with('success', 'Catégorie mise à jour avec succès.');
     }
 
@@ -172,8 +178,8 @@ class CategoryController extends Controller
         // Supprimer récursivement tous les enfants
         $this->deleteRecursively($category);
 
-        return redirect()->route('admin.categories.index')
-            ->with('success', 'Catégorie et ses sous-catégories supprimées avec succès.');
+        return redirect()->back()
+            ->with('success', 'Catégorie supprimée avec succès.');
     }
 
     /**

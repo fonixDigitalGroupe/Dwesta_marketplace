@@ -25,6 +25,7 @@ class AnnonceController extends Controller
     protected ImportAnnoncesCSVService $importService;
     protected RecommandationService $recommandationService;
     protected CreditService $creditService;
+    protected \App\Services\AnnoncePaymentService $paymentService;
 
     public function __construct(
         AnnonceService $annonceService,
@@ -32,7 +33,8 @@ class AnnonceController extends Controller
         MediaUploadService $mediaService,
         ImportAnnoncesCSVService $importService,
         RecommandationService $recommandationService,
-        CreditService $creditService
+        CreditService $creditService,
+        \App\Services\AnnoncePaymentService $paymentService
     ) {
         $this->annonceService = $annonceService;
         $this->optionService = $optionService;
@@ -40,6 +42,7 @@ class AnnonceController extends Controller
         $this->importService = $importService;
         $this->recommandationService = $recommandationService;
         $this->creditService = $creditService;
+        $this->paymentService = $paymentService;
     }
 
     /**
@@ -138,7 +141,16 @@ class AnnonceController extends Controller
         $validated = $this->validateAnnonce($request, $type);
 
         try {
+            // 1. Vérification du solde pour la catégorie (si payante)
+            $categorie = Category::findOrFail($validated['categorie_id']);
+            if (!$this->paymentService->canAffordPublication($user, $categorie)) {
+                return back()->withInput()->with('error', "Solde insuffisant pour publier dans cette catégorie ({$categorie->nom}). Coût : " . number_format($categorie->listing_price, 0) . " FCFA. Rechargez vos crédits.");
+            }
+
             $annonce = $this->annonceService->creerAnnonce($vendeur, $validated, $type);
+
+            // 2. Paiement effectif de la publication
+            $this->paymentService->processPublicationPayment($user, $categorie, "REF-" . $annonce->id);
 
             // Upload des photos
             if ($request->hasFile('photos')) {

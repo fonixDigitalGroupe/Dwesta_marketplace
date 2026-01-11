@@ -352,4 +352,9 @@ class Annonce extends Model
 
         return $slug;
     }
+
+    public function favoritedBy()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'annonce_id', 'user_id')->withTimestamps();
+    }
 }

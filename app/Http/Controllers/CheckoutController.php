@@ -131,14 +131,18 @@ class CheckoutController extends Controller
                 }
 
                 // Enregistrement de la transaction (une transaction par vendeur pour simplifier le séquestre)
+                // Enregistrement de la transaction (une transaction par vendeur pour simplifier le séquestre)
+                // SÉQUESTRE : L'argent est bloqué 14 jours
                 Transaction::create([
                     'order_id' => $order->id,
-                    'user_id' => Auth::id(),
+                    'user_id' => $order->vendeur->user_id, // L'argent va virtuellement au vendeur
                     'reference_externe' => 'SIM-' . strtoupper(Str::random(12)),
                     'montant' => $totalFinal,
                     'moyen_paiement' => $request->moyen_paiement,
                     'statut' => 'succes',
-                    'metadata' => ['mode' => 'simulation']
+                    'wallet_status' => 'pending', // Bloqué
+                    'release_at' => now()->addDays(14), // Libération dans 14 jours
+                    'metadata' => ['mode' => 'simulation', 'escrow' => true]
                 ]);
 
                 $orders[] = $order;

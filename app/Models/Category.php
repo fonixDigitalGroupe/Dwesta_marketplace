@@ -156,11 +156,22 @@ class Category extends Model
             ->get();
     }
 
-    /**
-     * Relation avec les annonces
-     */
     public function annonces(): HasMany
     {
-        return $this->hasMany(Annonce::class);
+        return $this->hasMany(Annonce::class, 'categorie_id');
+    }
+
+    /**
+     * Obtenir tous les IDs des descendants de la catégorie (récursif)
+     */
+    public function getAllDescendantIds(): \Illuminate\Support\Collection
+    {
+        $ids = collect([$this->id]);
+        
+        foreach ($this->enfantsActifs as $enfant) {
+            $ids = $ids->merge($enfant->getAllDescendantIds());
+        }
+        
+        return $ids->unique();
     }
 }

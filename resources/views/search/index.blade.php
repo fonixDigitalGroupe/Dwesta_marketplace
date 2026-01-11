@@ -231,12 +231,12 @@
             <ul class="filter-list">
                 @foreach($categories as $cat)
                     <li class="filter-item">
-                        <a href="{{ route('search.index', ['category' => $cat->slug, 'q' => request('q')]) }}" class="filter-link @if(request('category') == $cat->slug) active @endif">
+                        <a href="{{ route('search.index', ['category' => $cat->slug, 'q' => request('q')]) }}" class="filter-link @if(request('category') == $cat->slug || (isset($category) && $category->parent_id == $cat->id)) active @endif">
                             {{ $cat->nom }}
                         </a>
-                        @if($cat->enfantsActifs->isNotEmpty())
+                        @if($cat->enfantsActifs->isNotEmpty() && (request('category') == $cat->slug || (isset($category) && $category->parent_id == $cat->id)))
                             <ul class="filter-list" style="padding-left: 1rem; margin-top: 0.25rem;">
-                                @foreach($cat->enfantsActifs->take(5) as $child)
+                                @foreach($cat->enfantsActifs->take(10) as $child)
                                     <li class="filter-item">
                                         <a href="{{ route('search.index', ['category' => $child->slug, 'q' => request('q')]) }}" class="filter-link @if(request('category') == $child->slug) active @endif" style="font-size: 0.85rem;">
                                             {{ $child->nom }}
@@ -276,6 +276,46 @@
                     </label>
                 </div>
             </div>
+
+            @if(request('category') == 'immobilier' || str_contains(request('category') ?? '', 'immobilier'))
+                <div class="filter-group">
+                    <h3 class="filter-title">Détails Immobilier</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <label class="small text-muted">Nombre de pièces (min)</label>
+                        <input type="number" name="pieces" class="price-input" placeholder="Ex: 3" value="{{ request('pieces') }}">
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label class="small text-muted">Surface min (m²)</label>
+                        <input type="number" name="surface_min" class="price-input" placeholder="Ex: 50" value="{{ request('surface_min') }}">
+                    </div>
+                    <div>
+                        <label class="small text-muted">Type de transaction</label>
+                        <select name="type_transaction" class="price-input">
+                            <option value="">Tous</option>
+                            <option value="vente" @if(request('type_transaction') == 'vente') selected @endif>Vente</option>
+                            <option value="location" @if(request('type_transaction') == 'location') selected @endif>Location</option>
+                        </select>
+                    </div>
+                </div>
+            @endif
+
+            @if(request('category') == 'vehicules' || str_contains(request('category') ?? '', 'vehicule'))
+                <div class="filter-group">
+                    <h3 class="filter-title">Détails Véhicule</h3>
+                    <div style="margin-bottom: 1rem;">
+                        <label class="small text-muted">Kilométrage max</label>
+                        <input type="number" name="km_max" class="price-input" placeholder="Ex: 100000" value="{{ request('km_max') }}">
+                    </div>
+                    <div>
+                        <label class="small text-muted">Boîte de vitesse</label>
+                        <select name="boite" class="price-input">
+                            <option value="">Toutes</option>
+                            <option value="Manuelle" @if(request('boite') == 'Manuelle') selected @endif>Manuelle</option>
+                            <option value="Automatique" @if(request('boite') == 'Automatique') selected @endif>Automatique</option>
+                        </select>
+                    </div>
+                </div>
+            @endif
 
             <div class="filter-group">
                 <h3 class="filter-title">Type de vendeur</h3>

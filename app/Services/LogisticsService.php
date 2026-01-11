@@ -25,14 +25,19 @@ class LogisticsService
      */
     public function updateStatus(Order $order, string $newStatus)
     {
+        // Définition des transitions autorisées
         $allowedTransitions = [
-            'paye' => ['en_attente_depot'],
-            'en_attente_depot' => ['en_point_relais', 'annule'],
-            'en_point_relais' => ['receptionne', 'retour_vendeur'],
-            'receptionne' => []
+            Order::STATUT_PAYE => [Order::STATUT_PRET, Order::STATUT_ANNULE],
+            Order::STATUT_PRET => [Order::STATUT_EN_ROUTE, Order::STATUT_ANNULE],
+            Order::STATUT_EN_ROUTE => [Order::STATUT_DISPONIBLE, Order::STATUT_LITIGE],
+            Order::STATUT_DISPONIBLE => [Order::STATUT_LIVRE, Order::STATUT_LITIGE],
+            Order::STATUT_LIVRE => [Order::STATUT_LITIGE],
         ];
 
-        // Pour l'instant, on laisse libre mais on loggue
+        if (isset($allowedTransitions[$order->statut]) && !in_array($newStatus, $allowedTransitions[$order->statut])) {
+            throw new \Exception("Transition de statut non autorisée de {$order->statut} vers {$newStatus}");
+        }
+
         $order->update(['statut' => $newStatus]);
         
         return $order;

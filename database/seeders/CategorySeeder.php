@@ -12,129 +12,175 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        // Catégories principales
+        // Désactiver les contraintes de clés étrangères pour le nettoyage
+        \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+        \App\Models\Category::truncate();
+        \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
+
+        // 1. E-COMMERCE (Main Category)
         $ecommerce = Category::create([
             'nom' => 'E-commerce',
-            'slug' => Category::generateSlug('E-commerce'),
+            'slug' => 'e-commerce',
             'description' => 'Produits et articles en vente',
-            'icone' => 'shopping-bag',
+            'icone' => '📦',
             'ordre' => 1,
             'actif' => true,
         ]);
 
-        $services = Category::create([
-            'nom' => 'Services',
-            'slug' => Category::generateSlug('Services'),
-            'description' => 'Services professionnels et particuliers',
-            'icone' => 'briefcase',
+        // 1.1 Téléphonie, Tablette (Level 2 under E-commerce or Main?)
+        // In the image, "Téléphonie, Tablette" seems like a Main Category.
+        // Let's make it a Main Category for clarity as per user request.
+
+        $telephonie = Category::create([
+            'nom' => 'Téléphonie, Tablette',
+            'slug' => 'telephonie-tablette',
+            'icone' => '📱',
             'ordre' => 2,
             'actif' => true,
         ]);
 
-        $immobilier = Category::create([
-            'nom' => 'Immobilier',
-            'slug' => Category::generateSlug('Immobilier'),
-            'description' => 'Vente et location de biens immobiliers',
-            'icone' => 'home',
+        // Sub-categories for Téléphonie, Tablette (Level 2)
+        $subTelephonie = [
+            'SMARTPHONE ET TÉLÉPHONIE' => [
+                'iPhone', 'Xiaomi', 'Google', 'Sony', 'Samsung', 'Oneplus', 'Huawei', 'Realme', 'Tous les téléphones mobiles', 'Téléphone fixe'
+            ],
+            'TABLETTE ET LISEUSE' => [
+                'iPad', 'Tablette Xiaomi', 'Liseuse Kobo', 'Tablette Samsung', 'Toutes les tablettes', 'Toutes les liseuses'
+            ],
+            'OBJET CONNECTÉ' => [
+                'Apple watch', 'Bracelet Xiaomi', 'Toutes les montres connectées', 'Samsung watch', 'Montre Garmin', 'Tous les bracelets connectés'
+            ],
+            'ACCESSOIRE' => [
+                'Coque iPhone', 'Coque Xiaomi', 'Chargeur, Connectique', 'Coque Samsung', 'Etui, Coque', 'Tous les Accessoires de téléphones mobiles'
+            ],
+            'SECONDE MAIN' => [
+                'iPhone reconditionné', 'Samsung reconditionné', 'iPad reconditionné', 'Apple Watch reconditionnée'
+            ]
+        ];
+
+        foreach ($subTelephonie as $subNom => $items) {
+            $subCat = Category::create([
+                'parent_id' => $telephonie->id,
+                'nom' => $subNom,
+                'slug' => \Illuminate\Support\Str::slug($subNom),
+                'actif' => true,
+            ]);
+
+            foreach ($items as $itemNom) {
+                Category::create([
+                    'parent_id' => $subCat->id,
+                    'nom' => $itemNom,
+                    'slug' => \Illuminate\Support\Str::slug($itemNom . '-' . $subNom), // slug unique
+                    'actif' => true,
+                ]);
+            }
+        }
+
+        // 2. SERVICES (Main Category)
+        $services = Category::create([
+            'nom' => 'Services',
+            'slug' => 'services',
+            'description' => 'Services professionnels et particuliers',
+            'icone' => '🛠️',
             'ordre' => 3,
             'actif' => true,
         ]);
 
-        $vehicules = Category::create([
-            'nom' => 'Véhicules',
-            'slug' => Category::generateSlug('Véhicules'),
-            'description' => 'Véhicules d\'occasion et neufs',
-            'icone' => 'car',
+        $subServices = [
+            'Services à la personne' => ['Ménage', 'Garde d\'enfants', 'Soutien scolaire'],
+            'Services professionnels' => ['Conseil', 'Comptabilité', 'Marketing'],
+            'Services de réparation' => ['Informatique', 'Plomberie', 'Électricité'],
+            'Services de transport' => ['Déménagement', 'Livraison', 'Chauffeur'],
+        ];
+
+        foreach ($subServices as $subNom => $items) {
+            $subCat = Category::create([
+                'parent_id' => $services->id,
+                'nom' => $subNom,
+                'slug' => \Illuminate\Support\Str::slug($subNom),
+                'actif' => true,
+            ]);
+
+            foreach ($items as $itemNom) {
+                Category::create([
+                    'parent_id' => $subCat->id,
+                    'nom' => $itemNom,
+                    'slug' => \Illuminate\Support\Str::slug($itemNom),
+                    'actif' => true,
+                ]);
+            }
+        }
+
+        // 3. IMMOBILIER (Main Category)
+        $immobilier = Category::create([
+            'nom' => 'Immobilier',
+            'slug' => 'immobilier',
+            'description' => 'Vente et location de biens immobiliers',
+            'icone' => '🏠',
             'ordre' => 4,
             'actif' => true,
+            'listing_price' => 25000,
         ]);
 
-        // Sous-catégories E-commerce
-        $sousCategoriesEcommerce = [
-            ['nom' => 'Électronique', 'icone' => 'laptop', 'ordre' => 1],
-            ['nom' => 'Mode & Accessoires', 'icone' => 'tshirt', 'ordre' => 2],
-            ['nom' => 'Maison & Jardin', 'icone' => 'home', 'ordre' => 3],
-            ['nom' => 'Sport & Loisirs', 'icone' => 'football', 'ordre' => 4],
-            ['nom' => 'Livres & Médias', 'icone' => 'book', 'ordre' => 5],
-            ['nom' => 'Beauté & Santé', 'icone' => 'heart', 'ordre' => 6],
-            ['nom' => 'Jouets & Enfants', 'icone' => 'baby', 'ordre' => 7],
-            ['nom' => 'Autres', 'icone' => 'box', 'ordre' => 8],
+        $subImmo = [
+            'Vente' => ['Appartements', 'Maisons', 'Terrains', 'Bureaux'],
+            'Location' => ['Appartements', 'Maisons', 'Chambres', 'Parking'],
+            'Colocation' => ['Étudiant', 'Jeune actif'],
         ];
 
-        foreach ($sousCategoriesEcommerce as $sousCat) {
-            Category::create([
-                'parent_id' => $ecommerce->id,
-                'nom' => $sousCat['nom'],
-                'slug' => Category::generateSlug($sousCat['nom']),
-                'icone' => $sousCat['icone'],
-                'ordre' => $sousCat['ordre'],
-                'actif' => true,
-            ]);
-        }
-
-        // Sous-catégories Services
-        $sousCategoriesServices = [
-            ['nom' => 'Services à la personne', 'icone' => 'user', 'ordre' => 1],
-            ['nom' => 'Services professionnels', 'icone' => 'briefcase', 'ordre' => 2],
-            ['nom' => 'Services de réparation', 'icone' => 'tools', 'ordre' => 3],
-            ['nom' => 'Services de transport', 'icone' => 'truck', 'ordre' => 4],
-            ['nom' => 'Services de formation', 'icone' => 'graduation-cap', 'ordre' => 5],
-            ['nom' => 'Services événementiels', 'icone' => 'calendar', 'ordre' => 6],
-            ['nom' => 'Autres services', 'icone' => 'ellipsis-h', 'ordre' => 7],
-        ];
-
-        foreach ($sousCategoriesServices as $sousCat) {
-            Category::create([
-                'parent_id' => $services->id,
-                'nom' => $sousCat['nom'],
-                'slug' => Category::generateSlug($sousCat['nom']),
-                'icone' => $sousCat['icone'],
-                'ordre' => $sousCat['ordre'],
-                'actif' => true,
-            ]);
-        }
-
-        // Sous-catégories Immobilier
-        $sousCategoriesImmobilier = [
-            ['nom' => 'Appartements', 'icone' => 'building', 'ordre' => 1],
-            ['nom' => 'Maisons', 'icone' => 'home', 'ordre' => 2],
-            ['nom' => 'Terrains', 'icone' => 'map', 'ordre' => 3],
-            ['nom' => 'Locaux commerciaux', 'icone' => 'store', 'ordre' => 4],
-            ['nom' => 'Bureaux', 'icone' => 'briefcase', 'ordre' => 5],
-            ['nom' => 'Autres', 'icone' => 'ellipsis-h', 'ordre' => 6],
-        ];
-
-        foreach ($sousCategoriesImmobilier as $sousCat) {
-            Category::create([
+        foreach ($subImmo as $subNom => $items) {
+            $subCat = Category::create([
                 'parent_id' => $immobilier->id,
-                'nom' => $sousCat['nom'],
-                'slug' => Category::generateSlug($sousCat['nom']),
-                'icone' => $sousCat['icone'],
-                'ordre' => $sousCat['ordre'],
+                'nom' => $subNom,
+                'slug' => \Illuminate\Support\Str::slug($subNom . '-immo'),
                 'actif' => true,
             ]);
+
+            foreach ($items as $itemNom) {
+                Category::create([
+                    'parent_id' => $subCat->id,
+                    'nom' => $itemNom,
+                    'slug' => \Illuminate\Support\Str::slug($itemNom . '-' . $subNom),
+                    'actif' => true,
+                ]);
+            }
         }
 
-        // Sous-catégories Véhicules
-        $sousCategoriesVehicules = [
-            ['nom' => 'Voitures', 'icone' => 'car', 'ordre' => 1],
-            ['nom' => 'Motos', 'icone' => 'motorcycle', 'ordre' => 2],
-            ['nom' => 'Vélos', 'icone' => 'bicycle', 'ordre' => 3],
-            ['nom' => 'Utilitaires', 'icone' => 'truck', 'ordre' => 4],
-            ['nom' => 'Bateaux', 'icone' => 'ship', 'ordre' => 5],
-            ['nom' => 'Pièces & Accessoires', 'icone' => 'cog', 'ordre' => 6],
-            ['nom' => 'Autres', 'icone' => 'ellipsis-h', 'ordre' => 7],
+        // 4. VÉHICULES (Main Category)
+        $vehicules = Category::create([
+            'nom' => 'Véhicules',
+            'slug' => 'vehicules',
+            'description' => 'Véhicules d\'occasion et neufs',
+            'icone' => '🚗',
+            'ordre' => 5,
+            'actif' => true,
+            'listing_price' => 50000,
+        ]);
+
+        $subVehicules = [
+            'Voitures' => ['Berlines', 'SUV', 'Citadines', 'Coupés'],
+            'Motos & Scooters' => ['Motos', 'Scooters', 'Quads'],
+            'Vélos' => ['VTT', 'Vélo de route', 'Vélo électrique'],
+            'Pièces & Accessoires' => ['Pneus', 'Moteur', 'Équipement moto'],
         ];
 
-        foreach ($sousCategoriesVehicules as $sousCat) {
-            Category::create([
+        foreach ($subVehicules as $subNom => $items) {
+            $subCat = Category::create([
                 'parent_id' => $vehicules->id,
-                'nom' => $sousCat['nom'],
-                'slug' => Category::generateSlug($sousCat['nom']),
-                'icone' => $sousCat['icone'],
-                'ordre' => $sousCat['ordre'],
+                'nom' => $subNom,
+                'slug' => \Illuminate\Support\Str::slug($subNom),
                 'actif' => true,
             ]);
+
+            foreach ($items as $itemNom) {
+                Category::create([
+                    'parent_id' => $subCat->id,
+                    'nom' => $itemNom,
+                    'slug' => \Illuminate\Support\Str::slug($itemNom . '-' . $subNom),
+                    'actif' => true,
+                ]);
+            }
         }
     }
+
 }

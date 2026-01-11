@@ -13,11 +13,14 @@ class Transaction extends Model
         'montant',
         'moyen_paiement',
         'statut',
+        'wallet_status',
+        'release_at',
         'metadata',
     ];
 
     protected $casts = [
         'metadata' => 'array',
+        'release_at' => 'datetime',
     ];
 
     public function order()

@@ -308,7 +308,7 @@
                 <ul class="sidebar-menu">
                     <li><a href="{{ route('vendeur.show') }}" class="active">État du compte</a></li>
                     <li><a href="{{ route('abonnements.mon-abonnement') }}">Mon abonnement</a></li>
-                    <li><a href="#">Mes revenus</a></li>
+                    <li><a href="{{ route('vendeur.wallet.index') }}">Mon Portefeuille (Revenus)</a></li>
                     <li><a href="{{ route('annonces.index') }}">Mes annonces</a></li>
                 </ul>
             </div>
@@ -319,8 +319,8 @@
                     Porte-monnaie
                 </div>
                 <ul class="sidebar-menu">
-                    <li><a href="#">Solde : {{ number_format(0, 0, ',', ' ') }} FCFA</a></li>
-                    <li><a href="#">Demander un virement</a></li>
+                    <li><a href="{{ route('vendeur.wallet.index') }}">Solde : {{ number_format(auth()->user()->credit_balance, 0, ',', ' ') }} FCFA</a></li>
+                    <li><a href="{{ route('vendeur.wallet.index') }}">Demander un retrait</a></li>
                 </ul>
             </div>
         </aside>

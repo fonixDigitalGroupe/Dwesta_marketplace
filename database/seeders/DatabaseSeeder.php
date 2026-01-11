@@ -16,17 +16,18 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RoleSeeder::class,
+            RoleSeeder::class,              // Rôles (admin, vendeur, acheteur)
+            UserSeeder::class,              // Utilisateurs (admin, vendeurs, acheteurs)
+            VendeurSeeder::class,           // Profils vendeurs
+            AbonnementSeeder::class,        // Abonnements
+            CategorySeeder::class,          // Catégories
+            AnnonceSeeder::class,           // Annonces
+            OrderSeeder::class,             // Commandes
+            TransactionSeeder::class,       // Transactions
+            ReviewSeeder::class,            // Avis
+            MessageSeeder::class,           // Messages
+            CreditTransactionSeeder::class, // Crédits
+            LitigeSeeder::class,            // Litiges
         ]);
-
-        // Créer un admin par défaut
-        $admin = User::create([
-            'prenom' => 'Admin',
-            'nom' => 'Mady Market',
-            'email' => 'admin@madymarket.com',
-            'password' => bcrypt('password'),
-            'email_verified_at' => now(),
-        ]);
-        $admin->assignRole('Administrateur');
     }
 }

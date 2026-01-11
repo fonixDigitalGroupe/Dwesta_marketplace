@@ -19,6 +19,7 @@ class PagePro extends Model
         'logo',
         'banniere',
         'description',
+        'couleur_primaire',
         'categories',
         'telephone_contact',
         'email_contact',

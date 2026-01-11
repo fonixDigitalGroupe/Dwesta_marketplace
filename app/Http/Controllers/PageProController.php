@@ -132,6 +132,7 @@ class PageProController extends Controller
             'instagram' => ['nullable', 'url', 'max:255'],
             'twitter' => ['nullable', 'url', 'max:255'],
             'linkedin' => ['nullable', 'url', 'max:255'],
+            'couleur_primaire' => ['nullable', 'string', 'regex:/^#[a-fA-F0-9]{6}$/'],
         ]);
 
         $data = $request->only([
@@ -139,6 +140,7 @@ class PageProController extends Controller
             'telephone_contact',
             'email_contact',
             'site_web',
+            'couleur_primaire',
         ]);
 
         // Gestion du logo

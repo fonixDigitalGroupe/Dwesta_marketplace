@@ -18,6 +18,10 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CreditController;
 use App\Http\Controllers\ScanController;
 use App\Http\Controllers\VendeurController;
+use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\VendeurWalletController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -56,6 +60,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [VendeurController::class, 'show'])->name('show');
         Route::put('/{vendeur}/document-particulier', [VendeurController::class, 'updateDocumentParticulier'])->name('update.document.particulier');
         Route::put('/{vendeur}/document-professionnel', [VendeurController::class, 'updateDocumentProfessionnel'])->name('update.document.professionnel');
+        
+        // Wallet & Escrow
+        Route::get('/wallet', [VendeurWalletController::class, 'index'])->name('wallet.index');
+        Route::post('/wallet/withdraw', [VendeurWalletController::class, 'requestWithdrawal'])->name('wallet.withdraw');
     });
     
     // Abonnements
@@ -90,6 +98,11 @@ Route::middleware('auth')->group(function () {
             });
             
             // Gestion des catégories (Admin)
+            Route::prefix('categories')->name('categories.')->group(function () {
+                Route::get('/niveau-1', [AdminCategoryController::class, 'indexL1'])->name('l1');
+                Route::get('/niveau-2', [AdminCategoryController::class, 'indexL2'])->name('l2');
+                Route::get('/niveau-3', [AdminCategoryController::class, 'indexL3'])->name('l3');
+            });
             Route::resource('categories', AdminCategoryController::class)->names([
                 'index' => 'categories.index',
                 'create' => 'categories.create',
@@ -105,6 +118,26 @@ Route::middleware('auth')->group(function () {
                 Route::get('/moderation', [AvisController::class, 'moderation'])->name('moderation');
                 Route::post('/{avis}/approve', [AvisController::class, 'approve'])->name('approve');
                 Route::post('/{avis}/reject', [AvisController::class, 'reject'])->name('reject');
+            });
+
+            // Dashboard Admin
+            Route::get('/', function () {
+                return redirect()->route('admin.dashboard');
+            });
+            Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+
+            // Litiges
+            Route::prefix('litiges')->name('litiges.')->group(function () {
+                Route::get('/', [\App\Http\Controllers\Admin\LitigeController::class, 'index'])->name('index');
+                Route::get('/{litige}', [\App\Http\Controllers\Admin\LitigeController::class, 'show'])->name('show');
+                Route::put('/{litige}', [\App\Http\Controllers\Admin\LitigeController::class, 'resolve'])->name('resolve');
+            });
+
+            // Modération Annonces
+            Route::prefix('annonces')->name('annonces.')->group(function () {
+                Route::get('/moderation', [\App\Http\Controllers\Admin\AnnonceModerationController::class, 'index'])->name('moderation.index');
+                Route::post('/{annonce}/approve', [\App\Http\Controllers\Admin\AnnonceModerationController::class, 'approve'])->name('moderation.approve');
+                Route::post('/{annonce}/reject', [\App\Http\Controllers\Admin\AnnonceModerationController::class, 'reject'])->name('moderation.reject');
             });
         });
     
@@ -147,10 +180,15 @@ Route::middleware('auth')->group(function () {
     });
 
     // Logistique & Scan
-    Route::prefix('logistique')->name('logistics.')->group(function () {
-        Route::get('/scan', [ScanController::class, 'index'])->name('scan');
+    Route::prefix('logistique')->group(function () {
+        Route::get('/transporteur', [\App\Http\Controllers\LogisticsController::class, 'transporteurDashboard'])->name('logistics.transporteur');
+        Route::get('/relais', [\App\Http\Controllers\LogisticsController::class, 'relaisDashboard'])->name('logistics.relais');
+
+        Route::get('/scan', [ScanController::class, 'index'])->name('scan.index');
         Route::post('/scan', [ScanController::class, 'process'])->name('scan.process');
-        Route::get('/suivi/{reference}', [ScanController::class, 'track'])->name('track');
+        Route::get('/suivi/{reference}', [ScanController::class, 'track'])->name('scan.track');
+        
+        Route::post('/vendeur/orders/{order}/ready', [\App\Http\Controllers\LogisticsController::class, 'markAsReady'])->name('logistics.markAsReady');
     });
 
     // Crédits & Porte-Monnaie
@@ -159,12 +197,22 @@ Route::middleware('auth')->group(function () {
         Route::post('/buy', [CreditController::class, 'buyPack'])->name('buy');
     });
 
-    // Abonnements
-    Route::prefix('abonnements')->name('abonnements.')->group(function () {
-        Route::get('/', [AbonnementController::class, 'index'])->name('index');
-        Route::post('/subscribe', [AbonnementController::class, 'subscribe'])->name('subscribe');
-        Route::post('/cancel', [AbonnementController::class, 'cancel'])->name('cancel');
+    // Abonnements group removed (duplicate)
+
+    // Messagerie
+    Route::prefix('messagerie')->name('conversations.')->group(function () {
+        Route::get('/', [ConversationController::class, 'index'])->name('index');
+        Route::get('/create', [ConversationController::class, 'create'])->name('create');
+        Route::post('/', [ConversationController::class, 'store'])->name('store');
+        Route::get('/{conversation}', [ConversationController::class, 'show'])->name('show');
+        Route::post('/{conversation}/messages', [MessageController::class, 'store'])->name('messages.store');
     });
+
+    // Favoris
+    Route::post('/annonces/{annonce}/favorite', [\App\Http\Controllers\FavoriteController::class, 'toggle'])->name('favorites.toggle');
+
+    // Reviews (Avis global)
+    Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 });
 
 // Annonces publiques (accessible sans authentification) - DOIT être APRÈS les routes authentifiées

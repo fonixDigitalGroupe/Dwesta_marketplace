@@ -12,12 +12,10 @@ class RoleSeeder extends Seeder
     {
         // Créer les rôles
         $roles = [
-            'Acheteur',
-            'Vendeur',
-            'Vendeur Particulier',
-            'Vendeur Professionnel',
-            'Transporteur',
-            'Depot Relais',
+            'acheteur',
+            'vendeur',
+            'transporteur',
+            'depot_relais',
             'Administrateur',
         ];
 

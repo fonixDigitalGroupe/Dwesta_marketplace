@@ -359,6 +359,12 @@
                 <a href="#" class="club-r">Club R</a>
                 
                 @auth
+                    @if(auth()->user()->hasRole('Administrateur'))
+                        <a href="{{ route('admin.dashboard') }}" class="header-link" style="color: #bf0000; font-weight: 800; border: 1px solid #bf0000; padding: 4px 10px; border-radius: 6px; background: #fff;">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-right: 2px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span>Back Office</span>
+                        </a>
+                    @endif
                     <!-- Mon Compte -->
                     <a href="{{ route('profile.show') }}" class="header-link">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -388,6 +394,17 @@
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar">
+            @if(auth()->user()->hasRole('Administrateur'))
+            <div class="sidebar-section" style="border: 2px solid #bf0000; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(191,0,0,0.1);">
+                <div class="sidebar-title" style="background: #bf0000; color: #fff; border-bottom: none;">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #fff;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Administration
+                </div>
+                <ul class="sidebar-menu">
+                    <li><a href="{{ route('admin.dashboard') }}" style="color: #bf0000; font-weight: 800; font-size: 1rem; text-align: center; padding: 1rem;">ACCÉDER AU BACK OFFICE</a></li>
+                </ul>
+            </div>
+            @endif
             <!-- Mes informations -->
             <div class="sidebar-section">
                 <div class="sidebar-title">

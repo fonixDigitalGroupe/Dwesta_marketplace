@@ -15,11 +15,11 @@ class CategoryController extends Controller
     {
         $category = Category::where('slug', $slug)
             ->where('actif', true)
-            ->with(['parent', 'enfantsActifs'])
+            ->with(['parent', 'enfantsActifs.enfantsActifs'])
             ->firstOrFail();
 
         // Charger les annonces de cette catégorie et de ses enfants
-        $categoryIds = $category->descendantsAndSelf()->pluck('id');
+        $categoryIds = $category->getAllDescendantIds();
         
         $annonces = Annonce::publiees()
             ->whereIn('categorie_id', $categoryIds)

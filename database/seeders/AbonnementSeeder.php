@@ -15,30 +15,30 @@ class AbonnementSeeder extends Seeder
                 'nom' => 'Gratuit',
                 'description' => 'Idéal pour débuter sur Mady Market',
                 'nombre_annonces' => 5,
-                'commission' => 15.00, // 15%
+                'commission' => 3.00, // 3% selon CDC
                 'prix_mensuel' => 0,
                 'page_pro' => false,
                 'actif' => true,
                 'ordre' => 1,
             ],
             [
-                'type' => 'pro',
-                'nom' => 'Pro',
-                'description' => 'Pour les vendeurs réguliers qui veulent plus de visibilité',
-                'nombre_annonces' => 50,
-                'commission' => 12.00, // 12%
-                'prix_mensuel' => 5000, // 5000 FCFA
+                'type' => 'basic',
+                'nom' => 'Basic',
+                'description' => 'Usage illimité avec page pro personnalisée',
+                'nombre_annonces' => 0, // Illimité
+                'commission' => 7.00, // 7% selon CDC
+                'prix_mensuel' => 3000, // 3000 FCFA selon CDC
                 'page_pro' => true,
                 'actif' => true,
                 'ordre' => 2,
             ],
             [
-                'type' => 'gold',
-                'nom' => 'Gold',
-                'description' => 'Pour les professionnels qui veulent dominer leur marché',
+                'type' => 'expert',
+                'nom' => 'Expert',
+                'description' => 'Commission réduite pour les gros volumes',
                 'nombre_annonces' => 0, // Illimité
-                'commission' => 10.00, // 10%
-                'prix_mensuel' => 15000, // 15000 FCFA
+                'commission' => 5.00, // 5% selon CDC
+                'prix_mensuel' => 5000, // 5000 FCFA selon CDC
                 'page_pro' => true,
                 'actif' => true,
                 'ordre' => 3,

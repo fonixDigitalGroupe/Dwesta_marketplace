@@ -46,29 +46,52 @@ class ScanController extends Controller
 
         $token = $request->token;
 
-        // Recherche de la commande par QR Token ou Tracking Token
-        $order = Order::where('qr_code_token', $token)
-                    ->orWhere('tracking_token', $token)
-                    ->first();
+        // 1. Essayer de trouver par Tracking Token (Colis physique)
+        $orderByTracking = Order::where('tracking_token', $token)->first();
+
+        // 2. Essayer de trouver par QR Token (Preuve de retrait client)
+        $orderByQR = Order::where('qr_code_token', $token)->first();
+
+        $order = $orderByTracking ?? $orderByQR;
 
         if (!$order) {
             return back()->with('error', 'Commande non trouvée pour ce jeton.');
         }
 
-        // Logique de changement de statut basée sur le scan
         $message = "";
         $status = $order->statut;
+        $newStatus = null;
 
-        if ($status == 'paye' || $status == 'en_attente_depot') {
-            $this->logisticsService->updateStatus($order, 'en_point_relais');
-            $message = "Commande #{$order->reference} réceptionnée au point relais. Le vendeur a déposé le colis.";
-        } elseif ($status == 'en_point_relais') {
-            $this->logisticsService->updateStatus($order, 'receptionne');
-            $message = "Commande #{$order->reference} remise à l'acheteur. Livraison terminée.";
-        } else {
-            return back()->with('info', "La commande #{$order->reference} est déjà au statut : " . $status);
+        try {
+            if ($orderByTracking) {
+                // C'est un scan de COLIS (par Transporteur ou Relais)
+                if ($status == Order::STATUT_PRET) {
+                    $newStatus = Order::STATUT_EN_ROUTE;
+                    $message = "📦 Ramassage réussi ! Le colis est désormais 'En cours de livraison'.";
+                } elseif ($status == Order::STATUT_EN_ROUTE) {
+                    $newStatus = Order::STATUT_DISPONIBLE;
+                    $message = "📍 Réception en relais réussie ! Le colis est 'Disponible' pour le client.";
+                } else {
+                    return back()->with('info', "Scan Tracking : La commande est déjà en statut '{$order->statut_label}'.");
+                }
+            } elseif ($orderByQR) {
+                // C'est un scan de CLIENT (par Relais pour remise)
+                if ($status == Order::STATUT_DISPONIBLE) {
+                    $newStatus = Order::STATUT_LIVRE;
+                    $message = "✅ Livraison confirmée ! Le colis a été remis au client.";
+                } else {
+                    return back()->with('error', "Scan Client : Impossible de livrer un colis qui n'est pas encore 'Disponible' (Statut actuel : {$order->statut_label}).");
+                }
+            }
+
+            if ($newStatus) {
+                $this->logisticsService->updateStatus($order, $newStatus);
+                return back()->with('success', $message);
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', 'Erreur de transition : ' . $e->getMessage());
         }
 
-        return back()->with('success', $message);
+        return back()->with('warning', "Aucune action effectuée.");
     }
 }
