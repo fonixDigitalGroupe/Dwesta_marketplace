@@ -33,4 +33,9 @@ class FavoriteController extends Controller
             'count' => $annonce->favoritedBy()->count()
         ]);
     }
+    public function index()
+    {
+        $favorites = Auth::user()->favorites()->with('medias')->latest()->paginate(20);
+        return view('favorites.index', compact('favorites'));
+    }
 }

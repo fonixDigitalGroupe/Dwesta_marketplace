@@ -19,34 +19,27 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        // Préparer la date de naissance si présente
-        if ($request->filled(['annee', 'mois', 'jour'])) {
-            $request->merge([
-                'date_de_naissance' => "{$request->annee}-{$request->mois}-{$request->jour}"
-            ]);
-        }
 
         $request->validate([
-            'civilite' => ['required', 'string', 'in:Madame,Monsieur'],
             'prenom' => ['required', 'string', 'max:255'],
             'nom' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'confirmed'],
-            'date_de_naissance' => ['required', 'date'],
-            'telephone' => ['nullable', 'string', 'max:20', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'nationalite' => ['required', 'string', 'max:100'],
+            'adresse' => ['required', 'string', 'max:500'],
+            'telephone' => ['required', 'string', 'max:20', 'unique:users'],
+            'password' => ['required', Rules\Password::defaults()],
         ], [
             'email.unique' => 'Cet email est déjà utilisé.',
-            'email.confirmed' => 'La confirmation de l\'email ne correspond pas.',
             'telephone.unique' => 'Ce numéro de téléphone est déjà utilisé.',
-            'date_de_naissance.date' => 'La date de naissance n\'est pas valide.',
+            'telephone.required' => 'Le numéro de téléphone est requis.',
         ]);
 
         $user = User::create([
-            'civilite' => $request->civilite,
             'prenom' => $request->prenom,
             'nom' => $request->nom,
             'email' => $request->email,
-            'date_de_naissance' => $request->date_de_naissance,
+            'nationalite' => $request->nationalite,
+            'adresse' => $request->adresse,
             'telephone' => $request->telephone,
             'password' => Hash::make($request->password),
         ]);
