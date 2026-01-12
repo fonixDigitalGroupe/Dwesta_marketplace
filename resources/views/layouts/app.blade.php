@@ -238,7 +238,7 @@
                                      @mouseenter="selectedCategory = {{ $cat->id }}"
                                      @click="selectedCategory = {{ $cat->id }}">
                                     <div style="display: flex; align-items: center; gap: 12px;">
-                                        <span style="font-size: 1rem; width: 20px; text-align: center; color: inherit;">{{ $cat->icone ?? '📁' }}</span>
+                                        <span style="font-size: 1rem; width: 20px; text-align: center; color: inherit;">{!! $cat->icone ?? '📁' !!}</span>
                                         <span style="font-size: 0.88rem; font-weight: 400;">{{ $cat->nom }}</span>
                                     </div>
                                     <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>

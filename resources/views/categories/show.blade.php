@@ -52,7 +52,7 @@
 
     <div class="category-header">
         <div class="category-title-row">
-            @if($category->icone) <span style="font-size: 2rem;">{{ $category->icone }}</span> @endif
+            @if($category->icone) <span style="font-size: 2rem;">{!! $category->icone !!}</span> @endif
             <h1 class="category-title">{{ $category->nom }}</h1>
         </div>
         @if($category->description)

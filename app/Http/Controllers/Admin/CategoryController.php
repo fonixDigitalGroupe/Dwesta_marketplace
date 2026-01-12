@@ -50,7 +50,7 @@ class CategoryController extends Controller
     {
         // Récupérer l'arborescence complète pour le menu de sélection du parent
         $categoriesTree = Category::getArborescence();
-        
+
         return view('admin.categories.create', compact('categoriesTree'));
     }
 
@@ -63,7 +63,7 @@ class CategoryController extends Controller
             'nom' => ['required', 'string', 'max:255'],
             'parent_id' => ['nullable', 'exists:categories,id'],
             'description' => ['nullable', 'string', 'max:1000'],
-            'icone' => ['nullable', 'string', 'max:100'],
+            'icone' => ['nullable', 'string'],
             'ordre' => ['nullable', 'integer', 'min:0'],
             'actif' => ['nullable', 'boolean'],
         ]);
@@ -77,10 +77,15 @@ class CategoryController extends Controller
             'description' => $request->description,
             'icone' => $request->icone,
             'ordre' => $request->ordre ?? 0,
-            'actif' => $request->boolean('actif', true),
+            'actif' => $request->boolean('actif'),
         ]);
 
-        return redirect()->route('admin.categories.l' . ($request->parent_id ? (Category::find($request->parent_id)->parent_id ? '3' : '2') : '1'))
+        if ($request->parent_id) {
+            return redirect()->route('admin.categories.show', $request->parent_id)
+                ->with('success', 'Catégorie créée avec succès.');
+        }
+
+        return redirect()->route('admin.categories.l1')
             ->with('success', 'Catégorie créée avec succès.');
     }
 
@@ -90,7 +95,7 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         $category->load(['parent', 'enfants']);
-        
+
         return view('admin.categories.show', compact('category'));
     }
 
@@ -111,12 +116,12 @@ class CategoryController extends Controller
     private function getDescendantIds(Category $category): array
     {
         $ids = [];
-        
+
         foreach ($category->enfants as $enfant) {
             $ids[] = $enfant->id;
             $ids = array_merge($ids, $this->getDescendantIds($enfant));
         }
-        
+
         return $ids;
     }
 
@@ -127,23 +132,27 @@ class CategoryController extends Controller
     {
         $request->validate([
             'nom' => ['required', 'string', 'max:255'],
-            'parent_id' => ['nullable', 'exists:categories,id', function ($attribute, $value, $fail) use ($category) {
-                if ($value == $category->id) {
-                    $fail('Une catégorie ne peut pas être son propre parent.');
-                }
-                // Vérifier qu'on ne crée pas de boucle
-                if ($value) {
-                    $parent = Category::find($value);
-                    $ancetres = $parent->ancetres;
-                    foreach ($ancetres as $ancetre) {
-                        if ($ancetre->id == $category->id) {
-                            $fail('Cette catégorie créerait une boucle dans l\'arborescence.');
+            'parent_id' => [
+                'nullable',
+                'exists:categories,id',
+                function ($attribute, $value, $fail) use ($category) {
+                    if ($value == $category->id) {
+                        $fail('Une catégorie ne peut pas être son propre parent.');
+                    }
+                    // Vérifier qu'on ne crée pas de boucle
+                    if ($value) {
+                        $parent = Category::find($value);
+                        $ancetres = $parent->ancetres;
+                        foreach ($ancetres as $ancetre) {
+                            if ($ancetre->id == $category->id) {
+                                $fail('Cette catégorie créerait une boucle dans l\'arborescence.');
+                            }
                         }
                     }
                 }
-            }],
+            ],
             'description' => ['nullable', 'string', 'max:1000'],
-            'icone' => ['nullable', 'string', 'max:100'],
+            'icone' => ['nullable', 'string'],
             'ordre' => ['nullable', 'integer', 'min:0'],
             'actif' => ['nullable', 'boolean'],
         ]);
@@ -160,10 +169,15 @@ class CategoryController extends Controller
             'description' => $request->description,
             'icone' => $request->icone,
             'ordre' => $request->ordre ?? $category->ordre,
-            'actif' => $request->boolean('actif', $category->actif),
+            'actif' => $request->boolean('actif'),
         ]);
 
-        return redirect()->route('admin.categories.l' . ($category->parent_id ? ($category->parent->parent_id ? '3' : '2') : '1'))
+        if ($category->parent_id) {
+            return redirect()->route('admin.categories.show', $category->parent_id)
+                ->with('success', 'Catégorie mise à jour avec succès.');
+        }
+
+        return redirect()->route('admin.categories.l1')
             ->with('success', 'Catégorie mise à jour avec succès.');
     }
 
