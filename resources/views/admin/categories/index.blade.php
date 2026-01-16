@@ -44,7 +44,7 @@
 
             <!-- Onglets / Filtres -->
             <div style="padding: 1rem 1.5rem; border-bottom: 1px solid #f6f6f6; display: flex; gap: 8px;">
-                <button style="background: #333; border: 1px solid #333; border-radius: 4px; padding: 6px 12px; font-size: 0.8rem; color: #fff; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                <button style="background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; padding: 6px 12px; font-size: 0.8rem; color: #666; cursor: pointer; display: flex; align-items: center; gap: 6px;">
                     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
                     Liste des catégories
                 </button>
@@ -101,7 +101,11 @@
                             </td>
                             <td style="padding: 1rem 1.5rem;">
                                 <div style="font-weight: 500; color: #333; font-size: 0.95rem;">{{ $category->nom }}</div>
-                                <div style="font-size: 0.75rem; color: #999;">{{ $category->slug }}</div>
+                                @if($level == 1 && $category->famille)
+                                    <span style="display: inline-block; margin-top: 4px; background: #f3f4f6; color: #6b7280; padding: 2px 8px; border-radius: 12px; font-size: 0.65rem; font-weight: 500;">{{ $category->famille }}</span>
+                                @else
+                                    <div style="font-size: 0.75rem; color: #9ca3af; margin-top: 2px;">{{ $category->slug }}</div>
+                                @endif
                             </td>
                             @if($level > 1)
                             <td style="padding: 1rem 1.5rem;">

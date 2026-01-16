@@ -66,7 +66,13 @@ class CategoryController extends Controller
             'icone' => ['nullable', 'string'],
             'ordre' => ['nullable', 'integer', 'min:0'],
             'actif' => ['nullable', 'boolean'],
+            'famille' => ['nullable', 'string', 'in:' . implode(',', Category::getFamilles())],
         ]);
+
+        // Validation conditionnelle : Famille requise si racine
+        if (is_null($request->parent_id) && empty($request->famille)) {
+            return back()->withErrors(['famille' => 'La famille est obligatoire pour une catégorie principale.'])->withInput();
+        }
 
         $slug = Category::generateSlug($request->nom);
 
@@ -78,6 +84,7 @@ class CategoryController extends Controller
             'icone' => $request->icone,
             'ordre' => $request->ordre ?? 0,
             'actif' => $request->boolean('actif'),
+            'famille' => $request->parent_id ? null : $request->famille, // Seulement pour les racines
         ]);
 
         if ($request->parent_id) {
@@ -155,7 +162,13 @@ class CategoryController extends Controller
             'icone' => ['nullable', 'string'],
             'ordre' => ['nullable', 'integer', 'min:0'],
             'actif' => ['nullable', 'boolean'],
+            'famille' => ['nullable', 'string', 'in:' . implode(',', Category::getFamilles())],
         ]);
+
+        // Validation conditionnelle : Famille requise si racine
+        if (is_null($request->parent_id) && empty($request->famille)) {
+            return back()->withErrors(['famille' => 'La famille est obligatoire pour une catégorie principale.'])->withInput();
+        }
 
         $slug = $category->slug;
         if ($request->nom !== $category->nom) {
@@ -170,6 +183,7 @@ class CategoryController extends Controller
             'icone' => $request->icone,
             'ordre' => $request->ordre ?? $category->ordre,
             'actif' => $request->boolean('actif'),
+            'famille' => $request->parent_id ? null : $request->famille,
         ]);
 
         if ($category->parent_id) {
@@ -184,12 +198,25 @@ class CategoryController extends Controller
     /**
      * Supprime une catégorie (récursivement avec ses enfants)
      */
+    /**
+     * Supprime une catégorie (récursivement avec ses enfants)
+     */
     public function destroy(Category $category)
     {
-        // TODO: Vérifier si la catégorie est utilisée par des annonces (Phase 4)
-        // Si oui, on pourrait soit empêcher la suppression, soit déplacer les annonces
+        // 1. Récupérer tous les IDs concernés (la catégorie et tous ses descendants)
+        $allCategoryIds = $this->getDescendantIds($category);
+        $allCategoryIds[] = $category->id;
 
-        // Supprimer récursivement tous les enfants
+        // 2. Vérifier si des annonces sont liées à l'une de ces catégories
+        $count = \App\Models\Annonce::whereIn('categorie_id', $allCategoryIds)->count();
+
+        if ($count > 0) {
+            return redirect()->back()->withErrors([
+                'error' => "Impossible de supprimer cette catégorie car elle (ou ses sous-catégories) contient $count annonce(s). Veuillez d'abord supprimer ou déplacer ces annonces."
+            ]);
+        }
+
+        // 3. Supprimer récursivement tous les enfants
         $this->deleteRecursively($category);
 
         return redirect()->back()

@@ -102,6 +102,29 @@
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
 
                     <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
+                        <h3 style="font-size: 1rem; color: #333; font-weight: 500; margin-bottom: 1.25rem;">Configuration
+                        </h3>
+
+                        <!-- Famille Selection (Only for Root) -->
+                        <div id="famille-group" style="margin-bottom: 1.25rem;">
+                            <label for="famille"
+                                style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Famille
+                                (Catégorie Principale) <span style="color: #bf0000;">*</span></label>
+                            <select name="famille" id="famille"
+                                style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff; cursor: pointer;">
+                                <option value="">-- Sélectionner une famille --</option>
+                                @foreach(\App\Models\Category::getFamilles() as $famille)
+                                    <option value="{{ $famille }}" {{ old('famille') == $famille ? 'selected' : '' }}>
+                                        {{ $famille }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <p style="font-size: 0.75rem; color: #999; margin-top: 4px;">Requis uniquement pour les
+                                catégories de premier niveau.</p>
+                        </div>
+                    </div>
+
+                    <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
                         <h3 style="font-size: 1rem; color: #333; font-weight: 500; margin-bottom: 1.25rem;">Visuel & État
                         </h3>
 
@@ -190,4 +213,28 @@
             </div>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const parentSelect = document.getElementById('parent_id');
+            const familleGroup = document.getElementById('famille-group');
+            const familleSelect = document.getElementById('famille');
+
+            function toggleFamille() {
+                if (parentSelect.value === "") {
+                    // C'est une racine
+                    familleGroup.style.display = 'block';
+                    familleSelect.setAttribute('required', 'required');
+                } else {
+                    // C'est une sous-catégorie
+                    familleGroup.style.display = 'none';
+                    familleSelect.removeAttribute('required');
+                    familleSelect.value = ""; // Reset value
+                }
+            }
+
+            parentSelect.addEventListener('change', toggleFamille);
+            toggleFamille(); // Run on load
+        });
+    </script>
 @endsection

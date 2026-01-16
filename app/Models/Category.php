@@ -20,7 +20,24 @@ class Category extends Model
         'icone',
         'ordre',
         'actif',
+        'famille',
     ];
+
+    // Constantes pour les familles
+    const FAMILLE_ECOMMERCE = 'E-commerce';
+    const FAMILLE_SERVICES = 'Services';
+    const FAMILLE_IMMOBILIER = 'Immobilier';
+    const FAMILLE_VEHICULES = 'Véhicules';
+
+    public static function getFamilles(): array
+    {
+        return [
+            self::FAMILLE_ECOMMERCE,
+            self::FAMILLE_SERVICES,
+            self::FAMILLE_IMMOBILIER,
+            self::FAMILLE_VEHICULES,
+        ];
+    }
 
     protected $casts = [
         'ordre' => 'integer',
@@ -150,9 +167,11 @@ class Category extends Model
         return self::racines()
             ->actives()
             ->parOrdre()
-            ->with(['enfantsActifs' => function ($query) {
-                $query->parOrdre()->with('enfantsActifs');
-            }])
+            ->with([
+                'enfantsActifs' => function ($query) {
+                    $query->parOrdre()->with('enfantsActifs');
+                }
+            ])
             ->get();
     }
 
@@ -167,11 +186,11 @@ class Category extends Model
     public function getAllDescendantIds(): \Illuminate\Support\Collection
     {
         $ids = collect([$this->id]);
-        
+
         foreach ($this->enfantsActifs as $enfant) {
             $ids = $ids->merge($enfant->getAllDescendantIds());
         }
-        
+
         return $ids->unique();
     }
 }
