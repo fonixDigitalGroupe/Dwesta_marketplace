@@ -193,4 +193,31 @@ class Category extends Model
 
         return $ids->unique();
     }
+    /**
+     * Décale les ordres d'affichage si nécessaire
+     * Si une catégorie utilise un ordre déjà existant au même niveau, décale les suivants.
+     */
+    public static function shiftOrder(int $newOrder, ?int $parentId, ?int $excludeId = null): void
+    {
+        // On récupère les catégories au même niveau qui ont un ordre >= au nouvel ordre
+        $query = self::where('parent_id', $parentId)
+            ->where('ordre', '>=', $newOrder);
+
+        if ($excludeId) {
+            $query->where('id', '!=', $excludeId);
+        }
+
+        // Si une catégorie existe avec exactement le même ordre, on déclenche le décalage
+        $existsSameOrder = (clone $query)->where('ordre', $newOrder)->exists();
+
+        if ($existsSameOrder) {
+            // On récupère toutes les catégories à décaler, triées par ordre décroissant pour éviter les conflits temporaires
+            $toShift = $query->orderBy('ordre', 'desc')->get();
+
+            foreach ($toShift as $cat) {
+                $cat->ordre += 1;
+                $cat->save();
+            }
+        }
+    }
 }

@@ -39,7 +39,7 @@
 
         /* Public Header Styles Replication */
         .top-banner {
-            background-color: #bf0000;
+            background-color: #1e293b;
             height: 40px;
             width: 100%;
         }
@@ -75,7 +75,7 @@
             text-decoration: none;
             font-size: 1.5rem;
             font-weight: bold;
-            color: #bf0000;
+            color: #1e293b;
             flex-shrink: 0;
         }
 
@@ -140,7 +140,7 @@
         }
 
         .header-link:hover {
-            color: #bf0000;
+            color: #000;
         }
 
         .header-link svg {
@@ -220,12 +220,13 @@
         }
 
         .sidebar-menu li a:hover {
-            color: #bf0000;
+            color: #000;
         }
 
         .sidebar-menu li a.active {
-            color: #bf0000;
-            font-weight: 500;
+            color: #000;
+            font-weight: 600;
+            background-color: #f8fafc;
         }
 
         /* Main Viewport */
@@ -460,10 +461,13 @@
             <!-- Finance -->
             <div class="sidebar-section">
                 <div class="sidebar-title">
-                    <svg fill="none" stroke="#2563eb" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                        </path>
+                    <!-- Icone Finance type "Mes finances" (Carte/Portefeuille - Bleu foncé) -->
+                    <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5">
+                        <path
+                            d="M21 7H3C1.89543 7 1 7.89543 1 9V19C1 20.1046 1.89543 21 3 21H21C22.1046 21 23 20.1046 23 19V9C23 7.89543 22.1046 7 21 7Z"
+                            fill="#2c3e50" />
+                        <path d="M1 11H23V15H1V11Z" fill="#34495e" />
+                        <circle cx="18" cy="18" r="1.5" fill="#e74c3c" />
                     </svg>
                     Finance
                 </div>
@@ -476,9 +480,12 @@
             <!-- Logistique -->
             <div class="sidebar-section">
                 <div class="sidebar-title">
-                    <svg fill="none" stroke="#ea580c" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    <!-- Icone Logistique type "Mes ventes/Colis" (Carton/Box - Marron/Orange) -->
+                    <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5">
+                        <path
+                            d="M20 7.5L12 3L4 7.5M20 7.5V16.5L12 21M20 7.5L12 12M4 7.5L12 12M4 7.5V16.5L12 21M12 21V12"
+                            stroke="#d35400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M8 10L16 14.5" stroke="#d35400" stroke-width="1.5" stroke-linecap="round" />
                     </svg>
                     Logistique
                 </div>
@@ -489,15 +496,13 @@
                 </ul>
             </div>
 
-
-
             <!-- Contenu & Marketing -->
             <div class="sidebar-section">
                 <div class="sidebar-title">
-                    <svg fill="none" stroke="#eab308" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
-                        </path>
+                    <!-- Icone Contenu type "Mes annonces" (Magasin/Store - Orange/Rouge) -->
+                    <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5">
+                        <path d="M3 9l9-6 9 6v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="#f39c12" />
+                        <polyline points="9 22 9 12 15 12 15 22" fill="#e67e22" />
                     </svg>
                     Contenu
                 </div>
@@ -509,12 +514,10 @@
             <!-- Configuration -->
             <div class="sidebar-section">
                 <div class="sidebar-title">
-                    <svg fill="none" stroke="#bf0000" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                        </path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <!-- Icone Paramètres type "Mes informations" (Utilisateur - Rouge/Bordeaux) -->
+                    <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="#c0392b" />
+                        <circle cx="12" cy="7" r="4" fill="#e74c3c" />
                     </svg>
                     Paramètres
                 </div>
@@ -539,21 +542,21 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function  () {
+        document.addEventListener('DOMContentLoaded', function () {
             const trigger = document.getElementById('userMenuTrigger');
             const menu = document.getElementById('userDropdownMenu');
 
             if (trigger && menu) {
-                trigger.addEventListener('click', functio n (e) {
+                trigger.addEventListener('click', functio n(e) {
                     e.stopPropagation();
                     menu.classList.toggle('show');
                 });
 
-                document.addEventListener('click', functi on (e) {
-                    if (!trigger.contains(e.target) && !menu.contains(e.target)) {
-                        menu.classList.remove('show');
-                    }
-                });
+                document.addEventListener('click', functi on(e) {
+                    if(!trigger.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.remove('show');
+                }
+            });
             }
         });
     </script>

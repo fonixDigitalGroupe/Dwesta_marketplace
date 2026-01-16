@@ -10,7 +10,7 @@
     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
     </svg>
-    <span style="color: #bf0000; font-weight: 500;">Ajouter</span>
+    <span style="color: #333; font-weight: 500;">Ajouter</span>
 @endsection
 
 @section('content')
@@ -34,17 +34,18 @@
                     <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
                         <h2
                             style="font-size: 1.1rem; color: #333; font-weight: 500; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
-                            <span style="color: #bf0000;">01.</span> Identité Commerciale
+                            Identité Commerciale
                         </h2>
 
                         <div style="display: grid; gap: 1.25rem;">
                             <div>
                                 <label for="nom"
                                     style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Nom
-                                    de la catégorie <span style="color: #bf0000;">*</span></label>
+                                    de la catégorie <span style="color: #666;">*</span></label>
                                 <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required
                                     style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#bf0000'" onblur="this.style.borderColor='#e0e0e0'">
+                                    onfocus="this.style.borderColor='#000'" onblur="this.style.borderColor='#e0e0e0'"
+                                    oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
                                 @error('nom') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}
                                 </p> @enderror
                             </div>
@@ -55,8 +56,8 @@
                                     (SEO & Info)</label>
                                 <textarea name="description" id="description" rows="4"
                                     style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s; resize: vertical;"
-                                    onfocus="this.style.borderColor='#bf0000'"
-                                    onblur="this.style.borderColor='#e0e0e0'">{{ old('description') }}</textarea>
+                                    onfocus="this.style.borderColor='#000'" onblur="this.style.borderColor='#e0e0e0'"
+                                    oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">{{ old('description') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -65,7 +66,7 @@
                     <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
                         <h2
                             style="font-size: 1.1rem; color: #333; font-weight: 500; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
-                            <span style="color: #bf0000;">02.</span> Architecture
+                            Architecture
                         </h2>
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
@@ -90,7 +91,7 @@
                                 <label for="ordre"
                                     style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Ordre
                                     d'affichage</label>
-                                <input type="number" name="ordre" id="ordre" value="{{ old('ordre', 0) }}"
+                                <input type="number" name="ordre" id="ordre" value="{{ old('ordre', 1) }}"
                                     style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none;">
                             </div>
                         </div>
@@ -101,15 +102,15 @@
                 <!-- Right Colonne -->
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
 
-                    <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
+                    <div id="config-section" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
                         <h3 style="font-size: 1rem; color: #333; font-weight: 500; margin-bottom: 1.25rem;">Configuration
                         </h3>
 
                         <!-- Famille Selection (Only for Root) -->
-                        <div id="famille-group" style="margin-bottom: 1.25rem;">
+                        <div id="famille-group" style="margin-bottom: 0;">
                             <label for="famille"
                                 style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Famille
-                                (Catégorie Principale) <span style="color: #bf0000;">*</span></label>
+                                (Catégorie Principale) <span style="color: #666;">*</span></label>
                             <select name="famille" id="famille"
                                 style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff; cursor: pointer;">
                                 <option value="">-- Sélectionner une famille --</option>
@@ -120,7 +121,7 @@
                                 @endforeach
                             </select>
                             <p style="font-size: 0.75rem; color: #999; margin-top: 4px;">Requis uniquement pour les
-                                catégories de premier niveau.</p>
+                                catégories principale.</p>
                         </div>
                     </div>
 
@@ -168,9 +169,9 @@
                                                     b.style.color = '#999';
                                                     b.style.background = '#fff';
                                                 });
-                                                this.style.borderColor = '#bf0000';
-                                                this.style.color = '#bf0000';
-                                                this.style.background = '#fdf2f2';
+                                                this.style.borderColor = '#000';
+                                                this.style.color = '#000';
+                                                this.style.background = '#f8fafc';
                                                 document.getElementById('icone_input').value = svg;
                                             };
                                             grid.appendChild(btn);
@@ -182,7 +183,7 @@
                                     <label for="actif"
                                         style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
                                         <input type="checkbox" name="actif" id="actif" value="1" {{ (old('_token') ? old('actif') : true) ? 'checked' : '' }}
-                                            style="width: 16px; height: 16px; accent-color: #bf0000; cursor: pointer;">
+                                            style="width: 16px; height: 16px; accent-color: #333; cursor: pointer;">
                                         <span style="font-size: 0.9rem; font-weight: 500; color: #333;">Catégorie
                                             Active</span>
                                     </label>
@@ -194,7 +195,7 @@
                     <div style="display: flex; flex-direction: column; gap: 12px;">
                         <button type="submit"
                             style="background-color: #000; color: #fff; border: none; padding: 0.75rem; border-radius: 4px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem;">
-                            Créer
+                            Enregistrer
                             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -217,17 +218,17 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const parentSelect = document.getElementById('parent_id');
-            const familleGroup = document.getElementById('famille-group');
+            const configSection = document.getElementById('config-section');
             const familleSelect = document.getElementById('famille');
 
             function toggleFamille() {
                 if (parentSelect.value === "") {
                     // C'est une racine
-                    familleGroup.style.display = 'block';
+                    configSection.style.display = 'block';
                     familleSelect.setAttribute('required', 'required');
                 } else {
                     // C'est une sous-catégorie
-                    familleGroup.style.display = 'none';
+                    configSection.style.display = 'none';
                     familleSelect.removeAttribute('required');
                     familleSelect.value = ""; // Reset value
                 }

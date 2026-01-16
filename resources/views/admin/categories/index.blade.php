@@ -6,7 +6,7 @@
     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
     </svg>
-    <span style="color: #bf0000; font-weight: 500;">Catégories & Architecture</span>
+    <span style="color: #333; font-weight: 500;">Catégories & Architecture</span>
 @endsection
 
 @section('content')
@@ -18,17 +18,32 @@
                 {{ $level == 1 ? 'Catégories Principales' : ($level == 2 ? 'Sous-Catégories' : 'Éléments de Détail') }}
             </h1>
             <a href="{{ route('admin.categories.create') }}"
-                style="background: #bf0000; color: #fff; padding: 0.5rem 1rem; font-size: 0.8rem; text-decoration: none; font-weight: 500;">
-                + Ajouter une catégorie
+                style="background: #000; color: #fff; padding: 0.625rem 1.25rem; font-size: 0.85rem; text-decoration: none; font-weight: 600; border-radius: 4px; display: flex; align-items: center; gap: 8px; transition: all 0.2s;"
+                onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Ajouter une catégorie
             </a>
         </div>
 
         <!-- Description Box -->
-        <div style="background: #fff; border: 1px solid #e5e5e5; padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
-            <div style="font-size: 0.875rem; color: #333; font-weight: 500; margin-bottom: 0.25rem;">Gestion de
-                l'organisation hiérarchique</div>
-            <div style="font-size: 0.8rem; color: #666;">Gérez l'organisation hiérarchique du catalogue, les catégories et
-                sous catégories.</div>
+        <div
+            style="background: #fffaf0; border: 1px solid #ff9d00; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 12px; border-radius: 2px;">
+            <div style="flex-shrink: 0; margin-top: 2px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" fill="#ff9d00" />
+                    <path d="M12 7v6M12 17h.01" stroke="white" stroke-width="2.5" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div>
+                <div style="font-size: 0.875rem; color: #333; font-weight: 600; margin-bottom: 0.15rem;">
+                    Gestion de l'organisation hiérarchique
+                </div>
+                <div style="font-size: 0.8rem; color: #444; line-height: 1.4;">
+                    Gérez l'organisation hiérarchique du catalogue, les catégories et sous catégories.
+                </div>
+            </div>
         </div>
 
         <!-- Table Container -->
@@ -62,7 +77,7 @@
                                     style="display: inline;" onsubmit="return confirm('Supprimer cette catégorie ?')">
                                     @csrf @method('DELETE')
                                     <button type="submit"
-                                        style="background: none; border: none; color: #bf0000; font-size: 0.75rem; cursor: pointer; padding: 0;">Supprimer</button>
+                                        style="background: none; border: none; color: #666; font-size: 0.75rem; cursor: pointer; padding: 0;">Supprimer</button>
                                 </form>
                             </td>
                         </tr>

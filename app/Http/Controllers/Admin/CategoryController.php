@@ -76,13 +76,18 @@ class CategoryController extends Controller
 
         $slug = Category::generateSlug($request->nom);
 
+        $ordre = $request->ordre ?? 1;
+
+        // Décalage automatique des ordres existants
+        Category::shiftOrder($ordre, $request->parent_id);
+
         Category::create([
             'parent_id' => $request->parent_id,
             'nom' => $request->nom,
             'slug' => $slug,
             'description' => $request->description,
             'icone' => $request->icone,
-            'ordre' => $request->ordre ?? 0,
+            'ordre' => $ordre,
             'actif' => $request->boolean('actif'),
             'famille' => $request->parent_id ? null : $request->famille, // Seulement pour les racines
         ]);
@@ -175,13 +180,20 @@ class CategoryController extends Controller
             $slug = Category::generateSlug($request->nom, $category->id);
         }
 
+        $ordre = $request->ordre ?? $category->ordre;
+
+        // Décalage automatique si l'ordre a changé
+        if ($ordre != $category->ordre) {
+            Category::shiftOrder($ordre, $request->parent_id, $category->id);
+        }
+
         $category->update([
             'parent_id' => $request->parent_id,
             'nom' => $request->nom,
             'slug' => $slug,
             'description' => $request->description,
             'icone' => $request->icone,
-            'ordre' => $request->ordre ?? $category->ordre,
+            'ordre' => $ordre,
             'actif' => $request->boolean('actif'),
             'famille' => $request->parent_id ? null : $request->famille,
         ]);
