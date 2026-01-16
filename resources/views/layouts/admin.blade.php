@@ -27,7 +27,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
         }
 
         body {
@@ -159,48 +159,51 @@
             gap: 2rem;
         }
 
-        /* Sidebar Style Profile */
+        /* Sidebar Style Rakuten */
         .sidebar {
-            width: 280px;
+            width: 240px;
             flex-shrink: 0;
             background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 1.5rem 0;
+            border: 1px solid #e5e5e5;
+            border-radius: 0;
+            padding: 0;
             height: fit-content;
         }
 
         .sidebar-user {
-            padding: 0 1.5rem 1.5rem;
-            border-bottom: 1px solid #f0f0f0;
-            margin-bottom: 1rem;
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid #e5e5e5;
         }
 
         .sidebar-user h2 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: #333;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .sidebar-section {
-            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 0.75rem 0;
+        }
+
+        .sidebar-section:last-child {
+            border-bottom: none;
         }
 
         .sidebar-title {
-            padding: 0.5rem 1.5rem;
-            font-weight: bold;
-            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            font-size: 0.875rem;
             color: #333;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.25rem;
+            gap: 0.5rem;
         }
 
         .sidebar-title svg {
-            width: 20px;
-            height: 20px;
-            color: #bf0000;
+            width: 18px;
+            height: 18px;
+            color: #666;
         }
 
         .sidebar-menu {
@@ -209,21 +212,20 @@
 
         .sidebar-menu li a {
             display: block;
-            padding: 0.4rem 1.5rem 0.4rem 3.25rem;
+            padding: 0.35rem 1rem 0.35rem 2.75rem;
             color: #666;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            transition: color 0.15s;
         }
 
         .sidebar-menu li a:hover {
             color: #bf0000;
-            background-color: #f9f9f9;
         }
 
         .sidebar-menu li a.active {
             color: #bf0000;
-            background-color: #fdf2f2;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         /* Main Viewport */
@@ -279,7 +281,7 @@
             background: #fff;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             margin-top: 0.5rem;
             display: none;
             z-index: 3000;
@@ -398,25 +400,36 @@
 
                     <div class="user-dropdown-container">
                         <div class="user-dropdown-trigger" id="userMenuTrigger">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 20px; height: 20px;">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                style="width: 20px; height: 20px;">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                             </svg>
-                            <span style="font-size: 0.9rem; font-weight: 500; color: #333;">{{ auth()->user()->prenom }}</span>
-                            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.5;">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                            <span
+                                style="font-size: 0.9rem; font-weight: 500; color: #333;">{{ auth()->user()->prenom }}</span>
+                            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                style="opacity: 0.5;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </div>
                         <div class="user-dropdown-menu" id="userDropdownMenu">
                             <a href="{{ route('dashboard') }}" class="user-dropdown-item">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
                                 Mon compte
                             </a>
                             <div class="user-dropdown-divider"></div>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="user-dropdown-item" style="color: #e03131;">
-                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                        </path>
+                                    </svg>
                                     Déconnexion
                                 </button>
                             </form>
@@ -444,10 +457,10 @@
 
 
 
-            <!-- Commandes & Transactions -->
+            <!-- Finance -->
             <div class="sidebar-section">
                 <div class="sidebar-title">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg fill="none" stroke="#2563eb" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
                         </path>
@@ -463,7 +476,7 @@
             <!-- Logistique -->
             <div class="sidebar-section">
                 <div class="sidebar-title">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg fill="none" stroke="#ea580c" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
@@ -481,7 +494,7 @@
             <!-- Contenu & Marketing -->
             <div class="sidebar-section">
                 <div class="sidebar-title">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg fill="none" stroke="#eab308" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z">
                         </path>
@@ -496,7 +509,7 @@
             <!-- Configuration -->
             <div class="sidebar-section">
                 <div class="sidebar-title">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg fill="none" stroke="#bf0000" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
                         </path>
@@ -526,17 +539,17 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function  () {
             const trigger = document.getElementById('userMenuTrigger');
             const menu = document.getElementById('userDropdownMenu');
 
             if (trigger && menu) {
-                trigger.addEventListener('click', function(e) {
+                trigger.addEventListener('click', functio n (e) {
                     e.stopPropagation();
                     menu.classList.toggle('show');
                 });
 
-                document.addEventListener('click', function(e) {
+                document.addEventListener('click', functi on (e) {
                     if (!trigger.contains(e.target) && !menu.contains(e.target)) {
                         menu.classList.remove('show');
                     }
