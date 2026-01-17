@@ -525,7 +525,9 @@
                     <li><a href="{{ route('admin.categories.l1') }}"
                             class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Catégories &
                             Architecture</a></li>
-                    <li><a href="#">Gestion des Utilisateurs</a></li>
+                    <li><a href="{{ route('admin.users.index') }}"
+                            class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">Gestion des
+                            Utilisateurs</a></li>
                     <li><a href="{{ route('admin.vendeurs.verification.index') }}"
                             class="{{ request()->routeIs('admin.vendeurs.verification.*') ? 'active' : '' }}">Validation
                             Vendeurs</a></li>

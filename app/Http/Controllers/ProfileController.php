@@ -23,7 +23,13 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
+        $messages = [
+            'current_password_info.required' => 'Veuillez entrer votre mot de passe actuel pour enregistrer vos modifications.',
+            'current_password_info.current_password' => 'Veuillez entrer votre mot de passe actuel pour enregistrer vos modifications.',
+        ];
+
         $request->validate([
+            'civilite' => ['nullable', 'string', 'max:255'],
             'prenom' => ['required', 'string', 'max:255'],
             'nom' => ['nullable', 'string', 'max:255'],
             'nationalite' => ['nullable', 'string', 'max:255'],
@@ -32,9 +38,10 @@ class ProfileController extends Controller
             'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'adresse' => ['nullable', 'string', 'max:500'],
             'avatar' => ['nullable', 'image', 'max:2048'],
-        ]);
+            'current_password_info' => ['required', 'current_password'],
+        ], $messages);
 
-        $data = $request->only(['prenom', 'nom', 'nationalite', 'date_de_naissance', 'telephone', 'email', 'adresse']);
+        $data = $request->only(['civilite', 'prenom', 'nom', 'nationalite', 'date_de_naissance', 'telephone', 'email', 'adresse']);
 
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');
@@ -48,10 +55,17 @@ class ProfileController extends Controller
 
     public function updatePassword(Request $request)
     {
+        $messages = [
+            'current_password.required' => 'Veuillez entrer votre mot de passe actuel.',
+            'current_password.current_password' => 'Le mot de passe actuel est incorrect.',
+            'password.required' => 'Veuillez entrer un nouveau mot de passe.',
+            'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
+        ];
+
         $request->validate([
             'current_password' => ['required', 'current_password'],
             'password' => ['required', 'confirmed', Password::defaults()],
-        ]);
+        ], $messages);
 
         Auth::user()->update([
             'password' => Hash::make($request->password),

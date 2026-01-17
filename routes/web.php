@@ -13,6 +13,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PageProController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CreditController;
@@ -139,6 +140,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/{annonce}/approve', [\App\Http\Controllers\Admin\AnnonceModerationController::class, 'approve'])->name('moderation.approve');
             Route::post('/{annonce}/reject', [\App\Http\Controllers\Admin\AnnonceModerationController::class, 'reject'])->name('moderation.reject');
         });
+
+        // Gestion des Utilisateurs
+        Route::patch('/users/{user}/suspend', [\App\Http\Controllers\Admin\UserController::class, 'toggleStatus'])->name('users.suspend');
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
     });
 
     // Documents sécurisés (accessibles uniquement aux admins)

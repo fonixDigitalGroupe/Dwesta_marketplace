@@ -31,6 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'credit_balance',
         'adresse',
         'password',
+        'is_active',
         'avatar',
         'provider',
         'provider_id',
