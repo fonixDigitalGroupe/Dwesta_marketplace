@@ -11,8 +11,8 @@
                 <a href="{{ route('admin.vendeurs.verification.index') }}" style="display: inline-block; background: #6c757d; color: white; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 4px; font-weight: 500;">
                     ← Retour à la liste
                 </a>
-                <a href="{{ route('dashboard') }}" style="display: inline-block; background: #17a2b8; color: white; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 4px; font-weight: 500;">
-                    Dashboard
+                <a href="{{ route('home') }}" style="display: inline-block; background: #17a2b8; color: white; padding: 0.75rem 1.5rem; text-decoration: none; border-radius: 4px; font-weight: 500;">
+                    Accueil
                 </a>
             </div>
         </div>

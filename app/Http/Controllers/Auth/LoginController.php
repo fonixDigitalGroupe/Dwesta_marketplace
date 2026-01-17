@@ -26,7 +26,7 @@ class LoginController extends Controller
         if (Auth::attempt([$loginField => $request->login, 'password' => $request->password], $request->boolean('remember'))) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('home'));
         }
 
         throw ValidationException::withMessages([

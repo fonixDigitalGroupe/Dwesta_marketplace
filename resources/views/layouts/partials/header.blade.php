@@ -30,23 +30,30 @@
 
                 <div class="header-actions">
 
-                    <div class="sell-button-container">
-                        <button type="button" class="sell-button" style="cursor: default;">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
-                                </path>
-                            </svg>
-                            <span>Mettre en vente</span>
-                            <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </button>
-                        <div class="sell-dropdown" id="layoutSellDropdown">
-                            <!-- Inactif -->
-                        </div>
+                <div class="sell-button-container">
+                    <button type="button" class="sell-button" onclick="toggleSellDropdown()">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                            </path>
+                        </svg>
+                        <span>Mettre en vente</span>
+                        <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="sell-dropdown" id="layoutSellDropdown">
+                        <a href="{{ route('annonces.create') }}" class="sell-dropdown-item">
+                            <div class="sell-dropdown-item-title">Vendre un produit en tant que particulier</div>
+                            <div class="sell-dropdown-item-subtitle">Je dépose une annonce gratuitement</div>
+                        </a>
+                        <a href="{{ route('vendeur.create') }}" class="sell-dropdown-item">
+                            <div class="sell-dropdown-item-title">Devenir vendeur professionnel</div>
+                            <div class="sell-dropdown-item-subtitle">Ouvrez votre boutique sur Mady Market</div>
+                        </a>
                     </div>
+                </div>
 
                     @auth
                         @if(auth()->user()->hasRole('Administrateur'))
@@ -107,19 +114,26 @@
         </div>
 
         <div class="header-row-2">
-            <div class="header-container" style="min-height: 40px; justify-content: flex-start; gap: 2rem;">
-                <div class="cat-nav-item" @click="mobileMenuOpen = !mobileMenuOpen"
-                    style="font-weight: bold; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <div class="header-container" style="display: flex; align-items: center; gap: 1rem; padding-left: 7rem;">
+                <div class="cat-nav-item" @click="mobileMenuOpen = !mobileMenuOpen" style="margin-right: 0.5rem;">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                     Toutes les catégories
                 </div>
-                <a href="{{ route('search.index', ['category' => 'e-commerce']) }}" class="cat-nav-item badge-style">E-commerce</a>
-                <a href="{{ route('search.index', ['category' => 'telephonie-tablette']) }}" class="cat-nav-item badge-style">Téléphonie, Tablette</a>
-                <a href="{{ route('search.index', ['category' => 'immobilier']) }}" class="cat-nav-item badge-style">Immobilier</a>
-                <a href="{{ route('search.index', ['category' => 'vehicules']) }}" class="cat-nav-item badge-style">Véhicules</a>
+
+                @php 
+                    $nav_cats = \App\Models\Category::racines()->actives()->parOrdre()->get(); 
+                @endphp
+
+                <div class="header-badges-container" style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;">
+                    @foreach($nav_cats as $cat)
+                        <a href="{{ route('annonces.index', ['category' => $cat->id]) }}" class="cat-nav-item badge-style">
+                            {!! $cat->icone !!} {{ $cat->nom }}
+                        </a>
+                    @endforeach
+                </div>
             </div>
         </div>
 

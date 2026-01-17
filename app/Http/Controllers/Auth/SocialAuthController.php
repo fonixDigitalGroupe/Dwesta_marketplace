@@ -67,19 +67,19 @@ class SocialAuthController extends Controller
                         'provider' => $provider,
                         'provider_id' => $socialUser->getId(),
                     ];
-                    
+
                     // Mettre à jour l'avatar si l'utilisateur n'en a pas déjà un
                     if (!$user->avatar && $socialUser->getAvatar()) {
                         $updateData['avatar'] = $socialUser->getAvatar();
                     }
-                    
+
                     $user->update($updateData);
                 }
             }
 
             Auth::login($user);
 
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         } catch (\Exception $e) {
             // Logger l'erreur pour le débogage
             \Log::error('OAuth Error: ' . $e->getMessage(), [
@@ -88,7 +88,7 @@ class SocialAuthController extends Controller
             ]);
 
             $errorMessage = 'Erreur lors de la connexion avec ' . $provider;
-            
+
             // Messages d'erreur plus spécifiques
             if (str_contains($e->getMessage(), 'invalid_client')) {
                 $errorMessage = 'Configuration OAuth incorrecte. Vérifiez vos clés dans le fichier .env';

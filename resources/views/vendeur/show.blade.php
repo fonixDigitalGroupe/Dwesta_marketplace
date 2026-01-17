@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon compte vendeur - Mady Market</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+@extends('layouts.app')
+
+@section('title', 'Mon compte vendeur - Mady Market')
+
+@push('styles')
+    <style>
     <style>
         * {
             margin: 0;
@@ -271,32 +270,9 @@
             }
         }
     </style>
-</head>
-<body>
-    <!-- Bannière (Top Banner) -->
-    <div class="top-banner">
-        Mady Market Vendeur : Gérez vos ventes en toute simplicité.
-        <span class="close-btn" onclick="this.parentElement.style.display='none'">&times;</span>
-    </div>
+@endpush
 
-    <!-- Header -->
-    <header class="header">
-        <div class="header-container">
-            <a href="{{ route('home') }}" class="logo">
-                <img src="https://laravel.com/img/logomark.min.svg" alt="Logo">
-                Mady Market
-            </a>
-            
-            <div class="header-actions">
-                <a href="#" class="club-r">Club R Vendeur</a>
-                <a href="{{ route('profile.show') }}" class="header-link">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    <span>{{ auth()->user()->prenom }}</span>
-                </a>
-            </div>
-        </div>
-    </header>
-
+@section('content')
     <div class="dashboard-container">
         <!-- Sidebar -->
         <aside class="sidebar">
@@ -462,6 +438,4 @@
             @endif
 
         </main>
-    </div>
-</body>
-</html>
+@endsection

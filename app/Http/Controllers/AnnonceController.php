@@ -51,7 +51,7 @@ class AnnonceController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         if (!$user->estVendeur()) {
             return redirect()->route('vendeur.create')
                 ->with('error', 'Vous devez créer un compte vendeur pour publier des annonces.');
@@ -72,15 +72,15 @@ class AnnonceController extends Controller
     public function create(Request $request)
     {
         $user = Auth::user();
-        
+
         // Tous les utilisateurs connectés peuvent créer une annonce
         // Si l'utilisateur n'est pas vendeur, on créera automatiquement un compte vendeur lors de la création de l'annonce
-        
+
         $type = $request->query('type', 'produit');
-        
+
         // Nettoyer le type (au cas où il y aurait des caractères indésirables)
         $type = trim(strtolower($type));
-        
+
         // Valider le type
         if (!in_array($type, [Annonce::TYPE_PRODUIT, Annonce::TYPE_SERVICE, Annonce::TYPE_IMMOBILIER, Annonce::TYPE_VEHICULE])) {
             $type = Annonce::TYPE_PRODUIT;
@@ -93,7 +93,7 @@ class AnnonceController extends Controller
 
         // Utiliser la vue multi-étapes pour tous les types
         return view('annonces.create', compact('categories', 'optionsDisponibles', 'type', 'creditBalance', 'optionCosts'));
-        
+
         if (!view()->exists($viewName)) {
             \Log::error("Vue non trouvée: {$viewName}");
             return view('annonces.create');
@@ -108,7 +108,7 @@ class AnnonceController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        
+
         // Si l'utilisateur n'est pas vendeur, créer automatiquement un compte vendeur particulier
         if (!$user->estVendeur()) {
             $vendeur = Vendeur::create([
@@ -117,7 +117,7 @@ class AnnonceController extends Controller
                 'statut_verification' => 'en_attente',
                 'actif' => true,
             ]);
-            
+
             // Créer un vendeur particulier basique (sans document pour l'instant)
             VendeurParticulier::create([
                 'vendeur_id' => $vendeur->id,
@@ -125,18 +125,18 @@ class AnnonceController extends Controller
                 'numero_document' => 'A_COMPLETER',
                 'document_path' => null,
             ]);
-            
+
             // Assigner le rôle Vendeur Particulier
             $user->assignRole('Vendeur Particulier');
-            
+
             // Recharger la relation
             $user->load('vendeur');
         }
-        
+
         $vendeur = $user->vendeur;
 
         $type = $request->input('type');
-        
+
         // Validation de base
         $validated = $this->validateAnnonce($request, $type);
 
@@ -158,7 +158,7 @@ class AnnonceController extends Controller
                     $estPrincipale = $index === 0;
                     $this->mediaService->uploadPhoto($photo, $annonce->id, $estPrincipale, $index);
                 }
-                
+
                 // Mettre à jour le nombre de photos
                 $annonce->update(['nb_photos' => $annonce->photos()->count()]);
             }
@@ -233,16 +233,23 @@ class AnnonceController extends Controller
     public function edit(Annonce $annonce)
     {
         $user = Auth::user();
-        
+
         // Vérifier que l'utilisateur est le propriétaire
         if ($annonce->vendeur_id !== $user->vendeur->id) {
             return redirect()->route('annonces.index')
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
         }
 
-        $annonce->load(['produit', 'service', 'immobilier', 'vehicule', 'options', 'medias' => function($query) {
-            $query->where('type', 'photo')->orderBy('ordre');
-        }]);
+        $annonce->load([
+            'produit',
+            'service',
+            'immobilier',
+            'vehicule',
+            'options',
+            'medias' => function ($query) {
+                $query->where('type', 'photo')->orderBy('ordre');
+            }
+        ]);
         $categories = Category::actives()->parOrdre()->get();
         $optionsDisponibles = $this->optionService->getOptionsDisponibles();
 
@@ -255,7 +262,7 @@ class AnnonceController extends Controller
     public function update(Request $request, Annonce $annonce)
     {
         $user = Auth::user();
-        
+
         // Vérifier que l'utilisateur est le propriétaire
         if ($annonce->vendeur_id !== $user->vendeur->id) {
             return redirect()->route('annonces.index')
@@ -282,7 +289,7 @@ class AnnonceController extends Controller
                     }
                 }
             }
-            
+
             // Gestion des photos supplémentaires
             if ($request->hasFile('photos')) {
                 foreach ($request->file('photos') as $photo) {
@@ -306,7 +313,7 @@ class AnnonceController extends Controller
     public function publier(Annonce $annonce)
     {
         $user = Auth::user();
-        
+
         if ($annonce->vendeur_id !== $user->vendeur->id) {
             return redirect()->route('annonces.index')
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
@@ -314,11 +321,11 @@ class AnnonceController extends Controller
 
         try {
             $this->annonceService->publierAnnonce($annonce);
-            
-            return redirect()->route('dashboard')
+
+            return redirect()->route('annonces.index')
                 ->with('success', 'Annonce publiée avec succès !');
         } catch (\Exception $e) {
-            return redirect()->route('dashboard')
+            return redirect()->route('annonces.index')
                 ->with('error', $e->getMessage());
         }
     }
@@ -329,20 +336,20 @@ class AnnonceController extends Controller
     public function destroy(Annonce $annonce)
     {
         $user = Auth::user();
-        
+
         if ($annonce->vendeur_id !== $user->vendeur->id) {
-            return redirect()->route('dashboard')
+            return redirect()->route('annonces.index')
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
         }
 
         try {
             // Supprimer tous les médias
             $this->mediaService->deleteAllMedia($annonce->id);
-            
+
             // Supprimer l'annonce (cascade supprimera les relations)
             $annonce->delete();
 
-            return redirect()->route('dashboard')
+            return redirect()->route('annonces.index')
                 ->with('success', 'Annonce supprimée avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur suppression annonce: ' . $e->getMessage());
@@ -356,7 +363,7 @@ class AnnonceController extends Controller
     public function preview(Annonce $annonce)
     {
         $user = Auth::user();
-        
+
         if ($annonce->vendeur_id !== $user->vendeur->id) {
             return redirect()->route('annonces.index')
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
@@ -382,8 +389,8 @@ class AnnonceController extends Controller
         // Règles communes
         if ($type === Annonce::TYPE_PRODUIT || $type === Annonce::TYPE_IMMOBILIER || $type === Annonce::TYPE_VEHICULE) {
             $rules['prix'] = ['required', 'numeric', 'min:0'];
-            $rules['type_livraison'] = ['nullable', 'in:livraison,retrait,les_deux'];
-            $rules['disponibilite'] = ['nullable', 'in:en_stock,rupture_stock,sur_commande'];
+            $rules['type_livraison'] = ['required', 'in:retrait_boutique,livraison_domicile,livraison_point_relais'];
+            $rules['disponibilite'] = ['required', 'in:en_stock,rupture_stock,sur_commande'];
         }
 
         // Règles spécifiques par type
@@ -429,7 +436,7 @@ class AnnonceController extends Controller
 
         // Validation des photos
         if (!$annonce) {
-            $rules['photos'] = ['required', 'array', 'min:1', 'max:8'];
+            $rules['photos'] = ['required', 'array', 'min:4', 'max:8'];
             $rules['photos.*'] = ['image', 'mimes:jpeg,jpg,png,webp', 'max:5120']; // 5 Mo max
         } else {
             $rules['photos'] = ['nullable', 'array', 'max:8'];
@@ -471,7 +478,7 @@ class AnnonceController extends Controller
     public function showImportForm()
     {
         $user = Auth::user();
-        
+
         if (!$user->estVendeur()) {
             return redirect()->route('vendeur.create')
                 ->with('error', 'Vous devez créer un compte vendeur pour importer des annonces.');
@@ -535,9 +542,9 @@ class AnnonceController extends Controller
     {
         $type = $request->get('type', 'produit');
         $template = $this->importService->genererTemplate($type);
-        
+
         $filename = "template_import_{$type}.csv";
-        
+
         return response($template, 200, [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"{$filename}\"",

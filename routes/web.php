@@ -10,7 +10,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\AvisController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PageProController;
@@ -44,8 +43,6 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Profil
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
@@ -121,11 +118,11 @@ Route::middleware('auth')->group(function () {
             Route::post('/{avis}/reject', [AvisController::class, 'reject'])->name('reject');
         });
 
-        // Dashboard Admin
+        // Admin root - redirect to categories
         Route::get('/', function () {
             return redirect()->route('admin.categories.l1');
         });
-        Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+
 
         // Litiges
         Route::prefix('litiges')->name('litiges.')->group(function () {
