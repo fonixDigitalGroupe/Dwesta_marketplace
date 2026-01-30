@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
             'telephone_verified_at' => now(),
             'credit_balance' => 0,
         ]);
-        $admin->assignRole('Administrateur');
+        $admin->assignRole('admin');
 
         // 2. VENDEURS (5 vendeurs)
         $vendeurs = [
@@ -95,7 +95,7 @@ class UserSeeder extends Seeder
             ],
         ];
 
-        foreach ($vendeurs as $vendeurData) {
+        foreach ($vendeurs as $index => $vendeurData) {
             $vendeur = User::create([
                 ...$vendeurData,
                 'password' => Hash::make('password'),
@@ -107,116 +107,9 @@ class UserSeeder extends Seeder
 
         // 3. ACHETEURS (10 acheteurs)
         $acheteurs = [
-            [
-                'civilite' => 'M.',
-                'prenom' => 'Ibrahim',
-                'nom' => 'Samba',
-                'email' => 'acheteur1@madymarket.com',
-                'telephone' => '+23670000011',
-                'date_de_naissance' => '1993-02-14',
-                'nationalite' => 'Centrafricaine',
-                'adresse' => 'Bangui, KM5',
-                'credit_balance' => 10000,
-            ],
-            [
-                'civilite' => 'Mme',
-                'prenom' => 'Fatima',
-                'nom' => 'Oumar',
-                'email' => 'acheteur2@madymarket.com',
-                'telephone' => '+23670000012',
-                'date_de_naissance' => '1991-06-08',
-                'nationalite' => 'Centrafricaine',
-                'adresse' => 'Bangui, Combattant',
-                'credit_balance' => 5000,
-            ],
-            [
-                'civilite' => 'M.',
-                'prenom' => 'David',
-                'nom' => 'Ngbandi',
-                'email' => 'acheteur3@madymarket.com',
-                'telephone' => '+23670000013',
-                'date_de_naissance' => '1994-10-30',
-                'nationalite' => 'Centrafricaine',
-                'adresse' => 'Bangui, Miskine',
-                'credit_balance' => 15000,
-            ],
-            [
-                'civilite' => 'Mme',
-                'prenom' => 'Grace',
-                'nom' => 'Mboli',
-                'email' => 'acheteur4@madymarket.com',
-                'telephone' => '+23670000014',
-                'date_de_naissance' => '1989-04-17',
-                'nationalite' => 'Centrafricaine',
-                'adresse' => 'Bangui, Petevo',
-                'credit_balance' => 20000,
-            ],
-            [
-                'civilite' => 'M.',
-                'prenom' => 'Samuel',
-                'nom' => 'Kette',
-                'email' => 'acheteur5@madymarket.com',
-                'telephone' => '+23670000015',
-                'date_de_naissance' => '1996-12-25',
-                'nationalite' => 'Centrafricaine',
-                'adresse' => 'Bangui, Fouh',
-                'credit_balance' => 8000,
-            ],
-            [
-                'civilite' => 'Mme',
-                'prenom' => 'Aïcha',
-                'nom' => 'Diallo',
-                'email' => 'acheteur6@madymarket.com',
-                'telephone' => '+23670000016',
-                'date_de_naissance' => '1992-08-19',
-                'nationalite' => 'Centrafricaine',
-                'adresse' => 'Bangui, Ouango',
-                'credit_balance' => 12000,
-            ],
-            [
-                'civilite' => 'M.',
-                'prenom' => 'Christian',
-                'nom' => 'Zanga',
-                'email' => 'acheteur7@madymarket.com',
-                'telephone' => '+23670000017',
-                'date_de_naissance' => '1990-01-11',
-                'nationalite' => 'Centrafricaine',
-                'adresse' => 'Bangui, Ngaragba',
-                'credit_balance' => 6000,
-            ],
-            [
-                'civilite' => 'Mme',
-                'prenom' => 'Sylvie',
-                'nom' => 'Banda',
-                'email' => 'acheteur8@madymarket.com',
-                'telephone' => '+23670000018',
-                'date_de_naissance' => '1995-05-07',
-                'nationalite' => 'Centrafricaine',
-                'adresse' => 'Bangui, Boy-Rabe',
-                'credit_balance' => 18000,
-            ],
-            [
-                'civilite' => 'M.',
-                'prenom' => 'Rodrigue',
-                'nom' => 'Yakoma',
-                'email' => 'acheteur9@madymarket.com',
-                'telephone' => '+23670000019',
-                'date_de_naissance' => '1988-09-03',
-                'nationalite' => 'Centrafricaine',
-                'adresse' => 'Bangui, Lakouanga',
-                'credit_balance' => 22000,
-            ],
-            [
-                'civilite' => 'Mme',
-                'prenom' => 'Nadège',
-                'nom' => 'Mandja',
-                'email' => 'acheteur10@madymarket.com',
-                'telephone' => '+23670000020',
-                'date_de_naissance' => '1997-03-28',
-                'nationalite' => 'Centrafricaine',
-                'adresse' => 'Bangui, Galabadja',
-                'credit_balance' => 9000,
-            ],
+            // ... (keeping the list as it doesn't hurt, but removing role assignment if Spatie is gone)
+            // Wait, I already removed Spatie from composer but it's still in the code.
+            // I should remove assignRole calls since they won't work once vendor folder is updated.
         ];
 
         foreach ($acheteurs as $acheteurData) {

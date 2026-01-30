@@ -55,9 +55,9 @@ class AnnonceSeeder extends Seeder
     private function createProduits($vendeurs)
     {
         $catElectronique = Category::where('slug', 'electronique')->first();
-        $catMode = Category::where('slug', 'mode-accessoires')->first();
-        $catMaison = Category::where('slug', 'maison-jardin')->first();
-        $catSport = Category::where('slug', 'sport-loisirs')->first();
+        $catMode = Category::where('slug', 'mode')->first();
+        $catMaison = Category::where('slug', 'maison')->first();
+        $catSport = Category::where('slug', 'sport-et-loisirs')->first();
 
         $produits = [
             ['cat' => $catElectronique, 'titre' => 'iPhone 15 Pro Max 256GB', 'prix' => 850000, 'desc' => 'Neuf, scellé. Garantie 1 an.', 'etat' => 'neuf', 'stock' => 5],
@@ -74,13 +74,15 @@ class AnnonceSeeder extends Seeder
             ['cat' => $catMaison, 'titre' => 'Table à manger + 6 chaises', 'prix' => 180000, 'desc' => 'Bois massif, style moderne.', 'etat' => 'neuf', 'stock' => 3],
             ['cat' => $catMaison, 'titre' => 'Réfrigérateur Samsung 400L', 'prix' => 320000, 'desc' => 'Neuf, garantie 2 ans.', 'etat' => 'neuf', 'stock' => 5],
             
-            ['cat' => $catSport, 'titre' => 'Vélo VTT Décathlon', 'prix' => 120000, 'desc' => 'Excellent état, peu utilisé.', 'etat' => 'occasion', 'stock' => 1],
-            ['cat' => $catSport, 'titre' => 'Tapis de course électrique', 'prix' => 280000, 'desc' => 'Neuf, pliable, écran LCD.', 'etat' => 'neuf', 'stock' => 2],
-            ['cat' => $catSport, 'titre' => 'Set de golf complet', 'prix' => 350000, 'desc' => 'Clubs + sac + accessoires.', 'etat' => 'comme_neuf', 'stock' => 1],
-            ['cat' => $catSport, 'titre' => 'Ballon de football Nike', 'prix' => 15000, 'desc' => 'Taille 5, officiel.', 'etat' => 'neuf', 'stock' => 20],
+            ['cat' => $catSport ?: $catElectronique, 'titre' => 'Vélo VTT Décathlon', 'prix' => 120000, 'desc' => 'Excellent état, peu utilisé.', 'etat' => 'occasion', 'stock' => 1],
+            ['cat' => $catSport ?: $catElectronique, 'titre' => 'Tapis de course électrique', 'prix' => 280000, 'desc' => 'Neuf, pliable, écran LCD.', 'etat' => 'neuf', 'stock' => 2],
+            ['cat' => $catSport ?: $catElectronique, 'titre' => 'Set de golf complet', 'prix' => 350000, 'desc' => 'Clubs + sac + accessoires.', 'etat' => 'comme_neuf', 'stock' => 1],
+            ['cat' => $catSport ?: $catElectronique, 'titre' => 'Ballon de football Nike', 'prix' => 15000, 'desc' => 'Taille 5, officiel.', 'etat' => 'neuf', 'stock' => 20],
         ];
 
         foreach ($produits as $index => $p) {
+            if (!$p['cat']) continue;
+            
             $vendeur = $vendeurs->random();
             $statut = $index < 12 ? 'publiee' : ($index == 12 ? 'en_attente' : 'brouillon');
             
@@ -104,7 +106,6 @@ class AnnonceSeeder extends Seeder
                 'quantite' => $p['stock'],
             ]);
 
-            // Options payantes pour certaines annonces
             if ($index < 3) {
                 AnnonceOption::create([
                     'annonce_id' => $annonce->id,
@@ -119,28 +120,25 @@ class AnnonceSeeder extends Seeder
 
     private function createServices($vendeurs)
     {
-        $catReparation = Category::where('slug', 'services-de-reparation')->first();
-        $catPersonne = Category::where('slug', 'services-a-la-personne')->first();
-        $catPro = Category::where('slug', 'services-professionnels')->first();
-        $catFormation = Category::where('slug', 'services-de-formation')->first();
+        $catAdom = Category::where('slug', 'services-a-la-personne')->first();
+        $catPro = Category::where('slug', 'services-aux-professionnels')->first();
+        $catSante = Category::where('slug', 'sante-et-bien-etre')->first();
 
         $services = [
-            ['cat' => $catReparation, 'titre' => 'Électricien qualifié - Bangui', 'prix' => 0, 'desc' => 'Installation et dépannage 24/7. Devis gratuit.'],
-            ['cat' => $catReparation, 'titre' => 'Plombier professionnel', 'prix' => 0, 'desc' => 'Tous travaux de plomberie. Intervention rapide.'],
-            ['cat' => $catReparation, 'titre' => 'Réparation téléphones et tablettes', 'prix' => 15000, 'desc' => 'Écrans, batteries, réparations diverses.'],
-            ['cat' => $catReparation, 'titre' => 'Mécanicien auto à domicile', 'prix' => 0, 'desc' => 'Diagnostic et réparation sur place.'],
-            
-            ['cat' => $catPersonne, 'titre' => 'Ménage et repassage', 'prix' => 25000, 'desc' => 'Service de ménage professionnel. Prix par jour.'],
-            ['cat' => $catPersonne, 'titre' => 'Garde d\'enfants expérimentée', 'prix' => 30000, 'desc' => 'Nounou diplômée, références disponibles.'],
+            ['cat' => $catAdom, 'titre' => 'Électricien qualifié - Bangui', 'prix' => 0, 'desc' => 'Installation et dépannage 24/7. Devis gratuit.'],
+            ['cat' => $catAdom, 'titre' => 'Plombier professionnel', 'prix' => 0, 'desc' => 'Tous travaux de plomberie. Intervention rapide.'],
+            ['cat' => $catAdom, 'titre' => 'Ménage et repassage', 'prix' => 25000, 'desc' => 'Service de ménage professionnel. Prix par jour.'],
             
             ['cat' => $catPro, 'titre' => 'Comptable certifié', 'prix' => 0, 'desc' => 'Tenue de comptabilité pour PME.'],
             ['cat' => $catPro, 'titre' => 'Développeur Web & Mobile', 'prix' => 0, 'desc' => 'Création sites web et applications.'],
             
-            ['cat' => $catFormation, 'titre' => 'Cours particuliers Mathématiques', 'prix' => 20000, 'desc' => 'Tous niveaux. Prix par heure.'],
-            ['cat' => $catFormation, 'titre' => 'Formation bureautique (Word, Excel)', 'prix' => 50000, 'desc' => 'Formation complète sur 2 semaines.'],
+            ['cat' => $catSante, 'titre' => 'Coach Sportif', 'prix' => 15000, 'desc' => 'Entraînement personnalisé.'],
+            ['cat' => $catSante, 'titre' => 'Massage Relaxant', 'prix' => 20000, 'desc' => 'Massage professionnel à domicile.'],
         ];
 
         foreach ($services as $index => $s) {
+            if (!$s['cat']) continue;
+            
             $vendeur = $vendeurs->random();
             $statut = $index < 8 ? 'publiee' : 'en_attente';
             
@@ -165,30 +163,21 @@ class AnnonceSeeder extends Seeder
 
     private function createImmobilier($vendeurs)
     {
-        $catAppart = Category::where('slug', 'appartements')->first();
-        $catMaisons = Category::where('slug', 'maisons')->first();
-        $catTerrains = Category::where('slug', 'terrains')->first();
-        $catCommerce = Category::where('slug', 'locaux-commerciaux')->first();
+        $catVente = Category::where('slug', 'vente-immobiliere')->first();
+        $catLocation = Category::where('slug', 'location-immobiliere')->first();
 
         $immobiliers = [
-            ['cat' => $catAppart, 'titre' => 'T3 Centre-Ville Bangui', 'prix' => 350000, 'type' => 'location', 'surface' => 85, 'pieces' => 3],
-            ['cat' => $catAppart, 'titre' => 'Studio meublé PK5', 'prix' => 150000, 'type' => 'location', 'surface' => 35, 'pieces' => 1],
-            ['cat' => $catAppart, 'titre' => 'F4 avec balcon - Boeing', 'prix' => 450000, 'type' => 'location', 'surface' => 110, 'pieces' => 4],
-            ['cat' => $catAppart, 'titre' => 'Appartement T2 rénové', 'prix' => 25000000, 'type' => 'vente', 'surface' => 65, 'pieces' => 2],
-            
-            ['cat' => $catMaisons, 'titre' => 'Villa 5 pièces avec jardin', 'prix' => 85000000, 'type' => 'vente', 'surface' => 250, 'pieces' => 5],
-            ['cat' => $catMaisons, 'titre' => 'Maison F3 Lakouanga', 'prix' => 400000, 'type' => 'location', 'surface' => 95, 'pieces' => 3],
-            ['cat' => $catMaisons, 'titre' => 'Villa moderne avec piscine', 'prix' => 120000000, 'type' => 'vente', 'surface' => 350, 'pieces' => 6],
-            
-            ['cat' => $catTerrains, 'titre' => 'Terrain 500m² viabilisé', 'prix' => 15000000, 'type' => 'vente', 'surface' => 500, 'pieces' => 0],
-            
-            ['cat' => $catCommerce, 'titre' => 'Local commercial 80m²', 'prix' => 600000, 'type' => 'location', 'surface' => 80, 'pieces' => 2],
-            ['cat' => $catCommerce, 'titre' => 'Boutique avenue principale', 'prix' => 35000000, 'type' => 'vente', 'surface' => 120, 'pieces' => 3],
+            ['cat' => $catLocation, 'titre' => 'T3 Centre-Ville Bangui', 'prix' => 350000, 'type' => 'location', 'surface' => 85, 'pieces' => 3],
+            ['cat' => $catLocation, 'titre' => 'Studio meublé PK5', 'prix' => 150000, 'type' => 'location', 'surface' => 35, 'pieces' => 1],
+            ['cat' => $catVente, 'titre' => 'Villa modern avec piscine', 'prix' => 120000000, 'type' => 'vente', 'surface' => 350, 'pieces' => 6],
+            ['cat' => $catVente, 'titre' => 'Terrain 500m² viabilisé', 'prix' => 15000000, 'type' => 'vente', 'surface' => 500, 'pieces' => 0],
         ];
 
         foreach ($immobiliers as $index => $i) {
+            if (!$i['cat']) continue;
+            
             $vendeur = $vendeurs->random();
-            $statut = $index < 9 ? 'publiee' : 'brouillon';
+            $statut = $index < 4 ? 'publiee' : 'brouillon';
             
             $annonce = Annonce::create([
                 'vendeur_id' => $vendeur->id,
@@ -211,42 +200,25 @@ class AnnonceSeeder extends Seeder
                 'surface' => $i['surface'],
                 'nombre_pieces' => $i['pieces'],
             ]);
-
-            // Option "À la une" pour les 2 premières annonces
-            if ($index < 2) {
-                AnnonceOption::create([
-                    'annonce_id' => $annonce->id,
-                    'a_la_une' => true,
-                    'a_la_une_expire_le' => now()->addDays(14),
-                ]);
-            }
         }
     }
 
     private function createVehicules($vendeurs)
     {
         $catVoitures = Category::where('slug', 'voitures')->first();
-        $catMotos = Category::where('slug', 'motos')->first();
-        $catUtilitaires = Category::where('slug', 'utilitaires')->first();
+        $catMotos = Category::where('slug', 'motos-et-deux-roues')->first();
 
         $vehicules = [
             ['cat' => $catVoitures, 'titre' => 'Toyota Hilux 4x4 2022', 'prix' => 25000000, 'marque' => 'Toyota', 'modele' => 'Hilux', 'annee' => 2022, 'km' => 15000, 'trans' => 'automatique'],
-            ['cat' => $catVoitures, 'titre' => 'Toyota Corolla 2020', 'prix' => 12000000, 'marque' => 'Toyota', 'modele' => 'Corolla', 'annee' => 2020, 'km' => 45000, 'trans' => 'automatique'],
-            ['cat' => $catVoitures, 'titre' => 'Honda Civic 2019', 'prix' => 10500000, 'marque' => 'Honda', 'modele' => 'Civic', 'annee' => 2019, 'km' => 60000, 'trans' => 'manuelle'],
             ['cat' => $catVoitures, 'titre' => 'Mercedes Classe C 2021', 'prix' => 22000000, 'marque' => 'Mercedes', 'modele' => 'Classe C', 'annee' => 2021, 'km' => 25000, 'trans' => 'automatique'],
-            ['cat' => $catVoitures, 'titre' => 'Nissan Patrol 2018', 'prix' => 18000000, 'marque' => 'Nissan', 'modele' => 'Patrol', 'annee' => 2018, 'km' => 80000, 'trans' => 'automatique'],
-            ['cat' => $catVoitures, 'titre' => 'Peugeot 208 2017', 'prix' => 5500000, 'marque' => 'Peugeot', 'modele' => '208', 'annee' => 2017, 'km' => 95000, 'trans' => 'manuelle'],
-            
             ['cat' => $catMotos, 'titre' => 'Yamaha R1 2020', 'prix' => 8500000, 'marque' => 'Yamaha', 'modele' => 'R1', 'annee' => 2020, 'km' => 12000, 'trans' => 'manuelle'],
-            ['cat' => $catMotos, 'titre' => 'Honda CBR 600RR', 'prix' => 4500000, 'marque' => 'Honda', 'modele' => 'CBR 600RR', 'annee' => 2018, 'km' => 28000, 'trans' => 'manuelle'],
-            
-            ['cat' => $catUtilitaires, 'titre' => 'Ford Transit 2019', 'prix' => 15000000, 'marque' => 'Ford', 'modele' => 'Transit', 'annee' => 2019, 'km' => 120000, 'trans' => 'manuelle'],
-            ['cat' => $catUtilitaires, 'titre' => 'Isuzu D-Max 2021', 'prix' => 20000000, 'marque' => 'Isuzu', 'modele' => 'D-Max', 'annee' => 2021, 'km' => 35000, 'trans' => 'manuelle'],
         ];
 
         foreach ($vehicules as $index => $v) {
+            if (!$v['cat']) continue;
+            
             $vendeur = $vendeurs->random();
-            $statut = $index < 9 ? 'publiee' : 'en_attente';
+            $statut = $index < 3 ? 'publiee' : 'en_attente';
             
             $annonce = Annonce::create([
                 'vendeur_id' => $vendeur->id,
@@ -269,15 +241,6 @@ class AnnonceSeeder extends Seeder
                 'kilometrage' => $v['km'],
                 'boite_vitesse' => $v['trans'],
             ]);
-
-            // Option "Urgent" pour les 3 premières annonces
-            if ($index < 3) {
-                AnnonceOption::create([
-                    'annonce_id' => $annonce->id,
-                    'urgent' => true,
-                    'urgent_expire_le' => now()->addDays(5),
-                ]);
-            }
         }
     }
 }

@@ -67,7 +67,7 @@
                             <div>
                                 <label for="nom"
                                     style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Nom
-                                    de la catégorie <span style="color: #666;">*</span></label>
+                                    de la catégorie <span style="color: red;">*</span></label>
                                 <input type="text" name="nom" id="nom" value="{{ old('nom', $category->nom) }}" required
                                     style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
                                     onfocus="this.style.borderColor='#000'" onblur="this.style.borderColor='#e0e0e0'"
@@ -141,7 +141,7 @@
                         <div id="famille-group" style="margin-bottom: 0;">
                             <label for="famille"
                                 style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Famille
-                                (Catégorie Principale) <span style="color: #666;">*</span></label>
+                                (Catégorie Principale) <span style="color: red;">*</span></label>
                             <select name="famille" id="famille"
                                 style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff; cursor: pointer;">
                                 <option value="">-- Sélectionner une famille --</option>

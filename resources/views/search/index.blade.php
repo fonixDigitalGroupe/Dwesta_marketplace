@@ -223,179 +223,304 @@
 @endpush
 
 @section('content')
-<div class="search-results-container">
-    <!-- Sidebar -->
-    <aside class="filters-sidebar">
-        <div class="filter-group">
-            <h3 class="filter-title">Catégories</h3>
-            <ul class="filter-list">
-                @foreach($categories as $cat)
-                    <li class="filter-item">
-                        <a href="{{ route('search.index', ['category' => $cat->slug, 'q' => request('q')]) }}" class="filter-link @if(request('category') == $cat->slug || (isset($category) && $category->parent_id == $cat->id)) active @endif">
-                            {{ $cat->nom }}
-                        </a>
-                        @if($cat->enfantsActifs->isNotEmpty() && (request('category') == $cat->slug || (isset($category) && $category->parent_id == $cat->id)))
-                            <ul class="filter-list" style="padding-left: 1rem; margin-top: 0.25rem;">
-                                @foreach($cat->enfantsActifs->take(10) as $child)
-                                    <li class="filter-item">
-                                        <a href="{{ route('search.index', ['category' => $child->slug, 'q' => request('q')]) }}" class="filter-link @if(request('category') == $child->slug) active @endif" style="font-size: 0.85rem;">
-                                            {{ $child->nom }}
-                                        </a>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @endif
-                    </li>
-                @endforeach
-            </ul>
+<div class="catalog-page-container">
+    <div class="catalog-layout">
+        <!-- Sidebar -->
+        <div class="catalog-sidebar-column">
+            @include('partials.catalog-sidebar')
         </div>
 
-        <form action="{{ route('search.index') }}" method="GET">
-            <input type="hidden" name="q" value="{{ request('q') }}">
-            <input type="hidden" name="category" value="{{ request('category') }}">
-            
-            <div class="filter-group">
-                <h3 class="filter-title">Prix (€)</h3>
-                <div class="price-range-inputs">
-                    <input type="number" name="min_prix" class="price-input" placeholder="Min" value="{{ request('min_prix') }}">
-                    <span>-</span>
-                    <input type="number" name="max_prix" class="price-input" placeholder="Max" value="{{ request('max_prix') }}">
+        <!-- Main Content -->
+        <main class="catalog-main-column">
+            <div class="catalog-breadcrumbs">
+                <a href="{{ route('home') }}">Accueil</a>
+                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin: 0 4px; opacity: 0.4;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+                <span style="font-weight: 700; color: #000;">Recherche</span>
+            </div>
+
+            <div class="catalog-header">
+                <h1 class="header-title">
+                    @if(request('q'))
+                        Résultats pour "{{ request('q') }}"
+                    @else
+                        Toutes les annonces
+                    @endif
+                </h1>
+            </div>
+
+            <div class="results-toolbar">
+                <h2 class="results-count">Tous les résultats ({{ $annonces->total() }})</h2>
+                <div class="sort-options">
+                    <label>Trier par</label>
+                    <select onchange="window.location.href = this.value">
+                        <option value="{{ request()->fullUrlWithQuery(['sort' => 'relevance']) }}" @if(request('sort') == 'relevance') selected @endif>Le plus pertinent</option>
+                        <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}" @if(request('sort') == 'price_asc') selected @endif>Prix croissant</option>
+                        <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}" @if(request('sort') == 'price_desc') selected @endif>Prix décroissant</option>
+                        <option value="{{ request()->fullUrlWithQuery(['sort' => 'newest']) }}" @if(request('sort') == 'newest') selected @endif>Nouveautés</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="filter-group">
-                <h3 class="filter-title">État</h3>
-                <div class="filter-item">
-                    <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
-                        <input type="checkbox" name="etat[]" value="Neuf" @if(is_array(request('etat')) && in_array('Neuf', request('etat'))) checked @endif> Neuf
-                    </label>
-                </div>
-                <div class="filter-item">
-                    <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
-                        <input type="checkbox" name="etat[]" value="Occasion" @if(is_array(request('etat')) && in_array('Occasion', request('etat'))) checked @endif> Occasion
-                    </label>
-                </div>
-            </div>
-
-            @if(request('category') == 'immobilier' || str_contains(request('category') ?? '', 'immobilier'))
-                <div class="filter-group">
-                    <h3 class="filter-title">Détails Immobilier</h3>
-                    <div style="margin-bottom: 1rem;">
-                        <label class="small text-muted">Nombre de pièces (min)</label>
-                        <input type="number" name="pieces" class="price-input" placeholder="Ex: 3" value="{{ request('pieces') }}">
-                    </div>
-                    <div style="margin-bottom: 1rem;">
-                        <label class="small text-muted">Surface min (m²)</label>
-                        <input type="number" name="surface_min" class="price-input" placeholder="Ex: 50" value="{{ request('surface_min') }}">
-                    </div>
-                    <div>
-                        <label class="small text-muted">Type de transaction</label>
-                        <select name="type_transaction" class="price-input">
-                            <option value="">Tous</option>
-                            <option value="vente" @if(request('type_transaction') == 'vente') selected @endif>Vente</option>
-                            <option value="location" @if(request('type_transaction') == 'location') selected @endif>Location</option>
-                        </select>
-                    </div>
-                </div>
-            @endif
-
-            @if(request('category') == 'vehicules' || str_contains(request('category') ?? '', 'vehicule'))
-                <div class="filter-group">
-                    <h3 class="filter-title">Détails Véhicule</h3>
-                    <div style="margin-bottom: 1rem;">
-                        <label class="small text-muted">Kilométrage max</label>
-                        <input type="number" name="km_max" class="price-input" placeholder="Ex: 100000" value="{{ request('km_max') }}">
-                    </div>
-                    <div>
-                        <label class="small text-muted">Boîte de vitesse</label>
-                        <select name="boite" class="price-input">
-                            <option value="">Toutes</option>
-                            <option value="Manuelle" @if(request('boite') == 'Manuelle') selected @endif>Manuelle</option>
-                            <option value="Automatique" @if(request('boite') == 'Automatique') selected @endif>Automatique</option>
-                        </select>
-                    </div>
-                </div>
-            @endif
-
-            <div class="filter-group">
-                <h3 class="filter-title">Type de vendeur</h3>
-                <div class="filter-item">
-                    <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
-                        <input type="radio" name="vendeur_type" value="" @if(!request('vendeur_type')) checked @endif> Tous
-                    </label>
-                </div>
-                <div class="filter-item">
-                    <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
-                        <input type="radio" name="vendeur_type" value="professionnel" @if(request('vendeur_type') == 'professionnel') checked @endif> Professionnels
-                    </label>
-                </div>
-                <div class="filter-item">
-                    <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; cursor: pointer;">
-                        <input type="radio" name="vendeur_type" value="particulier" @if(request('vendeur_type') == 'particulier') checked @endif> Particuliers
-                    </label>
-                </div>
-            </div>
-
-            <button type="submit" class="apply-btn">Appliquer les filtres</button>
-        </form>
-    </aside>
-
-    <!-- Results Section -->
-    <main class="results-main">
-        <div class="results-header">
-            <h1 class="results-count">
-                @if(request('q'))
-                    Résultats pour "{{ request('q') }}" ({{ $annonces->total() }})
-                @else
-                    Toutes les annonces ({{ $annonces->total() }})
-                @endif
-            </h1>
-            
-            <div class="results-sort">
-                <select class="sort-select" onchange="window.location.href = this.value">
-                    <option value="{{ request()->fullUrlWithQuery(['sort' => 'relevance']) }}" @if(request('sort') == 'relevance') selected @endif>Trier par : Pertinence</option>
-                    <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}" @if(request('sort') == 'price_asc') selected @endif>Trier par : Prix croissant</option>
-                    <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}" @if(request('sort') == 'price_desc') selected @endif>Trier par : Prix décroissant</option>
-                    <option value="{{ request()->fullUrlWithQuery(['sort' => 'newest']) }}" @if(request('sort') == 'newest') selected @endif>Trier par : Nouveautés</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="products-grid">
-            @forelse($annonces as $annonce)
-                <a href="{{ route('annonces.show', $annonce->slug) }}" class="product-card">
-                    <div class="product-image">
-                        @if($annonce->photoPrincipale())
-                            <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
-                        @else
-                            <img src="https://via.placeholder.com/300?text=Sans+Photo" alt="Pas de photo">
-                        @endif
-                        
-                        @if($annonce->estALaUne())
-                            <span class="product-badge">À la une</span>
-                        @endif
-                    </div>
-                    <div class="product-info">
-                        <h2 class="product-title">{{ $annonce->titre }}</h2>
-                        <div class="product-price">{{ number_format($annonce->prix, 2, ',', ' ') }} €</div>
-                        <div class="product-meta">
-                            <span>{{ $annonce->vendeur->user->name }} @if($annonce->vendeur->estProfessionnel()) <strong style="color: #bf0000;">PRO</strong> @endif</span>
-                            <span>{{ $annonce->publiee_le->diffForHumans() }}</span>
+            <div class="catalog-grid">
+                @forelse($annonces as $annonce)
+                    <a href="{{ route('annonces.show', $annonce->slug) }}" class="catalog-card">
+                        <div class="card-media">
+                            @if($annonce->photoPrincipale())
+                                <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
+                            @else
+                                <div class="no-photo">Pas de photo</div>
+                            @endif
+                            @if($annonce->estALaUne()) <span class="badge-featured">À la une</span> @endif
                         </div>
+                        <div class="card-content">
+                            <h3 class="card-title">{{ $annonce->titre }}</h3>
+                            <div class="card-price">{{ number_format($annonce->prix, 2, ',', ' ') }} €</div>
+                            <div class="card-footer">
+                                <span class="seller-name">{{ $annonce->vendeur->user->prenom }} {{ $annonce->vendeur->user->nom }}</span>
+                                <span class="date">{{ $annonce->publiee_le->diffForHumans() }}</span>
+                            </div>
+                        </div>
+                    </a>
+                @empty
+                    <div class="empty-state">
+                        <p>Aucun produit ne correspond à vos critères.</p>
+                        <a href="{{ route('home') }}" class="btn-back">Retour à l'accueil</a>
                     </div>
-                </a>
-            @empty
-                <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: white; border-radius: 8px; border: 1px solid #e0e0e0;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
-                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Aucun résultat trouvé</h3>
-                    <p style="color: #666;">Essayez d'ajuster vos filtres ou de modifier votre recherche.</p>
-                </div>
-            @endforelse
-        </div>
+                @endforelse
+            </div>
 
-        <div class="pagination-container">
-            {{ $annonces->links() }}
-        </div>
-    </main>
+            <div class="pagination-wrapper">
+                {{ $annonces->links() }}
+            </div>
+        </main>
+    </div>
 </div>
+
+<style>
+    /* Reuse styles from category page for consistency */
+    .catalog-page-container {
+        background-color: #fff;
+        min-height: 100vh;
+        padding: 0;
+    }
+
+    .catalog-layout {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 210px 1fr;
+        gap: 2rem;
+    }
+
+    .catalog-breadcrumbs {
+        display: flex;
+        align-items: center;
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .catalog-breadcrumbs a {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .catalog-breadcrumbs a:hover {
+        text-decoration: underline;
+    }
+
+    .catalog-header {
+        padding: 1.5rem 0;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid #ebebeb;
+    }
+
+    .header-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #000;
+        letter-spacing: -0.01em;
+    }
+
+    .header-description {
+        font-size: 1rem;
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .header-icon {
+        font-size: 3rem;
+        opacity: 0.1;
+    }
+
+    .results-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .results-count {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #000;
+    }
+
+    .sort-options {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .sort-options label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #666;
+    }
+
+    .sort-options select {
+        padding: 0.5rem 1rem;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        outline: none;
+    }
+
+    .catalog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .catalog-card {
+        background: #fff;
+        border: 1px solid #ebebeb;
+        border-radius: 4px;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 0.2s, box-shadow 0.2s;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .catalog-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        border-color: #ddd;
+    }
+
+    .card-media {
+        aspect-ratio: 1;
+        background: #fcfcfc;
+        position: relative;
+    }
+
+    .card-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .no-photo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: #ccc;
+        font-size: 0.8rem;
+    }
+
+    .badge-featured {
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        background: #000;
+        color: #fff;
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 0.25rem 0.5rem;
+        border-radius: 2px;
+        text-transform: uppercase;
+    }
+
+    .card-content {
+        padding: 1.25rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-title {
+        font-size: 0.95rem;
+        line-height: 1.4;
+        font-weight: 500;
+        height: 2.1rem; /* 2 lines */
+        overflow: hidden;
+        margin-bottom: 0.75rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .card-price {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #000;
+        margin-bottom: auto;
+    }
+
+    .card-footer {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        color: #999;
+    }
+
+    .pagination-wrapper {
+        margin-top: 4rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 5rem 2rem;
+        background: #fff;
+        border-radius: 4px;
+        border: 1px solid #eee;
+    }
+
+    .empty-state p {
+        color: #666;
+        margin-bottom: 2rem;
+    }
+
+    .btn-back {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        background: #000;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+        .catalog-layout {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        .catalog-sidebar-column {
+            display: none;
+        }
+    }
+</style>
 @endsection

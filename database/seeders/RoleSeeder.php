@@ -10,40 +10,19 @@ class RoleSeeder extends Seeder
 {
     public function run(): void
     {
-        // Créer les rôles
+        // Rôles de base avant le cahier des charges
         $roles = [
-            'acheteur',
+            'admin',
             'vendeur',
-            'transporteur',
-            'depot_relais',
-            'Administrateur',
+            'acheteur',
+            'Vendeur Particulier',
+            'Vendeur Professionnel',
         ];
 
-        foreach ($roles as $role) {
-            Role::firstOrCreate(['name' => $role]);
+        foreach ($roles as $roleName) {
+            Role::firstOrCreate(['name' => $roleName]);
         }
-
-        // Créer les permissions de base (à étendre plus tard)
-        $permissions = [
-            'voir annonces',
-            'créer annonce',
-            'modifier annonce',
-            'supprimer annonce',
-            'gérer commandes',
-            'gérer utilisateurs',
-            'gérer litiges',
-        ];
-
-        foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
-        }
-
-        // Assigner toutes les permissions à l'administrateur
-        $admin = Role::where('name', 'Administrateur')->first();
-        if ($admin) {
-            $admin->givePermissionTo(Permission::all());
-        }
+        
+        $this->command->info('✓ Rôles créés : admin, vendeur, acheteur, Vendeur Particulier, Vendeur Professionnel');
     }
 }
-
-

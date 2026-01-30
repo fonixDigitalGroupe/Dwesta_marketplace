@@ -21,79 +21,73 @@ class ReviewSeeder extends Seeder
         Review::truncate();
         Schema::enableForeignKeyConstraints();
 
-        $acheteurs = User::whereHas('roles', function ($query) {
-            $query->where('name', 'acheteur');
-        })->get();
-
+        $acheteurs = User::role('acheteur')->get();
         $annonces = Annonce::where('statut', 'publiee')->get();
         $vendeurs = Vendeur::where('statut_verification', 'verifie')->get();
 
-        if ($acheteurs->isEmpty() || $annonces->isEmpty()) {
-            $this->command->warn('Pas assez de données pour créer des avis.');
+        if ($acheteurs->isEmpty()) {
+            $this->command->warn('Pas d\'acheteurs trouvés pour créer des avis.');
             return;
         }
 
         $commentaires = [
-            5 => [
-                'Excellent produit, conforme à la description !',
-                'Vendeur très professionnel, je recommande vivement.',
-                'Livraison rapide, produit de qualité. Parfait !',
-                'Très satisfait de mon achat, merci !',
-                'Top qualité, rien à redire. 5 étoiles méritées.',
-            ],
-            4 => [
-                'Bon produit, quelques petits détails à améliorer.',
-                'Satisfait dans l\'ensemble, livraison un peu longue.',
-                'Produit conforme, vendeur réactif.',
-                'Bien, mais le prix pourrait être plus compétitif.',
-            ],
-            3 => [
-                'Produit correct, sans plus.',
-                'Conforme à la description mais qualité moyenne.',
-                'Acceptable pour le prix.',
-            ],
-            2 => [
-                'Déçu de la qualité, ne correspond pas aux photos.',
-                'Livraison très longue, produit moyen.',
-            ],
-            1 => [
-                'Très déçu, produit défectueux.',
-                'Ne correspond pas du tout à la description.',
-            ],
+            5 => ['Excellent produit !', 'Vendeur pro.', 'Livraison rapide.', 'Parfait !', 'Top qualité.'],
+            4 => ['Bon produit.', 'Satisfait.', 'Vendeur réactif.', 'Bien.'],
+            3 => ['Correct.', 'Conforme.', 'Acceptable.'],
+            2 => ['Déçu.', 'Moyen.'],
+            1 => ['Très déçu.', 'Défectueux.'],
         ];
 
-        // Créer 30 avis sur annonces
-        for ($i = 0; $i < 30; $i++) {
-            $note = rand(3, 5); // Majorité de bonnes notes
+        // Créer des avis sur annonces (sans doublons)
+        $pairs = [];
+        $count = 0;
+        $maxAttempts = 100;
+
+        while ($count < 20 && $maxAttempts > 0) {
+            $note = rand(3, 5);
             $annonce = $annonces->random();
             $acheteur = $acheteurs->random();
+            $key = "annonce-{$annonce->id}-user-{$acheteur->id}";
 
-            Review::create([
-                'reviewer_id' => $acheteur->id,
-                'reviewable_type' => Annonce::class,
-                'reviewable_id' => $annonce->id,
-                'note' => $note,
-                'commentaire' => $commentaires[$note][array_rand($commentaires[$note])],
-                'created_at' => now()->subDays(rand(1, 30)),
-            ]);
+            if (!isset($pairs[$key])) {
+                Review::create([
+                    'reviewer_id' => $acheteur->id,
+                    'reviewable_type' => Annonce::class,
+                    'reviewable_id' => $annonce->id,
+                    'rating' => $note,
+                    'comment' => $commentaires[$note][array_rand($commentaires[$note])],
+                    'created_at' => now()->subDays(rand(1, 30)),
+                ]);
+                $pairs[$key] = true;
+                $count++;
+            }
+            $maxAttempts--;
         }
 
-        // Créer 15 avis sur vendeurs
-        for ($i = 0; $i < 15; $i++) {
+        // Créer des avis sur vendeurs (sans doublons)
+        $count = 0;
+        $maxAttempts = 100;
+        while ($count < 10 && $maxAttempts > 0) {
             $note = rand(3, 5);
             $vendeur = $vendeurs->random();
             $acheteur = $acheteurs->random();
+            $key = "vendeur-{$vendeur->id}-user-{$acheteur->id}";
 
-            Review::create([
-                'reviewer_id' => $acheteur->id,
-                'reviewable_type' => Vendeur::class,
-                'reviewable_id' => $vendeur->id,
-                'note' => $note,
-                'commentaire' => $commentaires[$note][array_rand($commentaires[$note])],
-                'created_at' => now()->subDays(rand(1, 30)),
-            ]);
+            if (!isset($pairs[$key])) {
+                Review::create([
+                    'reviewer_id' => $acheteur->id,
+                    'reviewable_type' => Vendeur::class,
+                    'reviewable_id' => $vendeur->id,
+                    'rating' => $note,
+                    'comment' => $commentaires[$note][array_rand($commentaires[$note])],
+                    'created_at' => now()->subDays(rand(1, 30)),
+                ]);
+                $pairs[$key] = true;
+                $count++;
+            }
+            $maxAttempts--;
         }
 
-        $this->command->info('✓ Avis créés : 30 sur annonces, 15 sur vendeurs');
+        $this->command->info("✓ Avis créés : $count avis générés avec succès.");
     }
 }

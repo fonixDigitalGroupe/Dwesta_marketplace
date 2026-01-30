@@ -20,9 +20,7 @@ class CreditTransactionSeeder extends Seeder
         CreditTransaction::truncate();
         Schema::enableForeignKeyConstraints();
 
-        $vendeurs = User::whereHas('roles', function ($query) {
-            $query->where('name', 'vendeur');
-        })->get();
+        $vendeurs = User::role('vendeur')->get();
 
         if ($vendeurs->isEmpty()) {
             $this->command->warn('Aucun vendeur trouvé.');
@@ -32,9 +30,9 @@ class CreditTransactionSeeder extends Seeder
         // Packs de crédits disponibles
         $packs = [
             ['montant' => 10000, 'credits' => 10000],
-            ['montant' => 25000, 'credits' => 27000], // +8% bonus
-            ['montant' => 50000, 'credits' => 56000], // +12% bonus
-            ['montant' => 100000, 'credits' => 115000], // +15% bonus
+            ['montant' => 25000, 'credits' => 27000],
+            ['montant' => 50000, 'credits' => 56000],
+            ['montant' => 100000, 'credits' => 115000],
         ];
 
         // Options payantes
@@ -52,10 +50,8 @@ class CreditTransactionSeeder extends Seeder
                 
                 CreditTransaction::create([
                     'user_id' => $vendeur->id,
-                    'type' => 'achat',
-                    'montant' => $pack['credits'],
-                    'solde_avant' => 0, // Simplifié
-                    'solde_apres' => $pack['credits'],
+                    'type' => 'credit',
+                    'amount' => $pack['credits'],
                     'description' => 'Achat pack ' . number_format($pack['credits'], 0, ',', ' ') . ' crédits',
                     'reference' => 'CREDIT-' . strtoupper(Str::random(10)),
                     'created_at' => now()->subDays(rand(1, 60)),
@@ -69,10 +65,8 @@ class CreditTransactionSeeder extends Seeder
                 
                 CreditTransaction::create([
                     'user_id' => $vendeur->id,
-                    'type' => 'depense',
-                    'montant' => -$option['cout'],
-                    'solde_avant' => 0, // Simplifié
-                    'solde_apres' => 0,
+                    'type' => 'debit',
+                    'amount' => $option['cout'], // Amount positive or negative? Migration doesn't specify but usually debit is positive amount in a 'debit' type transaction
                     'description' => 'Option "' . ucfirst(str_replace('_', ' ', $option['type'])) . '" pour annonce',
                     'reference' => 'OPT-' . strtoupper(Str::random(10)),
                     'created_at' => now()->subDays(rand(1, 30)),

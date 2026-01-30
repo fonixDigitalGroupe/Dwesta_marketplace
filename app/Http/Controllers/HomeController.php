@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Annonce;
+use Illuminate\Http\Request;
+
+class HomeController extends Controller
+{
+    /**
+     * Affiche la page d'accueil avec les différentes sections d'annonces.
+     */
+    public function index()
+    {
+        // 1. Nos offres imbattables : Les produits les moins chers (top 4)
+        $offresImbattables = Annonce::publiees()
+            ->orderBy('prix', 'asc')
+            ->take(4)
+            ->get();
+
+        // 2. Top des produits les plus consultés : Top 4 par vues
+        $topConsultes = Annonce::publiees()
+            ->orderBy('vues', 'desc')
+            ->take(4)
+            ->get();
+
+        // 3. Nos top produits du moment : Annonces à la une (aléatoire ou top 4)
+        $topProduits = Annonce::publiees()
+            ->aLaUne()
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+
+        // Si pas assez d'annonces à la une, on complète avec des annonces récentes
+        if ($topProduits->count() < 4) {
+            $extra = Annonce::publiees()
+                ->whereNotIn('id', $topProduits->pluck('id'))
+                ->latest()
+                ->take(4 - $topProduits->count())
+                ->get();
+            $topProduits = $topProduits->concat($extra);
+        }
+
+        // 4. Dernières opportunités : Les plus récentes
+        $dernieresOpportunites = Annonce::publiees()
+            ->latest()
+            ->take(4)
+            ->get();
+
+        return view('home', compact(
+            'offresImbattables',
+            'topConsultes',
+            'topProduits',
+            'dernieresOpportunites'
+        ));
+    }
+}

@@ -54,11 +54,11 @@ class AnnonceService
                 'prix' => $data['prix'] ?? null,
                 'description' => $data['description'],
                 'type_livraison' => $data['type_livraison'] ?? null,
-                'disponibilite' => $data['disponibilite'] ?? Annonce::DISPONIBILITE_DISPONIBLE,
+                'disponibilite' => $data['disponibilite'] ?? Annonce::DISPONIBILITE_EN_STOCK,
                 'statut' => $data['statut'] ?? Annonce::STATUT_BROUILLON,
                 'publiee_le' => ($data['statut'] ?? Annonce::STATUT_BROUILLON) === Annonce::STATUT_PUBLIEE ? now() : null,
-                'expire_le' => ($data['statut'] ?? Annonce::STATUT_BROUILLON) === Annonce::STATUT_PUBLIEE 
-                    ? now()->addDays(30) 
+                'expire_le' => ($data['statut'] ?? Annonce::STATUT_BROUILLON) === Annonce::STATUT_PUBLIEE
+                    ? now()->addDays(30)
                     : null,
             ]);
 
@@ -336,7 +336,7 @@ class AnnonceService
     private function incrementerAnnoncesUtilisees(Vendeur $vendeur): void
     {
         $abonnementActif = $vendeur->abonnementActif;
-        
+
         if ($abonnementActif) {
             $abonnementActif->increment('nombre_annonces_utilisees');
         }

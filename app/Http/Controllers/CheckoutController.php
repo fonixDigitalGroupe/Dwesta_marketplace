@@ -21,7 +21,7 @@ class CheckoutController extends Controller
     {
         $this->cartService = $cartService;
         $this->logisticsService = $logisticsService;
-        $this->middleware('auth');
+        // Middleware handled in routes/web.php in Laravel 11
     }
 
     /**

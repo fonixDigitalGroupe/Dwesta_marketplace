@@ -68,16 +68,14 @@
                                     <span style="font-size: 0.7rem; color: #999;">{{ $category->famille }}</span>
                                 @endif
                             </td>
-                            <td style="padding: 0.875rem 1.25rem; text-align: right;">
-                                <a href="{{ route('admin.categories.show', $category) }}"
-                                    style="color: #666; font-size: 0.75rem; text-decoration: none; margin-right: 0.75rem;">Voir</a>
-                                <a href="{{ route('admin.categories.edit', $category) }}"
-                                    style="color: #666; font-size: 0.75rem; text-decoration: none; margin-right: 0.75rem;">Modifier</a>
-                                <form action="{{ route('admin.categories.destroy', $category) }}" method="POST"
-                                    style="display: inline;" onsubmit="return confirm('Supprimer cette catégorie ?')">
+<td style="padding: 0.875rem 1.25rem; text-align: right; display: flex; justify-content: flex-end; gap: 8px;">
+                                <a href="{{ route('admin.categories.show', $category) }}" style="color: #666; font-size: 0.75rem; text-decoration: none; padding: 4px 8px; background: #f1f5f9; border-radius: 4px;">Voir</a>
+
+                                <a href="{{ route('admin.categories.edit', $category) }}" style="color: #333; font-size: 0.75rem; text-decoration: none; padding: 4px 8px; border: 1px solid #333; border-radius: 4px;">Modifier</a>
+
+                                <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" style="display:inline;" class="delete-form">
                                     @csrf @method('DELETE')
-                                    <button type="submit"
-                                        style="background: none; border: none; color: #666; font-size: 0.75rem; cursor: pointer; padding: 0;">Supprimer</button>
+                                    <button type="submit" style="color: #dc2626; font-size: 0.75rem; background: none; border: none; cursor: pointer; padding: 4px 8px; border: 1px solid #dc2626; border-radius: 4px;">Supprimer</button>
                                 </form>
                             </td>
                         </tr>
@@ -91,6 +89,11 @@
                     @endforelse
                 </tbody>
             </table>
+            
+            <!-- Pagination -->
+            <div style="padding: 1rem; border-top: 1px solid #e5e5e5;">
+                {{ $categories->links('admin.pagination') }}
+            </div>
         </div>
     </div>
 @endsection

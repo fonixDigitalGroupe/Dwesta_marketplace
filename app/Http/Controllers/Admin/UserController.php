@@ -15,16 +15,15 @@ class UserController extends Controller
     {
         $query = User::latest();
 
-        // Filtre par rôle
-        if ($request->has('role') && !empty($request->role)) {
-            $role = $request->role;
-            if ($role === 'Administrateur') {
-                $query->role('Administrateur');
-            } elseif ($role === 'Vendeur') {
-                $query->has('vendeur');
-            } elseif ($role === 'Utilisateur') {
-                $query->doesntHave('vendeur')->withoutRole('Administrateur');
-            }
+        // Filtre par rôle (par défaut : admin si premier chargement)
+        $role = $request->has('role') ? $request->role : 'admin';
+        
+        if ($role === 'admin') {
+            $query->role('admin');
+        } elseif ($role === 'vendeur') {
+            $query->has('vendeur');
+        } elseif ($role === 'acheteur') {
+            $query->doesntHave('vendeur')->role('acheteur');
         }
 
         // Filtre par nationalité
@@ -37,11 +36,11 @@ class UserController extends Controller
             $query->where('civilite', $request->civilite);
         }
 
-        $users = $query->paginate(20);
+        $users = $query->paginate(10);
         $nationalites = User::whereNotNull('nationalite')->where('nationalite', '!=', '')->distinct()->pluck('nationalite');
         $civilites = User::whereNotNull('civilite')->where('civilite', '!=', '')->distinct()->pluck('civilite');
 
-        return view('admin.users.index', compact('users', 'nationalites', 'civilites'));
+        return view('admin.users.index', compact('users', 'nationalites', 'civilites', 'role'));
     }
 
     /**

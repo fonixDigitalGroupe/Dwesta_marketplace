@@ -26,6 +26,7 @@ class AnnonceController extends Controller
     protected RecommandationService $recommandationService;
     protected CreditService $creditService;
     protected \App\Services\AnnoncePaymentService $paymentService;
+    protected \App\Services\SubscriptionService $subscriptionService;
 
     public function __construct(
         AnnonceService $annonceService,
@@ -34,7 +35,8 @@ class AnnonceController extends Controller
         ImportAnnoncesCSVService $importService,
         RecommandationService $recommandationService,
         CreditService $creditService,
-        \App\Services\AnnoncePaymentService $paymentService
+        \App\Services\AnnoncePaymentService $paymentService,
+        \App\Services\SubscriptionService $subscriptionService
     ) {
         $this->annonceService = $annonceService;
         $this->optionService = $optionService;
@@ -43,6 +45,7 @@ class AnnonceController extends Controller
         $this->recommandationService = $recommandationService;
         $this->creditService = $creditService;
         $this->paymentService = $paymentService;
+        $this->subscriptionService = $subscriptionService;
     }
 
     /**
@@ -140,6 +143,23 @@ class AnnonceController extends Controller
         // Validation de base
         $validated = $this->validateAnnonce($request, $type);
 
+        // Mettre à jour les coordonnées de l'utilisateur
+        $user->update([
+            'telephone' => $validated['user_phone'],
+            'code_postal' => $validated['code_postal'],
+        ]);
+
+        // Fix missing disponibilite as it was removed from form
+        if (!isset($validated['disponibilite'])) {
+            $validated['disponibilite'] = 'en_stock';
+        }
+
+        // Vérifier les limites d'annonces selon l'abonnement
+        if (!$this->subscriptionService->canPublishAnnonce($vendeur)) {
+            $remaining = $this->subscriptionService->getRemainingAnnonces($vendeur);
+            return back()->withInput()->with('error', "Vous avez atteint la limite d'annonces de votre abonnement. Annonces restantes : {$remaining}. Passez à un abonnement supérieur pour publier plus d'annonces.");
+        }
+
         try {
             // 1. Vérification du solde pour la catégorie (si payante)
             $categorie = Category::findOrFail($validated['categorie_id']);
@@ -192,12 +212,15 @@ class AnnonceController extends Controller
             }
 
             if ($validated['statut'] === Annonce::STATUT_PUBLIEE) {
-                return redirect()->route('annonces.show', $annonce)
-                    ->with('success', 'Annonce publiée avec succès !');
+                // Incrémenter le compteur d'annonces utilisées
+                $this->subscriptionService->incrementAnnonceCount($vendeur);
+                
+                return redirect()->route('annonces.create')
+                    ->with('success', 'ok');
             }
 
-            return redirect()->route('annonces.edit', $annonce)
-                ->with('success', 'Annonce enregistrée en brouillon. Vous pouvez la publier quand vous êtes prêt.');
+            return redirect()->route('annonces.create')
+                ->with('success', 'ok');
         } catch (\Exception $e) {
             Log::error('Erreur création annonce: ' . $e->getMessage());
             return back()->withInput()->with('error', $e->getMessage());
@@ -234,7 +257,6 @@ class AnnonceController extends Controller
     {
         $user = Auth::user();
 
-        // Vérifier que l'utilisateur est le propriétaire
         if ($annonce->vendeur_id !== $user->vendeur->id) {
             return redirect()->route('annonces.index')
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
@@ -263,7 +285,6 @@ class AnnonceController extends Controller
     {
         $user = Auth::user();
 
-        // Vérifier que l'utilisateur est le propriétaire
         if ($annonce->vendeur_id !== $user->vendeur->id) {
             return redirect()->route('annonces.index')
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
@@ -384,13 +405,15 @@ class AnnonceController extends Controller
             'titre' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'min:20'],
             'statut' => ['nullable', 'in:brouillon,en_attente,publiee'],
+            'user_phone' => ['required', 'string', 'max:255'],
+            'code_postal' => ['required', 'string', 'max:255'],
         ];
 
         // Règles communes
         if ($type === Annonce::TYPE_PRODUIT || $type === Annonce::TYPE_IMMOBILIER || $type === Annonce::TYPE_VEHICULE) {
             $rules['prix'] = ['required', 'numeric', 'min:0'];
             $rules['type_livraison'] = ['required', 'in:retrait_boutique,livraison_domicile,livraison_point_relais'];
-            $rules['disponibilite'] = ['required', 'in:en_stock,rupture_stock,sur_commande'];
+            $rules['disponibilite'] = ['nullable', 'in:en_stock,rupture_stock,sur_commande'];
         }
 
         // Règles spécifiques par type
@@ -398,7 +421,7 @@ class AnnonceController extends Controller
             case Annonce::TYPE_PRODUIT:
                 $rules['marque'] = ['nullable', 'string', 'max:255'];
                 $rules['modele'] = ['nullable', 'string', 'max:255'];
-                $rules['etat'] = ['nullable', 'in:Neuf,Occasion,Reconditionné'];
+                $rules['etat'] = ['nullable', 'in:Neuf,Comme neuf,Très bon état,Bon état,Etat correct,Hors service,Occasion,Reconditionné'];
                 $rules['quantite'] = ['nullable', 'integer', 'min:1'];
                 $rules['prix_moyen_marche'] = ['nullable', 'numeric', 'min:0'];
                 break;
@@ -427,7 +450,7 @@ class AnnonceController extends Controller
                 $rules['kilometrage'] = ['nullable', 'integer', 'min:0'];
                 $rules['carburant'] = ['nullable', 'string', 'max:50'];
                 $rules['boite_vitesse'] = ['nullable', 'in:Manuelle,Automatique'];
-                $rules['etat'] = ['nullable', 'in:Neuf,Occasion,Reconditionné'];
+                $rules['etat'] = ['nullable', 'in:Neuf,Comme neuf,Très bon état,Bon état,Etat correct,Hors service,Occasion,Reconditionné'];
                 $rules['couleur'] = ['nullable', 'string', 'max:50'];
                 $rules['portes'] = ['nullable', 'integer', 'min:2', 'max:5'];
                 $rules['places'] = ['nullable', 'integer', 'min:1'];
@@ -462,7 +485,12 @@ class AnnonceController extends Controller
         $rules['variantes.*.stock'] = ['nullable', 'integer', 'min:0'];
         $rules['variantes.*.prix_supplementaire'] = ['nullable', 'numeric', 'min:0'];
 
-        $validated = $request->validate($rules);
+        $messages = [
+            'description.min' => 'La description doit contenir au moins :min caractères.',
+            'etat.in' => "L'état sélectionné est invalide.",
+        ];
+
+        $validated = $request->validate($rules, $messages);
 
         // Calculer le prix pour les services
         if ($type === Annonce::TYPE_SERVICE && $validated['type_tarification'] === 'fixe') {
@@ -477,19 +505,10 @@ class AnnonceController extends Controller
      */
     public function showImportForm()
     {
-        $user = Auth::user();
-
-        if (!$user->estVendeur()) {
-            return redirect()->route('vendeur.create')
-                ->with('error', 'Vous devez créer un compte vendeur pour importer des annonces.');
-        }
-
-        $vendeur = $user->vendeur;
-
-        if (!$vendeur->estVerifie()) {
-            return redirect()->route('vendeur.show')
-                ->with('error', 'Votre compte vendeur doit être vérifié avant d\'importer des annonces.');
-        }
+        // if (!$user->vendeur->estProfessionnel()) {
+        //     return redirect()->route('annonces.index')
+        //         ->with('error', 'Cette fonctionnalité est réservée aux vendeurs professionnels.');
+        // }
 
         return view('annonces.import-csv');
     }

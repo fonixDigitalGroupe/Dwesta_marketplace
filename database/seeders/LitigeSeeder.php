@@ -24,11 +24,7 @@ class LitigeSeeder extends Seeder
             Order::STATUT_LIVRE,
             Order::STATUT_EN_ROUTE,
             Order::STATUT_DISPONIBLE,
-        ])->limit(5)->get();
-
-        $admin = User::whereHas('roles', function ($query) {
-            $query->where('name', 'admin');
-        })->first();
+        ])->with('seller.user')->limit(5)->get();
 
         if ($orders->isEmpty()) {
             $this->command->warn('Pas assez de commandes pour créer des litiges.');
@@ -36,11 +32,11 @@ class LitigeSeeder extends Seeder
         }
 
         $motifs = [
-            'Produit non conforme à la description',
-            'Produit endommagé à la livraison',
-            'Produit jamais reçu',
-            'Mauvaise qualité du produit',
-            'Vendeur non joignable',
+            'non_conforme',
+            'non_conforme',
+            'non_recu',
+            'non_conforme',
+            'autre',
         ];
 
         $descriptions = [
@@ -54,27 +50,26 @@ class LitigeSeeder extends Seeder
         // Créer 5 litiges avec différents statuts
         foreach ($orders as $index => $order) {
             $statut = match($index) {
-                0 => 'ouvert',
+                0 => 'en_cours',
                 1 => 'en_cours',
-                2 => 'resolu_acheteur',
-                3 => 'resolu_vendeur',
-                4 => 'resolu_partage',
+                2 => 'resolu',
+                3 => 'resolu',
+                4 => 'ferme',
             };
 
-            $litige = Litige::create([
-                'order_id' => $order->id,
-                'initiateur_id' => $order->user_id,
+            Litige::create([
+                'commande_id' => $order->id,
+                'reporter_id' => $order->user_id,
+                'reported_id' => $order->vendeur_id ? ($order->seller->user->id ?? $order->user_id) : $order->user_id, // Fallback if no seller user
                 'motif' => $motifs[$index],
                 'description' => $descriptions[$index],
                 'statut' => $statut,
-                'decision_admin' => $statut != 'ouvert' && $statut != 'en_cours' ? 'Après examen des preuves, décision prise en faveur de ' . ($statut == 'resolu_acheteur' ? 'l\'acheteur' : ($statut == 'resolu_vendeur' ? 'le vendeur' : 'partage 50/50')) : null,
-                'traite_par' => $statut != 'ouvert' ? $admin?->id : null,
-                'traite_le' => $statut != 'ouvert' ? now()->subDays(rand(1, 10)) : null,
+                'resolution' => $statut == 'resolu' ? 'Decision prise apres analyse.' : null,
                 'created_at' => now()->subDays(rand(5, 20)),
             ]);
 
             // Mettre à jour le statut de la commande si litige ouvert
-            if ($statut == 'ouvert' || $statut == 'en_cours') {
+            if ($statut == 'en_cours') {
                 $order->update(['statut' => Order::STATUT_LITIGE]);
             }
         }

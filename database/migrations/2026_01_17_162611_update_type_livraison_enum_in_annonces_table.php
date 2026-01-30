@@ -10,10 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            if (!Schema::hasColumn('users', 'is_active')) {
-                $table->boolean('is_active')->default(true)->after('password');
-            }
+        Schema::table('annonces', function (Blueprint $table) {
+            $table->string('type_livraison')->nullable()->change();
         });
     }
 
@@ -22,8 +20,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_active');
+        Schema::table('annonces', function (Blueprint $table) {
+            //
         });
     }
 };

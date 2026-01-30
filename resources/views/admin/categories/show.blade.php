@@ -69,18 +69,15 @@
                             onmouseover="this.style.background='#fcfcfc'" onmouseout="this.style.background='white'">
                             <td style="padding: 0.875rem 1.25rem;">
                                 <div style="font-size: 0.875rem; color: #333; font-weight: 500;">{{ $enfant->nom }}</div>
-                                <div style="font-size: 0.7rem; color: #999;">{{ $enfant->slug }}</div>
                             </td>
-                            <td style="padding: 0.875rem 1.25rem; text-align: right;">
-                                <a href="{{ route('admin.categories.show', $enfant) }}"
-                                    style="color: #666; font-size: 0.75rem; text-decoration: none; margin-right: 0.75rem;">Voir</a>
-                                <a href="{{ route('admin.categories.edit', $enfant) }}"
-                                    style="color: #666; font-size: 0.75rem; text-decoration: none; margin-right: 0.75rem;">Modifier</a>
-                                <form action="{{ route('admin.categories.destroy', $enfant) }}" method="POST"
-                                    style="display: inline;" onsubmit="return confirm('Supprimer cette catégorie ?')">
+<td style="padding: 0.875rem 1.25rem; text-align: right; display: flex; justify-content: flex-end; gap: 8px;">
+                                <a href="{{ route('admin.categories.show', $enfant) }}" style="color: #666; font-size: 0.75rem; text-decoration: none; padding: 4px 8px; background: #f1f5f9; border-radius: 4px;">Voir</a>
+
+                                <a href="{{ route('admin.categories.edit', $enfant) }}" style="color: #333; font-size: 0.75rem; text-decoration: none; padding: 4px 8px; border: 1px solid #333; border-radius: 4px;">Modifier</a>
+
+                                <form action="{{ route('admin.categories.destroy', $enfant) }}" method="POST" style="display:inline;" class="delete-form">
                                     @csrf @method('DELETE')
-                                    <button type="submit"
-                                        style="background: none; border: none; color: #666; font-size: 0.75rem; cursor: pointer; padding: 0;">Supprimer</button>
+                                    <button type="submit" style="color: #dc2626; font-size: 0.75rem; background: none; border: none; cursor: pointer; padding: 4px 8px; border: 1px solid #dc2626; border-radius: 4px;">Supprimer</button>
                                 </form>
                             </td>
                         </tr>

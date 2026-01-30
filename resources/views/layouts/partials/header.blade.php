@@ -48,15 +48,11 @@
                             <div class="sell-dropdown-item-title">Vendre un produit en tant que particulier</div>
                             <div class="sell-dropdown-item-subtitle">Je dépose une annonce gratuitement</div>
                         </a>
-                        <a href="{{ route('vendeur.create') }}" class="sell-dropdown-item">
-                            <div class="sell-dropdown-item-title">Devenir vendeur professionnel</div>
-                            <div class="sell-dropdown-item-subtitle">Ouvrez votre boutique sur Mady Market</div>
-                        </a>
                     </div>
                 </div>
 
                     @auth
-                        @if(auth()->user()->hasRole('Administrateur'))
+                        @if(auth()->user()->hasRole('admin'))
                             <a href="{{ route('admin.categories.l1') }}" class="header-link">
                                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

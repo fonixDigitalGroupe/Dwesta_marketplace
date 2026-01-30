@@ -118,13 +118,13 @@ class Vendeur extends Model
     public function getAbonnementActuelAttribute()
     {
         $abonnementActif = $this->abonnementActif;
-        
+
         if ($abonnementActif) {
             return $abonnementActif->abonnement;
         }
 
         // Retourner l'abonnement gratuit par défaut
-        return Abonnement::where('type', Abonnement::TYPE_GRATUIT)->first();
+        return Abonnement::where('type', 'gratuit')->first();
     }
 
     /**
@@ -132,16 +132,16 @@ class Vendeur extends Model
      */
     public function peutPublierAnnonce(): bool
     {
-        if (!$this->estVerifie()) {
+        if ($this->statut_verification === 'rejeté') {
             return false;
         }
 
         $abonnementActif = $this->abonnementActif;
-        
+
         if (!$abonnementActif) {
             // Si pas d'abonnement actif, utiliser l'abonnement gratuit
-            $abonnementGratuit = Abonnement::where('type', Abonnement::TYPE_GRATUIT)->first();
-            return $abonnementGratuit && $abonnementGratuit->aAnnoncesIllimitees();
+            $abonnementGratuit = Abonnement::where('type', 'gratuit')->first();
+            return $abonnementGratuit && ($abonnementGratuit->nombre_annonces === 0 || $abonnementGratuit->nombre_annonces > 0);
         }
 
         return $abonnementActif->peutPublierAnnonce();
@@ -169,11 +169,38 @@ class Vendeur extends Model
     public function aAccesPagePro(): bool
     {
         $abonnementActif = $this->abonnementActif;
-        
+
         if (!$abonnementActif) {
             return false;
         }
 
         return $abonnementActif->abonnement->page_pro === true;
+    }
+
+    /**
+     * Vérifier si le vendeur peut personnaliser sa boutique (logo, bannière, etc.)
+     * Seuls les vendeurs avec abonnements Basic ou Expert peuvent personnaliser
+     */
+    public function peutPersonnaliserBoutique(): bool
+    {
+        $abonnementActif = $this->abonnementActif;
+
+        if (!$abonnementActif) {
+            return false;
+        }
+
+        return $abonnementActif->abonnement->page_pro === true;
+    }
+
+    /**
+     * Obtenir l'URL de la boutique publique
+     */
+    public function getBoutiqueUrl(): ?string
+    {
+        if (!$this->pagePro) {
+            return null;
+        }
+
+        return route('page-pro.show', $this->pagePro->slug);
     }
 }

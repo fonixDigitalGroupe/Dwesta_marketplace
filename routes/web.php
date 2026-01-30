@@ -24,9 +24,9 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\VendeurWalletController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+use App\Http\Controllers\HomeController;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Authentification
 Route::middleware('guest')->group(function () {
@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/particulier', [VendeurController::class, 'storeParticulier'])->name('store.particulier');
         Route::post('/professionnel', [VendeurController::class, 'storeProfessionnel'])->name('store.professionnel');
         Route::get('/', [VendeurController::class, 'show'])->name('show');
+        Route::get('/mes-annonces', [VendeurController::class, 'mesAnnonces'])->name('mes-annonces');
         Route::put('/{vendeur}/document-particulier', [VendeurController::class, 'updateDocumentParticulier'])->name('update.document.particulier');
         Route::put('/{vendeur}/document-professionnel', [VendeurController::class, 'updateDocumentProfessionnel'])->name('update.document.professionnel');
 
@@ -67,10 +68,9 @@ Route::middleware('auth')->group(function () {
     // Abonnements
     Route::prefix('abonnements')->name('abonnements.')->group(function () {
         Route::get('/', [AbonnementController::class, 'index'])->name('index');
-        Route::get('/mon-abonnement', [AbonnementController::class, 'monAbonnement'])->name('mon-abonnement');
-        Route::get('/{abonnement}', [AbonnementController::class, 'show'])->name('show');
-        Route::post('/{abonnement}/souscrire', [AbonnementController::class, 'souscrire'])->name('souscrire');
-        Route::post('/toggle-renouvellement', [AbonnementController::class, 'toggleRenouvellementAutomatique'])->name('toggle-renouvellement');
+        Route::post('/checkout', [AbonnementController::class, 'checkout'])->name('checkout');
+        Route::post('/subscribe', [AbonnementController::class, 'subscribe'])->name('subscribe');
+        Route::post('/cancel', [AbonnementController::class, 'cancel'])->name('cancel');
     });
 
     // Page Pro (routes spécifiques AVANT la route avec paramètre)
@@ -87,7 +87,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Admin - Vérification vendeurs
-    Route::prefix('admin')->name('admin.')->middleware('role:Administrateur')->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
         Route::prefix('vendeurs')->name('vendeurs.')->group(function () {
             Route::get('/verification', [VendeurVerificationController::class, 'index'])->name('verification.index');
             Route::get('/verification/{vendeur}', [VendeurVerificationController::class, 'show'])->name('verification.show');
@@ -121,7 +121,7 @@ Route::middleware('auth')->group(function () {
         // Admin root - redirect to categories
         Route::get('/', function () {
             return redirect()->route('admin.categories.l1');
-        });
+        })->name('dashboard');
 
 
         // Litiges
@@ -141,11 +141,14 @@ Route::middleware('auth')->group(function () {
         // Gestion des Utilisateurs
         Route::patch('/users/{user}/suspend', [\App\Http\Controllers\Admin\UserController::class, 'toggleStatus'])->name('users.suspend');
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+
+        // Gestion des Rôles & Permissions
+        // Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class)->only(['index', 'edit', 'update']);
     });
 
     // Documents sécurisés (accessibles uniquement aux admins)
     Route::get('/documents/{path}', [DocumentController::class, 'show'])
-        ->middleware('role:Administrateur')
+        ->middleware('role:admin')
         ->name('documents.show');
 
     // Annonces (routes spécifiques AVANT la route publique)
@@ -183,11 +186,22 @@ Route::middleware('auth')->group(function () {
 
     // Logistique & Scan
     Route::prefix('logistique')->group(function () {
-        Route::get('/transporteur', [\App\Http\Controllers\LogisticsController::class, 'transporteurDashboard'])->name('logistics.transporteur');
-        Route::get('/relais', [\App\Http\Controllers\LogisticsController::class, 'relaisDashboard'])->name('logistics.relais');
+        Route::get('/transporteur', [\App\Http\Controllers\LogisticsController::class, 'transporteurDashboard'])
+            ->middleware('role:vendeur')
+            ->name('logistics.transporteur');
+            
+        Route::get('/relais', [\App\Http\Controllers\LogisticsController::class, 'relaisDashboard'])
+            ->middleware('role:vendeur')
+            ->name('logistics.relais');
 
-        Route::get('/scan', [ScanController::class, 'index'])->name('scan.index');
-        Route::post('/scan', [ScanController::class, 'process'])->name('scan.process');
+        Route::get('/scan', [ScanController::class, 'index'])
+            ->middleware('permission:scanner qr code')
+            ->name('scan.index');
+            
+        Route::post('/scan', [ScanController::class, 'process'])
+            ->middleware('permission:scanner qr code')
+            ->name('scan.process');
+            
         Route::get('/suivi/{reference}', [ScanController::class, 'track'])->name('scan.track');
 
         Route::post('/vendeur/orders/{order}/ready', [\App\Http\Controllers\LogisticsController::class, 'markAsReady'])->name('logistics.markAsReady');

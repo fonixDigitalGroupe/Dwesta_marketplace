@@ -43,4 +43,21 @@ class VendeurAbonnement extends Model
     {
         return $this->date_fin < Carbon::today();
     }
+
+    /**
+     * Vérifier si le vendeur peut publier une nouvelle annonce
+     * selon les limites de son abonnement
+     */
+    public function peutPublierAnnonce(): bool
+    {
+        $abonnement = $this->abonnement;
+
+        // Si nombre_annonces = 0, c'est illimité
+        if ($abonnement->nombre_annonces === 0) {
+            return true;
+        }
+
+        // Sinon, vérifier si le nombre d'annonces utilisées est inférieur à la limite
+        return $this->nombre_annonces_utilisees < $abonnement->nombre_annonces;
+    }
 }

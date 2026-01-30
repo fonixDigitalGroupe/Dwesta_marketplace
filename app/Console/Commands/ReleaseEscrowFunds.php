@@ -33,7 +33,7 @@ class ReleaseEscrowFunds extends Command
         $this->info("Démarrage de la libération des fonds sous séquestre...");
 
         // Trouver les transactions en attente dont la date de libération est passée
-        $transactions = Transaction::where('wallet_status', 'pending')
+        $transactions = Transaction::where('wallet_status', Transaction::STATUS_PENDING)
             ->where('release_at', '<=', Carbon::now())
             ->where('statut', 'succes') // Seulement les transactions réussies
             ->with(['order.litiges']) // Charger les litiges liés à la commande
@@ -61,7 +61,7 @@ class ReleaseEscrowFunds extends Command
             DB::beginTransaction();
             try {
                 // Mettre à jour la transaction
-                $transaction->wallet_status = 'available';
+                $transaction->wallet_status = Transaction::STATUS_AVAILABLE;
                 $transaction->save();
 
                 // Créditer le wallet de l'utilisateur (vendeur)

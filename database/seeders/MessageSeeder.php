@@ -22,14 +22,8 @@ class MessageSeeder extends Seeder
         Message::truncate();
         Schema::enableForeignKeyConstraints();
 
-        $acheteurs = User::whereHas('roles', function ($query) {
-            $query->where('name', 'acheteur');
-        })->get();
-
-        $vendeurs = User::whereHas('roles', function ($query) {
-            $query->where('name', 'vendeur');
-        })->get();
-
+        $acheteurs = User::role('acheteur')->get();
+        $vendeurs = User::role('vendeur')->get();
         $annonces = Annonce::where('statut', 'publiee')->get();
 
         if ($acheteurs->isEmpty() || $vendeurs->isEmpty() || $annonces->isEmpty()) {
@@ -83,12 +77,13 @@ class MessageSeeder extends Seeder
             $baseTime = $conversation->created_at;
             foreach ($messagesData as $msgData) {
                 $baseTime = $baseTime->addMinutes($msgData['delay']);
+                $isRead = rand(0, 1) == 1;
                 
                 Message::create([
                     'conversation_id' => $conversation->id,
                     'sender_id' => $msgData['sender']->id,
-                    'contenu' => $msgData['text'],
-                    'lu' => rand(0, 1) == 1,
+                    'content' => $msgData['text'],
+                    'read_at' => $isRead ? $baseTime->addMinutes(rand(1, 60)) : null,
                     'created_at' => $baseTime,
                 ]);
             }

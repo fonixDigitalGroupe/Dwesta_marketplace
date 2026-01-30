@@ -39,6 +39,23 @@ class AbonnementController extends Controller
     }
 
     /**
+     * Afficher la page de confirmation (Checkout)
+     */
+    public function checkout(Request $request)
+    {
+        $abonnement = Abonnement::findOrFail($request->abonnement_id);
+        
+        // Si c'est un forfait gratuit, on souscrit directement via la méthode subscribe
+        if ($abonnement->prix_mensuel == 0) {
+            // On redirige vers subscribe mais comme c'est une méthode POST, il faut un formulaire caché ou adapter la logique.
+            // Pour faire simple ici, on affiche quand même la confirmation pour "Activer", ou on adapte plus tard.
+            // Le user a dit "abonnement basic" (payant), donc on se concentre sur le flux payant.
+        }
+
+        return view('abonnements.checkout', compact('abonnement'));
+    }
+
+    /**
      * Souscrire à un abonnement
      */
     public function subscribe(Request $request)

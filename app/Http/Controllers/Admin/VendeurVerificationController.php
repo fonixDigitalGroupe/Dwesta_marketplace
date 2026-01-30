@@ -72,6 +72,9 @@ class VendeurVerificationController extends Controller
                 'raison_rejet' => null,
             ]);
 
+            // Attribution du rôle vendeur (avant cahier des charges)
+            $vendeur->user->assignRole('vendeur');
+
             // TODO: Envoyer une notification au vendeur
 
             return redirect()->route('admin.vendeurs.verification.index')

@@ -13,7 +13,7 @@ class AvisPolicy
     public function viewAny(User $user): bool
     {
         // Seuls les admins peuvent voir tous les avis
-        return $user->hasRole('Administrateur');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -23,7 +23,7 @@ class AvisPolicy
     {
         // Tout le monde peut voir les avis approuvés
         // Les admins peuvent voir tous les avis
-        return $avis->estApprouve() || $user->hasRole('Administrateur');
+        return $avis->estApprouve() || $user->hasRole('admin');
     }
 
     /**
@@ -41,7 +41,7 @@ class AvisPolicy
     public function update(User $user, Avis $avis): bool
     {
         // Seuls les admins peuvent modifier les avis (pour modération)
-        return $user->hasRole('Administrateur');
+        return $user->hasRole('admin');
     }
 
     /**
@@ -50,6 +50,6 @@ class AvisPolicy
     public function delete(User $user, Avis $avis): bool
     {
         // L'utilisateur peut supprimer son propre avis, ou les admins peuvent supprimer n'importe quel avis
-        return $user->id === $avis->user_id || $user->hasRole('Administrateur');
+        return $user->id === $avis->user_id || $user->hasRole('admin');
     }
 }

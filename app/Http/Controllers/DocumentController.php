@@ -22,7 +22,7 @@ class DocumentController extends Controller
         }
 
         // Vérifier que l'utilisateur est authentifié et est admin
-        if (!auth()->check() || !auth()->user()->hasRole('Administrateur')) {
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
             abort(403, 'Accès non autorisé.');
         }
 

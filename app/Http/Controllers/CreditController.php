@@ -13,7 +13,7 @@ class CreditController extends Controller
     public function __construct(CreditService $creditService)
     {
         $this->creditService = $creditService;
-        $this->middleware('auth');
+        // Middleware handled in routes/web.php in Laravel 11
     }
 
     /**

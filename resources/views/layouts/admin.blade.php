@@ -23,6 +23,31 @@
             --slate-900: #0f172a;
         }
 
+        /* SweetAlert Custom Styles */
+        .swal2-small-popup {
+            width: 320px !important;
+            padding: 1rem !important;
+        }
+        .swal2-small-icon {
+            transform: scale(0.5);
+            margin-top: 0.5rem !important;
+            margin-bottom: -0.5rem !important;
+        }
+        .swal2-small-title {
+            font-size: 1.1rem !important;
+            padding-top: 0 !important;
+        }
+        .swal2-small-content {
+            font-size: 0.85rem !important;
+        }
+        .swal2-small-actions {
+            gap: 8px !important;
+        }
+        .swal2-small-confirm, .swal2-small-cancel {
+            padding: 8px 16px !important;
+            font-size: 0.8rem !important;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -359,7 +384,29 @@
             }
         }
     </style>
+    <style>
+        /* SweetAlert2 Custom popup */
+        div:where(.swal2-container) div:where(.swal2-popup) {
+            font-size: 0.85rem !important;
+            border-radius: 8px !important;
+            width: 380px !important;
+            padding: 1rem !important; /* Hauteur réduite */
+        }
+        div:where(.swal2-container) div:where(.swal2-icon) {
+            width: 3.5em !important;
+            height: 3.5em !important;
+            margin: 0.5em auto 0.5em auto !important;
+        }
+        div:where(.swal2-container) h2:where(.swal2-title) {
+            padding: 0.2em 0 !important;
+            font-size: 1.1em !important;
+        }
+        div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+            background-color: #333 !important; /* Noir comme demandé */
+        }
+    </style>
     @stack('styles')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="h-full">
@@ -523,15 +570,23 @@
                 </div>
                 <ul class="sidebar-menu">
                     <li><a href="{{ route('admin.categories.l1') }}"
-                            class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Catégories &
+                            class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-sitemap" style="width: 20px;"></i> Catégories &
                             Architecture</a></li>
                     <li><a href="{{ route('admin.users.index') }}"
-                            class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">Gestion des
+                            class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><i class="fas fa-users" style="width: 20px;"></i> Gestion des
                             Utilisateurs</a></li>
-                    <li><a href="{{ route('admin.vendeurs.verification.index') }}"
-                            class="{{ request()->routeIs('admin.vendeurs.verification.*') ? 'active' : '' }}">Validation
-                            Vendeurs</a></li>
-                    <li><a href="#">Rôles & Permissions</a></li>
+                    <li>
+                        <a href="{{ route('admin.vendeurs.verification.index') }}"
+                            class="{{ request()->routeIs('admin.vendeurs.verification.*') ? 'active' : '' }}"
+                            style="display: flex; justify-content: space-between; align-items: center;">
+                            <span><i class="fas fa-check-circle" style="width: 20px;"></i> Validation Vendeurs</span>
+                            @if($pendingVendorsCount > 0)
+                                <span style="background: var(--mady-red); color: white; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 10px; min-width: 18px; text-align: center; margin-right: 10px;">
+                                    {{ $pendingVendorsCount }}
+                                </span>
+                            @endif
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -539,27 +594,101 @@
         </aside>
 
         <main class="viewport">
+            @if(session('success'))
+                <div style="background-color: #dcfce7; border: 1px solid #22c55e; color: #166534; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; display: flex; align-items: center; justify-content: space-between;" role="alert">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        {{ session('success') }}
+                    </div>
+                    <button onclick="this.parentElement.remove()" style="background: none; border: none; cursor: pointer; color: #166534;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div style="background-color: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; position: relative;" role="alert">
+                    <button onclick="this.parentElement.remove()" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; cursor: pointer; color: #991b1b;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div style="font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        Une erreur est survenue :
+                    </div>
+                    <ul style="list-style-type: disc; margin-left: 1.5rem; padding-right: 2rem;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             @yield('content')
         </main>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // User Dropdown
             const trigger = document.getElementById('userMenuTrigger');
             const menu = document.getElementById('userDropdownMenu');
 
             if (trigger && menu) {
-                trigger.addEventListener('click', functio n(e) {
+                trigger.addEventListener('click', function(e) {
                     e.stopPropagation();
                     menu.classList.toggle('show');
                 });
 
-                document.addEventListener('click', functi on(e) {
+                document.addEventListener('click', function(e) {
                     if(!trigger.contains(e.target) && !menu.contains(e.target)) {
-                    menu.classList.remove('show');
-                }
-            });
+                        menu.classList.remove('show');
+                    }
+                });
             }
+
+            // Global Delete Confirmation (SweetAlert2)
+            document.querySelectorAll('.delete-form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    Swal.fire({
+                        title: 'Êtes-vous sûr ?',
+                        text: "Cette action est irréversible.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#333',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Oui, supprimer',
+                        cancelButtonText: 'Annuler',
+                        customClass: {
+                            popup: 'swal2-small-popup',
+                            icon: 'swal2-small-icon',
+                            title: 'swal2-small-title',
+                            htmlContainer: 'swal2-small-content',
+                            actions: 'swal2-small-actions',
+                            confirmButton: 'swal2-small-confirm',
+                            cancelButton: 'swal2-small-cancel'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
         });
     </script>
     @stack('scripts')

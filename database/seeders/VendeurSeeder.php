@@ -28,9 +28,7 @@ class VendeurSeeder extends Seeder
         $admin = User::where('email', 'admin@madymarket.com')->first();
         
         // Récupérer les utilisateurs vendeurs
-        $vendeurUsers = User::whereHas('roles', function ($query) {
-            $query->where('name', 'vendeur');
-        })->get();
+        $vendeurUsers = User::where('email', 'like', 'vendeur%')->orderBy('id')->get();
 
         if ($vendeurUsers->isEmpty()) {
             $this->command->warn('Aucun utilisateur vendeur trouvé. Exécutez d\'abord UserSeeder.');

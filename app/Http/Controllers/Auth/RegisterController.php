@@ -44,8 +44,7 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Assigner le rôle Acheteur par défaut
-        $user->assignRole('Acheteur');
+        $user->assignRole('acheteur');
 
         // TODO: Implémenter vérification email dans Phase 12 (Notifications)
         // event(new Registered($user));

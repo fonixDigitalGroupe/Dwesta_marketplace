@@ -1,143 +1,486 @@
 @extends('layouts.app')
 
-@section('title', $pagePro->vendeur->user->name . ' - Boutique Officielle')
+@section('title', $pagePro->vendeur->identite . ' - Boutique Officielle')
+
+@push('styles')
+<style>
+    /* Global Shop Styles */
+    .shop-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem 3rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* Header / Banner Area */
+    .shop-header {
+        position: relative;
+        margin-bottom: 3rem;
+        background: white;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    .shop-banner {
+        height: 300px;
+        background-color: #eee;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    
+    .shop-banner::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    }
+
+    .shop-info-bar {
+        position: relative;
+        padding: 20px 30px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-top: -80px; /* Overlap banner */
+        z-index: 10;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .shop-identity {
+        display: flex;
+        align-items: flex-end;
+        gap: 20px;
+    }
+
+    .shop-logo {
+        width: 160px;
+        height: 160px;
+        background: white;
+        border-radius: 12px;
+        border: 4px solid white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .shop-logo-placeholder {
+        width: 160px;
+        height: 160px;
+        background: #f5f5f5;
+        border-radius: 12px;
+        border: 4px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        font-weight: bold;
+        color: #ddd;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .shop-text {
+        padding-bottom: 10px;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Shadow for banner overlap */
+    }
+
+    .shop-name {
+        font-size: 2rem;
+        font-weight: 800;
+        margin: 0 0 5px 0;
+        line-height: 1.2;
+    }
+
+    .shop-badges {
+        display: flex;
+        gap: 10px;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .badge-verified {
+        background: #e3f2fd;
+        color: #1565c0;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        text-shadow: none;
+    }
+
+    .badge-pro {
+        background: #f3e5f5;
+        color: #7b1fa2;
+        text-shadow: none;
+    }
+
+    .shop-actions {
+        padding-bottom: 10px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-contact {
+        background: {{ $pagePro->couleur_primaire ?? '#333' }};
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        transition: opacity 0.2s;
+        text-shadow: none;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .btn-contact:hover { opacity: 0.9; }
+
+    /* Fix text color when not overlapping banner for responsiveness if wrapped */
+    @media (max-width: 768px) {
+        .shop-info-bar {
+            margin-top: 0;
+            background: white;
+            padding: 20px;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+        }
+        .shop-identity {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .shop-logo, .shop-logo-placeholder {
+            margin-top: -90px;
+        }
+        .shop-text {
+            color: #333;
+            text-shadow: none;
+            padding-bottom: 0;
+        }
+        .shop-actions {
+            padding-bottom: 0;
+            width: 100%;
+            justify-content: center;
+        }
+        .shop-grid {
+            grid-template-columns: 1fr; /* Stack sidebar and content */
+        }
+    }
+
+    /* Main Content Layout */
+    .shop-grid {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 30px;
+    }
+
+    /* Sidebar Styles */
+    .shop-sidebar {
+        align-self: start;
+    }
+
+    .sidebar-block {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .sidebar-title {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #333;
+        border-bottom: 2px solid {{ $pagePro->couleur_primaire ?? '#f0f0f0' }};
+        padding-bottom: 10px;
+        display: inline-block;
+    }
+
+    .category-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .category-list li a {
+        display: block;
+        padding: 8px 0;
+        color: #666;
+        text-decoration: none;
+        border-bottom: 1px solid #f9f9f9;
+        transition: color 0.2s;
+    }
+
+    .category-list li a:hover, .category-list li a.active {
+        color: {{ $pagePro->couleur_primaire ?? '#bf0000' }};
+        font-weight: 600;
+    }
+
+    .contact-info-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        color: #555;
+        font-size: 0.9rem;
+    }
+
+    .contact-info-item svg { width: 18px; height: 18px; color: #999; }
+    .contact-info-item a { color: inherit; text-decoration: none; }
+    .contact-info-item a:hover { text-decoration: underline; }
+
+    /* Product Grid */
+    .products-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .products-count { font-size: 1.1rem; color: #666; }
+    
+    .sort-select {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px 10px;
+        color: #555;
+        outline: none;
+    }
+
+    .products-grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+    }
+
+    .product-card {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        border-color: #ddd;
+    }
+
+    .product-image-container {
+        height: 200px;
+        background: #f9f9f9;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .product-info {
+        padding: 15px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-title {
+        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 5px;
+        color: #333;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .product-price {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #bf0000;
+        margin-top: auto;
+    }
+
+    /* About Section (Bottom) */
+    .about-section {
+        margin-top: 40px;
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 30px;
+    }
+
+    .reviews-mini {
+        background: #fcfcfc;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+        margin-top: 15px;
+    }
+    .review-item {
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 8px;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 8px;
+    }
+    .star-rating { color: #fbc02d; font-size: 0.9rem; }
+    
+</style>
+@endpush
 
 @section('content')
-<style>
-    .boutique-primary-bg { background-color: {{ $pagePro->couleur_primaire }}; }
-    .boutique-primary-text { color: {{ $pagePro->couleur_primaire }}; }
-    .boutique-border { border-color: {{ $pagePro->couleur_primaire }}; }
-    .hover-boutique-bg:hover { background-color: {{ $pagePro->couleur_primaire }}; color: white; }
-</style>
-
-<!-- Bannière & Header -->
-<div class="relative bg-gray-100">
-    @if($pagePro->banniere)
-        <div class="h-64 md:h-80 w-full bg-cover bg-center" style="background-image: url('{{ Storage::url($pagePro->banniere) }}');">
-            <div class="w-full h-full bg-black bg-opacity-30"></div>
-        </div>
-    @else
-        <div class="h-64 md:h-80 w-full boutique-primary-bg opacity-90"></div>
-    @endif
-
-    <div class="container mx-auto px-4 relative -mt-32 z-10">
-        <div class="bg-white rounded-xl shadow-xl p-6 md:p-8 flex flex-col md:flex-row items-center md:items-start text-center md:text-left">
-            <div class="relative -mt-20 md:-mt-24 mb-4 md:mb-0 md:mr-8 flex-shrink-0">
+<div class="shop-container">
+    
+    <!-- Banner & Header -->
+    <header class="shop-header">
+        <div class="shop-banner" style="{{ $pagePro->banniere ? 'background-image: url('.Storage::url($pagePro->banniere).')' : '' }}"></div>
+        
+        <div class="shop-info-bar">
+            <div class="shop-identity">
                 @if($pagePro->logo)
-                    <img src="{{ Storage::url($pagePro->logo) }}" class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-lg object-cover bg-white">
+                    <img src="{{ Storage::url($pagePro->logo) }}" class="shop-logo" alt="Logo">
                 @else
-                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-lg bg-gray-100 flex items-center justify-center text-4xl font-bold text-gray-400">
+                    <div class="shop-logo-placeholder">
                         {{ substr($pagePro->vendeur->identite, 0, 1) }}
                     </div>
                 @endif
-            </div>
-            
-            <div class="flex-1 w-full">
-                <div class="flex flex-col md:flex-row justify-between items-center mb-4">
-                    <h1 class="text-3xl font-bold text-gray-900">{{ $pagePro->vendeur->identite }}</h1>
-                    <div class="flex items-center space-x-2 mt-2 md:mt-0">
-                        @if($pagePro->vendeur->estVendeurVerifie())
-                            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded flex items-center">
-                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                                Vendeur Vérifié
+
+                <div class="shop-text">
+                    <h1 class="shop-name">{{ $pagePro->vendeur->identite }}</h1>
+                    <div class="shop-badges">
+                        @if($pagePro->vendeur->estVerifie())
+                            <span class="badge badge-verified">
+                                <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                Vérifié
                             </span>
                         @endif
                         @if($pagePro->vendeur->estProfessionnel())
-                            <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">PRO</span>
+                            <span class="badge badge-pro">PRO</span>
                         @endif
                     </div>
                 </div>
+            </div>
 
-                <p class="text-gray-600 mb-6 text-sm md:text-base leading-relaxed max-w-2xl">
-                    {{ $pagePro->description ?? "Bienvenue sur notre boutique officielle. Découvrez nos produits !" }}
-                </p>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm border-t pt-4">
-                    @if($pagePro->telephone_contact)
-                    <div class="flex items-center justify-center md:justify-start text-gray-600">
-                        <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                        {{ $pagePro->telephone_contact }}
-                    </div>
-                    @endif
-                    @if($pagePro->email_contact)
-                    <div class="flex items-center justify-center md:justify-start text-gray-600">
-                        <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        {{ $pagePro->email_contact }}
-                    </div>
-                    @endif
-                    @if($pagePro->site_web)
-                    <div class="flex items-center justify-center md:justify-start">
-                        <svg class="w-5 h-5 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
-                        <a href="{{ $pagePro->site_web }}" target="_blank" class="boutique-primary-text hover:underline truncate">Site Web</a>
-                    </div>
-                    @endif
-                </div>
-
-                <div class="mt-6 flex space-x-3">
-                    <a href="{{ route('conversations.create', ['recipient_id' => $pagePro->vendeur->user->id]) }}" class="flex-1 md:flex-none boutique-primary-bg text-white font-bold py-2 px-6 rounded-lg shadow hover:opacity-90 flex items-center justify-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                        Contacter
-                    </a>
-                    @if(Auth::check() && Auth::id() !== $pagePro->vendeur->user->id)
-                        <button class="flex-1 md:flex-none bg-white border boutique-border boutique-primary-text font-bold py-2 px-6 rounded-lg hover:bg-gray-50 flex items-center justify-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                            S'abonner
-                        </button>
-                    @endif
-                </div>
+            <div class="shop-actions">
+                <a href="{{ route('conversations.create', ['recipient_id' => $pagePro->vendeur->user->id]) }}" class="btn-contact">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    Contacter le vendeur
+                </a>
             </div>
         </div>
-    </div>
-</div>
+    </header>
 
-<!-- Contenu Principal -->
-<div class="container mx-auto px-4 py-8">
-    <div class="flex flex-col lg:flex-row gap-8">
+    <!-- Main Content Layout -->
+    <div class="shop-grid">
         
-        <!-- Sidebar Filtres (Desktop) -->
-        <div class="hidden lg:block w-1/4">
-            <div class="bg-white rounded-lg shadow p-6 sticky top-24">
-                <h3 class="font-bold text-lg mb-4">Catégories</h3>
-                <ul class="space-y-2">
-                    <li><a href="?category=" class="block text-gray-700 hover:boutique-primary-text font-medium {{ !request('category') ? 'boutique-primary-text' : '' }}">Toutes les catégories</a></li>
-                    <!-- Les catégories seraient dynamiques ici basées sur les produits du vendeur -->
+        <!-- Sidebar -->
+        <aside class="shop-sidebar">
+            <!-- Contact Info Block -->
+            <div class="sidebar-block">
+                <h3 class="sidebar-title">Contact</h3>
+                @if($pagePro->telephone_contact)
+                    <div class="contact-info-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                        <span>{{ $pagePro->telephone_contact }}</span>
+                    </div>
+                @endif
+                @if($pagePro->email_contact)
+                    <div class="contact-info-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <span class="text-truncate">{{ $pagePro->email_contact }}</span>
+                    </div>
+                @endif
+                @if($pagePro->site_web)
+                    <div class="contact-info-item">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+                        <a href="{{ $pagePro->site_web }}" target="_blank">Visiter le site web</a>
+                    </div>
+                @endif
+            </div>
+
+            <!-- Categories Block -->
+            <div class="sidebar-block">
+                <h3 class="sidebar-title">Catégories</h3>
+                <ul class="category-list">
+                    <li><a href="?category=" class="{{ !request('category') ? 'active' : '' }}">Toutes les catégories</a></li>
                     @foreach($annonces->pluck('categorie')->unique('id') as $cat)
                         @if($cat)
-                        <li><a href="?category={{ $cat->id }}" class="block text-gray-600 hover:boutique-primary-text text-sm ml-2">{{ $cat->nom }}</a></li>
+                            <li><a href="?category={{ $cat->id }}" class="{{ request('category') == $cat->id ? 'active' : '' }}">{{ $cat->nom }}</a></li>
                         @endif
                     @endforeach
                 </ul>
+            </div>
 
-                <hr class="my-6">
-                
-                <h3 class="font-bold text-lg mb-4">Avis Clients</h3>
-                <div class="flex items-center mb-2">
-                    <span class="text-3xl font-bold text-gray-900 mr-2">4.8</span>
-                    <div class="flex text-yellow-400">★★★★★</div>
+            <!-- Reviews Summary Block -->
+            @if($avis->count() > 0)
+            <div class="sidebar-block">
+                <h3 class="sidebar-title">Avis Clients</h3>
+                <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px;">
+                    <span style="font-size: 2rem; font-weight: 800; color: #333;">4.8</span>
+                    <span class="star-rating">★★★★★</span>
                 </div>
-                <p class="text-sm text-gray-500 mb-4">{{ $avis->count() }} avis vérifiés</p>
+                <div style="font-size: 0.9rem; color: #666;">{{ $avis->count() }} avis vérifiés</div>
                 
-                <div class="space-y-4">
+                <div class="reviews-mini">
                     @foreach($avis->take(3) as $a)
-                        <div class="bg-gray-50 p-3 rounded text-sm">
-                            <div class="flex items-center justify-between mb-1">
-                                <span class="font-bold">{{ $a->user->name }}</span>
-                                <span class="text-yellow-400 text-xs">{{ str_repeat('★', $a->note) }}</span>
+                        <div class="review-item">
+                            <div style="display: flex; justify-content: space-between;">
+                                <strong>{{ $a->user->prenom }}</strong>
+                                <span class="star-rating" style="font-size: 0.7rem;">{{ str_repeat('★', $a->note) }}</span>
                             </div>
-                            <p class="text-gray-600 italic">"{{ Str::limit($a->commentaire, 60) }}"</p>
+                            <div style="font-style: italic; margin-top: 2px;">"{{ Str::limit($a->commentaire, 50) }}"</div>
                         </div>
                     @endforeach
                 </div>
             </div>
-        </div>
+            @endif
+        </aside>
 
-        <!-- Grille Produits -->
-        <div class="flex-1">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-gray-800">Catalogue Produits</h2>
-                <div class="flex items-center">
-                    <span class="mr-2 text-gray-600">Trier par:</span>
-                    <select onchange="window.location.href=this.value" class="border-gray-300 rounded-md shadow-sm text-sm focus:border-blue-500 focus:ring-blue-500">
+        <!-- Product Grid Area -->
+        <main>
+            <!-- About Description (Mobile only or Top) -->
+            @if($pagePro->description)
+                <div class="about-section" style="margin-top: 0; margin-bottom: 30px;">
+                    <h3 style="font-weight: 700; margin-bottom: 10px; font-size: 1.1rem;">À propos</h3>
+                    <p style="color: #555; line-height: 1.6;">{{ $pagePro->description }}</p>
+                </div>
+            @endif
+
+            <div class="products-header">
+                <div class="products-count">
+                    <strong>{{ $annonces->total() }}</strong> produits disponibles
+                </div>
+                <div>
+                    <select onchange="window.location.href=this.value" class="sort-select">
                         <option value="?sort=latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Nouveautés</option>
                         <option value="?sort=price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Prix croissant</option>
                         <option value="?sort=price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Prix décroissant</option>
@@ -146,42 +489,36 @@
             </div>
 
             @if($annonces->count() > 0)
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="products-grid-container">
                     @foreach($annonces as $annonce)
-                        <a href="{{ route('annonces.show', $annonce->slug) }}" class="bg-white rounded-lg shadow hover:shadow-lg transition group">
-                            <div class="aspect-w-1 aspect-h-1 w-full bg-gray-200 rounded-t-lg overflow-hidden relative">
+                        <a href="{{ route('annonces.show', $annonce->slug) }}" class="product-card">
+                            <div class="product-image-container">
                                 @if($annonce->photoPrincipale())
-                                    <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
+                                    <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" class="product-image" alt="{{ $annonce->titre }}">
                                 @else
-                                    <div class="w-full h-48 bg-gray-100 flex items-center justify-center text-gray-400">Sans image</div>
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #aaa;">
+                                        Sans image
+                                    </div>
                                 @endif
-                                
-                                <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition">
-                                    <button class="bg-white p-1.5 rounded-full shadow text-gray-600 hover:text-red-500">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                                    </button>
-                                </div>
                             </div>
-                            <div class="p-4">
-                                <h3 class="font-medium text-gray-900 group-hover:text-blue-600 truncate">{{ $annonce->titre }}</h3>
-                                <div class="flex items-end justify-between mt-2">
-                                    <span class="text-lg font-bold boutique-primary-text">{{ number_format($annonce->prix, 0, ',', ' ') }} CFA</span>
-                                </div>
+                            <div class="product-info">
+                                <h3 class="product-title">{{ $annonce->titre }}</h3>
+                                <div class="product-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</div>
                             </div>
                         </a>
                     @endforeach
                 </div>
-                <div class="mt-8">
+                <div style="margin-top: 40px;">
                     {{ $annonces->links() }}
                 </div>
             @else
-                <div class="text-center py-12 bg-white rounded-lg shadow">
-                    <svg class="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
-                    <h3 class="text-lg font-medium text-gray-900">Aucun produit trouvé</h3>
-                    <p class="text-gray-500 mt-1">Les produits de cette boutique apparaîtront ici.</p>
+                <div style="text-align: center; padding: 60px; background: white; border: 1px solid #eee; border-radius: 8px;">
+                    <svg style="width: 64px; height: 64px; margin: 0 auto 20px; color: #ddd;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+                    <h3 style="font-weight: 600; font-size: 1.2rem; color: #333;">Aucun produit trouvé</h3>
+                    <p style="color: #777;">Cette boutique n'a pas encore mis de produits en ligne dans cette catégorie.</p>
                 </div>
             @endif
-        </div>
+        </main>
     </div>
 </div>
 @endsection

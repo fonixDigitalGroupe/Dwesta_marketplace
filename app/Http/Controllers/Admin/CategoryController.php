@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -60,13 +61,24 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nom' => ['required', 'string', 'max:255'],
+            'nom' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('categories')->where(function ($query) use ($request) {
+                    return $query->where('parent_id', $request->parent_id);
+                }),
+            ],
             'parent_id' => ['nullable', 'exists:categories,id'],
             'description' => ['nullable', 'string', 'max:1000'],
             'icone' => ['nullable', 'string'],
             'ordre' => ['nullable', 'integer', 'min:0'],
             'actif' => ['nullable', 'boolean'],
             'famille' => ['nullable', 'string', 'in:' . implode(',', Category::getFamilles())],
+        ], [
+            'nom.required' => 'Le nom est obligatoire.',
+            'nom.unique' => 'Une catégorie avec ce nom existe déjà à ce niveau (même parent).',
+            'parent_id.exists' => 'Le parent sélectionné est invalide.',
         ]);
 
         // Validation conditionnelle : Famille requise si racine
@@ -143,7 +155,14 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'nom' => ['required', 'string', 'max:255'],
+            'nom' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('categories')->ignore($category->id)->where(function ($query) use ($request) {
+                    return $query->where('parent_id', $request->parent_id);
+                }),
+            ],
             'parent_id' => [
                 'nullable',
                 'exists:categories,id',
@@ -168,6 +187,10 @@ class CategoryController extends Controller
             'ordre' => ['nullable', 'integer', 'min:0'],
             'actif' => ['nullable', 'boolean'],
             'famille' => ['nullable', 'string', 'in:' . implode(',', Category::getFamilles())],
+        ], [
+            'nom.required' => 'Le nom est obligatoire.',
+            'nom.unique' => 'Une catégorie avec ce nom existe déjà à ce niveau (même parent).',
+            'parent_id.exists' => 'Le parent sélectionné est invalide.',
         ]);
 
         // Validation conditionnelle : Famille requise si racine
@@ -215,21 +238,24 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        // 1. Récupérer tous les IDs concernés (la catégorie et tous ses descendants)
-        $allCategoryIds = $this->getDescendantIds($category);
-        $allCategoryIds[] = $category->id;
-
-        // 2. Vérifier si des annonces sont liées à l'une de ces catégories
-        $count = \App\Models\Annonce::whereIn('categorie_id', $allCategoryIds)->count();
-
-        if ($count > 0) {
+        // 1. Vérifier si la catégorie a des sous-catégories (enfants)
+        if ($category->enfants()->count() > 0) {
             return redirect()->back()->withErrors([
-                'error' => "Impossible de supprimer cette catégorie car elle (ou ses sous-catégories) contient $count annonce(s). Veuillez d'abord supprimer ou déplacer ces annonces."
+                'error' => "Impossible de supprimer cette catégorie car elle contient des sous-catégories. Veuillez d'abord supprimer les sous-catégories."
             ]);
         }
 
-        // 3. Supprimer récursivement tous les enfants
-        $this->deleteRecursively($category);
+        // 2. Vérifier si des annonces sont liées à cette catégorie spécifique
+        $count = $category->annonces()->count();
+
+        if ($count > 0) {
+            return redirect()->back()->withErrors([
+                'error' => "Impossible de supprimer cette catégorie car elle contient $count annonce(s). Veuillez d'abord supprimer ou déplacer ces annonces."
+            ]);
+        }
+
+        // 3. Supprimer la catégorie
+        $category->delete();
 
         return redirect()->back()
             ->with('success', 'Catégorie supprimée avec succès.');

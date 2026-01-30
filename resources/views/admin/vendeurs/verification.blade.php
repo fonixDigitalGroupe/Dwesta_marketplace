@@ -34,8 +34,8 @@
                     @foreach($vendeursEnAttente as $vendeur)
                     <tr style="border-bottom: 1px solid var(--slate-100); transition: background 0.2s;" onmouseover="this.style.background='var(--slate-50)'" onmouseout="this.style.background='transparent'">
                         <td style="padding: 1.25rem 2rem;">
-                            <div style="font-weight: 700; color: var(--slate-900); font-size: 0.9375rem;">{{ $vendeur->user->prenom }} {{ $vendeur->user->nom ?? '' }}</div>
-                            <div style="font-size: 0.75rem; color: var(--slate-400); font-weight: 500;">{{ $vendeur->user->email }}</div>
+                            <div style="font-weight: 700; color: var(--slate-900); font-size: 0.9375rem;">{{ $vendeur->user->prenom ?? 'Utilisateur' }} {{ $vendeur->user->nom ?? 'Inconnu' }}</div>
+                            <div style="font-size: 0.75rem; color: var(--slate-400); font-weight: 500;">{{ $vendeur->user->email ?? 'Email non disponible' }}</div>
                             @if($vendeur->estProfessionnel() && $vendeur->professionnel)
                                 <div style="font-size: 0.75rem; color: var(--mady-red); font-weight: 700; margin-top: 4px;">🏢 {{ $vendeur->professionnel->nom_entreprise }}</div>
                             @endif

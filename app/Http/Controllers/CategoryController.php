@@ -21,11 +21,27 @@ class CategoryController extends Controller
         // Charger les annonces de cette catégorie et de ses enfants
         $categoryIds = $category->getAllDescendantIds();
         
-        $annonces = Annonce::publiees()
+        $query = Annonce::publiees()
             ->whereIn('categorie_id', $categoryIds)
-            ->with(['photos', 'category', 'vendeur.user', 'options'])
-            ->latest('publiee_le')
-            ->paginate(24);
+            ->with(['photos', 'category', 'vendeur.user', 'options']);
+
+        // Tri
+        $sort = request('sort', 'relevance');
+        switch ($sort) {
+            case 'price_asc':
+                $query->orderBy('prix', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('prix', 'desc');
+                break;
+            default:
+                // Priorité aux annonces "À la une" puis par date
+                $query->orderByRaw("CASE WHEN EXISTS (SELECT 1 FROM annonce_options WHERE annonce_id = annonces.id AND a_la_une = 1) THEN 0 ELSE 1 END")
+                      ->latest('publiee_le');
+                break;
+        }
+
+        $annonces = $query->paginate(24)->withQueryString();
 
         return view('categories.show', compact('category', 'annonces'));
     }

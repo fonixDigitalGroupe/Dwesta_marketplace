@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -30,6 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'credit_balance',
         'adresse',
+        'code_postal',
         'password',
         'is_active',
         'avatar',
@@ -146,5 +148,22 @@ class User extends Authenticatable implements MustVerifyEmail
     public function favorites()
     {
         return $this->belongsToMany(Annonce::class, 'favorites', 'user_id', 'annonce_id')->withTimestamps();
+    }
+
+    /**
+     * Solde disponible (déjà libéré)
+     */
+    public function getAvailableBalanceAttribute(): int
+    {
+        return $this->credit_balance;
+    }
+
+    /**
+     * Solde en attente (séquestré)
+     * Somme des transactions 'pending' liées à cet utilisateur
+     */
+    public function getPendingBalanceAttribute(): int
+    {
+        return $this->hasMany(Transaction::class)->where('wallet_status', Transaction::STATUS_PENDING)->sum('montant');
     }
 }

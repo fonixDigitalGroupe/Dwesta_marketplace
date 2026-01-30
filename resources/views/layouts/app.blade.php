@@ -455,6 +455,7 @@
             font-size: 0.85rem;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('styles')
 </head>
 
@@ -463,12 +464,6 @@
 
     @include('layouts.partials.header')
 
-    @if(session('success'))
-        <div
-            style="max-width: 1200px; margin: 1rem auto; background: #d4edda; color: #155724; padding: 1rem; border-radius: 4px;">
-            {{ session('success') }}
-        </div>
-    @endif
 
     @yield('content')
 
@@ -537,6 +532,33 @@
             if (!document.querySelector('.search-container').contains(e.target)) {
                 resultsContainer.style.display = 'none';
             }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+                @if(session('success') === 'ok')
+                    alert('ok');
+                @else
+                    Swal.fire({
+                        title: 'Succès !',
+                        text: "{{ session('success') }}",
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#bf0000'
+                    });
+                @endif
+            @endif
+
+            @if(session('error'))
+                Swal.fire({
+                    title: 'Erreur',
+                    text: "{{ session('error') }}",
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#bf0000'
+                });
+            @endif
         });
     </script>
     @stack('scripts')

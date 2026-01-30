@@ -195,6 +195,33 @@ class VendeurController extends Controller
     }
 
     /**
+     * Affiche la page "Mes annonces" avec toutes les annonces du vendeur
+     */
+    public function mesAnnonces()
+    {
+        $user = Auth::user();
+
+        if (!$user->estVendeur()) {
+            return redirect()->route('vendeur.create')->with('info', 'Vous devez créer un compte vendeur pour accéder à cette page.');
+        }
+
+        $vendeur = $user->vendeur;
+        $vendeur->load(['abonnementActif.abonnement', 'pagePro']);
+
+        // Récupérer toutes les annonces du vendeur
+        $annonces = $vendeur->annonces()
+            ->with(['category', 'photos', 'options'])
+            ->latest()
+            ->paginate(20);
+
+        // Vérifier si le vendeur a un abonnement payant pour afficher le lien boutique
+        $subscriptionService = app(\App\Services\SubscriptionService::class);
+        $hasPaidSubscription = $subscriptionService->hasPaidSubscription($vendeur);
+
+        return view('vendeur.mes-annonces', compact('vendeur', 'annonces', 'hasPaidSubscription'));
+    }
+
+    /**
      * Met à jour les documents d'un vendeur particulier
      */
     public function updateDocumentParticulier(Request $request, Vendeur $vendeur)

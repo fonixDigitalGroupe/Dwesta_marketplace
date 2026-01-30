@@ -18,13 +18,13 @@
                 Liste des Utilisateurs
             </h1>
             <div style="display: flex; gap: 10px;">
-                <a href="#" style="display: flex; align-items: center; gap: 6px; padding: 0.5rem 1rem; background-color: #fff; border: 1px solid #dc2626; color: #dc2626; border-radius: 4px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.2s;">
+                <a href="#" style="display: flex; align-items: center; gap: 6px; padding: 0.5rem 1rem; background-color: #fff; border: 1px solid #333; color: #333; border-radius: 4px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='#fff'">
                     <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                     Télécharger PDF
                 </a>
-                <a href="#" style="display: flex; align-items: center; gap: 6px; padding: 0.5rem 1rem; background-color: #fff; border: 1px solid #16a34a; color: #16a34a; border-radius: 4px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.2s;">
+                <a href="#" style="display: flex; align-items: center; gap: 6px; padding: 0.5rem 1rem; background-color: #fff; border: 1px solid #333; color: #333; border-radius: 4px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='#fff'">
                     <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                     </svg>
@@ -56,17 +56,16 @@
         <form action="{{ route('admin.users.index') }}" method="GET" style="background: #fff; padding: 1rem; border: 1px solid #e5e5e5; margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: flex-end; border-radius: 2px;">
             <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
                 <label for="role" style="font-size: 0.85rem; font-weight: 600; color: #333;">Rôle</label>
-                <select name="role" id="role" style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem;">
-                    <option value="">Tous les rôles</option>
-                    <option value="Administrateur" {{ request('role') == 'Administrateur' ? 'selected' : '' }}>Administrateur</option>
-                    <option value="Vendeur" {{ request('role') == 'Vendeur' ? 'selected' : '' }}>Vendeur</option>
-                    <option value="Utilisateur" {{ request('role') == 'Utilisateur' ? 'selected' : '' }}>Utilisateur</option>
+                <select name="role" id="role" onchange="this.form.submit()" style="padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; background-color: #f8fafc; border-radius: 6px; font-size: 0.85rem; color: #334155; font-weight: 500; cursor: pointer; transition: all 0.2s; outline: none;" onfocus="this.style.borderColor='#333'; this.style.backgroundColor='#fff'" onblur="this.style.borderColor='#e2e8f0'; this.style.backgroundColor='#f8fafc'">
+                    <option value="admin" {{ $role == 'admin' ? 'selected' : '' }}>Administrateur</option>
+                    <option value="vendeur" {{ $role == 'vendeur' ? 'selected' : '' }}>Vendeur</option>
+                    <option value="acheteur" {{ $role == 'acheteur' ? 'selected' : '' }}>Utilisateur</option>
                 </select>
             </div>
 
             <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
                 <label for="nationalite" style="font-size: 0.85rem; font-weight: 600; color: #333;">Nationalité</label>
-                <select name="nationalite" id="nationalite" style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem;">
+                <select name="nationalite" id="nationalite" onchange="this.form.submit()" style="padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; background-color: #f8fafc; border-radius: 6px; font-size: 0.85rem; color: #334155; font-weight: 500; cursor: pointer; transition: all 0.2s; outline: none;" onfocus="this.style.borderColor='#333'; this.style.backgroundColor='#fff'" onblur="this.style.borderColor='#e2e8f0'; this.style.backgroundColor='#f8fafc'">
                     <option value="">Toutes les nationalités</option>
                     @foreach($nationalites as $nat)
                         <option value="{{ $nat }}" {{ request('nationalite') == $nat ? 'selected' : '' }}>{{ $nat }}</option>
@@ -76,7 +75,7 @@
 
             <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
                 <label for="civilite" style="font-size: 0.85rem; font-weight: 600; color: #333;">Civilité</label>
-                <select name="civilite" id="civilite" style="padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem;">
+                <select name="civilite" id="civilite" onchange="this.form.submit()" style="padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; background-color: #f8fafc; border-radius: 6px; font-size: 0.85rem; color: #334155; font-weight: 500; cursor: pointer; transition: all 0.2s; outline: none;" onfocus="this.style.borderColor='#333'; this.style.backgroundColor='#fff'" onblur="this.style.borderColor='#e2e8f0'; this.style.backgroundColor='#f8fafc'">
                     <option value="">Toutes</option>
                     @foreach($civilites as $civ)
                         <option value="{{ $civ }}" {{ request('civilite') == $civ ? 'selected' : '' }}>{{ $civ }}</option>
@@ -84,12 +83,10 @@
                 </select>
             </div>
 
-            <button type="submit" style="background: #333; color: #fff; padding: 0.6rem 1.2rem; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; height: 38px;">
-                Filtrer
-            </button>
-            
-            @if(request()->has('role') || request()->has('nationalite'))
-                <a href="{{ route('admin.users.index') }}" style="color: #666; text-decoration: none; font-size: 0.85rem; background: #fff; border: 1px solid #ccc; padding: 0.6rem 1rem; border-radius: 4px; transition: all 0.2s; display: inline-flex; height: 38px; align-items: center; justify-content: center;">Réinitialiser</a>
+            @if(request()->anyFilled(['role', 'nationalite', 'civilite']))
+                <a href="{{ route('admin.users.index') }}" style="color: #64748b; text-decoration: none; font-size: 0.8rem; padding: 0.5rem 0.5rem; transition: all 0.2s; display: inline-flex; height: 38px; align-items: center; justify-content: center; font-weight: 500;" onmouseover="this.style.color='#1e293b'; this.style.textDecoration='underline'" onmouseout="this.style.color='#64748b'; this.style.textDecoration='none'">
+                    Effacer les filtres
+                </a>
             @endif
         </form>
 
@@ -98,13 +95,13 @@
 
             <!-- Table Header -->
             <div style="padding: 0.875rem 1.25rem; border-bottom: 1px solid #e5e5e5;">
-                <span style="font-size: 0.8rem; color: #666;">{{ $users->count() }} utilisateur(s)</span>
+                <span style="font-size: 0.8rem; color: #666;">{{ $users->total() }} utilisateur(s)</span>
             </div>
 
             <!-- Table -->
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
-                    <tr style="background-color: #f8fafc; text-align: left;">
+                    <tr style="text-align: left;">
                         <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Infos</th>
                         <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Téléphone</th>
                         <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Email</th>
@@ -135,7 +132,7 @@
                                 {{ $user->email }}
                             </td>
                             <td style="padding: 0.875rem 1.25rem; font-size: 0.85rem; color: #666;">
-                                @if($user->hasRole('Administrateur')) 
+                                @if($user->hasRole('admin')) 
                                     <span style="background-color: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 9999px; font-size: 0.7rem; font-weight: 600;">Admin</span>
                                 @elseif($user->estVendeur())
                                     <span style="background-color: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 9999px; font-size: 0.7rem; font-weight: 600;">Vendeur</span>
@@ -148,7 +145,7 @@
                                 
                                 <form action="{{ route('admin.users.suspend', $user) }}" method="POST" style="display:inline;">
                                     @csrf @method('PATCH')
-                                    <button type="submit" style="color: {{ $user->is_active ? '#d97706' : '#16a34a' }}; font-size: 0.75rem; background: none; border: none; cursor: pointer; padding: 4px 8px; border: 1px solid {{ $user->is_active ? '#d97706' : '#16a34a' }}; border-radius: 4px;">
+                                    <button type="submit" style="color: #333; font-size: 0.75rem; background: none; border: none; cursor: pointer; padding: 4px 8px; border: 1px solid #333; border-radius: 4px; font-weight: 500;">
                                         {{ $user->is_active ? 'Suspendre' : 'Activer' }}
                                     </button>
                                 </form>
