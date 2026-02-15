@@ -67,12 +67,26 @@
                         <input type="checkbox" name="etat[]" value="Neuf" @if(is_array(request('etat')) && in_array('Neuf', request('etat'))) checked @endif onchange="this.form.submit()">
                         <span class="box"></span> 
                         <span class="label-text">Neuf</span>
-                        <span class="count">+ 1 000</span>
                     </label>
                     <label class="rakuten-checkbox">
                         <input type="checkbox" name="etat[]" value="Occasion" @if(is_array(request('etat')) && in_array('Occasion', request('etat'))) checked @endif onchange="this.form.submit()">
                         <span class="box"></span> 
                         <span class="label-text">Occasion</span>
+                    </label>
+                    <label class="rakuten-checkbox">
+                        <input type="checkbox" name="etat[]" value="Reconditionné" @if(is_array(request('etat')) && in_array('Reconditionné', request('etat'))) checked @endif onchange="this.form.submit()">
+                        <span class="box"></span> 
+                        <span class="label-text">Reconditionné</span>
+                    </label>
+                    <label class="rakuten-checkbox">
+                        <input type="checkbox" name="etat[]" value="Bon état" @if(is_array(request('etat')) && in_array('Bon état', request('etat'))) checked @endif onchange="this.form.submit()">
+                        <span class="box"></span> 
+                        <span class="label-text">Bon état</span>
+                    </label>
+                    <label class="rakuten-checkbox">
+                        <input type="checkbox" name="etat[]" value="Très bon état" @if(is_array(request('etat')) && in_array('Très bon état', request('etat'))) checked @endif onchange="this.form.submit()">
+                        <span class="box"></span> 
+                        <span class="label-text">Très bon état</span>
                     </label>
                 </div>
                 <div class="divider-thin"></div>
@@ -83,12 +97,10 @@
                 <div class="rakuten-price-inputs">
                     <div class="price-box">
                         <input type="number" name="min_prix" placeholder="Min" value="{{ request('min_prix') }}">
-                        <span class="currency">€</span>
                     </div>
                     <span class="hyphen">-</span>
                     <div class="price-box">
                         <input type="number" name="max_prix" placeholder="Max" value="{{ request('max_prix') }}">
-                        <span class="currency">€</span>
                     </div>
                     <button type="submit" class="p-ok-btn">Ok</button>
                 </div>
@@ -123,6 +135,21 @@
                     <span class="box"></span> 
                     <span class="label-text">Livraison gratuite</span>
                 </label>
+                <label class="rakuten-checkbox">
+                    <input type="checkbox" name="livraison_express" value="1" @if(request('livraison_express')) checked @endif onchange="this.form.submit()">
+                    <span class="box"></span> 
+                    <span class="label-text">Livraison express</span>
+                </label>
+                <label class="rakuten-checkbox">
+                    <input type="checkbox" name="livraison_standard" value="1" @if(request('livraison_standard')) checked @endif onchange="this.form.submit()">
+                    <span class="box"></span> 
+                    <span class="label-text">Livraison standard</span>
+                </label>
+                <label class="rakuten-checkbox">
+                    <input type="checkbox" name="retrait_magasin" value="1" @if(request('retrait_magasin')) checked @endif onchange="this.form.submit()">
+                    <span class="box"></span> 
+                    <span class="label-text">Retrait en magasin</span>
+                </label>
             </div>
         </form>
     </div>
@@ -142,10 +169,6 @@
     .sidebar-section {
         border-bottom: 1px solid #f0f0f0;
         padding-bottom: 0.5rem;
-    }
-
-    .sidebar-section:last-of-type {
-        border-bottom: none;
     }
 
     .sidebar-header {

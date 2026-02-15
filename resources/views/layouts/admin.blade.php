@@ -196,7 +196,7 @@
         }
 
         .sidebar-user {
-            padding: 1.25rem 1rem;
+            padding: 0.75rem 1rem;
             border-bottom: 1px solid #e5e5e5;
         }
 

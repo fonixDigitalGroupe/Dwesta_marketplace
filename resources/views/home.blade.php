@@ -99,34 +99,11 @@
                     Nos offres imbattables</h2>
             </div>
             <div class="promo-carousel-wrapper">
-                <button class="carousel-arrow carousel-arrow-left" onclick="scrollPromoCarousel(-1)">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                    </svg>
-                </button>
                 <div class="promo-carousel" id="promoCarousel">
-                    @foreach($offresImbattables as $annonce)
-                        <x-promo-card :annonce="$annonce" />
-                    @endforeach
+                    {{-- Vidé par l'utilisateur --}}
                 </div>
-                <button class="carousel-arrow carousel-arrow-right" onclick="scrollPromoCarousel(1)">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                    </svg>
-                </button>
             </div>
         </div>
-
-        <script>
-            function scrollPromoCarousel(direction) {
-                const carousel = document.getElementById('promoCarousel');
-                const scrollAmount = carousel.offsetWidth * 0.8;
-                carousel.scrollBy({
-                    left: direction * scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
-        </script>
 
         <!-- Top des produits les plus consultés -->
         <div style="margin-bottom: 5rem;">
@@ -135,9 +112,7 @@
                     Top des produits les plus consultés</h2>
             </div>
             <div class="home-grid">
-                @foreach($topConsultes as $annonce)
-                    <x-product-item :annonce="$annonce" />
-                @endforeach
+                {{-- Vidé par l'utilisateur --}}
             </div>
         </div>
 
@@ -148,9 +123,7 @@
                     Nos top produits du moment</h2>
             </div>
             <div class="home-grid">
-                @foreach($topProduits as $annonce)
-                    <x-product-item :annonce="$annonce" />
-                @endforeach
+                {{-- Vidé par l'utilisateur --}}
             </div>
         </div>
 
@@ -161,9 +134,7 @@
                     Dernières opportunités</h2>
             </div>
             <div class="home-grid">
-                @foreach($dernieresOpportunites as $annonce)
-                    <x-product-item :annonce="$annonce" />
-                @endforeach
+                {{-- Vidé par l'utilisateur --}}
             </div>
         </div>
     </div>

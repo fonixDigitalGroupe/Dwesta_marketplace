@@ -14,12 +14,14 @@ class Abonnement extends Model
         'commission',
         'prix_mensuel',
         'page_pro',
+        'page_pro_personnalisable',
         'actif',
         'ordre',
     ];
 
     protected $casts = [
         'page_pro' => 'boolean',
+        'page_pro_personnalisable' => 'boolean',
         'actif' => 'boolean',
     ];
 

@@ -63,16 +63,7 @@
             </div>
 
 
-            <div class="results-toolbar">
-                <div></div> {{-- Spacer to keep sort to the right --}}
-                <div class="sort-options">
-                    <select onchange="window.location.href = this.value">
-                        <option value="{{ request()->fullUrlWithQuery(['sort' => 'relevance']) }}" @if(request('sort') == 'relevance') selected @endif>Le plus pertinent</option>
-                        <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}" @if(request('sort') == 'price_asc') selected @endif>Prix croissant</option>
-                        <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}" @if(request('sort') == 'price_desc') selected @endif>Prix décroissant</option>
-                    </select>
-                </div>
-            </div>
+
 
             <div class="catalog-grid">
                 @forelse($annonces as $annonce)
@@ -86,26 +77,14 @@
                                 @endif
                             </div>
                             <div class="item-content">
-                                <div class="item-sponsor">Sponsorisée</div>
                                 <h3 class="item-title">{{ $annonce->titre }}</h3>
                                 <div class="item-brand">- {{ $category->nom }}</div>
-                                <div class="item-rating">
-                                    <div class="stars">
-                                        <svg width="14" height="14" fill="#ffc107" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                        <svg width="14" height="14" fill="#ffc107" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                        <svg width="14" height="14" fill="#ffc107" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                        <svg width="14" height="14" fill="#ffc107" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                        <svg width="14" height="14" fill="#ffc107" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                    </div>
-                                    <span class="rating-count">560 avis</span>
-                                </div>
                                 <div class="item-pricing">
                                     <span class="price-main">{{ number_format($annonce->prix, 2, ',', ' ') }} €</span>
                                     <span class="condition">. Neuf</span>
                                 </div>
                                 <div class="item-seller">
                                     Par <span class="seller-name">{{ $annonce->vendeur->user->prenom }} {{ $annonce->vendeur->user->nom }}</span>
-                                    <span class="badge-pro">PRO</span>
                                 </div>
                                 <div class="item-button">
                                     <span>Voir le produit</span>
@@ -113,12 +92,6 @@
                                 </div>
                             </div>
                         </a>
-                        <div class="item-footer">
-                            <a href="#" class="sell-link">
-                                Vendez le vôtre
-                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8m4-4H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </a>
-                        </div>
                     </div>
                 @empty
                     <div class="empty-state">
@@ -386,7 +359,7 @@
 
     .condition {
         font-size: 0.8rem;
-        color: #e60000;
+        color: #333;
         font-weight: 500;
     }
 

@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserRegistered;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -46,12 +49,12 @@ class RegisterController extends Controller
 
         $user->assignRole('acheteur');
 
-        // TODO: Implémenter vérification email dans Phase 12 (Notifications)
-        // event(new Registered($user));
+        // Déclencher l'événement d'inscription (qui envoie le mail de vérification)
+        event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect()->route('home');
+        return redirect()->route('profile.show');
     }
 }
 

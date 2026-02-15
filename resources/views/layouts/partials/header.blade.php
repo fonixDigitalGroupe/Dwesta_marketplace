@@ -15,7 +15,7 @@
                         id="global-search-form">
                         <div class="search-field">
                             <input type="text" name="q" class="search-input" id="global-search-input"
-                                placeholder="Je cherche un produit, une marque..." value="{{ request('q') }}"
+                                placeholder="Rechercher un produit" value="{{ request('q') }}"
                                 autocomplete="off">
                             <button type="submit" class="search-button">
                                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -32,21 +32,21 @@
 
                 <div class="sell-button-container">
                     <button type="button" class="sell-button" onclick="toggleSellDropdown()">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
-                            </path>
-                        </svg>
+                        <span class="sell-icon" style="font-size: 1.2rem; font-weight: 700;">€</span>
                         <span>Mettre en vente</span>
-                        <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 9l-7 7-7-7"></path>
-                        </svg>
                     </button>
                     <div class="sell-dropdown" id="layoutSellDropdown">
                         <a href="{{ route('annonces.create') }}" class="sell-dropdown-item">
                             <div class="sell-dropdown-item-title">Vendre un produit en tant que particulier</div>
                             <div class="sell-dropdown-item-subtitle">Je dépose une annonce gratuitement</div>
+                        </a>
+                        <a href="#" class="sell-dropdown-item" style="padding-top: 0.25rem;">
+                            <div class="sell-dropdown-item-title" style="font-weight: 400; text-decoration: underline;">Astuces vendeurs particuliers</div>
+                        </a>
+                        <div class="sell-dropdown-separator"></div>
+                        <a href="{{ route('vendeur.create') }}" class="sell-dropdown-item">
+                            <div class="sell-dropdown-item-title">Je suis un commerçant</div>
+                            <div class="sell-dropdown-item-subtitle">J'ouvre un e-shop</div>
                         </a>
                     </div>
                 </div>
@@ -61,34 +61,84 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                 </svg>
-                                <span style="font-weight: 800; color: #bf0000;">Back Office</span>
+                                <span style="font-weight: 800; color: #0099ff;">Back Office</span>
                             </a>
                         @endif
-                        <a href="{{ route('profile.show') }}" class="header-link">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                            <span>{{ auth()->user()->prenom ?? auth()->user()->name }}</span>
-                        </a>
+                        <div class="auth-dropdown-container">
+                            <a href="{{ route('account.index') }}" class="header-link">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>{{ auth()->user()->prenom ?? auth()->user()->name }}</span>
+                                <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 12px; height: 12px; margin-left: -4px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </a>
+                            <div class="auth-dropdown">
+                                <div class="auth-dropdown-content">
+                                    <div class="auth-menu-list">
+                                        <a href="{{ route('account.index') }}" class="auth-menu-item">
+                                            <span>Mon compte</span>
+                                            <svg class="auth-icon-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                            </svg>
+                                        </a>
+                                        <a href="#" class="auth-menu-item">Suivi de commande</a>
+                                        <a href="#" class="auth-menu-item">Mon porte-monnaie</a>
+                                        <a href="#" class="auth-menu-item">Mes Messages</a>
+                                        
+                                        <div class="auth-separator"></div>
+                                        
+                                        <a href="{{ route('annonces.create') }}" class="auth-menu-item">Mettre en vente un produit</a>
+                                        <a href="{{ route('annonces.index', ['vendeur' => auth()->id()]) }}" class="auth-menu-item">Mes articles en vente</a>
+                                        <a href="#" class="auth-menu-item">Toutes mes ventes</a>
+                                        
+                                        <div class="auth-separator"></div>
+                                        
+                                        <form method="POST" action="{{ route('logout') }}" id="logout-form-dropdown">
+                                            @csrf
+                                            <a href="#" class="auth-menu-item" onclick="event.preventDefault(); document.getElementById('logout-form-dropdown').submit();" style="color: #0099ff;">
+                                                Déconnexion
+                                            </a>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @else
-                        <a href="{{ route('login') }}" class="header-link">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                            <span>Connexion</span>
-                        </a>
-                    @endauth
-
-                    @auth
-                        <span class="header-link disabled-action" title="Favoris">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                </path>
-                            </svg>
-                        </span>
+                        <div class="auth-dropdown-container">
+                            <a href="{{ route('login') }}" class="header-link">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span>Se connecter</span>
+                                <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 12px; height: 12px; margin-left: -4px;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </a>
+                            <div class="auth-dropdown">
+                                <div class="auth-dropdown-content">
+                                    <a href="{{ route('login') }}" class="auth-btn-login">Se connecter</a>
+                                    <a href="{{ route('register') }}" class="auth-link-create">Créer un compte</a>
+                                    <div class="auth-separator"></div>
+                                    <div class="auth-menu-list">
+                                        <a href="{{ route('login') }}" class="auth-menu-item">
+                                            <span>Mon compte</span>
+                                            <svg class="auth-icon-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                            </svg>
+                                        </a>
+                                        <a href="#" class="auth-menu-item">Suivi de commande</a>
+                                        <a href="#" class="auth-menu-item">Mon porte-monnaie</a>
+                                        <a href="#" class="auth-menu-item">Mes Messages</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @endauth
 
                     @inject('cartService', 'App\Services\CartService')
@@ -105,6 +155,14 @@
                             </span>
                         @endif
                     </span>
+
+                        <span class="header-link disabled-action" title="Favoris">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </span>
                 </div>
             </div>
         </div>
@@ -126,7 +184,7 @@
                 <div class="header-badges-container" style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;">
                     @foreach($nav_cats as $cat)
                         <a href="{{ route('annonces.index', ['category' => $cat->id]) }}" class="cat-nav-item badge-style">
-                            {!! $cat->icone !!} {{ $cat->nom }}
+                            {{ $cat->nom }}
                         </a>
                     @endforeach
                 </div>
@@ -154,8 +212,6 @@
                     <div class="cat-sidebar-item" :class="{ 'active-cat-item': selectedCategory === {{ $cat->id }} }"
                         @mouseenter="selectedCategory = {{ $cat->id }}" @click="selectedCategory = {{ $cat->id }}">
                         <div style="display: flex; align-items: center; gap: 12px;">
-                            <span
-                                style="font-size: 1rem; width: 20px; text-align: center; color: inherit;">{!! $cat->icone ?? '📁' !!}</span>
                             <span style="font-size: 0.88rem; font-weight: 400;">{{ $cat->nom }}</span>
                         </div>
                         <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,3 +285,135 @@
             }
         });
     </script>
+
+    <style>
+        .auth-dropdown-container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .auth-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            background: #fff;
+            border: 1px solid #f8f8f8;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: none;
+            z-index: 1000;
+            cursor: default;
+            margin-top: 10px; /* Space for the arrow */
+        }
+
+        .auth-dropdown-container:hover .auth-dropdown {
+            display: block;
+        }
+
+        /* Invisible bridge to keep hover active */
+        .auth-dropdown::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: transparent;
+        }
+
+        /* Triangle tip */
+        .auth-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            margin-left: -8px;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-top: 1px solid #eee;
+            border-left: 1px solid #eee;
+            transform: rotate(45deg);
+            z-index: 1001; /* Ensure overlapping border */
+        }
+
+        .auth-dropdown-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .auth-btn-login {
+            background: #000;
+            color: #fff;
+            font-weight: 700;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 1rem;
+            display: block;
+            transition: all 0.2s;
+        }
+
+        .auth-btn-login:hover {
+            background: #222;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .auth-link-create {
+            color: #333;
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: block;
+            font-weight: 500;
+        }
+
+        .auth-link-create:hover {
+            text-decoration: underline;
+            color: #000;
+        }
+
+        .auth-separator {
+            height: 1px;
+            background: #f0f0f0;
+            margin: 1rem 0;
+        }
+
+        .auth-menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .auth-menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #444;
+            text-decoration: none;
+            font-size: 0.95rem;
+            padding: 0.5rem 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.1s, color 0.1s;
+        }
+
+        .auth-menu-item:hover {
+            background-color: #f9f9f9;
+            color: #0099ff;
+        }
+
+        .auth-icon-blue {
+            width: 24px;
+            height: 24px;
+            color: #0099ff;
+        }
+    </style>

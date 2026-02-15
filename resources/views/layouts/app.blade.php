@@ -25,7 +25,7 @@
         }
 
         .top-banner {
-            background-color: #bf0000;
+            background-color: #004aad;
             height: 40px;
             width: 100%;
         }
@@ -39,17 +39,16 @@
         }
 
         .header-row-1 {
-            padding: 0.75rem 0;
-            border-bottom: 1px solid #f0f0f0;
+            padding: 0.4rem 0;
         }
 
         .header-row-2 {
             background-color: #fff;
-            padding: 0.75rem 0;
-            /* Increased padding */
+            padding: 0.25rem 0 0.6rem 0;
+            /* Increased bottom padding to lower the line */
             border-bottom: 1px solid #e0e0e0;
-            margin-top: 15px;
-            /* Increase space from search bar */
+            margin-top: 0;
+            /* No space from search bar */
         }
 
         .header-container {
@@ -60,7 +59,7 @@
             /* More padding */
             display: flex;
             align-items: center;
-            gap: 2rem;
+            gap: 1rem;
         }
 
         .header-row-2 .header-container {
@@ -79,9 +78,9 @@
         /* Logo */
         .logo {
             display: block;
-            width: 140px;
-            height: 40px;
-            background-image: url("{{ asset('images/logo.png') }}");
+            width: 150px;
+            height: 45px;
+            background-image: url("{{ asset('images/logo.png') }}?v={{ time() }}");
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -90,9 +89,8 @@
 
         /* Search Bar */
         .search-container {
-            flex: 1;
-            margin: 0 2rem;
-            max-width: 800px;
+            width: 600px;
+            margin: 0 1rem 0 0;
             display: flex;
             align-items: center;
             position: relative;
@@ -101,24 +99,27 @@
         .search-field {
             flex: 1;
             display: flex;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            overflow: hidden;
+            align-items: stretch;
+            gap: 0.5rem;
         }
 
         .search-input {
             flex: 1;
             padding: 0.75rem 1rem;
-            border: none;
+            border: 1px solid #f5f5f5;
+            border-radius: 4px;
             font-size: 1rem;
             outline: none;
+            background-color: #f5f5f5;
         }
 
         .search-button {
             background-color: #333;
             color: white;
             border: none;
-            padding: 0 1.25rem;
+            border-radius: 4px;
+            padding: 0 1rem;
+            height: auto;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -150,7 +151,7 @@
         }
 
         .header-link:hover {
-            color: #bf0000;
+            color: #000;
         }
 
         .header-link svg {
@@ -169,16 +170,17 @@
             gap: 0.5rem;
             text-decoration: none;
             color: #333;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
-            background: white;
+            background: transparent;
             border: none;
-            padding: 0.5rem;
+            padding: 8px 16px;
+            transition: all 0.2s;
         }
 
         .sell-button:hover {
-            color: #bf0000;
+            color: #000;
         }
 
         .sell-button .chevron {
@@ -194,15 +196,43 @@
         .sell-dropdown {
             position: absolute;
             top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 15px;
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            min-width: 280px;
+            border: 2px solid #ccc;
+            border-radius: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            min-width: 320px;
             z-index: 1000;
             display: none;
+        }
+
+        /* Triangular arrow on top of dropdown */
+        .sell-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #ccc;
+        }
+
+        .sell-dropdown::after {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-bottom: 9px solid white;
         }
 
         .sell-dropdown.show {
@@ -236,7 +266,13 @@
 
         .sell-dropdown-item-subtitle {
             font-size: 0.85rem;
-            color: #666;
+            color: #999;
+        }
+
+        .sell-dropdown-separator {
+            height: 1px;
+            background: #eee;
+            margin: 0.5rem 1rem;
         }
 
         /* Category Nav Items */
@@ -462,6 +498,7 @@
 <body x-data="{ mobileMenuOpen: false }">
     <div class="top-banner"></div>
 
+
     @include('layouts.partials.header')
 
 
@@ -537,17 +574,13 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             @if(session('success'))
-                @if(session('success') === 'ok')
-                    alert('ok');
-                @else
-                    Swal.fire({
-                        title: 'Succès !',
-                        text: "{{ session('success') }}",
-                        icon: 'success',
-                        confirmButtonText: 'OK',
-                        confirmButtonColor: '#bf0000'
-                    });
-                @endif
+                Swal.fire({
+                    title: "{{ session('success') === 'ok' ? '' : 'Succès !' }}",
+                    text: "{{ session('success') }}",
+                    icon: "{{ session('success') === 'ok' ? '' : 'success' }}",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#bf0000'
+                });
             @endif
 
             @if(session('error'))

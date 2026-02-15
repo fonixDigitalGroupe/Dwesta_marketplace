@@ -357,4 +357,14 @@ class Annonce extends Model
     {
         return $this->belongsToMany(User::class, 'favorites', 'annonce_id', 'user_id')->withTimestamps();
     }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

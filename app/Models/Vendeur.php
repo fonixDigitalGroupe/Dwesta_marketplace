@@ -86,6 +86,23 @@ class Vendeur extends Model
     }
 
     /**
+     * Vérifier si le vendeur est un vendeur officiel (formulaire rempli)
+     * Par opposition au vendeur auto-créé lors du dépôt d'annonce
+     */
+    public function estOfficiel(): bool
+    {
+        if ($this->estProfessionnel()) {
+            return true;
+        }
+
+        if ($this->estParticulier()) {
+            return $this->particulier && $this->particulier->numero_document !== 'A_COMPLETER';
+        }
+
+        return false;
+    }
+
+    /**
      * Relation avec les abonnements
      */
     public function abonnements(): HasMany
@@ -189,7 +206,7 @@ class Vendeur extends Model
             return false;
         }
 
-        return $abonnementActif->abonnement->page_pro === true;
+        return $abonnementActif->abonnement->page_pro_personnalisable === true;
     }
 
     /**

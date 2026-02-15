@@ -8,6 +8,8 @@ use App\Services\DocumentUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VendeurStatusUpdated;
 
 class VendeurVerificationController extends Controller
 {
@@ -40,13 +42,13 @@ class VendeurVerificationController extends Controller
         $vendeur->load(['user', 'particulier', 'professionnel']);
 
         // Générer les URLs temporaires pour les documents
-        if ($vendeur->estParticulier() && $vendeur->particulier) {
+        if ($vendeur->estParticulier() && $vendeur->particulier && $vendeur->particulier->document_path) {
             $vendeur->particulier->document_url = $this->documentUploadService->getDocumentUrl(
                 $vendeur->particulier->document_path
             );
         }
 
-        if ($vendeur->estProfessionnel() && $vendeur->professionnel) {
+        if ($vendeur->estProfessionnel() && $vendeur->professionnel && $vendeur->professionnel->registre_commerce_path) {
             $vendeur->professionnel->registre_url = $this->documentUploadService->getDocumentUrl(
                 $vendeur->professionnel->registre_commerce_path
             );
@@ -75,7 +77,8 @@ class VendeurVerificationController extends Controller
             // Attribution du rôle vendeur (avant cahier des charges)
             $vendeur->user->assignRole('vendeur');
 
-            // TODO: Envoyer une notification au vendeur
+            // Envoyer une notification au vendeur
+            Mail::to($vendeur->user->email)->send(new VendeurStatusUpdated($vendeur));
 
             return redirect()->route('admin.vendeurs.verification.index')
                 ->with('success', 'Vendeur approuvé avec succès.');
@@ -103,7 +106,8 @@ class VendeurVerificationController extends Controller
                 'verifie_par' => Auth::id(),
             ]);
 
-            // TODO: Envoyer une notification au vendeur avec la raison du rejet
+            // Envoyer une notification au vendeur avec la raison du rejet
+            Mail::to($vendeur->user->email)->send(new VendeurStatusUpdated($vendeur));
 
             return redirect()->route('admin.vendeurs.verification.index')
                 ->with('success', 'Vendeur rejeté avec succès.');

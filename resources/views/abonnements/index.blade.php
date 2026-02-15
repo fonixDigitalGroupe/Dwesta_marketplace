@@ -4,145 +4,235 @@
 
 @push('styles')
 <style>
-    .subscription-container { max-width: 1100px; margin: 1.5rem auto; padding: 0 1rem; }
+    .subscription-container { max-width: 900px; margin: 1.5rem auto; padding: 0 1rem; }
     
-    .current-plan { 
-        background: linear-gradient(135deg, #1e1e1e 0%, #333333 100%); 
-        color: white; 
-        border-radius: 12px; 
-        padding: 1.5rem 2rem; 
-        margin-bottom: 2.5rem; 
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    .section-header-bar {
+        padding: 0.5rem 0;
+        margin-bottom: 1rem;
+        font-weight: bold;
+        color: #333;
+        text-transform: lowercase;
+        border-radius: 2px;
+        background: transparent;
+    }
+
+    .plans-list {
+        background: white;
+        border-top: 1px solid #e0e0e0;
+        margin-bottom: 3rem;
+    }
+
+    .plan-row {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 0.5rem;
+        border-bottom: 1px solid #e0e0e0;
+        transition: background-color 0.2s;
+        gap: 1.25rem;
+        cursor: pointer;
+    }
+
+    .plan-row input[type="radio"] {
+        display: none;
+    }
+
+    .plan-row:hover {
+        background-color: #fafafa;
+    }
+
+    .plan-row.selected .plan-checkbox {
+        background-color: #ef6c00;
+        border-color: #ef6c00;
+    }
+
+    .plan-row.selected .plan-checkbox svg {
+        display: block;
+    }
+
+    .plan-checkbox-wrapper {
+        flex-shrink: 0;
+    }
+
+    .plan-checkbox {
+        width: 22px;
+        height: 22px;
+        border-radius: 4px;
+        border: 2px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+
+    /* Keep the 'active' class for the currently subscribed plan */
+    .plan-row.is-subscribed {
+        opacity: 0.8;
+        background-color: #f9f9f9;
+        cursor: default;
+    }
+
+    .plan-row.is-subscribed .plan-checkbox {
+        background-color: #ccc;
+        border-color: #ccc;
+    }
+    
+    .plan-row.is-subscribed .plan-checkbox svg {
+        display: block;
+    }
+
+    .plan-checkbox svg {
+        width: 14px;
+        height: 14px;
+        color: white;
+        display: none;
+    }
+
+    .plan-content {
+        flex: 1;
+    }
+
+    .plan-title {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #000;
+        margin-bottom: 0.25rem;
+    }
+
+    .plan-description {
+        font-size: 0.9rem;
+        color: #666;
+        line-height: 1.4;
+    }
+
+    .plan-benefits {
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+        color: #888;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .plan-right {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .plan-price-box {
+        text-align: right;
+    }
+
+    .plan-price-amount {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #000;
+    }
+
+    .plan-price-period {
+        font-size: 0.75rem;
+        color: #999;
+        display: block;
+    }
+
+    .subscription-actions {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .btn-submit-plan {
+        padding: 1rem 3rem;
+        background-color: #ef6c00;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-weight: 800;
+        font-size: 1rem;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 6px rgba(239, 108, 0, 0.2);
+    }
+
+    .btn-submit-plan:hover:not(:disabled) {
+        background-color: #e65100;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(239, 108, 0, 0.3);
+    }
+
+    .btn-submit-plan:disabled {
+        background-color: #e0e0e0;
+        color: #999;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    .current-plan-banner {
+        background: #fff8e1;
+        border: 1px solid #ffe082;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
-    .current-plan-info { flex: 1; }
-    .current-plan-title { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-bottom: 0.25rem; }
-    .current-plan-name { font-size: 1.6rem; font-weight: 800; margin: 0; }
-    .current-plan-expires { font-size: 0.85rem; opacity: 0.8; margin-top: 0.25rem; }
     
-    .plans-grid { 
-        display: grid; 
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 1.25rem; 
-        margin-bottom: 3rem; 
+    .banner-text {
+        font-size: 0.95rem;
+        color: #856404;
     }
-    
-    .plan-card { 
-        background: white; 
-        border: 1px solid #e0e0e0; 
-        border-radius: 12px; 
-        padding: 1.5rem; 
-        text-align: center; 
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-        position: relative;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .plan-card.recommended { 
-        border: 2px solid #bf0000; 
-        box-shadow: 0 10px 30px rgba(191, 0, 0, 0.08); 
-        transform: translateY(-5px);
-    }
-    
-    .plan-card.recommended::before { 
-        content: 'RECOMMANDÉ'; 
-        position: absolute; 
-        top: -12px; 
-        left: 50%; 
-        transform: translateX(-50%); 
-        background: #bf0000; 
-        color: white; 
-        padding: 0.25rem 1rem; 
-        border-radius: 20px; 
-        font-size: 0.7rem; 
-        font-weight: 800; 
-        letter-spacing: 0.5px;
-    }
-    
-    .plan-card:hover:not(.recommended) { 
-        border-color: #333;
-        transform: translateY(-5px);
-    }
-    
-    .plan-name { font-size: 1.25rem; font-weight: 700; color: #333; margin-bottom: 0.5rem; }
-    .plan-price { font-size: 1.8rem; font-weight: 800; color: #bf0000; margin: 1rem 0 0.25rem; }
-    .plan-price-label { font-size: 0.8rem; color: #666; margin-bottom: 1rem; }
-    
-    .commission-badge { 
-        background: #fdf2f2; 
-        color: #bf0000; 
-        padding: 0.35rem 0.75rem; 
-        border-radius: 6px; 
-        display: inline-block; 
-        font-weight: 700; 
+
+    /* Override breadcrumb to match clean look */
+    .breadcrumb {
         font-size: 0.85rem;
-        margin: 0.5rem auto; 
+        color: #888;
+        margin-bottom: 1.5rem;
     }
-
-    .plan-description { color: #666; font-size: 0.85rem; margin: 1rem 0; line-height: 1.5; min-height: 3rem; }
-    
-    .plan-features { text-align: left; margin: 1rem 0 2rem; padding: 0; list-style: none; flex-grow: 1; }
-    .plan-features li { padding: 0.5rem 0; border-bottom: 1px solid #f5f5f5; display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.85rem; color: #444; }
-    .plan-features li:last-child { border-bottom: none; }
-    .feature-icon { color: #2e7d32; font-weight: bold; flex-shrink: 0; }
-    
-    .btn-subscribe { 
-        background: #bf0000; 
-        color: white; 
-        border: none; 
-        padding: 0.8rem 1.5rem; 
-        border-radius: 6px; 
-        font-weight: 700; 
-        font-size: 0.95rem; 
-        cursor: pointer; 
-        width: 100%; 
-        transition: all 0.2s; 
-    }
-    .btn-subscribe:hover { background: #8b0000; box-shadow: 0 4px 10px rgba(191, 0, 0, 0.2); }
-    .btn-subscribe:disabled { background: #e0e0e0; color: #9e9e9e; cursor: not-allowed; }
-    
-    .btn-current { border: 2px solid #2e7d32; background: white; color: #2e7d32; }
-    .btn-current:hover { background: #f1f8e9; }
-
-    @media (max-width: 900px) {
-        .plans-grid { grid-template-columns: 1fr; }
-        .plan-card.recommended { transform: none; }
-    }
+    .breadcrumb a { color: #555; text-decoration: none; }
+    .breadcrumb a:hover { color: #ef6c00; }
 </style>
 @endpush
 
 @section('content')
     <div class="breadcrumb">
-        <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('profile.show') }}">Mon Compte</a> > <span>Abonnements</span>
+        <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('profile.show') }}">Mon Compte</a> > <span>Mes abonnements</span>
     </div>
 
     <div class="dashboard-container">
         @include('partials.profile-sidebar')
 
         <main class="main-content">
-            <div class="subscription-container" style="max-width: 100%; margin: 0; padding: 0;">
-                <h1 style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem; text-align: center;">Choisissez votre forfait</h1>
-                <p style="text-align: center; color: #666; margin-bottom: 3rem;">Augmentez votre visibilité et réduisez vos commissions avec nos offres premium</p>
+            <div class="subscription-container">
+                <h1 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem;">Mes abonnements</h1>
+                <p style="color: #666; margin-bottom: 2rem; font-size: 0.95rem;">
+                    Boostez votre activité en choisissant le forfait qui vous correspond.
+                </p>
+
+                @if(session('success'))
+                    <div style="background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #c8e6c9;">
+                        ✅ {{ session('success') }}
+                    </div>
+                @endif
 
                 @if($abonnementActif)
-                    <div class="current-plan">
-                        <div class="current-plan-info">
-                            <div class="current-plan-title">Votre forfait actuel</div>
-                            <div class="current-plan-name">{{ $abonnementActif->abonnement->nom }}</div>
-                            <div class="current-plan-expires">
-                                Expire le {{ $abonnementActif->date_fin->format('d/m/Y') }}
-                                @if($abonnementActif->renouvellement_automatique)
-                                    • Renouvellement automatique activé
-                                @endif
-                            </div>
+                    <div class="current-plan-banner">
+                        <div class="banner-text">
+                            <strong>Forfait actuel : {{ $abonnementActif->abonnement->nom }}</strong><br>
+                            <span style="font-size: 0.85rem;">Expire le {{ $abonnementActif->date_fin->format('d/m/Y') }}</span>
                         </div>
                         @if($abonnementActif->renouvellement_automatique)
                             <form action="{{ route('abonnements.cancel') }}" method="POST">
                                 @csrf
-                                <button type="submit" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;">
+                                <button type="submit" style="background: none; border: 1px solid #ef6c00; color: #ef6c00; padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
                                     Désactiver le renouvellement
                                 </button>
                             </form>
@@ -150,64 +240,88 @@
                     </div>
                 @endif
 
-                @if(session('success'))
-                    <div style="background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #c8e6c9; font-weight: 500;">
-                        ✅ {{ session('success') }}
+                <div class="section-header-bar">forfaits disponibles</div>
+
+                <form action="{{ route('abonnements.checkout') }}" method="POST" id="subscription-form">
+                    @csrf
+                    <div class="plans-list">
+                        @foreach($abonnements as $abonnement)
+                            @php $isSubscribed = $abonnementActif && $abonnementActif->abonnement_id === $abonnement->id; @endphp
+                            <div class="plan-row {{ $isSubscribed ? 'is-subscribed' : '' }}" 
+                                 onclick="{{ $isSubscribed ? '' : 'selectPlan(this, ' . $abonnement->id . ', \'' . addslashes($abonnement->nom) . '\')' }}">
+                                
+                                <input type="radio" name="abonnement_id" value="{{ $abonnement->id }}" {{ $isSubscribed ? 'disabled' : '' }}>
+                                
+                                <div class="plan-checkbox-wrapper">
+                                    <div class="plan-checkbox">
+                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                </div>
+                                
+                                <div class="plan-content">
+                                    <div class="plan-title">{{ $abonnement->nom }}</div>
+                                    <div class="plan-description">{{ $abonnement->description }}</div>
+                                    <div class="plan-benefits">
+                                        <div class="benefit-item">
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path></svg>
+                                            {{ $abonnement->nombre_annonces == 0 ? 'Annonces illimitées' : $abonnement->nombre_annonces . ' annonces' }}
+                                        </div>
+                                        <div class="benefit-item">
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path></svg>
+                                            {{ number_format($abonnement->commission, 0) }}% de commission
+                                    </div>
+                                        @if($abonnement->page_pro)
+                                            <div class="benefit-item">
+                                                <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path></svg>
+                                                Boutique Page Pro
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="plan-right">
+                                    <div class="plan-price-box">
+                                        <span class="plan-price-amount">
+                                            {{ $abonnement->prix_mensuel > 0 ? number_format($abonnement->prix_mensuel, 0, ',', ' ') : '0' }} FCFA
+                                        </span>
+                                        <span class="plan-price-period">/ mois</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
-                @endif
 
-                <div class="plans-grid">
-                    @foreach($abonnements as $index => $abonnement)
-                        <div class="plan-card {{ $index === 1 ? 'recommended' : '' }}">
-                            <div class="plan-name">{{ $abonnement->nom }}</div>
-                            
-                            <div class="commission-badge">
-                                {{ $abonnement->commission }}% de commission
-                            </div>
-
-                            <div class="plan-price">
-                                {{ $abonnement->prix_mensuel > 0 ? number_format($abonnement->prix_mensuel, 0, ',', ' ') : '0' }} <span style="font-size: 1rem;">FCFA</span>
-                            </div>
-                            <div class="plan-price-label">par mois</div>
-
-                            <p class="plan-description">{{ $abonnement->description }}</p>
-
-                            <ul class="plan-features">
-                                <li>
-                                    <span class="feature-icon">✓</span>
-                                    <span>{{ $abonnement->nombre_annonces == 0 ? 'Annonces illimitées' : $abonnement->nombre_annonces . ' annonces/mois' }}</span>
-                                </li>
-                                <li>
-                                    <span class="feature-icon">✓</span>
-                                    <span>Visibilité accrue</span>
-                                </li>
-                                @if($abonnement->page_pro)
-                                    <li>
-                                        <span class="feature-icon">✓</span>
-                                        <span>Boutique personnalisée</span>
-                                    </li>
-                                @endif
-                                <li>
-                                    <span class="feature-icon">✓</span>
-                                    <span>Support prioritaire</span>
-                                </li>
-                            </ul>
-
-                            @if($abonnementActif && $abonnementActif->abonnement_id === $abonnement->id)
-                                <button class="btn-subscribe btn-current" disabled>Forfait actuel</button>
-                            @else
-                                <form action="{{ route('abonnements.checkout') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="abonnement_id" value="{{ $abonnement->id }}">
-                                    <button type="submit" class="btn-subscribe">
-                                        {{ $abonnement->prix_mensuel > 0 ? 'Souscrire' : 'Activer' }}
-                                    </button>
-                                </form>
-                            @endif
-                        </div>
-                    @endforeach
-                </div>
+                    <div class="subscription-actions">
+                        <button type="button" class="btn-submit-plan" id="submit-button" disabled onclick="alert('OK ' + selectedPlanName)">
+                            Continuer avec ce forfait
+                        </button>
+                    </div>
+                </form>
             </div>
         </main>
     </div>
+
+    <script>
+        let selectedPlanName = '';
+
+        function selectPlan(row, id, name) {
+            // Unselect all other rows
+            document.querySelectorAll('.plan-row').forEach(r => {
+                r.classList.remove('selected');
+                const radio = r.querySelector('input[type="radio"]');
+                if (radio) radio.checked = false;
+            });
+
+            // Select this row
+            row.classList.add('selected');
+            selectedPlanName = name;
+            
+            const radio = row.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+                // Enable submit button
+                document.getElementById('submit-button').disabled = false;
+            }
+        }
+    </script>
 @endsection

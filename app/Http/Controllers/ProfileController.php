@@ -26,6 +26,9 @@ class ProfileController extends Controller
         $messages = [
             'current_password_info.required' => 'Veuillez entrer votre mot de passe actuel pour enregistrer vos modifications.',
             'current_password_info.current_password' => 'Veuillez entrer votre mot de passe actuel pour enregistrer vos modifications.',
+            'telephone.unique' => 'Ce numéro de téléphone est déjà utilisé par un autre compte.',
+            'email.unique' => 'Cet email est déjà utilisé par un autre compte.',
+            'prenom.required' => 'Le prénom est requis.',
         ];
 
         $request->validate([

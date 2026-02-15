@@ -60,7 +60,7 @@
         }
 
         .rakuten-field:focus-within {
-            border-color: #000;
+            border-color: #ff4e00;
         }
 
         .rakuten-label {
@@ -140,7 +140,7 @@
         .btn-rakuten {
             background: #000;
             color: #fff;
-            padding: 0.7rem 1.5rem;
+            padding: 0.5rem 1.5rem;
             border: none;
             border-radius: 4px;
             font-weight: 700;

@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 use Spatie\Permission\Traits\HasRoles;
+use App\Notifications\VerifyEmailNotification;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -86,6 +87,22 @@ class User extends Authenticatable implements MustVerifyEmail
     public function estVendeurVerifie(): bool
     {
         return $this->vendeur && $this->vendeur->estVerifie();
+    }
+
+    /**
+     * Vérifier si l'utilisateur est un vendeur officiel (a rempli le formulaire)
+     */
+    public function estVendeurOfficiel(): bool
+    {
+        return $this->vendeur && $this->vendeur->estOfficiel();
+    }
+
+    /**
+     * Vérifier si l'utilisateur a des annonces
+     */
+    public function hasAnnonces(): bool
+    {
+        return $this->vendeur && $this->vendeur->annonces()->exists();
     }
 
     public function orders()
@@ -165,5 +182,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getPendingBalanceAttribute(): int
     {
         return $this->hasMany(Transaction::class)->where('wallet_status', Transaction::STATUS_PENDING)->sum('montant');
+    }
+
+    /**
+     * Envoyer la notification de vérification d'email personnalisée.
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification);
     }
 }

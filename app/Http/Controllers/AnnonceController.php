@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class AnnonceController extends Controller
 {
@@ -57,7 +58,7 @@ class AnnonceController extends Controller
 
         if (!$user->estVendeur()) {
             return redirect()->route('vendeur.create')
-                ->with('error', 'Vous devez créer un compte vendeur pour publier des annonces.');
+                ->with('error_banner', 'Vous devez créer un compte vendeur pour publier des annonces.');
         }
 
         $vendeur = $user->vendeur;
@@ -111,8 +112,12 @@ class AnnonceController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
+        $type = $request->input('type');
 
-        // Si l'utilisateur n'est pas vendeur, créer automatiquement un compte vendeur particulier
+        // 1. Validation de base TOUJOURS en premier
+        $validated = $this->validateAnnonce($request, $type);
+
+        // 2. Si l'utilisateur n'est pas vendeur, créer automatiquement un compte vendeur particulier
         if (!$user->estVendeur()) {
             $vendeur = Vendeur::create([
                 'user_id' => $user->id,
@@ -137,11 +142,6 @@ class AnnonceController extends Controller
         }
 
         $vendeur = $user->vendeur;
-
-        $type = $request->input('type');
-
-        // Validation de base
-        $validated = $this->validateAnnonce($request, $type);
 
         // Mettre à jour les coordonnées de l'utilisateur
         $user->update([
@@ -320,7 +320,7 @@ class AnnonceController extends Controller
                 $annonce->update(['nb_photos' => $annonce->photos()->count()]);
             }
 
-            return redirect()->route('annonces.show', $annonce)
+            return redirect()->route('vendeur.mes-annonces')
                 ->with('success', 'Annonce mise à jour avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur mise à jour annonce: ' . $e->getMessage());
@@ -405,7 +405,7 @@ class AnnonceController extends Controller
             'titre' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'min:20'],
             'statut' => ['nullable', 'in:brouillon,en_attente,publiee'],
-            'user_phone' => ['required', 'string', 'max:255'],
+            'user_phone' => ['required', 'string', 'max:255', Rule::unique('users', 'telephone')->ignore(Auth::id())],
             'code_postal' => ['required', 'string', 'max:255'],
         ];
 
@@ -488,6 +488,17 @@ class AnnonceController extends Controller
         $messages = [
             'description.min' => 'La description doit contenir au moins :min caractères.',
             'etat.in' => "L'état sélectionné est invalide.",
+            'user_phone.unique' => 'Ce numéro de téléphone est déjà utilisé par un autre compte.',
+            'user_phone.required' => 'Le numéro de téléphone est requis.',
+            'code_postal.required' => 'Le code postal est requis.',
+            'categorie_id.required' => 'La catégorie est requise.',
+            'titre.required' => 'Le titre est requis.',
+            'description.required' => 'La description est requise.',
+            'prix.required' => 'Le prix est requis.',
+            'photos.required' => 'Veuillez ajouter au moins 4 photos pour votre annonce.',
+            'photos.min' => 'Il faut au minimum :min photos.',
+            'photos.max' => 'Vous ne pouvez pas ajouter plus de :max photos.',
+            'photos.*.image' => 'Le fichier doit être une image.',
         ];
 
         $validated = $request->validate($rules, $messages);

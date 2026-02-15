@@ -80,12 +80,12 @@ class DocumentUploadService
     /**
      * Récupère l'URL d'un document (pour téléchargement sécurisé)
      *
-     * @param string $path Chemin du document
+     * @param string|null $path Chemin du document
      * @return string|null
      */
-    public function getDocumentUrl(string $path): ?string
+    public function getDocumentUrl(?string $path): ?string
     {
-        if (!Storage::disk('private')->exists($path)) {
+        if (!$path || !Storage::disk('private')->exists($path)) {
             return null;
         }
 

@@ -1,3 +1,4 @@
+@php $user = auth()->user(); @endphp
 @push('styles')
     <style>
         .dashboard-container {
@@ -18,7 +19,7 @@
         }
 
         .sidebar-user {
-            padding: 1rem 0.5rem;
+            padding: 0.5rem 0.5rem;
             border-bottom: 1px solid #f0f0f0;
             margin-bottom: 0.5rem;
         }
@@ -74,6 +75,15 @@
             font-weight: 700;
         }
 
+        .sidebar-menu li .inactive-link {
+            display: block;
+            padding: 1px 0.5rem 1px 3.2rem;
+            color: #ccc;
+            font-size: 0.88rem;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+
         .sidebar-divider {
             height: 1px;
             background: #eee;
@@ -122,9 +132,10 @@
     </style>
 @endpush
 
+
 <aside class="sidebar">
     <div class="sidebar-user">
-        <h2>{{ auth()->user()->prenom }}</h2>
+        <h2>{{ $user->prenom }}</h2>
     </div>
 
     <!-- Mes achats -->
@@ -169,7 +180,11 @@
             Mes ventes
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#">Toutes mes ventes</a></li>
+            @if(auth()->user()->hasAnnonces())
+                <li><a href="#">Toutes mes ventes</a></li>
+            @else
+                <li><span class="inactive-link" title="Vous n'avez pas encore déposé d'annonces pour effectuer des ventes">Toutes mes ventes</span></li>
+            @endif
         </ul>
     </div>
 
@@ -183,18 +198,34 @@
             Mes annonces
         </div>
         <ul class="sidebar-menu">
-            <li><a href="{{ route('vendeur.mes-annonces') }}" class="{{ request()->routeIs('vendeur.mes-annonces') ? 'active' : '' }}">Toutes mes annonces</a></li>
-            @php $user = auth()->user(); @endphp
             @if($user->vendeur)
+                <li><a href="{{ route('vendeur.show') }}" class="{{ request()->routeIs('vendeur.show') ? 'active' : '' }}">État du compte</a></li>
+            @else
+                <li><span class="inactive-link" title="Devenez vendeur pour suivre l'état de votre compte">État du compte</span></li>
+            @endif
+
+            @if(auth()->user()->hasAnnonces())
+                <li><a href="{{ route('vendeur.mes-annonces') }}" class="{{ request()->routeIs('vendeur.mes-annonces') ? 'active' : '' }}">Toutes mes annonces</a></li>
+            @else
+                <li><span class="inactive-link" title="Vous n'avez pas encore déposé d'annonces">Toutes mes annonces</span></li>
+            @endif
+
+            @if($user->estVendeurVerifie())
                 @if($user->vendeur->pagePro)
                     <li><a href="{{ route('page-pro.show', $user->vendeur->pagePro->slug) }}" target="_blank">Voir ma Boutique</a></li>
                 @endif
-
+                
                 @if($user->vendeur->peutPersonnaliserBoutique())
                     <li><a href="{{ route('page-pro.edit') }}" class="{{ request()->routeIs('page-pro.edit') ? 'active' : '' }}">Personnaliser ma Boutique</a></li>
+                @else
+                    <li><span class="inactive-link" title="L'abonnement Expert est requis pour personnaliser votre boutique">Personnaliser ma Boutique</span></li>
+                @endif
+            @else
+                <li><span class="inactive-link" title="Votre compte doit être vérifié par l'administration pour gérer votre boutique.">Ma Boutique PRO</span></li>
+                @if(!$user->vendeur)
+                    <li><a href="{{ route('vendeur.create') }}" class="{{ request()->routeIs('vendeur.create') ? 'active' : '' }}" style="color: #bf0000; font-weight: bold;">Devenir Vendeur</a></li>
                 @endif
             @endif
-            <li><a href="#">Mes préférences vendeur</a></li>
         </ul>
     </div>
 
@@ -223,9 +254,10 @@
             Mes finances
         </div>
         <ul class="sidebar-menu">
-            <li><a href="{{ route('vendeur.wallet.index') }}">Mon Porte-Monnaie</a></li>
-            <li><a href="#">Statistiques</a></li>
-            <li><a href="#">Mes paiements</a></li>
+            <li><span class="inactive-link" title="Cette fonctionnalité sera disponible prochainement">Mon Porte-Monnaie</span></li>
+            <li><span class="inactive-link" title="Cette fonctionnalité sera disponible prochainement">Demander un retrait</span></li>
+            <li><span class="inactive-link" title="Cette fonctionnalité sera disponible prochainement">Statistiques</span></li>
+            <li><span class="inactive-link" title="Cette fonctionnalité sera disponible prochainement">Mes paiements</span></li>
         </ul>
     </div>
 
@@ -241,7 +273,11 @@
         <ul class="sidebar-menu">
             <li><a href="{{ route('profile.show') }}" class="{{ request()->routeIs('profile.show') ? 'active' : '' }}">Mon adresse e-mail</a></li>
             <li><a href="{{ route('profile.show') }}#changement-mot-de-passe">Mon mot de passe</a></li>
-            <li><a href="{{ route('abonnements.index') }}" class="{{ request()->routeIs('abonnements.*') ? 'active' : '' }}">Mes abonnements</a></li>
+            @if($user->estVendeurVerifie())
+                <li><a href="{{ route('abonnements.index') }}" class="{{ request()->routeIs('abonnements.*') ? 'active' : '' }}">Mes abonnements</a></li>
+            @else
+                <li><span class="inactive-link" title="Votre compte doit être vérifié par l'administration pour accéder aux abonnements.">Mes abonnements</span></li>
+            @endif
         </ul>
     </div>
 

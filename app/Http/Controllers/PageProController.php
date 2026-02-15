@@ -84,7 +84,7 @@ class PageProController extends Controller
         // Vérifier l'accès à la personnalisation de la boutique
         if (!$vendeur->peutPersonnaliserBoutique()) {
             return redirect()->route('abonnements.index')
-                ->with('error', 'La personnalisation de votre boutique nécessite un abonnement Basic ou Expert.');
+                ->with('error', 'L\'abonnement Expert est requis pour personnaliser votre boutique.');
         }
 
         $pagePro = $vendeur->pagePro;
@@ -112,7 +112,7 @@ class PageProController extends Controller
 
         // Vérifier l'accès à la personnalisation de la boutique
         if (!$vendeur->peutPersonnaliserBoutique()) {
-            return back()->with('error', 'La personnalisation de votre boutique nécessite un abonnement Basic ou Expert.');
+            return back()->with('error', 'L\'abonnement Expert est requis pour personnaliser votre boutique.');
         }
 
         $pagePro = $vendeur->pagePro;

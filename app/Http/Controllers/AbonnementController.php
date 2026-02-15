@@ -20,9 +20,9 @@ class AbonnementController extends Controller
     {
         $user = Auth::user();
         
-        if (!$user->estVendeur()) {
-            return redirect()->route('vendeur.create')
-                ->with('error', 'Vous devez créer un compte vendeur pour accéder aux abonnements.');
+        if (!$user->estVendeurVerifie()) {
+            return redirect()->route('vendeur.show')
+                ->with('error', 'Votre compte doit être vérifié par l\'administration pour accéder aux abonnements.');
         }
 
         $vendeur = $user->vendeur;
@@ -43,6 +43,12 @@ class AbonnementController extends Controller
      */
     public function checkout(Request $request)
     {
+        $user = Auth::user();
+        if (!$user->estVendeurVerifie()) {
+            return redirect()->route('vendeur.show')
+                ->with('error', 'Votre compte doit être vérifié pour accéder au paiement.');
+        }
+
         $abonnement = Abonnement::findOrFail($request->abonnement_id);
         
         // Si c'est un forfait gratuit, on souscrit directement via la méthode subscribe
@@ -66,6 +72,12 @@ class AbonnementController extends Controller
         ]);
 
         $user = Auth::user();
+
+        if (!$user->estVendeurVerifie()) {
+            return redirect()->route('vendeur.show')
+                ->with('error', 'Votre compte doit être vérifié pour souscrire à un abonnement.');
+        }
+
         $vendeur = $user->vendeur;
         $abonnement = Abonnement::findOrFail($request->abonnement_id);
 

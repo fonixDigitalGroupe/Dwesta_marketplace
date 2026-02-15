@@ -8,6 +8,7 @@ use App\Http\Controllers\AnnonceMediaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\AvisController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DocumentController;
@@ -43,9 +44,19 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+    // Email Verification Routes
+    Route::get('/email/verify', [VerifyEmailController::class, 'notice'])->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
+    Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware('throttle:6,1')->name('verification.resend');
 
-    // Profil
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+
+    // Routes nécessitant une vérification d'email
+    Route::middleware(['verified'])->group(function () {
+        // Account Dashboard
+        Route::get('/mon-compte', [\App\Http\Controllers\AccountController::class, 'index'])->name('account.index');
+
+        // Profil
+        Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
@@ -230,6 +241,7 @@ Route::middleware('auth')->group(function () {
 
     // Reviews (Avis global)
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    }); // Fin du middleware 'verified'
 });
 
 // Annonces publiques (accessible sans authentification) - DOIT être APRÈS les routes authentifiées

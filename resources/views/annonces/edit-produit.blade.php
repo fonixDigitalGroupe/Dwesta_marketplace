@@ -1,10 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Modifier une annonce')
+@section('title', 'Modifier mon annonce')
 
 @push('styles')
     <style>
-        <style>* {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -12,298 +12,85 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f5f5f5;
-        }
-
-        /* Bannière promotionnelle */
-        .promo-banner {
-            background-color: #193D23;
-            color: white;
-            padding: 0.75rem 1rem;
-            width: 100%;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            gap: 1rem;
-        }
-
-        .promo-banner-content {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex: 1;
-            justify-content: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .promo-chevron {
-            cursor: pointer;
-            padding: 0.25rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .promo-chevron:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-
-        .promo-link {
-            color: white;
-            text-decoration: underline;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .promo-link:hover {
-            text-decoration: none;
-        }
-
-        /* Header principal */
-        .header {
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 1rem 0;
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        /* Barre de recherche */
-        .search-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            max-width: 600px;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px 0 0 4px;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        .search-input:focus {
-            border-color: #193D23;
-        }
-
-        .search-button {
-            background-color: #666;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.25rem;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .search-button:hover {
-            background-color: #555;
-        }
-
-        .search-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Actions du header */
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .header-link {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            color: #333;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .header-link:hover {
-            color: #193D23;
-        }
-
-        .header-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Bouton Mettre en vente */
-        .sell-button-container {
-            position: relative;
-        }
-
-        .sell-button {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            color: #333;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            background: white;
-            border: none;
-            padding: 0.5rem;
-        }
-
-        .sell-button:hover {
-            color: #193D23;
-        }
-
-        .sell-button .chevron {
-            width: 12px;
-            height: 12px;
-            transition: transform 0.2s;
-        }
-
-        .sell-button.active .chevron {
-            transform: rotate(180deg);
-        }
-
-        /* Dropdown Mettre en vente */
-        .sell-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            min-width: 280px;
-            z-index: 1000;
-            display: none;
-        }
-
-        .sell-dropdown.show {
-            display: block;
-        }
-
-        .sell-dropdown-item {
-            display: block;
-            padding: 1rem;
-            text-decoration: none;
-            color: #333;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background-color 0.2s;
-        }
-
-        .sell-dropdown-item:last-child {
-            border-bottom: none;
-        }
-
-        .sell-dropdown-item:hover {
-            background-color: #f5f5f5;
-        }
-
-        .sell-dropdown-item-title {
-            font-weight: 500;
-            font-size: 0.95rem;
-            color: #333;
-            margin-bottom: 0.25rem;
-        }
-
-        .sell-dropdown-item-subtitle {
-            font-size: 0.85rem;
-            color: #666;
+            background-color: white;
         }
 
         .create-annonce-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
+            max-width: 1300px;
+            margin: 3rem auto;
+            padding: 0 2rem;
             display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 3rem;
+            grid-template-columns: 240px 1fr 280px;
+            /* Sidebar, Form, Advisory */
+            gap: 2.5rem;
+            align-items: flex-start;
         }
 
         /* Sidebar gauche - Indicateur de progression */
         .progress-sidebar {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 2rem 1.5rem;
+            background: transparent;
+            border: none;
+            padding: 0;
             height: fit-content;
             position: sticky;
             top: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 3.5rem;
         }
 
         .progress-step {
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 2rem;
+            align-items: center;
             position: relative;
-        }
-
-        .progress-step:last-child {
-            margin-bottom: 0;
         }
 
         .progress-step:not(:last-child)::after {
             content: '';
             position: absolute;
-            left: 12px;
+            left: 16px;
             top: 32px;
+            bottom: -3.5rem;
             width: 2px;
-            height: calc(100% + 0.5rem);
-            background: #e0e0e0;
+            background-color: #f0f0f0;
+            z-index: 0;
         }
 
-        .progress-step.active:not(:last-child)::after {
-            background: #193D23;
+        .progress-step.completed:not(:last-child)::after {
+            background-color: #00A400;
         }
 
         .step-circle {
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             border: 2px solid #e0e0e0;
             background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 1rem;
+            margin-right: 1.25rem;
             flex-shrink: 0;
             position: relative;
             z-index: 1;
+            transition: all 0.3s ease;
         }
 
         .progress-step.active .step-circle {
-            border-color: #193D23;
-            background: #193D23;
+            border-color: #00A400;
+            background: white;
         }
 
         .progress-step.completed .step-circle {
-            border-color: #193D23;
-            background: #193D23;
+            border-color: #00A400;
+            background: #00A400;
         }
 
         .step-dot {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            background: white;
+            background: #00A400;
             display: none;
         }
 
@@ -311,46 +98,70 @@
             display: block;
         }
 
+        .step-check {
+            color: white;
+            font-size: 14px;
+            display: none;
+        }
+
+        .progress-step.completed .step-check {
+            display: block;
+        }
+
         .step-content {
             flex: 1;
-        }
-
-        .step-title {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #333;
-            margin-bottom: 0.25rem;
-        }
-
-        .progress-step.active .step-title {
-            color: #193D23;
+            padding-top: 2px;
         }
 
         .step-number {
-            font-size: 0.75rem;
-            color: #666;
-            font-weight: 500;
+            font-size: 0.7rem;
+            color: #888;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+            display: block;
         }
 
         .progress-step.active .step-number {
-            color: #193D23;
+            color: #555;
+        }
+
+        .step-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #888;
+            line-height: 1.2;
+        }
+
+        .progress-step.active .step-title {
+            color: #222;
+        }
+
+        .progress-step.completed .step-title,
+        .progress-step.completed .step-number {
+            color: #00A400;
         }
 
         /* Contenu principal */
         .form-content {
             background: white;
-            border-radius: 8px;
-            padding: 3rem;
+            border-radius: 12px;
+            padding: 2.25rem 2.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eeeeee;
+            max-width: 600px;
         }
 
         .form-title {
-            font-size: 1.75rem;
+            font-size: 1.4rem;
             font-weight: 600;
-            color: #333;
+            color: #222;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            line-height: 1.2;
         }
 
         .form-instructions {
@@ -358,170 +169,314 @@
         }
 
         .instruction-text {
-            font-size: 0.95rem;
-            color: #666;
-            line-height: 1.6;
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
             margin-bottom: 0.5rem;
         }
 
         .instruction-text strong {
-            color: #193D23;
+            color: #00A400;
             font-weight: 600;
         }
 
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: 1.75rem;
         }
 
         .form-label {
             display: block;
             font-weight: 500;
             color: #333;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
+            margin-bottom: 0.65rem;
+            font-size: 0.875rem;
         }
 
-        .form-input {
+        .form-input,
+        select.form-input,
+        textarea.form-input {
             width: 100%;
-            padding: 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 1rem;
+            max-width: 480px;
+            padding: 0.65rem 1rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
             font-family: inherit;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s ease;
+            background: white;
         }
 
-        .form-input:focus {
-            border-color: #193D23;
+        .form-input:focus,
+        select.form-input:focus,
+        textarea.form-input:focus {
+            border-color: black;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            min-height: 120px;
         }
 
         .form-input-wrapper {
             position: relative;
         }
 
-        .char-counter {
-            position: absolute;
-            bottom: 0.75rem;
-            right: 1rem;
-            font-size: 0.85rem;
-            color: #999;
-        }
-
-        .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 3rem;
-        }
-
-        .btn {
-            padding: 0.75rem 2rem;
+        .product-summary-box {
+            background: #fafafa;
+            padding: 0.85rem 1.25rem;
             border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border: 1px solid #f0f0f0;
+        }
+
+        .product-summary-name {
             font-size: 1rem;
             font-weight: 500;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-        }
-
-        .btn-primary {
-            background: #193D23;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #0f2415;
-        }
-
-        .btn-secondary {
-            background: #e0e0e0;
             color: #333;
         }
 
-        .btn-secondary:hover {
-            background: #d0d0d0;
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Étapes du formulaire */
-        .form-step {
-            display: none;
-        }
-
-        .form-step.active {
-            display: block;
-        }
-
-        .step-indicator {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 2rem;
-            font-size: 0.85rem;
+        .product-summary-edit {
             color: #666;
-        }
-
-        /* Upload d'images */
-        .image-upload-area {
-            border: 2px dashed #e0e0e0;
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
-            background: #f9f9f9;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: color 0.25s ease;
         }
 
-        .image-upload-area:hover {
-            border-color: #193D23;
-            background: #f5f5f5;
+        .product-summary-edit:hover {
+            color: #008400;
         }
 
-        .image-upload-area.dragover {
-            border-color: #193D23;
-            background: #f0f0f0;
+        /* Category Badges Styling */
+        .category-badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
         }
 
-        .image-upload-icon {
-            width: 48px;
-            height: 48px;
-            margin: 0 auto 1rem;
-            color: #999;
+        .category-badge-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 1rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 50px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #444;
         }
 
-        .image-upload-text {
-            color: #666;
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
+        .category-badge-item:hover {
+            border-color: #000;
+            background: #fafafa;
         }
 
-        .image-upload-hint {
-            color: #999;
-            font-size: 0.85rem;
+        .category-badge-item.selected {
+            border-color: #000;
+            background: #fff;
+            color: #000;
+            border-width: 1px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
-        .image-preview-container {
+        .category-badge-icon svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .suggestion-cards {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            grid-template-columns: 1fr;
             gap: 1rem;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .suggestion-card {
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 0.85rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            text-align: left;
+            width: 100%;
+        }
+
+        .suggestion-card:hover {
+            border-color: #000;
+            background: #fcfcfc;
+        }
+
+        .suggestion-card.selected {
+            border-color: #000;
+            background: #fff;
+            border-width: 2px;
+        }
+
+        .radio-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            position: relative;
+        }
+
+        .suggestion-card.selected .radio-circle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: #000;
+            border-radius: 50%;
+            border: 1.5px solid white;
+            box-shadow: 0 0 0 1.5px #000;
+        }
+
+        .suggestion-card-content {
+            flex: 1;
+        }
+
+        .suggestion-card-title {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .selection-summary-box {
+            background: #fdfdfd;
+            border: 1px dashed #ccc;
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .selection-summary-text {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .selection-summary-path {
+            font-weight: 600;
+            color: #000;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Step 3 Styles */
+        .status-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .status-card {
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: white;
+            font-size: 0.9rem;
+            color: #444;
+            position: relative;
+        }
+
+        .status-card:hover {
+            border-color: #000;
+        }
+
+        .status-card.selected {
+            border-color: #000;
+            border-width: 1px;
+            background: #fff;
+        }
+
+        .status-card.selected .radio-circle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            background: #00A400;
+            border-radius: 50%;
+            border: 1.5px solid white;
+            box-shadow: 0 0 0 1.5px #00A400;
+        }
+
+        .photo-grid-system {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 110px));
+            gap: 12px;
+            margin-top: 0.5rem;
+        }
+
+        .photo-upload-box {
+            width: 110px;
+            height: 110px;
+            border: 1.5px dashed #ccc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: #fdfdfd;
+            transition: all 0.2s ease;
+        }
+
+        .photo-upload-box:hover {
+            border-color: #00A400;
+            background: #fafffa;
+        }
+
+        .upload-box-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 6px;
+            color: #555;
+            font-size: 0.75rem;
+            padding: 5px;
+        }
+
+        .upload-box-content svg {
+            width: 24px;
+            height: 24px;
+            color: #888;
         }
 
         .image-preview-item {
+            width: 110px;
+            height: 110px;
             position: relative;
-            aspect-ratio: 1;
             border-radius: 8px;
             overflow: hidden;
-            border: 2px solid #e0e0e0;
-        }
-
-        .image-preview-item.main {
-            border-color: #193D23;
-            border-width: 3px;
+            border: 1px solid #e0e0e0;
         }
 
         .image-preview-item img {
@@ -530,649 +485,766 @@
             object-fit: cover;
         }
 
-        .image-preview-actions {
+        .remove-photo-btn {
             position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .image-preview-btn {
-            width: 28px;
-            height: 28px;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
             border-radius: 50%;
-            border: none;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.75rem;
-            transition: background 0.2s;
+            cursor: pointer;
+            color: #333;
+            font-size: 14px;
+            z-index: 5;
+            padding: 0;
+            line-height: 1;
         }
 
-        .image-preview-btn:hover {
-            background: rgba(0, 0, 0, 0.8);
+        .remove-photo-btn:hover {
+            background: #fff;
+            color: #ff0000;
+            border-color: #ff0000;
         }
 
-        .image-preview-main-badge {
-            position: absolute;
-            bottom: 0.5rem;
-            left: 0.5rem;
-            background: #193D23;
+        /* Advisory Box */
+        .advisory-container {
+            position: sticky;
+            top: 2rem;
+            display: none;
+        }
+
+        .advisory-container.active {
+            display: block;
+        }
+
+        .advisory-box {
+            width: 280px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .advisory-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .advisory-text {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: black;
             color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.75rem;
+        }
+
+        .btn-primary:hover {
+            background: #333;
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e5e5;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .modal-title {
+            font-size: 1.15rem;
             font-weight: 500;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            color: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .modal-back {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: #666;
+            padding: 0.5rem;
+            position: absolute;
+            left: 0;
+            border-radius: 50%;
+        }
+
+        .subcategory-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            max-height: 350px;
+            overflow-y: auto;
+        }
+
+        .subcategory-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1.25rem;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            width: 100%;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .subcategory-item:hover {
+            border-color: #000;
+            background: #fafafa;
         }
 
         .file-input-hidden {
             display: none;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 @endpush
-    @section('content')
 
-            <div class="create-annonce-container">< !-- Sidebar gauche - Indicateur de progression --><aside class="progress-sidebar"><div class="progress-step active" data-step="1"><div class="step-circle"><div class="step-dot"></div></div><div class="step-content"><div class="step-number">ETAPE 1</div><div class="step-title">Votre annonce</div></div></div><div class="progress-step" data-step="2"><div class="step-circle"></div><div class="step-content"><div class="step-number">ETAPE 2</div><div class="step-title">Caractéristiques</div></div></div><div class="progress-step" data-step="3"><div class="step-circle"></div><div class="step-content"><div class="step-number">ETAPE 3</div><div class="step-title">Description</div></div></div><div class="progress-step" data-step="4"><div class="step-circle"></div><div class="step-content"><div class="step-number">ETAPE 4</div><div class="step-title">Caractéristiques</div></div></div><div class="progress-step" data-step="5"><div class="step-circle"></div><div class="step-content"><div class="step-number">ETAPE 5</div><div class="step-title">Livraison</div></div></div><div class="progress-step" data-step="6"><div class="step-circle"></div><div class="step-content"><div class="step-number">ETAPE 6</div><div class="step-title">Options & Publication</div></div></div></aside>< !-- Contenu principal --><main class="form-content"><form id="createAnnonceForm" method="POST" action="{{ route('annonces.update', $annonce) }}"
-            enctype="multipart/form-data">@csrf @method('PUT') <input type="hidden" name="type" value="produit"><input type="hidden" id="currentStep" value="1">< !-- Étape 1: Votre annonce --><div class="form-step active" id="step1"><h1 class="form-title">Modifier votre annonce 👋 </h1><div class="form-instructions"><p class="instruction-text">Indiquez quelques <strong>caractéristiques</strong>de votre produit pour faciliter sa recherche dans notre catalogue. </p><p class="instruction-text">Ne précisez pas l'état de votre produit, cette information vous sera demandée
-         ultérieurement. </p></div><div class="form-group"><label for="product_name" class="form-label">Nom du produit</label><div class="form-input-wrapper"><input type="text" id="product_name" name="titre" class="form-input"
-            placeholder="Nom ou code barre du produit" maxlength="200"
-            value="{{ old('titre', $annonce->titre) }}" required><span class="char-counter"><span id="charCount">0</span>/200 </span></div></div><div class="form-actions"><button type="button" class="btn btn-secondary" onclick="window.history.back()">Annuler </button><button type="button" class="btn btn-primary" onclick="nextStep()">Continuer </button></div></div>< !-- Étape 2: Caractéristiques --><div class="form-step" id="step2"><h1 class="form-title">Caractéristiques du produit </h1><div class="form-instructions"><p class="instruction-text">Décrivez les caractéristiques principales de votre produit. </p></div><div class="form-group"><label for="categorie_id" class="form-label">Catégorie <span style="color: #193D23;">*</span></label><select id="categorie_id" name="categorie_id" class="form-input" required><option value="">Sélectionnez une catégorie</option>
-            @foreach($categories as $categorie)
-                <option value="{{ $categorie->id }}"
-                {{ old('categorie_id', $annonce->categorie_id) == $categorie->id ? 'selected' : '' }}
-                >{{ $categorie->nom }} </option>
-                @if($categorie->enfantsActifs && $categorie->enfantsActifs->count() > 0)
-                    @foreach($categorie->enfantsActifs as $enfant)
-                        <option value="{{ $enfant->id }}"
-                        {{ old('categorie_id', $annonce->categorie_id) == $enfant->id ? 'selected' : '' }}
-                        >&nbsp;
-                        &nbsp;
-                        →
-                        {{ $enfant->nom }}
-            </option>@endforeach @endif @endforeach </select></div><div class="form-group"><label for="prix" class="form-label">Prix (€) <span style="color: #193D23;">*</span></label><input type="number" id="prix" name="prix" class="form-input" placeholder="0.00" step="0.01"
-            min="0" value="{{ old('prix', $annonce->prix) }}" required></div><div class="form-group"><label for="prix_moyen_marche" class="form-label">Prix moyen du marché (€)</label><input type="number" id="prix_moyen_marche" name="prix_moyen_marche" class="form-input"
-            placeholder="Optionnel" step="0.01" min="0"
-            value="{{ old('prix_moyen_marche', $annonce->produit->prix_moyen_marche ?? '') }}"><small style="color: #666; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Prix moyen du marché pour référence (optionnel) </small></div><div class="form-actions"><button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent </button><button type="button" class="btn btn-primary" onclick="nextStep()">Continuer </button></div></div>< !-- Étape 3: Description et Photos --><div class="form-step" id="step3"><h1 class="form-title">Description du produit </h1><div class="form-instructions"><p class="instruction-text">Décrivez votre produit en détail pour attirer les acheteurs. </p></div><div class="form-group"><label for="description" class="form-label">Description</label><textarea id="description" name="description" class="form-input" rows="6"
-            placeholder="Décrivez votre produit..."
-            required>{{ old('description', $annonce->description) }}</textarea></div><div class="form-group"><label class="form-label">Photos du produit <span style="color: #193D23;">*</span></label>
-            @php use Illuminate\Support\Facades\Storage; @endphp
-            @if($annonce->medias && $annonce->medias->count() > 0)
-                <div class="image-preview-container" id="existingImagesContainer" style="margin-bottom: 1rem;">
-                @foreach($annonce->medias as $media)
-                    <div class="image-preview-item {{ $media->est_principale ? 'main' : '' }}"
-                    data-media-id="{{ $media->id }}"><img src="{{ Storage::url($media->chemin) }}" alt="Photo existante"><div class="image-preview-actions">
-                    @if(!$media->est_principale)
-                        <button type="button" class="image-preview-btn"
-                        onclick="setMainExistingImage({{ $media->id }})"
-                    title="Définir comme photo principale">⭐</button>@endif <button type="button" class="image-preview-btn"
-                    onclick="removeExistingImage({{ $media->id }})" title="Supprimer">×</button></div>
-                    @if($media->est_principale)
-            <div class="image-preview-main-badge">Principale</div>@endif </div>@endforeach </div>@endif <div class="image-upload-area" id="imageUploadArea"
-            onclick="document.getElementById('photosInput').click()"><svg class="image-upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><div class="image-upload-text">Cliquez pour ajouter des photos ou glissez-déposez</div><div class="image-upload-hint">1-8 photos, formats JPG, PNG, WEBP (max 5 Mo chacune)</div></div><input type="file" id="photosInput" name="photos[]"
-            accept="image/jpeg,image/jpg,image/png,image/webp" multiple class="file-input-hidden"><input type="hidden" name="delete_media_ids" id="deleteMediaIds" value=""><div class="image-preview-container" id="imagePreviewContainer"></div></div><div class="form-actions"><button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent </button><button type="button" class="btn btn-primary" onclick="nextStep()">Continuer </button></div></div>< !-- Étape 4: Caractéristiques détaillées --><div class="form-step" id="step4"><h1 class="form-title">Caractéristiques détaillées </h1><div class="form-instructions"><p class="instruction-text">Ajoutez des détails supplémentaires sur votre produit pour aider les acheteurs. </p></div><div class="form-group"><label for="marque" class="form-label">Marque</label><input type="text" id="marque" name="marque" class="form-input" placeholder="Ex: Apple"
-            value="{{ old('marque', $annonce->produit->marque ?? '') }}"></div><div class="form-group"><label for="modele" class="form-label">Modèle</label><input type="text" id="modele" name="modele" class="form-input"
-            placeholder="Ex: iPhone 13 Pro Max"
-            value="{{ old('modele', $annonce->produit->modele ?? '') }}"></div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;"><div class="form-group"><label for="etat" class="form-label">État</label><select id="etat" name="etat" class="form-input"><option value="">Sélectionnez</option><option value="Neuf"
-            {{ old('etat', $annonce->produit->etat ?? '') == 'Neuf' ? 'selected' : '' }}
-            >Neuf</option><option value="Occasion"
-            {{ old('etat', $annonce->produit->etat ?? '') == 'Occasion' ? 'selected' : '' }}
-            >Occasion</option><option value="Reconditionné"
-            {{ old('etat', $annonce->produit->etat ?? '') == 'Reconditionné' ? 'selected' : '' }}
-            >Reconditionné</option></select></div><div class="form-group"><label for="quantite" class="form-label">Quantité</label><input type="number" id="quantite" name="quantite" class="form-input" placeholder="1"
-            min="1" value="{{ old('quantite', $annonce->produit->quantite ?? 1) }}"></div></div><div class="form-actions"><button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent </button><button type="button" class="btn btn-primary" onclick="nextStep()">Continuer </button></div></div>< !-- Étape 5: Livraison et Disponibilité --><div class="form-step" id="step5"><h1 class="form-title">Livraison et Disponibilité </h1><div class="form-instructions"><p class="instruction-text">Indiquez comment vous souhaitez expédier votre produit et sa disponibilité. </p></div><div class="form-group"><label for="type_livraison" class="form-label">Moyens d'expédition</label>
-         <select id="type_livraison" name="type_livraison" class="form-input"><option value="">Sélectionnez une option</option><option value="livraison"
-            {{ old('type_livraison', $annonce->type_livraison) == 'livraison' ? 'selected' : '' }}
-            >Livraison uniquement</option><option value="retrait"
-            {{ old('type_livraison', $annonce->type_livraison) == 'retrait' ? 'selected' : '' }}
-            >Retrait sur place uniquement</option><option value="les_deux"
-            {{ old('type_livraison', $annonce->type_livraison) == 'les_deux' ? 'selected' : '' }}
-            >Les deux (livraison et retrait)</option></select><small style="color: #666; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Indiquez comment vous souhaitez expédier votre produit. </small></div><div class="form-group"><label for="disponibilite" class="form-label">Disponibilité</label><select id="disponibilite" name="disponibilite" class="form-input"><option value="en_stock"
-            {{ old('disponibilite', $annonce->disponibilite) == 'en_stock' ? 'selected' : '' }}
-            >En stock</option><option value="rupture_stock"
-            {{ old('disponibilite', $annonce->disponibilite) == 'rupture_stock' ? 'selected' : '' }}
-            >Rupture de stock</option><option value="sur_commande"
-            {{ old('disponibilite', $annonce->disponibilite) == 'sur_commande' ? 'selected' : '' }}
-            >Sur commande</option></select></div><div class="form-actions"><button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent </button><button type="button" class="btn btn-primary" onclick="nextStep()">Continuer </button></div></div>< !-- Étape 6: Options payantes et Publication --><div class="form-step" id="step6"><h1 class="form-title">Options payantes et Publication </h1><div class="form-instructions"><p class="instruction-text">Choisissez des options pour mettre en avant votre annonce et décidez de sa publication. </p></div>
-            @if(isset($optionsDisponibles) && count($optionsDisponibles) > 0)
-                <div class="form-group" style="margin-bottom: 2rem;"><label class="form-label">Options payantes (optionnel)</label><div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-top: 0.5rem;">
-                @foreach($optionsDisponibles as $key => $option)
-                    <div style="margin-bottom: 1rem; display: flex; align-items: start; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e0e0e0;"><input type="checkbox" name="options[{{ $key }}]" id="option_{{ $key }}" value="1"
-                    style="margin-top: 0.25rem; width: 20px; height: 20px; cursor: pointer;"
-                    {{ old('options.' . $key, $annonce->options && $annonce->options->{$key} ? true : false) ? 'checked' : '' }}
-                    ><div style="flex: 1;"><label for="option_{{ $key }}"
-                    style="color: #333; font-weight: 500; cursor: pointer; display: block; margin-bottom: 0.25rem;">
-                    {{ $option['nom'] }}
-                    -
-                    {{ number_format($option['prix'], 0, ',', ' ') }}
-                    €
-                    @if($option['duree'])
-            ({{ $option['duree'] }} jours) @endif </label><p style="color: #666; font-size: 0.875rem; margin: 0;">{{ $option['description'] }} </p></div></div>@endforeach </div></div>@endif <div class="form-group"><label for="statut" class="form-label">Statut de publication</label><select id="statut" name="statut" class="form-input"><option value="brouillon"
-            {{ old('statut', $annonce->statut) == 'brouillon' ? 'selected' : '' }}
-            >Enregistrer en brouillon</option><option value="publiee"
-            {{ old('statut', $annonce->statut) == 'publiee' ? 'selected' : '' }}
-    >Publier immédiatement</option></select><small style="color: #666; font-size: 0.875rem; margin-top: 0.5rem; display: block;">Vous pourrez publier votre annonce plus tard depuis votre tableau de bord. </small></div><div class="form-actions"><button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent </button><button type="submit" class="btn btn-primary" id="submitButton">Enregistrer les modifications </button></div></div></form></main></div>@endsection @push('scripts') <script>let currentStep=1;
-        const totalSteps=6;
+@section('content')
+    <div class="create-annonce-container">
+        <!-- Sidebar gauche - Indicateur de progression -->
+        <aside class="progress-sidebar">
+            <div class="progress-step active" data-step="1">
+                <div class="step-circle">
+                    <div class="step-dot"></div>
+                    <div class="step-check">✓</div>
+                </div>
+                <div class="step-content">
+                    <div class="step-number">ETAPE 1</div>
+                    <div class="step-title">Votre annonce</div>
+                </div>
+            </div>
+            <div class="progress-step" data-step="2">
+                <div class="step-circle">
+                    <div class="step-dot"></div>
+                    <div class="step-check">✓</div>
+                </div>
+                <div class="step-content">
+                    <div class="step-number">ETAPE 2</div>
+                    <div class="step-title">Catégories</div>
+                </div>
+            </div>
+            <div class="progress-step" data-step="3">
+                <div class="step-circle">
+                    <div class="step-dot"></div>
+                    <div class="step-check">✓</div>
+                </div>
+                <div class="step-content">
+                    <div class="step-number">ETAPE 3</div>
+                    <div class="step-title">Description</div>
+                </div>
+            </div>
+            <div class="progress-step" data-step="4">
+                <div class="step-circle">
+                    <div class="step-dot"></div>
+                    <div class="step-check">✓</div>
+                </div>
+                <div class="step-content">
+                    <div class="step-number">ETAPE 4</div>
+                    <div class="step-title">Moyens d'expédition</div>
+                </div>
+            </div>
+        </aside>
 
-        // Initialisation au chargement de la page
-        document.addEventListener('DOMContentLoaded', function () {
+        <!-- Contenu principal -->
+        <main class="form-content">
+            <form id="createAnnonceForm" method="POST" action="{{ route('annonces.update', $annonce) }}" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="type" value="produit">
+                <input type="hidden" id="current_step_input" name="current_step" value="{{ old('current_step', 1) }}">
 
-                // S'assurer que seule l'étape 1 est visible
-                document.querySelectorAll('.form-step').forEach((step, index)=> {
-                        if (index===0) {
-                            step.classList.add('active');
-                        }
+                @if ($errors->any())
+                    <div class="alert alert-danger" style="background: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 1rem; border-radius: 8px; margin-bottom: 2rem;">
+                        <h4 style="font-weight: 700; margin-bottom: 0.5rem;">Veuillez corriger les erreurs suivantes :</h4>
+                        <ul style="list-style-position: inside;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-                        else {
-                            step.classList.remove('active');
-                        }
-                    });
+                <!-- Étape 1: Votre annonce -->
+                <div class="form-step active" id="step1">
+                    <h1 class="form-title">👋 Modifier votre annonce</h1>
+                    <div class="form-instructions">
+                        <p class="instruction-text">Mettez à jour le nom de votre produit.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="product_name" class="form-label">Nom du produit</label>
+                        <div class="form-input-wrapper">
+                            <input type="text" id="product_name" name="titre" class="form-input"
+                                placeholder="Nom ou code barre du produit" maxlength="200" required value="{{ old('titre', $annonce->titre) }}">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer</button>
+                    </div>
+                </div>
 
-                // Compteur de caractères
-                const productNameInput=document.getElementById('product_name');
-                const charCount=document.getElementById('charCount');
+                <!-- Étape 2: Catégories -->
+                <div class="form-step" id="step2">
+                    <h1 class="form-title">📦 Catégories</h1>
 
-                if (productNameInput && charCount) {
-                    // Initialiser le compteur avec la valeur existante
-                    charCount.textContent=productNameInput.value.length;
+                    <div class="product-summary-box">
+                        <span id="summary_product_name" class="product-summary-name">{{ $annonce->titre }}</span>
+                        <div class="product-summary-edit" onclick="previousStep()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        </div>
+                    </div>
 
-                    productNameInput.addEventListener('input', function () {
-                            charCount.textContent=this.value.length;
-                        });
+                    <div class="form-group">
+                        <label class="form-label" style="font-size: 0.9rem; font-weight: 500; color: #666;">Catégorie de l'article</label>
+                        <input type="hidden" id="categorie_id" name="categorie_id" value="{{ old('categorie_id', $annonce->categorie_id) }}" required>
+
+                        <div class="category-badges-container">
+                            @php
+                                $rootCatId = null;
+                                $curr = $annonce->category;
+                                while($curr && $curr->parent_id) {
+                                    $curr = $curr->parent;
+                                }
+                                $rootCatId = $curr ? $curr->id : null;
+
+                                $icons = [
+                                    'E-commerce' => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>',
+                                    'Services' => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>',
+                                    'Immobilier' => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>',
+                                    'Véhicules' => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="13" width="22" height="8" rx="2"></rect><path d="M7 13V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7"></path></svg>'
+                                ];
+                            @endphp
+                            @foreach($categories->where('parent_id', null) as $categorie)
+                                <div class="category-badge-item main-cat-badge {{ $rootCatId == $categorie->id ? 'selected' : '' }}" data-id="{{ $categorie->id }}"
+                                    onclick="selectMainCategory(this, {{ $categorie->id }})">
+                                    <span class="category-badge-icon">
+                                        @if($categorie->icone)
+                                            {!! $categorie->icone !!}
+                                        @else
+                                            {!! $icons[$categorie->nom] ?? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="16" y2="12"></line><line x1="12" x2="12.01" y1="8" y2="8"></line></svg>' !!}
+                                        @endif
+                                    </span>
+                                    {{ $categorie->nom }}
+                                </div>
+                            @endforeach
+                        </div>
+
+                        <div id="level2Section" style="display:none; margin-top: 2rem;">
+                            <label class="form-label" style="font-size: 0.9rem; font-weight: 500; color: #666; margin-bottom: 1rem; display: block;">Choisissez une sous-catégorie</label>
+                            <div id="level2Cards" class="suggestion-cards">
+                                <!-- Level 2 cards will be injected here -->
+                            </div>
+                        </div>
+
+                        <div id="finalSelectionSummary" style="display:none;">
+                            <div class="selection-summary-box">
+                                <div class="selection-summary-text">
+                                    Catégorie sélectionnée :
+                                    <span id="finalCategoryPath" class="selection-summary-path"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer</button>
+                    </div>
+                </div>
+
+                <!-- Étape 3: Description et Photos -->
+                <div class="form-step" id="step3">
+                    <h1 class="form-title">✍️ Précisions et Photos</h1>
+
+                    <div class="product-summary-box">
+                        <span class="product-summary-name-s3" id="summary_product_name_s3">{{ $annonce->titre }}</span>
+                        <div class="product-summary-edit" onclick="previousStep()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div id="productConditionGroup" class="form-group" style="margin-top: 1.5rem;">
+                        <label class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">État du produit</label>
+                        <input type="hidden" id="etat_produit" name="etat" value="{{ old('etat', $annonce->produit->etat ?? 'Bon état') }}" required>
+                        <div class="status-cards-grid">
+                            @foreach(['Neuf', 'Comme neuf', 'Très bon état', 'Bon état', 'Etat correct', 'Hors service'] as $st)
+                                <div class="status-card {{ old('etat', $annonce->produit->etat ?? 'Bon état') == $st ? 'selected' : '' }}" onclick="selectStatus(this, '{{ $st }}')">
+                                    <div class="radio-circle"></div>
+                                    {{ $st }}
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label class="form-label" style="font-size: 0.95rem; font-weight: 700; color: #000; margin-bottom: 1rem; display: block;">
+                            Photos du produit <span id="photoCountDisplay" style="color: #666; font-weight: 500; margin-left: 0.5rem;">0 sur 8</span>
+                        </label>
+
+                        <div class="photo-grid-system" id="photoGrid">
+                            @if($annonce->photos->count() > 0)
+                                @foreach($annonce->photos as $photo)
+                                    <div class="image-preview-item existing-photo" data-media-id="{{ $photo->id }}" id="media-{{ $photo->id }}">
+                                        <img src="{{ asset('storage/' . $photo->chemin) }}">
+                                        <button type="button" class="remove-photo-btn" onclick="markExistingForDeletion({{ $photo->id }})">×</button>
+                                    </div>
+                                @endforeach
+                            @endif
+
+                            <div class="photo-upload-box" onclick="document.getElementById('photosInput').click()" id="uploadTrigger">
+                                <div class="upload-box-content">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                    </svg>
+                                    <span>Ajouter une image</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="delete_media_ids" id="deleteMediaIds" value="">
+
+                        <input type="file" id="photosInput" name="photos[]" accept="image/jpeg,image/jpg,image/png,image/webp" multiple class="file-input-hidden" onchange="handleFiles(this.files)">
+                    </div>
+
+                    <div class="form-group" style="margin-top: 2rem;">
+                        <label for="description" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Description de l'annonce</label>
+                        <textarea id="description" name="description" class="form-input" rows="5" placeholder="Description" required>{{ old('description', $annonce->description) }}</textarea>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label for="prix" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Prix de vente (FCFA)</label>
+                            <input type="number" id="prix" name="prix" class="form-input" placeholder="Ex: 5000" min="0" required value="{{ old('prix', $annonce->prix) }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="quantite" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Quantité</label>
+                            <input type="number" id="quantite" name="quantite" class="form-input" placeholder="Ex: 1" min="1" required value="{{ old('quantite', $annonce->produit->quantite ?? 1) }}">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer</button>
+                    </div>
+                </div>
+
+                <!-- Étape 4: Expédition -->
+                <div class="form-step" id="step4">
+                    <h1 class="form-title">🚚 Expédition et Publication</h1>
+                    
+                    <div class="form-group">
+                        <label class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 1rem; display: block;">Moyens d'expédition *</label>
+                        <input type="hidden" id="type_livraison" name="type_livraison" value="{{ old('type_livraison', $annonce->type_livraison ?? 'livraison_domicile') }}" required>
+                        <div class="status-cards-grid">
+                            <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'livraison_domicile') == 'retrait_boutique' ? 'selected' : '' }}" onclick="selectShipping(this, 'retrait_boutique')">
+                                <div class="radio-circle"></div>
+                                Retrait en boutique
+                            </div>
+                            <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'livraison_domicile') == 'livraison_domicile' ? 'selected' : '' }}" onclick="selectShipping(this, 'livraison_domicile')">
+                                <div class="radio-circle"></div>
+                                Livraison à domicile
+                            </div>
+                            <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'livraison_domicile') == 'livraison_point_relais' ? 'selected' : '' }}" onclick="selectShipping(this, 'livraison_point_relais')">
+                                <div class="radio-circle"></div>
+                                Livraison en point relais
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 3rem; border-top: 1px solid #eee; padding-top: 2rem;">
+                        <h2 style="font-size: 1.1rem; font-weight: 700; color: #000; margin-bottom: 1.5rem;">Mes coordonnées</h2>
+                        <div class="form-group">
+                            <label for="user_phone" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Numéro de téléphone</label>
+                            <input type="tel" id="user_phone" name="user_phone" class="form-input" value="{{ old('user_phone', $annonce->vendeur->user->telephone ?? auth()->user()->telephone ?? '') }}" placeholder="Ex: +221 77...">
+                        </div>
+                        <div class="form-group">
+                            <label for="code_postal" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Code postal</label>
+                            <input type="text" id="code_postal" name="code_postal" class="form-input" placeholder="Ex: 12000" value="{{ old('code_postal', $annonce->code_postal ?? '') }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="statut" class="form-label">Statut de publication</label>
+                        <select id="statut" name="statut" class="form-input">
+                            <option value="brouillon" {{ $annonce->statut == 'brouillon' ? 'selected' : '' }}>Brouillon</option>
+                            <option value="publiee" {{ $annonce->statut == 'publiee' ? 'selected' : '' }}>Publiée</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent</button>
+                        <button type="submit" class="btn btn-primary" id="submitButton">Enregistrer les modifications</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+
+        <div id="advisoryArea" class="advisory-container">
+            <div id="advisoryContentStep2" class="advisory-box">
+                <h3 class="advisory-title">Catégories détaillées</h3>
+                <p class="advisory-text">Une catégorie précise aide les acheteurs à trouver votre produit plus facilement.</p>
+            </div>
+            <div id="advisoryContentStep3" class="advisory-box" style="display: none;">
+                <h3 class="advisory-title">L'importance des photos</h3>
+                <p class="advisory-text">Des photos claires et sous différents angles augmentent considérablement vos chances de vente.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sous-catégories -->
+    <div id="subcategoryModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSubcategoryModal()">&times;</button>
+            <h2 class="modal-title">
+                <button id="modalBackBtn" class="modal-back" onclick="goBackInModal()">←</button>
+                <span id="modalTitleText">Choisir une sous-catégorie</span>
+            </h2>
+            <div id="subcategoryList" class="subcategory-list"></div>
+        </div>
+    </div>
+
+    <script>
+        var currentStep = parseInt("{{ old('current_step', 1) }}");
+        var totalSteps = 4;
+        var uploadedImages = [];
+        var deletedMediaIds = [];
+        var selectedParentId = null;
+        var modalHistory = [];
+
+        const categoriesData = {
+            @foreach($categories as $cat)
+                {{ $cat->id }}: {
+                    id: {{ $cat->id }},
+                    nom: "{{ $cat->nom }}",
+                    parent_id: {{ $cat->parent_id ?? 'null' }},
+                    famille: "{{ $cat->famille }}",
+                    children: [
+                        @if($cat->enfantsActifs)
+                            @foreach($cat->enfantsActifs as $enfant)
+                                { id: {{ $enfant->id }}, nom: "{{ $enfant->nom }}" },
+                            @endforeach
+                        @endif
+                    ]
+                },
+            @endforeach
+        };
+
+        function selectMainCategory(el, id) {
+            document.querySelectorAll('.main-cat-badge').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('level2Section').style.display = 'block';
+            document.getElementById('finalSelectionSummary').style.display = 'none';
+            renderInlineChildren(id, 'level2Cards');
+        }
+
+        function renderInlineChildren(parentId, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            const cat = categoriesData[parentId];
+            if (cat && cat.children.length > 0) {
+                cat.children.forEach(child => {
+                    const card = document.createElement('div');
+                    card.className = `suggestion-card ${containerId === 'level2Cards' ? 'level2-card' : 'level3-card'}`;
+                    // Selection state
+                    if (document.getElementById('categorie_id').value == child.id) card.classList.add('selected');
+
+                    card.innerHTML = `
+                        <div class="radio-circle"></div>
+                        <div class="suggestion-card-content">
+                            <span class="suggestion-card-title">${child.nom}</span>
+                        </div>
+                    `;
+                    card.onclick = () => {
+                        if (containerId === 'level2Cards') selectLevel2Category(card, child.id);
+                        else selectLevel3Category(card, child.id);
+                    };
+                    container.appendChild(card);
+                });
+            }
+        }
+
+        function selectLevel2Category(el, id) {
+            document.querySelectorAll('.level2-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            const cat = categoriesData[id];
+            if (cat && cat.children.length > 0) openSubcategoryModalWithParent(id);
+            else finalizeSelection(id);
+        }
+
+        function openSubcategoryModalWithParent(parentId) {
+            selectedParentId = parentId;
+            modalHistory = [parentId];
+            renderSubcategories(parentId);
+            document.getElementById('subcategoryModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function renderSubcategories(parentId) {
+            const list = document.getElementById('subcategoryList');
+            const cat = categoriesData[parentId];
+            const backBtn = document.getElementById('modalBackBtn');
+            const titleText = document.getElementById('modalTitleText');
+            titleText.textContent = cat.nom;
+            backBtn.style.display = modalHistory.length > 1 ? 'block' : 'none';
+            list.innerHTML = '';
+            cat.children.forEach(child => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'subcategory-item';
+                if (document.getElementById('categorie_id').value == child.id) btn.classList.add('active');
+                btn.innerHTML = `<span>${child.nom}</span>`;
+                if (categoriesData[child.id] && categoriesData[child.id].children.length > 0) {
+                    btn.onclick = () => { modalHistory.push(child.id); renderSubcategories(child.id); };
+                    btn.innerHTML += '<span style="color: #ccc;">→</span>';
+                } else {
+                    btn.onclick = () => { finalizeSelection(child.id); closeSubcategoryModal(); };
+                    btn.innerHTML += '<div class="radio-circle"></div>';
                 }
-
-                // Initialiser les éléments d'upload d'images
-                photosInput=document.getElementById('photosInput');
-                imagePreviewContainer=document.getElementById('imagePreviewContainer');
-                imageUploadArea=document.getElementById('imageUploadArea');
-
-                if (photosInput && imagePreviewContainer && imageUploadArea) {
-                    photosInput.addEventListener('change', function (e) {
-                            handleFiles(Array.from(e.target.files));
-                        });
-
-                    // Drag and drop
-                    imageUploadArea.addEventListener('dragover', function (e) {
-                            e.preventDefault();
-                            imageUploadArea.classList.add('dragover');
-                        });
-
-                    imageUploadArea.addEventListener('dragleave', function (e) {
-                            e.preventDefault();
-                            imageUploadArea.classList.remove('dragover');
-                        });
-
-                    imageUploadArea.addEventListener('drop', function (e) {
-                            e.preventDefault();
-                            imageUploadArea.classList.remove('dragover');
-                            const files=Array.from(e.dataTransfer.files).filter(file=> file.type.startsWith ('image/'));
-                            handleFiles(files);
-                        });
-                }
+                list.appendChild(btn);
             });
+        }
 
-        // Navigation entre les étapes
+        function finalizeSelection(id) {
+            document.getElementById('categorie_id').value = id;
+            const pathSpan = document.getElementById('finalCategoryPath');
+            let path = [];
+            let curr = categoriesData[id];
+            while (curr) { path.unshift(curr.nom); curr = categoriesData[curr.parent_id]; }
+            pathSpan.textContent = path.join(' > ');
+            document.getElementById('finalSelectionSummary').style.display = 'block';
+        }
+
         function nextStep() {
-            console.log('nextStep called, currentStep:', currentStep, 'totalSteps:', totalSteps);
-
-            // Valider l'étape actuelle
-            if ( !validateCurrentStep()) {
-                console.log('Validation failed, stopping');
-                return false;
+            if (!validateCurrentStep()) return;
+            if (currentStep >= totalSteps) { document.getElementById('createAnnonceForm').submit(); return; }
+            if (currentStep === 1) {
+                const val = document.getElementById('product_name').value;
+                document.getElementById('summary_product_name').textContent = val;
+                document.getElementById('summary_product_name_s3').textContent = val;
             }
-
-            // Vérifier qu'on n'est pas à la dernière étape
-            if (currentStep >=totalSteps) {
-                console.log('Already at last step, submitting form');
-                // Si on est à la dernière étape, soumettre le formulaire
-                document.getElementById('createAnnonceForm').submit();
-                return true;
-            }
-
-            // Masquer l'étape actuelle
-            const currentStepElement=document.getElementById('step' + currentStep);
-            const currentProgressStep=document.querySelector(`.progress-step[data-step="${currentStep}"]`);
-
-            if ( !currentStepElement) {
-                console.error('Current step element not found:', 'step' + currentStep);
-                alert('Erreur: étape actuelle introuvable');
-                return false;
-            }
-
-            currentStepElement.classList.remove('active');
-            console.log('Hidden step', currentStep);
-
-            if (currentProgressStep) {
-                currentProgressStep.classList.remove('active');
-            }
-
-            // Passer à l'étape suivante
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.querySelector(`.progress-sidebar [data-step="${currentStep}"]`).classList.replace('active', 'completed');
             currentStep++;
-            const currentStepInput=document.getElementById('currentStep');
-
-            if (currentStepInput) {
-                currentStepInput.value=currentStep;
-            }
-
-            // Afficher la nouvelle étape
-            const nextStepElement=document.getElementById('step' + currentStep);
-            const nextProgressStep=document.querySelector(`.progress-step[data-step="${currentStep}"]`);
-
-            if ( !nextStepElement) {
-                console.error('Next step element not found:', 'step' + currentStep);
-                alert('Erreur: étape suivante introuvable');
-                // Revenir en arrière
-                currentStep--;
-                currentStepElement.classList.add('active');
-                return false;
-            }
-
-            nextStepElement.classList.add('active');
-            console.log('Shown step', currentStep);
-
-            if (nextProgressStep) {
-                nextProgressStep.classList.add('active');
-            }
-
-            // Marquer l'étape précédente comme complétée
-            const prevProgressStep=document.querySelector(`.progress-step[data-step="${currentStep - 1}"]`);
-
-            if (prevProgressStep) {
-                prevProgressStep.classList.add('completed');
-            }
-
-            return true;
+            document.getElementById('step' + currentStep).classList.add('active');
+            document.querySelector(`.progress-sidebar [data-step="${currentStep}"]`).classList.add('active');
+            document.getElementById('current_step_input').value = currentStep;
+            toggleAdvisory(currentStep);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function previousStep() {
-            if (currentStep > 1) {
-                // Masquer l'étape actuelle
-                const currentStepElement=document.getElementById('step' + currentStep);
-                const currentProgressStep=document.querySelector(`.progress-step[data-step="${currentStep}"]`);
+            if (currentStep <= 1) return;
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.querySelector(`.progress-sidebar [data-step="${currentStep}"]`).classList.remove('active');
+            currentStep--;
+            document.getElementById('step' + currentStep).classList.add('active');
+            document.querySelector(`.progress-sidebar [data-step="${currentStep}"]`).classList.replace('completed', 'active');
+            document.getElementById('current_step_input').value = currentStep;
+            toggleAdvisory(currentStep);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-                if (currentStepElement) currentStepElement.classList.remove('active');
-                if (currentProgressStep) currentProgressStep.classList.remove('active');
-
-                // Revenir à l'étape précédente
-                currentStep--;
-                const currentStepInput=document.getElementById('currentStep');
-                if (currentStepInput) currentStepInput.value=currentStep;
-
-                // Afficher l'étape précédente
-                const prevStepElement=document.getElementById('step' + currentStep);
-                const prevProgressStep=document.querySelector(`.progress-step[data-step="${currentStep}"]`);
-
-                if (prevStepElement) prevStepElement.classList.add('active');
-                if (prevProgressStep) prevProgressStep.classList.add('active');
-
-                // Retirer le statut complété de l'étape suivante
-                const nextProgressStep=document.querySelector(`.progress-step[data-step="${currentStep + 1}"]`);
-                if (nextProgressStep) nextProgressStep.classList.remove('completed');
-            }
+        function toggleAdvisory(step) {
+            const area = document.getElementById('advisoryArea');
+            if (step === 2 || step === 3) {
+                area.classList.add('active');
+                document.getElementById('advisoryContentStep2').style.display = step === 2 ? 'block' : 'none';
+                document.getElementById('advisoryContentStep3').style.display = step === 3 ? 'block' : 'none';
+            } else area.classList.remove('active');
         }
 
         function validateCurrentStep() {
-            console.log('Validating step:', currentStep);
-
-            if (currentStep===1) {
-                const productNameInput=document.getElementById('product_name');
-
-                if ( !productNameInput) {
-                    console.error('product_name input not found');
-                    return false;
-                }
-
-                const productName=productNameInput.value.trim();
-
-                if ( !productName) {
-                    alert('Veuillez saisir le nom du produit.');
-                    productNameInput.focus();
-                    return false;
-                }
-
-                if (productName.length < 3) {
-                    alert('Le nom du produit doit contenir au moins 3 caractères.');
-                    productNameInput.focus();
-                    return false;
-                }
-
-                console.log('Step 1 validation passed');
+            if (currentStep === 1) return document.getElementById('product_name').value.trim().length >= 3;
+            if (currentStep === 2) return document.getElementById('categorie_id').value != "";
+            if (currentStep === 3) {
+                if (document.getElementById('description').value.trim().length < 10) return false;
+                if ((uploadedImages.length + document.querySelectorAll('.existing-photo').length) < 1) return false;
                 return true;
             }
-
-            else if (currentStep===2) {
-                const categorieInput=document.getElementById('categorie_id');
-                const prixInput=document.getElementById('prix');
-
-                if ( !categorieInput || !prixInput) {
-                    console.error('Step 2 inputs not found');
-                    return false;
-                }
-
-                const categorie=categorieInput.value;
-                const prix=prixInput.value;
-
-                if ( !categorie) {
-                    alert('Veuillez sélectionner une catégorie.');
-                    categorieInput.focus();
-                    return false;
-                }
-
-                if ( !prix || parseFloat(prix) <=0) {
-                    alert('Veuillez saisir un prix valide.');
-                    prixInput.focus();
-                    return false;
-                }
-
-                console.log('Step 2 validation passed');
-                return true;
-            }
-
-            else if (currentStep===3) {
-                const descriptionInput=document.getElementById('description');
-                const photosInput=document.getElementById('photosInput');
-
-                if ( !descriptionInput) {
-                    console.error('description input not found');
-                    return false;
-                }
-
-                const description=descriptionInput.value.trim();
-
-                if ( !description) {
-                    alert('Veuillez saisir une description.');
-                    descriptionInput.focus();
-                    return false;
-                }
-
-                if (description.length < 10) {
-                    alert('La description doit contenir au moins 10 caractères.');
-                    descriptionInput.focus();
-                    return false;
-                }
-
-                // Vérifier les fichiers uploadés ou les photos existantes
-                const existingImages=document.querySelectorAll('#existingImagesContainer .image-preview-item');
-                const hasExistingImages=existingImages.length>0;
-                const hasNewImages=(typeof uploadedImages !=='undefined' && uploadedImages.length > 0) || (photosInput && photosInput.files && photosInput.files.length > 0);
-
-                if ( !hasExistingImages && !hasNewImages) {
-                    alert('Veuillez ajouter au moins une photo du produit.');
-                    return false;
-                }
-
-                const totalFiles=(typeof uploadedImages !=='undefined' ? uploadedImages.length : 0)+(photosInput && photosInput.files ? photosInput.files.length : 0);
-
-                if (totalFiles > 8) {
-                    alert('Vous ne pouvez pas ajouter plus de 8 photos.');
-                    return false;
-                }
-
-                console.log('Step 3 validation passed');
-                return true;
-            }
-
-            else if (currentStep===4) {
-                // Validation de l'étape 4 (caractéristiques détaillées - optionnelles)
-                console.log('Step 4 validation passed');
-                return true;
-            }
-
-            else if (currentStep===5) {
-                // Validation de l'étape 5 (livraison et disponibilité - optionnelles)
-                console.log('Step 5 validation passed');
-                return true;
-            }
-
-            else if (currentStep===6) {
-                // Validation de l'étape 6 (options et statut - optionnelles)
-                console.log('Step 6 validation passed');
-                return true;
-            }
-
-            console.log('No validation for step:', currentStep);
             return true;
         }
 
-        // Gestion de l'upload d'images (variables globales)
-        let uploadedImages=[];
-        let mainImageIndex=0;
-        let photosInput,
-        imagePreviewContainer,
-        imageUploadArea;
-        let deletedMediaIds=[];
-
-        function setMainExistingImage(mediaId) {
-
-            // Marquer toutes les images existantes comme non principales
-            document.querySelectorAll('#existingImagesContainer .image-preview-item').forEach(item=> {
-                    item.classList.remove('main');
-                    const badge=item.querySelector('.image-preview-main-badge');
-                    if (badge) badge.remove();
-                });
-
-            // Marquer l'image sélectionnée comme principale
-            const selectedItem=document.querySelector(`[data-media-id="${mediaId}"]`);
-
-            if (selectedItem) {
-                selectedItem.classList.add('main');
-                const badge=document.createElement('div');
-                badge.className='image-preview-main-badge';
-                badge.textContent='Principale';
-                selectedItem.appendChild(badge);
-            }
-
-            // Note: La mise à jour réelle sera gérée lors de la soumission du formulaire
-            // Pour l'instant, on met juste à jour l'affichage visuel
-        }
-
-        function removeExistingImage(mediaId) {
-            if (confirm('Êtes-vous sûr de vouloir supprimer cette photo ?')) {
-                deletedMediaIds.push(mediaId);
-                document.getElementById('deleteMediaIds').value=deletedMediaIds.join(',');
-                document.querySelector(`[data-media-id="${mediaId}"]`).remove();
-            }
-        }
-
         function handleFiles(files) {
-            files.forEach(file=> {
-                    if (file.size > 5 * 1024 * 1024) {
-                        alert(`Le fichier $ {
-                                file.name
-                            }
-
-                            est trop volumineux (max 5 Mo)`);
-                        return;
-                    }
-
-                    const reader=new FileReader();
-
-                    reader.onload=function (e) {
-                        const imageData= {
-                            file: file,
-                            preview: e.target.result,
-                            index: uploadedImages.length
-                        }
-
-                        ;
-                        uploadedImages.push(imageData);
-                        renderImagePreview();
-                    }
-
-                    ;
-                    reader.readAsDataURL(file);
-                });
-        }
-
-        function renderImagePreview() {
-            if ( !imagePreviewContainer) return;
-            imagePreviewContainer.innerHTML='';
-
-            uploadedImages.forEach((imageData, index)=> {
-                    const previewItem=document.createElement('div');
-
-                    previewItem.className=`image-preview-item $ {
-                        index===mainImageIndex ? 'main' : ''
-                    }
-
-                    `;
-
-                    previewItem.innerHTML=` <img src="${imageData.preview}" alt="Preview" > <div class="image-preview-actions" > $ {
-                        index !==mainImageIndex ? `<button type="button" class="image-preview-btn" onclick="setMainImage(${index})" title="Définir comme photo principale" >⭐</button>` : ''
-                    }
-
-                    <button type="button" class="image-preview-btn" onclick="removeImage(${index})" title="Supprimer" >×</button> </div> $ {
-                        index===mainImageIndex ? '<div class="image-preview-main-badge">Principale</div>' : ''
-                    }
-
-                    `;
-                    imagePreviewContainer.appendChild(previewItem);
-                });
-
-            // Mettre à jour l'input file
-            updateFileInput();
-        }
-
-        function setMainImage(index) {
-            mainImageIndex=index;
-            renderImagePreview();
-        }
-
-        function removeImage(index) {
-            uploadedImages.splice(index, 1);
-
-            if (mainImageIndex >=uploadedImages.length) {
-                mainImageIndex=0;
-            }
-
-            else if (mainImageIndex > index) {
-                mainImageIndex--;
-            }
-
-            renderImagePreview();
-        }
-
-        function updateFileInput() {
-            if ( !photosInput) {
-                console.warn('photosInput not found');
-                return;
-            }
-
-            // Créer un nouveau FileList avec les fichiers uploadés
-            // Note: DataTransfer n'est pas toujours disponible, on utilise une approche alternative
-            if (typeof DataTransfer !=='undefined') {
-                try {
-                    const dt=new DataTransfer();
-
-                    uploadedImages.forEach(imageData=> {
-                            if (imageData && imageData.file) {
-                                dt.items.add(imageData.file);
-                            }
-                        });
-                    photosInput.files=dt.files;
-                    console.log('File input updated with', dt.files.length, 'files');
-                }
-
-                catch (e) {
-                    console.warn('DataTransfer not supported:', e);
-                    // Si DataTransfer n'est pas supporté, les fichiers dans uploadedImages
-                    // devront être gérés côté serveur différemment
-                }
-            }
-
-            else {
-                console.warn('DataTransfer not available');
-            }
-        }
-
-        // Validation finale avant soumission
-        const form=document.getElementById('createAnnonceForm');
-        const submitButton=document.getElementById('submitButton');
-
-        if (form) {
-            form.addEventListener('submit', function (e) {
-                    console.log('Form submit event triggered, currentStep:', currentStep, 'totalSteps:', totalSteps);
-
-                    // Si on n'est pas à la dernière étape, empêcher la soumission et aller à la dernière étape
-                    if (currentStep < totalSteps) {
-                        console.log('Not at last step, preventing submit and going to last step');
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        // Aller directement à la dernière étape
-                        // Masquer toutes les étapes
-                        document.querySelectorAll('.form-step').forEach(step=> step.classList.remove('active'));
-
-                        // Afficher la dernière étape
-                        const lastStepElement=document.getElementById('step' + totalSteps);
-
-                        if (lastStepElement) {
-                            lastStepElement.classList.add('active');
-                            currentStep=totalSteps;
-                            const currentStepInput=document.getElementById('currentStep');
-
-                            if (currentStepInput) {
-                                currentStepInput.value=currentStep;
-                            }
-                        }
-
-                        // Mettre à jour la sidebar
-                        document.querySelectorAll('.progress-step').forEach((step, index)=> {
-                                step.classList.remove('active', 'completed');
-
-                                if (index + 1 <=totalSteps) {
-                                    if (index + 1===totalSteps) {
-                                        step.classList.add('active');
-                                    }
-
-                                    else {
-                                        step.classList.add('completed');
-                                    }
-                                }
-                            });
-
-                        // Scroll vers le haut
-                        window.scrollTo({
-                            top: 0, behavior: 'smooth'
-                        });
-
-                    return false;
-                }
-
-                // Si on est à la dernière étape, valider avant de soumettre
-                console.log('At last step, validating current step...');
-
-                // Valider seulement l'étape actuelle (la dernière étape n'a pas de champs requis)
-                // Les validations des étapes précédentes ont déjà été faites lors de la navigation
-                if ( !validateCurrentStep()) {
-                    console.log('Validation failed at last step');
-                    e.preventDefault();
-                    e.stopPropagation();
-                    alert('Veuillez remplir tous les champs requis.');
-                    return false;
-                }
-
-                // S'assurer que les fichiers sont bien attachés
-                if (uploadedImages && uploadedImages.length > 0) {
-                    console.log('Updating file input with', uploadedImages.length, 'images');
-                    updateFileInput();
-                }
-
-                console.log('Form submission allowed, submitting...');
-
-                // Désactiver le bouton pour éviter les doubles soumissions
-                if (submitButton) {
-                    submitButton.disabled=true;
-                    submitButton.textContent='Enregistrement en cours...';
-                }
-
-                // Laisser le formulaire se soumettre normalement
-                return true;
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => { uploadedImages.push({ file, preview: e.target.result }); renderPhotoGrid(); };
+                reader.readAsDataURL(file);
             });
         }
 
-    </script>@endpush
+        function renderPhotoGrid() {
+            const grid = document.getElementById('photoGrid');
+            grid.querySelectorAll('.new-photo').forEach(p => p.remove());
+            uploadedImages.forEach((img, i) => {
+                const div = document.createElement('div');
+                div.className = 'image-preview-item new-photo';
+                div.innerHTML = `<img src="${img.preview}"><button type="button" class="remove-photo-btn" onclick="removeNewPhoto(${i})">×</button>`;
+                grid.insertBefore(div, document.getElementById('uploadTrigger'));
+            });
+            updateFileInput();
+        }
+
+        function removeNewPhoto(i) { uploadedImages.splice(i, 1); renderPhotoGrid(); }
+
+        function markExistingForDeletion(id) {
+            deletedMediaIds.push(id);
+            document.getElementById('media-' + id).style.display = 'none';
+            document.getElementById('deleteMediaIds').value = deletedMediaIds.join(',');
+            updatePhotoCount();
+        }
+
+        function updateFileInput() {
+            const dt = new DataTransfer();
+            uploadedImages.forEach(img => dt.items.add(img.file));
+            document.getElementById('photosInput').files = dt.files;
+            updatePhotoCount();
+        }
+
+        function updatePhotoCount() {
+            const total = uploadedImages.length + document.querySelectorAll('.existing-photo:not([style*="display: none"])').length;
+            document.getElementById('photoCountDisplay').textContent = total + ' sur 8';
+        }
+
+        function selectStatus(el, val) {
+            document.getElementById('etat_produit').value = val;
+            document.querySelectorAll('#step3 .status-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function selectShipping(el, val) {
+            document.getElementById('type_livraison').value = val;
+            document.querySelectorAll('#step4 .status-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function closeSubcategoryModal() { document.getElementById('subcategoryModal').style.display = 'none'; document.body.style.overflow = ''; }
+        function goBackInModal() { if (modalHistory.length <= 1) return; modalHistory.pop(); renderSubcategories(modalHistory[modalHistory.length-1]); }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const catId = "{{ $annonce->categorie_id }}";
+            if (catId) {
+                finalizeSelection(catId);
+                // Pre-select main category
+                let curr = categoriesData[catId];
+                while(curr && curr.parent_id) curr = categoriesData[curr.parent_id];
+                if(curr) selectMainCategory(document.querySelector(`[data-id="${curr.id}"]`), curr.id);
+            }
+            updatePhotoCount();
+            
+            // Restore step state on load
+            if(currentStep > 1) {
+                document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.progress-step').forEach(s => s.classList.remove('active'));
+                
+                document.getElementById('step' + currentStep).classList.add('active');
+                
+                for(let i=1; i<currentStep; i++) {
+                    document.querySelector(`.progress-sidebar [data-step="${i}"]`).classList.add('completed');
+                }
+                document.querySelector(`.progress-sidebar [data-step="${currentStep}"]`).classList.add('active');
+            }
+        });
+    </script>
+@endsection

@@ -82,7 +82,7 @@
                 <div
                     style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 4px; margin-bottom: 2rem; border: 1px solid #c3e6cb;">
                     <strong>Cet abonnement est actuellement actif.</strong>
-                    <a href="{{ route('abonnements.mon-abonnement') }}"
+                    <a href="{{ route('abonnements.index') }}"
                         style="display: block; margin-top: 0.5rem; color: #155724; text-decoration: underline;">
                         Gérer mon abonnement
                     </a>
@@ -90,7 +90,7 @@
             @else
                 @auth
                     @if(auth()->user()->estVendeur() && auth()->user()->vendeur && auth()->user()->vendeur->estVerifie())
-                        <form method="POST" action="{{ route('abonnements.souscrire', $abonnement) }}"
+                        <form method="POST" action="{{ route('abonnements.subscribe') }}"
                             style="background: #f8f9fa; padding: 1.5rem; border-radius: 4px;">
                             @csrf
                             <h3 style="color: #333; margin-top: 0; margin-bottom: 1rem;">Souscrire à cet abonnement</h3>

@@ -242,8 +242,7 @@
     .btn-create-ad-outline {
         background-color: transparent;
         color: #333;
-        padding: 0.7rem 1.5rem;
-        /* Removed border and radius for text-only look, keeping padding for hit area */
+        padding: 0.7rem 0;
         font-weight: 700;
         font-size: 0.95rem;
         text-decoration: none;
@@ -252,15 +251,11 @@
         gap: 0.5rem;
         transition: color 0.2s ease;
         border: none;
-        margin-top: 30px;
-        box-shadow: none; /* No shadow */
     }
     
     .btn-create-ad-outline:hover {
-        background-color: transparent;
         color: #000;
-        transform: translateY(-1px);
-        text-decoration: underline; /* Standard link hover behavior */
+        text-decoration: underline;
     }
 </style>
 @endpush
@@ -278,10 +273,10 @@
             <div class="content-header">
                 <h1>Mes annonces</h1>
                 <a href="{{ route('annonces.create') }}" class="btn-create-ad-outline">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #f59e0b;">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #bf0000;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
-                    Créer une annonce
+                    Mettre en vente
                 </a>
             </div>
 
