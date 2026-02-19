@@ -76,15 +76,17 @@
         }
 
         /* Logo */
-        .logo {
-            display: block;
-            width: 150px;
-            height: 45px;
-            background-image: url("{{ asset('images/logo.png') }}?v={{ time() }}");
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
+        .header-logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #000;
+            text-decoration: none;
             flex-shrink: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .header-logo-text span {
+            color: #bf0000;
         }
 
         /* Search Bar */

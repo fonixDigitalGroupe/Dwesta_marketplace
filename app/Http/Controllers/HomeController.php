@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Annonce;
+use App\Models\Banner;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -12,10 +13,15 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // 0. Bannières publicitaires
+        $banners = Banner::where('active', true)
+            ->orderBy('order', 'asc')
+            ->get();
+
         // 1. Nos offres imbattables : Les produits les moins chers (top 4)
         $offresImbattables = Annonce::publiees()
             ->orderBy('prix', 'asc')
-            ->take(4)
+            ->take(8)
             ->get();
 
         // 2. Top des produits les plus consultés : Top 4 par vues
@@ -48,6 +54,7 @@ class HomeController extends Controller
             ->get();
 
         return view('home', compact(
+            'banners',
             'offresImbattables',
             'topConsultes',
             'topProduits',

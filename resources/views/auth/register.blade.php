@@ -599,18 +599,18 @@
                 <div class="form-group" style="font-size: 0.8rem; line-height: 1.4; color: #555; margin-bottom: 1.5rem;">
                     <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
                         <input type="checkbox" name="terms_accepted" required style="margin-top: 3px;">
-                        <span>En créant mon compte je déclare avoir lu et accepté les <a href="#" style="color: #0066c0; text-decoration: underline;">Conditions d'utilisation Karnou</a> et <br> la <a href="#" style="color: #0066c0; text-decoration: underline;">politique Vie privée et Cookies</a>.</span>
+                        <span>En créant mon compte je déclare avoir lu et accepté les <a href="#" style="color: #0066c0; text-decoration: underline;">Conditions d'utilisation Mady Market</a> et <br> la <a href="#" style="color: #0066c0; text-decoration: underline;">politique Vie privée et Cookies</a>.</span>
                     </label>
                 </div>
 
                 <div class="form-group" style="font-size: 0.9rem;">
                     <label style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; cursor: pointer;">
                         <input type="checkbox" name="newsletter_karnou" style="margin-top: 3px;">
-                        <span>Je souhaite recevoir les emails personnalisés de Karnou (promos, avantages fidélité, nouveautés...)</span>
+                        <span>Je souhaite recevoir les emails personnalisés de Mady Market (promos, avantages fidélité, nouveautés...)</span>
                     </label>
                     <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
                         <input type="checkbox" name="newsletter_partners" style="margin-top: 3px;">
-                        <span>Je souhaite recevoir les offres personnalisées des partenaires de Karnou*</span>
+                        <span>Je souhaite recevoir les offres personnalisées des partenaires de Mady Market*</span>
                     </label>
                 </div>
 

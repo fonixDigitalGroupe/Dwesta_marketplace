@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'S\'inscrire comme vendeur - Karnou')
+@section('title', 'S\'inscrire comme vendeur - Mady Market')
 
 @section('content')
     <style>
@@ -313,7 +313,7 @@
                     <h1>Devenez un Vendeur Officiel</h1>
                     <p>Complétez votre profil pour débloquer les abonnements et publier plus d'annonces.</p>
                 @else
-                    <h1>Rejoignez les vendeurs Karnou</h1>
+                    <h1>Rejoignez les vendeurs Mady Market</h1>
                     <p>Vendez vos produits en quelques clics à travers toute la Centrafrique.</p>
                 @endif
             </div>

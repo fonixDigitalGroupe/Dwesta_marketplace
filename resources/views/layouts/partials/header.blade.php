@@ -8,7 +8,7 @@
                     </svg>
                 </button>
 
-                <a href="{{ route('home') }}" class="logo"></a>
+                <a href="{{ route('home') }}" class="header-logo-text">Mady<span>Market</span></a>
 
                 <div class="search-container">
                     <form action="{{ route('search.index') }}" method="GET" style="width: 100%;"
