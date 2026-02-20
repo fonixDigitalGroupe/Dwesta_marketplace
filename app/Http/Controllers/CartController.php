@@ -36,6 +36,16 @@ class CartController extends Controller
             'quantite' => 'integer|min:1'
         ]);
 
+        $annonce = \App\Models\Annonce::find($request->annonce_id);
+
+        if (!$annonce->peutEtreAchete()) {
+            $msg = 'Cet article ne peut pas être ajouté au panier. Veuillez contacter le vendeur.';
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'message' => $msg], 422);
+            }
+            return redirect()->back()->with('error', $msg);
+        }
+
         $this->cartService->addItem(
             $request->annonce_id,
             $request->variante_id,

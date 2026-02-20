@@ -242,8 +242,9 @@
 
                 <div class="section-header-bar">forfaits disponibles</div>
 
-                <form action="{{ route('abonnements.checkout') }}" method="POST" id="subscription-form">
+                <form action="{{ route('abonnements.subscribe') }}" method="POST" id="subscription-form">
                     @csrf
+                    <input type="hidden" name="payment_method" value="cb">
                     <div class="plans-list">
                         @foreach($abonnements as $abonnement)
                             @php $isSubscribed = $abonnementActif && $abonnementActif->abonnement_id === $abonnement->id; @endphp
@@ -292,7 +293,7 @@
                     </div>
 
                     <div class="subscription-actions">
-                        <button type="button" class="btn-submit-plan" id="submit-button" disabled onclick="alert('OK ' + selectedPlanName)">
+                        <button type="submit" class="btn-submit-plan" id="submit-button" disabled>
                             Continuer avec ce forfait
                         </button>
                     </div>

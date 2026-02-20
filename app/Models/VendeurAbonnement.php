@@ -15,6 +15,7 @@ class VendeurAbonnement extends Model
         'actif',
         'renouvellement_automatique',
         'nombre_annonces_utilisees',
+        'metadata',
     ];
 
     protected $casts = [
@@ -22,6 +23,7 @@ class VendeurAbonnement extends Model
         'date_fin' => 'date',
         'actif' => 'boolean',
         'renouvellement_automatique' => 'boolean',
+        'metadata' => 'array',
     ];
 
     public function vendeur()

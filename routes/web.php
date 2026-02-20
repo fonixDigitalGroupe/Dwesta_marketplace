@@ -60,14 +60,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
+        
+        // Mes Achats
+        Route::get('/mes-achats', [\App\Http\Controllers\AccountController::class, 'orders'])->name('account.orders');
 
     // Vendeur
     Route::prefix('vendeur')->name('vendeur.')->group(function () {
         Route::get('/create', [VendeurController::class, 'create'])->name('create');
         Route::post('/particulier', [VendeurController::class, 'storeParticulier'])->name('store.particulier');
         Route::post('/professionnel', [VendeurController::class, 'storeProfessionnel'])->name('store.professionnel');
-        Route::get('/', [VendeurController::class, 'show'])->name('show');
+        Route::get('/mon-compte', [VendeurController::class, 'show'])->name('show');
         Route::get('/mes-annonces', [VendeurController::class, 'mesAnnonces'])->name('mes-annonces');
+        Route::get('/mes-ventes', [VendeurController::class, 'orders'])->name('orders');
         Route::put('/{vendeur}/document-particulier', [VendeurController::class, 'updateDocumentParticulier'])->name('update.document.particulier');
         Route::put('/{vendeur}/document-professionnel', [VendeurController::class, 'updateDocumentProfessionnel'])->name('update.document.professionnel');
 
@@ -82,6 +86,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/checkout', [AbonnementController::class, 'checkout'])->name('checkout');
         Route::post('/subscribe', [AbonnementController::class, 'subscribe'])->name('subscribe');
         Route::post('/cancel', [AbonnementController::class, 'cancel'])->name('cancel');
+    });
+
+    // Cartes Cadeaux
+    Route::prefix('cartes-cadeaux')->name('gift-cards.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\GiftCardController::class, 'index'])->name('index');
+        Route::get('/succes', [\App\Http\Controllers\GiftCardController::class, 'success'])->name('success');
+        Route::post('/redeem', [\App\Http\Controllers\GiftCardController::class, 'redeem'])->name('redeem');
+        Route::post('/buy', [\App\Http\Controllers\GiftCardController::class, 'buy'])->name('buy');
     });
 
     // Page Pro (routes spécifiques AVANT la route avec paramètre)
@@ -155,6 +167,33 @@ Route::middleware('auth')->group(function () {
 
         // Gestion des Rôles & Permissions
         // Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class)->only(['index', 'edit', 'update']);
+
+        // Gestion Logistique
+        Route::prefix('transporteurs')->name('transporteurs.')->group(function () {
+             Route::get('/', [\App\Http\Controllers\Admin\TransporteurController::class, 'index'])->name('index');
+             Route::get('/create', [\App\Http\Controllers\Admin\TransporteurController::class, 'create'])->name('create');
+             Route::post('/', [\App\Http\Controllers\Admin\TransporteurController::class, 'store'])->name('store');
+             Route::get('/{transporteur}', [\App\Http\Controllers\Admin\TransporteurController::class, 'show'])->name('show');
+             Route::get('/{transporteur}/edit', [\App\Http\Controllers\Admin\TransporteurController::class, 'edit'])->name('edit');
+             Route::put('/{transporteur}', [\App\Http\Controllers\Admin\TransporteurController::class, 'update'])->name('update');
+             Route::delete('/{transporteur}', [\App\Http\Controllers\Admin\TransporteurController::class, 'destroy'])->name('destroy');
+             Route::post('/{transporteur}/approve', [\App\Http\Controllers\Admin\TransporteurController::class, 'approve'])->name('approve');
+             Route::post('/{transporteur}/reject', [\App\Http\Controllers\Admin\TransporteurController::class, 'reject'])->name('reject');
+        });
+
+        Route::prefix('livreurs')->name('livreurs.')->group(function () {
+             Route::get('/', [\App\Http\Controllers\Admin\LivreurController::class, 'index'])->name('index');
+             Route::get('/create', [\App\Http\Controllers\Admin\LivreurController::class, 'create'])->name('create');
+             Route::post('/', [\App\Http\Controllers\Admin\LivreurController::class, 'store'])->name('store');
+             Route::get('/{livreur}', [\App\Http\Controllers\Admin\LivreurController::class, 'show'])->name('show');
+             Route::get('/{livreur}/edit', [\App\Http\Controllers\Admin\LivreurController::class, 'edit'])->name('edit');
+             Route::put('/{livreur}', [\App\Http\Controllers\Admin\LivreurController::class, 'update'])->name('update');
+             Route::delete('/{livreur}', [\App\Http\Controllers\Admin\LivreurController::class, 'destroy'])->name('destroy');
+             Route::post('/{livreur}/approve', [\App\Http\Controllers\Admin\LivreurController::class, 'approve'])->name('approve');
+             Route::post('/{livreur}/reject', [\App\Http\Controllers\Admin\LivreurController::class, 'reject'])->name('reject');
+        });
+
+        Route::resource('point-relais', \App\Http\Controllers\Admin\PointRelaisController::class);
     });
 
     // Documents sécurisés (accessibles uniquement aux admins)
@@ -257,9 +296,17 @@ Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('cat
 Route::get('/recherche', [\App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
 Route::get('/api/search/autocomplete', [\App\Http\Controllers\SearchController::class, 'autocomplete'])->name('search.autocomplete');
 
+// Webhook Stripe (Public)
+Route::post('/webhook/stripe', [\App\Http\Controllers\StripeWebhookController::class, 'handle'])->name('stripe.webhook');
+
 // Panier
 Route::get('/panier', [CartController::class, 'index'])->name('cart.index');
 Route::post('/panier/ajouter', [CartController::class, 'store'])->name('cart.store');
 Route::patch('/panier/update/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/panier/supprimer/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
 Route::delete('/panier/vider', [CartController::class, 'clear'])->name('cart.clear');
+
+// Routes de succès/annulation pour les abonnements (besoin d'être dans auth pour rediriger vers le dashboard par exemple)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/abonnements/succes', [AbonnementController::class, 'success'])->name('abonnements.success');
+});

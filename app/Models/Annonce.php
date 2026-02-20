@@ -367,4 +367,13 @@ class Annonce extends Model
     {
         return 'slug';
     }
+
+    /**
+     * Vérifie si l'annonce peut être ajoutée au panier.
+     * Seuls les produits de la famille E-commerce sont achetables en ligne.
+     */
+    public function peutEtreAchete(): bool
+    {
+        return $this->category && $this->category->famille === Category::FAMILLE_ECOMMERCE;
+    }
 }

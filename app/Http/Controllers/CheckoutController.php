@@ -99,10 +99,9 @@ class CheckoutController extends Controller
                     return ($item->annonce->prix + ($item->variante ? $item->variante->prix_supplementaire : 0)) * $item->quantite;
                 });
 
-                // Commission 15% (exemple)
-                $commission = $totalProduits * 0.15;
-                $fraisPort = 0; // À dynamiser plus tard
+                $fraisPort = 0; 
                 $totalFinal = $totalProduits + $fraisPort;
+                $commission = $totalProduits * 0.15;
 
                 $order = Order::create([
                     'user_id' => Auth::id(),
@@ -112,13 +111,10 @@ class CheckoutController extends Controller
                     'frais_port' => $fraisPort,
                     'commission_plateforme' => $commission,
                     'total_final' => $totalFinal,
-                    'statut' => 'paye', // Simulé : on considère le paiement comme réussi
+                    'statut' => 'en_attente', // En attente du paiement Stripe
                     'adresse_livraison' => $adresse,
                     'mode_livraison' => $mode,
                 ]);
-
-                // Génération des tokens logistiques
-                $this->logisticsService->generateLogisticsTokens($order);
 
                 foreach ($items as $item) {
                     OrderItem::create([
@@ -130,37 +126,35 @@ class CheckoutController extends Controller
                     ]);
                 }
 
-                // Enregistrement de la transaction (une transaction par vendeur pour simplifier le séquestre)
-                // Enregistrement de la transaction (une transaction par vendeur pour simplifier le séquestre)
-                // SÉQUESTRE : L'argent est bloqué 14 jours
-                Transaction::create([
-                    'order_id' => $order->id,
-                    'user_id' => $order->vendeur->user_id, // L'argent va virtuellement au vendeur
-                    'reference_externe' => 'SIM-' . strtoupper(Str::random(12)),
-                    'montant' => $totalFinal,
-                    'moyen_paiement' => $request->moyen_paiement,
-                    'statut' => 'succes',
-                    'wallet_status' => 'pending', // Bloqué
-                    'release_at' => now()->addDays(14), // Libération dans 14 jours
-                    'metadata' => ['mode' => 'simulation', 'escrow' => true]
-                ]);
-
                 $orders[] = $order;
             }
 
-            // Vider le panier
-            $this->cartService->clear();
+            // Pour l'instant, on gère UNE session par tunnel d'achat même si plusieurs vendeurs (simplification)
+            // Dans une version plus complexe, on ferait un total global ou des paiements séparés.
+            // Ici on va créer une session Stripe pour le PREMIER order (ou le total si on veut regrouper)
+            // Vu le code actuel qui crée plusieurs ordres, on va rediriger vers Stripe pour le TOTAL du panier.
             
-            // Nettoyage session checkout
-            session()->forget(['checkout_adresse', 'checkout_mode']);
+            $totalPanier = collect($orders)->sum('total_final');
+            $mainOrder = $orders[0]; // On utilise le premier pour la référence principale
+            
+            $stripeService = new \App\Services\StripeService();
+            $session = $stripeService->createCheckoutSession($mainOrder, 
+                route('checkout.success'), 
+                route('checkout.step2')
+            );
+
+            // Associer l'ID de session à tous les ordres de cette transaction
+            foreach($orders as $o) {
+                $o->update(['stripe_session_id' => $session->id]);
+            }
 
             DB::commit();
 
-            return redirect()->route('checkout.success')->with('orders', $orders);
+            return redirect($session->url);
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Une erreur est survenue : ' . $e->getMessage());
+            return back()->with('error', 'Une erreur est survenue lors de l\'initialisation du paiement : ' . $e->getMessage());
         }
     }
 

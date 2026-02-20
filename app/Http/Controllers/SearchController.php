@@ -135,6 +135,7 @@ class SearchController extends Controller
             ->where('actif', true)
             ->limit(3)
             ->get(['nom', 'slug'])
+            ->toBase() // Convert to base collection
             ->map(function($c) {
                 return [
                     'type' => 'category',
@@ -148,6 +149,7 @@ class SearchController extends Controller
             ->where('titre', 'LIKE', "%{$term}%")
             ->limit(5)
             ->get(['id', 'titre', 'slug'])
+            ->toBase() // Convert to base collection
             ->map(function($a) {
                 return [
                     'type' => 'product',

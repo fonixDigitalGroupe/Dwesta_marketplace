@@ -81,39 +81,44 @@ class AbonnementController extends Controller
         $vendeur = $user->vendeur;
         $abonnement = Abonnement::findOrFail($request->abonnement_id);
 
-        // Vérifier si le vendeur a déjà un abonnement actif
-        $abonnementActif = VendeurAbonnement::where('vendeur_id', $vendeur->id)
-            ->where('actif', true)
-            ->where('date_fin', '>=', Carbon::today())
-            ->first();
+        if (!$abonnement->stripe_price_id && $abonnement->prix_mensuel > 0) {
+            return back()->with('error', 'Cet abonnement n\'est pas encore configuré pour le paiement réel (stripe_price_id manquant).');
+        }
 
-        try {
-            DB::beginTransaction();
-
-            // Désactiver l'ancien abonnement si existant
-            if ($abonnementActif) {
-                $abonnementActif->update(['actif' => false]);
+        if ($abonnement->prix_mensuel == 0) {
+            // Logique pour abonnement gratuit (immédiat)
+            try {
+                DB::beginTransaction();
+                VendeurAbonnement::where('vendeur_id', $vendeur->id)->update(['actif' => false]);
+                VendeurAbonnement::create([
+                    'vendeur_id' => $vendeur->id,
+                    'abonnement_id' => $abonnement->id,
+                    'date_debut' => Carbon::today(),
+                    'date_fin' => Carbon::today()->addMonth(),
+                    'actif' => true,
+                    'renouvellement_automatique' => false,
+                    'nombre_annonces_utilisees' => 0,
+                ]);
+                DB::commit();
+                return redirect()->route('abonnements.index')->with('success', "Vous avez activé le forfait gratuit !");
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return back()->with('error', $e->getMessage());
             }
+        }
 
-            // Créer le nouvel abonnement
-            VendeurAbonnement::create([
-                'vendeur_id' => $vendeur->id,
-                'abonnement_id' => $abonnement->id,
-                'date_debut' => Carbon::today(),
-                'date_fin' => Carbon::today()->addMonth(),
-                'actif' => true,
-                'renouvellement_automatique' => $request->has('auto_renew'),
-                'nombre_annonces_utilisees' => 0,
-            ]);
+        // Flux Stripe pour abonnement payant
+        try {
+            $stripeService = new \App\Services\StripeService();
+            $session = $stripeService->createSubscriptionSession($vendeur, $abonnement, 
+                route('abonnements.success'), 
+                route('abonnements.index')
+            );
 
-            DB::commit();
-
-            return redirect()->route('abonnements.index')
-                ->with('success', "Vous êtes maintenant abonné au forfait {$abonnement->nom} !");
+            return redirect($session->url);
 
         } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with('error', 'Une erreur est survenue : ' . $e->getMessage());
+            return back()->with('error', 'Erreur Stripe : ' . $e->getMessage());
         }
     }
 
@@ -138,5 +143,67 @@ class AbonnementController extends Controller
         }
 
         return back()->with('error', 'Aucun abonnement actif trouvé.');
+    }
+
+    /**
+     * Page de succès après paiement Stripe
+     */
+    public function success(Request $request)
+    {
+        $sessionId = $request->get('session_id');
+        
+        if (!$sessionId) {
+            return redirect()->route('abonnements.index');
+        }
+
+        try {
+            $stripeService = new \App\Services\StripeService();
+            $session = $stripeService->getSession($sessionId);
+            
+            if ($session->payment_status === 'paid' || $session->status === 'complete') {
+                
+                // On peut aussi activer ici "au cas où" le webhook tarde, mais l'idéal est de laisser le webhook gérer la source de vérité.
+                // Pour une meilleure UX, on active ici si ce n'est pas déjà fait.
+                
+                $vendeurId = $session->metadata->vendeur_id ?? null;
+                $planId = $session->metadata->plan_id ?? null;
+                $type = $session->metadata->type ?? null;
+
+                if ($type === 'seller_subscription' && $vendeurId && $planId) {
+                    $vendeur = \App\Models\Vendeur::find($vendeurId);
+                    $abonnement = Abonnement::find($planId);
+
+                    // Vérifier si l'abonnement est déjà actif (par le webhook)
+                    $exists = VendeurAbonnement::where('vendeur_id', $vendeurId)
+                        ->where('abonnement_id', $planId)
+                        ->where('created_at', '>=', Carbon::now()->subMinutes(5)) // Créé tout récemment
+                        ->exists();
+
+                    if (!$exists) {
+                         // Activation immédiate (fallback webhook)
+                         VendeurAbonnement::where('vendeur_id', $vendeur->id)->update(['actif' => false]);
+                         
+                         VendeurAbonnement::create([
+                            'vendeur_id' => $vendeur->id,
+                            'abonnement_id' => $abonnement->id,
+                            'date_debut' => Carbon::today(),
+                            'date_fin' => Carbon::today()->addMonth(),
+                            'actif' => true,
+                            'renouvellement_automatique' => true,
+                            'nombre_annonces_utilisees' => 0,
+                        ]);
+                    }
+                }
+
+                return redirect()->route('abonnements.index')
+                    ->with('success', 'Votre abonnement a été activé avec succès ! Bienvenue dans votre nouvelle offre.');
+            }
+        
+        } catch (\Exception $e) {
+            return redirect()->route('abonnements.index')->with('error', 'Erreur lors de la vérification du paiement.');
+        }
+
+        return redirect()->route('abonnements.index')
+            ->with('info', 'Le paiement est en cours de traitement. Votre abonnement sera actif sous peu.');
     }
 }

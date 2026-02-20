@@ -8,7 +8,9 @@
                     </svg>
                 </button>
 
-                <a href="{{ route('home') }}" class="header-logo-text">Mady<span>Market</span></a>
+                <a href="{{ route('home') }}" class="header-logo-text">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 40px; width: auto;">
+                </a>
 
                 <div class="search-container">
                     <form action="{{ route('search.index') }}" method="GET" style="width: 100%;"
@@ -32,7 +34,7 @@
 
                 <div class="sell-button-container">
                     <button type="button" class="sell-button" onclick="toggleSellDropdown()">
-                        <span class="sell-icon" style="font-size: 1.2rem; font-weight: 700;">€</span>
+                        <span class="sell-icon" style="font-size: 1.5rem; font-weight: 800; color: #000; margin-right: 2px;">€</span>
                         <span>Mettre en vente</span>
                     </button>
                     <div class="sell-dropdown" id="layoutSellDropdown">
@@ -141,6 +143,14 @@
                         </div>
                     @endauth
 
+                        <span class="header-link disabled-action" title="Favoris">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                        </span>
+
                     @inject('cartService', 'App\Services\CartService')
                     <span class="header-link disabled-action" title="Panier">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,14 +165,6 @@
                             </span>
                         @endif
                     </span>
-
-                        <span class="header-link disabled-action" title="Favoris">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                </path>
-                            </svg>
-                        </span>
                 </div>
             </div>
         </div>
@@ -183,7 +185,7 @@
 
                 <div class="header-badges-container" style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;">
                     @foreach($nav_cats as $cat)
-                        <a href="{{ route('annonces.index', ['category' => $cat->id]) }}" class="cat-nav-item badge-style">
+                        <a href="{{ route('categories.show', $cat->slug) }}" class="cat-nav-item badge-style">
                             {{ $cat->nom }}
                         </a>
                     @endforeach

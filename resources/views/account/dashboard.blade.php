@@ -527,7 +527,7 @@
                                 <li>Le <u>paiement sécurisé</u></li>
                                 <li>La <u>garantie de bonne réception</u> des produits commandés</li>
                             </ul>
-                            <a href="{{ route('annonces.index') }}" class="karnou-card-btn">Tous les produits</a>
+                            <a href="{{ route('search.index') }}" class="karnou-card-btn">Tous les produits</a>
                             <div class="karnou-card-links">
                                 <a href="#">Comment acheter ?</a>
                             </div>

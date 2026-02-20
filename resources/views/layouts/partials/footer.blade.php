@@ -18,7 +18,9 @@
         <div class="rk-footer-grid">
             <!-- Branding & About -->
             <div class="rk-footer-col branding-col">
-                <div class="footer-logo">Mady<span>Market</span></div>
+                <div class="footer-logo">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 50px; width: auto;">
+                </div>
                 <p class="footer-desc">Votre marketplace de confiance pour acheter et vendre en toute simplicité. Des milliers d'annonces au meilleur prix.</p>
                 <div class="social-links">
                     <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
@@ -32,7 +34,7 @@
             <div class="rk-footer-col">
                 <h4>Acheter & Vendre</h4>
                 <ul>
-                    <li><a href="{{ route('home') }}">Toutes les annonces</a></li>
+                    <li><a href="{{ route('search.index') }}">Toutes les annonces</a></li>
                     <li><a href="{{ route('annonces.create') }}">Déposer une annonce</a></li>
                     <li><a href="#">Comment ça marche ?</a></li>
                     <li><a href="#">Conseils de sécurité</a></li>
@@ -74,7 +76,7 @@
                 <span class="custom-icon" title="Wave/Orange Money">OM/Wave</span>
             </div>
             <div class="footer-legal">
-                <p>&copy; {{ date('Y') }} Mady Market. Tous droits réservés.</p>
+                <p>&copy; {{ date('Y') }} Dwesta. Tous droits réservés.</p>
                 <div class="legal-links">
                     <a href="#">Mentions légales</a>
                     <a href="#">CGU</a>

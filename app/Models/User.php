@@ -147,6 +147,11 @@ class User extends Authenticatable implements MustVerifyEmail
             ->get();
     }
 
+    public function getNameAttribute(): string
+    {
+        return trim($this->prenom . ' ' . ($this->nom ?? ''));
+    }
+
     public function messagesSent()
     {
         return $this->hasMany(Message::class, 'sender_id');

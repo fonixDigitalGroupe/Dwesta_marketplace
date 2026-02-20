@@ -181,6 +181,14 @@ class Vendeur extends Model
     }
 
     /**
+     * Relation avec les ventes (commandes reçues)
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
      * Vérifier si le vendeur a accès à la page pro
      */
     public function aAccesPagePro(): bool

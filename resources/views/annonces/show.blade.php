@@ -381,17 +381,26 @@
             </div>
 
             <!-- Price & Action -->
-            <!-- Price & Action -->
             <div class="rk-price-box">
                 <div class="rk-main-price" id="main-price">
                     {{ number_format($annonce->prix, 0, ',', ' ') }} €
                 </div>
                 
                 <div class="rk-actions">
-                    <button type="button" class="rk-btn-cart">
-                        <i class="fas fa-shopping-cart" style="margin-right: 0.75rem;"></i> Ajouter au panier
-                    </button>
-                    <!-- Quantité default hidden -->
+                    @if($annonce->peutEtreAchete())
+                        <form action="{{ route('cart.store') }}" method="POST" style="display:inline;">
+                        @csrf
+                        <input type="hidden" name="annonce_id" value="{{ $annonce->id }}">
+                        <input type="hidden" name="quantite" value="1">
+                        <button type="submit" class="rk-btn-cart">
+                            <i class="fas fa-shopping-cart" style="margin-right: 0.75rem;"></i> Ajouter au panier
+                        </button>
+                    </form>
+                    @else
+                        <a href="{{ auth()->check() ? route('conversations.create', ['recipient_id' => $annonce->vendeur->user_id, 'annonce_id' => $annonce->id]) : route('login') }}" class="rk-btn-cart" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #000;">
+                            <i class="fas fa-envelope" style="margin-right: 0.75rem;"></i> Contacter le vendeur
+                        </a>
+                    @endif
                 </div>
             </div>
             
@@ -400,10 +409,12 @@
                  <div class="rk-seller-info">
                      <div style="font-size: 0.8rem; color: #888; margin-bottom: 0.1rem;">Vendeur</div>
                      <a href="#" class="rk-seller-name">
-                        @if($annonce->vendeur->professionnel)
+                        @if($annonce->vendeur && $annonce->vendeur->professionnel)
                             {{ $annonce->vendeur->professionnel->nom_entreprise }}
-                        @else
+                        @elseif($annonce->vendeur && $annonce->vendeur->user)
                             {{ $annonce->vendeur->user->prenom }}
+                        @else
+                            Vendeur inconnu
                         @endif
                      </a>
                  </div>

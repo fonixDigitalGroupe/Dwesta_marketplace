@@ -406,5 +406,26 @@ class VendeurController extends Controller
             return back()->withInput()->with('error', 'Une erreur est survenue lors de la mise à jour.');
         }
     }
+    /**
+     * Affiche les ventes (commandes reçues) du vendeur
+     */
+    public function orders()
+    {
+        $user = Auth::user();
+
+        if (!$user->estVendeur()) {
+            return redirect()->route('vendeur.create')->with('error_banner', 'Vous devez créer un compte vendeur pour accéder à cette page.');
+        }
+
+        $vendeur = $user->vendeur;
+        
+        // Récupérer toutes les commandes passées chez ce vendeur
+        $orders = $vendeur->orders()
+            ->with(['buyer', 'items.annonce'])
+            ->latest()
+            ->paginate(20);
+
+        return view('vendeur.orders', compact('vendeur', 'orders'));
+    }
 }
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Mady Market')</title>
+    <title>@yield('title', 'Dwesta Marketplace')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <style>
@@ -91,7 +91,7 @@
 
         /* Search Bar */
         .search-container {
-            width: 600px;
+            width: 1000px;
             margin: 0 1rem 0 0;
             display: flex;
             align-items: center;
@@ -116,7 +116,7 @@
         }
 
         .search-button {
-            background-color: #333;
+            background-color: #f36b00;
             color: white;
             border: none;
             border-radius: 4px;
@@ -126,10 +126,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background-color 0.2s;
         }
 
         .search-button:hover {
-            background-color: #000;
+            background-color: #d95f00;
         }
 
         /* Header Actions */
@@ -146,7 +147,7 @@
             align-items: center;
             gap: 0.5rem;
             text-decoration: none;
-            color: #333;
+            color: #000;
             font-size: 0.9rem;
             font-weight: 500;
             position: relative;
@@ -291,7 +292,7 @@
 
         .cat-nav-item.badge-style {
             background: #f0f0f0;
-            padding: 5px 15px;
+            padding: 2px 12px;
             border-radius: 50px;
             font-weight: 500;
         }
@@ -508,7 +509,7 @@
 
     <footer class="footer">
         <div class="footer-bottom">
-            <p>&copy; {{ date('Y') }} Mady Market. Tous droits réservés.</p>
+            <p>&copy; {{ date('Y') }} Dwesta. Tous droits réservés.</p>
         </div>
     </footer>
 

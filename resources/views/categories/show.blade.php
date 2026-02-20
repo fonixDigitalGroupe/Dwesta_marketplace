@@ -84,7 +84,7 @@
                                     <span class="condition">. Neuf</span>
                                 </div>
                                 <div class="item-seller">
-                                    Par <span class="seller-name">{{ $annonce->vendeur->user->prenom }} {{ $annonce->vendeur->user->nom }}</span>
+                                    Par <span class="seller-name">{{ $annonce->vendeur && $annonce->vendeur->user ? $annonce->vendeur->user->prenom . ' ' . $annonce->vendeur->user->nom : 'Utilisateur' }}</span>
                                 </div>
                                 <div class="item-button">
                                     <span>Voir le produit</span>

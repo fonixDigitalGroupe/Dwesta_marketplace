@@ -1,70 +1,228 @@
 @extends('layouts.app')
 
-@section('title', 'Conversation')
+@section('title', 'Conversation - Mady Market')
+
+@push('styles')
+<style>
+    .conv-wrapper {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        height: calc(100vh - 160px);
+        display: flex;
+        flex-direction: column;
+    }
+    .conv-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+        border: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+    }
+    .conv-header {
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-bottom: 1px solid #f0f0f0;
+        background: #fff;
+        z-index: 10;
+    }
+    .back-link {
+        color: #999;
+        font-size: 1.2rem;
+        transition: color 0.2s;
+    }
+    .back-link:hover { color: #333; }
+    
+    .other-user-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #f5f5f5;
+    }
+    .other-user-info h2 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 0;
+        color: #000;
+    }
+    .annonce-link {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: 0.75rem;
+        color: #bf0000;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .annonce-link:hover { text-decoration: underline; }
+
+    .messages-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 2rem;
+        background: #fdfdfd;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .message-row {
+        display: flex;
+        width: 100%;
+    }
+    .message-row.mine { justify-content: flex-end; }
+    .message-row.theirs { justify-content: flex-start; }
+
+    .bubble {
+        max-width: 70%;
+        padding: 0.8rem 1.2rem;
+        border-radius: 18px;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        position: relative;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    }
+    .mine .bubble {
+        background: #bf0000;
+        color: #fff;
+        border-bottom-right-radius: 4px;
+    }
+    .theirs .bubble {
+        background: #fff;
+        color: #333;
+        border: 1px solid #eee;
+        border-bottom-left-radius: 4px;
+    }
+    .bubble-meta {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 4px;
+        font-size: 10px;
+        margin-top: 4px;
+        opacity: 0.7;
+    }
+    .mine .bubble-meta { color: #fff; }
+    .theirs .bubble-meta { color: #999; }
+
+    .input-area {
+        padding: 1.2rem 1.5rem;
+        background: #fff;
+        border-top: 1px solid #f0f0f0;
+    }
+    .input-form {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: #f5f5f5;
+        padding: 0.5rem 0.5rem 0.5rem 1.2rem;
+        border-radius: 30px;
+        transition: all 0.2s;
+        border: 1px solid transparent;
+    }
+    .input-form:focus-within {
+        background: #fff;
+        border-color: #bf0000;
+        box-shadow: 0 0 0 3px rgba(191,0,0,0.1);
+    }
+    .message-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 0.95rem;
+        color: #333;
+        padding: 0.5rem 0;
+        resize: none;
+        max-height: 120px;
+    }
+    .send-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #bf0000;
+        color: #fff;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex-shrink: 0;
+    }
+    .send-btn:hover {
+        background: #a00000;
+        transform: scale(1.05);
+    }
+    .send-btn:active { transform: scale(0.95); }
+</style>
+@endpush
 
 @section('content')
-<div class="container mx-auto px-4 py-6 h-[calc(100vh-140px)] flex flex-col">
+<div class="conv-wrapper">
     @php
         $otherUser = $conversation->user1_id == Auth::id() ? $conversation->user2 : $conversation->user1;
     @endphp
 
-    <!-- Header -->
-    <div class="bg-white shadow rounded-t-lg p-4 flex items-center justify-between z-10">
-        <div class="flex items-center space-x-3">
-            <a href="{{ route('conversations.index') }}" class="text-gray-500 hover:text-gray-700 mr-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+    <div class="conv-card">
+        <div class="conv-header">
+            <a href="{{ route('conversations.index') }}" class="back-link">
+                <i class="fas fa-arrow-left"></i>
             </a>
-            <img src="{{ $otherUser->avatar ?? 'https://ui-avatars.com/api/?name='.urlencode($otherUser->name) }}" class="w-10 h-10 rounded-full bg-gray-200">
-            <div>
-                <h2 class="font-bold text-gray-800 leading-tight">{{ $otherUser->name }}</h2>
+            <img src="{{ $otherUser->avatar ? Storage::url($otherUser->avatar) : 'https://ui-avatars.com/api/?name='.urlencode($otherUser->name) }}" class="other-user-avatar">
+            <div class="other-user-info">
+                <h2>{{ $otherUser->name }}</h2>
                 @if($conversation->annonce)
-                    <a href="{{ route('annonces.show', $conversation->annonce) }}" class="text-xs text-blue-600 hover:underline flex items-center">
-                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                        {{ Str::limit($conversation->annonce->titre, 40) }}
+                    <a href="{{ route('annonces.show', $conversation->annonce) }}" class="annonce-link">
+                        <i class="fas fa-tag"></i>
+                        {{ Str::limit($conversation->annonce->titre, 35) }}
                     </a>
                 @endif
             </div>
         </div>
-    </div>
 
-    <!-- Messages Area -->
-    <div class="flex-1 bg-gray-50 overflow-y-auto p-4 space-y-4" id="messages-container">
-        @foreach($conversation->messages as $message)
-            <div class="flex {{ $message->sender_id == Auth::id() ? 'justify-end' : 'justify-start' }}">
-                <div class="max-w-[75%] {{ $message->sender_id == Auth::id() ? 'bg-blue-600 text-white rounded-br-none' : 'bg-white text-gray-800 border border-gray-200 rounded-bl-none' }} rounded-2xl px-4 py-2 shadow-sm">
-                    <p class="text-sm whitespace-pre-wrap">{{ $message->content }}</p>
-                    <div class="text-[10px] mt-1 {{ $message->sender_id == Auth::id() ? 'text-blue-100' : 'text-gray-400' }} text-right">
-                        {{ $message->created_at->format('H:i') }}
-                        @if($message->sender_id == Auth::id())
-                            @if($message->read_at)
-                                <span class="ml-1">✓✓</span>
-                            @else
-                                <span class="ml-1">✓</span>
+        <div class="messages-area" id="messages-container">
+            @forelse($conversation->messages as $message)
+                <div class="message-row {{ $message->sender_id == Auth::id() ? 'mine' : 'theirs' }}">
+                    <div class="bubble">
+                        <div class="content">{{ $message->content }}</div>
+                        <div class="bubble-meta">
+                            {{ $message->created_at->format('H:i') }}
+                            @if($message->sender_id == Auth::id())
+                                <i class="fas fa-check{{ $message->read_at ? '-double' : '' }}"></i>
                             @endif
-                        @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
+            @empty
+                <div style="text-align: center; color: #999; margin-top: 4rem;">
+                    <i class="far fa-comments fa-3x" style="display: block; margin-bottom: 1rem;"></i>
+                    Aucun message dans cette conversation.
+                </div>
+            @endforelse
+        </div>
 
-    <!-- Input Area -->
-    <div class="bg-white p-4 border-t rounded-b-lg">
-        <form action="{{ route('conversations.messages.store', $conversation) }}" method="POST" class="flex items-end space-x-2">
-            @csrf
-            <div class="flex-1 bg-gray-100 rounded-lg p-2 focus-within:ring-2 focus-within:ring-blue-500 focus-within:bg-white transition">
-                <textarea name="content" rows="1" class="w-full bg-transparent border-none focus:ring-0 resize-none max-h-32 text-sm" placeholder="Écrivez votre message..." required oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
-            </div>
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-2.5 transition flex-shrink-0 shadow-lg">
-                <svg class="w-5 h-5 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
-            </button>
-        </form>
+        <div class="input-area">
+            <form action="{{ route('conversations.messages.store', $conversation) }}" method="POST" class="input-form">
+                @csrf
+                <textarea name="content" class="message-input" placeholder="Écrivez votre message..." required rows="1" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+                <button type="submit" class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 
 <script>
-    // Scroll to bottom on load
-    const container = document.getElementById('messages-container');
-    container.scrollTop = container.scrollHeight;
+    document.addEventListener('DOMContentLoaded', function() {
+        const container = document.getElementById('messages-container');
+        container.scrollTop = container.scrollHeight;
+    });
 </script>
 @endsection

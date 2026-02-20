@@ -46,9 +46,20 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        //
+        // Rôles spécifiques demandés
+        $roles = [
+            'admin' => 'Administrateur',
+            'transporteur' => 'Transporteur',
+            'livreur' => 'Livreur',
+            'point relais' => 'Point Relais',
+        ];
+
+        return view('admin.users.create', compact('roles'));
     }
 
     /**
@@ -56,31 +67,96 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'prenom' => 'required|string|max:255',
+            'nom' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|string|in:admin,transporteur,livreur,point relais',
+            'civilite' => 'nullable|string',
+            'telephone' => 'nullable|string',
+            'nationalite' => 'nullable|string',
+            'adresse' => 'nullable|string',
+        ]);
+
+        $user = User::create([
+            'prenom' => $validated['prenom'],
+            'nom' => $validated['nom'],
+            'email' => $validated['email'],
+            'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
+            'civilite' => $validated['civilite'],
+            'telephone' => $validated['telephone'],
+            'nationalite' => $validated['nationalite'],
+            'adresse' => $validated['adresse'],
+            'email_verified_at' => now(),
+            'is_active' => true,
+        ]);
+
+        // Assignation du rôle
+        $user->assignRole($validated['role']);
+
+        return redirect()->route('admin.users.index')->with('success', 'Utilisateur créé avec succès.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
-        //
+        return redirect()->route('admin.users.edit', $user);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        $roles = [
+            'admin' => 'Administrateur',
+            'transporteur' => 'Transporteur',
+            'livreur' => 'Livreur',
+            'point relais' => 'Point Relais',
+        ];
+        return view('admin.users.edit', compact('user', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $validated = $request->validate([
+            'prenom' => 'required|string|max:255',
+            'nom' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'role' => 'required|string',
+            'civilite' => 'nullable|string',
+            'telephone' => 'nullable|string',
+            'nationalite' => 'nullable|string',
+            'adresse' => 'nullable|string',
+        ]);
+
+        $data = [
+            'prenom' => $validated['prenom'],
+            'nom' => $validated['nom'],
+            'email' => $validated['email'],
+            'civilite' => $validated['civilite'],
+            'telephone' => $validated['telephone'],
+            'nationalite' => $validated['nationalite'],
+            'adresse' => $validated['adresse'],
+        ];
+
+        if (!empty($validated['password'])) {
+            $data['password'] = \Illuminate\Support\Facades\Hash::make($validated['password']);
+        }
+
+        $user->update($data);
+
+        // Mise à jour du rôle
+        $user->syncRoles([$validated['role']]);
+
+        return redirect()->route('admin.users.index')->with('success', 'Utilisateur mis à jour avec succès.');
     }
 
     /**

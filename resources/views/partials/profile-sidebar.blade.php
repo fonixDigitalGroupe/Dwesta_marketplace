@@ -148,9 +148,9 @@
             Mes achats
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#">Tous mes achats</a></li>
-            <li><a href="#">Mes favoris</a></li>
-            <li><a href="#">Cartes cadeaux</a></li>
+            <li><a href="{{ route('account.orders') }}" class="{{ request()->routeIs('account.orders') ? 'active' : '' }}">Tous mes achats</a></li>
+            <li><a href="{{ route('favorites.index') }}" class="{{ request()->routeIs('favorites.*') ? 'active' : '' }}">Mes favoris</a></li>
+            <li><a href="{{ route('gift-cards.index') }}" class="{{ request()->routeIs('gift-cards.*') ? 'active' : '' }}">Cartes cadeaux</a></li>
         </ul>
     </div>
 
@@ -158,13 +158,12 @@
     <div class="sidebar-section">
         <div class="sidebar-title">
             <svg viewBox="0 0 24 24" fill="#fbc02d">
-                <path
-                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
             </svg>
             Mes avis
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#">Tous mes avis</a></li>
+            <li><a href="#" class="inactive-link" title="Bientôt disponible">Tous mes avis</a></li>
         </ul>
     </div>
 
@@ -174,17 +173,12 @@
     <div class="sidebar-section">
         <div class="sidebar-title">
             <svg viewBox="0 0 24 24" fill="#757575">
-                <path
-                    d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21v-.05c0-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
+                <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21v-.05c0-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" />
             </svg>
             Mes ventes
         </div>
         <ul class="sidebar-menu">
-            @if(auth()->user()->hasAnnonces())
-                <li><a href="#">Toutes mes ventes</a></li>
-            @else
-                <li><span class="inactive-link" title="Vous n'avez pas encore déposé d'annonces pour effectuer des ventes">Toutes mes ventes</span></li>
-            @endif
+            <li><a href="{{ route('vendeur.orders') }}" class="{{ request()->routeIs('vendeur.orders') ? 'active' : '' }}">Toutes mes ventes</a></li>
         </ul>
     </div>
 
@@ -192,39 +186,23 @@
     <div class="sidebar-section">
         <div class="sidebar-title">
             <svg viewBox="0 0 24 24" style="width: 24px; height: 24px;">
-                <path d="M20,4H4V6H20V4M21,14V12L20,7H4L3,12V14H4V20H14V14H18V20H20V14H21M12,18H6V14H12V18Z"
-                    fill="#e67e22" />
+                <path d="M20,4H4V6H20V4M21,14V12L20,7H4L3,12V14H4V20H14V14H18V20H20V14H21M12,18H6V14H12V18Z" fill="#e67e22" />
             </svg>
             Mes annonces
         </div>
         <ul class="sidebar-menu">
             @if($user->vendeur)
                 <li><a href="{{ route('vendeur.show') }}" class="{{ request()->routeIs('vendeur.show') ? 'active' : '' }}">État du compte</a></li>
-            @else
-                <li><span class="inactive-link" title="Devenez vendeur pour suivre l'état de votre compte">État du compte</span></li>
-            @endif
-
-            @if(auth()->user()->hasAnnonces())
                 <li><a href="{{ route('vendeur.mes-annonces') }}" class="{{ request()->routeIs('vendeur.mes-annonces') ? 'active' : '' }}">Toutes mes annonces</a></li>
-            @else
-                <li><span class="inactive-link" title="Vous n'avez pas encore déposé d'annonces">Toutes mes annonces</span></li>
-            @endif
-
-            @if($user->estVendeurVerifie())
                 @if($user->vendeur->pagePro)
-                    <li><a href="{{ route('page-pro.show', $user->vendeur->pagePro->slug) }}" target="_blank">Voir ma Boutique</a></li>
-                @endif
-                
-                @if($user->vendeur->peutPersonnaliserBoutique())
-                    <li><a href="{{ route('page-pro.edit') }}" class="{{ request()->routeIs('page-pro.edit') ? 'active' : '' }}">Personnaliser ma Boutique</a></li>
+                    <li><a href="{{ route('page-pro.show', $user->vendeur->pagePro->slug) }}" target="_blank">Ma Boutique PRO</a></li>
                 @else
-                    <li><span class="inactive-link" title="L'abonnement Expert est requis pour personnaliser votre boutique">Personnaliser ma Boutique</span></li>
+                    <li><span class="inactive-link" title="Créez votre boutique PRO pour l'afficher ici">Ma Boutique PRO</span></li>
                 @endif
             @else
-                <li><span class="inactive-link" title="Votre compte doit être vérifié par l'administration pour gérer votre boutique.">Ma Boutique PRO</span></li>
-                @if(!$user->vendeur)
-                    <li><a href="{{ route('vendeur.create') }}" class="{{ request()->routeIs('vendeur.create') ? 'active' : '' }}" style="color: #bf0000; font-weight: bold;">Devenir Vendeur</a></li>
-                @endif
+                <li><span class="inactive-link" title="Devenez vendeur pour gérer vos annonces">État du compte</span></li>
+                <li><span class="inactive-link" title="Devenez vendeur pour voir vos annonces">Toutes mes annonces</span></li>
+                <li><a href="{{ route('vendeur.create') }}" class="{{ request()->routeIs('vendeur.create') ? 'active' : '' }}" style="color: #bf0000; font-weight: bold;">Devenir Vendeur</a></li>
             @endif
         </ul>
     </div>
@@ -233,14 +211,13 @@
     <div class="sidebar-section">
         <div class="sidebar-title">
             <svg viewBox="0 0 24 24" fill="#3498db">
-                <path
-                    d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z" />
+                <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z" />
             </svg>
             Communauté
         </div>
         <ul class="sidebar-menu">
-            <li><a href="{{ route('conversations.index') }}">Mes messages</a></li>
-            <li><a href="#">Contacter Aide & support</a></li>
+            <li><a href="{{ route('conversations.index') }}" class="{{ request()->routeIs('conversations.*') ? 'active' : '' }}">Mes messages</a></li>
+            <li><a href="#" class="inactive-link" title="Bientôt disponible">Contacter Aide & support</a></li>
         </ul>
     </div>
 
@@ -254,10 +231,14 @@
             Mes finances
         </div>
         <ul class="sidebar-menu">
-            <li><span class="inactive-link" title="Cette fonctionnalité sera disponible prochainement">Mon Porte-Monnaie</span></li>
-            <li><span class="inactive-link" title="Cette fonctionnalité sera disponible prochainement">Demander un retrait</span></li>
-            <li><span class="inactive-link" title="Cette fonctionnalité sera disponible prochainement">Statistiques</span></li>
-            <li><span class="inactive-link" title="Cette fonctionnalité sera disponible prochainement">Mes paiements</span></li>
+            @if($user->vendeur)
+                <li><a href="{{ route('vendeur.wallet.index') }}" class="{{ request()->routeIs('vendeur.wallet.index') ? 'active' : '' }}">Mon Porte-Monnaie</a></li>
+                <li><a href="#" onclick="event.preventDefault(); alert('Fonctionnalité de retrait bientôt disponible');">Demander un retrait</a></li>
+            @else
+                <li><span class="inactive-link" title="Devenez vendeur pour gérer vos finances">Mon Porte-Monnaie</span></li>
+            @endif
+            <li><a href="#" class="inactive-link" title="Bientôt disponible">Statistiques</a></li>
+            <li><a href="#" class="inactive-link" title="Bientôt disponible">Mes paiements</a></li>
         </ul>
     </div>
 
@@ -265,18 +246,17 @@
     <div class="sidebar-section">
         <div class="sidebar-title">
             <svg viewBox="0 0 24 24" fill="#d32f2f">
-                <path
-                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
             </svg>
             Mes informations
         </div>
         <ul class="sidebar-menu">
             <li><a href="{{ route('profile.show') }}" class="{{ request()->routeIs('profile.show') ? 'active' : '' }}">Mon adresse e-mail</a></li>
             <li><a href="{{ route('profile.show') }}#changement-mot-de-passe">Mon mot de passe</a></li>
-            @if($user->estVendeurVerifie())
+            @if($user->vendeur && $user->estVendeurOfficiel())
                 <li><a href="{{ route('abonnements.index') }}" class="{{ request()->routeIs('abonnements.*') ? 'active' : '' }}">Mes abonnements</a></li>
             @else
-                <li><span class="inactive-link" title="Votre compte doit être vérifié par l'administration pour accéder aux abonnements.">Mes abonnements</span></li>
+                <li><span class="inactive-link" title="Votre compte doit être vérifié pour accéder aux abonnements.">Mes abonnements</span></li>
             @endif
         </ul>
     </div>

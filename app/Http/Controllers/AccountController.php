@@ -16,4 +16,15 @@ class AccountController extends Controller
             'user' => Auth::user(),
         ]);
     }
+
+    /**
+     * Display user's order history.
+     */
+    public function orders()
+    {
+        $user = Auth::user();
+        $orders = $user->orders()->with(['items.annonce', 'seller.user'])->latest()->paginate(10);
+        
+        return view('account.orders', compact('orders'));
+    }
 }

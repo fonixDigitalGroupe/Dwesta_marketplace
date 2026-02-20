@@ -18,6 +18,12 @@
                 Liste des Utilisateurs
             </h1>
             <div style="display: flex; gap: 10px;">
+                <a href="{{ route('admin.users.create') }}" style="display: flex; align-items: center; gap: 6px; padding: 0.5rem 1rem; background-color: #333; border: 1px solid #333; color: #fff; border-radius: 4px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                    Nouveau Utilisateur
+                </a>
                 <a href="#" style="display: flex; align-items: center; gap: 6px; padding: 0.5rem 1rem; background-color: #fff; border: 1px solid #333; color: #333; border-radius: 4px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='#fff'">
                     <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
