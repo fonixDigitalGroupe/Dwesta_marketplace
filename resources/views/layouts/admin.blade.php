@@ -419,7 +419,7 @@
         <div class="header-row-1">
             <div class="header-container">
                 <a href="{{ route('home') }}" class="logo" title="Retour à l'accueil">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 35px; width: auto;">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 22px; width: auto;">
                 </a>
 
                 <div class="search-container">

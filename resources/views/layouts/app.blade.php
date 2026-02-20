@@ -16,7 +16,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #ffffff;
+            background-color: #ffffff; /* Page background white as requested */
             color: #333;
         }
 
@@ -45,10 +45,9 @@
         .header-row-2 {
             background-color: #fff;
             padding: 0.25rem 0 0.6rem 0;
-            /* Increased bottom padding to lower the line */
             border-bottom: 1px solid #e0e0e0;
             margin-top: 0;
-            /* No space from search bar */
+            margin-bottom: 0; /* Removed margin for breathing room to align with banner */
         }
 
         .header-container {
@@ -56,10 +55,9 @@
             /* Wider container */
             margin: 0 auto;
             padding: 0 2rem;
-            /* More padding */
             display: flex;
-            align-items: center;
-            gap: 1rem;
+            align-items: center; /* Vertical alignment */
+            gap: 1.5rem;
         }
 
         .header-row-2 .header-container {
@@ -108,29 +106,30 @@
         .search-input {
             flex: 1;
             padding: 0.75rem 1rem;
-            border: 1px solid #f5f5f5;
-            border-radius: 4px;
+            border: 1px solid #eeeeee;
+            border-radius: 8px 0 0 8px;
             font-size: 1rem;
             outline: none;
-            background-color: #f5f5f5;
+            background-color: #eeeeee;
         }
 
         .search-button {
-            background-color: #f36b00;
+            background-color: #ff8c00; /* Dark orange matching logo/banner */
             color: white;
             border: none;
-            border-radius: 4px;
-            padding: 0 1rem;
+            border-radius: 0 8px 8px 0;
+            padding: 0 1.2rem;
             height: auto;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: background-color 0.2s;
+            margin-left: -1px;
         }
 
         .search-button:hover {
-            background-color: #d95f00;
+            background-color: #e67e00; /* Slightly darker on hover */
         }
 
         /* Header Actions */
@@ -290,15 +289,30 @@
             text-decoration: none;
         }
 
-        .cat-nav-item.badge-style {
-            background: #f0f0f0;
-            padding: 2px 12px;
+        .badge-style {
+            background: #eeeeee;
+            padding: 4px 16px;
             border-radius: 50px;
-            font-weight: 500;
+            font-weight: 700; /* Unified font weight */
+            color: #333;
+            font-size: 0.9rem; /* Unified font size */
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
         }
 
-        .cat-nav-item.badge-style:hover {
+        .badge-style:hover {
             background: #e0e0e0;
+            transform: scale(1.05);
+            color: #333;
+        }
+
+        /* Global Rakuten Style Border Radius */
+        .rakuten-card {
+            border-radius: 15px !important;
+            overflow: hidden;
         }
 
         /* Inactive Buttons Style */

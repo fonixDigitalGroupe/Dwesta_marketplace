@@ -9,7 +9,7 @@
                 </button>
 
                 <a href="{{ route('home') }}" class="header-logo-text">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 40px; width: auto;">
+                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 26px; width: auto;">
                 </a>
 
                 <div class="search-container">
@@ -20,8 +20,8 @@
                                 placeholder="Rechercher un produit" value="{{ request('q') }}"
                                 autocomplete="off">
                             <button type="submit" class="search-button">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg>
                             </button>
@@ -170,10 +170,10 @@
         </div>
 
         <div class="header-row-2">
-            <div class="header-container" style="display: flex; align-items: center; gap: 1rem; padding-left: 7rem;">
-                <div class="cat-nav-item" @click="mobileMenuOpen = !mobileMenuOpen" style="margin-right: 0.5rem;">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            <div class="header-container" style="display: flex; align-items: center; gap: 1rem; padding-left: 1.5rem; max-width: 1400px; margin: 0 auto;">
+                <div class="cat-nav-item" @click="mobileMenuOpen = !mobileMenuOpen" style="margin-right: 0.5rem; color: #333;">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
                             d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                     Toutes les catégories
@@ -183,11 +183,18 @@
                     $nav_cats = \App\Models\Category::racines()->actives()->parOrdre()->get(); 
                 @endphp
 
-                <div class="header-badges-container" style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;">
+                <div class="header-badges-container" style="display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none; align-items: center;">
                     @foreach($nav_cats as $cat)
-                        <a href="{{ route('categories.show', $cat->slug) }}" class="cat-nav-item badge-style">
-                            {{ $cat->nom }}
-                        </a>
+                        <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                            <a href="{{ route('categories.show', $cat->slug) }}" class="cat-nav-item badge-style">
+                                {{ $cat->nom }}
+                            </a>
+                            @foreach($cat->enfantsActifs()->take(1)->get() as $sub)
+                                <a href="{{ route('categories.show', $sub->slug) }}" class="badge-style">
+                                    {{ $sub->nom }}
+                                </a>
+                            @endforeach
+                        </div>
                     @endforeach
                 </div>
             </div>
