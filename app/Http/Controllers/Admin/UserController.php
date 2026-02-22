@@ -20,10 +20,20 @@ class UserController extends Controller
         
         if ($role === 'admin') {
             $query->role('admin');
+        } elseif ($role === 'vendeur_pro') {
+            $query->whereHas('vendeur', function($q) {
+                $q->where('type', 'professionnel');
+            });
+        } elseif ($role === 'vendeur_particulier') {
+            $query->whereHas('vendeur', function($q) {
+                $q->where('type', 'particulier');
+            });
         } elseif ($role === 'vendeur') {
             $query->has('vendeur');
         } elseif ($role === 'acheteur') {
             $query->doesntHave('vendeur')->role('acheteur');
+        } elseif (in_array($role, ['transporteur', 'livreur', 'point relais'])) {
+            $query->role($role);
         }
 
         // Filtre par nationalité
@@ -36,11 +46,9 @@ class UserController extends Controller
             $query->where('civilite', $request->civilite);
         }
 
-        $users = $query->paginate(10);
-        $nationalites = User::whereNotNull('nationalite')->where('nationalite', '!=', '')->distinct()->pluck('nationalite');
-        $civilites = User::whereNotNull('civilite')->where('civilite', '!=', '')->distinct()->pluck('civilite');
+        $users = $query->paginate(8);
 
-        return view('admin.users.index', compact('users', 'nationalites', 'civilites', 'role'));
+        return view('admin.users.index', compact('users', 'role'));
     }
 
     /**
@@ -73,7 +81,6 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|string|in:admin,transporteur,livreur,point relais',
-            'civilite' => 'nullable|string',
             'telephone' => 'nullable|string',
             'nationalite' => 'nullable|string',
             'adresse' => 'nullable|string',
@@ -84,7 +91,6 @@ class UserController extends Controller
             'nom' => $validated['nom'],
             'email' => $validated['email'],
             'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
-            'civilite' => $validated['civilite'],
             'telephone' => $validated['telephone'],
             'nationalite' => $validated['nationalite'],
             'adresse' => $validated['adresse'],
@@ -131,7 +137,6 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
             'role' => 'required|string',
-            'civilite' => 'nullable|string',
             'telephone' => 'nullable|string',
             'nationalite' => 'nullable|string',
             'adresse' => 'nullable|string',
@@ -141,7 +146,6 @@ class UserController extends Controller
             'prenom' => $validated['prenom'],
             'nom' => $validated['nom'],
             'email' => $validated['email'],
-            'civilite' => $validated['civilite'],
             'telephone' => $validated['telephone'],
             'nationalite' => $validated['nationalite'],
             'adresse' => $validated['adresse'],

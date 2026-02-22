@@ -125,47 +125,58 @@
 @endpush
 
 @section('content')
-<div class="message-create-container">
-    <div class="message-card">
-        <div class="message-card-header">
-            <h1>Nouveau message</h1>
-            <a href="{{ url()->previous() }}" style="color: #999;"><i class="fas fa-times"></i></a>
-        </div>
-        
-        <form action="{{ route('conversations.store') }}" method="POST" class="message-form">
-            @csrf
-            <input type="hidden" name="recipient_id" value="{{ $recipient->id }}">
-            @if(request('annonce_id'))
-                <input type="hidden" name="annonce_id" value="{{ request('annonce_id') }}">
-            @endif
+<nav class="breadcrumb">
+    <a href="{{ route('home') }}">Accueil</a> &gt; 
+    <a href="{{ route('account.index') }}">Mon compte</a> &gt; 
+    <a href="{{ route('conversations.index') }}">Mes messages</a> &gt; 
+    <span>Nouveau message</span>
+</nav>
 
-            <div class="recipient-info">
-                <img src="{{ $recipient->avatar ? Storage::url($recipient->avatar) : 'https://ui-avatars.com/api/?name='.urlencode($recipient->name) }}" class="recipient-avatar">
-                <div class="recipient-details">
-                    <div class="label">Destinataire</div>
-                    <div class="name">{{ $recipient->name }}</div>
-                </div>
+<div class="dashboard-container">
+    @include('partials.profile-sidebar')
+
+    <div class="main-content">
+        <div class="message-card">
+            <div class="message-card-header">
+                <h1>Nouveau message</h1>
+                <a href="{{ url()->previous() }}" style="color: #999;"><i class="fas fa-times"></i></a>
             </div>
+            
+            <form action="{{ route('conversations.store') }}" method="POST" class="message-form">
+                @csrf
+                <input type="hidden" name="recipient_id" value="{{ $recipient->id }}">
+                @if(request('annonce_id'))
+                    <input type="hidden" name="annonce_id" value="{{ request('annonce_id') }}">
+                @endif
 
-            @if(request('annonce_id') && $annonce = \App\Models\Annonce::find(request('annonce_id')))
-                <div class="annonce-context">
-                    <span class="annonce-icon">📦</span>
-                    <div class="annonce-details">
-                        <div style="font-size: 0.7rem; color: #b08d24; text-transform: uppercase; font-weight: 700;">Concernant</div>
-                        <div class="annonce-title">{{ $annonce->titre }}</div>
+                <div class="recipient-info">
+                    <img src="{{ $recipient->avatar ? Storage::url($recipient->avatar) : 'https://ui-avatars.com/api/?name='.urlencode($recipient->name) }}" class="recipient-avatar">
+                    <div class="recipient-details">
+                        <div class="label">Destinataire</div>
+                        <div class="name">{{ $recipient->name }}</div>
                     </div>
                 </div>
-            @endif
 
-            <div class="form-group">
-                <label for="message">Votre message</label>
-                <textarea name="message" id="message" class="form-textarea" placeholder="Dites quelque chose au vendeur..." required autofocus></textarea>
-            </div>
+                @if(request('annonce_id') && $annonce = \App\Models\Annonce::find(request('annonce_id')))
+                    <div class="annonce-context">
+                        <span class="annonce-icon">📦</span>
+                        <div class="annonce-details">
+                            <div style="font-size: 0.7rem; color: #b08d24; text-transform: uppercase; font-weight: 700;">Concernant</div>
+                            <div class="annonce-title">{{ $annonce->titre }}</div>
+                        </div>
+                    </div>
+                @endif
 
-            <button type="submit" class="btn-send">
-                Envoyer le message
-            </button>
-        </form>
+                <div class="form-group">
+                    <label for="message">Votre message</label>
+                    <textarea name="message" id="message" class="form-textarea" placeholder="Dites quelque chose au vendeur..." required autofocus></textarea>
+                </div>
+
+                <button type="submit" class="btn-send">
+                    Envoyer le message
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 @endsection

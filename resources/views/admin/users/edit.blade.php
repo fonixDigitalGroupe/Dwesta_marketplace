@@ -42,9 +42,19 @@
 @endpush
     <div style="max-width: 1000px; margin: 0 auto;">
 
-        <header style="margin-bottom: 1.5rem;">
-            <h1 style="font-size: 1.5rem; color: #333; font-weight: 500; margin-bottom: 0.25rem;">Modifier le compte utilisateur</h1>
-            <p style="font-size: 0.95rem; color: #666; font-weight: 400;">Mettez à jour les informations de l'utilisateur.</p>
+        <header style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <h1 style="font-size: 1.5rem; color: #333; font-weight: 500; margin-bottom: 0.25rem;">Modifier le compte utilisateur</h1>
+                <p style="font-size: 0.95rem; color: #666; font-weight: 400;">Mettez à jour les informations de l'utilisateur.</p>
+            </div>
+            <a href="{{ route('admin.users.index') }}" 
+               style="color: #000; text-decoration: none; font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: all 0.2s; padding: 8px 0;"
+               onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                Retour
+            </a>
         </header>
 
         <form action="{{ route('admin.users.update', $user) }}" method="POST">
@@ -63,19 +73,7 @@
                         </h2>
                         
                         <div style="display: grid; gap: 1.25rem;">
-                            <div>
-                                <label style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Civilité</label>
-                                <div style="display: flex; gap: 20px;">
-                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.95rem; color: #333;">
-                                        <input type="radio" name="civilite" value="M." {{ old('civilite', $user->civilite) == 'M.' ? 'checked' : '' }} style="accent-color: #ff750f; width: 18px; height: 18px;">
-                                        M.
-                                    </label>
-                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.95rem; color: #333;">
-                                        <input type="radio" name="civilite" value="Mme" {{ old('civilite', $user->civilite) == 'Mme' ? 'checked' : '' }} style="accent-color: #ff750f; width: 18px; height: 18px;">
-                                        Mme
-                                    </label>
-                                </div>
-                            </div>
+
 
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
                                 <div>
@@ -225,9 +223,9 @@
                         </button>
                         
                         <a href="{{ route('admin.users.index') }}" 
-                           style="width: 100%; padding: 12px; background: transparent; color: #666; border: none; border-radius: 8px; font-weight: 500; text-align: center; text-decoration: none; cursor: pointer; transition: all 0.2s;"
-                           onmouseover="this.style.backgroundColor='#f5f5f5'; this.style.color='#333'" 
-                           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#666'">
+                           style="width: 100%; padding: 12px; background: transparent; color: #666; border: 1px solid #e0e0e0; border-radius: 8px; font-weight: 500; text-align: center; text-decoration: none; cursor: pointer; transition: all 0.2s;"
+                           onmouseover="this.style.backgroundColor='#f8fafc'; this.style.borderColor='#cbd5e1'; this.style.color='#333'" 
+                           onmouseout="this.style.backgroundColor='transparent'; this.style.borderColor='#e0e0e0'; this.style.color='#666'">
                             Annuler
                         </a>
                     </div>

@@ -1,102 +1,227 @@
 <footer class="rk-footer">
-    <div class="rk-footer-content">
-        <!-- Top Section: Elegant Newsletter -->
-        <div class="rk-footer-newsletter">
-            <div class="newsletter-info">
-                <h3>Inscrivez-vous à notre newsletter</h3>
-                <p>Recevez nos meilleures offres et actualités directement dans votre boîte mail.</p>
-            </div>
-            <form class="newsletter-form">
-                <div class="input-group">
-                    <input type="email" placeholder="Votre adresse email" required>
-                    <button type="submit">S'abonner</button>
+    <!-- Top trust bar -->
+    <div class="rk-footer-trust">
+        <div class="rk-footer-content">
+            <div class="trust-items">
+                <div class="trust-item">
+                    <div class="trust-icon">🔒</div>
+                    <div>
+                        <strong>Paiement sécurisé</strong>
+                        <span>Transactions cryptées</span>
+                    </div>
                 </div>
-                <p class="newsletter-privacy">En vous inscrivant, vous acceptez nos <a href="#">CGU</a> et notre <a href="#">Politique de Confidentialité</a>.</p>
-            </form>
-        </div>
-
-        <div class="rk-footer-grid">
-            <!-- Branding & About -->
-            <div class="rk-footer-col branding-col">
-                <div class="footer-logo">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 50px; width: auto;">
+                <div class="trust-sep"></div>
+                <div class="trust-item">
+                    <div class="trust-icon">🚚</div>
+                    <div>
+                        <strong>Livraison partout</strong>
+                        <span>Suivi en temps réel</span>
+                    </div>
                 </div>
-                <p class="footer-desc">Votre marketplace de confiance pour acheter et vendre en toute simplicité. Des milliers d'annonces au meilleur prix.</p>
-                <div class="social-links">
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <div class="trust-sep"></div>
+                <div class="trust-item">
+                    <div class="trust-icon">↩️</div>
+                    <div>
+                        <strong>Retour facile</strong>
+                        <span>30 jours pour changer d'avis</span>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Links Columns -->
-            <div class="rk-footer-col">
-                <h4>Acheter & Vendre</h4>
-                <ul>
-                    <li><a href="{{ route('search.index') }}">Toutes les annonces</a></li>
-                    <li><a href="{{ route('annonces.create') }}">Déposer une annonce</a></li>
-                    <li><a href="#">Comment ça marche ?</a></li>
-                    <li><a href="#">Conseils de sécurité</a></li>
-                    <li><a href="#">Vendre en tant que Pro</a></li>
-                </ul>
-            </div>
-
-            <div class="rk-footer-col">
-                <h4>Informations</h4>
-                <ul>
-                    <li><a href="#">À propos de nous</a></li>
-                    <li><a href="#">Nos engagements</a></li>
-                    <li><a href="#">Blog & Actualités</a></li>
-                    <li><a href="#">Avis clients</a></li>
-                    <li><a href="#">Recrutement</a></li>
-                </ul>
-            </div>
-
-            <div class="rk-footer-col">
-                <h4>Support</h4>
-                <ul>
-                    <li><a href="#">Centre d'aide</a></li>
-                    <li><a href="#">Contactez-nous</a></li>
-                    <li><a href="#">Modes de livraison</a></li>
-                    <li><a href="#">Paiements sécurisés</a></li>
-                    <li><a href="#">Suivi de commande</a></li>
-                </ul>
+                <div class="trust-sep"></div>
+                <div class="trust-item">
+                    <div class="trust-icon">⭐</div>
+                    <div>
+                        <strong>Vendeurs certifiés</strong>
+                        <span>Avis clients vérifiés</span>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
-        <div class="rk-footer-divider"></div>
-
-        <!-- Bottom Section: Payments & Copyright -->
-        <div class="rk-footer-bottom">
-            <div class="payment-methods">
-                <i class="fab fa-cc-visa" title="Visa"></i>
-                <i class="fab fa-cc-mastercard" title="Mastercard"></i>
-                <i class="fab fa-cc-paypal" title="Paypal"></i>
-                <span class="custom-icon" title="Wave/Orange Money">OM/Wave</span>
+    <!-- Main footer body -->
+    <div class="rk-footer-main">
+        <div class="rk-footer-content">
+            <!-- Top: Newsletter -->
+            <div class="rk-footer-newsletter">
+                <div class="newsletter-info">
+                    <h3>Recevez les meilleures offres</h3>
+                    <p>Inscrivez-vous à notre newsletter et ne ratez plus aucune promotion.</p>
+                </div>
+                <form class="newsletter-form" onsubmit="return false;">
+                    <div class="input-group">
+                        <input type="email" placeholder="Votre adresse email">
+                        <button type="submit">S'abonner</button>
+                    </div>
+                    <p class="newsletter-privacy">En vous inscrivant, vous acceptez nos <a href="#">CGU</a> et notre <a href="#">Politique de confidentialité</a>.</p>
+                </form>
             </div>
-            <div class="footer-legal">
-                <p>&copy; {{ date('Y') }} Dwesta. Tous droits réservés.</p>
-                <div class="legal-links">
-                    <a href="#">Mentions légales</a>
-                    <a href="#">CGU</a>
-                    <a href="#">Confidentialité</a>
-                    <a href="#">Cookies</a>
+
+            <div class="rk-footer-divider"></div>
+
+            <!-- Link Columns -->
+            <div class="rk-footer-grid">
+                <!-- Branding -->
+                <div class="rk-footer-col branding-col">
+                    <div class="footer-logo">
+                        <img src="{{ asset('images/logo.png') }}" alt="Karnou" style="height: 45px; width: auto; filter: brightness(0) invert(1);">
+                    </div>
+                    <p class="footer-desc">Votre marketplace de confiance pour acheter et vendre en toute sécurité. Des milliers d'annonces au meilleur prix.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter / X"><i class="fab fa-x-twitter"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                    <div class="app-badges">
+                        <a href="#" class="app-badge">
+                            <i class="fab fa-apple"></i>
+                            <div>
+                                <span>Télécharger sur</span>
+                                <strong>App Store</strong>
+                            </div>
+                        </a>
+                        <a href="#" class="app-badge">
+                            <i class="fab fa-google-play"></i>
+                            <div>
+                                <span>Disponible sur</span>
+                                <strong>Google Play</strong>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Acheter & Vendre -->
+                <div class="rk-footer-col">
+                    <h4>Acheter & Vendre</h4>
+                    <ul>
+                        <li><a href="{{ route('search.index') }}">Toutes les annonces</a></li>
+                        <li><a href="{{ route('annonces.create') }}">Déposer une annonce</a></li>
+                        <li><a href="#">Comment ça marche ?</a></li>
+                        <li><a href="#">Conseils de sécurité</a></li>
+                        <li><a href="#">Guide du vendeur</a></li>
+                        <li><a href="#">Vendre en tant que Pro</a></li>
+                        <li><a href="#">Tarifs et commissions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Catégories populaires -->
+                <div class="rk-footer-col">
+                    <h4>Catégories populaires</h4>
+                    <ul>
+                        <li><a href="#">Informatique & Bureautique</a></li>
+                        <li><a href="#">Smartphones & Tablettes</a></li>
+                        <li><a href="#">Mode & Vêtements</a></li>
+                        <li><a href="#">Maison & Jardin</a></li>
+                        <li><a href="#">Electroménager</a></li>
+                        <li><a href="#">Livres & BD</a></li>
+                        <li><a href="#">Jeux vidéo</a></li>
+                    </ul>
+                </div>
+
+                <!-- Informations -->
+                <div class="rk-footer-col">
+                    <h4>Informations</h4>
+                    <ul>
+                        <li><a href="#">À propos de Karnou</a></li>
+                        <li><a href="#">Nos engagements</a></li>
+                        <li><a href="#">Blog & Actualités</a></li>
+                        <li><a href="#">Presse</a></li>
+                        <li><a href="#">Partenaires</a></li>
+                        <li><a href="#">Recrutement</a></li>
+                        <li><a href="#">Investisseurs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Aide & Support -->
+                <div class="rk-footer-col">
+                    <h4>Aide & Support</h4>
+                    <ul>
+                        <li><a href="#">Centre d'aide</a></li>
+                        <li><a href="#">Contactez-nous</a></li>
+                        <li><a href="#">Modes de livraison</a></li>
+                        <li><a href="#">Retours & Remboursements</a></li>
+                        <li><a href="#">Suivi de commande</a></li>
+                        <li><a href="#">Signaler un problème</a></li>
+                        <li><a href="#">Protection acheteur</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="rk-footer-divider"></div>
+
+            <!-- Bottom bar -->
+            <div class="rk-footer-bottom">
+                <div class="payment-methods">
+                    <span class="payment-label">Paiements acceptés :</span>
+                    <i class="fab fa-cc-visa" title="Visa"></i>
+                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                    <i class="fab fa-cc-paypal" title="PayPal"></i>
+                    <span class="custom-pay-icon" title="Orange Money">OM</span>
+                    <span class="custom-pay-icon" title="Wave">Wave</span>
+                </div>
+                <div class="footer-legal">
+                    <div class="legal-links">
+                        <a href="#">Mentions légales</a>
+                        <a href="#">CGU</a>
+                        <a href="#">CGV</a>
+                        <a href="#">Confidentialité</a>
+                        <a href="#">Cookies</a>
+                        <a href="#">Accessibilité</a>
+                    </div>
+                    <p>&copy; {{ date('Y') }} Karnou Marketplace. Tous droits réservés.</p>
                 </div>
             </div>
         </div>
     </div>
 </footer>
 
-@once
-@push('styles')
 <style>
-    .rk-footer {
-        background-color: #f8f9fa;
-        color: #333;
-        border-top: 1px solid #eee;
-        padding: 4rem 0 2rem 0;
-        font-family: inherit;
+    /* ===== TRUST BAR ===== */
+    .rk-footer-trust {
+        background: #f0f0f0;
+        border-top: 1px solid #e0e0e0;
+        padding: 1.5rem 0;
+    }
+    .trust-items {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        flex-wrap: wrap;
+    }
+    .trust-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0 2.5rem;
+    }
+    .trust-sep {
+        width: 1px;
+        height: 40px;
+        background: #ddd;
+    }
+    .trust-icon {
+        font-size: 1.6rem;
+        line-height: 1;
+    }
+    .trust-item strong {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #111;
+    }
+    .trust-item span {
+        display: block;
+        font-size: 0.75rem;
+        color: #777;
+    }
+
+    /* ===== MAIN FOOTER ===== */
+    .rk-footer-main {
+        background: #1a1a1a;
+        color: #ccc;
+        padding: 4rem 0 0;
     }
 
     .rk-footer-content {
@@ -105,247 +230,237 @@
         padding: 0 2rem;
     }
 
-    /* Newsletter Section */
+    /* ===== NEWSLETTER ===== */
     .rk-footer-newsletter {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 2rem;
-        margin-bottom: 4rem;
-        padding: 2.5rem;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        gap: 3rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
     }
-
     .newsletter-info h3 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         font-weight: 800;
-        margin-bottom: 0.5rem;
-        color: #000;
+        color: #fff;
+        margin-bottom: 0.4rem;
     }
-
     .newsletter-info p {
-        color: #666;
-        font-size: 0.95rem;
+        color: #aaa;
+        font-size: 0.9rem;
     }
-
     .newsletter-form {
-        flex: 0 0 450px;
+        flex: 0 0 420px;
     }
-
     .newsletter-form .input-group {
         display: flex;
-        gap: 0.5rem;
-        margin-bottom: 0.75rem;
+        gap: 0;
+        margin-bottom: 0.6rem;
+        border-radius: 6px;
+        overflow: hidden;
     }
-
     .newsletter-form input {
         flex: 1;
-        padding: 0.8rem 1.2rem;
-        border: 1px solid #ddd;
-        border-radius: 6px;
+        padding: 0.8rem 1rem;
+        border: none;
         outline: none;
-        font-size: 0.95rem;
-        transition: border-color 0.2s;
+        background: #2a2a2a;
+        color: #fff;
+        font-size: 0.9rem;
     }
-
-    .newsletter-form input:focus {
-        border-color: #bf0000;
-    }
-
+    .newsletter-form input::placeholder { color: #777; }
     .newsletter-form button {
-        background: #000;
+        background: #db0001;
         color: #fff;
         border: none;
-        padding: 0 2rem;
-        border-radius: 6px;
+        padding: 0 1.5rem;
         font-weight: 700;
+        font-size: 0.9rem;
         cursor: pointer;
+        white-space: nowrap;
         transition: background 0.2s;
     }
-
-    .newsletter-form button:hover {
-        background: #bf0000;
-    }
-
+    .newsletter-form button:hover { background: #b00000; }
     .newsletter-privacy {
-        font-size: 0.75rem;
-        color: #999;
-    }
-
-    .newsletter-privacy a {
+        font-size: 0.72rem;
         color: #666;
-        text-decoration: underline;
     }
+    .newsletter-privacy a { color: #888; text-decoration: underline; }
 
-    /* Grid Section */
+    /* ===== GRID ===== */
     .rk-footer-grid {
         display: grid;
-        grid-template-columns: 1.5fr 1fr 1fr 1fr;
-        gap: 3rem;
-        margin-bottom: 4rem;
+        grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+        gap: 2.5rem;
+        margin-bottom: 3rem;
     }
 
-    .branding-col .footer-logo {
-        font-size: 1.8rem;
-        font-weight: 900;
-        color: #000;
-        margin-bottom: 1.5rem;
-    }
-
-    .branding-col .footer-logo span {
-        color: #bf0000;
-    }
-
+    /* ===== BRANDING COL ===== */
     .branding-col .footer-desc {
-        color: #666;
+        color: #999;
         line-height: 1.6;
-        margin-bottom: 1.5rem;
-        font-size: 0.95rem;
+        margin: 1.2rem 0 1.5rem;
+        font-size: 0.85rem;
     }
-
     .social-links {
         display: flex;
-        gap: 1rem;
+        gap: 0.6rem;
+        margin-bottom: 1.5rem;
     }
-
     .social-links a {
-        width: 36px;
-        height: 36px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
-        background: #eee;
+        background: #2a2a2a;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #333;
+        color: #aaa;
         text-decoration: none;
+        font-size: 0.85rem;
         transition: all 0.2s;
     }
-
     .social-links a:hover {
-        background: #bf0000;
+        background: #db0001;
         color: #fff;
-        transform: translateY(-3px);
     }
+    .app-badges {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .app-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        background: #2a2a2a;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        color: #ccc;
+        text-decoration: none;
+        transition: all 0.2s;
+        font-size: 0.8rem;
+    }
+    .app-badge:hover { background: #333; color: #fff; }
+    .app-badge i { font-size: 1.4rem; color: #fff; }
+    .app-badge span { display: block; font-size: 0.65rem; color: #888; }
+    .app-badge strong { display: block; font-size: 0.85rem; color: #fff; font-weight: 700; }
 
+    /* ===== LINK COLUMNS ===== */
     .rk-footer-col h4 {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
         font-weight: 700;
-        margin-bottom: 1.5rem;
-        color: #000;
+        color: #fff;
+        margin-bottom: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
-
     .rk-footer-col ul {
         list-style: none;
         padding: 0;
+        margin: 0;
     }
-
     .rk-footer-col ul li {
-        margin-bottom: 0.8rem;
+        margin-bottom: 0.6rem;
     }
-
     .rk-footer-col ul li a {
         text-decoration: none;
-        color: #666;
-        font-size: 0.95rem;
-        transition: all 0.2s;
+        color: #999;
+        font-size: 0.85rem;
+        transition: color 0.2s;
+        line-height: 1.4;
     }
-
     .rk-footer-col ul li a:hover {
-        color: #bf0000;
-        padding-left: 5px;
+        color: #fff;
     }
 
-    /* Bottom Section */
+    /* ===== DIVIDER ===== */
     .rk-footer-divider {
         height: 1px;
-        background: #eee;
+        background: #2a2a2a;
         margin-bottom: 2rem;
     }
 
+    /* ===== BOTTOM BAR ===== */
     .rk-footer-bottom {
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        gap: 2rem;
+        gap: 1.5rem;
+        padding: 1.5rem 0 2rem;
+        border-top: 1px solid #2a2a2a;
     }
-
     .payment-methods {
         display: flex;
         align-items: center;
-        gap: 1.5rem;
-        font-size: 1.8rem;
-        color: #999;
+        gap: 1rem;
+        flex-wrap: wrap;
     }
-
-    .custom-icon {
+    .payment-label {
         font-size: 0.75rem;
-        font-weight: 800;
-        border: 1px solid #ccc;
-        padding: 2px 6px;
-        border-radius: 4px;
+        color: #666;
+        margin-right: 0.3rem;
     }
-
+    .payment-methods i {
+        font-size: 2rem;
+        color: #666;
+    }
+    .custom-pay-icon {
+        font-size: 0.65rem;
+        font-weight: 800;
+        border: 1px solid #444;
+        padding: 3px 7px;
+        border-radius: 4px;
+        color: #888;
+    }
     .footer-legal {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
         gap: 0.5rem;
     }
-
     .footer-legal p {
-        font-size: 0.85rem;
-        color: #999;
+        font-size: 0.75rem;
+        color: #555;
         margin: 0;
     }
-
     .legal-links {
         display: flex;
-        gap: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: flex-end;
     }
-
     .legal-links a {
         color: #666;
         text-decoration: none;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
+        transition: color 0.2s;
     }
+    .legal-links a:hover { color: #ccc; }
 
-    .legal-links a:hover {
-        text-decoration: underline;
-    }
-
-    /* Responsive */
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 1024px) {
+        .rk-footer-grid {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
         .rk-footer-newsletter {
             flex-direction: column;
-            text-align: center;
+            align-items: flex-start;
         }
-        .newsletter-form {
-            flex: 1;
-            width: 100%;
-        }
-        .rk-footer-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
+        .newsletter-form { flex: 1; width: 100%; }
     }
-
     @media (max-width: 768px) {
-        .rk-footer-bottom {
-            flex-direction: column;
-            text-align: center;
-        }
-        .footer-legal {
-            align-items: center;
-        }
+        .trust-items { flex-direction: column; gap: 1rem; }
+        .trust-sep { display: none; }
+        .rk-footer-grid { grid-template-columns: 1fr 1fr; }
+        .rk-footer-bottom { flex-direction: column; align-items: flex-start; }
+        .footer-legal { align-items: flex-start; }
+        .legal-links { justify-content: flex-start; }
     }
-
     @media (max-width: 640px) {
-        .rk-footer-grid {
-            grid-template-columns: 1fr;
-        }
+        .rk-footer-grid { grid-template-columns: 1fr; }
     }
 </style>
-@endpush
-@endonce
+

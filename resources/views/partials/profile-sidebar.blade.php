@@ -163,7 +163,7 @@
             Mes avis
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#" class="inactive-link" title="Bientôt disponible">Tous mes avis</a></li>
+            <li><a href="{{ route('account.avis') }}" class="{{ request()->routeIs('account.avis') ? 'active' : '' }}">Tous mes avis</a></li>
         </ul>
     </div>
 
@@ -233,7 +233,12 @@
         <ul class="sidebar-menu">
             @if($user->vendeur)
                 <li><a href="{{ route('vendeur.wallet.index') }}" class="{{ request()->routeIs('vendeur.wallet.index') ? 'active' : '' }}">Mon Porte-Monnaie</a></li>
-                <li><a href="#" onclick="event.preventDefault(); alert('Fonctionnalité de retrait bientôt disponible');">Demander un retrait</a></li>
+                <li>
+                    <a href="{{ route('vendeur.wallet.index', ['withdraw' => 1]) }}" 
+                       @if(request()->routeIs('vendeur.wallet.index')) onclick="event.preventDefault(); openWithdrawModal();" @endif>
+                       Demander un retrait
+                    </a>
+                </li>
             @else
                 <li><span class="inactive-link" title="Devenez vendeur pour gérer vos finances">Mon Porte-Monnaie</span></li>
             @endif

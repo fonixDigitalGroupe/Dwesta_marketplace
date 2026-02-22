@@ -10,6 +10,10 @@ class Banner extends Model
         'title',
         'image_url',
         'link_url',
+        'promo_discount',
+        'promo_conditions',
+        'promo_code',
+        'has_payment_4x',
         'active',
         'order',
         'start_date',
@@ -18,6 +22,7 @@ class Banner extends Model
 
     protected $casts = [
         'active' => 'boolean',
+        'has_payment_4x' => 'boolean',
         'start_date' => 'datetime',
         'end_date' => 'datetime',
         'order' => 'integer',

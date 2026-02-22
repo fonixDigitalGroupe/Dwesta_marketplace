@@ -47,6 +47,18 @@ class VendeurAbonnement extends Model
     }
 
     /**
+     * Vérifier si l'abonnement expire bientôt (dans 30 jours)
+     */
+    public function expireBientot(): bool
+    {
+        if (!$this->date_fin) {
+            return false;
+        }
+
+        return $this->date_fin->isBefore(now()->addDays(30)) && !$this->estExpire();
+    }
+
+    /**
      * Vérifier si le vendeur peut publier une nouvelle annonce
      * selon les limites de son abonnement
      */

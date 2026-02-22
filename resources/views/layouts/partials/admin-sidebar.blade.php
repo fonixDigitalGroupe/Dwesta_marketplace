@@ -36,6 +36,30 @@
         </ul>
     </div>
 
+    <!-- Gestion des Vendeurs -->
+    <div class="sidebar-section">
+        <div class="sidebar-title">
+            <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5" style="color: #6366f1;">
+                <path d="M16 11c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+            </svg>
+            Gestion des Vendeurs
+        </div>
+        <ul class="sidebar-menu">
+            <li>
+                <a href="{{ route('admin.vendeurs.verification.index') }}" class="{{ request()->routeIs('admin.vendeurs.verification.*') ? 'active' : '' }}" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span><i class="fas fa-check-circle" style="width: 20px; color: #6366f1;"></i> Validation Vendeurs</span>
+                    @if(isset($pendingVendorsCount) && $pendingVendorsCount > 0)
+                        <span style="background: var(--mady-red); color: white; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 10px; min-width: 18px; text-align: center; margin-right: 10px;">
+                            {{ $pendingVendorsCount }}
+                        </span>
+                    @endif
+                </a>
+            </li>
+            <li><a href="{{ route('admin.users.index', ['role' => 'vendeur']) }}" class="{{ in_array(request('role'), ['vendeur', 'vendeur_pro', 'vendeur_particulier']) ? 'active' : '' }}"><i class="fas fa-store" style="width: 20px; color: #6366f1;"></i> Vendeurs</a></li>
+        </ul>
+    </div>
+
+
     <!-- Contenu & Marketing -->
     <div class="sidebar-section">
         <div class="sidebar-title">
@@ -46,32 +70,22 @@
             Contenu
         </div>
         <ul class="sidebar-menu">
-            <li><a href="#">Bannières Publicitaires</a></li>
+            <li><a href="{{ route('admin.banners.index') }}" class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}"><i class="fas fa-image" style="width: 20px; color: #f39c12;"></i> Bannières Publicitaires</a></li>
+            <li><a href="{{ route('admin.highlights.index') }}" class="{{ request()->routeIs('admin.highlights.*') ? 'active' : '' }}"><i class="fas fa-th-large" style="width: 20px; color: #f39c12;"></i> Actualités Karnou</a></li>
+            <li><a href="{{ route('admin.highlight-tabs.index') }}" class="{{ request()->routeIs('admin.highlight-tabs.*') ? 'active' : '' }}"><i class="fas fa-tags" style="width: 20px; color: #f39c12;"></i> Gestion des Onglets</a></li>
         </ul>
     </div>
 
     <!-- Configuration -->
     <div class="sidebar-section">
         <div class="sidebar-title">
-            <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" fill="#c0392b" />
-                <circle cx="12" cy="7" r="4" fill="#e74c3c" />
-            </svg>
+            <i class="fas fa-cogs" style="font-size: 1.1rem; color: #666;"></i>
             Paramètres
         </div>
         <ul class="sidebar-menu">
             <li><a href="{{ route('admin.categories.l1') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-sitemap" style="width: 20px;"></i> Catégories & Architecture</a></li>
-            <li><a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}"><i class="fas fa-users" style="width: 20px;"></i> Gestion des Utilisateurs</a></li>
-            <li>
-                <a href="{{ route('admin.vendeurs.verification.index') }}" class="{{ request()->routeIs('admin.vendeurs.verification.*') ? 'active' : '' }}" style="display: flex; justify-content: space-between; align-items: center;">
-                    <span><i class="fas fa-check-circle" style="width: 20px;"></i> Validation Vendeurs</span>
-                    @if(isset($pendingVendorsCount) && $pendingVendorsCount > 0)
-                        <span style="background: var(--mady-red); color: white; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 10px; min-width: 18px; text-align: center; margin-right: 10px;">
-                            {{ $pendingVendorsCount }}
-                        </span>
-                    @endif
-                </a>
-            </li>
+            <li><a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.index') && !request()->has('role') ? 'active' : '' }}"><i class="fas fa-users" style="width: 20px;"></i> Gestion des Utilisateurs</a></li>
+            <li><a href="#"><i class="fas fa-tools" style="width: 20px;"></i> Configuration Générale</a></li>
         </ul>
     </div>
 </aside>

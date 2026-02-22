@@ -9,7 +9,7 @@
             <h1 class="text-2xl font-bold">Litige #{{ $litige->id }}</h1>
             <p class="text-gray-500">Ouvert le {{ $litige->created_at->format('d/m/Y à H:i') }}</p>
         </div>
-        <a href="{{ route('admin.litiges.index') }}" class="text-gray-600 hover:text-gray-900 border px-4 py-2 rounded bg-white">Retour à la liste</a>
+        <a href="{{ route('admin.litiges.index') }}" class="text-gray-600 hover:text-gray-900 font-medium">Retour à la liste</a>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

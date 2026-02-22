@@ -7,6 +7,7 @@
     <title>@yield('title', 'Dwesta Marketplace')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -487,26 +488,7 @@
             }
         }
 
-        /* Footer Styles */
-        .footer {
-            background-color: #ffffff;
-            color: #333;
-            padding: 3rem 0;
-            margin-top: 4rem;
-            border-top: 1px solid #eee;
-        }
 
-        .footer-bottom {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            text-align: center;
-        }
-
-        .footer-bottom p {
-            color: #888;
-            font-size: 0.85rem;
-        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('styles')
@@ -521,11 +503,7 @@
 
     @yield('content')
 
-    <footer class="footer">
-        <div class="footer-bottom">
-            <p>&copy; {{ date('Y') }} Dwesta. Tous droits réservés.</p>
-        </div>
-    </footer>
+    @include('layouts.partials.footer')
 
     <script>
         // Scripts globaux
@@ -601,13 +579,15 @@
             @endif
 
             @if(session('error'))
-                Swal.fire({
-                    title: 'Erreur',
-                    text: "{{ session('error') }}",
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#bf0000'
-                });
+                if (!document.querySelector('.alert-error')) {
+                    Swal.fire({
+                        title: 'Erreur',
+                        text: "{{ session('error') }}",
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        confirmButtonColor: '#bf0000'
+                    });
+                }
             @endif
         });
     </script>

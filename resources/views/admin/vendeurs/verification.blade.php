@@ -52,9 +52,9 @@
                             </td>
                             <td style="padding: 1rem 1.25rem;">
                                 @if($vendeur->estParticulier())
-                                    <span style="display: inline-block; padding: 2px 8px; background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; border-radius: 4px; font-size: 0.7rem; font-weight: 700;">Particulier</span>
+                                    <span style="display: inline-block; padding: 2px 8px; background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; border-radius: 4px; font-size: 0.7rem; font-weight: 700;">Vendeur part</span>
                                 @else
-                                    <span style="display: inline-block; padding: 2px 8px; background: #fffbeb; color: #b45309; border: 1px solid #fef3c7; border-radius: 4px; font-size: 0.7rem; font-weight: 700;">Professionnel</span>
+                                    <span style="display: inline-block; padding: 2px 8px; background: #fffbeb; color: #b45309; border: 1px solid #fef3c7; border-radius: 4px; font-size: 0.7rem; font-weight: 700;">Vendeur pro</span>
                                 @endif
                             </td>
                             <td style="padding: 1rem 1.25rem; color: #666; font-size: 0.8rem;">

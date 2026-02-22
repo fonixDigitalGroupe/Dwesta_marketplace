@@ -105,8 +105,6 @@
             <div style="background: white; padding: 3rem; text-align: center; border-radius: 8px; border: 1px solid #eee;">
                 <div style="font-size: 3rem; margin-bottom: 1rem;">🛍️</div>
                 <h3 style="margin-bottom: 0.5rem;">Vous n'avez pas encore effectué d'achats.</h3>
-                <p style="color: #666; margin-bottom: 1.5rem;">Découvrez nos produits et faites votre premier achat dès maintenant !</p>
-                <a href="{{ route('home') }}" style="background: #ef6c00; color: white; padding: 0.75rem 2rem; border-radius: 4px; text-decoration: none; font-weight: bold;">Explorer la boutique</a>
             </div>
         @else
             <div class="orders-list">

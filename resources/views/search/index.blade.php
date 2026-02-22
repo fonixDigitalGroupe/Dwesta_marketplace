@@ -274,10 +274,13 @@
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">{{ $annonce->titre }}</h3>
-                            <div class="card-price">{{ number_format($annonce->prix, 2, ',', ' ') }} €</div>
+                            <div class="card-price">{{ number_format($annonce->prix, 0, ',', ' ') }} F CFA</div>
                             <div class="card-footer">
-                                <span class="seller-name">{{ $annonce->vendeur->user->prenom }} {{ $annonce->vendeur->user->nom }}</span>
-                                <span class="date">{{ $annonce->publiee_le->diffForHumans() }}</span>
+                                <span class="seller-name">
+                                    {{ $annonce->vendeur?->user?->prenom ?? 'Utilisateur' }} 
+                                    {{ $annonce->vendeur?->user?->nom ?? '' }}
+                                </span>
+                                <span class="date">{{ $annonce->publiee_le?->diffForHumans() ?? '' }}</span>
                             </div>
                         </div>
                     </a>

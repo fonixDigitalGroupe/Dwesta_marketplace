@@ -15,11 +15,29 @@
             <div class="item-brand">- {{ $annonce->categorie->nom ?? 'Produit' }}</div>
             <div class="item-rating">
                 <div class="stars">
-                    @for($i = 0; $i < 5; $i++)
-                        <svg width="14" height="14" fill="#ffc107" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                    @endfor
+                    @if($annonce->nombre_avis > 0)
+                        @php
+                            $rating = $annonce->note_moyenne;
+                            $fullStars = floor($rating);
+                            $halfStar = ($rating - $fullStars) >= 0.5;
+                            $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                        @endphp
+                        @for($i = 0; $i < $fullStars; $i++)
+                            <svg width="14" height="14" fill="#ffc107" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        @endfor
+                        @if($halfStar)
+                            <svg width="14" height="14" fill="#ffc107" viewBox="0 0 24 24"><path d="M12 18.26l-7.05 4.31 1.7-8.15-6.21-5.38 8.1-.71L12 1.05l3.46 7.28 8.1.71-6.21 5.38 1.7 8.15-7.05-4.31zM12 15.4V6.1l-1.92 4.04-4.5.39 3.45 3.01-.95 4.54L12 15.4z"/></svg>
+                        @endif
+                        @for($i = 0; $i < $emptyStars; $i++)
+                            <svg width="14" height="14" fill="#ddd" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        @endfor
+                    @else
+                        @for($i = 0; $i < 5; $i++)
+                            <svg width="14" height="14" fill="#ddd" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        @endfor
+                    @endif
                 </div>
-                <span class="rating-count">{{ 100 + ($annonce->id * 7) % 500 }} avis</span>
+                <span class="rating-count">{{ $annonce->nombre_avis }} avis</span>
             </div>
             <div class="item-pricing">
                 <span class="price-main">{{ number_format($annonce->prix, 2, ',', ' ') }} €</span>

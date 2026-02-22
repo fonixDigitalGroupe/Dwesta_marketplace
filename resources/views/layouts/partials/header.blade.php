@@ -87,15 +87,15 @@
                                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                             </svg>
                                         </a>
-                                        <a href="#" class="auth-menu-item">Suivi de commande</a>
-                                        <a href="#" class="auth-menu-item">Mon porte-monnaie</a>
-                                        <a href="#" class="auth-menu-item">Mes Messages</a>
+                                        <a href="{{ route('account.orders') }}" class="auth-menu-item">Suivi de commande</a>
+                                        <a href="{{ route('vendeur.wallet.index') }}" class="auth-menu-item">Mon porte-monnaie</a>
+                                        <a href="{{ route('conversations.index') }}" class="auth-menu-item">Mes Messages</a>
                                         
                                         <div class="auth-separator"></div>
                                         
                                         <a href="{{ route('annonces.create') }}" class="auth-menu-item">Mettre en vente un produit</a>
                                         <a href="{{ route('annonces.index', ['vendeur' => auth()->id()]) }}" class="auth-menu-item">Mes articles en vente</a>
-                                        <a href="#" class="auth-menu-item">Toutes mes ventes</a>
+                                        <a href="{{ route('vendeur.orders') }}" class="auth-menu-item">Toutes mes ventes</a>
                                         
                                         <div class="auth-separator"></div>
                                         
@@ -134,9 +134,9 @@
                                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                             </svg>
                                         </a>
-                                        <a href="#" class="auth-menu-item">Suivi de commande</a>
-                                        <a href="#" class="auth-menu-item">Mon porte-monnaie</a>
-                                        <a href="#" class="auth-menu-item">Mes Messages</a>
+                                        <a href="{{ route('account.orders') }}" class="auth-menu-item">Suivi de commande</a>
+                                        <a href="{{ route('vendeur.wallet.index') }}" class="auth-menu-item">Mon porte-monnaie</a>
+                                        <a href="{{ route('conversations.index') }}" class="auth-menu-item">Mes Messages</a>
                                     </div>
                                 </div>
                             </div>

@@ -179,8 +179,8 @@
             </div>
 
             <a href="{{ route('admin.transporteurs.index') }}" 
-               style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; color: #666; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: background 0.2s;" 
-               onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='#fff'">
+               style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 0; background: transparent; color: #666; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: opacity 0.2s;" 
+               onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
                 <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 Retour
             </a>

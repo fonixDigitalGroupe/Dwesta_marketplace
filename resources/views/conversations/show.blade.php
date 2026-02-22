@@ -164,57 +164,68 @@
 @endpush
 
 @section('content')
-<div class="conv-wrapper">
-    @php
-        $otherUser = $conversation->user1_id == Auth::id() ? $conversation->user2 : $conversation->user1;
-    @endphp
+<nav class="breadcrumb">
+    <a href="{{ route('home') }}">Accueil</a> &gt; 
+    <a href="{{ route('account.index') }}">Mon compte</a> &gt; 
+    <a href="{{ route('conversations.index') }}">Mes messages</a> &gt; 
+    <span>Conversation</span>
+</nav>
 
-    <div class="conv-card">
-        <div class="conv-header">
-            <a href="{{ route('conversations.index') }}" class="back-link">
-                <i class="fas fa-arrow-left"></i>
-            </a>
-            <img src="{{ $otherUser->avatar ? Storage::url($otherUser->avatar) : 'https://ui-avatars.com/api/?name='.urlencode($otherUser->name) }}" class="other-user-avatar">
-            <div class="other-user-info">
-                <h2>{{ $otherUser->name }}</h2>
-                @if($conversation->annonce)
-                    <a href="{{ route('annonces.show', $conversation->annonce) }}" class="annonce-link">
-                        <i class="fas fa-tag"></i>
-                        {{ Str::limit($conversation->annonce->titre, 35) }}
-                    </a>
-                @endif
+<div class="dashboard-container">
+    @include('partials.profile-sidebar')
+
+    <div class="main-content">
+        @php
+            $otherUser = $conversation->user1_id == Auth::id() ? $conversation->user2 : $conversation->user1;
+        @endphp
+
+        <div class="conv-card">
+            <div class="conv-header">
+                <a href="{{ route('conversations.index') }}" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <img src="{{ $otherUser->avatar ? Storage::url($otherUser->avatar) : 'https://ui-avatars.com/api/?name='.urlencode($otherUser->name) }}" class="other-user-avatar">
+                <div class="other-user-info">
+                    <h2>{{ $otherUser->name }}</h2>
+                    @if($conversation->annonce)
+                        <a href="{{ route('annonces.show', $conversation->annonce) }}" class="annonce-link">
+                            <i class="fas fa-tag"></i>
+                            {{ Str::limit($conversation->annonce->titre, 35) }}
+                        </a>
+                    @endif
+                </div>
             </div>
-        </div>
 
-        <div class="messages-area" id="messages-container">
-            @forelse($conversation->messages as $message)
-                <div class="message-row {{ $message->sender_id == Auth::id() ? 'mine' : 'theirs' }}">
-                    <div class="bubble">
-                        <div class="content">{{ $message->content }}</div>
-                        <div class="bubble-meta">
-                            {{ $message->created_at->format('H:i') }}
-                            @if($message->sender_id == Auth::id())
-                                <i class="fas fa-check{{ $message->read_at ? '-double' : '' }}"></i>
-                            @endif
+            <div class="messages-area" id="messages-container">
+                @forelse($conversation->messages as $message)
+                    <div class="message-row {{ $message->sender_id == Auth::id() ? 'mine' : 'theirs' }}">
+                        <div class="bubble">
+                            <div class="content">{{ $message->content }}</div>
+                            <div class="bubble-meta">
+                                {{ $message->created_at->format('H:i') }}
+                                @if($message->sender_id == Auth::id())
+                                    <i class="fas fa-check{{ $message->read_at ? '-double' : '' }}"></i>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
-            @empty
-                <div style="text-align: center; color: #999; margin-top: 4rem;">
-                    <i class="far fa-comments fa-3x" style="display: block; margin-bottom: 1rem;"></i>
-                    Aucun message dans cette conversation.
-                </div>
-            @endforelse
-        </div>
+                @empty
+                    <div style="text-align: center; color: #999; margin-top: 4rem;">
+                        <i class="far fa-comments fa-3x" style="display: block; margin-bottom: 1rem;"></i>
+                        Aucun message dans cette conversation.
+                    </div>
+                @endforelse
+            </div>
 
-        <div class="input-area">
-            <form action="{{ route('conversations.messages.store', $conversation) }}" method="POST" class="input-form">
-                @csrf
-                <textarea name="content" class="message-input" placeholder="Écrivez votre message..." required rows="1" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
-                <button type="submit" class="send-btn">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </form>
+            <div class="input-area">
+                <form action="{{ route('conversations.messages.store', $conversation) }}" method="POST" class="input-form">
+                    @csrf
+                    <textarea name="content" class="message-input" placeholder="Écrivez votre message..." required rows="1" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+                    <button type="submit" class="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -222,7 +233,9 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('messages-container');
-        container.scrollTop = container.scrollHeight;
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
     });
 </script>
 @endsection

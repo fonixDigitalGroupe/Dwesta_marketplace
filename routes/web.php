@@ -7,6 +7,8 @@ use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\AnnonceMediaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\AvisController;
@@ -39,6 +41,12 @@ Route::middleware('guest')->group(function () {
     // OAuth
     Route::get('/auth/{provider}', [SocialAuthController::class, 'redirect'])->name('social.redirect');
     Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->name('social.callback');
+
+    // Password Reset
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 });
 
 Route::middleware('auth')->group(function () {
@@ -63,6 +71,7 @@ Route::middleware('auth')->group(function () {
         
         // Mes Achats
         Route::get('/mes-achats', [\App\Http\Controllers\AccountController::class, 'orders'])->name('account.orders');
+        Route::get('/mes-avis', [\App\Http\Controllers\AvisController::class, 'mesAvis'])->name('account.avis');
 
     // Vendeur
     Route::prefix('vendeur')->name('vendeur.')->group(function () {
@@ -72,6 +81,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/mon-compte', [VendeurController::class, 'show'])->name('show');
         Route::get('/mes-annonces', [VendeurController::class, 'mesAnnonces'])->name('mes-annonces');
         Route::get('/mes-ventes', [VendeurController::class, 'orders'])->name('orders');
+        Route::get('/mes-ventes/{order}', [VendeurController::class, 'orderShow'])->name('orders.show');
         Route::put('/{vendeur}/document-particulier', [VendeurController::class, 'updateDocumentParticulier'])->name('update.document.particulier');
         Route::put('/{vendeur}/document-professionnel', [VendeurController::class, 'updateDocumentProfessionnel'])->name('update.document.professionnel');
 
@@ -194,6 +204,16 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::resource('point-relais', \App\Http\Controllers\Admin\PointRelaisController::class);
+
+        // Gestion des Bannières
+        Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class);
+        Route::patch('banners/{banner}/toggle-status', [\App\Http\Controllers\Admin\BannerController::class, 'toggleStatus'])->name('banners.toggle-status');
+
+        // Gestion des Actualités (Highlights)
+        Route::resource('highlight-tabs', \App\Http\Controllers\Admin\HighlightTabController::class);
+        Route::patch('highlight-tabs/{highlightTab}/toggle-status', [\App\Http\Controllers\Admin\HighlightTabController::class, 'toggleStatus'])->name('highlight-tabs.toggle-status');
+        Route::resource('highlights', \App\Http\Controllers\Admin\HighlightController::class);
+        Route::patch('highlights/{highlight}/toggle-status', [\App\Http\Controllers\Admin\HighlightController::class, 'toggleStatus'])->name('highlights.toggle-status');
     });
 
     // Documents sécurisés (accessibles uniquement aux admins)

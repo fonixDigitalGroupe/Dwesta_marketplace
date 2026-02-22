@@ -57,9 +57,12 @@
 
         .auth-card {
             background: white;
-            padding: 2.5rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
+            padding: 1.5rem 2.5rem 2.5rem 2.5rem;
+            border: 1px solid #f0f0f0;
+            border-left: none !important;
+            border-top: none !important;
+            border-radius: 0 0 8px 0 !important;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.02);
         }
 
         .auth-title {
@@ -74,15 +77,46 @@
 
         .form-input-box {
             width: 100%;
-            padding: 0.6rem;
+            padding: 1rem 0.6rem 0.25rem 0.6rem;
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 1rem;
             outline: none;
+            transition: border-color 0.2s;
         }
 
         .form-input-box:focus {
             border-color: #ff4e00;
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .floating-label {
+            position: absolute;
+            left: 0.6rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1rem;
+            transition: all 0.2s ease-out;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .form-input-box:focus + .floating-label,
+        .form-input-box:not(:placeholder-shown) + .floating-label,
+        .iti:focus-within + .floating-label {
+            top: 0.35rem;
+            transform: translateY(0);
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        /* Specific for intl-tel-input to avoid overlap with flag */
+        .iti + .floating-label {
+            left: 3rem;
         }
 
         .password-container {
@@ -107,8 +141,7 @@
         }
 
         .btn-black {
-            width: auto;
-            min-width: 150px;
+            width: 100%;
             background: #000;
             color: white;
             border: none;
@@ -129,17 +162,26 @@
         .new-client-card {
             background: white;
             padding: 1.5rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
+            border: 1px solid #f0f0f0;
+            border-left: none !important;
+            border-top: none !important;
+            border-radius: 0 0 8px 0 !important;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.02);
             height: auto;
-            max-width: 350px;
+            max-width: 450px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
         }
 
+        .new-client-card .auth-title {
+            margin-bottom: 1.5rem;
+        }
+
         .new-client-card .btn-black {
-            margin-top: 0.5rem;
+            width: auto;
+            min-width: 150px;
+            margin-top: 0;
         }
 
         .error-message {
@@ -266,10 +308,34 @@
             background: #df4930;
         }
 
+        .btn-facebook {
+            background: #1877F2;
+            margin-top: 0.4rem;
+        }
+
+        .login-form .form-group:first-of-type {
+            margin-bottom: 0.5rem;
+        }
+
         .btn-social svg {
             width: 18px;
             height: 18px;
             fill: white;
+        }
+        .alert-error {
+            background-color: #fff5f5;
+            color: #bf0000;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .alert-error svg {
+            flex-shrink: 0;
         }
     </style>
 @endpush
@@ -284,26 +350,41 @@
         <div class="login-grid">
             <!-- Left Column: Existing Customer -->
             <div class="auth-card">
+                <h2 class="auth-title">Déjà client Karnou ?</h2>
 
-                <form method="POST" action="{{ route('login') }}">
+                @if(session('error'))
+                    <div class="alert-error">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>{{ session('error') }}</span>
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('login') }}" class="login-form">
                     @csrf
 
                     <div class="form-group" x-data="{ loginType: 'email' }">
                         <div class="input-container" style="position: relative;">
                             <!-- Email Input -->
                             <input x-show="loginType === 'email'" type="text" name="login_email" id="login_email" 
-                                placeholder="E-mail ou pseudo" class="form-input-box"
+                                placeholder=" " class="form-input-box"
                                 value="{{ old('login') }}" 
                                 style="padding-right: 50px;"
                                 :required="loginType === 'email'"
                                 :name="loginType === 'email' ? 'login' : ''">
+                            <label class="floating-label" x-show="loginType === 'email'">E-mail ou pseudo</label>
                             
                             <!-- Phone Input -->
                             <div x-show="loginType === 'phone'" style="display: none;" x-effect="if(loginType === 'phone') $el.style.display = 'block'">
-                                <input type="tel" id="login_phone" class="form-input-box" 
-                                    style="width: 100%; padding-right: 50px;"
-                                    :required="loginType === 'phone'">
-                                <input type="hidden" name="login" id="full_login_phone" :disabled="loginType !== 'phone'">
+                                <div class="input-container">
+                                    <input type="tel" id="login_phone" class="form-input-box" 
+                                        placeholder=" "
+                                        style="width: 100%; padding-right: 50px;"
+                                        :required="loginType === 'phone'">
+                                    <label class="floating-label">Téléphone</label>
+                                    <input type="hidden" name="login" id="full_login_phone" :disabled="loginType !== 'phone'">
+                                </div>
                             </div>
 
                             <!-- Toggle Icon -->
@@ -328,22 +409,25 @@
                     </div>
 
                     <div class="form-group password-container">
-                        <input type="password" id="password" name="password" placeholder="Mot de passe"
-                            class="form-input-box" required>
-                        <span class="toggle-password" onclick="togglePassword()">
-                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                <path fill-rule="evenodd"
-                                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </span>
+                        <div class="input-container">
+                            <input type="password" id="password" name="password" placeholder=" "
+                                class="form-input-box" required>
+                            <label class="floating-label">Mot de passe</label>
+                            <span class="toggle-password" onclick="togglePassword()" style="top: 50%; transform: translateY(-50%);">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                    <path fill-rule="evenodd"
+                                        d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        </div>
                         @error('password')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <a href="#" class="forgot-password">J'ai oublié mon mot de passe</a>
+                    <a href="{{ route('password.request') }}" class="forgot-password">J'ai oublié mon mot de passe</a>
 
                     <button type="submit" class="btn-black">
                         Me connecter
@@ -353,7 +437,7 @@
                     <div class="social-login-section">
                         <div class="social-divider">ou</div>
                         <div class="social-buttons">
-                            <a href="#" class="btn-social btn-google">
+                            <a href="{{ route('social.redirect', ['provider' => 'google', 'action' => 'login']) }}" class="btn-social btn-google">
                                 <div class="icon-box">
                                     <svg viewBox="0 0 24 24">
                                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -364,6 +448,17 @@
                                 </div>
                                 <div class="text-box">
                                     <span>Se connecter avec Google</span>
+                                </div>
+                            </a>
+
+                            <a href="{{ route('social.redirect', ['provider' => 'facebook', 'action' => 'login']) }}" class="btn-social btn-facebook">
+                                <div class="icon-box">
+                                    <svg viewBox="0 0 24 24" fill="white">
+                                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                    </svg>
+                                </div>
+                                <div class="text-box">
+                                    <span>Se connecter avec Facebook</span>
                                 </div>
                             </a>
                         </div>

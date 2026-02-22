@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class VendeurWalletController extends Controller
 {
@@ -51,7 +52,7 @@ class VendeurWalletController extends Controller
     public function requestWithdrawal(Request $request)
     {
         $request->validate([
-            'montant' => 'required|numeric|min:1000',
+            'montant' => 'required|numeric|min:1',
             'moyen' => 'required|in:om,momo,virement'
         ]);
 
@@ -68,7 +69,7 @@ class VendeurWalletController extends Controller
 
         Transaction::create([
             'user_id' => $user->id,
-            'reference_externe' => 'WD-' . strtoupper(str_random(8)),
+            'reference_externe' => 'WD-' . strtoupper(Str::random(8)),
             'montant' => -$request->montant,
             'moyen_paiement' => $request->moyen,
             'statut' => 'succes',

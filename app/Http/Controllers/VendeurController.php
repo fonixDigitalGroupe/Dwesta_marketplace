@@ -418,14 +418,45 @@ class VendeurController extends Controller
         }
 
         $vendeur = $user->vendeur;
-        
+
         // Récupérer toutes les commandes passées chez ce vendeur
         $orders = $vendeur->orders()
             ->with(['buyer', 'items.annonce'])
             ->latest()
             ->paginate(20);
 
-        return view('vendeur.orders', compact('vendeur', 'orders'));
+        // Stats rapides (sur toutes les commandes, pas seulement la page)
+        $allOrders = $vendeur->orders();
+        $stats = [
+            'total'     => (clone $allOrders)->count(),
+            'revenue'   => (clone $allOrders)->sum('total_produits'),
+            'pending'   => (clone $allOrders)->where('statut', 'paye')->count(),
+            'delivered' => (clone $allOrders)->where('statut', 'livre')->count(),
+        ];
+
+        return view('vendeur.orders', compact('vendeur', 'orders', 'stats'));
+    }
+
+    /**
+     * Affiche le détail d'une commande reçue (côté vendeur)
+     */
+    public function orderShow(\App\Models\Order $order)
+    {
+        $user = Auth::user();
+
+        if (!$user->estVendeur()) {
+            return redirect()->route('vendeur.create');
+        }
+
+        $vendeur = $user->vendeur;
+
+        // Sécurité : la commande doit appartenir à ce vendeur
+        if ($order->vendeur_id !== $vendeur->id) {
+            abort(403, 'Accès non autorisé.');
+        }
+
+        $order->load(['buyer', 'items.annonce.photos']);
+
+        return view('vendeur.order-show', compact('order'));
     }
 }
-

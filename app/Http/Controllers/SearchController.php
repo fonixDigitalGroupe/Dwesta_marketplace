@@ -15,6 +15,7 @@ class SearchController extends Controller
     public function index(Request $request)
     {
         $query = Annonce::publiees()->with(['photos', 'category', 'vendeur.user', 'options']);
+        $category = null;
 
         // Recherche textuelle
         $searchTerm = $request->q ?? $request->search;

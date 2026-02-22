@@ -11,12 +11,15 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller
 {
-    public function redirect($provider)
+    public function redirect(Request $request, $provider)
     {
         // Valider que le provider est supporté
         if (!in_array($provider, ['facebook', 'google'])) {
             return redirect()->route('login')->with('error', 'Provider non supporté');
         }
+
+        // Sauvegarder l'intention (login ou register) dans la session
+        session(['social_auth_action' => $request->query('action', 'login')]);
 
         // Configurer les scopes pour Facebook
         if ($provider === 'facebook') {
@@ -34,19 +37,39 @@ class SocialAuthController extends Controller
     public function callback($provider)
     {
         try {
+            $action = session()->pull('social_auth_action', 'login');
+            
+            \Log::info('Social Login Callback started', ['provider' => $provider, 'action' => $action]);
+            
             $socialUser = Socialite::driver($provider)->user();
+            
+            \Log::info('Social User retrieved', [
+                'id' => $socialUser->getId(),
+                'email' => $socialUser->getEmail(),
+                'name' => $socialUser->getName()
+            ]);
 
             $user = User::where('provider', $provider)
                 ->where('provider_id', $socialUser->getId())
                 ->first();
 
             if (!$user) {
+                \Log::info('Existing user by provider not found. Checking email.');
+                
                 // Vérifier si l'email existe déjà
                 if ($socialUser->getEmail()) {
                     $user = User::where('email', $socialUser->getEmail())->first();
                 }
 
                 if (!$user) {
+                    // Si on est en mode "login" uniquement, on refuse la création
+                    if ($action === 'login') {
+                        \Log::info('User not found in login mode. Aborting.');
+                        return redirect()->route('login')->with('error', 'Aucun compte trouvé avec cet e-mail. Veuillez d\'abord créer un compte.');
+                    }
+
+                    \Log::info('No user found. Creating new user (Register mode).');
+                    
                     // Créer un nouvel utilisateur
                     $nameParts = explode(' ', $socialUser->getName() ?? 'Utilisateur', 2);
                     $user = User::create([
@@ -60,13 +83,21 @@ class SocialAuthController extends Controller
                         'avatar' => $socialUser->getAvatar(),
                     ]);
 
-                    $user->assignRole('Acheteur');
+                    \Log::info('User created successfully. Assigning role.');
+                    $user->assignRole('acheteur');
                 } else {
+                    \Log::info('User found by email. Updating provider info.');
+                    
                     // Mettre à jour l'utilisateur existant
                     $updateData = [
                         'provider' => $provider,
                         'provider_id' => $socialUser->getId(),
                     ];
+
+                    // Si l'utilisateur n'était pas vérifié, on le considère comme vérifié via le provider social
+                    if (!$user->email_verified_at) {
+                        $updateData['email_verified_at'] = now();
+                    }
 
                     // Mettre à jour l'avatar si l'utilisateur n'en a pas déjà un
                     if (!$user->avatar && $socialUser->getAvatar()) {
@@ -74,16 +105,22 @@ class SocialAuthController extends Controller
                     }
 
                     $user->update($updateData);
+                    \Log::info('User updated successfully (and verified if needed).');
                 }
+            } else {
+                \Log::info('User found by provider and ID.');
             }
 
             Auth::login($user);
+            \Log::info('User logged in successfully.');
 
             return redirect()->route('home');
         } catch (\Exception $e) {
-            // Logger l'erreur pour le débogage
-            \Log::error('OAuth Error: ' . $e->getMessage(), [
+            // Logger l'erreur détaillée pour le débogage
+            \Log::error('Social Login Error: ' . $e->getMessage(), [
                 'provider' => $provider,
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]);
 
@@ -91,11 +128,9 @@ class SocialAuthController extends Controller
 
             // Messages d'erreur plus spécifiques
             if (str_contains($e->getMessage(), 'invalid_client')) {
-                $errorMessage = 'Configuration OAuth incorrecte. Vérifiez vos clés dans le fichier .env';
+                $errorMessage = 'Configuration OAuth incorrecte (Client ID ou Secret).';
             } elseif (str_contains($e->getMessage(), 'redirect_uri_mismatch')) {
-                $errorMessage = 'URL de redirection incorrecte. Vérifiez la configuration dans Facebook/Google Developers';
-            } elseif (str_contains($e->getMessage(), 'access_denied')) {
-                $errorMessage = 'Connexion annulée par l\'utilisateur';
+                $errorMessage = 'URL de redirection incorrecte.';
             }
 
             return redirect()->route('login')->with('error', $errorMessage);

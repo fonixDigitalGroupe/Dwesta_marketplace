@@ -64,7 +64,7 @@
 
         /* Public Header Styles Replication */
         .top-banner {
-            background-color: #1e293b;
+            background-color: #004aad;
             height: 40px;
             width: 100%;
         }
@@ -105,35 +105,34 @@
         }
 
         .search-container {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
             width: 100%;
-            max-width: 400px;
+            max-width: 600px;
             display: flex;
             align-items: center;
+            margin-left: 3rem;
         }
 
         .search-field {
             flex: 1;
             display: flex;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            overflow: hidden;
+            align-items: stretch;
+            gap: 0.5rem;
         }
 
         .search-input {
             flex: 1;
             padding: 0.75rem 1rem;
-            border: none;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
             font-size: 1rem;
             outline: none;
         }
 
         .search-button {
-            background-color: #333;
+            background-color: #ff8c00;
             color: white;
             border: none;
+            border-radius: 4px;
             padding: 0 1.25rem;
             cursor: pointer;
             display: flex;
@@ -142,7 +141,7 @@
         }
 
         .search-button:hover {
-            background-color: #000;
+            background-color: #e67e00;
         }
 
         .header-actions {
@@ -251,7 +250,6 @@
         .sidebar-menu li a.active {
             color: #000;
             font-weight: 600;
-            background-color: #f8fafc;
         }
 
         /* Main Viewport */
@@ -383,6 +381,11 @@
                 width: 100%;
             }
         }
+
+        @keyframes slideIn {
+            from { transform: translateY(-10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
     </style>
     <style>
         /* SweetAlert2 Custom popup */
@@ -500,16 +503,17 @@
 
         <main class="viewport">
             @if(session('success'))
-                <div style="background-color: #dcfce7; border: 1px solid #22c55e; color: #166534; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; display: flex; align-items: center; justify-content: space-between;" role="alert">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                        </svg>
-                        {{ session('success') }}
+                <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 0.875rem 1.25rem; margin-bottom: 1.5rem; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); animation: slideIn 0.3s ease-out;" role="alert">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="background: #dcfce7; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <span style="font-size: 0.875rem; font-weight: 500;">{{ session('success') }}</span>
                     </div>
-                    <button onclick="this.parentElement.remove()" style="background: none; border: none; cursor: pointer; color: #166534;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <button onclick="this.parentElement.remove()" style="background: none; border: none; cursor: pointer; color: #166534; opacity: 0.5; transition: opacity 0.2s; padding: 4px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
@@ -518,26 +522,30 @@
             @endif
 
             @if($errors->any())
-                <div style="background-color: #fee2e2; border: 1px solid #ef4444; color: #991b1b; padding: 1rem; margin-bottom: 1rem; border-radius: 4px; position: relative;" role="alert">
-                    <button onclick="this.parentElement.remove()" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; cursor: pointer; color: #991b1b;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <div style="background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 1rem 1.25rem; margin-bottom: 1.5rem; border-radius: 8px; position: relative; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); animation: slideIn 0.3s ease-out;" role="alert">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                        <div style="background: #fee2e2; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <span style="font-size: 0.875rem; font-weight: 600;">Oups ! Un petit problème :</span>
+                    </div>
+                    <ul style="list-style: none; margin: 0; padding: 0 0 0 36px; font-size: 0.85rem; line-height: 1.5;">
+                        @foreach ($errors->all() as $error)
+                            <li style="display: flex; align-items: flex-start; gap: 6px;">
+                                <span style="color: #ef4444;">•</span> {{ $error }}
+                            </li>
+                        @endforeach
+                    </ul>
+                    <button onclick="this.parentElement.remove()" style="position: absolute; top: 0.875rem; right: 0.875rem; background: none; border: none; cursor: pointer; color: #991b1b; opacity: 0.5; transition: opacity 0.2s; padding: 4px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="18" y1="6" x2="6" y2="18"></line>
                             <line x1="6" y1="6" x2="18" y2="18"></line>
                         </svg>
                     </button>
-                    <div style="font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="8" x2="12" y2="12"></line>
-                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                        </svg>
-                        Une erreur est survenue :
-                    </div>
-                    <ul style="list-style-type: disc; margin-left: 1.5rem; padding-right: 2rem;">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
                 </div>
             @endif
 
@@ -574,9 +582,40 @@
                         text: "Cette action est irréversible.",
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#333',
+                        confirmButtonColor: '#004aad',
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Oui, supprimer',
+                        cancelButtonText: 'Annuler',
+                        customClass: {
+                            popup: 'swal2-small-popup',
+                            icon: 'swal2-small-icon',
+                            title: 'swal2-small-title',
+                            htmlContainer: 'swal2-small-content',
+                            actions: 'swal2-small-actions',
+                            confirmButton: 'swal2-small-confirm',
+                            cancelButton: 'swal2-small-cancel'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+
+            // Suspend/Activate Confirmation
+            document.querySelectorAll('.suspend-form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const title = this.getAttribute('data-confirm-title') || 'Confirmer l\'action';
+                    
+                    Swal.fire({
+                        title: title,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#004aad',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Confirmer',
                         cancelButtonText: 'Annuler',
                         customClass: {
                             popup: 'swal2-small-popup',

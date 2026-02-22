@@ -11,6 +11,19 @@ use Illuminate\Support\Facades\Log;
 class AvisController extends Controller
 {
     /**
+     * Affiche les avis laissés par l'utilisateur connecté
+     */
+    public function mesAvis()
+    {
+        $avis = Avis::where('user_id', Auth::id())
+            ->with(['annonce'])
+            ->latest()
+            ->paginate(15);
+
+        return view('account.avis', compact('avis'));
+    }
+
+    /**
      * Affiche les avis d'une annonce
      */
     public function index(Annonce $annonce)

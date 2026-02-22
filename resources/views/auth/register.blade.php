@@ -99,7 +99,7 @@
         .form-input-box {
             width: 100%;
             max-width: 300px;
-            padding: 0.6rem;
+            padding: 0.9rem 0.75rem 0.2rem 0.75rem;
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 0.9rem;
@@ -117,6 +117,43 @@
 
         .form-input-box.invalid {
             border-color: #dc3545;
+        }
+
+        /* Floating label for register */
+        .input-container,
+        .password-container,
+        .phone-container {
+            position: relative;
+            max-width: 300px;
+        }
+
+        .input-container .floating-label,
+        .password-container .floating-label,
+        .phone-container .floating-label {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 0.9rem;
+            transition: all 0.2s ease-out;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .input-container .form-input-box:focus + .floating-label,
+        .input-container .form-input-box:not(:placeholder-shown) + .floating-label,
+        .input-container select.form-input-box:focus + .floating-label,
+        .input-container select.form-input-box:valid + .floating-label,
+        .password-container .form-input-box:focus + .floating-label,
+        .password-container .form-input-box:not(:placeholder-shown) + .floating-label,
+        .phone-container .form-input-box:focus + .floating-label,
+        .phone-container .form-input-box:not(:placeholder-shown) + .floating-label,
+        .phone-container .iti:focus-within + .floating-label {
+            top: 0.4rem;
+            transform: translateY(0);
+            font-size: 0.7rem;
+            color: #888;
         }
 
         .password-requirements {
@@ -161,7 +198,8 @@
         .toggle-password {
             position: absolute;
             right: 0.75rem;
-            top: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
             cursor: pointer;
             color: #666;
             z-index: 10;
@@ -422,6 +460,22 @@
             width: 100%;
             max-width: 300px;
         }
+        .alert-error {
+            background-color: #fff5f5;
+            color: #bf0000;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            max-width: 550px;
+        }
+
+        .alert-error svg {
+            flex-shrink: 0;
+        }
     </style>
 @endpush
 
@@ -435,6 +489,15 @@
 
         <h1 class="page-title">Création de compte</h1>
 
+        @if(session('error'))
+            <div class="alert-error" style="margin: 0 auto 1.5rem 0;">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                </svg>
+                <span>{{ session('error') }}</span>
+            </div>
+        @endif
+
         <div class="register-card">
 
             <form method="POST" action="{{ route('register') }}">
@@ -445,9 +508,10 @@
                     <h2 class="section-title">Informations d'authentification</h2>
     
                     <div class="form-group">
-                        <div class="email-container">
-                            <input type="email" id="email" name="email" placeholder="E-mail" class="form-input-box" value="{{ old('email') }}"
+                        <div class="input-container email-container">
+                            <input type="email" id="email" name="email" placeholder=" " class="form-input-box" value="{{ old('email') }}"
                                 required>
+                            <label class="floating-label">E-mail</label>
                             <span id="email-icon" class="email-icon"></span>
                         </div>
                         @error('email')
@@ -456,18 +520,20 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="email-container">
-                            <input type="email" id="email_confirmation" name="email_confirmation" placeholder="Confirmer votre e-mail" class="form-input-box"
+                        <div class="input-container email-container">
+                            <input type="email" id="email_confirmation" name="email_confirmation" placeholder=" " class="form-input-box"
                                 required>
+                            <label class="floating-label">Confirmer votre e-mail</label>
                             <span id="email-confirm-icon" class="email-icon"></span>
                         </div>
                         <div id="email-error" class="error-message" style="display: none;">Veuillez entrer votre adresse e-mail.</div>
                     </div>
-    
+
                     <div class="form-group">
                         <div class="password-container">
-                            <input type="password" id="password" name="password" placeholder="Mot de passe" class="form-input-box"
+                            <input type="password" id="password" name="password" placeholder=" " class="form-input-box"
                                 required>
+                            <label class="floating-label">Mot de passe</label>
                             <span class="toggle-password" onclick="togglePassword()">
                                 <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -493,79 +559,91 @@
                     <h2 class="section-title">Informations personnelles</h2>
     
                     <div class="form-group">
-                        <input type="text" name="prenom" placeholder="Prénom" class="form-input-box" value="{{ old('prenom') }}" style="text-transform: capitalize;"
-                            required>
+                        <div class="input-container">
+                            <input type="text" name="prenom" placeholder=" " class="form-input-box" value="{{ old('prenom') }}" style="text-transform: capitalize;"
+                                required>
+                            <label class="floating-label">Prénom</label>
+                        </div>
                         @error('prenom')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
     
                     <div class="form-group">
-                        <input type="text" name="nom" placeholder="Nom" class="form-input-box" value="{{ old('nom') }}" style="text-transform: capitalize;"
-                            required>
+                        <div class="input-container">
+                            <input type="text" name="nom" placeholder=" " class="form-input-box" value="{{ old('nom') }}" style="text-transform: capitalize;"
+                                required>
+                            <label class="floating-label">Nom</label>
+                        </div>
                         @error('nom')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
                     </div>
     
                     <div class="form-group">
-                        <select name="nationalite" class="form-input-box" required>
-                            <option value="" disabled>Choisir une nationalité</option>
-                            <option value="Afrique du Sud">Afrique du Sud</option>
-                            <option value="Algérie">Algérie</option>
-                            <option value="Angola">Angola</option>
-                            <option value="Bénin">Bénin</option>
-                            <option value="Botswana">Botswana</option>
-                            <option value="Burkina Faso">Burkina Faso</option>
-                            <option value="Burundi">Burundi</option>
-                            <option value="Cameroun">Cameroun</option>
-                            <option value="Cap-Vert">Cap-Vert</option>
-                            <option value="Centrafrique" selected>Centrafrique</option>
-                            <option value="Comores">Comores</option>
-                            <option value="Congo">Congo</option>
-                            <option value="Côte d'Ivoire">Côte d'Ivoire</option>
-                            <option value="Djibouti">Djibouti</option>
-                            <option value="Égypte">Égypte</option>
-                            <option value="Érythrée">Érythrée</option>
-                            <option value="Eswatini">Eswatini</option>
-                            <option value="Éthiopie">Éthiopie</option>
-                            <option value="Gabon">Gabon</option>
-                            <option value="Gambie">Gambie</option>
-                            <option value="Ghana">Ghana</option>
-                            <option value="Guinée">Guinée</option>
-                            <option value="Guinée-Bissau">Guinée-Bissau</option>
-                            <option value="Guinée équatoriale">Guinée équatoriale</option>
-                            <option value="Kenya">Kenya</option>
-                            <option value="Lesotho">Lesotho</option>
-                            <option value="Liberia">Liberia</option>
-                            <option value="Libye">Libye</option>
-                            <option value="Madagascar">Madagascar</option>
-                            <option value="Malawi">Malawi</option>
-                            <option value="Mali">Mali</option>
-                            <option value="Maroc">Maroc</option>
-                            <option value="Maurice">Maurice</option>
-                            <option value="Mauritanie">Mauritanie</option>
-                            <option value="Mozambique">Mozambique</option>
-                            <option value="Namibie">Namibie</option>
-                            <option value="Niger">Niger</option>
-                            <option value="Nigeria">Nigeria</option>
-                            <option value="Ouganda">Ouganda</option>
-                            <option value="République Démocratique du Congo">RDC</option>
-                            <option value="Rwanda">Rwanda</option>
-                            <option value="Sao Tomé-et-Principe">Sao Tomé-et-Principe</option>
-                            <option value="Sénégal">Sénégal</option>
-                            <option value="Seychelles">Seychelles</option>
-                            <option value="Sierra Leone">Sierra Leone</option>
-                            <option value="Somalie">Somalie</option>
-                            <option value="Soudan">Soudan</option>
-                            <option value="Soudan du Sud">Soudan du Sud</option>
-                            <option value="Tanzanie">Tanzanie</option>
-                            <option value="Tchad">Tchad</option>
-                            <option value="Togo">Togo</option>
-                            <option value="Tunisie">Tunisie</option>
-                            <option value="Zambie">Zambie</option>
-                            <option value="Zimbabwe">Zimbabwe</option>
-                        </select>
+                        <div class="input-container" style="max-width: 300px;">
+                            <select id="nationalite" name="nationalite" class="form-input-box" required
+                                style="padding-top: 1.2rem; padding-bottom: 0.1rem; appearance: none; cursor: pointer;">
+                                <option value="" disabled selected></option>
+                                <option value="Afrique du Sud">Afrique du Sud</option>
+                                <option value="Algérie">Algérie</option>
+                                <option value="Angola">Angola</option>
+                                <option value="Bénin">Bénin</option>
+                                <option value="Botswana">Botswana</option>
+                                <option value="Burkina Faso">Burkina Faso</option>
+                                <option value="Burundi">Burundi</option>
+                                <option value="Cameroun">Cameroun</option>
+                                <option value="Cap-Vert">Cap-Vert</option>
+                                <option value="Centrafrique">Centrafrique</option>
+                                <option value="Comores">Comores</option>
+                                <option value="Congo">Congo</option>
+                                <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+                                <option value="Djibouti">Djibouti</option>
+                                <option value="Égypte">Égypte</option>
+                                <option value="Érythrée">Érythrée</option>
+                                <option value="Eswatini">Eswatini</option>
+                                <option value="Éthiopie">Éthiopie</option>
+                                <option value="Gabon">Gabon</option>
+                                <option value="Gambie">Gambie</option>
+                                <option value="Ghana">Ghana</option>
+                                <option value="Guinée">Guinée</option>
+                                <option value="Guinée-Bissau">Guinée-Bissau</option>
+                                <option value="Guinée équatoriale">Guinée équatoriale</option>
+                                <option value="Kenya">Kenya</option>
+                                <option value="Lesotho">Lesotho</option>
+                                <option value="Liberia">Liberia</option>
+                                <option value="Libye">Libye</option>
+                                <option value="Madagascar">Madagascar</option>
+                                <option value="Malawi">Malawi</option>
+                                <option value="Mali">Mali</option>
+                                <option value="Maroc">Maroc</option>
+                                <option value="Maurice">Maurice</option>
+                                <option value="Mauritanie">Mauritanie</option>
+                                <option value="Mozambique">Mozambique</option>
+                                <option value="Namibie">Namibie</option>
+                                <option value="Niger">Niger</option>
+                                <option value="Nigeria">Nigeria</option>
+                                <option value="Ouganda">Ouganda</option>
+                                <option value="République Démocratique du Congo">RDC</option>
+                                <option value="Rwanda">Rwanda</option>
+                                <option value="Sao Tomé-et-Principe">Sao Tomé-et-Principe</option>
+                                <option value="Sénégal">Sénégal</option>
+                                <option value="Seychelles">Seychelles</option>
+                                <option value="Sierra Leone">Sierra Leone</option>
+                                <option value="Somalie">Somalie</option>
+                                <option value="Soudan">Soudan</option>
+                                <option value="Soudan du Sud">Soudan du Sud</option>
+                                <option value="Tanzanie">Tanzanie</option>
+                                <option value="Tchad">Tchad</option>
+                                <option value="Togo">Togo</option>
+                                <option value="Tunisie">Tunisie</option>
+                                <option value="Zambie">Zambie</option>
+                                <option value="Zimbabwe">Zimbabwe</option>
+                            </select>
+                            <label class="floating-label">Nationalité</label>
+                            <!-- dropdown arrow -->
+                            <svg style="position:absolute; right:0.75rem; top:50%; transform:translateY(-50%); pointer-events:none; color:#666;" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
                         @error('nationalite')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
@@ -573,8 +651,9 @@
     
                     <div class="form-group">
                         <div class="phone-container">
-                            <input type="tel" id="telephone" name="telephone" placeholder="Téléphone" class="form-input-box"
+                            <input type="tel" id="telephone" name="telephone" placeholder=" " class="form-input-box"
                                 value="{{ old('telephone') }}" required>
+                            <label id="phone-floating-label" class="floating-label" style="left: 3.5rem;">Téléphone</label>
                             <span id="phone-icon" class="phone-icon"></span>
                         </div>
                         <!-- Hidden input to store full number with country code -->
@@ -586,8 +665,12 @@
                     </div>
     
                     <div class="form-group">
-                        <textarea name="adresse" placeholder="Adresse complète" class="form-input-box"
-                            style="height: 100px; resize: vertical;" required>{{ old('adresse') }}</textarea>
+                        <div class="input-container" style="max-width: 300px; position: relative;">
+                            <textarea name="adresse" placeholder=" " class="form-input-box"
+                                style="height: 80px; resize: vertical; padding-top: 1.5rem;"
+                                required>{{ old('adresse') }}</textarea>
+                            <label class="floating-label" style="top: 1rem; transform: none;">Adresse complète</label>
+                        </div>
                         @error('adresse')
                             <div class="error-message">{{ $message }}</div>
                         @enderror
@@ -599,18 +682,18 @@
                 <div class="form-group" style="font-size: 0.8rem; line-height: 1.4; color: #555; margin-bottom: 1.5rem;">
                     <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
                         <input type="checkbox" name="terms_accepted" required style="margin-top: 3px;">
-                        <span>En créant mon compte je déclare avoir lu et accepté les <a href="#" style="color: #0066c0; text-decoration: underline;">Conditions d'utilisation Mady Market</a> et <br> la <a href="#" style="color: #0066c0; text-decoration: underline;">politique Vie privée et Cookies</a>.</span>
+                        <span>En créant mon compte je déclare avoir lu et accepté les <a href="#" style="color: #0066c0; text-decoration: underline;">Conditions d'utilisation Karnou</a> et <br> la <a href="#" style="color: #0066c0; text-decoration: underline;">politique Vie privée et Cookies</a>.</span>
                     </label>
                 </div>
 
                 <div class="form-group" style="font-size: 0.9rem;">
                     <label style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; cursor: pointer;">
                         <input type="checkbox" name="newsletter_karnou" style="margin-top: 3px;">
-                        <span>Je souhaite recevoir les emails personnalisés de Mady Market (promos, avantages fidélité, nouveautés...)</span>
+                        <span>Je souhaite recevoir les emails personnalisés de Karnou (promos, avantages fidélité, nouveautés...)</span>
                     </label>
                     <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
                         <input type="checkbox" name="newsletter_partners" style="margin-top: 3px;">
-                        <span>Je souhaite recevoir les offres personnalisées des partenaires de Mady Market*</span>
+                        <span>Je souhaite recevoir les offres personnalisées des partenaires de Karnou*</span>
                     </label>
                 </div>
 
@@ -624,7 +707,7 @@
                 <div class="social-login-section">
                     <div class="social-divider">ou</div>
                     <div class="social-buttons">
-                        <a href="#" class="btn-social btn-google">
+                        <a href="{{ route('social.redirect', ['provider' => 'google', 'action' => 'register']) }}" class="btn-social btn-google">
                             <div class="icon-box">
                                 <svg viewBox="0 0 24 24">
                                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -637,7 +720,7 @@
                                 <span>S'inscrire avec Google</span>
                             </div>
                         </a>
-                        <a href="#" class="btn-social btn-facebook">
+                        <a href="{{ route('social.redirect', ['provider' => 'facebook', 'action' => 'register']) }}" class="btn-social btn-facebook">
                             <div class="icon-box">
                                 <svg viewBox="0 0 24 24">
                                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -739,6 +822,27 @@
                 nationalMode: true,
                 utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
             });
+
+            // Floating label for phone field (intl-tel-input wraps input, so CSS sibling selectors don't work)
+            const phoneLabel = document.getElementById('phone-floating-label');
+            function floatPhoneLabel(up) {
+                if (up) {
+                    phoneLabel.style.top = '0.4rem';
+                    phoneLabel.style.fontSize = '0.7rem';
+                    phoneLabel.style.color = '#888';
+                    phoneLabel.style.transform = 'none';
+                } else {
+                    phoneLabel.style.top = '50%';
+                    phoneLabel.style.fontSize = '0.9rem';
+                    phoneLabel.style.color = '#999';
+                    phoneLabel.style.transform = 'translateY(-50%)';
+                }
+            }
+            input.addEventListener('focus', function() { floatPhoneLabel(true); });
+            input.addEventListener('blur', function() { if (!input.value.trim()) floatPhoneLabel(false); });
+            input.addEventListener('input', function() { floatPhoneLabel(true); });
+            // Keep floated if there's a value (e.g. on back navigation)
+            if (input.value.trim()) floatPhoneLabel(true);
 
             // Sync nationality selection with phone country code
             nationaliteSelect.addEventListener('change', function() {

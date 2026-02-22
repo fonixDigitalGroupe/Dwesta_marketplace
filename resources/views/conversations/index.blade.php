@@ -141,56 +141,66 @@
 @endpush
 
 @section('content')
-<div class="inbox-wrapper">
-    <div class="inbox-header">
-        <h1>Mes Messages</h1>
-    </div>
+<nav class="breadcrumb">
+    <a href="{{ route('home') }}">Accueil</a> &gt; 
+    <a href="{{ route('account.index') }}">Mon compte</a> &gt; 
+    <span>Mes messages</span>
+</nav>
 
-    @if($conversations->count() > 0)
-        <div class="inbox-card">
-            @foreach($conversations as $conversation)
-                @php
-                    $otherUser = $conversation->user1_id == Auth::id() ? $conversation->user2 : $conversation->user1;
-                    $lastMessage = $conversation->messages()->latest()->first();
-                    $unreadCount = $conversation->messages()->where('sender_id', '!=', Auth::id())->whereNull('read_at')->count();
-                @endphp
-                <a href="{{ route('conversations.show', $conversation) }}" class="conv-item {{ $unreadCount > 0 ? 'unread' : '' }}">
-                    <div class="conv-main">
-                        <div class="conv-avatar-wrapper">
-                            <img src="{{ $otherUser->avatar ? Storage::url($otherUser->avatar) : 'https://ui-avatars.com/api/?name='.urlencode($otherUser->name) }}" class="conv-avatar">
-                            @if($unreadCount > 0)
-                                <span class="unread-badge">{{ $unreadCount }}</span>
-                            @endif
-                        </div>
-                        <div class="conv-content">
-                            <div class="conv-name">{{ $otherUser->name }}</div>
-                            @if($conversation->annonce)
-                                <div class="conv-annonce">
-                                    <i class="fas fa-tag"></i>
-                                    {{ Str::limit($conversation->annonce->titre, 40) }}
+<div class="dashboard-container">
+    @include('partials.profile-sidebar')
+    
+    <div class="main-content">
+        <div class="inbox-header">
+            <h1>Mes Messages</h1>
+        </div>
+
+        @if($conversations->count() > 0)
+            <div class="inbox-card">
+                @foreach($conversations as $conversation)
+                    @php
+                        $otherUser = $conversation->user1_id == Auth::id() ? $conversation->user2 : $conversation->user1;
+                        $lastMessage = $conversation->messages()->latest()->first();
+                        $unreadCount = $conversation->messages()->where('sender_id', '!=', Auth::id())->whereNull('read_at')->count();
+                    @endphp
+                    <a href="{{ route('conversations.show', $conversation) }}" class="conv-item {{ $unreadCount > 0 ? 'unread' : '' }}">
+                        <div class="conv-main">
+                            <div class="conv-avatar-wrapper">
+                                <img src="{{ $otherUser->avatar ? Storage::url($otherUser->avatar) : 'https://ui-avatars.com/api/?name='.urlencode($otherUser->name) }}" class="conv-avatar">
+                                @if($unreadCount > 0)
+                                    <span class="unread-badge">{{ $unreadCount }}</span>
+                                @endif
+                            </div>
+                            <div class="conv-content">
+                                <div class="conv-name">{{ $otherUser->name }}</div>
+                                @if($conversation->annonce)
+                                    <div class="conv-annonce">
+                                        <i class="fas fa-tag"></i>
+                                        {{ Str::limit($conversation->annonce->titre, 40) }}
+                                    </div>
+                                @endif
+                                <div class="conv-snippet">
+                                    {{ $lastMessage ? $lastMessage->content : 'Nouvelle conversation' }}
                                 </div>
-                            @endif
-                            <div class="conv-snippet">
-                                {{ $lastMessage ? $lastMessage->content : 'Nouvelle conversation' }}
                             </div>
                         </div>
-                    </div>
-                    <div class="conv-meta">
-                        <div class="conv-time">
-                            {{ $lastMessage ? $lastMessage->created_at->diffForHumans() : $conversation->created_at->diffForHumans() }}
+                        <div class="conv-meta">
+                            <div class="conv-time">
+                                {{ $lastMessage ? $lastMessage->created_at->diffForHumans() : $conversation->created_at->diffForHumans() }}
+                            </div>
                         </div>
-                    </div>
-                </a>
-            @endforeach
-        </div>
-    @else
-        <div class="empty-inbox">
-            <div class="empty-icon">
-                <i class="far fa-comments"></i>
+                    </a>
+                @endforeach
             </div>
-            <h3>Aucune conversation</h3>
-            <p>Commencez à discuter avec des vendeurs pour voir vos messages ici.</p>
-        </div>
-    @endif
+        @else
+            <div class="empty-inbox">
+                <div class="empty-icon">
+                    <i class="far fa-comments"></i>
+                </div>
+                <h3>Aucune conversation</h3>
+                <p>Commencez à discuter avec des vendeurs pour voir vos messages ici.</p>
+            </div>
+        @endif
+    </div>
 </div>
 @endsection

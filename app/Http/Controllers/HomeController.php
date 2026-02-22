@@ -53,12 +53,21 @@ class HomeController extends Controller
             ->take(4)
             ->get();
 
+        // 5. Actualités (Highlights) Bento Grid
+        $highlightTabs = \App\Models\HighlightTab::where('active', true)
+            ->with(['highlights' => function($query) {
+                $query->where('active', true)->orderBy('position');
+            }])
+            ->orderBy('position')
+            ->get();
+
         return view('home', compact(
             'banners',
             'offresImbattables',
             'topConsultes',
             'topProduits',
-            'dernieresOpportunites'
+            'dernieresOpportunites',
+            'highlightTabs'
         ));
     }
 }
