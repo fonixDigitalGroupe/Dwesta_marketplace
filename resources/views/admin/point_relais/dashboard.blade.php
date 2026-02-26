@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 
-@section('title', 'Tableau de bord Point Relais')
+@section('title', 'Tableau de bord Dépôt Relais')
 
 @section('breadcrumbs')
-    > <span>Point Relais</span> > <span>Tableau de bord</span>
+    > <span>Dépôt Relais</span> > <span>Tableau de bord</span>
 @endsection
 
 @section('content')
@@ -11,7 +11,7 @@
     <!-- Welcome Header -->
     <div style="margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
         <div>
-            <h1 style="font-size: 1.75rem; font-weight: 800; color: #1e293b; letter-spacing: -0.025em;">Pôle Logistique & Points Relais</h1>
+            <h1 style="font-size: 1.75rem; font-weight: 800; color: #1e293b; letter-spacing: -0.025em;">Pôle Logistique & Dépôts Relais</h1>
             <p style="color: #64748b; font-size: 1rem; margin-top: 0.25rem;">Bienvenue, {{ auth()->user()->prenom }}. Voici l'état de vos points de collecte.</p>
         </div>
         <div style="background: white; padding: 0.5rem 1rem; border-radius: 9999px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 0.75rem;">
@@ -236,7 +236,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
-            Mes Points Relais Assignés
+            Mes Dépôts Relais Assignés
         </h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
             @foreach($poids_relais as $point)

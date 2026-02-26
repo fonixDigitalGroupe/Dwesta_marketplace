@@ -1,15 +1,15 @@
 @extends('layouts.admin')
 
-@section('title', 'Modifier mon Point Relais')
+@section('title', 'Modifier mon Dépôt Relais')
 
 @section('breadcrumbs')
-    > <span>Point Relais</span> > <span>Modifier</span>
+    > <span>Dépôt Relais</span> > <span>Modifier</span>
 @endsection
 
 @section('content')
 <div style="max-width: 800px; margin: 0 auto; padding: 2rem 0;">
     <div class="card-pro">
-        <h2 style="font-size: 1.5rem; font-weight: 800; color: #1e293b; margin-bottom: 2rem;">Modifier les informations du Point Relais</h2>
+        <h2 style="font-size: 1.5rem; font-weight: 800; color: #1e293b; margin-bottom: 2rem;">Modifier les informations du Dépôt Relais</h2>
         
         <form action="{{ route('admin.prive.point-relais.update', $point_relais) }}" method="POST">
             @csrf
@@ -17,7 +17,7 @@
 
             <!-- Nom (Disabled) -->
             <div style="margin-bottom: 1.5rem;">
-                <label style="display: block; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Nom du Point Relais</label>
+                <label style="display: block; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Nom du Dépôt Relais</label>
                 <input type="text" value="{{ $point_relais->nom }}" disabled 
                     style="width: 100%; padding: 0.75rem; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; color: #64748b;">
                 <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 0.25rem;">Le nom ne peut être modifié que par un administrateur.</p>

@@ -203,7 +203,9 @@ Route::middleware('auth')->group(function () {
              Route::post('/{livreur}/reject', [\App\Http\Controllers\Admin\LivreurController::class, 'reject'])->name('reject');
         });
 
-        Route::resource('point-relais', \App\Http\Controllers\Admin\PointRelaisController::class);
+        Route::resource('point-relais', \App\Http\Controllers\Admin\PointRelaisController::class)->parameters([
+            'point-relais' => 'point_relais'
+        ]);
 
         // Gestion des Bannières
         Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class);
@@ -214,6 +216,10 @@ Route::middleware('auth')->group(function () {
         Route::patch('highlight-tabs/{highlightTab}/toggle-status', [\App\Http\Controllers\Admin\HighlightTabController::class, 'toggleStatus'])->name('highlight-tabs.toggle-status');
         Route::resource('highlights', \App\Http\Controllers\Admin\HighlightController::class);
         Route::patch('highlights/{highlight}/toggle-status', [\App\Http\Controllers\Admin\HighlightController::class, 'toggleStatus'])->name('highlights.toggle-status');
+
+        // Configuration Générale
+        Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+        Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
     });
 
     // Documents sécurisés (accessibles uniquement aux admins)

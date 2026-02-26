@@ -3,20 +3,14 @@
         <h2>{{ auth()->user()->prenom ?? auth()->user()->name }}</h2>
     </div>
 
-    <!-- Finance -->
+    <!-- Dashboard -->
     <div class="sidebar-section">
-        <div class="sidebar-title">
+        <a href="{{ route('admin.dashboard') }}" class="sidebar-title {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" style="text-decoration: none;">
             <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5">
-                <path d="M21 7H3C1.89543 7 1 7.89543 1 9V19C1 20.1046 1.89543 21 3 21H21C22.1046 21 23 20.1046 23 19V9C23 7.89543 22.1046 7 21 7Z" fill="#2c3e50" />
-                <path d="M1 11H23V15H1V11Z" fill="#34495e" />
-                <circle cx="18" cy="18" r="1.5" fill="#e74c3c" />
+                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke="#3498db" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-            Finance
-        </div>
-        <ul class="sidebar-menu">
-            <li><a href="#">Portefeuilles & Crédits</a></li>
-            <li><a href="#">Abonnements & Packs</a></li>
-        </ul>
+            Tableau de bord
+        </a>
     </div>
 
     <!-- Logistique -->
@@ -31,7 +25,7 @@
         <ul class="sidebar-menu">
             <li><a href="{{ route('admin.transporteurs.index') }}" class="{{ request()->routeIs('admin.transporteurs.*') ? 'active' : '' }}"><i class="fas fa-truck" style="width: 20px; color: #ff750f;"></i> Transporteurs</a></li>
             <li><a href="{{ route('admin.livreurs.index') }}" class="{{ request()->routeIs('admin.livreurs.*') ? 'active' : '' }}"><i class="fas fa-motorcycle" style="width: 20px; color: #ff750f;"></i> Livreurs</a></li>
-            <li><a href="{{ route('admin.point-relais.index') }}" class="{{ request()->routeIs('admin.point-relais.*') ? 'active' : '' }}"><i class="fas fa-map-marker-alt" style="width: 20px; color: #ff750f;"></i> Points Relais</a></li>
+            <li><a href="{{ route('admin.point-relais.index') }}" class="{{ request()->routeIs('admin.point-relais.*') ? 'active' : '' }}"><i class="fas fa-map-marker-alt" style="width: 20px; color: #ff750f;"></i> Dépôts Relais</a></li>
             <li><a href="#"><i class="fas fa-shipping-fast" style="width: 20px;"></i> Suivi des Livraisons</a></li>
         </ul>
     </div>
@@ -85,7 +79,8 @@
         <ul class="sidebar-menu">
             <li><a href="{{ route('admin.categories.l1') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-sitemap" style="width: 20px;"></i> Catégories & Architecture</a></li>
             <li><a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.index') && !request()->has('role') ? 'active' : '' }}"><i class="fas fa-users" style="width: 20px;"></i> Gestion des Utilisateurs</a></li>
-            <li><a href="#"><i class="fas fa-tools" style="width: 20px;"></i> Configuration Générale</a></li>
+            <li><a href="#"><i class="fas fa-user-shield" style="width: 20px;"></i> Rôles et permissions</a></li>
+            <li><a href="{{ route('admin.settings.index') }}" class="{{ request()->routeIs('admin.settings.index') ? 'active' : '' }}"><i class="fas fa-tools" style="width: 20px;"></i> Configuration Générale</a></li>
         </ul>
     </div>
 </aside>

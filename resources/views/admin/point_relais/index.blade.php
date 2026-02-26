@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Gestion des Points Relais')
+@section('title', 'Gestion des Dépôts Relais')
 
 @section('breadcrumbs')
     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
     </svg>
-    <span style="color: #333; font-weight: 500;">Points Relais</span>
+    <span style="color: #333; font-weight: 500;">Dépôts Relais</span>
 @endsection
 
 @section('content')
@@ -15,12 +15,12 @@
         <!-- Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
             <h1 style="font-size: 1.375rem; color: #333; font-weight: 600;">
-                Points Relais
+                Dépôts Relais
             </h1>
             <div style="display: flex; gap: 10px;">
                 <a href="{{ route('admin.point-relais.create') }}" 
                    style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background-color: #000; color: #fff; border-radius: 8px; transition: all 0.2s;" 
-                   title="Nouveau Point Relais"
+                   title="Nouveau Dépôt Relais"
                    onmouseover="this.style.opacity='0.8'" 
                    onmouseout="this.style.opacity='1'">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,37 +39,21 @@
             </div>
         </div>
 
-        <!-- Description Box -->
-        <div style="background: #fffaf0; border: 1px solid #ff750f; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 12px; border-radius: 2px;">
-            <div style="flex-shrink: 0; margin-top: 2px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" fill="#ff750f" />
-                    <path d="M12 7v6M12 17h.01" stroke="white" stroke-width="2.5" stroke-linecap="round" />
-                </svg>
-            </div>
-            <div>
-                <div style="font-size: 0.875rem; color: #333; font-weight: 600; margin-bottom: 0.15rem;">
-                    Gestion des lieux de retrait
-                </div>
-                <div style="font-size: 0.8rem; color: #444; line-height: 1.4;">
-                    Gérez les points relais où les clients peuvent retirer leurs commandes en toute sécurité.
-                </div>
-            </div>
-        </div>
+
 
         <!-- Table Container -->
         <div style="background: #fff; border: 1px solid #e5e5e5;">
 
             <!-- Table Header -->
             <div style="padding: 0.875rem 1.25rem; border-bottom: 1px solid #e5e5e5;">
-                <span style="font-size: 0.8rem; color: #666;">{{ $points->total() }} point(s) relais</span>
+                <span style="font-size: 0.8rem; color: #666;">{{ $points->total() }} dépôt(s) relais</span>
             </div>
 
             <!-- Table -->
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
                     <tr style="text-align: left;">
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Point Relais</th>
+                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Dépôt Relais</th>
                         <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Localisation</th>
                         <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Responsable</th>
                         <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Statut</th>
@@ -81,12 +65,7 @@
                         <tr style="border-bottom: 1px solid #e5e5e5;">
                             <td style="padding: 0.875rem 1.25rem;">
                                 <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div style="width: 32px; height: 32px; background: #fff7ed; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #ff750f;">
-                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                    </div>
+
                                     <div>
                                         <div style="font-size: 0.875rem; color: #333; font-weight: 500;">{{ $point->nom }}</div>
                                         <div style="font-size: 0.75rem; color: #999;">Créé le {{ $point->created_at->format('d/m/Y') }}</div>
@@ -136,7 +115,7 @@
                                             title="Supprimer"
                                             onmouseover="this.style.background='#ffe4e6'; this.style.transform='scale(1.05)'" 
                                             onmouseout="this.style.background='#fff1f2'; this.style.transform='scale(1)'"
-                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce point relais ?')">
+                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce dépôt relais ?')">
                                         <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                         </svg>
@@ -148,7 +127,7 @@
                         <tr>
                             <td colspan="5"
                                 style="padding: 3rem 1.25rem; text-align: center; color: #999; font-size: 0.875rem;">
-                                Aucun point relais trouvé
+                                Aucun dépôt relais trouvé
                             </td>
                         </tr>
                     @endforelse

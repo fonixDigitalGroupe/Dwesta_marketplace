@@ -45,23 +45,7 @@
             </div>
         </div>
 
-        <!-- Description Box -->
-        <div style="background: #fffaf0; border: 1px solid #ff750f; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 12px; border-radius: 2px;">
-            <div style="flex-shrink: 0; margin-top: 2px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="10" fill="#ff750f" />
-                    <path d="M12 7v6M12 17h.01" stroke="white" stroke-width="2.5" stroke-linecap="round" />
-                </svg>
-            </div>
-            <div>
-                <div style="font-size: 0.875rem; color: #333; font-weight: 600; margin-bottom: 0.15rem;">
-                    Vérification des transporteurs (KYC)
-                </div>
-                <div style="font-size: 0.8rem; color: #444; line-height: 1.4;">
-                    Administrez la liste des transporteurs, gérez leurs véhicules et vérifiez leurs documents de conformité.
-                </div>
-            </div>
-        </div>
+
 
         <!-- Table Container -->
         <div style="background: #fff; border: 1px solid #e5e5e5;">
@@ -88,13 +72,7 @@
                         <tr style="border-bottom: 1px solid #e5e5e5;">
                             <td style="padding: 0.875rem 1.25rem;">
                                 <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div style="width: 32px; height: 32px; background: #fff7ed; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #ff750f;">
-                                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                            <path d="M1 14h3.89m0 0l2.11-8h9l2.11 8H23v5H1v-5z"/>
-                                            <circle cx="7" cy="19" r="2"/>
-                                            <circle cx="17" cy="19" r="2"/>
-                                        </svg>
-                                    </div>
+
                                     <div>
                                         <div style="font-size: 0.875rem; color: #333; font-weight: 500;">{{ $transporteur->user->prenom }} {{ $transporteur->user->nom }}</div>
                                         <div style="font-size: 0.75rem; color: #666;">{{ $transporteur->user->email }}</div>
@@ -125,16 +103,7 @@
                                 @endif
                             </td>
                             <td style="padding: 0.875rem 1.25rem; text-align: right; display: flex; justify-content: flex-end; gap: 4px;">
-                                <a href="{{ route('admin.transporteurs.show', $transporteur) }}" 
-                                   style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #64748b; background: #f8fafc; border-radius: 8px; transition: all 0.2s;" 
-                                   title="Voir Dossier"
-                                   onmouseover="this.style.background='#f1f5f9'; this.style.color='#0f172a'" 
-                                   onmouseout="this.style.background='#f8fafc'; this.style.color='#64748b'">
-                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                    </svg>
-                                </a>
+
 
                                 <a href="{{ route('admin.transporteurs.edit', $transporteur) }}" 
                                    style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #64748b; background: #f8fafc; border-radius: 8px; transition: all 0.2s;" 

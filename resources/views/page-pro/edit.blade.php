@@ -1,10 +1,5 @@
 @extends('layouts.app')
 
-@section('title', 'Modifier ma Page Pro')
-
-@section('content')
-@extends('layouts.app')
-
 @section('title', 'Personnaliser ma Boutique - Mady Market')
 
 @push('styles')
@@ -204,5 +199,4 @@
             </div>
         </main>
     </div>
-@endsection
 @endsection

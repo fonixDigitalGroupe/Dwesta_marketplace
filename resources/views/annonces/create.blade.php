@@ -1132,7 +1132,7 @@
             </div>
         </aside>
         <!-- Contenu principal -->
-        <div class="form-content">
+        <main class="form-content">
             @if(session('success'))
                 <div class="alert alert-success mt-3" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
                     <strong>Succès !</strong> Votre annonce a été enregistrée avec succès.

@@ -63,8 +63,7 @@ class LivreurController extends Controller
                 $livreur->user->assignRole('livreur');
             }
 
-            return redirect()->route('admin.livreurs.index')
-                ->with('success', 'Livreur vérifié et approuvé avec succès.');
+            return redirect()->route('admin.livreurs.index');
         } catch (\Exception $e) {
             Log::error('Erreur approbation livreur: ' . $e->getMessage());
             return back()->with('error', 'Une erreur est survenue lors de l\'approbation.');
@@ -86,8 +85,7 @@ class LivreurController extends Controller
                 'raison_rejet' => $request->raison_rejet,
             ]);
 
-            return redirect()->route('admin.livreurs.index')
-                ->with('success', 'Le dossier du livreur a été rejeté.');
+            return redirect()->route('admin.livreurs.index');
         } catch (\Exception $e) {
             Log::error('Erreur rejet livreur: ' . $e->getMessage());
             return back()->with('error', 'Une erreur est survenue lors du rejet.');

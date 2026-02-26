@@ -80,7 +80,7 @@
                                 <h3 class="item-title">{{ $annonce->titre }}</h3>
                                 <div class="item-brand">- {{ $category->nom }}</div>
                                 <div class="item-pricing">
-                                    <span class="price-main">{{ number_format($annonce->prix, 2, ',', ' ') }} €</span>
+                                    <span class="price-main">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
                                     <span class="condition">. Neuf</span>
                                 </div>
                                 <div class="item-seller">

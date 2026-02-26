@@ -7,6 +7,7 @@
     <title>@yield('title', 'Administration') - Dwesta</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     <style>
         :root {
             --mady-red: #bf0000;
@@ -422,7 +423,11 @@
         <div class="header-row-1">
             <div class="header-container">
                 <a href="{{ route('home') }}" class="logo" title="Retour à l'accueil">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 22px; width: auto;">
+                    @if(isset($siteSettings['logo']))
+                        <img src="{{ asset('storage/' . $siteSettings['logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 22px; width: auto;">
+                    @else
+                        <img src="{{ asset('images/logo.png') }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 22px; width: auto;">
+                    @endif
                 </a>
 
                 <div class="search-container">

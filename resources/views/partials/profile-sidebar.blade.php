@@ -194,15 +194,15 @@
             @if($user->vendeur)
                 <li><a href="{{ route('vendeur.show') }}" class="{{ request()->routeIs('vendeur.show') ? 'active' : '' }}">État du compte</a></li>
                 <li><a href="{{ route('vendeur.mes-annonces') }}" class="{{ request()->routeIs('vendeur.mes-annonces') ? 'active' : '' }}">Toutes mes annonces</a></li>
-                @if($user->vendeur->pagePro)
-                    <li><a href="{{ route('page-pro.show', $user->vendeur->pagePro->slug) }}" target="_blank">Ma Boutique PRO</a></li>
+                @if($user->vendeur->aAccesPagePro())
+                    <li><a href="{{ route('page-pro.edit') }}" class="{{ request()->routeIs('page-pro.edit') ? 'active' : '' }}">Gérer ma Boutique PRO</a></li>
                 @else
-                    <li><span class="inactive-link" title="Créez votre boutique PRO pour l'afficher ici">Ma Boutique PRO</span></li>
+                    <li><span class="inactive-link" title="Créez votre boutique PRO pour l'afficher ici">Gérer ma Boutique PRO</span></li>
                 @endif
             @else
                 <li><span class="inactive-link" title="Devenez vendeur pour gérer vos annonces">État du compte</span></li>
                 <li><span class="inactive-link" title="Devenez vendeur pour voir vos annonces">Toutes mes annonces</span></li>
-                <li><a href="{{ route('vendeur.create') }}" class="{{ request()->routeIs('vendeur.create') ? 'active' : '' }}" style="color: #bf0000; font-weight: bold;">Devenir Vendeur</a></li>
+                <li><a href="{{ route('vendeur.create') }}" class="{{ request()->routeIs('vendeur.create') ? 'active' : '' }}" style="color: #000; font-weight: bold;">Devenir Vendeur</a></li>
             @endif
         </ul>
     </div>

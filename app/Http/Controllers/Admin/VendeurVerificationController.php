@@ -80,8 +80,7 @@ class VendeurVerificationController extends Controller
             // Envoyer une notification au vendeur
             Mail::to($vendeur->user->email)->send(new VendeurStatusUpdated($vendeur));
 
-            return redirect()->route('admin.vendeurs.verification.index')
-                ->with('success', 'Vendeur approuvé avec succès.');
+            return redirect()->route('admin.vendeurs.verification.index');
         } catch (\Exception $e) {
             Log::error('Erreur approbation vendeur: ' . $e->getMessage());
 
@@ -109,8 +108,7 @@ class VendeurVerificationController extends Controller
             // Envoyer une notification au vendeur avec la raison du rejet
             Mail::to($vendeur->user->email)->send(new VendeurStatusUpdated($vendeur));
 
-            return redirect()->route('admin.vendeurs.verification.index')
-                ->with('success', 'Vendeur rejeté avec succès.');
+            return redirect()->route('admin.vendeurs.verification.index');
         } catch (\Exception $e) {
             Log::error('Erreur rejet vendeur: ' . $e->getMessage());
 

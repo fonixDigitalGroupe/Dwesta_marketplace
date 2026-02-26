@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Modifier le Point Relais')
+@section('title', 'Modifier le Dépôt Relais')
 
 @section('breadcrumbs')
     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
     </svg>
-    <a href="{{ route('admin.point-relais.index') }}">Points Relais</a>
+    <a href="{{ route('admin.point-relais.index') }}">Dépôts Relais</a>
     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
     </svg>
@@ -36,7 +36,7 @@
                     
                     <div style="display: grid; gap: 1.25rem;">
                         <div>
-                            <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Nom du Point Relais <span style="color: red;">*</span></label>
+                            <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Nom du Dépôt Relais <span style="color: red;">*</span></label>
                             <input type="text" name="nom" id="nom" value="{{ old('nom', $point_relais->nom) }}" required
                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
                                    onfocus="this.style.borderColor='#ff750f'" onblur="this.style.borderColor='#e0e0e0'"
@@ -128,7 +128,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <span style="font-size: 0.9rem; font-weight: 550; color: #333;">Point Relais Actif</span>
+                        <span style="font-size: 0.9rem; font-weight: 550; color: #333;">Dépôt Relais Actif</span>
                     </label>
                 </div>
 

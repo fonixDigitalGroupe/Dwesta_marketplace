@@ -383,7 +383,7 @@
             <!-- Price & Action -->
             <div class="rk-price-box">
                 <div class="rk-main-price" id="main-price">
-                    {{ number_format($annonce->prix, 0, ',', ' ') }} €
+                    {{ number_format($annonce->prix, 0, ',', ' ') }} FCFA
                 </div>
                 
                 <div class="rk-actions">
@@ -463,7 +463,7 @@
     function updatePrice(extra) {
         // Simple client-side updates (symbolic as real price calc is backend)
         const total = parseFloat(basePrice) + parseFloat(extra || 0);
-        priceDisplay.innerText = total.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' €';
+        priceDisplay.innerText = total.toLocaleString('fr-FR', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' FCFA';
     }
 
     function updateGallery(url, thumb) {

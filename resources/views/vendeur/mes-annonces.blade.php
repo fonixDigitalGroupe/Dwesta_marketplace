@@ -400,10 +400,6 @@
                             </svg>
                         </span>
                         <h2 class="empty-title">Aucune annonce pour le moment</h2>
-                        <p class="empty-description">C'est le moment idéal pour commencer à vendre ! Créez votre première annonce en quelques clics.</p>
-                        <a href="{{ route('annonces.create') }}" class="btn btn-primary btn-lg" style="background: #bf0000; border-color: #bf0000;">
-                            Créer ma première annonce
-                        </a>
                     </div>
                 @endif
             </div>

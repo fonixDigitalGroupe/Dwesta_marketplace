@@ -71,8 +71,7 @@ class TransporteurController extends Controller
                 $transporteur->user->assignRole('transporteur');
             }
 
-            return redirect()->route('admin.transporteurs.index')
-                ->with('success', 'Transporteur vérifié et approuvé avec succès.');
+            return redirect()->route('admin.transporteurs.index');
         } catch (\Exception $e) {
             Log::error('Erreur approbation transporteur: ' . $e->getMessage());
             return back()->with('error', 'Une erreur est survenue lors de l\'approbation.');
@@ -94,8 +93,7 @@ class TransporteurController extends Controller
                 'raison_rejet' => $request->raison_rejet,
             ]);
 
-            return redirect()->route('admin.transporteurs.index')
-                ->with('success', 'Le dossier du transporteur a été rejeté.');
+            return redirect()->route('admin.transporteurs.index');
         } catch (\Exception $e) {
             Log::error('Erreur rejet transporteur: ' . $e->getMessage());
             return back()->with('error', 'Une erreur est survenue lors du rejet.');

@@ -9,7 +9,11 @@
                 </button>
 
                 <a href="{{ route('home') }}" class="header-logo-text">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 26px; width: auto;">
+                    @if(isset($siteSettings['logo']))
+                        <img src="{{ asset('storage/' . $siteSettings['logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 26px; width: auto;">
+                    @else
+                        <img src="{{ asset('images/logo.png') }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 26px; width: auto;">
+                    @endif
                 </a>
 
                 <div class="search-container">
@@ -34,7 +38,11 @@
 
                 <div class="sell-button-container">
                     <button type="button" class="sell-button" onclick="toggleSellDropdown()">
-                        <span class="sell-icon" style="font-size: 1.5rem; font-weight: 800; color: #000; margin-right: 2px;">€</span>
+                        <span class="sell-icon" style="display: flex; align-items: center; justify-content: center; margin-right: 6px;">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M4 11l8 8a2 2 0 002.828 0l5.858-5.858a2 2 0 000-2.828L11 4H5a2 2 0 00-2 2v6z"></path>
+                            </svg>
+                        </span>
                         <span>Mettre en vente</span>
                     </button>
                     <div class="sell-dropdown" id="layoutSellDropdown">
@@ -93,6 +101,14 @@
                                         
                                         <div class="auth-separator"></div>
                                         
+                                        @if(auth()->user()->hasRole('admin'))
+                                            <a href="{{ route('admin.categories.l1') }}" class="auth-menu-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Catégories & Architecture</a>
+                                            <a href="{{ route('admin.users.index') }}" class="auth-menu-item {{ request()->routeIs('admin.users.index') && !request()->has('role') ? 'active' : '' }}">Gestion des Utilisateurs</a>
+                                            <a href="#" class="auth-menu-item">Rôles et permissions</a>
+                                            <a href="{{ route('admin.settings.index') }}" class="auth-menu-item {{ request()->routeIs('admin.settings.index') ? 'active' : '' }}">Configuration Générale</a>
+                                            <div class="auth-separator"></div>
+                                        @endif
+
                                         <a href="{{ route('annonces.create') }}" class="auth-menu-item">Mettre en vente un produit</a>
                                         <a href="{{ route('annonces.index', ['vendeur' => auth()->id()]) }}" class="auth-menu-item">Mes articles en vente</a>
                                         <a href="{{ route('vendeur.orders') }}" class="auth-menu-item">Toutes mes ventes</a>

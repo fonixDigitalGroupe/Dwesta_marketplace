@@ -40,7 +40,7 @@
                 <span class="rating-count">{{ $annonce->nombre_avis }} avis</span>
             </div>
             <div class="item-pricing">
-                <span class="price-main">{{ number_format($annonce->prix, 2, ',', ' ') }} €</span>
+                <span class="price-main">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
                 <span class="condition">. Neuf</span>
             </div>
             <div class="item-seller">

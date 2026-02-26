@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mon compte - Mady Market')
+@section('title', 'Mon compte - Karnou')
 
 @push('styles')
     <style>
@@ -492,7 +492,7 @@
             </div>
 
             <div class="survey-section" x-data="{ score: 2 }">
-                <h3>Recommanderiez-vous Mady Market à vos proches? <span style="color: #999;">*</span></h3>
+                <h3>Recommanderiez-vous Karnou à vos proches? <span style="color: #999;">*</span></h3>
                 <p class="survey-subtext">0 = Pas du tout probable, 10 = Très probable</p>
                 <div class="score-buttons">
                     <template x-for="i in [0,1,2,3,4,5,6,7,8,9,10]">
@@ -518,7 +518,7 @@
                             <h2>Pas encore acheteur ?</h2>
                         </div>
                         <div class="karnou-card-body">
-                            <p>L'achat sur Mady Market c'est :</p>
+                            <p>L'achat sur Karnou c'est :</p>
                             <ul class="karnou-list">
                                 <li><b>200 000</b> nouveaux articles mis en vente par jour</li>
                                 <li><b>Prix bas toute l'année</b></li>
@@ -558,7 +558,7 @@
                 <div class="column-stack">
                     <div class="karnou-card">
                         <div class="karnou-card-header">
-                            <span class="icon blue-icon">€</span>
+                            <span class="icon blue-icon" style="font-size: 0.8rem; font-weight: 800;">FCFA</span>
                             <h2>Pas encore vendeur ?</h2>
                         </div>
                         <div class="karnou-card-body">
@@ -588,7 +588,7 @@
                         <div class="karnou-card-body">
                             <div class="sub-card-links">
                                 <a href="{{ route('conversations.index') }}" class="sub-card-link-item">Mes messages</a>
-                                <a href="#" class="sub-card-link-item">Contacter Mady Market</a>
+                                <a href="#" class="sub-card-link-item">Contacter Karnou</a>
                             </div>
                             
 

@@ -118,7 +118,7 @@ class VendeurController extends Controller
 
             DB::commit();
 
-            return redirect()->route('vendeur.show')->with('success', 'ok');
+            return redirect()->route('vendeur.show');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erreur création compte vendeur particulier: ' . $e->getMessage());
@@ -207,7 +207,7 @@ class VendeurController extends Controller
 
             DB::commit();
 
-            return redirect()->route('vendeur.show')->with('success', 'ok');
+            return redirect()->route('vendeur.show');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erreur création compte vendeur professionnel: ' . $e->getMessage());
@@ -319,7 +319,7 @@ class VendeurController extends Controller
                 'raison_rejet' => null,
             ]);
 
-            return redirect()->route('vendeur.show')->with('success', 'ok');
+            return redirect()->route('vendeur.show');
         } catch (\Exception $e) {
             Log::error('Erreur mise à jour document particulier: ' . $e->getMessage());
 
@@ -399,7 +399,7 @@ class VendeurController extends Controller
                 ]);
             }
 
-            return redirect()->route('vendeur.show')->with('success', 'ok');
+            return redirect()->route('vendeur.show');
         } catch (\Exception $e) {
             Log::error('Erreur mise à jour document professionnel: ' . $e->getMessage());
 

@@ -503,7 +503,6 @@
 
     @yield('content')
 
-    @include('layouts.partials.footer')
 
     <script>
         // Scripts globaux
@@ -568,16 +567,6 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            @if(session('success'))
-                Swal.fire({
-                    title: "{{ session('success') === 'ok' ? '' : 'Succès !' }}",
-                    text: "{{ session('success') }}",
-                    icon: "{{ session('success') === 'ok' ? '' : 'success' }}",
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#bf0000'
-                });
-            @endif
-
             @if(session('error'))
                 if (!document.querySelector('.alert-error')) {
                     Swal.fire({

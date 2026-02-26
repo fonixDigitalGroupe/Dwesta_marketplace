@@ -24,11 +24,11 @@
                         $discount = $originalPrice - $annonce->prix;
                     @endphp
                     <div class="price-row">
-                        <span class="price-original">{{ number_format($originalPrice, 2, ',', ' ') }}€</span>
-                        <span class="price-discount">-{{ number_format($discount, 2, ',', ' ') }}€</span>
+                        <span class="price-original">{{ number_format($originalPrice, 0, ',', ' ') }} FCFA</span>
+                        <span class="price-discount">-{{ number_format($discount, 0, ',', ' ') }} FCFA</span>
                     </div>
                     <p class="price-label">à partir de</p>
-                    <div class="price-main-promo">{{ number_format($annonce->prix, 2, ',', ' ') }}<span class="price-currency">€</span></div>
+                    <div class="price-main-promo">{{ number_format($annonce->prix, 0, ',', ' ') }}<span class="price-currency">FCFA</span></div>
                 </div>
             </div>
             

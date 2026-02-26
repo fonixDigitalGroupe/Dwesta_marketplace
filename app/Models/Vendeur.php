@@ -193,6 +193,10 @@ class Vendeur extends Model
      */
     public function aAccesPagePro(): bool
     {
+        if ($this->estProfessionnel()) {
+            return true;
+        }
+
         $abonnementActif = $this->abonnementActif;
 
         if (!$abonnementActif) {
@@ -208,6 +212,10 @@ class Vendeur extends Model
      */
     public function peutPersonnaliserBoutique(): bool
     {
+        if ($this->estProfessionnel()) {
+            return true;
+        }
+
         $abonnementActif = $this->abonnementActif;
 
         if (!$abonnementActif) {

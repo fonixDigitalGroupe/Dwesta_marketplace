@@ -34,6 +34,47 @@ class DocumentUploadService
      */
     public function uploadDocument(UploadedFile $file, string $type, int $vendeurId): string
     {
+        return $this->uploadToStore($file, "documents/vendeurs/{$vendeurId}/{$type}");
+    }
+
+    /**
+     * Upload un document de livreur
+     *
+     * @param UploadedFile $file
+     * @param string $type
+     * @param int $livreurId
+     * @return string
+     * @throws \Exception
+     */
+    public function uploadLivreurDocument(UploadedFile $file, string $type, int $livreurId): string
+    {
+        return $this->uploadToStore($file, "documents/livreurs/{$livreurId}/{$type}");
+    }
+
+    /**
+     * Upload un document de transporteur
+     *
+     * @param UploadedFile $file
+     * @param string $type
+     * @param int $transporteurId
+     * @return string
+     * @throws \Exception
+     */
+    public function uploadTransporteurDocument(UploadedFile $file, string $type, int $transporteurId): string
+    {
+        return $this->uploadToStore($file, "documents/transporteurs/{$transporteurId}/{$type}");
+    }
+
+    /**
+     * Upload générique vers un dossier spécifique
+     *
+     * @param UploadedFile $file
+     * @param string $folder
+     * @return string
+     * @throws \Exception
+     */
+    private function uploadToStore(UploadedFile $file, string $folder): string
+    {
         // Validation du type MIME
         if (!in_array($file->getMimeType(), self::ALLOWED_MIME_TYPES)) {
             throw new \Exception('Format de fichier non autorisé. Formats acceptés : PDF, JPG, PNG.');
@@ -48,12 +89,9 @@ class DocumentUploadService
         // Génération d'un nom de fichier sécurisé
         $extension = $file->getClientOriginalExtension();
         $fileName = Str::random(40) . '_' . time() . '.' . $extension;
-        
-        // Chemin de stockage : documents/vendeurs/{vendeur_id}/{type}/
-        $path = "documents/vendeurs/{$vendeurId}/{$type}/{$fileName}";
 
         // Upload dans le storage privé
-        $storedPath = $file->storeAs("documents/vendeurs/{$vendeurId}/{$type}", $fileName, 'private');
+        $storedPath = $file->storeAs($folder, $fileName, 'private');
 
         if (!$storedPath) {
             throw new \Exception('Erreur lors de l\'upload du fichier.');

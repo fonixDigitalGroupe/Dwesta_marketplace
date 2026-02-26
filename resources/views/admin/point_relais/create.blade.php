@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Nouveau Point Relais')
+@section('title', 'Nouveau Dépôt Relais')
 
 @section('breadcrumbs')
     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
     </svg>
-    <a href="{{ route('admin.point-relais.index') }}">Points Relais</a>
+    <a href="{{ route('admin.point-relais.index') }}">Dépôts Relais</a>
     <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
     </svg>
@@ -17,7 +17,7 @@
 <div style="max-width: 1000px; margin: 0 auto;">
 
     <header style="margin-bottom: 1.5rem;">
-        <h1 style="font-size: 1.5rem; color: #333; font-weight: 500; margin-bottom: 0.25rem;">Nouveau Point Relais</h1>
+        <h1 style="font-size: 1.5rem; color: #333; font-weight: 500; margin-bottom: 0.25rem;">Nouveau Dépôt Relais</h1>
         <p style="font-size: 0.95rem; color: #666; font-weight: 400;">Configurez les paramètres d'un nouveau lieu de retrait pour les commandes.</p>
     </header>
 
@@ -35,7 +35,7 @@
                     
                     <div style="display: grid; gap: 1.25rem;">
                         <div>
-                            <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Nom du Point Relais <span style="color: red;">*</span></label>
+                            <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Nom du Dépôt Relais <span style="color: red;">*</span></label>
                             <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required
                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
                                    onfocus="this.style.borderColor='#ff750f'" onblur="this.style.borderColor='#e0e0e0'"
@@ -128,7 +128,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <span style="font-size: 0.9rem; font-weight: 550; color: #333;">Point Relais Actif</span>
+                        <span style="font-size: 0.9rem; font-weight: 550; color: #333;">Dépôt Relais Actif</span>
                     </label>
                 </div>
 
