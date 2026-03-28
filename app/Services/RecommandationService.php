@@ -103,6 +103,71 @@ class RecommandationService
     }
 
     /**
+     * Obtenir les meilleures offres des vendeurs pros
+     * (Similaires, sponsorisés ou vendeurs professionnels)
+     */
+    public function getMeilleuresOffresPro(Annonce $annonce, int $limit = 8): Collection
+    {
+        return Annonce::publiees()
+            ->where('id', '!=', $annonce->id)
+            ->where('categorie_id', $annonce->categorie_id)
+            ->where(function ($query) {
+                // Sponsorisé (À la Une)
+                $query->whereHas('options', function ($q) {
+                    $q->where('a_la_une', true)
+                        ->where(function ($q2) {
+                            $q2->whereNull('a_la_une_expire_le')
+                                ->orWhere('a_la_une_expire_le', '>', now());
+                        });
+                })
+                // OU Vendeur Pro
+                ->orWhereHas('vendeur', function ($q) {
+                    $q->where('type', 'professionnel');
+                });
+            })
+            ->with(['photos', 'category', 'vendeur.user', 'vendeur.professionnel', 'options'])
+            ->orderByRaw("CASE WHEN EXISTS (
+                SELECT 1 FROM annonce_options 
+                WHERE annonce_options.annonce_id = annonces.id 
+                AND annonce_options.a_la_une = 1
+                AND (annonce_options.a_la_une_expire_le IS NULL OR annonce_options.a_la_une_expire_le > ?)
+            ) THEN 0 ELSE 1 END", [now()->toDateTimeString()])
+            ->orderBy('vues', 'desc')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Obtenir les produits aussi vus par les clients
+     */
+    public function getProduitsAussiVus(Annonce $annonce, int $limit = 8): Collection
+    {
+        return Annonce::publiees()
+            ->where('id', '!=', $annonce->id)
+            ->where('categorie_id', $annonce->categorie_id)
+            ->with(['photos', 'category', 'vendeur.user', 'options'])
+            ->orderBy('vues', 'desc')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Obtenir les produits aussi aimés par les clients (basé sur les favoris)
+     */
+    public function getProduitsAussiAimes(Annonce $annonce, int $limit = 8): Collection
+    {
+        return Annonce::publiees()
+            ->where('id', '!=', $annonce->id)
+            ->where('categorie_id', $annonce->categorie_id)
+            ->with(['photos', 'category', 'vendeur.user', 'options'])
+            ->withCount('favoritedBy')
+            ->orderBy('favorited_by_count', 'desc')
+            ->orderBy('vues', 'desc')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
      * Obtenir toutes les recommandations pour une annonce
      *
      * @param Annonce $annonce
@@ -114,6 +179,9 @@ class RecommandationService
             'similaires' => $this->getProduitsSimilaires($annonce, 8),
             'achetez_ensemble' => $this->getAchetezSouventEnsemble($annonce, 6),
             'sponsorises' => $this->getProduitsSponsorises($annonce, 4),
+            'meilleures_offres_pro' => $this->getMeilleuresOffresPro($annonce, 8),
+            'aussi_vus' => $this->getProduitsAussiVus($annonce, 8),
+            'aussi_aimes' => $this->getProduitsAussiAimes($annonce, 8),
         ];
     }
 }

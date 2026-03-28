@@ -36,7 +36,7 @@ class SubscriptionService
 
         if (!$abonnementActif) {
             // Si pas d'abonnement actif, vérifier les limites de l'abonnement gratuit
-            $abonnementGratuit = \App\Models\Abonnement::where('type', 'gratuit')->first();
+            $abonnementGratuit = \App\Models\Abonnement::where('type', \App\Models\Abonnement::TYPE_GRATUIT)->first();
             
             if (!$abonnementGratuit) {
                 return false;
@@ -82,7 +82,7 @@ class SubscriptionService
 
         if (!$abonnementActif) {
             // Abonnement gratuit
-            $abonnementGratuit = \App\Models\Abonnement::where('type', 'gratuit')->first();
+            $abonnementGratuit = \App\Models\Abonnement::where('type', \App\Models\Abonnement::TYPE_GRATUIT)->first();
             
             if (!$abonnementGratuit) {
                 return 0;
@@ -114,6 +114,6 @@ class SubscriptionService
             return false;
         }
 
-        return in_array($abonnementActif->abonnement->type, ['basic', 'expert']);
+        return $abonnementActif->abonnement->prix_mensuel > 0;
     }
 }

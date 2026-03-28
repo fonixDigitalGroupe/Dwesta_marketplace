@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            RoleSeeder::class,              // Rôles (admin, vendeur, acheteur) — DOIT ÊTRE EN PREMIER
             UserSeeder::class,              // Utilisateurs (admin, vendeurs, acheteurs)
             VendeurSeeder::class,           // Profils vendeurs
             AbonnementSeeder::class,        // Abonnements

@@ -71,6 +71,7 @@ class CategorySeeder extends Seeder
                     'slug' => Str::slug($l2Nom . '-' . $mainCat->id),
                     'ordre' => $ordreL2++,
                     'actif' => true,
+                    'famille' => $famille,
                 ]);
 
                 $ordreL3 = 1;
@@ -82,6 +83,7 @@ class CategorySeeder extends Seeder
                         'slug' => Str::slug($l3Nom . '-' . $l2Cat->id),
                         'ordre' => $ordreL3++,
                         'actif' => true,
+                        'famille' => $famille,
                     ]);
                 }
             }

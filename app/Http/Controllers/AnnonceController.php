@@ -91,19 +91,11 @@ class AnnonceController extends Controller
         }
 
         $categories = Category::actives()->parOrdre()->get();
-        $optionsDisponibles = $this->optionService->getOptionsDisponibles();
-        $creditBalance = $user->credit_balance;
-        $optionCosts = $this->creditService->getOptionCosts();
+        $creditServices = \App\Models\CreditServiceConfig::actif()->get();
+        $creditBalance = $this->creditService->solde($user);
 
         // Utiliser la vue multi-étapes pour tous les types
-        return view('annonces.create', compact('categories', 'optionsDisponibles', 'type', 'creditBalance', 'optionCosts'));
-
-        if (!view()->exists($viewName)) {
-            \Log::error("Vue non trouvée: {$viewName}");
-            return view('annonces.create');
-        }
-
-        return view($viewName, compact('categories', 'optionsDisponibles', 'type'));
+        return view('annonces.create', compact('categories', 'type', 'creditBalance', 'creditServices'));
     }
 
     /**
@@ -167,7 +159,8 @@ class AnnonceController extends Controller
                 return back()->withInput()->with('error', "Solde insuffisant pour publier dans cette catégorie ({$categorie->nom}). Coût : " . number_format($categorie->listing_price, 0) . " FCFA. Rechargez vos crédits.");
             }
 
-            $annonce = $this->annonceService->creerAnnonce($vendeur, $validated, $type);
+            $annonceData = array_merge($validated, ['attributes' => $request->input('attributes', [])]);
+            $annonce = $this->annonceService->creerAnnonce($vendeur, $annonceData, $type);
 
             // 2. Paiement effectif de la publication
             $this->paymentService->processPublicationPayment($user, $categorie, "REF-" . $annonce->id);
@@ -187,27 +180,43 @@ class AnnonceController extends Controller
             if ($request->hasFile('video')) {
                 $this->mediaService->uploadVideo($request->file('video'), $annonce->id);
                 $annonce->update(['video_achetee' => true]);
+                
+                // S'assurer que le service vidéo est dans la liste des services à activer
+                if (!isset($selectedServices)) {
+                    $selectedServices = $request->input('services', []);
+                }
+                if (!in_array('video', $selectedServices)) {
+                    $selectedServices[] = 'video';
+                }
             }
 
             // Gestion des options payantes (consommation de crédits)
-            if ($validated['statut'] === Annonce::STATUT_PUBLIEE && $request->has('options')) {
-                $selectedOptions = $request->input('options', []);
-                $optionCosts = $this->creditService->getOptionCosts();
+            if ($validated['statut'] === Annonce::STATUT_PUBLIEE && ($request->has('services') || (isset($selectedServices) && !empty($selectedServices)))) {
+                if (!isset($selectedServices)) {
+                    $selectedServices = $request->input('services', []); // Array de clés comme ['video', 'boost']
+                }
                 $totalCost = 0;
+                $configsToActivate = [];
 
-                foreach ($selectedOptions as $optionKey) {
-                    if (isset($optionCosts[$optionKey])) {
-                        $totalCost += $optionCosts[$optionKey];
+                foreach ($selectedServices as $serviceKey) {
+                    $config = \App\Models\CreditServiceConfig::where('cle', $serviceKey)->where('actif', true)->first();
+                    if ($config) {
+                        $totalCost += $config->credits_requis;
+                        $configsToActivate[] = $config;
                     }
                 }
 
                 if ($totalCost > 0) {
-                    if (!$this->creditService->hasEnoughCredits($user, $totalCost)) {
-                        return back()->withInput()->with('error', "Crédits insuffisants. Vous avez besoin de {$totalCost} crédits. Solde actuel : {$user->credit_balance}. Rechargez votre compte.");
+                    if (!$this->creditService->aAssezDeCredits($user, $totalCost)) {
+                        // Annuler la création
+                        $annonce->forceDelete();
+                        return back()->withInput()->with('error', "Crédits insuffisants pour les options choisies. Solde actuel : " . $this->creditService->solde($user) . " crédits.");
                     }
 
-                    // Débiter les crédits
-                    $this->creditService->debitCredits($user, $totalCost, "Options d'annonce #{$annonce->id}");
+                    // Activer chaque service
+                    foreach ($configsToActivate as $config) {
+                        $this->creditService->activerService($user, $annonce, $config->cle);
+                    }
                 }
             }
 
@@ -268,14 +277,16 @@ class AnnonceController extends Controller
             'immobilier',
             'vehicule',
             'options',
+            'filteredAttributes',
             'medias' => function ($query) {
                 $query->where('type', 'photo')->orderBy('ordre');
             }
         ]);
         $categories = Category::actives()->parOrdre()->get();
-        $optionsDisponibles = $this->optionService->getOptionsDisponibles();
+        $creditServices = \App\Models\CreditServiceConfig::actif()->get();
+        $creditBalance = $this->creditService->solde($user);
 
-        return view("annonces.edit-{$annonce->type}", compact('annonce', 'categories', 'optionsDisponibles'));
+        return view("annonces.edit-{$annonce->type}", compact('annonce', 'categories', 'creditServices', 'creditBalance'));
     }
 
     /**
@@ -293,7 +304,8 @@ class AnnonceController extends Controller
         $validated = $this->validateAnnonce($request, $annonce->type, $annonce);
 
         try {
-            $this->annonceService->mettreAJourAnnonce($annonce, $validated);
+            $annonceData = array_merge($validated, ['attributes' => $request->input('attributes', [])]);
+            $this->annonceService->mettreAJourAnnonce($annonce, $annonceData);
 
             // Gestion de la suppression des médias
             if ($request->has('delete_media_ids') && !empty($request->input('delete_media_ids'))) {
@@ -311,6 +323,20 @@ class AnnonceController extends Controller
                 }
             }
 
+            // Upload de la vidéo si fournie
+            if ($request->hasFile('video')) {
+                $this->mediaService->uploadVideo($request->file('video'), $annonce->id);
+                $annonce->update(['video_achetee' => true]);
+                
+                // Préparer les services pour activation automatique
+                if (!isset($selectedServices)) {
+                    $selectedServices = $request->input('services', []);
+                }
+                if (!in_array('video', $selectedServices)) {
+                    $selectedServices[] = 'video';
+                }
+            }
+
             // Gestion des photos supplémentaires
             if ($request->hasFile('photos')) {
                 foreach ($request->file('photos') as $photo) {
@@ -318,6 +344,42 @@ class AnnonceController extends Controller
                     $this->mediaService->uploadPhoto($photo, $annonce->id, false, $ordre);
                 }
                 $annonce->update(['nb_photos' => $annonce->photos()->count()]);
+            }
+
+            // Gestion des options payantes (consommation de crédits)
+            if ($annonce->statut === Annonce::STATUT_PUBLIEE && ($request->has('services') || (isset($selectedServices) && !empty($selectedServices)))) {
+                if (!isset($selectedServices)) {
+                    $selectedServices = $request->input('services', []); // Array de clés comme ['video', 'boost']
+                }
+                $totalCost = 0;
+                $configsToActivate = [];
+
+                foreach ($selectedServices as $serviceKey) {
+                    // Check if not already active to avoid double charging
+                    $alreadyActive = \App\Models\AnnonceCreditService::where('annonce_id', $annonce->id)
+                        ->where('service', $serviceKey)
+                        ->actif()
+                        ->exists();
+
+                    if (!$alreadyActive) {
+                        $config = \App\Models\CreditServiceConfig::where('cle', $serviceKey)->where('actif', true)->first();
+                        if ($config) {
+                            $totalCost += $config->credits_requis;
+                            $configsToActivate[] = $config;
+                        }
+                    }
+                }
+
+                if ($totalCost > 0) {
+                    if (!$this->creditService->aAssezDeCredits($user, $totalCost)) {
+                        return back()->withInput()->with('error', "Annonce mise à jour, mais crédits insuffisants pour les NOUVELLES options choisies. Solde actuel : " . $this->creditService->solde($user) . " crédits.");
+                    }
+
+                    // Activer chaque nouveau service
+                    foreach ($configsToActivate as $config) {
+                        $this->creditService->activerService($user, $annonce, $config->cle);
+                    }
+                }
             }
 
             return redirect()->route('vendeur.mes-annonces')
@@ -405,14 +467,14 @@ class AnnonceController extends Controller
             'titre' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'min:20'],
             'statut' => ['nullable', 'in:brouillon,en_attente,publiee'],
-            'user_phone' => ['required', 'string', 'max:255', Rule::unique('users', 'telephone')->ignore(Auth::id())],
-            'code_postal' => ['required', 'string', 'max:255'],
+            'user_phone' => ['nullable', 'string', 'max:255', Rule::unique('users', 'telephone')->ignore(Auth::id())],
+            'code_postal' => ['nullable', 'string', 'max:255'],
         ];
 
         // Règles communes
         if ($type === Annonce::TYPE_PRODUIT || $type === Annonce::TYPE_IMMOBILIER || $type === Annonce::TYPE_VEHICULE) {
             $rules['prix'] = ['required', 'numeric', 'min:0'];
-            $rules['type_livraison'] = ['required', 'in:retrait_boutique,livraison_domicile,livraison_point_relais'];
+            $rules['type_livraison'] = ['nullable', 'in:retrait_boutique,livraison_domicile,livraison_point_relais'];
             $rules['disponibilite'] = ['nullable', 'in:en_stock,rupture_stock,sur_commande'];
         }
 
@@ -421,7 +483,7 @@ class AnnonceController extends Controller
             case Annonce::TYPE_PRODUIT:
                 $rules['marque'] = ['nullable', 'string', 'max:255'];
                 $rules['modele'] = ['nullable', 'string', 'max:255'];
-                $rules['etat'] = ['nullable', 'in:Neuf,Comme neuf,Très bon état,Bon état,Etat correct,Hors service,Occasion,Reconditionné'];
+                $rules['etat'] = ['nullable', 'in:Neuf,Occasion,Reconditionné'];
                 $rules['quantite'] = ['nullable', 'integer', 'min:1'];
                 $rules['prix_moyen_marche'] = ['nullable', 'numeric', 'min:0'];
                 break;
@@ -450,7 +512,7 @@ class AnnonceController extends Controller
                 $rules['kilometrage'] = ['nullable', 'integer', 'min:0'];
                 $rules['carburant'] = ['nullable', 'string', 'max:50'];
                 $rules['boite_vitesse'] = ['nullable', 'in:Manuelle,Automatique'];
-                $rules['etat'] = ['nullable', 'in:Neuf,Comme neuf,Très bon état,Bon état,Etat correct,Hors service,Occasion,Reconditionné'];
+                $rules['etat'] = ['nullable', 'in:Neuf,Occasion,Reconditionné'];
                 $rules['couleur'] = ['nullable', 'string', 'max:50'];
                 $rules['portes'] = ['nullable', 'integer', 'min:2', 'max:5'];
                 $rules['places'] = ['nullable', 'integer', 'min:1'];
@@ -459,7 +521,7 @@ class AnnonceController extends Controller
 
         // Validation des photos
         if (!$annonce) {
-            $rules['photos'] = ['required', 'array', 'min:4', 'max:8'];
+            $rules['photos'] = ['required', 'array', 'min:1', 'max:8'];
             $rules['photos.*'] = ['image', 'mimes:jpeg,jpg,png,webp', 'max:5120']; // 5 Mo max
         } else {
             $rules['photos'] = ['nullable', 'array', 'max:8'];
@@ -489,14 +551,12 @@ class AnnonceController extends Controller
             'description.min' => 'La description doit contenir au moins :min caractères.',
             'etat.in' => "L'état sélectionné est invalide.",
             'user_phone.unique' => 'Ce numéro de téléphone est déjà utilisé par un autre compte.',
-            'user_phone.required' => 'Le numéro de téléphone est requis.',
-            'code_postal.required' => 'Le code postal est requis.',
             'categorie_id.required' => 'La catégorie est requise.',
             'titre.required' => 'Le titre est requis.',
             'description.required' => 'La description est requise.',
             'prix.required' => 'Le prix est requis.',
-            'photos.required' => 'Veuillez ajouter au moins 4 photos pour votre annonce.',
-            'photos.min' => 'Il faut au minimum :min photos.',
+            'photos.required' => 'Veuillez ajouter au moins 1 photo pour votre annonce.',
+            'photos.min' => 'Il faut au minimum :min photo.',
             'photos.max' => 'Vous ne pouvez pas ajouter plus de :max photos.',
             'photos.*.image' => 'Le fichier doit être une image.',
         ];

@@ -25,6 +25,18 @@ class LoginController extends Controller
 
         if (Auth::attempt([$loginField => $request->login, 'password' => $request->password], $request->boolean('remember'))) {
             $request->session()->regenerate();
+            
+            $user = Auth::user();
+
+            if ($user->hasRole('admin')) {
+                return redirect()->intended(route('admin.dashboard'));
+            } elseif ($user->hasRole('transporteur')) {
+                return redirect()->intended(route('transporteur.dashboard'));
+            } elseif ($user->hasRole('livreur')) {
+                return redirect()->intended(route('livreur.dashboard'));
+            } elseif ($user->hasRole('point_relais')) {
+                return redirect()->intended(route('relais.dashboard'));
+            }
 
             return redirect()->intended(route('account.index'));
         }

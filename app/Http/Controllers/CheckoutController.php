@@ -150,6 +150,9 @@ class CheckoutController extends Controller
 
             DB::commit();
 
+            // Store order refs in session for success page
+            session(['last_order_refs' => collect($orders)->pluck('reference')->toArray()]);
+
             return redirect($session->url);
 
         } catch (\Exception $e) {
@@ -163,6 +166,12 @@ class CheckoutController extends Controller
      */
     public function success()
     {
+        // Vider le panier après confirmation de commande
+        $this->cartService->clear();
+
+        // Nettoyer les données de session de checkout
+        session()->forget(['checkout_adresse', 'checkout_mode']);
+
         return view('checkout.success');
     }
 }

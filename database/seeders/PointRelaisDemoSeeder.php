@@ -31,10 +31,10 @@ class PointRelaisDemoSeeder extends Seeder
             ]);
             
             // Assign role
-            if (!Role::where('name', 'point relais')->exists()) {
-                Role::create(['name' => 'point relais']);
+            if (!Role::where('name', 'point_relais')->exists()) {
+                Role::create(['name' => 'point_relais']);
             }
-            $manager->assignRole('point relais');
+            $manager->assignRole('point_relais');
         }
 
         // 2. Create Point Relais

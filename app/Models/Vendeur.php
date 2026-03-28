@@ -141,7 +141,7 @@ class Vendeur extends Model
         }
 
         // Retourner l'abonnement gratuit par défaut
-        return Abonnement::where('type', 'gratuit')->first();
+        return Abonnement::where('type', Abonnement::TYPE_GRATUIT)->first();
     }
 
     /**
@@ -157,7 +157,7 @@ class Vendeur extends Model
 
         if (!$abonnementActif) {
             // Si pas d'abonnement actif, utiliser l'abonnement gratuit
-            $abonnementGratuit = Abonnement::where('type', 'gratuit')->first();
+            $abonnementGratuit = Abonnement::where('type', Abonnement::TYPE_GRATUIT)->first();
             return $abonnementGratuit && ($abonnementGratuit->nombre_annonces === 0 || $abonnementGratuit->nombre_annonces > 0);
         }
 

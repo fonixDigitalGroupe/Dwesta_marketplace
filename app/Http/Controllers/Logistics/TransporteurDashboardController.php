@@ -30,14 +30,16 @@ class TransporteurDashboardController extends Controller
         ];
 
         // Commandes disponibles (Amazon-like: pick what's ready)
-        $availableOrders = Order::where('statut', Order::STATUT_PRET)
+        $availableOrders = Order::with(['seller.user'])
+            ->where('statut', Order::STATUT_PRET)
             ->whereNull('transporteur_id')
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
 
         // Mes livraisons en cours
-        $myDeliveries = Order::where('transporteur_id', $transporteur->id)
+        $myDeliveries = Order::with(['seller.user', 'buyer'])
+            ->where('transporteur_id', $transporteur->id)
             ->where('statut', Order::STATUT_EN_ROUTE)
             ->orderBy('updated_at', 'desc')
             ->get();

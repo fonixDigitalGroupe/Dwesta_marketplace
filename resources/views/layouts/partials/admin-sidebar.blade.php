@@ -5,8 +5,8 @@
 
     <!-- Dashboard -->
     <div class="sidebar-section">
-        <a href="{{ route('admin.dashboard') }}" class="sidebar-title {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" style="text-decoration: none;">
-            <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5">
+        <a href="{{ route('admin.dashboard') }}" class="sidebar-title {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem;">
+            <svg viewBox="0 0 24 24" fill="none" class="w-5 h-5" style="width: 18px; height: 18px;">
                 <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" stroke="#3498db" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
             Tableau de bord
@@ -78,9 +78,13 @@
         </div>
         <ul class="sidebar-menu">
             <li><a href="{{ route('admin.categories.l1') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-sitemap" style="width: 20px;"></i> Catégories & Architecture</a></li>
+            <li><a href="{{ route('admin.filters.index') }}" class="{{ request()->routeIs('admin.filters.*') ? 'active' : '' }}"><i class="fas fa-filter" style="width: 20px;"></i> Critères de filtrage</a></li>
             <li><a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.index') && !request()->has('role') ? 'active' : '' }}"><i class="fas fa-users" style="width: 20px;"></i> Gestion des Utilisateurs</a></li>
             <li><a href="#"><i class="fas fa-user-shield" style="width: 20px;"></i> Rôles et permissions</a></li>
             <li><a href="{{ route('admin.settings.index') }}" class="{{ request()->routeIs('admin.settings.index') ? 'active' : '' }}"><i class="fas fa-tools" style="width: 20px;"></i> Configuration Générale</a></li>
+            <li><a href="{{ route('admin.credits.packs') }}" class="{{ request()->routeIs('admin.credits.packs*') ? 'active' : '' }}"><i class="fas fa-box" style="width: 20px;"></i> Packs de crédits</a></li>
+            <li><a href="{{ route('admin.credits.services') }}" class="{{ request()->routeIs('admin.credits.services*') ? 'active' : '' }}"><i class="fas fa-star" style="width: 20px;"></i> Services annonces</a></li>
+            <li><a href="{{ route('admin.abonnements.index') }}" class="{{ request()->routeIs('admin.abonnements.*') ? 'active' : '' }}"><i class="fas fa-id-card" style="width: 20px;"></i> Packs d'abonnement</a></li>
         </ul>
     </div>
 </aside>

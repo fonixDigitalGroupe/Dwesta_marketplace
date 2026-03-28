@@ -9,18 +9,24 @@ class CreditTransaction extends Model
     protected $fillable = [
         'user_id',
         'type',
-        'amount',
-        'reference',
+        'montant',
         'description',
-        'metadata',
+        'reference',
+        'related_type',
+        'related_id',
     ];
 
     protected $casts = [
-        'metadata' => 'array',
+        'montant' => 'integer',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function related()
+    {
+        return $this->morphTo();
     }
 }

@@ -104,6 +104,36 @@ class StripeService
     }
 
     /**
+     * Crée une session Checkout pour l'achat d'un pack de crédits
+     */
+    public function createCreditPackSession($user, \App\Models\CreditPack $pack, $successUrl, $cancelUrl)
+    {
+        return $this->stripe->checkout->sessions->create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => "Pack {$pack->nom}",
+                        'description' => "{$pack->credits} crédits" . ($pack->bonus_credits ? " + {$pack->bonus_credits} bonus" : ""),
+                    ],
+                    'unit_amount' => (int)($pack->prix / 655 * 100), // Conversion approximative FCFA -> EUR
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => $successUrl . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => $cancelUrl,
+            'metadata' => [
+                'user_id' => $user->id,
+                'pack_id' => $pack->id,
+                'type' => 'credit_pack_purchase'
+            ],
+            'customer_email' => $user->email,
+        ]);
+    }
+
+    /**
      * Récupère une session Stripe
      */
     public function getSession($sessionId)

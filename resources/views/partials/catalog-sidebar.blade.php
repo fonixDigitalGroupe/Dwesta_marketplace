@@ -60,6 +60,16 @@
             @if(request('category') && !isset($category)) <input type="hidden" name="category" value="{{ request('category') }}"> @endif
             @if(request('sort')) <input type="hidden" name="sort" value="{{ request('sort') }}"> @endif
 
+@php
+    // Find root category to determine family
+    $rootCat = $currentCategory;
+    while ($rootCat && $rootCat->parent_id) {
+        $rootCat = $rootCat->parent;
+    }
+    $showEtatFilter = !($rootCat && in_array($rootCat->famille, ['Immobilier', 'Services']));
+@endphp
+
+@if($showEtatFilter)
             <div class="filter-group-alt">
                 <div class="filter-label-alt">ETAT</div>
                 <div class="checkbox-group">
@@ -78,19 +88,11 @@
                         <span class="box"></span> 
                         <span class="label-text">Reconditionné</span>
                     </label>
-                    <label class="rakuten-checkbox">
-                        <input type="checkbox" name="etat[]" value="Bon état" @if(is_array(request('etat')) && in_array('Bon état', request('etat'))) checked @endif onchange="this.form.submit()">
-                        <span class="box"></span> 
-                        <span class="label-text">Bon état</span>
-                    </label>
-                    <label class="rakuten-checkbox">
-                        <input type="checkbox" name="etat[]" value="Très bon état" @if(is_array(request('etat')) && in_array('Très bon état', request('etat'))) checked @endif onchange="this.form.submit()">
-                        <span class="box"></span> 
-                        <span class="label-text">Très bon état</span>
-                    </label>
+
                 </div>
                 <div class="divider-thin"></div>
             </div>
+@endif
 
             <div class="filter-group-alt">
                 <div class="filter-label-alt">PRIX</div>
@@ -107,18 +109,38 @@
                 <div class="divider-thin"></div>
             </div>
 
+            @if(isset($category) && $category->filters)
+                @foreach($category->filters as $filter)
+                    @if($filter->is_filterable)
+                        <div class="filter-group-alt">
+                            <div class="filter-label-alt">{{ strtoupper($filter->nom) }}</div>
+                            @if($filter->type === 'select' && $filter->options)
+                                <div class="checkbox-group">
+                                    @foreach($filter->options as $option)
+                                        <label class="rakuten-checkbox">
+                                            <input type="checkbox" name="attrs[{{ $filter->id }}]" value="{{ $option }}" @if(request()->input('attrs.'.$filter->id) == $option) checked @endif onchange="this.form.submit()">
+                                            <span class="box"></span> 
+                                            <span class="label-text">{{ $option }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="rakuten-price-inputs">
+                                     <input type="text" name="attrs[{{ $filter->id }}]" placeholder="{{ $filter->unit ? 'Ex: '.$filter->unit : '...' }}" value="{{ request()->input('attrs.'.$filter->id) }}" class="sidebar-input-alt" style="flex: 1;">
+                                     <button type="submit" class="p-ok-btn">Ok</button>
+                                </div>
+                            @endif
+                            <div class="divider-thin"></div>
+                        </div>
+                    @endif
+                @endforeach
+            @endif
+
+
+
             @php
-                $isImmo = (isset($category) && str_contains(strtolower($category->nom), 'immo')) || request('category') == 'immobilier';
                 $isVehicule = (isset($category) && str_contains(strtolower($category->nom), 'auto')) || request('category') == 'vehicules';
             @endphp
-
-            @if($isImmo)
-                <div class="filter-group-alt">
-                    <div class="filter-label-alt">PIÈCES (MIN)</div>
-                    <input type="number" name="pieces" class="sidebar-input-alt" placeholder="Ex: 3" value="{{ request('pieces') }}" onchange="this.form.submit()">
-                    <div class="divider-thin"></div>
-                </div>
-            @endif
 
             @if($isVehicule)
                 <div class="filter-group-alt">
@@ -128,29 +150,7 @@
                 </div>
             @endif
 
-            <div class="filter-group-alt">
-                <div class="filter-label-alt">OPTION D'EXPÉDITION</div>
-                <label class="rakuten-checkbox">
-                    <input type="checkbox" name="livraison_gratuite" value="1" @if(request('livraison_gratuite')) checked @endif onchange="this.form.submit()">
-                    <span class="box"></span> 
-                    <span class="label-text">Livraison gratuite</span>
-                </label>
-                <label class="rakuten-checkbox">
-                    <input type="checkbox" name="livraison_express" value="1" @if(request('livraison_express')) checked @endif onchange="this.form.submit()">
-                    <span class="box"></span> 
-                    <span class="label-text">Livraison express</span>
-                </label>
-                <label class="rakuten-checkbox">
-                    <input type="checkbox" name="livraison_standard" value="1" @if(request('livraison_standard')) checked @endif onchange="this.form.submit()">
-                    <span class="box"></span> 
-                    <span class="label-text">Livraison standard</span>
-                </label>
-                <label class="rakuten-checkbox">
-                    <input type="checkbox" name="retrait_magasin" value="1" @if(request('retrait_magasin')) checked @endif onchange="this.form.submit()">
-                    <span class="box"></span> 
-                    <span class="label-text">Retrait en magasin</span>
-                </label>
-            </div>
+
         </form>
     </div>
     @endif
@@ -340,20 +340,18 @@
 
     .price-box input {
         width: 100%;
-        padding: 0.4rem 1.25rem 0.4rem 0.4rem;
+        padding: 0.4rem;
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 0.75rem;
         outline: none;
+        -moz-appearance: textfield;
     }
 
-    .price-box .currency {
-        position: absolute;
-        right: 6px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 0.75rem;
-        color: #999;
+    .price-box input::-webkit-outer-spin-button,
+    .price-box input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
 
     .rakuten-price-inputs .hyphen {
@@ -361,7 +359,7 @@
     }
 
     .p-ok-btn {
-        background: #000;
+        background: #ff6600;
         color: #fff;
         border: none;
         padding: 0.4rem 0.6rem;
@@ -369,6 +367,11 @@
         font-weight: 700;
         font-size: 0.75rem;
         cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .p-ok-btn:hover {
+        background: #e65c00;
     }
 
     .sidebar-input-alt {

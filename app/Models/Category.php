@@ -12,6 +12,23 @@ class Category extends Model
 {
     use HasFactory;
 
+    /**
+     * Boot: auto-hérite la famille du parent si non définie
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (Category $category) {
+            if (empty($category->famille) && $category->parent_id) {
+                $parent = self::find($category->parent_id);
+                if ($parent) {
+                    $category->famille = $parent->getFamilleAttribute();
+                }
+            }
+        });
+    }
+
     protected $fillable = [
         'parent_id',
         'nom',
@@ -84,6 +101,25 @@ class Category extends Model
     public function aEnfants(): bool
     {
         return $this->enfants()->count() > 0;
+    }
+
+    /**
+     * Accesseur récursif pour 'famille'.
+     * Si la catégorie courante n'a pas de famille définie,
+     * on remonte dans l'arbre pour trouver la famille du parent.
+     */
+    public function getFamilleAttribute(): ?string
+    {
+        if (!empty($this->attributes['famille'])) {
+            return $this->attributes['famille'];
+        }
+
+        if ($this->parent_id) {
+            $parent = $this->parent;
+            return $parent ? $parent->getFamilleAttribute() : null;
+        }
+
+        return null;
     }
 
     /**
@@ -219,5 +255,9 @@ class Category extends Model
                 $cat->save();
             }
         }
+    }
+    public function filters(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CategoryFilter::class);
     }
 }

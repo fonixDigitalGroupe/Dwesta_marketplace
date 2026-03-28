@@ -17,7 +17,7 @@ class AbonnementFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => fake()->randomElement(['gratuit', 'basic', 'expert']),
+            'type' => $this->faker->unique()->randomElement(['gratuit', 'basic', 'expert']),
             'nom' => fake()->words(2, true),
             'description' => fake()->sentence(),
             'nombre_annonces' => fake()->numberBetween(0, 50),

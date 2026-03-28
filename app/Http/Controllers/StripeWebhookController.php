@@ -129,6 +129,26 @@ class StripeWebhookController extends Controller
                 ]);
             }
         }
+        
+        elseif ($type === 'credit_pack_purchase') {
+            $userId = $metadata->user_id;
+            $packId = $metadata->pack_id;
+            
+            $user = \App\Models\User::find($userId);
+            $pack = \App\Models\CreditPack::find($packId);
+            
+            if ($user && $pack) {
+                $exists = \App\Models\CreditTransaction::where('user_id', $userId)
+                    ->where('type', 'achat')
+                    ->where('reference', $session->id)
+                    ->exists();
+                    
+                if (!$exists) {
+                    $creditService = app(\App\Services\CreditService::class);
+                    $creditService->acheter($user, $pack, $session->id);
+                }
+            }
+        }
     }
 
     protected function handleInvoicePaid($invoice)

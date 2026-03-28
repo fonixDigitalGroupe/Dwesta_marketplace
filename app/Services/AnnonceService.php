@@ -74,6 +74,11 @@ class AnnonceService
             if (isset($data['variantes']) && is_array($data['variantes'])) {
                 $this->enregistrerVariantes($annonce, $data['variantes']);
             }
+ 
+            // Enregistrer les attributs dynamiques
+            if (isset($data['attributes']) && is_array($data['attributes'])) {
+                $this->enregistrerAttributsDynamiques($annonce, $data['attributes']);
+            }
 
             // Incrémenter le nombre d'annonces utilisées si publiée
             if ($annonce->estPubliee()) {
@@ -109,16 +114,23 @@ class AnnonceService
                 $slug = Annonce::generateSlug($data['titre'], $annonce->id);
             }
 
+            $newStatut = $data['statut'] ?? $annonce->statut;
+            $publiee_le = $annonce->publiee_le;
+            if ($newStatut === Annonce::STATUT_PUBLIEE && !$publiee_le) {
+                $publiee_le = now();
+            }
+
             // Mettre à jour l'annonce principale
             $annonce->update([
                 'categorie_id' => $data['categorie_id'] ?? $annonce->categorie_id,
-                'titre' => $data['titre'] ?? $annonce->titre,
-                'slug' => $slug,
-                'prix' => $data['prix'] ?? $annonce->prix,
-                'description' => $data['description'] ?? $annonce->description,
+                'titre'        => $data['titre'] ?? $annonce->titre,
+                'slug'         => $slug,
+                'prix'         => $data['prix'] ?? $annonce->prix,
+                'description'  => $data['description'] ?? $annonce->description,
                 'type_livraison' => $data['type_livraison'] ?? $annonce->type_livraison,
-                'disponibilite' => $data['disponibilite'] ?? $annonce->disponibilite,
-                'statut' => $data['statut'] ?? $annonce->statut,
+                'disponibilite'  => $data['disponibilite'] ?? $annonce->disponibilite,
+                'statut'         => $newStatut,
+                'publiee_le'     => $publiee_le,
             ]);
 
             // Mettre à jour les données spécifiques
@@ -132,6 +144,11 @@ class AnnonceService
             // Mettre à jour les variantes si fournies
             if (isset($data['variantes']) && is_array($data['variantes'])) {
                 $this->enregistrerVariantes($annonce, $data['variantes']);
+            }
+
+            // Mettre à jour les attributs dynamiques
+            if (isset($data['attributes']) && is_array($data['attributes'])) {
+                $this->enregistrerAttributsDynamiques($annonce, $data['attributes']);
             }
 
             DB::commit();
@@ -325,6 +342,23 @@ class AnnonceService
                     'valeur' => $variante['valeur'],
                     'stock' => $variante['stock'] ?? 0,
                     'prix_supplementaire' => $variante['prix_supplementaire'] ?? 0,
+                ]);
+            }
+        }
+    }
+
+
+    private function enregistrerAttributsDynamiques(Annonce $annonce, array $attributes): void
+    {
+        // Supprimer les anciens attributs
+        $annonce->filteredAttributes()->delete();
+
+        foreach ($attributes as $filterId => $value) {
+            if ($value !== null && $value !== '' && (!is_array($value) || count($value) > 0)) {
+                $finalValue = is_array($value) ? implode(', ', $value) : $value;
+                $annonce->filteredAttributes()->create([
+                    'category_filter_id' => $filterId,
+                    'value' => $finalValue,
                 ]);
             }
         }

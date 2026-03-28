@@ -68,27 +68,59 @@
             <div class="catalog-grid">
                 @forelse($annonces as $annonce)
                     <div class="catalog-item">
-                        <a href="{{ route('annonces.show', $annonce->slug) }}" class="item-link">
-                            <div class="item-media">
+                        <a href="{{ route('annonces.show', $annonce->slug) }}" class="catalog-card">
+                            <div class="card-media">
                                 @if($annonce->photoPrincipale())
                                     <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
                                 @else
                                     <div class="no-photo">Pas de photo</div>
                                 @endif
+                                @if($annonce->estALaUne()) <span class="badge-sponsored">Sponsorisée</span> @endif
                             </div>
-                            <div class="item-content">
-                                <h3 class="item-title">{{ $annonce->titre }}</h3>
-                                <div class="item-brand">- {{ $category->nom }}</div>
-                                <div class="item-pricing">
-                                    <span class="price-main">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
-                                    <span class="condition">. Neuf</span>
+                            <div class="card-content">
+                                <h3 class="card-title">{{ $annonce->titre }}</h3>
+                                
+                                <div class="card-rating">
+                                    @php
+                                        $rating = $annonce->note_moyenne;
+                                        $fullStars = floor($rating);
+                                        $halfStar = ($rating - $fullStars) >= 0.5;
+                                        $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                                    @endphp
+                                    <div class="stars">
+                                        @for($i = 0; $i < $fullStars; $i++)
+                                            <i class="fas fa-star"></i>
+                                        @endfor
+                                        @if($halfStar)
+                                            <i class="fas fa-star-half-alt"></i>
+                                        @endif
+                                        @for($i = 0; $i < $emptyStars; $i++)
+                                            <i class="far fa-star"></i>
+                                        @endfor
+                                    </div>
+                                    <span class="reviews-count">{{ $annonce->nombre_avis ?? 0 }} avis</span>
                                 </div>
-                                <div class="item-seller">
-                                    Par <span class="seller-name">{{ $annonce->vendeur && $annonce->vendeur->user ? $annonce->vendeur->user->prenom . ' ' . $annonce->vendeur->user->nom : 'Utilisateur' }}</span>
+
+                                <div class="card-price-state">
+                                    <span class="price-val">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                    <span class="state-sep">·</span>
+                                    <span class="state-label">
+                                        {{ $annonce->etat_libelle }}
+                                    </span>
                                 </div>
-                                <div class="item-button">
-                                    <span>Voir le produit</span>
-                                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+
+                                @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
+                                <div class="seller-info-line">
+                                    <span class="seller-prefix">Par</span>
+                                    <span class="seller-name-text">
+                                        {{ $annonce->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}
+                                        <span class="pro-tag">PRO</span>
+                                    </span>
+                                </div>
+                                @endif
+
+                                <div class="card-actions">
+                                    <span class="btn-see-product">Voir le produit <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
                                 </div>
                             </div>
                         </a>
@@ -238,40 +270,44 @@
     .catalog-item:nth-child(7n+4),
     .catalog-item:nth-child(7n+5),
     .catalog-item:nth-child(7n+6),
-    .catalog-item:nth-child(7n+7),
-    .catalog-item:nth-child(7n) {
+    .catalog-item:nth-child(7n+7) {
         grid-column: span 3;
     }
 
     /* Remove right border for items at the end of their rows */
     .catalog-item:nth-child(7n+3), /* End of 3-item row */
-    .catalog-item:nth-child(7n)   /* End of 4-item row */ {
+    .catalog-item:nth-child(7n+7)  /* End of 4-item row */ {
         border-right: none;
     }
 
-    .item-link {
-        text-decoration: none;
-        color: inherit;
-        padding: 0.75rem 1.25rem 0.25rem 1.25rem;
-        flex: 1;
+    .catalog-card {
+        background: #fff;
+        border-right: 1px solid #ebebeb;
+        border-bottom: 1px solid #ebebeb;
         display: flex;
         flex-direction: column;
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+        color: inherit;
+        height: 100%;
     }
 
-    .item-media {
-        aspect-ratio: 1.15;
-        background: #fff;
+    .catalog-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        border-color: #ddd;
+    }
+
+    .card-media {
+        aspect-ratio: 1;
+        background: #fcfcfc;
         position: relative;
-        margin-bottom: 0.35rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 
-    .item-media img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
+    .card-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .no-photo {
@@ -283,107 +319,135 @@
         font-size: 0.8rem;
     }
 
-    .badge-featured {
+    .badge-sponsored {
         position: absolute;
         top: 0.5rem;
         left: 0.5rem;
-        background: #000;
-        color: #fff;
-        font-size: 0.65rem;
+        background: #fff;
+        color: #111;
+        font-size: 0.6rem;
         font-weight: 800;
-        padding: 0.25rem 0.5rem;
-        border-radius: 2px;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
         text-transform: uppercase;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border: 1px solid #eee;
+        z-index: 10;
     }
 
-    .item-content {
+    .card-content {
+        padding: 0.75rem 0.75rem 1rem 0.75rem;
+        flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 0.4rem;
     }
-
-    .item-sponsor {
-        font-size: 0.7rem;
-        color: #999;
-        margin-bottom: 0.2rem;
-    }
-
-    .item-title {
-        font-size: 0.9rem;
+    
+    .card-title {
+        font-size: 0.85rem;
         font-weight: 700;
-        color: #333;
-        line-height: 1.3;
-        margin: 0;
+        line-height: 1.25;
+        height: 2.1rem;
+        overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
-        overflow: hidden;
-        height: 2.4rem;
-    }
-
-    .item-brand {
-        font-size: 0.85rem;
+        margin-bottom: 0.25rem;
         color: #333;
-        margin-top: -0.1rem;
     }
 
-    .item-rating {
+    .card-rating {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
     }
 
-    .stars {
+    .card-rating .stars {
         display: flex;
         gap: 1px;
-    }
-
-    .rating-count {
-        font-size: 0.75rem;
-        color: #666;
-    }
-
-    .item-pricing {
-        margin-top: 0.5rem;
-        display: flex;
-        align-items: baseline;
-        gap: 0.3rem;
-    }
-
-    .price-main {
-        font-size: 1.3rem;
-        font-weight: 900;
-        color: #e60000;
-    }
-
-    .condition {
+        color: #ffbc00;
         font-size: 0.8rem;
-        color: #333;
-        font-weight: 500;
     }
 
-    .item-seller {
+    .card-rating .reviews-count {
         font-size: 0.75rem;
-        color: #666;
-        margin-top: 0.25rem;
+        color: #777;
+    }
+
+    .card-price-state {
         display: flex;
         align-items: center;
         gap: 0.4rem;
+        margin: 0.25rem 0;
     }
 
-    .seller-name {
-        text-transform: uppercase;
-        font-weight: 500;
-    }
-
-    .badge-pro {
-        font-size: 0.6rem;
+    .price-val {
+        font-size: 1.15rem;
         font-weight: 800;
-        border: 1px solid #ccc;
-        padding: 0 0.2rem;
-        border-radius: 4px;
+        color: #db0001;
+    }
+
+    .state-sep {
+        font-weight: bold;
+        color: #db0001;
+    }
+
+    .state-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #db0001;
+    }
+
+    .seller-info-line {
+        font-size: 0.75rem;
+        color: #777;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .seller-name-text {
+        font-weight: 600;
         color: #333;
+    }
+
+    .pro-tag {
+        background: #fff;
+        color: #666;
+        font-size: 7px;
+        font-weight: 700;
+        padding: 1px 5px;
+        border-radius: 10px;
+        margin-left: 2px;
+        border: 1px solid #ddd;
+        text-transform: uppercase;
+        vertical-align: middle;
+    }
+
+    .card-actions {
+        margin-top: auto;
+    }
+
+    .btn-see-product {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 0.6rem;
+        border: 1.5px solid #111;
+        border-radius: 8px;
+        background: #fff;
+        color: #111;
+        font-size: 0.9rem;
+        font-weight: 800;
+        transition: all 0.2s;
+    }
+
+    .catalog-card:hover .btn-see-product {
+        background: #111;
+        color: #fff;
     }
 
     .item-button {

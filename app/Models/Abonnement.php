@@ -2,10 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Abonnement extends Model
 {
+    use HasFactory;
+
+    const TYPE_GRATUIT = 'gratuit';
+    const TYPE_BASIC = 'basic';
+    const TYPE_EXPERT = 'expert';
+
     protected $fillable = [
         'type',
         'nom',

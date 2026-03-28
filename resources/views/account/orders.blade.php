@@ -138,7 +138,15 @@
 
                         <div class="order-footer">
                             <div style="font-size: 0.85rem; color: #888;">
-                                Vendu par : <strong>{{ $order->seller->user->prenom }} {{ $order->seller->user->nom }}</strong>
+                                Vendu par : <strong>
+                                    @if($order->seller && $order->seller->professionnel)
+                                        {{ $order->seller->professionnel->nom_entreprise }}
+                                    @elseif($order->seller && $order->seller->user)
+                                        {{ $order->seller->user->prenom }} {{ $order->seller->user->nom }}
+                                    @else
+                                        Vendeur inconnu
+                                    @endif
+                                </strong>
                             </div>
                             <div class="order-total">
                                 Total : {{ number_format($order->total_final, 0, ',', ' ') }} FCFA

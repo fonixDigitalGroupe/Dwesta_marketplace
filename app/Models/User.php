@@ -75,6 +75,30 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Relation avec le transporteur (si l'utilisateur est transporteur)
+     */
+    public function transporteur(): HasOne
+    {
+        return $this->hasOne(Transporteur::class);
+    }
+
+    /**
+     * Relation avec le livreur (si l'utilisateur est livreur)
+     */
+    public function livreur(): HasOne
+    {
+        return $this->hasOne(Livreur::class);
+    }
+
+    /**
+     * Relation avec les points relais (si l'utilisateur gère des points relais)
+     */
+    public function pointRelais()
+    {
+        return $this->belongsToMany(PointRelais::class, 'point_relais_user');
+    }
+
+    /**
      * Vérifier si l'utilisateur est vendeur
      */
     public function estVendeur(): bool
@@ -96,6 +120,30 @@ class User extends Authenticatable implements MustVerifyEmail
     public function estVendeurOfficiel(): bool
     {
         return $this->vendeur && $this->vendeur->estOfficiel();
+    }
+
+    /**
+     * Vérifier si l'utilisateur est transporteur
+     */
+    public function estTransporteur(): bool
+    {
+        return $this->transporteur !== null;
+    }
+
+    /**
+     * Vérifier si l'utilisateur est livreur
+     */
+    public function estLivreur(): bool
+    {
+        return $this->livreur !== null;
+    }
+
+    /**
+     * Vérifier si l'utilisateur gère des points relais
+     */
+    public function estPointRelais(): bool
+    {
+        return $this->pointRelais()->exists();
     }
 
     /**

@@ -229,6 +229,25 @@ class Annonce extends Model
     }
 
     /**
+     * Obtenir le libellé de l'état (Neuf/Occasion)
+     */
+    public function getEtatLibelleAttribute(): string
+    {
+        $etat = null;
+        if ($this->type === self::TYPE_PRODUIT && $this->produit) {
+            $etat = $this->produit->etat;
+        } elseif ($this->type === self::TYPE_VEHICULE && $this->vehicule) {
+            $etat = $this->vehicule->etat;
+        }
+        return $etat ? ucfirst($etat) : 'Occasion';
+    }
+
+    public function filteredAttributes(): HasMany
+    {
+        return $this->hasMany(AnnonceAttribute::class);
+    }
+
+    /**
      * Incrémenter le compteur de vues
      */
     public function incrementerVues(): void
@@ -309,6 +328,16 @@ class Annonce extends Model
     }
 
     /**
+     * Scope pour les annonces des vendeurs professionnels
+     */
+    public function scopeProfessionnelles($query)
+    {
+        return $query->whereHas('vendeur', function ($q) {
+            $q->where('type', 'professionnel');
+        });
+    }
+
+    /**
      * Scope pour les annonces "À la Une"
      */
     public function scopeALaUne($query)
@@ -374,6 +403,10 @@ class Annonce extends Model
      */
     public function peutEtreAchete(): bool
     {
+        if (!$this->relationLoaded('category')) {
+            $this->load('category');
+        }
+
         return $this->category && $this->category->famille === Category::FAMILLE_ECOMMERCE;
     }
 }

@@ -14,7 +14,7 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Annonce::publiees()->with(['photos', 'category', 'vendeur.user', 'options']);
+        $query = Annonce::publiees()->with(['photos', 'category', 'vendeur.user', 'options', 'produit', 'vehicule']);
         $category = null;
 
         // Recherche textuelle
@@ -30,6 +30,7 @@ class SearchController extends Controller
         if ($request->filled('category')) {
             $category = Category::where('slug', $request->category)->first();
             if ($category) {
+                $category->load('filters');
                 $query->whereIn('categorie_id', $category->descendantsAndSelf()->pluck('id'));
             }
         }
@@ -107,9 +108,13 @@ class SearchController extends Controller
                 $query->orderBy('publiee_le', 'desc');
                 break;
             default:
-                // Priorité aux annonces "À la une" puis par vues
-                $query->orderByRaw("CASE WHEN EXISTS (SELECT 1 FROM annonce_options WHERE annonce_id = annonces.id AND a_la_une = 1) THEN 0 ELSE 1 END")
-                      ->orderBy('vues', 'desc');
+                // Priorité : 1) Sponsorisé (À la une) | 2) Vendeurs pro | 3) Vues
+                $query
+                    ->leftJoin('vendeurs', 'vendeurs.id', '=', 'annonces.vendeur_id')
+                    ->orderByRaw("CASE WHEN EXISTS (SELECT 1 FROM annonce_options WHERE annonce_id = annonces.id AND a_la_une = 1) THEN 0 ELSE 1 END")
+                    ->orderByRaw("CASE WHEN vendeurs.type = 'professionnel' THEN 0 ELSE 1 END")
+                    ->orderBy('annonces.vues', 'desc')
+                    ->select('annonces.*');
                 break;
         }
 

@@ -690,6 +690,22 @@
             from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Input price/quantity refinements */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        #prix, #quantite {
+            height: 45px;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+        }
     </style>
 @endpush
 
@@ -734,7 +750,7 @@
                 </div>
                 <div class="step-content">
                     <div class="step-number">ETAPE 4</div>
-                    <div class="step-title">Moyens d'expédition</div>
+                    <div class="step-title">Booster votre annonce</div>
                 </div>
             </div>
         </aside>
@@ -826,21 +842,21 @@
                             @endforeach
                         </div>
 
-                        <div id="level2Section" style="display:none; margin-top: 2rem;">
-                            <label class="form-label" style="font-size: 0.9rem; font-weight: 500; color: #666; margin-bottom: 1rem; display: block;">Choisissez une sous-catégorie</label>
-                            <div id="level2Cards" class="suggestion-cards">
-                                <!-- Level 2 cards will be injected here -->
-                            </div>
+                        <div id="level2Section" style="display:none; margin-top: 1.5rem;">
+                            <label class="form-label" style="font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 0.75rem; display: block;">Choisissez une sous-catégorie</label>
+                            <select id="level2Select" class="form-input" onchange="onLevel2Change(this.value)" style="width: 100%; border-radius: 8px;">
+                                <option value="">Choisir une option...</option>
+                            </select>
                         </div>
 
-                        <div id="finalSelectionSummary" style="display:none;">
-                            <div class="selection-summary-box">
-                                <div class="selection-summary-text">
-                                    Catégorie sélectionnée :
-                                    <span id="finalCategoryPath" class="selection-summary-path"></span>
-                                </div>
-                            </div>
+                        <div id="level3Section" style="display:none; margin-top: 1.5rem;">
+                            <label class="form-label" style="font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 0.75rem; display: block;">Précisez votre choix (champ détaillé)</label>
+                            <select id="level3Select" class="form-input" onchange="onLevel3Change(this.value)" style="width: 100%; border-radius: 8px;">
+                                <option value="">Choisir une option...</option>
+                            </select>
                         </div>
+
+                        <div id="dynamic-filters-container" style="margin-top: 1.5rem;"></div>
                     </div>
 
                     <div class="form-actions">
@@ -865,11 +881,11 @@
                     </div>
 
                     <div id="productConditionGroup" class="form-group" style="margin-top: 1.5rem;">
-                        <label class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">État du produit</label>
-                        <input type="hidden" id="etat_produit" name="etat" value="{{ old('etat', $annonce->produit->etat ?? 'Bon état') }}" required>
+                        <label class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">État</label>
+                        <input type="hidden" id="etat_produit" name="etat" value="{{ old('etat', $annonce->produit->etat ?? 'Neuf') }}" required>
                         <div class="status-cards-grid">
-                            @foreach(['Neuf', 'Comme neuf', 'Très bon état', 'Bon état', 'Etat correct', 'Hors service'] as $st)
-                                <div class="status-card {{ old('etat', $annonce->produit->etat ?? 'Bon état') == $st ? 'selected' : '' }}" onclick="selectStatus(this, '{{ $st }}')">
+                            @foreach(['Neuf', 'Occasion', 'Reconditionné'] as $st)
+                                <div class="status-card {{ old('etat', $annonce->produit->etat ?? 'Neuf') == $st ? 'selected' : '' }}" onclick="selectStatus(this, '{{ $st }}')">
                                     <div class="radio-circle"></div>
                                     {{ $st }}
                                 </div>
@@ -913,12 +929,12 @@
                         <textarea id="description" name="description" class="form-input" rows="5" placeholder="Description" required>{{ old('description', $annonce->description) }}</textarea>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                        <div class="form-group">
+                    <div style="display: flex; gap: 1rem;">
+                        <div class="form-group" style="flex: 1;">
                             <label for="prix" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Prix de vente (FCFA)</label>
                             <input type="number" id="prix" name="prix" class="form-input" placeholder="Ex: 5000" min="0" required value="{{ old('prix', $annonce->prix) }}">
                         </div>
-                        <div class="form-group">
+                        <div id="quantity-container" class="form-group" style="flex: 1;">
                             <label for="quantite" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Quantité</label>
                             <input type="number" id="quantite" name="quantite" class="form-input" placeholder="Ex: 1" min="1" required value="{{ old('quantite', $annonce->produit->quantite ?? 1) }}">
                         </div>
@@ -930,47 +946,91 @@
                     </div>
                 </div>
 
-                <!-- Étape 4: Expédition -->
+                <!-- Étape 4: Booster votre annonce -->
                 <div class="form-step" id="step4">
-                    <h1 class="form-title">🚚 Expédition et Publication</h1>
-                    
-                    <div class="form-group">
-                        <label class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 1rem; display: block;">Moyens d'expédition *</label>
-                        <input type="hidden" id="type_livraison" name="type_livraison" value="{{ old('type_livraison', $annonce->type_livraison ?? 'livraison_domicile') }}" required>
-                        <div class="status-cards-grid">
-                            <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'livraison_domicile') == 'retrait_boutique' ? 'selected' : '' }}" onclick="selectShipping(this, 'retrait_boutique')">
-                                <div class="radio-circle"></div>
-                                Retrait en boutique
-                            </div>
-                            <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'livraison_domicile') == 'livraison_domicile' ? 'selected' : '' }}" onclick="selectShipping(this, 'livraison_domicile')">
-                                <div class="radio-circle"></div>
-                                Livraison à domicile
-                            </div>
-                            <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'livraison_domicile') == 'livraison_point_relais' ? 'selected' : '' }}" onclick="selectShipping(this, 'livraison_point_relais')">
-                                <div class="radio-circle"></div>
-                                Livraison en point relais
-                            </div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+                        <div>
+                            <h1 class="form-title" style="margin-bottom: 0.5rem;">🚀 Booster votre annonce</h1>
+                            <p class="instruction-text" style="color: #666; font-size: 0.95rem;">Mettez votre annonce en avant pour vendre plus vite.</p>
                         </div>
                     </div>
 
-                    <div style="margin-top: 3rem; border-top: 1px solid #eee; padding-top: 2rem;">
-                        <h2 style="font-size: 1.1rem; font-weight: 700; color: #000; margin-bottom: 1.5rem;">Mes coordonnées</h2>
-                        <div class="form-group">
-                            <label for="user_phone" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Numéro de téléphone</label>
-                            <input type="tel" id="user_phone" name="user_phone" class="form-input" value="{{ old('user_phone', $annonce->vendeur->user->telephone ?? auth()->user()->telephone ?? '') }}" placeholder="Ex: +221 77...">
-                        </div>
-                        <div class="form-group">
-                            <label for="code_postal" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Code postal</label>
-                            <input type="text" id="code_postal" name="code_postal" class="form-input" placeholder="Ex: 12000" value="{{ old('code_postal', $annonce->code_postal ?? '') }}">
+
+                    <input type="hidden" id="type_livraison" name="type_livraison" value="{{ old('type_livraison', $annonce->type_livraison ?? 'livraison_domicile') }}" required>
+                    <input type="hidden" id="user_phone" name="user_phone" value="{{ old('user_phone', $annonce->vendeur->user->telephone ?? auth()->user()->telephone ?? '00000000') }}">
+                    <input type="hidden" id="code_postal" name="code_postal" value="{{ old('code_postal', $annonce->code_postal ?? '00000') }}">
+
+                    <div style="margin-bottom: 2rem;">
+                        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Options de visibilité</h3>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            @php
+                                $activeServices = \App\Models\AnnonceCreditService::where('annonce_id', $annonce->id)
+                                    ->actif()
+                                    ->pluck('service')
+                                    ->toArray();
+                            @endphp
+
+                            @foreach($creditServices as $service)
+                                @php
+                                    $isAlreadyActive = in_array($service->cle, $activeServices);
+                                @endphp
+                                <label class="service-card {{ $isAlreadyActive ? 'already-active' : '' }}" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border: 2px solid {{ $isAlreadyActive ? '#4caf50' : '#e0e0e0' }}; border-radius: 12px; cursor: {{ $isAlreadyActive ? 'default' : 'pointer' }}; transition: all 0.2s; position: relative; {{ $isAlreadyActive ? 'background: #f1f8e9; opacity: 0.9;' : '' }}">
+                                    @if($isAlreadyActive)
+                                        <div style="width: 20px; height: 20px; margin-top: 4px; display: flex; align-items: center; justify-content: center; background: #4caf50; border-radius: 4px; color: white;">✓</div>
+                                        <input type="hidden" name="services[]" value="{{ $service->cle }}">
+                                    @else
+                                        <input type="checkbox" name="services[]" value="{{ $service->cle }}" class="service-checkbox" data-cost="{{ $service->credits_requis }}" {{ old('services') && in_array($service->cle, old('services')) ? 'checked' : '' }} style="width: 20px; height: 20px; margin-top: 4px; accent-color: #ef6c00;">
+                                    @endif
+                                    
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 0.25rem; color: #333;">
+                                            {{ $service->nom }}
+                                            @if($isAlreadyActive)
+                                                <span style="background: #4caf50; color: white; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: text-bottom;">Déjà actif</span>
+                                            @elseif($service->cle == 'mise_en_avant' || $service->cle == 'boost')
+                                                <span style="background: #eef2ff; color: #004aad; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: text-bottom;">Recommandé</span>
+                                            @endif
+                                        </div>
+                                        <div style="font-size: 0.9rem; color: #666; line-height: 1.4;">{{ $service->description }}</div>
+                                        @if($service->duree_jours)
+                                            <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem; font-weight: 600;">⏳ Valable {{ $service->duree_jours }} jours</div>
+                                        @endif
+                                    </div>
+                                    <div style="font-weight: 800; font-size: 1.25rem; color: {{ $isAlreadyActive ? '#4caf50' : '#ef6c00' }}; white-space: nowrap;">
+                                        @if($isAlreadyActive)
+                                            --
+                                        @else
+                                            +{{ $service->credits_requis }} ⭐
+                                        @endif
+                                    </div>
+                                </label>
+                            @endforeach
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="statut" class="form-label">Statut de publication</label>
-                        <select id="statut" name="statut" class="form-input">
-                            <option value="brouillon" {{ $annonce->statut == 'brouillon' ? 'selected' : '' }}>Brouillon</option>
-                            <option value="publiee" {{ $annonce->statut == 'publiee' ? 'selected' : '' }}>Publiée</option>
-                        </select>
+                    <div style="background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid #eee;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <span style="font-weight: 600; color: #333;">Statut de publication</span>
+                            <div style="display: flex; gap: 1rem;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="radio" name="statut" value="brouillon" {{ $annonce->statut == 'brouillon' ? 'checked' : '' }} style="accent-color: #333;">
+                                    <span style="font-size: 0.95rem;">Brouillon</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="radio" name="statut" value="publiee" {{ $annonce->statut == 'publiee' ? 'checked' : '' }} style="accent-color: #ef6c00;">
+                                    <span style="font-size: 0.95rem; font-weight: 600;">Publier maintenant</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 1rem;">
+                            <span style="font-weight: 700; font-size: 1.1rem; color: #000;">NOUVEAU Total à payer :</span>
+                            <span style="font-weight: 800; font-size: 1.5rem; color: #111;">
+                                <span id="total-cost-display">0</span> <span style="font-size: 1.2rem; color: #ffbe00;">⭐</span>
+                            </span>
+                        </div>
+                        <div id="insufficient-credits-warning" style="display: none; background: #fde8e8; color: #c62828; padding: 0.75rem 1rem; border-radius: 6px; margin-top: 1rem; font-size: 0.9rem; border: 1px solid #ffcdd2;">
+                            ⚠️ Votre solde de crédits est insuffisant pour ces NOUVELLES options. <a href="{{ route('account.credits.index') }}" target="_blank" style="color: #c62828; font-weight: bold; text-decoration: underline;">Rechargez votre compte</a>.
+                        </div>
                     </div>
 
                     <div class="form-actions">
@@ -993,26 +1053,12 @@
         </div>
     </div>
 
-    <!-- Modal Sous-catégories -->
-    <div id="subcategoryModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeSubcategoryModal()">&times;</button>
-            <h2 class="modal-title">
-                <button id="modalBackBtn" class="modal-back" onclick="goBackInModal()">←</button>
-                <span id="modalTitleText">Choisir une sous-catégorie</span>
-            </h2>
-            <div id="subcategoryList" class="subcategory-list"></div>
-        </div>
-    </div>
 
     <script>
         var currentStep = parseInt("{{ old('current_step', 1) }}");
         var totalSteps = 4;
         var uploadedImages = [];
         var deletedMediaIds = [];
-        var selectedParentId = null;
-        var modalHistory = [];
-
         const categoriesData = {
             @foreach($categories as $cat)
                 {{ $cat->id }}: {
@@ -1031,89 +1077,106 @@
             @endforeach
         };
 
+        const existingAttributes = {
+            @foreach($annonce->filteredAttributes as $attr)
+                {{ $attr->category_filter_id }}: "{{ $attr->value }}",
+            @endforeach
+        };
+
         function selectMainCategory(el, id) {
             document.querySelectorAll('.main-cat-badge').forEach(b => b.classList.remove('selected'));
             el.classList.add('selected');
-            document.getElementById('level2Section').style.display = 'block';
-            document.getElementById('finalSelectionSummary').style.display = 'none';
-            renderInlineChildren(id, 'level2Cards');
-        }
-
-        function renderInlineChildren(parentId, containerId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            const cat = categoriesData[parentId];
-            if (cat && cat.children.length > 0) {
-                cat.children.forEach(child => {
-                    const card = document.createElement('div');
-                    card.className = `suggestion-card ${containerId === 'level2Cards' ? 'level2-card' : 'level3-card'}`;
-                    // Selection state
-                    if (document.getElementById('categorie_id').value == child.id) card.classList.add('selected');
-
-                    card.innerHTML = `
-                        <div class="radio-circle"></div>
-                        <div class="suggestion-card-content">
-                            <span class="suggestion-card-title">${child.nom}</span>
-                        </div>
-                    `;
-                    card.onclick = () => {
-                        if (containerId === 'level2Cards') selectLevel2Category(card, child.id);
-                        else selectLevel3Category(card, child.id);
-                    };
-                    container.appendChild(card);
-                });
-            }
-        }
-
-        function selectLevel2Category(el, id) {
-            document.querySelectorAll('.level2-card').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            const cat = categoriesData[id];
-            if (cat && cat.children.length > 0) openSubcategoryModalWithParent(id);
-            else finalizeSelection(id);
-        }
-
-        function openSubcategoryModalWithParent(parentId) {
-            selectedParentId = parentId;
-            modalHistory = [parentId];
-            renderSubcategories(parentId);
-            document.getElementById('subcategoryModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function renderSubcategories(parentId) {
-            const list = document.getElementById('subcategoryList');
-            const cat = categoriesData[parentId];
-            const backBtn = document.getElementById('modalBackBtn');
-            const titleText = document.getElementById('modalTitleText');
-            titleText.textContent = cat.nom;
-            backBtn.style.display = modalHistory.length > 1 ? 'block' : 'none';
-            list.innerHTML = '';
-            cat.children.forEach(child => {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'subcategory-item';
-                if (document.getElementById('categorie_id').value == child.id) btn.classList.add('active');
-                btn.innerHTML = `<span>${child.nom}</span>`;
-                if (categoriesData[child.id] && categoriesData[child.id].children.length > 0) {
-                    btn.onclick = () => { modalHistory.push(child.id); renderSubcategories(child.id); };
-                    btn.innerHTML += '<span style="color: #ccc;">→</span>';
-                } else {
-                    btn.onclick = () => { finalizeSelection(child.id); closeSubcategoryModal(); };
-                    btn.innerHTML += '<div class="radio-circle"></div>';
-                }
-                list.appendChild(btn);
-            });
-        }
-
-        function finalizeSelection(id) {
             document.getElementById('categorie_id').value = id;
-            const pathSpan = document.getElementById('finalCategoryPath');
-            let path = [];
-            let curr = categoriesData[id];
-            while (curr) { path.unshift(curr.nom); curr = categoriesData[curr.parent_id]; }
-            pathSpan.textContent = path.join(' > ');
-            document.getElementById('finalSelectionSummary').style.display = 'block';
+            
+            const hasChildren = populateSelect('level2Select', id);
+            document.getElementById('level2Section').style.display = hasChildren ? 'block' : 'none';
+            document.getElementById('level3Section').style.display = 'none';
+            fetchFilters(id);
+            toggleStockVisibility(id);
+        }
+
+        function populateSelect(selectId, parentId) {
+            const select = document.getElementById(selectId);
+            const cat = categoriesData[parentId];
+            select.innerHTML = '<option value="">Choisir une option...</option>';
+            if (cat && cat.children && cat.children.length > 0) {
+                cat.children.forEach(child => {
+                    const option = document.createElement('option');
+                    option.value = child.id;
+                    option.textContent = child.nom;
+                    select.appendChild(option);
+                });
+                return true;
+            }
+            return false;
+        }
+
+        function onLevel2Change(id) {
+            if (!id) {
+                document.getElementById('level3Section').style.display = 'none';
+                return;
+            }
+            document.getElementById('categorie_id').value = id;
+            const hasChildren = populateSelect('level3Select', id);
+            document.getElementById('level3Section').style.display = hasChildren ? 'block' : 'none';
+            fetchFilters(id);
+            toggleStockVisibility(id);
+        }
+
+        function onLevel3Change(id) {
+            if (!id) return;
+            document.getElementById('categorie_id').value = id;
+            fetchFilters(id);
+            toggleStockVisibility(id);
+        }
+
+        function fetchFilters(categoryId) {
+            const container = document.getElementById('dynamic-filters-container');
+            if (!container) return;
+            container.innerHTML = '<div style="padding: 1rem; color: #666; font-size: 0.9rem;"><i class="fas fa-spinner fa-spin"></i> Chargement des critères spécifiques...</div>';
+
+            fetch(`/api/categories/${categoryId}/filters`)
+                .then(response => response.json())
+                .then(filters => {
+                    container.innerHTML = '';
+                    if (filters.length > 0) {
+                        filters.forEach(filter => {
+                            const field = document.createElement('div');
+                            field.className = 'form-group';
+                            field.style = 'margin-top: 1.5rem;';
+                            
+                            const existingValue = existingAttributes[filter.id] || "";
+                            let inputHtml = '';
+                            const commonStyle = 'width: 100%; padding: 0.75rem; border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: 0.9rem; outline: none; transition: border-color 0.2s; background: white;';
+                            
+                            if (filter.type === 'select' || (filter.options && filter.options.length > 0)) {
+                                inputHtml = `<select name="attributes[${filter.id}]" style="${commonStyle}" ${filter.is_required ? 'required' : ''}>
+                                    <option value="">Sélectionner ${filter.nom}</option>
+                                    ${filter.options.map(opt => `<option value="${opt}" ${opt == existingValue ? 'selected' : ''}>${opt}</option>`).join('')}
+                                </select>`;
+                            } else if (filter.type === 'number' || filter.type === 'price') {
+                                inputHtml = `<div style="display: flex; align-items: center;">
+                                    <input type="number" name="attributes[${filter.id}]" style="${commonStyle} ${filter.unit ? 'border-top-right-radius: 0; border-bottom-right-radius: 0;' : ''}" value="${existingValue}" placeholder="${filter.nom}" ${filter.is_required ? 'required' : ''}>
+                                    ${filter.unit ? `<span style="padding: 0.75rem; background: #edf2f7; border: 1.5px solid #e0e0e0; border-left: none; border-top-right-radius: 8px; border-bottom-right-radius: 8px; font-size: 0.85rem; color: #4a5568; font-weight: 600;">${filter.unit}</span>` : ''}
+                                </div>`;
+                            } else {
+                                inputHtml = `<input type="text" name="attributes[${filter.id}]" style="${commonStyle}" value="${existingValue}" placeholder="${filter.nom}" ${filter.is_required ? 'required' : ''}>`;
+                            }
+
+                            field.innerHTML = `
+                                <label style="display: block; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600; color: #4a5568;">
+                                    ${filter.nom} ${filter.is_required ? '<span style="color: #e74c3c;">*</span>' : ''}
+                                </label>
+                                ${inputHtml}
+                            `;
+                            container.appendChild(field);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching filters:', error);
+                    container.innerHTML = '';
+                });
         }
 
         function nextStep() {
@@ -1152,19 +1215,128 @@
                 area.classList.add('active');
                 document.getElementById('advisoryContentStep2').style.display = step === 2 ? 'block' : 'none';
                 document.getElementById('advisoryContentStep3').style.display = step === 3 ? 'block' : 'none';
+
+                if (step === 3) {
+                    // Hide État for Immobilier/Services
+                    const catId = document.getElementById('categorie_id').value;
+                    const condGroup = document.getElementById('productConditionGroup');
+                    if (catId && condGroup) {
+                        let curr = categoriesData[catId];
+                        while (curr && curr.parent_id) curr = categoriesData[curr.parent_id];
+                        const hide = curr && (curr.famille === 'Services' || curr.famille === 'Immobilier');
+                        condGroup.style.display = hide ? 'none' : 'block';
+                    }
+                }
             } else area.classList.remove('active');
         }
 
         function validateCurrentStep() {
-            if (currentStep === 1) return document.getElementById('product_name').value.trim().length >= 3;
-            if (currentStep === 2) return document.getElementById('categorie_id').value != "";
+            if (currentStep === 1) {
+                if (document.getElementById('product_name').value.trim().length < 3) {
+                    alert('Le titre doit faire au moins 3 caractères.');
+                    return false;
+                }
+                return true;
+            }
+            if (currentStep === 2) {
+                if (document.getElementById('categorie_id').value == "") {
+                    alert('Veuillez sélectionner une catégorie finale.');
+                    return false;
+                }
+                return true;
+            }
             if (currentStep === 3) {
-                if (document.getElementById('description').value.trim().length < 10) return false;
-                if ((uploadedImages.length + document.querySelectorAll('.existing-photo').length) < 1) return false;
+                if (document.getElementById('description').value.trim().length < 10) {
+                    alert('La description doit faire au moins 10 caractères.');
+                    return false;
+                }
+                const existingPhotos = document.querySelectorAll('.existing-photo:not([style*="display: none"])').length;
+                if ((uploadedImages.length + existingPhotos) < 1) {
+                    alert('Veuillez ajouter au moins une photo.');
+                    return false;
+                }
+                const prix = document.getElementById('prix').value;
+                if (!prix || prix <= 0) {
+                    alert('Veuillez saisir un prix valide.');
+                    return false;
+                }
                 return true;
             }
             return true;
         }
+
+        // Add validation to form submission to catch step 4 credit check before submitting
+        document.getElementById('createAnnonceForm').addEventListener('submit', function (e) {
+            const statut = document.querySelector('input[name="statut"]:checked').value;
+            if (statut === 'publiee') {
+                const totalCost = parseInt(document.getElementById('total-cost-display').textContent) || 0;
+                const balance = parseInt(document.getElementById('user-credit-balance').textContent) || 0;
+                if (totalCost > balance) {
+                    e.preventDefault();
+                    alert('Solde de crédits insuffisant pour les options choisies.');
+                }
+            }
+        });
+
+        // --- Credit Services Logic ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceCheckboxes = document.querySelectorAll('.service-checkbox');
+            const statutRadios = document.querySelectorAll('input[name="statut"]');
+            const totalCostDisplay = document.getElementById('total-cost-display');
+            const warningDisplay = document.getElementById('insufficient-credits-warning');
+            const submitButton = document.getElementById('submitButton');
+            const userBalance = parseInt(document.getElementById('user-credit-balance').textContent) || 0;
+            
+            // Add video upload container dynamically if 'video' service is selected
+            const videoServiceCheckbox = document.querySelector('.service-checkbox[value="video"]');
+            const isVideoAlreadyActive = document.querySelector('.already-active input[value="video"]');
+            
+            if (videoServiceCheckbox && !isVideoAlreadyActive) {
+                const videoUploadHtml = `
+                    <div id="video-upload-container" style="display: none; padding: 1rem; border: 1px dashed #ef6c00; border-radius: 8px; background: #fff5e6; margin-top: 10px;">
+                        <label style="font-weight: 700; display: block; margin-bottom: 0.5rem; color: #ef6c00;">🎥 Télécharger votre vidéo</label>
+                        <input type="file" name="video" accept="video/mp4,video/quicktime,video/webm" class="form-input" style="background: white;">
+                        <small style="color: #666; display: block; margin-top: 5px;">Format MP4, MOV. Max 50Mo. La vidéo doit être cochée lors de la publication pour être validée.</small>
+                    </div>
+                `;
+                videoServiceCheckbox.closest('.service-card').insertAdjacentHTML('afterend', videoUploadHtml);
+                
+                videoServiceCheckbox.addEventListener('change', function() {
+                    document.getElementById('video-upload-container').style.display = this.checked ? 'block' : 'none';
+                });
+            }
+
+            function calculateTotal() {
+                const statut = document.querySelector('input[name="statut"]:checked').value;
+                let total = 0;
+
+                if (statut === 'publiee') {
+                    serviceCheckboxes.forEach(cb => {
+                        if (cb.checked) {
+                            total += parseInt(cb.getAttribute('data-cost')) || 0;
+                        }
+                    });
+                }
+
+                totalCostDisplay.textContent = total;
+
+                if (total > userBalance && statut === 'publiee') {
+                    warningDisplay.style.display = 'block';
+                    submitButton.disabled = true;
+                    submitButton.style.opacity = '0.5';
+                } else {
+                    warningDisplay.style.display = 'none';
+                    submitButton.disabled = false;
+                    submitButton.style.opacity = '1';
+                }
+            }
+
+            serviceCheckboxes.forEach(cb => cb.addEventListener('change', calculateTotal));
+            statutRadios.forEach(radio => radio.addEventListener('change', calculateTotal));
+            
+            // Initial calculation
+            calculateTotal();
+        });
 
         function handleFiles(files) {
             Array.from(files).forEach(file => {
@@ -1219,17 +1391,32 @@
             el.classList.add('selected');
         }
 
-        function closeSubcategoryModal() { document.getElementById('subcategoryModal').style.display = 'none'; document.body.style.overflow = ''; }
-        function goBackInModal() { if (modalHistory.length <= 1) return; modalHistory.pop(); renderSubcategories(modalHistory[modalHistory.length-1]); }
+        function closeSubcategoryModal() { }
+        function goBackInModal() { }
 
         document.addEventListener('DOMContentLoaded', function() {
             const catId = "{{ $annonce->categorie_id }}";
             if (catId) {
-                finalizeSelection(catId);
-                // Pre-select main category
+                // Determine path to pre-fill selectors
+                let path = [];
                 let curr = categoriesData[catId];
-                while(curr && curr.parent_id) curr = categoriesData[curr.parent_id];
-                if(curr) selectMainCategory(document.querySelector(`[data-id="${curr.id}"]`), curr.id);
+                while(curr) { path.unshift(curr.id); curr = categoriesData[curr.parent_id]; }
+                
+                if (path.length >= 1) {
+                    const mainId = path[0];
+                    const badge = document.querySelector(`.main-cat-badge[data-id="${mainId}"]`);
+                    if(badge) selectMainCategory(badge, mainId);
+                    
+                    if (path.length >= 2) {
+                        document.getElementById('level2Select').value = path[1];
+                        onLevel2Change(path[1]);
+                        
+                        if (path.length >= 3) {
+                            document.getElementById('level3Select').value = path[2];
+                            onLevel3Change(path[2]);
+                        }
+                    }
+                }
             }
             updatePhotoCount();
             
@@ -1245,6 +1432,26 @@
                 }
                 document.querySelector(`.progress-sidebar [data-step="${currentStep}"]`).classList.add('active');
             }
+            const initialCatId = document.getElementById('categorie_id').value;
+            if (initialCatId) {
+                toggleStockVisibility(initialCatId);
+            }
         });
+
+        function toggleStockVisibility(categoryId) {
+            const container = document.getElementById('quantity-container');
+            const input = document.getElementById('quantite');
+            if (!container || !input) return;
+
+            const cat = categoriesData[categoryId];
+            if (cat && (cat.famille === 'Services' || cat.famille === 'Immobilier')) {
+                container.style.display = 'none';
+                input.value = '1';
+                input.removeAttribute('required');
+            } else {
+                container.style.display = 'block';
+                input.setAttribute('required', 'required');
+            }
+        }
     </script>
 @endsection

@@ -151,6 +151,7 @@
             <li><a href="{{ route('account.orders') }}" class="{{ request()->routeIs('account.orders') ? 'active' : '' }}">Tous mes achats</a></li>
             <li><a href="{{ route('favorites.index') }}" class="{{ request()->routeIs('favorites.*') ? 'active' : '' }}">Mes favoris</a></li>
             <li><a href="{{ route('gift-cards.index') }}" class="{{ request()->routeIs('gift-cards.*') ? 'active' : '' }}">Cartes cadeaux</a></li>
+            <li><a href="{{ route('account.credits.index') }}" class="{{ request()->routeIs('account.credits.*') ? 'active' : '' }}"> Mes Crédits</a></li>
         </ul>
     </div>
 

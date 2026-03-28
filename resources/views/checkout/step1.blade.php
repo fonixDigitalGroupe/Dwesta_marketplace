@@ -8,7 +8,7 @@
     
     .checkout-main { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 2rem; }
     .checkout-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; }
-    .step-number { background: #bf0000; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+    .step-number { background: #ff8c00; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
 
     .form-group { margin-bottom: 1.5rem; }
     .form-label { display: block; font-weight: bold; margin-bottom: 0.5rem; color: #333; }
@@ -17,7 +17,7 @@
     .delivery-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
     .delivery-option { border: 2px solid #eee; border-radius: 8px; padding: 1.5rem; cursor: pointer; transition: all 0.2s; position: relative; }
     .delivery-option:hover { border-color: #fdd; }
-    .delivery-option.active { border-color: #bf0000; background: #fdf2f2; }
+    .delivery-option.active { border-color: #ff8c00; background: #fff8f0; }
     .delivery-option input { position: absolute; opacity: 0; }
     .delivery-name { font-weight: bold; display: block; margin-bottom: 0.25rem; }
     .delivery-desc { font-size: 0.85rem; color: #666; }
@@ -26,7 +26,7 @@
     .summary-item { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.95rem; color: #666; }
     .summary-total { border-top: 1px solid #ddd; margin-top: 1rem; padding-top: 1rem; display: flex; justify-content: space-between; font-weight: bold; font-size: 1.25rem; color: #333; }
     
-    .btn-next { display: block; width: 100%; background: #bf0000; color: white; text-align: center; padding: 1rem; border-radius: 6px; font-weight: bold; border: none; cursor: pointer; font-size: 1.1rem; margin-top: 2rem; }
+    .btn-next { display: block; width: 100%; background: #ff8c00; color: white; text-align: center; padding: 1rem; border-radius: 4px; font-weight: bold; border: none; cursor: pointer; font-size: 1rem; margin-top: 2rem; }
     .btn-next:hover { opacity: 0.9; }
 </style>
 @endpush
@@ -73,7 +73,16 @@
             @foreach($cartGrouped as $vendeurId => $items)
                 <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed #ddd;">
                     <div style="font-size: 0.8rem; color: #999; margin-bottom: 0.5rem;">Expédié par : 
-                        <strong>{{ $items->first()->annonce->vendeur->user->prenom }}</strong>
+                        @php $v = $items->first()->annonce->vendeur; @endphp
+                        <strong>
+                            @if($v && $v->professionnel)
+                                {{ $v->professionnel->nom_entreprise }}
+                            @elseif($v && $v->user)
+                                {{ $v->user->prenom }}
+                            @else
+                                Vendeur
+                            @endif
+                        </strong>
                     </div>
                     @foreach($items as $item)
                         <div class="summary-item">

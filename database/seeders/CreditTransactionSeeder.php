@@ -50,8 +50,8 @@ class CreditTransactionSeeder extends Seeder
                 
                 CreditTransaction::create([
                     'user_id' => $vendeur->id,
-                    'type' => 'credit',
-                    'amount' => $pack['credits'],
+                    'type' => 'achat',
+                    'montant' => $pack['credits'],
                     'description' => 'Achat pack ' . number_format($pack['credits'], 0, ',', ' ') . ' crédits',
                     'reference' => 'CREDIT-' . strtoupper(Str::random(10)),
                     'created_at' => now()->subDays(rand(1, 60)),
@@ -65,8 +65,8 @@ class CreditTransactionSeeder extends Seeder
                 
                 CreditTransaction::create([
                     'user_id' => $vendeur->id,
-                    'type' => 'debit',
-                    'amount' => $option['cout'], // Amount positive or negative? Migration doesn't specify but usually debit is positive amount in a 'debit' type transaction
+                    'type' => 'depense',
+                    'montant' => -$option['cout'],
                     'description' => 'Option "' . ucfirst(str_replace('_', ' ', $option['type'])) . '" pour annonce',
                     'reference' => 'OPT-' . strtoupper(Str::random(10)),
                     'created_at' => now()->subDays(rand(1, 30)),

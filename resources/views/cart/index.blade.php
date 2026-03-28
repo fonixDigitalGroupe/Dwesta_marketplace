@@ -35,7 +35,7 @@
     .summary-row { display: flex; justify-content: space-between; margin-bottom: 1rem; color: #666; }
     .summary-total { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #f0f0f0; font-weight: bold; font-size: 1.3rem; color: #333; }
     
-    .btn-checkout { display: block; width: 100%; background: #bf0000; color: white; text-align: center; padding: 1.2rem; border-radius: 6px; font-weight: bold; text-decoration: none; margin-top: 1.5rem; transition: opacity 0.2s; }
+    .btn-checkout { display: block; width: 100%; background: #ff8c00; color: white; text-align: center; padding: 0.8rem 1rem; border-radius: 4px; font-weight: 700; font-size: 0.9rem; text-decoration: none; margin-top: 1.5rem; transition: opacity 0.2s; }
     .btn-checkout:hover { opacity: 0.9; }
 
     .empty-cart { text-align: center; padding: 5rem 2rem; background: white; border: 1px solid #e0e0e0; border-radius: 8px; grid-column: 1 / -1; }
@@ -58,13 +58,15 @@
             <div class="seller-group">
                 <div class="seller-header">
                     <span class="seller-name">Vendeur : 
-                        @if($vendeur->professionnel)
+                        @if($vendeur && $vendeur->professionnel)
                             {{ $vendeur->professionnel->nom_entreprise }}
-                        @else
+                        @elseif($vendeur && $vendeur->user)
                             {{ $vendeur->user->prenom }} {{ $vendeur->user->nom }}
+                        @else
+                            Vendeur inconnu
                         @endif
                     </span>
-                    @if($vendeur->estVerifie())
+                    @if($vendeur && $vendeur->estVerifie())
                         <span class="seller-badge">Vérifié ✅</span>
                     @endif
                 </div>
@@ -151,13 +153,6 @@
             </form>
         </div>
 
-        <div style="background: #fdf2f2; border: 1px solid #bf0000; border-radius: 8px; padding: 1rem; margin-top: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-            <div style="color: #bf0000; font-size: 1.25rem;">💎</div>
-            <div style="font-size: 0.85rem;">
-                <span style="font-weight: bold; color: #bf0000;">Club R</span><br>
-                Gagnez environ {{ number_format($subtotal * 0.05, 0, ',', ' ') }} FCFA en Super Points sur cet achat !
-            </div>
-        </div>
     </aside>
     @endif
 </div>

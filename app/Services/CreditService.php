@@ -2,108 +2,167 @@
 
 namespace App\Services;
 
-use App\Models\User;
+use App\Models\Annonce;
+use App\Models\AnnonceCreditService;
+use App\Models\CreditPack;
+use App\Models\CreditServiceConfig;
 use App\Models\CreditTransaction;
-use Illuminate\Support\Str;
+use App\Models\User;
+use App\Models\UserCredit;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CreditService
 {
     /**
-     * Ajouter des crédits au compte utilisateur
+     * Retourne le solde de crédits d'un utilisateur.
      */
-    public function addCredits(User $user, int $amount, string $description = 'Achat de crédits')
+    public function solde(User $user): int
     {
-        $user->increment('credit_balance', $amount);
-
-        CreditTransaction::create([
-            'user_id' => $user->id,
-            'type' => 'credit',
-            'amount' => $amount,
-            'reference' => 'CR-' . strtoupper(Str::random(12)),
-            'description' => $description,
-        ]);
-
-        return $user->fresh();
+        return UserCredit::soldeFor($user->id);
     }
 
     /**
-     * Débiter des crédits du compte utilisateur
+     * Vérifie si l'utilisateur a assez de crédits.
      */
-    public function debitCredits(User $user, int $amount, string $description = 'Consommation de crédits')
+    public function aAssezDeCredits(User $user, int $montant): bool
     {
-        if ($user->credit_balance < $amount) {
-            throw new \Exception('Solde de crédits insuffisant.');
+        return $this->solde($user) >= $montant;
+    }
+
+    /**
+     * Crédite un utilisateur suite à l'achat d'un pack.
+     * Appelé par le webhook Stripe ou manuellement par l'admin.
+     */
+    public function acheter(User $user, CreditPack $pack, string $reference = null): void
+    {
+        $total = $pack->total_credits;
+
+        DB::transaction(function () use ($user, $pack, $total, $reference) {
+            $userCredit = UserCredit::firstOrCreate(
+                ['user_id' => $user->id],
+                ['credits_disponibles' => 0]
+            );
+            $userCredit->increment('credits_disponibles', $total);
+
+            CreditTransaction::create([
+                'user_id'      => $user->id,
+                'type'         => 'achat',
+                'montant'      => $total,
+                'description'  => "Achat du pack « {$pack->nom} » ({$pack->credits} + {$pack->bonus_credits} bonus)",
+                'reference'    => $reference,
+                'related_type' => CreditPack::class,
+                'related_id'   => $pack->id,
+            ]);
+        });
+    }
+
+    /**
+     * Attribue des crédits manuellement (bonus admin).
+     */
+    public function attribuerBonus(User $user, int $montant, string $raison): void
+    {
+        DB::transaction(function () use ($user, $montant, $raison) {
+            UserCredit::updateOrCreate(
+                ['user_id' => $user->id],
+                ['credits_disponibles' => DB::raw("credits_disponibles + {$montant}")]
+            );
+
+            CreditTransaction::create([
+                'user_id'     => $user->id,
+                'type'        => 'bonus',
+                'montant'     => $montant,
+                'description' => "Bonus admin : {$raison}",
+            ]);
+        });
+    }
+
+    /**
+     * Dépense des crédits pour activer un service sur une annonce.
+     *
+     * @throws \Exception Si le solde est insuffisant ou si le service n'existe pas.
+     */
+    public function activerService(User $user, Annonce $annonce, string $cle): AnnonceCreditService
+    {
+        $config = CreditServiceConfig::where('cle', $cle)->where('actif', true)->firstOrFail();
+
+        if (!$this->aAssezDeCredits($user, $config->credits_requis)) {
+            throw new \Exception("Solde insuffisant. Ce service nécessite {$config->credits_requis} crédits.");
         }
 
-        $user->decrement('credit_balance', $amount);
+        $creditService = null;
 
-        CreditTransaction::create([
-            'user_id' => $user->id,
-            'type' => 'debit',
-            'amount' => $amount,
-            'reference' => 'DB-' . strtoupper(Str::random(12)),
-            'description' => $description,
-        ]);
+        DB::transaction(function () use ($user, $annonce, $config, &$creditService) {
+            UserCredit::where('user_id', $user->id)
+                ->decrement('credits_disponibles', $config->credits_requis);
 
-        return $user->fresh();
+            CreditTransaction::create([
+                'user_id'      => $user->id,
+                'type'         => 'depense',
+                'montant'      => -$config->credits_requis,
+                'description'  => "Service « {$config->nom} » sur l'annonce #{$annonce->id}",
+                'related_type' => Annonce::class,
+                'related_id'   => $annonce->id,
+            ]);
+
+            $creditService = AnnonceCreditService::create([
+                'annonce_id'       => $annonce->id,
+                'service'          => $config->cle,
+                'credits_depenses' => $config->credits_requis,
+                'demarre_le'       => now(),
+                'expire_le'        => $config->calculerExpiration(),
+            ]);
+
+            if (in_array($config->cle, ['mise_en_avant', 'boost'])) {
+                $annonce->options()->updateOrCreate(
+                    ['annonce_id' => $annonce->id],
+                    ['a_la_une' => true, 'a_la_une_expire_le' => $config->calculerExpiration()]
+                );
+            } elseif ($config->cle === 'urgent') {
+                $annonce->options()->updateOrCreate(
+                    ['annonce_id' => $annonce->id],
+                    ['urgent' => true, 'urgent_expire_le' => $config->calculerExpiration()]
+                );
+            } elseif ($config->cle === 'video') {
+                $annonce->options()->updateOrCreate(
+                    ['annonce_id' => $annonce->id],
+                    ['video' => true, 'video_expire_le' => $config->calculerExpiration()]
+                );
+            }
+        });
+
+        return $creditService;
     }
 
     /**
-     * Obtenir le solde de crédits
+     * Désactive les services expirés (appelé par le scheduler).
      */
-    public function getBalance(User $user): int
+    public function expirerServicesDepasses(): int
     {
-        return $user->credit_balance;
-    }
+        $expired = AnnonceCreditService::where('expire_le', '<', now())->get();
+        $count = 0;
 
-    /**
-     * Vérifier si l'utilisateur a assez de crédits
-     */
-    public function hasEnoughCredits(User $user, int $amount): bool
-    {
-        return $user->credit_balance >= $amount;
-    }
+        foreach ($expired as $service) {
+            try {
+                if (in_array($service->service, ['mise_en_avant', 'boost'])) {
+                    $autresActifs = AnnonceCreditService::where('annonce_id', $service->annonce_id)
+                        ->where('service', $service->service)
+                        ->where('id', '!=', $service->id)
+                        ->actif()
+                        ->count();
 
-    /**
-     * Packs de crédits disponibles à l'achat
-     */
-    public function getAvailablePacks(): array
-    {
-        return [
-            [
-                'id' => 'pack_50',
-                'credits' => 50,
-                'price' => 2500, // FCFA
-                'bonus' => 0,
-                'label' => 'Pack Starter',
-            ],
-            [
-                'id' => 'pack_150',
-                'credits' => 150,
-                'price' => 7000, // FCFA
-                'bonus' => 10,
-                'label' => 'Pack Premium',
-                'popular' => true,
-            ],
-            [
-                'id' => 'pack_500',
-                'credits' => 500,
-                'price' => 20000, // FCFA
-                'bonus' => 50,
-                'label' => 'Pack Business',
-            ],
-        ];
-    }
+                    if ($autresActifs === 0) {
+                        $service->annonce->options()->update(['a_la_une' => false]);
+                    }
+                }
 
-    /**
-     * Coût des options d'annonce en crédits
-     */
-    public function getOptionCosts(): array
-    {
-        return [
-            'a_la_une' => 20,
-            'urgent' => 15,
-            'remontee' => 10,
-        ];
+                $service->delete();
+                $count++;
+            } catch (\Exception $e) {
+                Log::error("Erreur expiration service crédit #{$service->id}: " . $e->getMessage());
+            }
+        }
+
+        return $count;
     }
 }

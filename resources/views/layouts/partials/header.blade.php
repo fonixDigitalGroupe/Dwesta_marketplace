@@ -62,7 +62,7 @@
                 </div>
 
                     @auth
-                        @if(auth()->user()->hasRole('admin'))
+                        @if(auth()->check() && auth()->user()->hasRole('admin'))
                             <a href="{{ route('admin.categories.l1') }}" class="header-link">
                                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -101,7 +101,32 @@
                                         
                                         <div class="auth-separator"></div>
                                         
-                                        @if(auth()->user()->hasRole('admin'))
+                                        
+                                        @if(auth()->check() && (auth()->user()->hasRole('transporteur') || auth()->user()->hasRole('admin')))
+                                            <a href="{{ route('transporteur.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
+                                                <div style="display:flex; align-items:center; gap:8px;">
+                                                    <i class="fa-solid fa-truck"></i> Espace Transporteur
+                                                </div>
+                                            </a>
+                                        @endif
+                                        @if(auth()->check() && (auth()->user()->hasRole('livreur') || auth()->user()->hasRole('admin')))
+                                            <a href="{{ route('livreur.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
+                                                <div style="display:flex; align-items:center; gap:8px;">
+                                                    <i class="fa-solid fa-motorcycle"></i> Espace Livreur
+                                                </div>
+                                            </a>
+                                        @endif
+                                        @if(auth()->check() && (auth()->user()->hasRole('point_relais') || auth()->user()->hasRole('admin')))
+                                            <a href="{{ route('relais.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
+                                                <div style="display:flex; align-items:center; gap:8px;">
+                                                    <i class="fa-solid fa-store"></i> Point Relais
+                                                </div>
+                                            </a>
+                                        @endif
+                                        
+                                        <div class="auth-separator"></div>
+                                        
+                                        @if(auth()->check() && auth()->user()->hasRole('admin'))
                                             <a href="{{ route('admin.categories.l1') }}" class="auth-menu-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Catégories & Architecture</a>
                                             <a href="{{ route('admin.users.index') }}" class="auth-menu-item {{ request()->routeIs('admin.users.index') && !request()->has('role') ? 'active' : '' }}">Gestion des Utilisateurs</a>
                                             <a href="#" class="auth-menu-item">Rôles et permissions</a>
@@ -153,22 +178,68 @@
                                         <a href="{{ route('account.orders') }}" class="auth-menu-item">Suivi de commande</a>
                                         <a href="{{ route('vendeur.wallet.index') }}" class="auth-menu-item">Mon porte-monnaie</a>
                                         <a href="{{ route('conversations.index') }}" class="auth-menu-item">Mes Messages</a>
+                                        <div class="auth-separator"></div>
+                                        
+                                        
+                                        @if(auth()->check() && (auth()->user()->hasRole('transporteur') || auth()->user()->hasRole('admin')))
+                                            <a href="{{ route('transporteur.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
+                                                <div style="display:flex; align-items:center; gap:8px;">
+                                                    <i class="fa-solid fa-truck"></i> Espace Transporteur
+                                                </div>
+                                            </a>
+                                        @endif
+                                        @if(auth()->check() && (auth()->user()->hasRole('livreur') || auth()->user()->hasRole('admin')))
+                                            <a href="{{ route('livreur.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
+                                                <div style="display:flex; align-items:center; gap:8px;">
+                                                    <i class="fa-solid fa-motorcycle"></i> Espace Livreur
+                                                </div>
+                                            </a>
+                                        @endif
+                                        @if(auth()->check() && (auth()->user()->hasRole('point_relais') || auth()->user()->hasRole('admin')))
+                                            <a href="{{ route('relais.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
+                                                <div style="display:flex; align-items:center; gap:8px;">
+                                                    <i class="fa-solid fa-store"></i> Point Relais
+                                                </div>
+                                            </a>
+                                        @endif
+                                        
+                                        <div class="auth-separator"></div>
+                                        <form method="POST" action="{{ route('logout') }}" id="logout-form-dropdown-mobile">
+                                            @csrf
+                                            <a href="#" class="auth-menu-item" onclick="event.preventDefault(); document.getElementById('logout-form-dropdown-mobile').submit();" style="color: #0099ff;">
+                                                Déconnexion
+                                            </a>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endauth
 
-                        <span class="header-link disabled-action" title="Favoris">
+                        @auth
+                        @php $favCount = auth()->user()->favorites()->count(); @endphp
+                        <a href="{{ route('favorites.index') }}" class="header-link" title="Mes Favoris" style="position: relative;">
+                            <svg width="24" height="24" fill="{{ $favCount > 0 ? '#bf0000' : 'none' }}" stroke="{{ $favCount > 0 ? '#bf0000' : 'currentColor' }}" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                            </svg>
+                            @if($favCount > 0)
+                                <span style="position: absolute; top: -8px; right: -8px; background: #bf0000; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white;">{{ $favCount }}</span>
+                            @endif
+                        </a>
+                        @else
+                        <a href="{{ route('login') }}" class="header-link" title="Mes Favoris">
                             <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
                                 </path>
                             </svg>
-                        </span>
+                        </a>
+                        @endauth
 
                     @inject('cartService', 'App\Services\CartService')
-                    <span class="header-link disabled-action" title="Panier">
+                    <a href="{{ route('cart.index') }}" class="header-link" title="Mon Panier" style="position: relative;">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
@@ -180,7 +251,7 @@
                                 {{ $cartService->getItemsCount() }}
                             </span>
                         @endif
-                    </span>
+                    </a>
                 </div>
             </div>
         </div>

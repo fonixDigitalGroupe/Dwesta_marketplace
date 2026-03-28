@@ -23,7 +23,7 @@ class CategoryController extends Controller
         
         $query = Annonce::publiees()
             ->whereIn('categorie_id', $categoryIds)
-            ->with(['photos', 'category', 'vendeur.user', 'options']);
+            ->with(['photos', 'category', 'vendeur.user', 'options', 'produit', 'vehicule']);
 
         // Tri
         $sort = request('sort', 'relevance');
@@ -35,14 +35,23 @@ class CategoryController extends Controller
                 $query->orderBy('prix', 'desc');
                 break;
             default:
-                // Priorité aux annonces "À la une" puis par date
-                $query->orderByRaw("CASE WHEN EXISTS (SELECT 1 FROM annonce_options WHERE annonce_id = annonces.id AND a_la_une = 1) THEN 0 ELSE 1 END")
-                      ->latest('publiee_le');
+                // Priorité : 1) Sponsorisé | 2) Vendeurs pro | 3) Date
+                $query
+                    ->leftJoin('vendeurs', 'vendeurs.id', '=', 'annonces.vendeur_id')
+                    ->orderByRaw("CASE WHEN EXISTS (SELECT 1 FROM annonce_options WHERE annonce_id = annonces.id AND a_la_une = 1) THEN 0 ELSE 1 END")
+                    ->orderByRaw("CASE WHEN vendeurs.type = 'professionnel' THEN 0 ELSE 1 END")
+                    ->latest('annonces.publiee_le')
+                    ->select('annonces.*');
                 break;
         }
 
         $annonces = $query->paginate(24)->withQueryString();
 
         return view('categories.show', compact('category', 'annonces'));
+    }
+
+    public function getFilters(Category $category)
+    {
+        return response()->json($category->filters()->orderBy('ordre')->get());
     }
 }

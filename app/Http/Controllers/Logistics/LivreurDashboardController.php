@@ -30,20 +30,69 @@ class LivreurDashboardController extends Controller
         ];
 
         // Commandes disponibles (Prêt chez le vendeur ou Disponible en point relais pour livraison finale)
-        // On suppose ici que le livreur fait le dernier kilomètre
-        $availableOrders = Order::whereIn('statut', [Order::STATUT_PRET, Order::STATUT_DISPONIBLE])
+        $availableOrders = Order::with(['seller.user'])
+            ->whereIn('statut', [Order::STATUT_PRET, Order::STATUT_DISPONIBLE])
             ->whereNull('livreur_id')
             ->orderBy('created_at', 'desc')
             ->limit(20)
             ->get();
 
         // Mes livraisons en cours
-        $myDeliveries = Order::where('livreur_id', $livreur->id)
+        $myDeliveries = Order::with(['seller.user', 'buyer'])
+            ->where('livreur_id', $livreur->id)
             ->where('statut', Order::STATUT_EN_ROUTE)
             ->orderBy('updated_at', 'desc')
             ->get();
 
         return view('logistics.livreur.dashboard', compact('stats', 'availableOrders', 'myDeliveries'));
+    }
+
+    /**
+     * Voir les commandes disponibles
+     */
+    public function availableOrders()
+    {
+        $availableOrders = Order::with(['seller.user'])
+            ->whereIn('statut', [Order::STATUT_PRET, Order::STATUT_DISPONIBLE])
+            ->whereNull('livreur_id')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        return view('logistics.livreur.orders.available', compact('availableOrders'));
+    }
+
+    /**
+     * Voir les expéditions en cours
+     */
+    public function ongoingOrders()
+    {
+        $livreur = Auth::user()->livreur;
+        if (!$livreur) return redirect()->route('account.index');
+
+        $ongoingOrders = Order::with(['seller.user', 'buyer'])
+            ->where('livreur_id', $livreur->id)
+            ->where('statut', Order::STATUT_EN_ROUTE)
+            ->orderBy('updated_at', 'desc')
+            ->paginate(15);
+
+        return view('logistics.livreur.orders.ongoing', compact('ongoingOrders'));
+    }
+
+    /**
+     * Voir l'historique des livraisons
+     */
+    public function deliveryHistory()
+    {
+        $livreur = Auth::user()->livreur;
+        if (!$livreur) return redirect()->route('account.index');
+
+        $history = Order::with(['seller.user', 'buyer'])
+            ->where('livreur_id', $livreur->id)
+            ->where('statut', Order::STATUT_LIVRE)
+            ->orderBy('updated_at', 'desc')
+            ->paginate(15);
+
+        return view('logistics.livreur.orders.history', compact('history'));
     }
 
     /**

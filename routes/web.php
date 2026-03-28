@@ -73,6 +73,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/mes-achats', [\App\Http\Controllers\AccountController::class, 'orders'])->name('account.orders');
         Route::get('/mes-avis', [\App\Http\Controllers\AvisController::class, 'mesAvis'])->name('account.avis');
 
+        // Mon Porte-Monnaie (Crédits)
+        Route::prefix('mon-compte/credits')->name('account.credits.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\CreditController::class, 'index'])->name('index');
+            Route::post('/checkout', [\App\Http\Controllers\CreditController::class, 'buyPack'])->name('checkout');
+            Route::get('/success', [\App\Http\Controllers\CreditController::class, 'success'])->name('success');
+        });
+
     // Vendeur
     Route::prefix('vendeur')->name('vendeur.')->group(function () {
         Route::get('/create', [VendeurController::class, 'create'])->name('create');
@@ -144,6 +151,17 @@ Route::middleware('auth')->group(function () {
             'destroy' => 'categories.destroy',
         ]);
 
+        // Gestion des abonnements (Packs)
+        Route::resource('abonnements', \App\Http\Controllers\Admin\AbonnementController::class)->names([
+            'index' => 'abonnements.index',
+            'create' => 'abonnements.create',
+            'store' => 'abonnements.store',
+            'show' => 'abonnements.show',
+            'edit' => 'abonnements.edit',
+            'update' => 'abonnements.update',
+            'destroy' => 'abonnements.destroy',
+        ]);
+
         // Modération des avis (Admin)
         Route::prefix('avis')->name('avis.')->group(function () {
             Route::get('/moderation', [AvisController::class, 'moderation'])->name('moderation');
@@ -151,10 +169,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/{avis}/reject', [AvisController::class, 'reject'])->name('reject');
         });
 
-        // Admin root - redirect to categories
-        Route::get('/', function () {
-            return redirect()->route('admin.categories.l1');
-        })->name('dashboard');
+        // Admin root - dashboard
+        Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
 
         // Litiges
@@ -216,10 +232,36 @@ Route::middleware('auth')->group(function () {
         Route::patch('highlight-tabs/{highlightTab}/toggle-status', [\App\Http\Controllers\Admin\HighlightTabController::class, 'toggleStatus'])->name('highlight-tabs.toggle-status');
         Route::resource('highlights', \App\Http\Controllers\Admin\HighlightController::class);
         Route::patch('highlights/{highlight}/toggle-status', [\App\Http\Controllers\Admin\HighlightController::class, 'toggleStatus'])->name('highlights.toggle-status');
+ 
+        // Gestion des critères de filtrage
+        Route::get('filters/categories/{category}/children', [\App\Http\Controllers\Admin\CategoryFilterController::class, 'getChildren'])->name('filters.categories.children');
+        Route::resource('filters', \App\Http\Controllers\Admin\CategoryFilterController::class);
 
         // Configuration Générale
         Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
         Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+
+        // Système de crédits
+        Route::prefix('credits')->name('credits.')->group(function () {
+            Route::get('/',               [\App\Http\Controllers\Admin\CreditController::class, 'dashboard'])->name('dashboard');
+            // Packs
+            Route::get('/packs',          [\App\Http\Controllers\Admin\CreditController::class, 'packsIndex'])->name('packs');
+            Route::get('/packs/create',   [\App\Http\Controllers\Admin\CreditController::class, 'packsCreate'])->name('packs.create');
+            Route::post('/packs',         [\App\Http\Controllers\Admin\CreditController::class, 'packsStore'])->name('packs.store');
+            Route::get('/packs/{pack}/edit', [\App\Http\Controllers\Admin\CreditController::class, 'packsEdit'])->name('packs.edit');
+            Route::put('/packs/{pack}',   [\App\Http\Controllers\Admin\CreditController::class, 'packsUpdate'])->name('packs.update');
+            Route::delete('/packs/{pack}',[\App\Http\Controllers\Admin\CreditController::class, 'packsDestroy'])->name('packs.destroy');
+            // Services
+            Route::get('/services',       [\App\Http\Controllers\Admin\CreditController::class, 'servicesIndex'])->name('services');
+            Route::get('/services/create',[\App\Http\Controllers\Admin\CreditController::class, 'servicesCreate'])->name('services.create');
+            Route::post('/services',      [\App\Http\Controllers\Admin\CreditController::class, 'servicesStore'])->name('services.store');
+            Route::get('/services/{service}/edit', [\App\Http\Controllers\Admin\CreditController::class, 'servicesEdit'])->name('services.edit');
+            Route::put('/services/{service}',      [\App\Http\Controllers\Admin\CreditController::class, 'servicesUpdate'])->name('services.update');
+            Route::delete('/services/{service}',   [\App\Http\Controllers\Admin\CreditController::class, 'servicesDestroy'])->name('services.destroy');
+            // Attribution manuelle
+            Route::get('/attribuer',      [\App\Http\Controllers\Admin\CreditController::class, 'attribuerForm'])->name('attribuer');
+            Route::post('/attribuer',     [\App\Http\Controllers\Admin\CreditController::class, 'attribuerStore'])->name('attribuer.store');
+        });
     });
 
     // Documents sécurisés (accessibles uniquement aux admins)
@@ -262,13 +304,45 @@ Route::middleware('auth')->group(function () {
 
     // Logistique & Scan
     Route::prefix('logistique')->group(function () {
-        Route::get('/transporteur', [\App\Http\Controllers\LogisticsController::class, 'transporteurDashboard'])
-            ->middleware('role:vendeur')
-            ->name('logistics.transporteur');
+        Route::get('/transporteur', [\App\Http\Controllers\Logistics\TransporteurDashboardController::class, 'index'])
+            ->middleware('role:transporteur|admin')
+            ->name('transporteur.dashboard');
             
-        Route::get('/relais', [\App\Http\Controllers\LogisticsController::class, 'relaisDashboard'])
-            ->middleware('role:vendeur')
-            ->name('logistics.relais');
+        Route::post('/transporteur/{order}/pickup', [\App\Http\Controllers\Logistics\TransporteurDashboardController::class, 'pickup'])
+            ->middleware('role:transporteur|admin')
+            ->name('transporteur.pickup');
+            
+        Route::post('/transporteur/{order}/dropoff', [\App\Http\Controllers\Logistics\TransporteurDashboardController::class, 'dropoff'])
+            ->middleware('role:transporteur|admin')
+            ->name('transporteur.dropoff');
+
+        Route::get('/livreur', [\App\Http\Controllers\Logistics\LivreurDashboardController::class, 'index'])
+            ->middleware('role:livreur|admin')
+            ->name('livreur.dashboard');
+            
+        Route::get('/livreur/available', [\App\Http\Controllers\Logistics\LivreurDashboardController::class, 'availableOrders'])
+            ->middleware('role:livreur|admin')
+            ->name('livreur.orders.available');
+
+        Route::get('/livreur/ongoing', [\App\Http\Controllers\Logistics\LivreurDashboardController::class, 'ongoingOrders'])
+            ->middleware('role:livreur|admin')
+            ->name('livreur.orders.ongoing');
+
+        Route::get('/livreur/history', [\App\Http\Controllers\Logistics\LivreurDashboardController::class, 'deliveryHistory'])
+            ->middleware('role:livreur|admin')
+            ->name('livreur.orders.history');
+            
+        Route::post('/livreur/{order}/pickup', [\App\Http\Controllers\Logistics\LivreurDashboardController::class, 'pickup'])
+            ->middleware('role:livreur|admin')
+            ->name('livreur.pickup');
+            
+        Route::post('/livreur/{order}/delivered', [\App\Http\Controllers\Logistics\LivreurDashboardController::class, 'delivered'])
+            ->middleware('role:livreur|admin')
+            ->name('livreur.delivered');
+
+        Route::get('/relais', [\App\Http\Controllers\Logistics\PointRelaisDashboardController::class, 'index'])
+            ->middleware('role:point_relais|admin')
+            ->name('relais.dashboard');
 
         Route::get('/scan', [ScanController::class, 'index'])
             ->middleware('permission:scanner qr code')
@@ -321,6 +395,7 @@ Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('cat
 // Recherche publique
 Route::get('/recherche', [\App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
 Route::get('/api/search/autocomplete', [\App\Http\Controllers\SearchController::class, 'autocomplete'])->name('search.autocomplete');
+Route::get('/api/categories/{category}/filters', [CategoryController::class, 'getFilters'])->name('api.categories.filters');
 
 // Webhook Stripe (Public)
 Route::post('/webhook/stripe', [\App\Http\Controllers\StripeWebhookController::class, 'handle'])->name('stripe.webhook');

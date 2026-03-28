@@ -241,7 +241,7 @@
             <div class="catalog-header">
                 <h1 class="header-title">
                     @if(request('q'))
-                        Résultats pour "{{ request('q') }}"
+                        {{ request('q') }}
                     @else
                         Toutes les annonces
                     @endif
@@ -249,7 +249,7 @@
             </div>
 
             <div class="results-toolbar">
-                <h2 class="results-count">Tous les résultats ({{ $annonces->total() }})</h2>
+                <h2 class="results-count">{{ $annonces->total() }} résultats</h2>
                 <div class="sort-options">
                     <label>Trier par</label>
                     <select onchange="window.location.href = this.value">
@@ -270,17 +270,52 @@
                             @else
                                 <div class="no-photo">Pas de photo</div>
                             @endif
-                            @if($annonce->estALaUne()) <span class="badge-featured">À la une</span> @endif
+                            @if($annonce->estALaUne()) <span class="badge-sponsored">Sponsorisée</span> @endif
                         </div>
                         <div class="card-content">
                             <h3 class="card-title">{{ $annonce->titre }}</h3>
-                            <div class="card-price">{{ number_format($annonce->prix, 0, ',', ' ') }} F CFA</div>
-                            <div class="card-footer">
-                                <span class="seller-name">
-                                    {{ $annonce->vendeur?->user?->prenom ?? 'Utilisateur' }} 
-                                    {{ $annonce->vendeur?->user?->nom ?? '' }}
+                            
+                            <div class="card-rating">
+                                @php
+                                    $rating = $annonce->note_moyenne;
+                                    $fullStars = floor($rating);
+                                    $halfStar = ($rating - $fullStars) >= 0.5;
+                                    $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                                @endphp
+                                <div class="stars">
+                                    @for($i = 0; $i < $fullStars; $i++)
+                                        <i class="fas fa-star"></i>
+                                    @endfor
+                                    @if($halfStar)
+                                        <i class="fas fa-star-half-alt"></i>
+                                    @endif
+                                    @for($i = 0; $i < $emptyStars; $i++)
+                                        <i class="far fa-star"></i>
+                                    @endfor
+                                </div>
+                                <span class="reviews-count">{{ $annonce->nombre_avis ?? 0 }} avis</span>
+                            </div>
+
+                            <div class="card-price-state">
+                                <span class="price-val">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                <span class="state-sep">·</span>
+                                <span class="state-label">
+                                    {{ $annonce->etat_libelle }}
                                 </span>
-                                <span class="date">{{ $annonce->publiee_le?->diffForHumans() ?? '' }}</span>
+                            </div>
+
+                            @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
+                            <div class="seller-info-line">
+                                <span class="seller-prefix">Par</span>
+                                <span class="seller-name-text">
+                                    {{ $annonce->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}
+                                    <span class="pro-tag">PRO</span>
+                                </span>
+                            </div>
+                            @endif
+
+                            <div class="card-actions">
+                                <span class="btn-see-product">Voir le produit <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
                             </div>
                         </div>
                     </a>
@@ -334,8 +369,8 @@
     }
 
     .catalog-header {
-        padding: 1.5rem 0;
-        margin-bottom: 2rem;
+        padding: 0.5rem 0;
+        margin-bottom: 1rem;
         border-bottom: 1px solid #ebebeb;
     }
 
@@ -361,8 +396,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
         border-bottom: 1px solid #eee;
     }
 
@@ -395,20 +430,41 @@
 
     .catalog-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 0;
+        padding: 0;
     }
 
     .catalog-card {
         background: #fff;
-        border: 1px solid #ebebeb;
-        border-radius: 4px;
-        overflow: hidden;
-        text-decoration: none;
-        color: inherit;
-        transition: transform 0.2s, box-shadow 0.2s;
+        border-right: 1px solid #ebebeb;
+        border-bottom: 1px solid #ebebeb;
         display: flex;
         flex-direction: column;
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* Pattern: 3 items (span 4) then 4 items (span 3) */
+    .catalog-card:nth-child(7n+1),
+    .catalog-card:nth-child(7n+2),
+    .catalog-card:nth-child(7n+3) {
+        grid-column: span 4;
+    }
+
+    .catalog-card:nth-child(7n+4),
+    .catalog-card:nth-child(7n+5),
+    .catalog-card:nth-child(7n+6),
+    .catalog-card:nth-child(7n+7),
+    .catalog-card:nth-child(7n) {
+        grid-column: span 3;
+    }
+
+    /* Remove right border for items at the end of their rows */
+    .catalog-card:nth-child(7n+3), /* End of 3-item row */
+    .catalog-card:nth-child(7n)   /* End of 4-item row */ {
+        border-right: none;
     }
 
     .catalog-card:hover {
@@ -438,51 +494,149 @@
         font-size: 0.8rem;
     }
 
-    .badge-featured {
+    .badge-sponsored {
         position: absolute;
         top: 0.5rem;
         left: 0.5rem;
-        background: #000;
+        background: #fff;
+        color: #111;
+        font-size: 0.6rem;
+        font-weight: 800;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        text-transform: uppercase;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border: 1px solid #eee;
+        z-index: 10;
+    }
+
+    .badge-pro-card {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: #bf0000;
         color: #fff;
         font-size: 0.65rem;
         font-weight: 800;
         padding: 0.25rem 0.5rem;
         border-radius: 2px;
         text-transform: uppercase;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .card-content {
-        padding: 1.25rem;
+        padding: 0.75rem 0.75rem 1rem 0.75rem;
         flex: 1;
         display: flex;
         flex-direction: column;
+        gap: 0.4rem;
     }
-
+    
     .card-title {
-        font-size: 0.95rem;
-        line-height: 1.4;
-        font-weight: 500;
-        height: 2.1rem; /* 2 lines */
+        font-size: 0.85rem;
+        font-weight: 700;
+        line-height: 1.25;
+        height: 2.1rem;
         overflow: hidden;
-        margin-bottom: 0.75rem;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+        margin-bottom: 0.25rem;
+        color: #333;
     }
 
-    .card-price {
-        font-size: 1.25rem;
-        font-weight: 800;
-        color: #000;
-        margin-bottom: auto;
-    }
-
-    .card-footer {
-        margin-top: 1rem;
+    .card-rating {
         display: flex;
-        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .card-rating .stars {
+        display: flex;
+        gap: 1px;
+        color: #ffbc00;
+        font-size: 0.8rem;
+    }
+
+    .card-rating .reviews-count {
         font-size: 0.75rem;
-        color: #999;
+        color: #777;
+    }
+
+    .card-price-state {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        margin: 0.25rem 0;
+    }
+
+    .price-val {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #db0001;
+    }
+
+    .state-sep {
+        font-weight: bold;
+        color: #db0001;
+    }
+
+    .state-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #db0001;
+    }
+
+    .seller-info-line {
+        font-size: 0.75rem;
+        color: #777;
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .seller-name-text {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .pro-tag {
+        background: #fff;
+        color: #666;
+        font-size: 7px;
+        font-weight: 700;
+        padding: 1px 5px;
+        border-radius: 10px;
+        margin-left: 2px;
+        border: 1px solid #ddd;
+        text-transform: uppercase;
+        vertical-align: middle;
+    }
+
+    .card-actions {
+        margin-top: auto;
+    }
+
+    .btn-see-product {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 0.6rem;
+        border: 1.5px solid #111;
+        border-radius: 8px;
+        background: #fff;
+        color: #111;
+        font-size: 0.9rem;
+        font-weight: 800;
+        transition: all 0.2s;
+    }
+
+    .catalog-card:hover .btn-see-product {
+        background: #111;
+        color: #fff;
     }
 
     .pagination-wrapper {
