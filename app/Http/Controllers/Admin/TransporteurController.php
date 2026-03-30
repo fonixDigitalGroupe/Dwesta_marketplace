@@ -27,7 +27,7 @@ class TransporteurController extends Controller
         // On récupère les transporteurs existants
         $transporteurs = Transporteur::with('user')
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(8);
 
         // On compte les transporteurs en attente
         $pendingCount = Transporteur::where('statut_verification', 'en_attente')->count();

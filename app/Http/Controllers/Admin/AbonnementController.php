@@ -12,10 +12,23 @@ class AbonnementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $abonnements = Abonnement::orderBy('ordre')->get();
-        return view('admin.abonnements.index', compact('abonnements'));
+        $perPage = $request->get('per_page', 8);
+        $search = $request->get('search');
+
+        $query = Abonnement::orderBy('ordre');
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('nom', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('type', 'like', "%{$search}%");
+            });
+        }
+
+        $abonnements = $query->paginate($perPage);
+        return view('admin.abonnements.index', compact('abonnements', 'perPage', 'search'));
     }
 
     /**
@@ -23,7 +36,11 @@ class AbonnementController extends Controller
      */
     public function create()
     {
-        return view('admin.abonnements.create');
+        $takenTypes = Abonnement::pluck('type')->toArray();
+        $allTypes = ['gratuit', 'basic', 'expert'];
+        $availableTypes = array_diff($allTypes, $takenTypes);
+        
+        return view('admin.abonnements.create', compact('availableTypes'));
     }
 
     /**
@@ -66,7 +83,11 @@ class AbonnementController extends Controller
      */
     public function edit(Abonnement $abonnement)
     {
-        return view('admin.abonnements.edit', compact('abonnement'));
+        $takenTypes = Abonnement::where('id', '!=', $abonnement->id)->pluck('type')->toArray();
+        $allTypes = ['gratuit', 'basic', 'expert'];
+        $availableTypes = array_diff($allTypes, $takenTypes);
+        
+        return view('admin.abonnements.edit', compact('abonnement', 'availableTypes'));
     }
 
     /**

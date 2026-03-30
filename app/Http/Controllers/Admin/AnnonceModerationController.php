@@ -10,7 +10,7 @@ class AnnonceModerationController extends Controller
 {
     public function index()
     {
-        $annonces = Annonce::where('statut', 'en_attente')->with('vendeur.user')->latest()->paginate(10);
+        $annonces = Annonce::where('statut', 'en_attente')->with('vendeur.user')->latest()->paginate(8);
         return view('admin.annonces.index', compact('annonces'));
     }
 

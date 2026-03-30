@@ -2,80 +2,71 @@
 
 @section('title', 'Ajouter une catégorie')
 
-@section('breadcrumbs')
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <a href="{{ route('admin.categories.l1') }}">Catalogue</a>
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <span style="color: #333; font-weight: 500;">Ajouter</span>
-@endsection
+@push('styles')
+    <style>
+        .main-content { background-color: #f8f9fa !important; }
+    </style>
+@endpush
 
 @section('content')
-    <div style="max-width: 1000px; margin: 0 auto;">
+    <div style="max-width: 100%;">
+        <!-- Titre en majuscules -->
+        <h2 style="font-size: 0.85rem; color: #555; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; letter-spacing: 0.05em;">
+            Ajouter une catégorie
+        </h2>
 
-        <header style="margin-bottom: 1.5rem;">
-            <h1 style="font-size: 1.5rem; color: #333; font-weight: 500; margin-bottom: 0.25rem;">Ajouter une catégorie</h1>
-            <p style="font-size: 0.95rem; color: #666; font-weight: 400;">Configurez les paramètres d'un nouvel élément de
-                votre catalogue.</p>
-        </header>
+        <!-- Barre d'outils -->
+        <div style="display: flex; gap: 8px; margin-bottom: 1.5rem;">
+            <a href="{{ route('admin.categories.l1') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                <i class="fas fa-arrow-left" style="font-size: 0.75rem; opacity: 0.6;"></i> Retour au catalogue
+            </a>
+        </div>
 
         <form action="{{ route('admin.categories.store') }}" method="POST">
             @csrf
 
             <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start;">
-
-                <!-- Left Colonne -->
+                <!-- Left Column -->
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-
+                    
                     <!-- Section 1: Identité -->
-                    <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
-                        <h2
-                            style="font-size: 1.1rem; color: #333; font-weight: 500; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                    <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 1.5rem;">
+                        <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                             Identité Commerciale
-                        </h2>
+                        </h3>
 
-                        <div style="display: grid; gap: 1.25rem;">
+                        <div style="display: grid; gap: 1.5rem;">
                             <div>
-                                <label for="nom"
-                                    style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Nom
-                                    de la catégorie <span style="color: red;">*</span></label>
+                                <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Nom de la catégorie <small style="color: red;">*</small></label>
                                 <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#000'" onblur="this.style.borderColor='#e0e0e0'"
+                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; outline: none; transition: all 0.2s; color: #333;"
+                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'"
                                     oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
-                                @error('nom') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}
-                                </p> @enderror
+                                @error('nom') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                             </div>
 
                             <div>
-                                <label for="description"
-                                    style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Description
-                                    (SEO & Info)</label>
+                                <label for="description" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Description (SEO & Info)</label>
                                 <textarea name="description" id="description" rows="4"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s; resize: vertical;"
-                                    onfocus="this.style.borderColor='#000'" onblur="this.style.borderColor='#e0e0e0'"
+                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; outline: none; transition: all 0.2s; resize: vertical; color: #333; font-family: inherit;"
+                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'"
                                     oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">{{ old('description') }}</textarea>
                             </div>
                         </div>
                     </div>
 
                     <!-- Section 2: Structure -->
-                    <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
-                        <h2
-                            style="font-size: 1.1rem; color: #333; font-weight: 500; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                    <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 1.5rem;">
+                        <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                             Architecture
-                        </h2>
+                        </h3>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                             <div>
-                                <label for="parent_id"
-                                    style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Catégorie
-                                    Parente</label>
+                                <label for="parent_id" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Catégorie Parente</label>
                                 <select name="parent_id" id="parent_id"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff; cursor: pointer;">
+                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; outline: none; background: #fff; cursor: pointer; color: #333; transition: all 0.2s;"
+                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
                                     <option value="">-- Racine --</option>
                                     @foreach($categoriesTree as $treeItem)
                                         <option value="{{ $treeItem->id }}" {{ old('parent_id') == $treeItem->id ? 'selected' : '' }}>{{ $treeItem->nom }}</option>
@@ -88,31 +79,28 @@
                             </div>
 
                             <div>
-                                <label for="ordre"
-                                    style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Ordre
-                                    d'affichage</label>
+                                <label for="ordre" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Ordre d'affichage</label>
                                 <input type="number" name="ordre" id="ordre" value="{{ old('ordre', 1) }}"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none;">
+                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; outline: none; color: #333; transition: all 0.2s;"
+                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Right Colonne -->
+                <!-- Right Column -->
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
 
-                    <div id="config-section" style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
-                        <h3 style="font-size: 1rem; color: #333; font-weight: 500; margin-bottom: 1.25rem;">Configuration
-                        </h3>
-
+                    <div id="config-section" style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 1.5rem;">
+                        <h3 style="font-size: 0.9rem; color: #333; font-weight: 600; margin-bottom: 1.25rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">Configuration</h3>
+                        
                         <!-- Famille Selection (Only for Root) -->
                         <div id="famille-group" style="margin-bottom: 0;">
-                            <label for="famille"
-                                style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Famille
-                                (Catégorie Principale) <span style="color: red;">*</span></label>
+                            <label for="famille" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Famille (Catégorie Principale) <small style="color: red;">*</small></label>
                             <select name="famille" id="famille"
-                                style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff; cursor: pointer;">
+                                style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; outline: none; background: #fff; cursor: pointer; color: #333; transition: all 0.2s;"
+                                onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
                                 <option value="">-- Sélectionner une famille --</option>
                                 @foreach(\App\Models\Category::getFamilles() as $famille)
                                     <option value="{{ $famille }}" {{ old('famille') == $famille ? 'selected' : '' }}>
@@ -120,25 +108,20 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <p style="font-size: 0.75rem; color: #999; margin-top: 4px;">Requis uniquement pour les
-                                catégories principale.</p>
+                            <p style="font-size: 0.75rem; color: #888; margin-top: 6px; font-style: italic;">Requis uniquement pour les catégories principale.</p>
                         </div>
                     </div>
 
-                    <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
-                        <h3 style="font-size: 1rem; color: #333; font-weight: 500; margin-bottom: 1.25rem;">Visuel & État
-                        </h3>
+                    <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 1.5rem;">
+                        <h3 style="font-size: 0.9rem; color: #333; font-weight: 600; margin-bottom: 1.25rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">Visuel & État</h3>
 
-                        <div style="display: grid; gap: 1.25rem;">
+                        <div style="display: grid; gap: 1.5rem;">
                             <div>
-                                <label
-                                    style="display: block; font-size: 0.75rem; font-weight: 500; color: #999; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.05em;">Icône
-                                    de catégorie</label>
+                                <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 12px;">Icône de catégorie</label>
 
                                 <input type="hidden" name="icone" id="icone_input" value="{{ old('icone', '📦') }}">
 
-                                <div id="icon-grid"
-                                    style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px;">
+                                <div id="icon-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px;">
                                     <script>
                                         const icons = [
                                             '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>',
@@ -161,7 +144,7 @@
                                             btn.type = 'button';
                                             btn.className = 'icon-option';
                                             btn.innerHTML = svg;
-                                            btn.style.cssText = 'padding: 8px; border: 1px solid #e0e0e0; border-radius: 6px; background: #fff; cursor: pointer; color: #999; transition: all 0.2s; display: flex; align-items: center; justify-content: center;';
+                                            btn.style.cssText = 'padding: 10px; border: 1px solid #e0e0e0; border-radius: 6px; background: #fff; cursor: pointer; color: #999; transition: all 0.2s; display: flex; align-items: center; justify-content: center;';
 
                                             btn.onclick = function () {
                                                 document.querySelectorAll('.icon-option').forEach(b => {
@@ -169,9 +152,9 @@
                                                     b.style.color = '#999';
                                                     b.style.background = '#fff';
                                                 });
-                                                this.style.borderColor = '#000';
-                                                this.style.color = '#000';
-                                                this.style.background = '#f8fafc';
+                                                this.style.borderColor = '#e67e00';
+                                                this.style.color = '#e67e00';
+                                                this.style.background = '#fcf4ec';
                                                 document.getElementById('icone_input').value = svg;
                                             };
                                             grid.appendChild(btn);
@@ -179,34 +162,42 @@
                                     </script>
                                 </div>
 
-                                <div style="padding-top: 1rem; border-top: 1px solid #f0f0f0; margin-top: 1rem;">
-                                    <label for="actif"
-                                        style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                                        <input type="checkbox" name="actif" id="actif" value="1" {{ (old('_token') ? old('actif') : true) ? 'checked' : '' }}
-                                            style="width: 16px; height: 16px; accent-color: #333; cursor: pointer;">
-                                        <span style="font-size: 0.9rem; font-weight: 500; color: #333;">Catégorie
-                                            Active</span>
+                                <div style="display: grid; gap: 1rem; margin-top: 1rem;">
+                                    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none;">
+                                        <div style="position: relative; width: 20px; height: 20px;">
+                                            <input type="checkbox" name="actif" id="actif" value="1" {{ (old('_token') ? old('actif') : true) ? 'checked' : '' }}
+                                                style="position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0;">
+                                            <div id="custom-checkbox-actif" style="position: absolute; top: 0; left: 0; height: 20px; width: 20px; background-color: {{ (old('_token') ? old('actif') : true) ? '#999' : '#eee' }}; border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                                                <i class="fas fa-check" style="color: #fff; font-size: 10px; opacity: {{ (old('_token') ? old('actif') : true) ? '1' : '0' }};"></i>
+                                            </div>
+                                        </div>
+                                        <span style="font-size: 0.85rem; font-weight: 600; color: #555;">Catégorie Active</span>
                                     </label>
+
+                                    <script>
+                                        document.getElementById('actif').addEventListener('change', function() {
+                                            const customBox = document.getElementById('custom-checkbox-actif');
+                                            if (this.checked) {
+                                                customBox.style.backgroundColor = '#999';
+                                                customBox.querySelector('i').style.opacity = '1';
+                                            } else {
+                                                customBox.style.backgroundColor = '#eee';
+                                                customBox.querySelector('i').style.opacity = '0';
+                                            }
+                                        });
+                                    </script>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <button type="submit"
-                            style="background-color: #000; color: #fff; border: none; padding: 0.75rem; border-radius: 4px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.95rem;">
-                            Enregistrer
-                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                            </svg>
-                        </button>
-                        <a href="{{ route('admin.categories.l1') }}"
-                            style="display: flex; justify-content: center; padding: 0.75rem; background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; color: #666; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: all 0.2s;"
-                            onmouseover="this.style.background='#f9f9f9'; this.style.color='#333'"
-                            onmouseout="this.style.background='#fff'; this.style.color='#666'">
-                            Annuler
-                        </a>
+                        <div style="display: flex; gap: 12px; margin-top: 1.5rem;">
+                            <a href="{{ route('admin.categories.l1') }}" style="flex: 1; background: #dc2626; color: #fff; text-align: center; text-decoration: none; padding: 12px; border-radius: 6px; font-weight: 500; transition: opacity 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                                Annuler
+                            </a>
+                            <button type="submit" style="flex: 2; background: #e67e00; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                                Enregistrer
+                            </button>
+                        </div>
                     </div>
 
                 </div>
@@ -215,6 +206,7 @@
         </form>
     </div>
 
+    @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const parentSelect = document.getElementById('parent_id');
@@ -238,4 +230,5 @@
             toggleFamille(); // Run on load
         });
     </script>
+    @endpush
 @endsection

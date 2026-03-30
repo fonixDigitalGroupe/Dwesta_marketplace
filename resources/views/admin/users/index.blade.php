@@ -2,153 +2,154 @@
 
 @php
     $isSellerView = in_array($role, ['vendeur', 'vendeur_pro', 'vendeur_particulier']);
-    $currentTitle = $isSellerView ? 'Vendeurs' : 'Gestion des Utilisateurs';
+    $currentTitle = $isSellerView ? 'Gestion des Vendeurs' : 'Gestion des Utilisateurs';
 @endphp
 
 @section('title', $currentTitle)
 
-@section('breadcrumbs')
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <span style="color: #333; font-weight: 500;">{{ $currentTitle }}</span>
-@endsection
+@push('styles')
+<style>
+    .main-content { background-color: #f8f9fa !important; }
+    select:focus, input:focus {
+        border-color: #aaa !important;
+        box-shadow: 0 0 0 2px rgba(0,0,0,0.05) !important;
+        outline: none;
+    }
+</style>
+@endpush
 
 @section('content')
-    <div style="max-width: 1200px;">
+    <div style="max-width: 100%;">
 
-        <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h1 style="font-size: 1.375rem; color: #333; font-weight: 600;">
-                {{ $currentTitle }}
-            </h1>
-            <div style="display: flex; gap: 10px;">
-                <a href="{{ route('admin.users.create') }}" 
-                   style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background-color: #000; color: #fff; border-radius: 8px; transition: all 0.2s;" 
-                   title="Nouveau Utilisateur"
-                   onmouseover="this.style.opacity='0.8'" 
-                   onmouseout="this.style.opacity='1'">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                </a>
-                <a href="#" 
-                   style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background-color: #e11d48; color: #fff; border-radius: 8px; transition: all 0.2s;" 
-                   title="Télécharger PDF"
-                   onmouseover="this.style.opacity='0.8'" 
-                   onmouseout="this.style.opacity='1'">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
-                </a>
-            </div>
+        <!-- Titre en majuscules type image -->
+        <h2 style="font-size: 0.85rem; color: #555; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; letter-spacing: 0.05em;">
+            {{ $currentTitle }}
+        </h2>
+
+        <!-- Barre d'outils type image -->
+        <div style="display: flex; gap: 8px; margin-bottom: 1.5rem;">
+            <a href="{{ route('admin.users.index') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                Liste des utilisateurs <i class="fas fa-undo" style="font-size: 0.75rem; opacity: 0.6;"></i>
+            </a>
+            <a href="{{ route('admin.users.create') }}" style="display: flex; align-items: center; gap: 8px; background: #e67e00; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                Nouveau <i class="fas fa-plus-square"></i>
+            </a>
+            <a href="javascript:window.print()" style="display: flex; align-items: center; gap: 8px; background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                Imprimer <i class="fas fa-print"></i>
+            </a>
         </div>
 
 
+        <!-- Main Conteneur -->
+        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1rem;">
+            
+            <!-- Filtres type image -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 15px; font-size: 0.85rem; color: #333;">
+                    <div>
+                        Afficher 
+                        <select onchange="window.location.href = '{{ route('admin.users.index') }}?per_page=' + this.value + '&role={{ $role }}&nationalite={{ request('nationalite') }}&search={{ $search }}'" 
+                            style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                            <option value="8" {{ $perPage == 8 ? 'selected' : '' }}>8</option>
+                            <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100</option>
+                        </select>
+                        lignes
+                    </div>
 
-        <!-- Filters Form -->
-        <form action="{{ route('admin.users.index') }}" method="GET" style="background: #fff; padding: 1rem; border: 1px solid #e5e5e5; margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: flex-end; border-radius: 2px;">
-            <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
-                <label for="role" style="font-size: 0.85rem; font-weight: 600; color: #333;">Rôle</label>
-                <select name="role" id="role" onchange="this.form.submit()" style="padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; background-color: #fff; border-radius: 6px; font-size: 0.85rem; color: #334155; font-weight: 500; cursor: pointer; transition: all 0.2s; outline: none;" onfocus="this.style.borderColor='#ff750f'; this.style.boxShadow='0 0 0 3px rgba(255, 117, 15, 0.1)'" onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">
-                    @if(in_array($role, ['vendeur', 'vendeur_pro', 'vendeur_particulier']))
-                        <option value="vendeur" {{ $role == 'vendeur' ? 'selected' : '' }}>Tous les Vendeurs</option>
-                        <option value="vendeur_pro" {{ $role == 'vendeur_pro' ? 'selected' : '' }}>Vendeur pro</option>
-                        <option value="vendeur_particulier" {{ $role == 'vendeur_particulier' ? 'selected' : '' }}>Vendeur part</option>
-                    @else
-                        <option value="" {{ $role == '' ? 'selected' : '' }}>Tous les utilisateurs</option>
-                        <option value="admin" {{ $role == 'admin' ? 'selected' : '' }}>Administrateur</option>
-                        <option value="acheteur" {{ $role == 'acheteur' ? 'selected' : '' }}>Utilisateur Simple</option>
-                        <option value="transporteur" {{ $role == 'transporteur' ? 'selected' : '' }}>Transporteur</option>
-                        <option value="livreur" {{ $role == 'livreur' ? 'selected' : '' }}>Livreur</option>
-                        <option value="point relais" {{ $role == 'point relais' ? 'selected' : '' }}>Point Relais</option>
-                    @endif
-                </select>
-            </div>
+                    <form action="{{ route('admin.users.index') }}" method="GET" style="display: flex; align-items: center; gap: 10px;">
+                        <input type="hidden" name="per_page" value="{{ $perPage }}">
+                        <input type="hidden" name="search" value="{{ $search }}">
+                        
+                        <div>
+                            Rôle: 
+                            <select name="role" onchange="this.form.submit()" 
+                                style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                                @if($isSellerView)
+                                    <option value="vendeur" {{ $role == 'vendeur' ? 'selected' : '' }}>Tous les Vendeurs</option>
+                                    <option value="vendeur_pro" {{ $role == 'vendeur_pro' ? 'selected' : '' }}>Vendeur pro</option>
+                                    <option value="vendeur_particulier" {{ $role == 'vendeur_particulier' ? 'selected' : '' }}>Vendeur part</option>
+                                @else
+                                    <option value="" {{ $role == '' ? 'selected' : '' }}>Tous</option>
+                                    <option value="admin" {{ $role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                    <option value="acheteur" {{ $role == 'acheteur' ? 'selected' : '' }}>Simple</option>
+                                    <option value="transporteur" {{ $role == 'transporteur' ? 'selected' : '' }}>Transporteur</option>
+                                    <option value="livreur" {{ $role == 'livreur' ? 'selected' : '' }}>Livreur</option>
+                                    <option value="point relais" {{ $role == 'point relais' ? 'selected' : '' }}>Relais</option>
+                                @endif
+                            </select>
+                        </div>
 
-            <div style="display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
-                <label for="nationalite" style="font-size: 0.85rem; font-weight: 600; color: #333;">Nationalité</label>
-                <select name="nationalite" id="nationalite" onchange="this.form.submit()" style="padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; background-color: #fff; border-radius: 6px; font-size: 0.85rem; color: #334155; font-weight: 500; cursor: pointer; transition: all 0.2s; outline: none;" onfocus="this.style.borderColor='#ff750f'; this.style.boxShadow='0 0 0 3px rgba(255, 117, 15, 0.1)'" onblur="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">
-                    <option value="">Toutes les nationalités</option>
-                    @php
-                        $countries = [
-                            'Afrique du Sud' => '🇿🇦', 'Algérie' => '🇩🇿', 'Angola' => '🇦🇴', 'Bénin' => '🇧🇯', 'Botswana' => '🇧🇼',
-                            'Burkina Faso' => '🇧🇫', 'Burundi' => '🇧🇮', 'Cameroun' => '🇨🇲', 'Cap-Vert' => '🇨🇻', 'Centrafrique' => '🇨🇫',
-                            'Comores' => '🇰🇲', 'Congo' => '🇨🇬', "Côte d'Ivoire" => '🇨🇮', 'Djibouti' => '🇩🇯', 'Égypte' => '🇪🇬',
-                            'Érythrée' => '🇪🇷', 'Eswatini' => '🇸🇿', 'Éthiopie' => '🇪🇹', 'Gabon' => '🇬🇦', 'Gambie' => '🇬🇲',
-                            'Ghana' => '🇬🇭', 'Guinée' => '🇬🇳', 'Guinée-Bissau' => '🇬🇼', 'Guinée équatoriale' => '🇬🇶', 'Kenya' => '🇰🇪',
-                            'Lesotho' => '🇱🇸', 'Liberia' => '🇱🇷', 'Libye' => '🇱🇾', 'Madagascar' => '🇲🇬', 'Malawi' => '🇲🇼',
-                            'Mali' => '🇲🇱', 'Maroc' => '🇲🇦', 'Maurice' => '🇲🇺', 'Mauritanie' => '🇲🇷', 'Mozambique' => '🇲🇿',
-                            'Namibie' => '🇳🇦', 'Niger' => '🇳🇪', 'Nigeria' => '🇳🇬', 'Ouganda' => '🇺🇬', 'République Démocratique du Congo' => '🇨🇩',
-                            'Rwanda' => '🇷🇼', 'Sao Tomé-et-Principe' => '🇸🇹', 'Sénégal' => '🇸🇳', 'Seychelles' => '🇸🇨', 'Sierra Leone' => '🇸🇱',
-                            'Somalie' => '🇸🇴', 'Soudan' => '🇸🇩', 'Soudan du Sud' => '🇸🇸', 'Tanzanie' => '🇹🇿', 'Tchad' => '🇹🇩',
-                            'Togo' => '🇹🇬', 'Tunisie' => '🇹🇳', 'Zambie' => '🇿🇲', 'Zimbabwe' => '🇿🇼', 'Française' => '🇫🇷'
-                        ];
-                    @endphp
-                    @foreach($countries as $name => $flag)
-                        <option value="{{ $name }}" {{ request('nationalite') == $name ? 'selected' : '' }}>
-                            {{ $flag }} {{ $name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
+                        <div>
+                            Pays: 
+                            <select name="nationalite" onchange="this.form.submit()" 
+                                style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; background-color: #fff; outline: none; cursor: pointer; max-width: 150px; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                                <option value="">Tous les pays</option>
+                                @php
+                                    $countries = [
+                                        'Sénégal' => '🇸🇳', 'Afrique du Sud' => '🇿🇦', 'Algérie' => '🇩🇿', 'Angola' => '🇦🇴', 'Bénin' => '🇧🇯', 
+                                        'Burkina Faso' => '🇧🇫', 'Cameroun' => '🇨🇲', 'Congo' => '🇨🇬', "Côte d'Ivoire" => '🇨🇮', 'Égypte' => '🇪🇬',
+                                        'Gabon' => '🇬🇦', 'Ghana' => '🇬🇭', 'Guinée' => '🇬🇳', 'Mali' => '🇲🇱', 'Maroc' => '🇲🇦', 
+                                        'Mauritanie' => '🇲🇷', 'Niger' => '🇳🇪', 'Nigeria' => '🇳🇬', 'Tchad' => '🇹🇩', 'Togo' => '🇹🇬', 
+                                        'Tunisie' => '🇹🇳', 'Française' => '🇫🇷'
+                                    ];
+                                @endphp
+                                @foreach($countries as $name => $flag)
+                                    <option value="{{ $name }}" {{ request('nationalite') == $name ? 'selected' : '' }}>
+                                        {{ $flag }} {{ $name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </form>
+                </div>
 
-
-
-            @if(request()->anyFilled(['role', 'nationalite']))
-                <a href="{{ route('admin.users.index') }}" style="color: #64748b; text-decoration: none; font-size: 0.8rem; padding: 0.5rem 0.5rem; transition: all 0.2s; display: inline-flex; height: 38px; align-items: center; justify-content: center; font-weight: 500;" onmouseover="this.style.color='#1e293b'; this.style.textDecoration='underline'" onmouseout="this.style.color='#64748b'; this.style.textDecoration='none'">
-                    Effacer les filtres
-                </a>
-            @endif
-        </form>
-
-        <!-- Table Container -->
-        <div style="background: #fff; border: 1px solid #e5e5e5;">
-
-            <!-- Table Header -->
-            <div style="padding: 0.875rem 1.25rem; border-bottom: 1px solid #e5e5e5;">
-                <span style="font-size: 0.8rem; color: #666;">{{ $users->total() }} utilisateur(s)</span>
+                <div style="font-size: 0.85rem; color: #333;">
+                    <form action="{{ route('admin.users.index') }}" method="GET" style="display: flex; align-items: center;">
+                        <input type="hidden" name="per_page" value="{{ $perPage }}">
+                        <input type="hidden" name="role" value="{{ $role }}">
+                        <input type="hidden" name="nationalite" value="{{ request('nationalite') }}">
+                        Chercher: <input type="text" name="search" value="{{ $search }}" 
+                            placeholder="Tapez et Entrée..."
+                            style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; margin-left: 5px; background-color: #fff; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                    </form>
+                </div>
             </div>
 
             <!-- Table -->
-            <table style="width: 100%; border-collapse: collapse;">
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid #eee;">
                 <thead>
-                    <tr style="text-align: left;">
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Infos</th>
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Téléphone</th>
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Email</th>
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Nationalité</th>
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Rôle</th>
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Statut</th>
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5; text-align: right;">Actions</th>
+                    <tr style="background: #fff; border-bottom: 2px solid #eee;">
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333; width: 200px;">Utilisateur</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333;">Coordonnées</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333; width: 120px;">Pays</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.82rem; font-weight: 700; color: #333; width: 120px;">Rôle</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.82rem; font-weight: 700; color: #333; width: 100px;">Statut</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: right; font-size: 0.82rem; font-weight: 700; color: #333; width: 120px;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($users as $user)
-                        <tr style="border-bottom: 1px solid #e5e5e5;">
-                            <td style="padding: 0.875rem 1.25rem;">
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <div>
-                                        <div style="font-size: 0.875rem; color: #333; font-weight: 500;">
-                                            {{ $user->prenom }} {{ $user->nom }}
-                                        </div>
-                                    </div>
+                        <tr style="transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit;">
+                                <span style="background: #fff7ed; color: #c2410c; padding: 4px 10px; border-radius: 4px; font-weight: 600; font-size: 0.75rem; border: 1px solid #ffedd5;">
+                                    {{ $user->prenom }} {{ $user->nom }}
+                                </span>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit;">
+                                <div style="display: flex; flex-direction: column; gap: 2px;">
+                                    <span><i class="fas fa-envelope" style="width: 14px; opacity: 0.5;"></i> {{ $user->email }}</span>
+                                    <span><i class="fas fa-phone" style="width: 14px; opacity: 0.5;"></i> {{ $user->telephone ?? '-' }}</span>
                                 </div>
                             </td>
-                            <td style="padding: 0.875rem 1.25rem; font-size: 0.85rem; color: #666;">
-                                {{ $user->telephone ?? '-' }}
-                            </td>
-                            <td style="padding: 0.875rem 1.25rem; font-size: 0.85rem; color: #666;">
-                                {{ $user->email }}
-                            </td>
-                            <td style="padding: 0.875rem 1.25rem; font-size: 0.85rem; color: #666;">
+                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit;">
                                 {{ $user->nationalite ?? '-' }}
                             </td>
-                            <td style="padding: 0.875rem 1.25rem; font-size: 0.85rem; color: #666;">
+                            <td style="padding: 10px; border: 1px solid #eee; text-align: center;">
                                 @php
-                                    $roleName = 'Utilisateur';
-                                    $bgColor = '#fee2e2';
-                                    $textColor = '#991b1b';
+                                    $roleName = 'Acheteur';
+                                    $bgColor = '#f8f9fa';
+                                    $textColor = '#666';
 
                                     if($user->hasRole('admin')) {
                                         $roleName = 'Admin';
@@ -168,95 +169,120 @@
                                         $roleName = ucfirst($user->roles->first()->name);
                                     }
                                 @endphp
-                                <span style="background-color: {{ $bgColor }}; color: {{ $textColor }}; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; white-space: nowrap;">
+                                <span style="background-color: {{ $bgColor }}; color: {{ $textColor }}; padding: 3px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; white-space: nowrap; text-transform: uppercase;">
                                     {{ $roleName }}
                                 </span>
                             </td>
-                            <td style="padding: 0.875rem 1.25rem; font-size: 0.85rem;">
+                            <td style="padding: 10px; border: 1px solid #eee; text-align: center;">
                                 @if($user->is_active)
-                                    <span style="color: #16a34a; font-weight: 600; font-size: 0.75rem;">
+                                    <span style="background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; white-space: nowrap;">
                                         Actif
                                     </span>
                                 @else
-                                    <span style="color: #ca8a04; font-weight: 600; font-size: 0.75rem;">
+                                    <span style="background: #ffedd5; color: #9a3412; padding: 4px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; white-space: nowrap;">
                                         Suspendu
                                     </span>
                                 @endif
                             </td>
-                            <td style="padding: 0.875rem 1.25rem; text-align: right; display: flex; justify-content: flex-end; gap: 4px;">
-                                @if($user->vendeur)
-                                    <a href="{{ route('admin.vendeurs.verification.show', $user->vendeur) }}" 
-                                       style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #1e293b; background: #f1f5f9; border-radius: 8px; transition: all 0.2s;" 
-                                       title="Afficher les informations vendeur"
-                                       onmouseover="this.style.background='#e2e8f0'; this.style.opacity='0.8'" 
-                                       onmouseout="this.style.background='#f1f5f9'; this.style.opacity='1'">
-                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                        </svg>
+                            <td style="padding: 10px; border: 1px solid #eee; text-align: right;">
+                                <div style="display: flex; gap: 4px; justify-content: flex-end;">
+
+                                    <a href="{{ route('admin.users.edit', $user) }}" style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: #004aad; color: #fff; border-radius: 3px; font-size: 0.75rem; text-decoration: none;" title="Modifier">
+                                        <i class="fas fa-edit"></i>
                                     </a>
-                                @endif
-
-                                <a href="{{ route('admin.users.edit', $user) }}" 
-                                   style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #004aad; background: #eef2ff; border-radius: 8px; transition: all 0.2s;" 
-                                   title="Modifier"
-                                   onmouseover="this.style.background='#e0e7ff'; this.style.opacity='0.8'" 
-                                   onmouseout="this.style.background='#eef2ff'; this.style.opacity='1'">
-                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                    </svg>
-                                </a>
-                                
-                                <form action="{{ route('admin.users.suspend', $user) }}" method="POST" style="display:inline;" class="suspend-form" data-confirm-title="Voulez-vous {{ $user->is_active ? 'suspendre' : 'activer' }} cet utilisateur ?">
-                                    @csrf @method('PATCH')
-                                    <button type="submit" 
-                                            style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: {{ $user->is_active ? '#ca8a04' : '#16a34a' }}; background: {{ $user->is_active ? '#fefce8' : '#f0fdf4' }}; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;" 
-                                            title="{{ $user->is_active ? 'Suspendre' : 'Activer' }}"
-                                            onmouseover="this.style.opacity='0.8'" 
-                                            onmouseout="this.style.opacity='1'">
-                                        @if($user->is_active)
-                                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke-width="2"></rect>
-                                                <path d="M7 11V7a5 5 0 0110 0v4" stroke-width="2"></path>
-                                            </svg>
-                                        @else
-                                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke-width="2"></rect>
-                                                <path d="M7 11V7a5 5 0 019.9-1" stroke-width="2"></path>
-                                            </svg>
-                                        @endif
-                                    </button>
-                                </form>
-
-                                <form action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" 
-                                            style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #ef4444; background: #fff1f2; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;" 
-                                            title="Supprimer"
-                                            onmouseover="this.style.background='#ffe4e6'; this.style.transform='scale(1.05)'" 
-                                            onmouseout="this.style.background='#fff1f2'; this.style.transform='scale(1)'">
-                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                    </button>
-                                </form>
+                                    <form id="suspend-form-{{ $user->id }}" action="{{ route('admin.users.suspend', $user) }}" method="POST" style="display:inline;">
+                                        @csrf @method('PATCH')
+                                        <button type="button" onclick="confirmSuspend({{ $user->id }}, {{ $user->is_active ? 'true' : 'false' }})" style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: {{ $user->is_active ? '#ca8a04' : '#16a34a' }}; color: #fff; border-radius: 3px; font-size: 0.75rem; border: none; cursor: pointer;" title="{{ $user->is_active ? 'Suspendre' : 'Activer' }}">
+                                            <i class="fas fa-{{ $user->is_active ? 'lock' : 'lock-open' }}"></i>
+                                        </button>
+                                    </form>
+                                    <form id="delete-form-{{ $user->id }}" action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display:inline;">
+                                        @csrf @method('DELETE')
+                                        <button type="button" onclick="confirmDelete({{ $user->id }})" style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: #e74c3c; color: #fff; border-radius: 3px; font-size: 0.75rem; border: none; cursor: pointer;" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7"
-                                style="padding: 3rem 1.25rem; text-align: center; color: #999; font-size: 0.875rem;">
-                                Aucun utilisateur trouvé
-                            </td>
+                            <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">Aucun utilisateur trouvé.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
-            
-            <!-- Pagination -->
-            <div style="padding: 1rem; border-top: 1px solid #e5e5e5;">
-                {{ $users->links('admin.pagination') }}
+
+            <!-- Pagination type image -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                <div style="font-size: 0.85rem; color: #666;">
+                    Affichage de {{ $users->firstItem() ?? 0 }} à {{ $users->lastItem() ?? 0 }} sur {{ $users->total() }} éléments
+                </div>
+                <div style="display: flex; gap: 0; border: 1px solid #ddd; border-radius: 4px; overflow: hidden;">
+                    @if($users->onFirstPage())
+                        <span style="padding: 6px 12px; background: #fff; color: #ccc; font-size: 0.85rem; border-right: 1px solid #ddd;">Prec</span>
+                    @else
+                        <a href="{{ $users->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none; border-right: 1px solid #ddd;">Prec</a>
+                    @endif
+
+                    @foreach(range(1, $users->lastPage()) as $i)
+                        @if($i == $users->currentPage())
+                            <span style="padding: 6px 12px; background: #e67e00; color: #fff; font-size: 0.85rem; border-right: 1px solid #ddd;">{{ $i }}</span>
+                        @else
+                            <a href="{{ $users->url($i) }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none; border-right: 1px solid #ddd;">{{ $i }}</a>
+                        @endif
+                    @endforeach
+
+                    @if($users->hasMorePages())
+                        <a href="{{ $users->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none;">Suiv</a>
+                    @else
+                        <span style="padding: 6px 12px; background: #fff; color: #ccc; font-size: 0.85rem;">Suiv</span>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Cette action est irréversible !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e67e00',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimer !',
+                cancelButtonText: 'Annuler',
+                borderRadius: '8px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+
+        function confirmSuspend(id, isActive) {
+            const actionText = isActive ? 'suspendre' : 'activer';
+            const actionColor = isActive ? '#ea580c' : '#16a34a';
+            
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: `Voulez-vous vraiment ${actionText} cet utilisateur ?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: actionColor,
+                cancelButtonColor: '#64748b',
+                confirmButtonText: `Oui, ${actionText} !`,
+                cancelButtonText: 'Annuler',
+                borderRadius: '8px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('suspend-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+    @endpush
 @endsection

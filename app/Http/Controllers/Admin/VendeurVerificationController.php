@@ -29,7 +29,7 @@ class VendeurVerificationController extends Controller
         $vendeursEnAttente = Vendeur::where('statut_verification', 'en_attente')
             ->with(['user', 'particulier', 'professionnel'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(8);
 
         return view('admin.vendeurs.verification', compact('vendeursEnAttente'));
     }

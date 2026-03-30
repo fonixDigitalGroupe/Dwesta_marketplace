@@ -33,10 +33,23 @@ class CreditController extends Controller
     // =====================
     // Credit Packs
     // =====================
-    public function packsIndex()
+    public function packsIndex(Request $request)
     {
-        $packs = CreditPack::orderBy('ordre')->get();
-        return view('admin.credits.packs.index', compact('packs'));
+        $query = CreditPack::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nom', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        $search = $request->get('search');
+        $perPage = $request->get('per_page', 8);
+        $packs = $query->orderBy('ordre')->paginate($perPage)->withQueryString();
+
+        return view('admin.credits.packs.index', compact('packs', 'perPage', 'search'));
     }
 
     public function packsCreate()
@@ -60,7 +73,7 @@ class CreditController extends Controller
 
         CreditPack::create($validated);
 
-        return redirect()->route('admin.credits.packs');
+        return redirect()->route('admin.credits.packs')->with('success', 'Pack de crédits créé avec succès.');
     }
 
     public function packsEdit(CreditPack $pack)
@@ -84,13 +97,13 @@ class CreditController extends Controller
 
         $pack->update($validated);
 
-        return redirect()->route('admin.credits.packs');
+        return redirect()->route('admin.credits.packs')->with('success', 'Pack de crédits mis à jour avec succès.');
     }
 
     public function packsDestroy(CreditPack $pack)
     {
         $pack->delete();
-        return redirect()->route('admin.credits.packs')->with('success', 'Pack supprimé.');
+        return redirect()->route('admin.credits.packs')->with('success', 'Pack de crédits supprimé avec succès.');
     }
 
     // =====================

@@ -12,7 +12,15 @@ class CategoryFilterController extends Controller
 {
     public function index(Request $request)
     {
+        $search = $request->get('search');
+        $perPage = $request->get('per_page', 8);
+
         $query = CategoryFilter::with('category.parent.parent');
+
+        // Recherche par nom
+        if (!empty($search)) {
+            $query->where('nom', 'like', "%{$search}%");
+        }
 
         // Filtrage par niveaux de catégories
         if ($request->filled('category_id')) {
@@ -34,10 +42,10 @@ class CategoryFilterController extends Controller
             });
         }
 
-        $filters = $query->latest()->paginate(20);
+        $filters = $query->latest()->paginate($perPage)->withQueryString();
         $parents = Category::whereNull('parent_id')->get();
 
-        return view('admin.filters.index', compact('filters', 'parents'));
+        return view('admin.filters.index', compact('filters', 'parents', 'search', 'perPage'));
     }
 
     public function create()

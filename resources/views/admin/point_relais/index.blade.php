@@ -13,28 +13,16 @@
     <div style="max-width: 1200px;">
 
         <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h1 style="font-size: 1.375rem; color: #333; font-weight: 600;">
-                Dépôts Relais
-            </h1>
-            <div style="display: flex; gap: 10px;">
-                <a href="{{ route('admin.point-relais.create') }}" 
-                   style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background-color: #000; color: #fff; border-radius: 8px; transition: all 0.2s;" 
-                   title="Nouveau Dépôt Relais"
-                   onmouseover="this.style.opacity='0.8'" 
-                   onmouseout="this.style.opacity='1'">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 0.85rem; color: #555; font-weight: 700; text-transform: uppercase; margin: 0; letter-spacing: 0.05em;">
+                Gestion des Dépôts Relais
+            </h2>
+            <div style="display: flex; gap: 8px;">
+                <a href="{{ route('admin.point-relais.create') }}" style="display: flex; align-items: center; gap: 8px; background: #e67e00; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                    Nouveau Dépôt Relais <i class="fas fa-plus-square"></i>
                 </a>
-                <a href="#" 
-                   style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background-color: #e11d48; color: #fff; border-radius: 8px; transition: all 0.2s;" 
-                   title="Télécharger PDF"
-                   onmouseover="this.style.opacity='0.8'" 
-                   onmouseout="this.style.opacity='1'">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
+                <a href="javascript:window.print()" style="display: flex; align-items: center; gap: 8px; background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                    Imprimer <i class="fas fa-print"></i>
                 </a>
             </div>
         </div>
@@ -42,22 +30,36 @@
 
 
         <!-- Table Container -->
-        <div style="background: #fff; border: 1px solid #e5e5e5;">
+        <div style="background: #fff; border: 1px solid #e5e5e5; padding: 1rem;">
 
-            <!-- Table Header -->
-            <div style="padding: 0.875rem 1.25rem; border-bottom: 1px solid #e5e5e5;">
-                <span style="font-size: 0.8rem; color: #666;">{{ $points->total() }} dépôt(s) relais</span>
+            <!-- Barre d'outils secondaire -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 15px; font-size: 0.85rem; color: #333;">
+                    <div>
+                        Afficher 
+                        <select onchange="window.location.href = '{{ request()->url() }}?per_page=' + this.value" 
+                            style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                            <option value="8" {{ request('per_page', 8) == 8 ? 'selected' : '' }}>8</option>
+                            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                        </select>
+                        lignes
+                    </div>
+                </div>
+                <div style="font-size: 0.8rem; color: #666;">
+                    {{ $points->total() }} dépôt(s) relais au total
+                </div>
             </div>
 
             <!-- Table -->
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
-                    <tr style="text-align: left;">
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Dépôt Relais</th>
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Localisation</th>
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Responsable</th>
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Statut</th>
-                        <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5; text-align: right;">Actions</th>
+                    <tr style="background: #fff; border-bottom: 2px solid #eee;">
+                        <th style="padding: 12px 1.25rem; font-size: 0.82rem; font-weight: 700; color: #333; border: 1px solid #eee;">Dépôt Relais</th>
+                        <th style="padding: 12px 1.25rem; font-size: 0.82rem; font-weight: 700; color: #333; border: 1px solid #eee;">Localisation</th>
+                        <th style="padding: 12px 1.25rem; font-size: 0.82rem; font-weight: 700; color: #333; border: 1px solid #eee;">Responsable</th>
+                        <th style="padding: 12px 1.25rem; font-size: 0.82rem; font-weight: 700; color: #333; border: 1px solid #eee;">Statut</th>
+                        <th style="padding: 12px 1.25rem; font-size: 0.82rem; font-weight: 700; color: #333; border: 1px solid #eee; text-align: right;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -85,13 +87,13 @@
                                     <span style="font-size: 0.8rem; color: #999; font-style: italic;">Aucun</span>
                                 @endforelse
                             </td>
-                            <td style="padding: 0.875rem 1.25rem;">
+                            <td style="padding: 0.875rem 1.25rem; border: 1px solid #eee;">
                                 @if($point->is_active)
-                                    <span style="color: #16a34a; font-size: 0.75rem; font-weight: 600;">
+                                    <span style="background: #f0fdf4; color: #166534; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; border: 1px solid #bbf7d0;">
                                         Actif
                                     </span>
                                 @else
-                                    <span style="color: #dc2626; font-size: 0.75rem; font-weight: 600;">
+                                    <span style="background: #fef2f2; color: #991b1b; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; border: 1px solid #fecaca;">
                                         Inactif
                                     </span>
                                 @endif

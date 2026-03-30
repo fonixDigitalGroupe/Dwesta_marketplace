@@ -26,7 +26,7 @@ class LivreurController extends Controller
     {
         $livreurs = Livreur::with('user')
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(8);
 
         $pendingCount = Livreur::where('statut_verification', 'en_attente')->count();
 

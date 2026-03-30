@@ -166,15 +166,15 @@
 
                     <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 1rem; margin-bottom: 1rem;">
                         <span style="color: #64748b; font-size: 0.85rem;">Commission</span>
-                        <span style="color: #0f172a; font-size: 0.85rem; font-weight: 600;">{{ $formule->commission }}%</span>
+                        <span style="color: #0f172a; font-size: 0.85rem; font-weight: 600;">{{ $formule ? $formule->commission : 'N/A' }}%</span>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 1rem; margin-bottom: 1rem;">
                         <span style="color: #64748b; font-size: 0.85rem;">Prix Mensuel</span>
-                        <span style="color: #0f172a; font-size: 0.85rem; font-weight: 600;">{{ number_format($formule->prix_mensuel, 0, ',', ' ') }} FCFA</span>
+                        <span style="color: #0f172a; font-size: 0.85rem; font-weight: 600;">{{ $formule ? number_format($formule->prix_mensuel, 0, ',', ' ') : 0 }} FCFA</span>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 1rem;">
                         <span style="color: #64748b; font-size: 0.85rem;">Page Pro</span>
-                        <span style="color: #0f172a; font-size: 0.85rem; font-weight: 600;">{{ $formule->page_pro ? 'Inclus' : 'Non inclus' }}</span>
+                        <span style="color: #0f172a; font-size: 0.85rem; font-weight: 600;">{{ $formule && $formule->page_pro ? 'Inclus' : 'Non inclus' }}</span>
                     </div>
                 </div>
             </div>

@@ -11,9 +11,23 @@
 <div class="card-pro" style="overflow: hidden;">
     
     <!-- Header -->
-    <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--slate-100); background: #fff;">
-        <h1 style="font-size: 1.25rem; font-weight: 800; color: var(--slate-900); letter-spacing: -0.02em; margin-bottom: 0.25rem;">Modération des Annonces</h1>
-        <p style="font-size: 0.875rem; color: var(--slate-500); font-weight: 500;">Examinez et validez les nouvelles annonces avant publication.</p>
+    <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--slate-100); background: #fff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 style="font-size: 1.25rem; font-weight: 800; color: var(--slate-900); letter-spacing: -0.02em; margin-bottom: 0.25rem;">Modération des Annonces</h1>
+            <p style="font-size: 0.875rem; color: var(--slate-500); font-weight: 500;">Examinez et validez les nouvelles annonces avant publication.</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 15px; font-size: 0.85rem; color: #333;">
+            <div>
+                Afficher 
+                <select onchange="window.location.href = '{{ request()->url() }}?per_page=' + this.value" 
+                    style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                    <option value="8" {{ request('per_page', 8) == 8 ? 'selected' : '' }}>8</option>
+                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                </select>
+                lignes
+            </div>
+        </div>
     </div>
 
     <!-- Table -->

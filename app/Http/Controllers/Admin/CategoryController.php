@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
     public function indexL1()
     {
-        $categories = Category::racines()->parOrdre()->paginate(10);
+        $categories = Category::racines()->parOrdre()->paginate(8);
         return view('admin.categories.index', compact('categories'))->with('level', 1);
     }
 
@@ -30,7 +30,7 @@ class CategoryController extends Controller
         $categories = Category::whereIn('parent_id', Category::racines()->pluck('id'))
             ->with('parent')
             ->parOrdre()
-            ->paginate(10);
+            ->paginate(8);
         return view('admin.categories.index', compact('categories'))->with('level', 2);
     }
 
@@ -40,7 +40,7 @@ class CategoryController extends Controller
         $categories = Category::whereIn('parent_id', $parentIds)
             ->with('parent.parent')
             ->parOrdre()
-            ->paginate(10);
+            ->paginate(8);
         return view('admin.categories.index', compact('categories'))->with('level', 3);
     }
 

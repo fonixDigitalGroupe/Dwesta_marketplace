@@ -10,7 +10,7 @@ class LitigeController extends Controller
 {
     public function index()
     {
-        $litiges = Litige::with(['reporter', 'reported'])->latest()->paginate(10);
+        $litiges = Litige::with(['reporter', 'reported'])->latest()->paginate(8);
         return view('admin.litiges.index', compact('litiges'));
     }
 

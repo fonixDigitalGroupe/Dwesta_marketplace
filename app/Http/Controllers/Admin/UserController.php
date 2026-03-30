@@ -13,11 +13,23 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $search = $request->get('search');
+        $perPage = $request->get('per_page', 8);
+        $role = $request->get('role', 'admin');
+
         $query = User::latest();
 
-        // Filtre par rôle (par défaut : admin si premier chargement)
-        $role = $request->has('role') ? $request->role : 'admin';
-        
+        // Recherche
+        if (!empty($search)) {
+            $query->where(function($q) use ($search) {
+                $q->where('prenom', 'like', "%{$search}%")
+                  ->orWhere('nom', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('telephone', 'like', "%{$search}%");
+            });
+        }
+
+        // Filtre par rôle
         if ($role === 'admin') {
             $query->role('admin');
         } elseif ($role === 'vendeur_pro') {
@@ -37,18 +49,18 @@ class UserController extends Controller
         }
 
         // Filtre par nationalité
-        if ($request->has('nationalite') && !empty($request->nationalite)) {
+        if ($request->filled('nationalite')) {
             $query->where('nationalite', $request->nationalite);
         }
 
         // Filtre par civilité
-        if ($request->has('civilite') && !empty($request->civilite)) {
+        if ($request->filled('civilite')) {
             $query->where('civilite', $request->civilite);
         }
 
-        $users = $query->paginate(8);
+        $users = $query->paginate($perPage)->withQueryString();
 
-        return view('admin.users.index', compact('users', 'role'));
+        return view('admin.users.index', compact('users', 'role', 'search', 'perPage'));
     }
 
     /**

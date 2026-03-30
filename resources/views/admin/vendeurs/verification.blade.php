@@ -22,7 +22,19 @@
     <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 2px;">
         
         <!-- Table Header Info -->
-        <div style="padding: 0.875rem 1.25rem; border-bottom: 1px solid #e5e5e5; background: #fff;">
+        <div style="padding: 1rem 1.25rem; border-bottom: 1px solid #e5e5e5; background: #fff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 15px; font-size: 0.85rem; color: #333;">
+                <div>
+                    Afficher 
+                    <select onchange="window.location.href = '{{ request()->url() }}?per_page=' + this.value" 
+                        style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                        <option value="8" {{ request('per_page', 8) == 8 ? 'selected' : '' }}>8</option>
+                        <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                    lignes
+                </div>
+            </div>
             <span style="font-size: 0.8rem; color: #666; font-weight: 600;">
                 {{ $vendeursEnAttente->total() }} dossier(s) en attente
             </span>

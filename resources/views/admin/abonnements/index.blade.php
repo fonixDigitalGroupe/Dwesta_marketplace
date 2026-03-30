@@ -2,104 +2,94 @@
 
 @section('title', 'Gestion des Packs d\'Abonnement')
 
-@section('breadcrumbs')
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <span style="color: #666;">Paramètres</span>
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <span style="color: #333; font-weight: 500;">Packs d'Abonnement</span>
-@endsection
+@push('styles')
+<style>
+    .main-content { background-color: #f8f9fa !important; }
+    select:focus, input:focus {
+        border-color: #aaa !important;
+        box-shadow: 0 0 0 2px rgba(0,0,0,0.05) !important;
+        outline: none;
+    }
+</style>
+@endpush
+
 
 @section('content')
-    <div style="max-width: 1000px;">
+    <div style="max-width: 100%;">
 
-        <!-- Header avec bouton -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h1 style="font-size: 1.375rem; color: #333; font-weight: 600;">
-                Packs d'Abonnement
-            </h1>
-            <a href="{{ route('admin.abonnements.create') }}"
-                style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background-color: #000; color: #fff; border-radius: 8px; transition: all 0.2s;" 
-                title="Ajouter un pack"
-                onmouseover="this.style.opacity='0.8'" 
-                onmouseout="this.style.opacity='1'">
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
-                </svg>
+        <!-- Titre en majuscules type image -->
+        <h2 style="font-size: 0.85rem; color: #555; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; letter-spacing: 0.05em;">
+            Gestion des Packs d'Abonnement
+        </h2>
+
+        <!-- Barre d'outils type image -->
+        <div style="display: flex; gap: 8px; margin-bottom: 1.5rem;">
+            <a href="{{ route('admin.abonnements.index') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                Liste des packs <i class="fas fa-undo" style="font-size: 0.75rem; opacity: 0.6;"></i>
+            </a>
+            <a href="{{ route('admin.abonnements.create') }}" style="display: flex; align-items: center; gap: 8px; background: #e67e00; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; text-decoration: none; transition: opacity 0.2s;">
+                Nouveau pack <i class="fas fa-plus-square"></i>
             </a>
         </div>
 
-        @if(session('success'))
-            <div style="background:#d4edda;color:#155724;padding:0.75rem 1rem;border-radius:6px;margin-bottom:1rem;">{{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div style="background:#f8d7da;color:#721c24;padding:0.75rem 1rem;border-radius:6px;margin-bottom:1rem;">{{ session('error') }}</div>
-        @endif
 
-        <!-- Table Container -->
-        <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden;">
-
-            <!-- Table Header -->
-            <div style="padding: 0.875rem 1.25rem; border-bottom: 1px solid #e5e5e5; background: #fcfcfc;">
-                <span style="font-size: 0.8rem; color: #666;">{{ $abonnements->count() }} pack(s) configuré(s)</span>
+        <!-- Main Conteneur -->
+        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1rem;">
+            
+            <!-- Filtres type image -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div style="font-size: 0.85rem; color: #333;">
+                    Afficher 
+                    <select onchange="window.location.href = '{{ route('admin.abonnements.index') }}?per_page=' + this.value + '&search={{ $search }}'" 
+                        style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                        <option value="8" {{ $perPage == 8 ? 'selected' : '' }}>8</option>
+                        <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                    lignes
+                </div>
+                <div style="font-size: 0.85rem; color: #333;">
+                    <form action="{{ route('admin.abonnements.index') }}" method="GET" style="display: flex; align-items: center;">
+                        <input type="hidden" name="per_page" value="{{ $perPage }}">
+                        Chercher: <input type="text" name="search" value="{{ $search }}" 
+                            placeholder="Tapez et Entrée..."
+                            style="padding: 6px 10px; border: 1px solid #ddd; border-radius: 3px; outline: none; margin-left: 5px; background-color: #fff;">
+                    </form>
+                </div>
             </div>
 
             <!-- Table -->
-            <table style="width: 100%; border-collapse: collapse;">
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid #eee;">
+                <thead>
+                    <tr style="background: #fff; border-bottom: 2px solid #eee;">
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.85rem; font-weight: 700; color: #333; width: 220px;">Nom du Pack</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.85rem; font-weight: 700; color: #333;">Description</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.85rem; font-weight: 700; color: #333;">Commission</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.85rem; font-weight: 700; color: #333;">Annonces</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.85rem; font-weight: 700; color: #333; width: 140px;">Prix Mensuel</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: right; font-size: 0.85rem; font-weight: 700; color: #333; width: 80px;">Action</th>
+                    </tr>
+                </thead>
                 <tbody>
                     @forelse($abonnements as $abonnement)
-                        <tr style="border-bottom: 1px solid #e5e5e5; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f9fafb'" onmouseout="this.style.backgroundColor='transparent'">
-                            <!-- Info Column -->
-                            <td style="padding: 0.875rem 0.5rem; padding-left: 1.25rem;">
-                                <div style="font-size: 0.875rem; color: #333; font-weight: 600;">{{ $abonnement->nom }}</div>
-                                <div style="font-size: 0.75rem; color: #666;">{{ Str::limit($abonnement->description, 60) }}</div>
+                        <tr style="transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit;">
+                                <span style="background: #fff3e0; color: #e67e00; padding: 4px 10px; border-radius: 4px; font-weight: 600; font-size: 0.75rem;">{{ $abonnement->nom }}</span>
                             </td>
-
-                            <!-- Details Column -->
-                            <td style="padding: 0.875rem 0.5rem;">
-                                <div style="font-size: 0.8rem; color: #333;">Com : <strong>{{ $abonnement->commission }}%</strong></div>
-                                <div style="font-size: 0.75rem; color: #666;">{{ $abonnement->nombre_annonces > 0 ? $abonnement->nombre_annonces . ' annonces' : 'Annonces illimitées' }}</div>
-                            </td>
-
-                            <!-- Price Column -->
-                            <td style="padding: 0.875rem 0.5rem; text-align: center;">
-                                <span style="font-size: 0.875rem; font-weight: 700; color: #111827;">{{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} FCFA</span>
-                                <div style="font-size: 0.7rem; color: #9ca3af;">/ mois</div>
-                            </td>
-
-                            <!-- Status Column -->
-                            <td style="padding: 0.875rem 0.5rem; text-align: center;">
-                                <span style="display: inline-block; background:{{ $abonnement->actif ? '#dcfce7' : '#fee2e2' }}; color:{{ $abonnement->actif ? '#166534' : '#991b1b' }}; padding: 0.25rem 0.625rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.025em;">
-                                    {{ $abonnement->actif ? 'Actif' : 'Inactif' }}
-                                </span>
-                            </td>
-
-                            <!-- Actions Column -->
-                            <td style="padding: 0.875rem 1.25rem; text-align: right;">
-                                <div style="display: flex; justify-content: flex-end; gap: 6px;">
-                                    <a href="{{ route('admin.abonnements.edit', $abonnement) }}" 
-                                       style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #004aad; background: #eef2ff; border-radius: 8px; transition: all 0.2s;" 
-                                       title="Modifier"
-                                       onmouseover="this.style.background='#e0e7ff'" 
-                                       onmouseout="this.style.background='#eef2ff'">
-                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                        </svg>
+                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit;">{{ ucfirst(Str::limit($abonnement->description, 50)) }}</td>
+                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit;">{{ $abonnement->commission }} %</td>
+                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit;">{{ $abonnement->nombre_annonces > 0 ? $abonnement->nombre_annonces : 'ıllımıté' }}</td>
+                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit;">{{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} F</td>
+                            <td style="padding: 10px; border: 1px solid #eee; text-align: right;">
+                                <div style="display: flex; gap: 4px; justify-content: flex-end;">
+                                    <a href="{{ route('admin.abonnements.edit', $abonnement) }}" style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: #004aad; color: #fff; border-radius: 3px; font-size: 0.75rem; text-decoration: none; font-weight: 600;" title="Modifier">
+                                        <i class="fas fa-edit"></i>
                                     </a>
-
-                                    <form action="{{ route('admin.abonnements.destroy', $abonnement) }}" method="POST" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce pack ?');">
-                                        @csrf @method('DELETE')
-                                        <button type="submit" 
-                                                style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #ef4444; background: #fff1f2; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;" 
-                                                title="Supprimer"
-                                                onmouseover="this.style.background='#ffe4e6'" 
-                                                onmouseout="this.style.background='#fff1f2'">
-                                            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                            </svg>
+                                    <form id="delete-form-{{ $abonnement->id }}" action="{{ route('admin.abonnements.destroy', $abonnement) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" onclick="confirmDelete({{ $abonnement->id }})" style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: #e74c3c; color: #fff; border-radius: 3px; font-size: 0.75rem; border: none; cursor: pointer;" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -107,13 +97,60 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="padding: 3rem 1.25rem; text-align: center; color: #9ca3af; font-size: 0.875rem;">
-                                Aucun pack d'abonnement configuré.
-                            </td>
+                            <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">Aucun pack trouvé.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
+
+            <!-- Pagination type image -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                <div style="font-size: 0.85rem; color: #666;">
+                    Affichage de {{ $abonnements->firstItem() ?? 0 }} à {{ $abonnements->lastItem() ?? 0 }} sur {{ $abonnements->total() }} éléments
+                </div>
+                <div style="display: flex; gap: 0; border: 1px solid #ddd; border-radius: 4px; overflow: hidden;">
+                    @if($abonnements->onFirstPage())
+                        <span style="padding: 6px 12px; background: #fff; color: #ccc; font-size: 0.85rem; border-right: 1px solid #ddd;">Prec</span>
+                    @else
+                        <a href="{{ $abonnements->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none; border-right: 1px solid #ddd;">Prec</a>
+                    @endif
+
+                    @foreach(range(1, $abonnements->lastPage()) as $i)
+                        @if($i == $abonnements->currentPage())
+                            <span style="padding: 6px 12px; background: #e67e00; color: #fff; font-size: 0.85rem; border-right: 1px solid #ddd;">{{ $i }}</span>
+                        @else
+                            <a href="{{ $abonnements->url($i) }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none; border-right: 1px solid #ddd;">{{ $i }}</a>
+                        @endif
+                    @endforeach
+
+                    @if($abonnements->hasMorePages())
+                        <a href="{{ $abonnements->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none;">Suiv</a>
+                    @else
+                        <span style="padding: 6px 12px; background: #fff; color: #ccc; font-size: 0.85rem;">Suiv</span>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
+    @push('scripts')
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Cette action est irréversible !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e67e00',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimer !',
+                cancelButtonText: 'Annuler',
+                borderRadius: '8px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+    @endpush
 @endsection

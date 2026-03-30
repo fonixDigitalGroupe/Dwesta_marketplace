@@ -170,7 +170,7 @@ class PointRelaisController extends Controller
      */
     public function index()
     {
-        $points = PointRelais::with('users')->paginate(10);
+        $points = PointRelais::with('users')->paginate(8);
         return view('admin.point_relais.index', compact('points'));
     }
 

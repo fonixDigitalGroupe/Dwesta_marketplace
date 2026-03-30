@@ -8,10 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    @stack('styles')
     <style>
         :root {
             --mady-red: #bf0000;
             --mady-red-hover: #a00000;
+            --mady-blue: #004aad;
+            --sidebar-bg: #002e6b; /* Even darker blue for a more professional look */
+            --sidebar-text: rgba(255, 255, 255, 0.85);
+            --sidebar-text-hover: #ffffff;
+            --sidebar-hover: rgba(255, 255, 255, 0.1);
+            --sidebar-active: rgba(255, 255, 255, 0.15);
+            --sidebar-text-hover: #ffffff;
             --slate-50: #f8fafc;
             --slate-100: #f1f5f9;
             --slate-200: #e2e8f0;
@@ -24,259 +33,226 @@
             --slate-900: #0f172a;
         }
 
-        /* SweetAlert Custom Styles */
-        .swal2-small-popup {
-            width: 320px !important;
-            padding: 1rem !important;
-        }
-        .swal2-small-icon {
-            transform: scale(0.5);
-            margin-top: 0.5rem !important;
-            margin-bottom: -0.5rem !important;
-        }
-        .swal2-small-title {
-            font-size: 1.1rem !important;
-            padding-top: 0 !important;
-        }
-        .swal2-small-content {
-            font-size: 0.85rem !important;
-        }
-        .swal2-small-actions {
-            gap: 8px !important;
-        }
-        .swal2-small-confirm, .swal2-small-cancel {
-            padding: 8px 16px !important;
-            font-size: 0.8rem !important;
-        }
-
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
         }
 
+        [x-cloak] {
+            display: none !important;
+        }
+
+        /* Layout Structure */
         body {
-            background-color: #ffffff;
-            color: #333;
+            background-color: #f9fafb;
+            color: #111827;
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
         }
 
-        /* Public Header Styles Replication */
-        .top-banner {
-            background-color: #004aad;
-            height: 40px;
-            width: 100%;
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
         }
 
+        /* Sidebar Dark Theme Refined */
+        .sidebar {
+            width: 260px; /* Adjusted for better balance */
+            background-color: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Control scroll on menu div instead */
+            flex-shrink: 0;
+            z-index: 100;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+        }
+
+        .sidebar-brand {
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+        }
+
+        .sidebar-user {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #1f2937;
+        }
+
+        .sidebar-user h2 {
+            font-size: 0.95rem;
+            color: #fff;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .sidebar-section {
+            padding: 0.5rem 0;
+        }
+
+        .sidebar-title {
+            padding: 1.25rem 1.75rem 0.5rem 1.75rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-container {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 2rem;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.75rem 1.5rem;
+            color: var(--sidebar-text);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .sidebar-menu li a:hover {
+            background-color: var(--sidebar-hover);
+            color: var(--sidebar-text-hover);
+        }
+
+        .sidebar-menu li a.active {
+            background-color: var(--sidebar-active);
+            color: #fff;
+        }
+
+        .sidebar-menu li a.active i {
+            color: #ff8c00 !important;
+            opacity: 1;
+        }
+
+        .sidebar-menu li a i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            background-color: #f9fafb;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
 
         .header {
             background-color: #ffffff;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e5e7eb;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
             position: sticky;
             top: 0;
-            z-index: 2000;
-        }
-
-        .header-row-1 {
-            border-bottom: 1px solid #f0f0f0;
-            padding: 0.5rem 0;
+            z-index: 50;
         }
 
         .header-container {
             width: 100%;
-            padding: 0 1.5rem;
             display: flex;
             align-items: center;
-            position: relative;
-            max-width: 1600px;
+            justify-content: space-between;
+            max-width: 1400px;
             margin: 0 auto;
-            min-height: 50px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #1e293b;
-            flex-shrink: 0;
         }
 
         .search-container {
-            width: 100%;
-            max-width: 600px;
-            display: flex;
-            align-items: center;
-            margin-left: 3rem;
-        }
-
-        .search-field {
             flex: 1;
-            display: flex;
-            align-items: stretch;
-            gap: 0.5rem;
+            max-width: 400px;
         }
 
         .search-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 1rem;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background-color: #f3f4f6;
+            border: 1px solid transparent;
+            border-radius: 9999px;
+            font-size: 0.875rem;
             outline: none;
+            transition: all 0.2s;
         }
 
-        .search-button {
-            background-color: #ff8c00;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 0 1.25rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .search-button:hover {
-            background-color: #e67e00;
+        .search-input:focus {
+            background-color: #fff;
+            border-color: var(--mady-blue);
+            box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
         }
 
         .header-actions {
             display: flex;
             align-items: center;
             gap: 1.5rem;
-            margin-left: auto;
-            flex-shrink: 0;
         }
 
         .header-link {
+            color: #4b5563;
+            text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            color: #333;
-            font-size: 0.9rem;
+            gap: 8px;
+            font-size: 0.875rem;
             font-weight: 500;
-            position: relative;
         }
 
         .header-link:hover {
-            color: #000;
+            color: #111827;
         }
 
-        .header-link svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Admin Layout Structure */
-        .admin-main {
-            display: flex;
-            max-width: 1600px;
-            /* Largeur max augmentée pour le confort admin */
-            margin: 2rem auto;
-            margin-left: 3rem;
-            padding: 0 1.5rem;
-            gap: 2rem;
-        }
-
-        /* Sidebar Style Rakuten */
-        .sidebar {
-            width: 240px;
-            flex-shrink: 0;
-            background: #fff;
-            border: 1px solid #e5e5e5;
-            border-radius: 0;
-            padding: 0;
-            height: fit-content;
-        }
-
-        .sidebar-user {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #e5e5e5;
-        }
-
-        .sidebar-user h2 {
-            font-size: 1rem;
-            color: #333;
-            font-weight: 600;
-        }
-
-        .sidebar-section {
-            border-bottom: 1px solid #f0f0f0;
-            padding: 0.75rem 0;
-        }
-
-        .sidebar-section:last-child {
-            border-bottom: none;
-        }
-
-        .sidebar-title {
-            padding: 0.5rem 1rem;
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .sidebar-title svg {
-            width: 18px;
-            height: 18px;
-            color: #666;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-        }
-
-        .sidebar-menu li a {
-            display: block;
-            padding: 0.35rem 1rem 0.35rem 2.75rem;
-            color: #666;
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: color 0.15s;
-        }
-
-        .sidebar-menu li a:hover {
-            color: #000;
-        }
-
-        .sidebar-menu li a.active {
-            color: #000;
-            font-weight: 600;
-        }
-
-        /* Main Viewport */
-        .viewport {
-            flex: 1;
-            min-width: 0;
-            background: transparent;
-        }
-
-        /* Breadcrumb */
+        /* Breadcrumb Refined */
         .breadcrumb {
-            max-width: 1600px;
-            margin: 1rem auto;
-            margin-left: 3rem;
-            padding: 0 1.5rem;
-            font-size: 0.85rem;
-            color: #666;
+            padding: 1rem 1.5rem 0.5rem 1.5rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
         }
 
         .breadcrumb a {
-            color: #666;
+            color: #6b7280;
             text-decoration: none;
         }
 
         .breadcrumb a:hover {
-            text-decoration: underline;
+            color: var(--mady-blue);
+        }
+
+        /* Viewport Padding */
+        .viewport {
+            padding: 1.5rem;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
         }
 
         /* User Dropdown */
@@ -288,29 +264,29 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             padding: 0.5rem;
-            border-radius: 4px;
+            border-radius: 8px;
             transition: background 0.2s;
         }
 
         .user-dropdown-trigger:hover {
-            background-color: #f6f6f6;
+            background-color: #f3f4f6;
         }
 
         .user-dropdown-menu {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 8px);
             right: 0;
-            width: 200px;
+            width: 220px;
             background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            margin-top: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             display: none;
-            z-index: 3000;
+            z-index: 100;
             overflow: hidden;
+            animation: slideIn 0.2s ease-out;
         }
 
         .user-dropdown-menu.show {
@@ -320,11 +296,11 @@
         .user-dropdown-item {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 12px;
             padding: 0.75rem 1rem;
-            color: #333;
+            color: #374151;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             transition: all 0.2s;
             border: none;
             background: none;
@@ -334,228 +310,127 @@
         }
 
         .user-dropdown-item:hover {
-            background-color: #f9f9f9;
-            color: #bf0000;
-        }
-
-        .user-dropdown-divider {
-            height: 1px;
-            background-color: #f0f0f0;
-            margin: 0.25rem 0;
-        }
-
-        /* Global UI Utilities */
-        .card-pro {
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 2rem;
-        }
-
-        .btn-pro-primary {
-            background: var(--mady-red);
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 4px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        .btn-pro-primary:hover {
-            background: var(--mady-red-hover);
-            color: white;
-        }
-
-        @media (max-width: 1100px) {
-            .admin-main {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-            }
+            background-color: #f9fafb;
+            color: var(--mady-blue);
         }
 
         @keyframes slideIn {
-            from { transform: translateY(-10px); opacity: 0; }
+            from { transform: translateY(10px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-    </style>
-    <style>
-        /* SweetAlert2 Custom popup */
-        div:where(.swal2-container) div:where(.swal2-popup) {
-            font-size: 0.85rem !important;
-            border-radius: 8px !important;
-            width: 380px !important;
-            padding: 1rem !important; /* Hauteur réduite */
+
+        /* Custom Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
-        div:where(.swal2-container) div:where(.swal2-icon) {
-            width: 3.5em !important;
-            height: 3.5em !important;
-            margin: 0.5em auto 0.5em auto !important;
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
         }
-        div:where(.swal2-container) h2:where(.swal2-title) {
-            padding: 0.2em 0 !important;
-            font-size: 1.1em !important;
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
         }
-        div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
-            background-color: #333 !important; /* Noir comme demandé */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Darker scrollbar for sidebar */
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #4b5563;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #374151;
         }
     </style>
     @stack('styles')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body class="h-full">
 
-    <div class="top-banner"></div>
-
-
-
-    <header class="header">
-        <div class="header-row-1">
-            <div class="header-container">
-                <a href="{{ route('home') }}" class="logo" title="Retour à l'accueil">
-                    @if(isset($siteSettings['logo']))
-                        <img src="{{ asset('storage/' . $siteSettings['logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 22px; width: auto;">
-                    @else
-                        <img src="{{ asset('images/logo.png') }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 22px; width: auto;">
-                    @endif
-                </a>
-
-                <div class="search-container">
-                    <form action="#" method="GET" style="width: 100%;">
-                        <div class="search-field">
-                            <input type="text" class="search-input" placeholder="Rechercher dans l'administration..."
-                                autocomplete="off">
-                            <button type="submit" class="search-button">
-                                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="header-actions">
-                    <a href="{{ route('home') }}" class="header-link" title="Aller sur le site">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                            </path>
-                        </svg>
-                        <span>Site public</span>
-                    </a>
-
-                    <div class="user-dropdown-container">
-                        <div class="user-dropdown-trigger" id="userMenuTrigger">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                style="width: 20px; height: 20px;">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                            <span
-                                style="font-size: 0.9rem; font-weight: 500; color: #333;">{{ auth()->user()->prenom }}</span>
-                            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                style="opacity: 0.5;">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                    d="M19 9l-7 7-7-7"></path>
-                            </svg>
-                        </div>
-                        <div class="user-dropdown-menu" id="userDropdownMenu">
-                            <a href="{{ route('profile.show') }}" class="user-dropdown-item">
-                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                </svg>
-                                Mon compte
-                            </a>
-                            <div class="user-dropdown-divider"></div>
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="user-dropdown-item" style="color: #e03131;">
-                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                                        </path>
-                                    </svg>
-                                    Déconnexion
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Breadcrumb -->
-    <div class="breadcrumb">
-        <a href="{{ route('home') }}">Accueil</a> > <span>Administration</span>
-        @yield('breadcrumbs')
-    </div>
-
-    <div class="admin-main">
+    <div class="admin-wrapper">
+        <!-- Sidebar inclusion -->
         @include('layouts.partials.admin-sidebar')
 
-        <main class="viewport">
-            @if(session('success'))
-                <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 0.875rem 1.25rem; margin-bottom: 1.5rem; border-radius: 8px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); animation: slideIn 0.3s ease-out;" role="alert">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="background: #dcfce7; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                        </div>
-                        <span style="font-size: 0.875rem; font-weight: 500;">{{ session('success') }}</span>
+        <div class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-container">
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Rechercher...">
                     </div>
-                    <button onclick="this.parentElement.remove()" style="background: none; border: none; cursor: pointer; color: #166534; opacity: 0.5; transition: opacity 0.2s; padding: 4px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
+
+                    <div class="header-actions">
+                        <a href="{{ route('home') }}" class="header-link" title="Aller sur le site">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span>Site public</span>
+                        </a>
+
+                        <div class="user-dropdown-container">
+                            <div class="user-dropdown-trigger" id="userMenuTrigger">
+                                <div style="width: 32px; height: 32px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #4b5563;">
+                                    <i class="fas fa-user text-sm"></i>
+                                </div>
+                                <span style="font-size: 0.875rem; font-weight: 600; color: #111827;">{{ auth()->user()->prenom }}</span>
+                                <i class="fas fa-chevron-down" style="font-size: 0.75rem; opacity: 0.4;"></i>
+                            </div>
+                            <div class="user-dropdown-menu" id="userDropdownMenu">
+                                <a href="{{ route('profile.show') }}" class="user-dropdown-item">
+                                    <i class="fas fa-user-circle"></i>
+                                    Mon compte
+                                </a>
+                                <div style="height: 1px; background: #f3f4f6;"></div>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="user-dropdown-item" style="color: #ef4444;">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        Déconnexion
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </header>
+
+            <!-- Breadcrumb -->
+            @hasSection('breadcrumbs')
+            <div class="breadcrumb">
+                <a href="{{ route('admin.dashboard') }}">Dashboard</a> <span style="margin: 0 0.5rem; opacity: 0.4;">/</span>
+                @yield('breadcrumbs')
+            </div>
             @endif
 
-            @if($errors->any())
-                <div style="background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 1rem 1.25rem; margin-bottom: 1.5rem; border-radius: 8px; position: relative; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); animation: slideIn 0.3s ease-out;" role="alert">
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
-                        <div style="background: #fee2e2; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" y1="8" x2="12" y2="12"></line>
-                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                            </svg>
-                        </div>
-                        <span style="font-size: 0.875rem; font-weight: 600;">Oups ! Un petit problème :</span>
+            <!-- Content -->
+            <main class="viewport">
+                @if(session('success'))
+                    <div id="success-alert" style="background: #28a745; color: #fff; padding: 12px 20px; border-radius: 4px; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; font-weight: 500; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: opacity 0.5s ease-out; animation: slideIn 0.3s ease-out;" role="alert">
+                        <i class="fas fa-check-circle"></i>
+                        <span>{{ session('success') }}</span>
                     </div>
-                    <ul style="list-style: none; margin: 0; padding: 0 0 0 36px; font-size: 0.85rem; line-height: 1.5;">
-                        @foreach ($errors->all() as $error)
-                            <li style="display: flex; align-items: flex-start; gap: 6px;">
-                                <span style="color: #ef4444;">•</span> {{ $error }}
-                            </li>
-                        @endforeach
-                    </ul>
-                    <button onclick="this.parentElement.remove()" style="position: absolute; top: 0.875rem; right: 0.875rem; background: none; border: none; cursor: pointer; color: #991b1b; opacity: 0.5; transition: opacity 0.2s; padding: 4px;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
-                </div>
-            @endif
+                @endif
 
-            @yield('content')
-        </main>
+                @if($errors->any())
+                    <div style="background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 1rem 1.25rem; margin-bottom: 1.5rem; border-radius: 12px; position: relative; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); animation: slideIn 0.3s ease-out;" role="alert">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                            <div style="background: #fee2e2; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-exclamation-triangle" style="font-size: 0.8rem;"></i>
+                            </div>
+                            <span style="font-size: 0.875rem; font-weight: 600;">Oups ! Un petit problème :</span>
+                        </div>
+                        <ul style="list-style: none; margin: 0; padding: 0 0 0 36px; font-size: 0.85rem; line-height: 1.5;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @yield('content')
+            </main>
+        </div>
     </div>
 
     <script>
@@ -577,67 +452,16 @@
                 });
             }
 
-            // Global Delete Confirmation (SweetAlert2)
-            document.querySelectorAll('.delete-form').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    Swal.fire({
-                        title: 'Êtes-vous sûr ?',
-                        text: "Cette action est irréversible.",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#004aad',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Oui, supprimer',
-                        cancelButtonText: 'Annuler',
-                        customClass: {
-                            popup: 'swal2-small-popup',
-                            icon: 'swal2-small-icon',
-                            title: 'swal2-small-title',
-                            htmlContainer: 'swal2-small-content',
-                            actions: 'swal2-small-actions',
-                            confirmButton: 'swal2-small-confirm',
-                            cancelButton: 'swal2-small-cancel'
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
-            });
-
-            // Suspend/Activate Confirmation
-            document.querySelectorAll('.suspend-form').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const title = this.getAttribute('data-confirm-title') || 'Confirmer l\'action';
-                    
-                    Swal.fire({
-                        title: title,
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#004aad',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Confirmer',
-                        cancelButtonText: 'Annuler',
-                        customClass: {
-                            popup: 'swal2-small-popup',
-                            icon: 'swal2-small-icon',
-                            title: 'swal2-small-title',
-                            htmlContainer: 'swal2-small-content',
-                            actions: 'swal2-small-actions',
-                            confirmButton: 'swal2-small-confirm',
-                            cancelButton: 'swal2-small-cancel'
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
-            });
+            // Auto-dismiss success alert
+            const successAlert = document.getElementById('success-alert');
+            if (successAlert) {
+                setTimeout(() => {
+                    successAlert.style.opacity = '0';
+                    setTimeout(() => {
+                        successAlert.remove();
+                    }, 500);
+                }, 5000);
+            }
         });
     </script>
     @stack('scripts')
