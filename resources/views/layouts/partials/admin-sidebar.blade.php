@@ -48,21 +48,10 @@
             </ul>
         </div>
 
-        <div class="sidebar-section" x-data="{ openContent: {{ request()->routeIs('admin.banners.*', 'admin.highlights.*') ? 'true' : 'false' }} }">
+        <div class="sidebar-section">
             <ul class="sidebar-menu">
-                <li>
-                    <a href="javascript:void(0)" @click="openContent = !openContent" style="display: flex; align-items: center; justify-content: space-between;">
-                        <span style="display: flex; align-items: center; gap: 12px;">
-                            <i class="fas fa-photo-video" style="color: #ff8c00;"></i>
-                            Contenu
-                        </span>
-                        <i class="fas fa-chevron-down" style="font-size: 0.6rem; transition: transform 0.2s;" :style="openContent ? 'transform: rotate(180deg)' : ''"></i>
-                    </a>
-                    <ul class="sidebar-submenu" x-show="openContent" x-cloak style="list-style: none; padding-left: 1rem; background: rgba(0,0,0,0.05);">
-                        <li><a href="{{ route('admin.banners.index') }}" class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.5rem 1.5rem;"><i class="fas fa-image" style="font-size: 0.8rem; opacity: 0.7;"></i> Bannières</a></li>
-                        <li><a href="{{ route('admin.highlights.index') }}" class="{{ request()->routeIs('admin.highlights.*') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.5rem 1.5rem;"><i class="fas fa-newspaper" style="font-size: 0.8rem; opacity: 0.7;"></i> Actualités</a></li>
-                    </ul>
-                </li>
+                <li><a href="{{ route('admin.banners.index') }}" class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}"><i class="fas fa-image" style="color: #ff8c00;"></i> Bannières</a></li>
+                <li><a href="{{ route('admin.highlights.index') }}" class="{{ request()->routeIs('admin.highlights.*') ? 'active' : '' }}"><i class="fas fa-newspaper" style="color: #ff8c00;"></i> Actualités</a></li>
             </ul>
         </div>
 
@@ -77,12 +66,12 @@
                         <i class="fas fa-chevron-down" style="font-size: 0.6rem; transition: transform 0.2s;" :style="openParams ? 'transform: rotate(180deg)' : ''"></i>
                     </a>
                     <ul class="sidebar-submenu" x-show="openParams" x-cloak style="list-style: none; padding-left: 1rem; background: rgba(0,0,0,0.05);">
-                        <li><a href="{{ route('admin.categories.l1') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.5rem 1.5rem;"><i class="fas fa-sitemap" style="font-size: 0.8rem; opacity: 0.7;"></i> Catégories</a></li>
-                        <li><a href="{{ route('admin.filters.index') }}" class="{{ request()->routeIs('admin.filters.*') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.5rem 1.5rem;"><i class="fas fa-filter" style="font-size: 0.8rem; opacity: 0.7;"></i> Filtres</a></li>
-                        <li><a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.index') && !request()->has('role') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.5rem 1.5rem;"><i class="fas fa-users" style="font-size: 0.8rem; opacity: 0.7;"></i> Utilisateurs</a></li>
-                        <li><a href="{{ route('admin.settings.index') }}" class="{{ request()->routeIs('admin.settings.index') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.5rem 1.5rem;"><i class="fas fa-tools" style="font-size: 0.8rem; opacity: 0.7;"></i> Configuration</a></li>
-                        <li><a href="{{ route('admin.credits.packs') }}" class="{{ request()->routeIs('admin.credits.packs*') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.5rem 1.5rem;"><i class="fas fa-coins" style="font-size: 0.8rem; opacity: 0.7;"></i> Packs Crédits</a></li>
-                        <li><a href="{{ route('admin.abonnements.index') }}" class="{{ request()->routeIs('admin.abonnements.*') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.5rem 1.5rem;"><i class="fas fa-id-card" style="font-size: 0.8rem; opacity: 0.7;"></i> Abonnements</a></li>
+                        <li><a href="{{ route('admin.categories.l1') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.75rem 1.5rem;"><i class="fas fa-sitemap" style="font-size: 0.8rem; opacity: 0.7;"></i> Catégories</a></li>
+                        <li><a href="{{ route('admin.filters.index') }}" class="{{ request()->routeIs('admin.filters.*') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.75rem 1.5rem;"><i class="fas fa-filter" style="font-size: 0.8rem; opacity: 0.7;"></i> Filtres</a></li>
+                        <li><a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.index') && !request()->has('role') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.75rem 1.5rem;"><i class="fas fa-users" style="font-size: 0.8rem; opacity: 0.7;"></i> Utilisateurs</a></li>
+                        <li><a href="{{ route('admin.settings.index') }}" class="{{ request()->routeIs('admin.settings.index') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.75rem 1.5rem;"><i class="fas fa-tools" style="font-size: 0.8rem; opacity: 0.7;"></i> Configuration</a></li>
+                        <li><a href="{{ route('admin.credits.packs') }}" class="{{ request()->routeIs('admin.credits.packs*') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.75rem 1.5rem;"><i class="fas fa-coins" style="font-size: 0.8rem; opacity: 0.7;"></i> Packs Crédits</a></li>
+                        <li><a href="{{ route('admin.abonnements.index') }}" class="{{ request()->routeIs('admin.abonnements.*') ? 'active' : '' }}" style="font-size: 0.8rem; padding: 0.75rem 1.5rem;"><i class="fas fa-id-card" style="font-size: 0.8rem; opacity: 0.7;"></i> Abonnements</a></li>
                     </ul>
                 </li>
             </ul>
