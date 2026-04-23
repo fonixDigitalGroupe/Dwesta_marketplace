@@ -74,37 +74,38 @@
 
 @section('content')
     <div style="max-width: 100%;">
+        <!-- Main Conteneur -->
+        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1.5rem;">
+            
+            <div style="margin-bottom: 0.5rem;">
+                <h1 style="font-size: 1.25rem; font-weight: 700; color: #333; margin: 0;">Nouveau pack de crédits</h1>
+            </div>
+            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1rem;"></div>
 
-        <!-- Titre en majuscules -->
-        <h2 style="font-size: 0.85rem; color: #555; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; letter-spacing: 0.05em;">
-            Nouveau pack de crédits
-        </h2>
+            <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1rem;">
+                <a href="{{ route('admin.credits.packs') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#e67e00'" onmouseout="this.style.borderColor='#ddd'">
+                    Retour à la liste <i class="fas fa-undo" style="font-size: 0.75rem; opacity: 0.6;"></i>
+                </a>
+            </div>
 
-        <!-- Barre d'outils -->
-        <div style="display: flex; gap: 8px; margin-bottom: 1.5rem;">
-            <a href="{{ route('admin.credits.packs') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-                <i class="fas fa-arrow-left" style="font-size: 0.75rem; opacity: 0.6;"></i> Retour à la liste
-            </a>
-        </div>
+            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
 
-        <form method="POST" action="{{ route('admin.credits.packs.store') }}">
-            @csrf
+            <form method="POST" action="{{ route('admin.credits.packs.store') }}">
+                @csrf
 
-            <div style="display: grid; grid-template-columns: 1fr 300px; gap: 1.5rem; align-items: start;">
+                <!-- Grid Layout Side-by-Side (Equal Heights) -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: stretch;">
 
-                <!-- Left Colonne -->
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-
-                    <!-- Section 1: Identité -->
-                    <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
-                        <h2 style="font-size: 1.1rem; color: #333; font-weight: 500; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                    <!-- Section 1: Identité (Left) -->
+                    <div style="background: #fdfdfd; border: 1px solid #f3f3f3; border-radius: 4px; padding: 1.5rem;">
+                        <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                             Identité du Pack
-                        </h2>
+                        </h3>
 
-                        <div style="display: grid; gap: 1.25rem;">
+                        <div style="display: grid; gap: 1.5rem;">
                             <div>
-                                <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">
-                                    Nom du pack <span style="color: red;">*</span>
+                                <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">
+                                    Nom du pack <small style="color: red;">*</small>
                                 </label>
                                 <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required
                                     style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
@@ -114,10 +115,10 @@
                             </div>
 
                             <div>
-                                <label for="description" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">
+                                <label for="description" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">
                                     Description
                                 </label>
-                                <textarea name="description" id="description" rows="3"
+                                <textarea name="description" id="description" rows="5"
                                     style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s; resize: vertical; font-family: inherit;"
                                     onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'"
                                     oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">{{ old('description') }}</textarea>
@@ -126,90 +127,62 @@
                         </div>
                     </div>
 
-                    <!-- Section 2: Valeur et Prix -->
-                    <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
-                        <h2 style="font-size: 1.1rem; color: #333; font-weight: 500; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                    <!-- Section 2: Contenu & Tarification (Right) -->
+                    <div style="background: #fdfdfd; border: 1px solid #f3f3f3; border-radius: 4px; padding: 1.5rem;">
+                        <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                             Contenu & Tarification
-                        </h2>
+                        </h3>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
-                            <div>
-                                <label for="credits" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">
-                                    Crédits inclus <span style="color: red;">*</span>
-                                </label>
-                                <input type="number" name="credits" id="credits" value="{{ old('credits') }}" min="1" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                                @error('credits') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
-                            </div>
-                            <div>
-                                <label for="bonus_credits" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">
-                                    Crédits bonus
-                                </label>
-                                <input type="number" name="bonus_credits" id="bonus_credits" value="{{ old('bonus_credits', 0) }}" min="0" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                                @error('bonus_credits') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label for="prix" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">
-                                Prix en FCFA <span style="color: red;">*</span>
-                            </label>
-                            <input type="number" name="prix" id="prix" value="{{ old('prix') }}" min="0" required
-                                style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none;"
-                                onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                            @error('prix') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Right Colonne -->
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-
-                    <!-- Section Disponibilité -->
-                    <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
-                        <h2 style="font-size: 1.1rem; color: #333; font-weight: 500; margin-bottom: 1.5rem;">
-                            Disponibilité
-                        </h2>
-
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <label class="checkbox-container">
-                                <input type="checkbox" name="actif" value="1" {{ old('actif', true) ? 'checked' : '' }}>
-                                <span class="checkmark"></span>
-                                <span style="font-size: 0.95rem; color: #333;">Pack actif et visible</span>
-                            </label>
-
-                            <hr style="border: 0; border-top: 1px solid #eee; margin: 0.5rem 0;">
-
-                            <div>
-                                <label for="ordre" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">
-                                    Ordre d'affichage
-                                </label>
-                                <input type="number" name="ordre" id="ordre" value="{{ old('ordre', 0) }}" min="0"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none;">
+                        <div style="display: grid; gap: 1.5rem;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div>
+                                    <label for="credits" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">
+                                        Crédits inclus <small style="color: red;">*</small>
+                                    </label>
+                                    <input type="number" name="credits" id="credits" value="{{ old('credits') }}" min="1" required
+                                        style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
+                                        onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
+                                    @error('credits') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                                </div>
+                                <div>
+                                    <label for="bonus_credits" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">
+                                        Crédits bonus
+                                    </label>
+                                    <input type="number" name="bonus_credits" id="bonus_credits" value="{{ old('bonus_credits', 0) }}" min="0" required
+                                        style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
+                                        onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
+                                    @error('bonus_credits') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                                </div>
                             </div>
                             
-                            <div style="display: flex; gap: 10px; margin-top: 1rem;">
-                                <a href="{{ route('admin.credits.packs') }}"
-                                    style="flex: 1; text-align: center; background: #e74c3c; border: none; color: #fff; padding: 10px; border-radius: 6px; font-size: 0.95rem; font-weight: 500; cursor: pointer; text-decoration: none; transition: opacity 0.2s;"
-                                    onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                                    Annuler
-                                </a>
-                                <button type="submit"
-                                    style="flex: 1; background: #e67e00; color: #fff; border: none; padding: 10px; border-radius: 6px; font-size: 0.95rem; font-weight: 500; cursor: pointer; transition: opacity 0.2s;"
-                                    onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                                    Enregistrer
-                                </button>
+                            <div>
+                                <label for="prix" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">
+                                    Prix en FCFA <small style="color: red;">*</small>
+                                </label>
+                                <input type="number" name="prix" id="prix" value="{{ old('prix') }}" min="0" required
+                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
+                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
+                                @error('prix') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-            </div>
-        </form>
+                <!-- Footer Actions -->
+                <div style="display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #f3f3f3;">
+                    <a href="{{ route('admin.credits.packs') }}"
+                        style="background: #fff; border: 1px solid #ddd; color: #333; padding: 10px 24px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.2s;"
+                        onmouseover="this.style.borderColor='#e67e00'" onmouseout="this.style.borderColor='#ddd'">
+                        Annuler
+                    </a>
+                    <button type="submit"
+                        style="background: #e67e00; color: #fff; border: none; padding: 10px 32px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s;"
+                        onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 @endsection

@@ -65,11 +65,10 @@ class CreditController extends Controller
             'credits'       => 'required|integer|min:1',
             'bonus_credits' => 'required|integer|min:0',
             'prix'          => 'required|integer|min:0',
-            'actif'         => 'boolean',
-            'ordre'         => 'integer|min:0',
         ]);
 
-        $validated['actif'] = $request->boolean('actif', true);
+        $validated['actif'] = true;
+        $validated['ordre'] = 0;
 
         CreditPack::create($validated);
 
@@ -89,15 +88,18 @@ class CreditController extends Controller
             'credits'       => 'required|integer|min:1',
             'bonus_credits' => 'required|integer|min:0',
             'prix'          => 'required|integer|min:0',
-            'actif'         => 'boolean',
-            'ordre'         => 'integer|min:0',
         ]);
-
-        $validated['actif'] = $request->boolean('actif');
 
         $pack->update($validated);
 
         return redirect()->route('admin.credits.packs')->with('success', 'Pack de crédits mis à jour avec succès.');
+    }
+
+    public function packsToggleStatus(CreditPack $pack)
+    {
+        $pack->update(['actif' => !$pack->actif]);
+        $statusMessage = $pack->actif ? 'activé' : 'suspendu';
+        return redirect()->route('admin.credits.packs')->with('success', "Pack de crédits {$statusMessage} avec succès.");
     }
 
     public function packsDestroy(CreditPack $pack)

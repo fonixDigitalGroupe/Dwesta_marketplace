@@ -19,6 +19,10 @@ class BannerSeeder extends Seeder
             'link_url' => '/recherche?q=Galaxy+S24',
             'order' => 1,
             'active' => true,
+            'promo_discount' => '-10%',
+            'promo_code' => 'S24PRECO',
+            'start_date' => now(),
+            'end_date' => now()->addDays(30),
         ]);
 
         // 2. Offre iPhone 15
@@ -28,6 +32,7 @@ class BannerSeeder extends Seeder
             'link_url' => '/recherche?q=iPhone+15',
             'order' => 2,
             'active' => true,
+            'promo_discount' => 'Livraison Gratuite',
         ]);
 
         // 3. Promo Laptop
@@ -37,6 +42,8 @@ class BannerSeeder extends Seeder
             'link_url' => '/recherche?q=MacBook',
             'order' => 3,
             'active' => true,
+            'promo_discount' => '-150€',
+            'promo_code' => 'MACM2',
         ]);
         
         // 4. Promo Mode
@@ -46,6 +53,8 @@ class BannerSeeder extends Seeder
             'link_url' => '/categories/mode',
             'order' => 4,
             'active' => true,
+            'promo_discount' => '-50%',
+            'promo_code' => 'SUMMER50',
         ]);
     }
 }

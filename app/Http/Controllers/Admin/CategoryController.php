@@ -19,28 +19,44 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories.l1');
     }
 
-    public function indexL1()
+    public function indexL1(Request $request)
     {
-        $categories = Category::racines()->parOrdre()->paginate(8);
+        $query = Category::racines()->parOrdre();
+        
+        if ($request->filled('search')) {
+            $query->where('nom', 'LIKE', '%' . $request->search . '%');
+        }
+
+        $categories = $query->paginate($request->get('per_page', 8))->appends($request->query());
         return view('admin.categories.index', compact('categories'))->with('level', 1);
     }
 
-    public function indexL2()
+    public function indexL2(Request $request)
     {
-        $categories = Category::whereIn('parent_id', Category::racines()->pluck('id'))
+        $query = Category::whereIn('parent_id', Category::racines()->pluck('id'))
             ->with('parent')
-            ->parOrdre()
-            ->paginate(8);
+            ->parOrdre();
+
+        if ($request->filled('search')) {
+            $query->where('nom', 'LIKE', '%' . $request->search . '%');
+        }
+
+        $categories = $query->paginate($request->get('per_page', 8))->appends($request->query());
         return view('admin.categories.index', compact('categories'))->with('level', 2);
     }
 
-    public function indexL3()
+    public function indexL3(Request $request)
     {
         $parentIds = Category::whereIn('parent_id', Category::racines()->pluck('id'))->pluck('id');
-        $categories = Category::whereIn('parent_id', $parentIds)
+        $query = Category::whereIn('parent_id', $parentIds)
             ->with('parent.parent')
-            ->parOrdre()
-            ->paginate(8);
+            ->parOrdre();
+
+        if ($request->filled('search')) {
+            $query->where('nom', 'LIKE', '%' . $request->search . '%');
+        }
+
+        $categories = $query->paginate($request->get('per_page', 8))->appends($request->query());
         return view('admin.categories.index', compact('categories'))->with('level', 3);
     }
 
@@ -100,7 +116,7 @@ class CategoryController extends Controller
             'description' => $request->description,
             'icone' => $request->icone,
             'ordre' => $ordre,
-            'actif' => $request->boolean('actif'),
+            'actif' => $request->has('actif') ? $request->boolean('actif') : true,
             'famille' => $request->parent_id ? null : $request->famille, // Seulement pour les racines
         ]);
 
@@ -116,11 +132,23 @@ class CategoryController extends Controller
     /**
      * Affiche les détails d'une catégorie
      */
-    public function show(Category $category)
+    public function show(Request $request, Category $category)
     {
-        $category->load(['parent', 'enfants']);
+        $category->load('parent');
 
-        return view('admin.categories.show', compact('category'));
+        $perPage = $request->input('per_page', 8);
+        $search = $request->input('search');
+
+        $enfants = $category->enfants()
+            ->when($search, function ($query, $search) {
+                return $query->where('nom', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->orderBy('ordre')
+            ->paginate($perPage)
+            ->appends(['per_page' => $perPage, 'search' => $search]);
+
+        return view('admin.categories.show', compact('category', 'enfants'));
     }
 
     /**
@@ -217,7 +245,7 @@ class CategoryController extends Controller
             'description' => $request->description,
             'icone' => $request->icone,
             'ordre' => $ordre,
-            'actif' => $request->boolean('actif'),
+            'actif' => $request->has('actif') ? $request->boolean('actif') : $category->actif,
             'famille' => $request->parent_id ? null : $request->famille,
         ]);
 
@@ -271,7 +299,18 @@ class CategoryController extends Controller
             $this->deleteRecursively($enfant);
         }
 
-        // Puis supprimer la catégorie elle-même
+    // Puis supprimer la catégorie elle-même
         $category->delete();
+    }
+
+    /**
+     * Active/Désactive une catégorie
+     */
+    public function toggleStatus(Category $category)
+    {
+        $category->update(['actif' => !$category->actif]);
+
+        $status = $category->actif ? 'activée' : 'suspendue';
+        return redirect()->back()->with('success', "La catégorie a été $status avec succès.");
     }
 }

@@ -35,7 +35,7 @@
                     <div>
                         Afficher 
                         <select onchange="window.location.href = '{{ request()->url() }}?per_page=' + this.value" 
-                            style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                            style="padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s; min-width: 60px;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
                             <option value="8" {{ request('per_page', 8) == 8 ? 'selected' : '' }}>8</option>
                             <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
                             <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
@@ -100,7 +100,7 @@
             @if($litiges->hasPages())
             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
                 <div style="font-size: 0.85rem; color: #666;">
-                    Affichage de {{ $litiges->firstItem() ?? 0 }} à {{ $litiges->lastItem() ?? 0 }} sur {{ $litiges->total() }} éléments
+                    ligne {{ $litiges->firstItem() ?? 0 }} sur {{ $litiges->total() }}
                 </div>
                 <div style="display: flex; gap: 0; border: 1px solid #ddd; border-radius: 4px; overflow: hidden;">
                     @if($litiges->onFirstPage())

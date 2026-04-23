@@ -10,19 +10,23 @@
 
 @section('content')
     <div style="max-width: 100%;">
-        <!-- Titre en majuscules -->
-        <h2 style="font-size: 0.85rem; color: #555; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; letter-spacing: 0.05em;">
-            Ajouter une catégorie
-        </h2>
+        <!-- Main Conteneur -->
+        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1.5rem;">
+            
+            <div style="margin-bottom: 0.5rem;">
+                <h1 style="font-size: 1.25rem; font-weight: 700; color: #333; margin: 0;">Ajouter une catégorie</h1>
+            </div>
+            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1rem;"></div>
 
-        <!-- Barre d'outils -->
-        <div style="display: flex; gap: 8px; margin-bottom: 1.5rem;">
-            <a href="{{ route('admin.categories.l1') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
-                <i class="fas fa-arrow-left" style="font-size: 0.75rem; opacity: 0.6;"></i> Retour au catalogue
-            </a>
-        </div>
+            <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1rem;">
+                <a href="{{ route('admin.categories.l1') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#e67e00'" onmouseout="this.style.borderColor='#ddd'">
+                    Retour au catalogue <i class="fas fa-undo" style="font-size: 0.75rem; opacity: 0.6;"></i>
+                </a>
+            </div>
 
-        <form action="{{ route('admin.categories.store') }}" method="POST">
+            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
+
+            <form action="{{ route('admin.categories.store') }}" method="POST">
             @csrf
 
             <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start;">
@@ -162,39 +166,20 @@
                                     </script>
                                 </div>
 
-                                <div style="display: grid; gap: 1rem; margin-top: 1rem;">
-                                    <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none;">
-                                        <div style="position: relative; width: 20px; height: 20px;">
-                                            <input type="checkbox" name="actif" id="actif" value="1" {{ (old('_token') ? old('actif') : true) ? 'checked' : '' }}
-                                                style="position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0;">
-                                            <div id="custom-checkbox-actif" style="position: absolute; top: 0; left: 0; height: 20px; width: 20px; background-color: {{ (old('_token') ? old('actif') : true) ? '#999' : '#eee' }}; border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
-                                                <i class="fas fa-check" style="color: #fff; font-size: 10px; opacity: {{ (old('_token') ? old('actif') : true) ? '1' : '0' }};"></i>
-                                            </div>
-                                        </div>
-                                        <span style="font-size: 0.85rem; font-weight: 600; color: #555;">Catégorie Active</span>
-                                    </label>
-
-                                    <script>
-                                        document.getElementById('actif').addEventListener('change', function() {
-                                            const customBox = document.getElementById('custom-checkbox-actif');
-                                            if (this.checked) {
-                                                customBox.style.backgroundColor = '#999';
-                                                customBox.querySelector('i').style.opacity = '1';
-                                            } else {
-                                                customBox.style.backgroundColor = '#eee';
-                                                customBox.querySelector('i').style.opacity = '0';
-                                            }
-                                        });
-                                    </script>
                                 </div>
                             </div>
                         </div>
 
                         <div style="display: flex; gap: 12px; margin-top: 1.5rem;">
-                            <a href="{{ route('admin.categories.l1') }}" style="flex: 1; background: #dc2626; color: #fff; text-align: center; text-decoration: none; padding: 12px; border-radius: 6px; font-weight: 500; transition: opacity 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                            <a href="{{ route('admin.categories.l1') }}" 
+                                style="flex: 1; background: #fff; border: 1px solid #ddd; color: #333; text-align: center; text-decoration: none; padding: 12px; border-radius: 6px; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
+                                onmouseover="this.style.background='#f9f9f9'; this.style.borderColor='#ccc'" 
+                                onmouseout="this.style.background='#fff'; this.style.borderColor='#ddd'">
                                 Annuler
                             </a>
-                            <button type="submit" style="flex: 2; background: #e67e00; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                            <button type="submit" 
+                                style="flex: 2; background: #e67e00; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;"
+                                onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
                                 Enregistrer
                             </button>
                         </div>
@@ -202,8 +187,8 @@
 
                 </div>
 
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
     @push('scripts')

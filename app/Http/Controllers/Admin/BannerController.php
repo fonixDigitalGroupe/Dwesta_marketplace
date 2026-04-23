@@ -12,9 +12,19 @@ class BannerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $banners = Banner::orderBy('order')->paginate(8);
+        $perPage = $request->input('per_page', 8);
+        $search = $request->input('search');
+
+        $banners = Banner::when($search, function ($query, $search) {
+                return $query->where('title', 'like', "%{$search}%")
+                            ->orWhere('link_url', 'like', "%{$search}%");
+            })
+            ->orderBy('order')
+            ->paginate($perPage)
+            ->appends(['per_page' => $perPage, 'search' => $search]);
+
         return view('admin.banners.index', compact('banners'));
     }
 
@@ -52,8 +62,9 @@ class BannerController extends Controller
             $data['image_url'] = Storage::url($path);
         }
 
-        $data['active'] = $request->has('active');
-        $data['has_payment_4x'] = $request->has('has_payment_4x');
+        // Par défaut actif à la création si non précisé (le champ est retiré du form)
+        $data['active'] = $request->has('active') ? $request->boolean('active') : true;
+        $data['has_payment_4x'] = $request->boolean('has_payment_4x');
 
         Banner::create($data);
 
@@ -91,14 +102,18 @@ class BannerController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('image')) {
-            // Optionnel : Supprimer l'ancienne image si elle est stockée localement
-            // For now, let's keep it simple.
             $path = $request->file('image')->store('banners', 'public');
             $data['image_url'] = Storage::url($path);
         }
 
-        $data['active'] = $request->has('active');
-        $data['has_payment_4x'] = $request->has('has_payment_4x');
+        // Préserver le statut actuel si le champ est absent du formulaire (cas standard après retrait du checkbox)
+        if (!$request->has('active')) {
+            unset($data['active']);
+        } else {
+            $data['active'] = $request->boolean('active');
+        }
+        
+        $data['has_payment_4x'] = $request->boolean('has_payment_4x');
 
         $banner->update($data);
 

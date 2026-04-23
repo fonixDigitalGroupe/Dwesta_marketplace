@@ -84,33 +84,18 @@
 
 @section('content')
     <div class="main-content">
-        <!-- Rakuten-Style Hero Section -->
-        <svg width="0" height="0" style="position: absolute;">
-            <defs>
-                <clipPath id="rakutenPath" clipPathUnits="objectBoundingBox">
-                    <path d="M0,0 H0.42 L0.32,0.5 L0.42,1 H0 Z" />
-                </clipPath>
-            </defs>
-        </svg>
-
+        <!-- Hero Section -->
         <div class="hero-slider">
             <div class="slider-container" id="sliderContainer">
                 @if($banners->count() > 0)
                     @foreach($banners as $banner)
                         <div class="slider-slide {{ $loop->first ? 'active' : '' }}">
                             <div class="rakuten-banner-content">
-                                <!-- Background Image covering full width -->
+                                <!-- Background Image covering full width without gradient -->
                                 <div class="banner-bg-image" style="background-image: url('{{ $banner->image_url }}')"></div>
-                                
-                                <!-- Red Asymmetrical R-Shape -->
-                                <div class="rakuten-shape-wrapper">
-                                    <div class="rakuten-shape"></div>
-                                </div>
                                 
                                 <div class="banner-inner-container">
                                     <div class="banner-text-content">
-
-                                        <h1 class="banner-title">{!! str_replace('Dwesta', '<span>Dwesta</span>', $banner->title ?? 'Réservez votre hôtel directement sur Dwesta') !!}</h1>
                                         <a href="{{ $banner->link_url ?? '#' }}" class="banner-cta">En profiter</a>
                                     </div>
                                     
@@ -310,7 +295,7 @@
     .hero-slider {
         position: relative;
         max-width: 100%;
-        margin-top: 60px; /* Increased margin to move further down */
+        margin-top: 20px; /* Reduced to push banner up */
         margin-bottom: 4rem; /* Increased spacing after banner */
         background: white;
     }
@@ -354,22 +339,6 @@
         z-index: 0;
     }
 
-    .rakuten-shape-wrapper {
-        position: absolute;
-        top: -20px; /* Adjusted centering for 340px banner over 380px shape */
-        left: 0;
-        width: 100%;
-        height: 380px; /* Keep blue shape at 380px */
-        filter: drop-shadow(8px 0 12px rgba(0,0,0,0.25));
-        z-index: 1;
-    }
-
-    .rakuten-shape {
-        width: 100%;
-        height: 100%;
-        background: #004aad; /* Blue matching header bar as requested */
-        clip-path: url(#rakutenPath);
-    }
 
     .banner-inner-container {
         position: relative;
@@ -418,17 +387,18 @@
 
     .banner-text-content {
         flex: 1;
-        max-width: 38%; /* Increased to fit the wider shape */
+        max-width: 50%;
         color: white;
+        margin-top: 150px; /* Pushes the button lower on the banner */
     }
 
     .banner-title {
-        font-size: 2.1rem; /* Slightly smaller for narrower space */
+        font-size: 2.5rem;
         font-weight: 700;
         line-height: 1.1;
         margin-bottom: 2rem;
         color: white;
-        max-width: 280px; /* Adapted to narrower container */
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
     .banner-title span {
@@ -450,7 +420,7 @@
 
     .banner-cta:hover {
         background: white;
-        color: #db0001;
+        color: #333;
     }
 
     /* Promo Card Overlay (Right Side) */

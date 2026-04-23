@@ -140,6 +140,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/niveau-1', [AdminCategoryController::class, 'indexL1'])->name('l1');
             Route::get('/niveau-2', [AdminCategoryController::class, 'indexL2'])->name('l2');
             Route::get('/niveau-3', [AdminCategoryController::class, 'indexL3'])->name('l3');
+            Route::patch('/{category}/toggle-status', [AdminCategoryController::class, 'toggleStatus'])->name('toggle-status');
         });
         Route::resource('categories', AdminCategoryController::class)->names([
             'index' => 'categories.index',
@@ -152,6 +153,7 @@ Route::middleware('auth')->group(function () {
         ]);
 
         // Gestion des abonnements (Packs)
+        Route::patch('abonnements/{abonnement}/toggle-status', [\App\Http\Controllers\Admin\AbonnementController::class, 'toggleStatus'])->name('abonnements.toggle-status');
         Route::resource('abonnements', \App\Http\Controllers\Admin\AbonnementController::class)->names([
             'index' => 'abonnements.index',
             'create' => 'abonnements.create',
@@ -235,6 +237,7 @@ Route::middleware('auth')->group(function () {
  
         // Gestion des critères de filtrage
         Route::get('filters/categories/{category}/children', [\App\Http\Controllers\Admin\CategoryFilterController::class, 'getChildren'])->name('filters.categories.children');
+        Route::patch('filters/{filter}/toggle-status', [\App\Http\Controllers\Admin\CategoryFilterController::class, 'toggleStatus'])->name('filters.toggle-status');
         Route::resource('filters', \App\Http\Controllers\Admin\CategoryFilterController::class);
 
         // Configuration Générale
@@ -250,6 +253,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/packs',         [\App\Http\Controllers\Admin\CreditController::class, 'packsStore'])->name('packs.store');
             Route::get('/packs/{pack}/edit', [\App\Http\Controllers\Admin\CreditController::class, 'packsEdit'])->name('packs.edit');
             Route::put('/packs/{pack}',   [\App\Http\Controllers\Admin\CreditController::class, 'packsUpdate'])->name('packs.update');
+            Route::patch('/packs/{pack}/toggle-status', [\App\Http\Controllers\Admin\CreditController::class, 'packsToggleStatus'])->name('packs.toggle-status');
             Route::delete('/packs/{pack}',[\App\Http\Controllers\Admin\CreditController::class, 'packsDestroy'])->name('packs.destroy');
             // Services
             Route::get('/services',       [\App\Http\Controllers\Admin\CreditController::class, 'servicesIndex'])->name('services');

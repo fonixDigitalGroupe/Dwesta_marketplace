@@ -63,6 +63,8 @@ class AbonnementController extends Controller
         $validated['page_pro_personnalisable'] = ($validated['type'] === Abonnement::TYPE_EXPERT);
 
         $validated['nom'] = ucfirst($validated['type']);
+        $validated['actif'] = true; // Default to active for new packs
+        $validated['ordre'] = Abonnement::max('ordre') + 1;
 
         Abonnement::create($validated);
 
@@ -128,5 +130,16 @@ class AbonnementController extends Controller
 
         return redirect()->route('admin.abonnements.index')
             ->with('success', 'Pack d\'abonnement supprimé avec succès.');
+    }
+
+    /**
+     * Toggle the status of the pack.
+     */
+    public function toggleStatus(Abonnement $abonnement)
+    {
+        $abonnement->update(['actif' => !$abonnement->actif]);
+
+        $status = $abonnement->actif ? 'activé' : 'suspendu';
+        return back()->with('success', "Le pack d'abonnement a été {$status} avec succès.");
     }
 }

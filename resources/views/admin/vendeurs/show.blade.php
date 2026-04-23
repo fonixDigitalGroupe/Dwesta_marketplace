@@ -235,19 +235,19 @@
                         <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </div>
                     <div>
-                        <h3 style="font-size: 1rem; color: #166534; font-weight: 700; margin: 0;">Approuver le Vendeur</h3>
-                        <p style="font-size: 0.8rem; color: #15803d; opacity: 0.8; margin-top: 2px;">Confirmer l'identité et activer le compte.</p>
+                        <h3 style="font-size: 1rem; color: #16a34a; font-weight: 700; margin: 0;">Approuver le Vendeur</h3>
+                        <p style="font-size: 0.8rem; color: #16a34a; opacity: 0.8; margin-top: 2px;">Confirmer l'identité et activer le compte.</p>
                     </div>
                 </div>
                 
                 <form method="POST" action="{{ route('admin.vendeurs.verification.approve', $vendeur) }}">
                     @csrf
                     <div style="margin-bottom: 1.5rem;">
-                        <textarea name="commentaire" rows="3" placeholder="Message optionnel pour le vendeur..." style="width: 100%; border: 1px solid #dcfce7; border-radius: 0; padding: 0.75rem; font-size: 0.85rem; outline: none; focus: border-color: #166534;"></textarea>
+                        <textarea name="commentaire" rows="3" placeholder="Message optionnel pour le vendeur..." style="width: 100%; border: 1px solid #dcfce7; border-radius: 0; padding: 0.75rem; font-size: 0.85rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#16a34a'" onblur="this.style.borderColor='#dcfce7'"></textarea>
                     </div>
-                    <button type="submit" style="width: 100%; background: #166534; color: #fff; padding: 0.875rem; border: none; border-radius: 0; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s;"
-                            onmouseover="this.style.background='#14532d'; this.style.transform='scale(1.01)'"
-                            onmouseout="this.style.background='#166534'; this.style.transform='scale(1)'">
+                    <button type="submit" style="width: 100%; background: #16a34a; color: #fff; padding: 0.875rem; border: none; border-radius: 0; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s;"
+                            onmouseover="this.style.background='#15803d'; this.style.transform='scale(1.01)'"
+                            onmouseout="this.style.background='#16a34a'; this.style.transform='scale(1)'">
                         Valider Décision ✓
                     </button>
                 </form>

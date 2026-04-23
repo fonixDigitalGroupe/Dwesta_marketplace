@@ -63,7 +63,7 @@ class CategoryFilterController extends Controller
         ]);
 
         $validated['type'] = 'select';
-        $validated['is_filterable'] = $request->has('is_filterable');
+        $validated['is_filterable'] = true;
         $validated['is_required'] = false;
         $validated['ordre'] = 0;
 
@@ -121,7 +121,7 @@ class CategoryFilterController extends Controller
         ]);
 
         $validated['type'] = 'select';
-        $validated['is_filterable'] = $request->has('is_filterable');
+        // is_filterable is managed via index table toggleStatus method
         $validated['is_required'] = false;
         $validated['ordre'] = $filter->ordre ?? 0;
 
@@ -149,6 +149,13 @@ class CategoryFilterController extends Controller
     public function getChildren(Category $category)
     {
         return response()->json($category->enfants);
+    }
+
+    public function toggleStatus(CategoryFilter $filter)
+    {
+        $filter->update(['is_filterable' => !$filter->is_filterable]);
+        $status = $filter->is_filterable ? 'activé' : 'suspendu';
+        return redirect()->back()->with('success', "Filtre {$status} avec succès.");
     }
 
     public function destroy(CategoryFilter $filter)

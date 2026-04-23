@@ -6,8 +6,8 @@
 <style>
     .main-content { background-color: #f8f9fa !important; }
     select:focus, input:focus {
-        border-color: #aaa !important;
-        box-shadow: 0 0 0 2px rgba(0,0,0,0.05) !important;
+        border-color: #e67e00 !important;
+        box-shadow: 0 0 0 2px rgba(230,126,0,0.05) !important;
         outline: none;
     }
 </style>
@@ -15,82 +15,83 @@
 
 @section('content')
     <div style="max-width: 100%;">
-
-        <!-- Titre en majuscules type image -->
-        <h2 style="font-size: 0.85rem; color: #555; font-weight: 700; text-transform: uppercase; margin-bottom: 1.5rem; letter-spacing: 0.05em;">
-            Gestion des Critères de Filtrage
-        </h2>
-
-        <!-- Barre d'outils type image -->
-        <div style="display: flex; gap: 8px; margin-bottom: 1.5rem;">
-            <a href="{{ route('admin.filters.index') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-                Liste des critères <i class="fas fa-undo" style="font-size: 0.75rem; opacity: 0.6;"></i>
-            </a>
-            <a href="{{ route('admin.filters.create') }}" style="display: flex; align-items: center; gap: 8px; background: #e67e00; color: #fff; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; text-decoration: none; transition: opacity 0.2s;">
-                Nouveau critère <i class="fas fa-plus-square"></i>
-            </a>
-        </div>
-
-
         <!-- Main Conteneur -->
-        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1rem;">
+        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1.5rem;">
             
-            <!-- Filtres type image -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
-                <div style="display: flex; align-items: center; gap: 15px; font-size: 0.85rem; color: #333;">
-                    <form action="{{ route('admin.filters.index') }}" method="GET" id="filter-form" style="display: flex; align-items: center; gap: 10px;">
+            <div style="margin-bottom: 0.5rem;">
+                <h1 style="font-size: 1.25rem; font-weight: 700; color: #333; margin: 0;">Gestion des Critères de Filtrage</h1>
+            </div>
+            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1rem;"></div>
+
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 1rem;">
+                <a href="{{ route('admin.filters.create') }}" style="display: flex; align-items: center; gap: 8px; background: #e67e00; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                    Nouveau critère <i class="fas fa-plus-square"></i>
+                </a>
+                <a href="javascript:window.print()" style="display: flex; align-items: center; gap: 8px; background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                    Imprimer <i class="fas fa-print"></i>
+                </a>
+            </div>
+
+            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1rem;"></div>
+
+            <!-- Barre d'outils (Filtres) -->
+            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+                <form action="{{ route('admin.filters.index') }}" method="GET" id="filter-form" style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="font-size: 0.85rem; color: #333;">
+                        Niveau 1: 
+                        <select name="l1" id="l1_filter" onchange="this.form.submit()" 
+                            style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s; min-width: 150px; font-size: 0.85rem;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                            <option value="">Toutes</option>
+                            @foreach($parents as $parent)
+                                <option value="{{ $parent->id }}" {{ request('l1') == $parent->id ? 'selected' : '' }}>{{ $parent->nom }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div style="font-size: 0.85rem; color: #333;">
+                        Niveau 2: 
+                        <select name="l2" id="l2_filter" onchange="this.form.submit()" 
+                            style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s; min-width: 150px; font-size: 0.85rem;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'" {{ !request('l1') ? 'disabled' : '' }}>
+                            <option value="">Toutes</option>
+                        </select>
+                    </div>
+
+                    <div style="font-size: 0.85rem; color: #333;">
+                        Niveau 3: 
+                        <select name="category_id" id="l3_filter" onchange="this.form.submit()" 
+                            style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s; min-width: 150px; font-size: 0.85rem;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'" {{ !request('l2') ? 'disabled' : '' }}>
+                            <option value="">Toutes</option>
+                        </select>
+                    </div>
+                </form>
+
+                <div style="border-bottom: 1px solid #f3f3f3;"></div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 15px; font-size: 0.85rem; color: #333;">
                         <div>
                             Afficher 
-                            <select name="per_page" onchange="this.form.submit()" 
-                                style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                            <select onchange="const form = document.getElementById('filter-form'); const input = document.createElement('input'); input.type = 'hidden'; input.name = 'per_page'; input.value = this.value; form.appendChild(input); form.submit();"
+                                style="padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s; min-width: 60px;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
                                 <option value="8" {{ ($perPage ?? 8) == 8 ? 'selected' : '' }}>8</option>
                                 <option value="50" {{ ($perPage ?? 8) == 50 ? 'selected' : '' }}>50</option>
                                 <option value="100" {{ ($perPage ?? 8) == 100 ? 'selected' : '' }}>100</option>
                             </select>
                             lignes
                         </div>
+                    </div>
 
-                        <input type="hidden" name="search" value="{{ $search ?? '' }}">
-                        
-                        <div>
-                            Cat N1: 
-                            <select name="l1" id="l1_filter" onchange="this.form.submit()" 
-                                style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
-                                <option value="">Toutes</option>
-                                @foreach($parents as $parent)
-                                    <option value="{{ $parent->id }}" {{ request('l1') == $parent->id ? 'selected' : '' }}>{{ $parent->nom }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div>
-                            Cat N2: 
-                            <select name="l2" id="l2_filter" onchange="this.form.submit()" 
-                                style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'" {{ !request('l1') ? 'disabled' : '' }}>
-                                <option value="">Toutes</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            Cat N3: 
-                            <select name="category_id" id="l3_filter" onchange="this.form.submit()" 
-                                style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'" {{ !request('l2') ? 'disabled' : '' }}>
-                                <option value="">Toutes</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-
-                <div style="font-size: 0.85rem; color: #333;">
-                    <form action="{{ route('admin.filters.index') }}" method="GET" style="display: flex; align-items: center;">
-                        <input type="hidden" name="per_page" value="{{ $perPage ?? 8 }}">
-                        <input type="hidden" name="l1" value="{{ request('l1') }}">
-                        <input type="hidden" name="l2" value="{{ request('l2') }}">
-                        <input type="hidden" name="category_id" value="{{ request('category_id') }}">
-                        Chercher: <input type="text" name="search" value="{{ $search ?? '' }}" 
-                            placeholder="Tapez et Entrée..."
-                            style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; margin-left: 5px; background-color: #fff; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
-                    </form>
+                    <div style="font-size: 0.85rem; color: #333;">
+                        <form action="{{ route('admin.filters.index') }}" method="GET" style="display: flex; align-items: center;">
+                            @if(request('l1')) <input type="hidden" name="l1" value="{{ request('l1') }}"> @endif
+                            @if(request('l2')) <input type="hidden" name="l2" value="{{ request('l2') }}"> @endif
+                            @if(request('category_id')) <input type="hidden" name="category_id" value="{{ request('category_id') }}"> @endif
+                            @if(isset($perPage)) <input type="hidden" name="per_page" value="{{ $perPage }}"> @endif
+                            Chercher: <input type="text" name="search" value="{{ $search ?? '' }}" 
+                                placeholder="Tapez et Entrée..."
+                                style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; margin-left: 5px; background-color: #fff; transition: all 0.2s; font-size: 0.85rem; min-width: 200px;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -98,42 +99,59 @@
             <table style="width: 100%; border-collapse: collapse; border: 1px solid #eee;">
                 <thead>
                     <tr style="background: #fff; border-bottom: 2px solid #eee;">
-                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333; width: 250px;">Filtre</th>
-                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333;">Options de filtre</th>
-                        <th style="padding: 10px; border: 1px solid #eee; text-align: right; font-size: 0.82rem; font-weight: 700; color: #333; width: 120px;">Action</th>
+                        <th style="padding: 12px 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333; width: 200px;">Critère</th>
+                        <th style="padding: 12px 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333; width: 180px;">Catégorie</th>
+                        <th style="padding: 12px 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333;">Options de filtre</th>
+                        <th style="padding: 12px 10px; border: 1px solid #eee; text-align: right; font-size: 0.82rem; font-weight: 700; color: #333; width: 120px;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($filters as $filter)
                         <tr style="transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
-                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit;">
-                                <div style="font-weight: 600; color: #333; margin-bottom: 2px;">{{ $filter->nom }}</div>
-                                <div style="font-size: 0.75rem; color: #888;">{{ $filter->slug }}</div>
+                            <td style="padding: 12px 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; vertical-align: top;">
+                                <div style="font-weight: 600; color: #333; text-transform: capitalize;">{{ $filter->nom }}</div>
                             </td>
-                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit;">
+                            <td style="padding: 12px 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; vertical-align: top;">
+                                {{ $filter->category->nom ?? 'N/A' }}
+                            </td>
+                            <td style="padding: 12px 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555;">
                                 @if(!empty($filter->options))
-                                    <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
                                         @foreach($filter->options as $option)
-                                            <span style="background: #fff7ed; color: #c2410c; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; border: 1px solid #fdba74;">
+                                            <span style="background: #fff7ed; color: #e67e00; padding: 2px 10px; border-radius: 4px; font-size: 0.75rem; border: 1px solid #fdba74; font-weight: 500;">
                                                 {{ $option }}
                                             </span>
                                         @endforeach
                                     </div>
                                 @else
-                                    <span style="color: #ccc; font-style: italic;">Aucune option</span>
+                                    <span style="color: #ccc; font-style: italic; font-size: 0.8rem;">Aucune option</span>
                                 @endif
-                                <div style="margin-top: 8px; font-size: 0.7rem; color: #999;">
-                                    Catégorie: {{ $filter->category->nom ?? 'N/A' }}
-                                </div>
                             </td>
-                            <td style="padding: 10px; border: 1px solid #eee; text-align: right;">
-                                <div style="display: flex; gap: 4px; justify-content: flex-end;">
-                                    <a href="{{ route('admin.filters.edit', $filter) }}" style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: #004aad; color: #fff; border-radius: 3px; font-size: 0.75rem; text-decoration: none;" title="Modifier">
+                            <td style="padding: 12px 10px; border: 1px solid #eee; text-align: right; vertical-align: top;">
+                                <div style="display: flex; gap: 6px; justify-content: flex-end;">
+                                    <a href="{{ route('admin.filters.edit', $filter) }}" 
+                                       style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #eff6ff; color: #2563eb; border-radius: 6px; font-size: 0.8rem; text-decoration: none; border: 1px solid #dbeafe; transition: all 0.2s;" 
+                                       onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background='#eff6ff'"
+                                       title="Modifier">
                                         <i class="fas fa-edit"></i>
                                     </a>
+
+                                    <form id="status-form-{{ $filter->id }}" action="{{ route('admin.filters.toggle-status', $filter) }}" method="POST" style="display:inline;">
+                                        @csrf @method('PATCH')
+                                        <button type="button" onclick="confirmStatus({{ $filter->id }}, {{ $filter->is_filterable ? 'true' : 'false' }})" 
+                                                style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: {{ $filter->is_filterable ? '#fff7ed' : '#f0fdf4' }}; color: {{ $filter->is_filterable ? '#c2410c' : '#15803d' }}; border-radius: 6px; font-size: 0.8rem; border: 1px solid {{ $filter->is_filterable ? '#ffedd5' : '#dcfce7' }}; cursor: pointer; transition: all 0.2s;" 
+                                                onmouseover="this.style.background='{{ $filter->is_filterable ? '#ffedd5' : '#dcfce7' }}'" onmouseout="this.style.background='{{ $filter->is_filterable ? '#fff7ed' : '#f0fdf4' }}'"
+                                                title="{{ $filter->is_filterable ? 'Suspendre' : 'Activer' }}">
+                                            <i class="fas fa-{{ $filter->is_filterable ? 'lock' : 'lock-open' }}"></i>
+                                        </button>
+                                    </form>
+
                                     <form id="delete-form-{{ $filter->id }}" action="{{ route('admin.filters.destroy', $filter) }}" method="POST" style="display:inline;">
                                         @csrf @method('DELETE')
-                                        <button type="button" onclick="confirmDelete({{ $filter->id }})" style="display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; background: #e74c3c; color: #fff; border-radius: 3px; font-size: 0.75rem; border: none; cursor: pointer;" title="Supprimer">
+                                        <button type="button" onclick="confirmDelete({{ $filter->id }})" 
+                                                style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #fef2f2; color: #dc2626; border-radius: 6px; font-size: 0.8rem; border: 1px solid #fee2e2; cursor: pointer; transition: all 0.2s;" 
+                                                onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'"
+                                                title="Supprimer">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
@@ -142,36 +160,44 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">Aucun critère trouvé.</td>
+                            <td colspan="4" style="padding: 3rem; text-align: center; color: #999; font-size: 0.85rem;">Aucun critère trouvé.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
 
-            <!-- Pagination type image -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+            <!-- Pagination -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
                 <div style="font-size: 0.85rem; color: #666;">
-                    Affichage de {{ $filters->firstItem() ?? 0 }} à {{ $filters->lastItem() ?? 0 }} sur {{ $filters->total() }} éléments
+                    ligne {{ $filters->firstItem() ?? 0 }} sur {{ $filters->total() }}
                 </div>
-                <div style="display: flex; gap: 0; border: 1px solid #ddd; border-radius: 4px; overflow: hidden;">
+                <div style="display: flex; gap: 0; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                     @if($filters->onFirstPage())
-                        <span style="padding: 6px 12px; background: #fff; color: #ccc; font-size: 0.85rem; border-right: 1px solid #ddd;">Prec</span>
+                        <span style="padding: 6px 12px; background: #fff; color: #ccc; font-size: 0.85rem; border-right: 1px solid #ddd; cursor: not-allowed;">Prec</span>
                     @else
-                        <a href="{{ $filters->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none; border-right: 1px solid #ddd;">Prec</a>
+                        <a href="{{ $filters->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none; border-right: 1px solid #ddd; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='#fff'">Prec</a>
                     @endif
 
-                    @foreach(range(1, $filters->lastPage()) as $i)
+                    @php
+                        $start = max(1, $filters->currentPage() - 2);
+                        $end = min($filters->lastPage(), $start + 4);
+                        if ($end - $start < 4) {
+                            $start = max(1, $end - 4);
+                        }
+                    @endphp
+
+                    @for($i = $start; $i <= $end; $i++)
                         @if($i == $filters->currentPage())
-                            <span style="padding: 6px 12px; background: #e67e00; color: #fff; font-size: 0.85rem; border-right: 1px solid #ddd;">{{ $i }}</span>
+                            <span style="padding: 6px 12px; background: #eff6ff; color: #2563eb; font-weight: 700; font-size: 0.85rem; border-right: 1px solid #ddd;">{{ $i }}</span>
                         @else
-                            <a href="{{ $filters->url($i) }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none; border-right: 1px solid #ddd;">{{ $i }}</a>
+                            <a href="{{ $filters->url($i) }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none; border-right: 1px solid #ddd; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='#fff'">{{ $i }}</a>
                         @endif
-                    @endforeach
+                    @endfor
 
                     @if($filters->hasMorePages())
-                        <a href="{{ $filters->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none;">Suiv</a>
+                        <a href="{{ $filters->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #333; font-size: 0.85rem; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='#fff'">Suiv</a>
                     @else
-                        <span style="padding: 6px 12px; background: #fff; color: #ccc; font-size: 0.85rem;">Suiv</span>
+                        <span style="padding: 6px 12px; background: #fff; color: #ccc; font-size: 0.85rem; cursor: not-allowed;">Suiv</span>
                     @endif
                 </div>
             </div>
@@ -250,6 +276,27 @@
                     });
             }
         });
+
+        function confirmStatus(id, isFilterable) {
+            const actionText = isFilterable ? 'suspendre' : 'activer';
+            const actionColor = isFilterable ? '#ea580c' : '#16a34a';
+            
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: `Voulez-vous vraiment ${actionText} ce critère de filtrage ?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: actionColor,
+                cancelButtonColor: '#64748b',
+                confirmButtonText: `Oui, ${actionText} !`,
+                cancelButtonText: 'Annuler',
+                borderRadius: '8px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('status-form-' + id).submit();
+                }
+            })
+        }
     </script>
     @endpush
 @endsection
