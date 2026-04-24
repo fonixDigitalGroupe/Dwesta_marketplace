@@ -51,7 +51,7 @@
         </ul>
     </div>
 
-    @if(isset($annonces))
+    @if(isset($annonces) && !($currentCategory && $currentCategory->parent_id === null))
     <div class="sidebar-section">
         <div class="sidebar-header">FILTRES</div>
         

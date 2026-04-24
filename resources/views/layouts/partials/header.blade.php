@@ -277,7 +277,7 @@
                                 {{ $cat->nom }}
                             </a>
                             @foreach($cat->enfantsActifs()->take(1)->get() as $sub)
-                                <a href="{{ route('categories.show', $sub->slug) }}" class="badge-style">
+                                <a href="{{ route('categories.show', $cat->slug) }}?active={{ $sub->id }}" class="badge-style">
                                     {{ $sub->nom }}
                                 </a>
                             @endforeach
@@ -332,7 +332,7 @@
                                     <div style="width: 250px; padding-right: 30px;">
                                         <h3
                                             style="font-size: 0.75rem; font-weight: 800; color: #000; text-transform: uppercase; letter-spacing: 0.5px; margin: 4px 0 0 0; line-height: 1.2;">
-                                            <a href="{{ route('categories.show', $sousCat->slug) }}"
+                                            <a href="{{ route('categories.show', $cat->slug) }}?active={{ $sousCat->id }}"
                                                 style="text-decoration: none; color: inherit;">{{ $sousCat->nom }}</a>
                                                 </h3>
                                     </div>
@@ -340,7 +340,7 @@
                                     <div
                                     style="flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 40px;">
                                     @foreach($sousCat->enfantsActifs as $enfant)
-                                        <a href="{{ route('categories.show', $enfant->slug) }}"
+                                        <a href="{{ route('categories.show', $cat->slug) }}?active={{ $sousCat->id }}&n3={{ $enfant->id }}"
                                             style="text-decoration: none; color: #666; font-size: 0.85rem; transition: color 0.1s; font-weight: 400;"
                                             onmouseover="this.style.color='#000'; this.style.textDecoration='underline';"
                                             onmouseout="this.style.color='#666'; this.style.textDecoration='none';">

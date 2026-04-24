@@ -23,7 +23,7 @@ class CategoryController extends Controller
         
         $query = Annonce::publiees()
             ->whereIn('categorie_id', $categoryIds)
-            ->with(['photos', 'category', 'vendeur.user', 'options', 'produit', 'vehicule']);
+            ->with(['photos', 'category.parent', 'vendeur.user', 'options', 'produit', 'vehicule']);
 
         // Tri
         $sort = request('sort', 'relevance');
@@ -47,7 +47,50 @@ class CategoryController extends Controller
 
         $annonces = $query->paginate(24)->withQueryString();
 
-        return view('categories.show', compact('category', 'annonces'));
+        $dealsMarchands = collect();
+        if ($category->parent_id === null) {
+            $dealsMarchands = Annonce::publiees()
+                ->whereIn('categorie_id', $categoryIds)
+                ->whereHas('vendeur', function ($q) {
+                    $q->where('type', 'professionnel');
+                })
+                ->whereHas('options', function ($q) {
+                    $q->where('a_la_une', 1);
+                })
+                ->whereHas('category', function ($q) {
+                    $q->where('famille', Category::FAMILLE_ECOMMERCE);
+                })
+                ->with(['photos', 'category.parent', 'vendeur.professionnel', 'options'])
+                ->latest('publiee_le')
+                ->limit(60)
+                ->get();
+        }
+
+        $selectionAnnonces = collect();
+        $offresReductions = collect();
+        
+        if ($category->parent_id === null) {
+            $selectionAnnonces = Annonce::publiees()
+                ->whereIn('categorie_id', $categoryIds)
+                ->with(['photos', 'category.parent', 'vendeur.professionnel', 'options'])
+                ->latest('publiee_le')
+                ->limit(60)
+                ->get();
+
+            // Offres avec réduction (prix < prix_moyen_marche)
+            $offresReductions = Annonce::publiees()
+                ->whereIn('categorie_id', $categoryIds)
+                ->whereHas('produit', function ($q) {
+                    $q->whereNotNull('prix_moyen_marche')
+                      ->whereRaw('annonce_produits.prix_moyen_marche > annonces.prix');
+                })
+                ->with(['photos', 'category.parent', 'vendeur.professionnel', 'options', 'produit'])
+                ->latest('publiee_le')
+                ->limit(15)
+                ->get();
+        }
+
+        return view('categories.show', compact('category', 'annonces', 'dealsMarchands', 'selectionAnnonces', 'offresReductions'));
     }
 
     public function getFilters(Category $category)
