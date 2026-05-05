@@ -91,6 +91,7 @@ class CategoryController extends Controller
             'ordre' => ['nullable', 'integer', 'min:0'],
             'actif' => ['nullable', 'boolean'],
             'famille' => ['nullable', 'string', 'in:' . implode(',', Category::getFamilles())],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ], [
             'nom.required' => 'Le nom est obligatoire.',
             'nom.unique' => 'Une catégorie avec ce nom existe déjà à ce niveau (même parent).',
@@ -109,12 +110,19 @@ class CategoryController extends Controller
         // Décalage automatique des ordres existants
         Category::shiftOrder($ordre, $request->parent_id);
 
+        $imageData = null;
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('categories', 'public');
+            $imageData = Storage::url($path);
+        }
+
         Category::create([
             'parent_id' => $request->parent_id,
             'nom' => $request->nom,
             'slug' => $slug,
             'description' => $request->description,
             'icone' => $request->icone,
+            'image' => $imageData,
             'ordre' => $ordre,
             'actif' => $request->has('actif') ? $request->boolean('actif') : true,
             'famille' => $request->parent_id ? null : $request->famille, // Seulement pour les racines
@@ -215,6 +223,7 @@ class CategoryController extends Controller
             'ordre' => ['nullable', 'integer', 'min:0'],
             'actif' => ['nullable', 'boolean'],
             'famille' => ['nullable', 'string', 'in:' . implode(',', Category::getFamilles())],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ], [
             'nom.required' => 'Le nom est obligatoire.',
             'nom.unique' => 'Une catégorie avec ce nom existe déjà à ce niveau (même parent).',
@@ -238,7 +247,7 @@ class CategoryController extends Controller
             Category::shiftOrder($ordre, $request->parent_id, $category->id);
         }
 
-        $category->update([
+        $data = [
             'parent_id' => $request->parent_id,
             'nom' => $request->nom,
             'slug' => $slug,
@@ -247,7 +256,15 @@ class CategoryController extends Controller
             'ordre' => $ordre,
             'actif' => $request->has('actif') ? $request->boolean('actif') : $category->actif,
             'famille' => $request->parent_id ? null : $request->famille,
-        ]);
+        ];
+
+        if ($request->hasFile('image')) {
+            // Optionnel : Supprimer l'ancienne image
+            $path = $request->file('image')->store('categories', 'public');
+            $data['image'] = Storage::url($path);
+        }
+
+        $category->update($data);
 
         if ($category->parent_id) {
             return redirect()->route('admin.categories.show', $category->parent_id)

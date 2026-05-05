@@ -6,8 +6,8 @@
 <style>
     .main-content { background-color: #f8f9fa !important; }
     select:focus, input:focus {
-        border-color: #aaa !important;
-        box-shadow: 0 0 0 2px rgba(0,0,0,0.05) !important;
+        border-color: #adb1b8 !important;
+        box-shadow: 0 0 3px rgba(225,121,9,0.5) !important;
         outline: none;
     }
 </style>
@@ -16,111 +16,115 @@
 
 @section('content')
     <div style="max-width: 100%;">
-
-        <!-- Main Conteneur -->
-        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1.5rem;">
+        <!-- Main Conteneur style Amazon Card -->
+        <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
             
-            <div style="margin-bottom: 0.5rem;">
-                <h1 style="font-size: 1.25rem; font-weight: 700; color: #333; margin: 0;">Gestion des Packs d'Abonnement</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
+                    Gestion des Abonnements
+                </h1>
+                
+                <div style="display: flex; gap: 8px;">
+                    <a href="{{ route('admin.abonnements.create') }}" 
+                       style="background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
+                        Nouveau pack d'abonnement
+                    </a>
+                    <a href="javascript:window.print()" 
+                       style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 6px;">
+                        Imprimer
+                    </a>
+                </div>
             </div>
-            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1rem;"></div>
-
-            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 1rem;">
-                <a href="{{ route('admin.abonnements.create') }}" style="display: flex; align-items: center; gap: 8px; background: #e67e00; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                    Nouveau pack <i class="fas fa-plus-square"></i>
-                </a>
-                <a href="javascript:window.print()" style="display: flex; align-items: center; gap: 8px; background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                    Imprimer <i class="fas fa-print"></i>
-                </a>
-            </div>
-
-            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
             
-            <!-- Filtres type image -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
-                <div style="font-size: 0.85rem; color: #333;">
-                    Afficher 
+            <!-- Barre de filtre modernisée -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 16px; border-radius: 0; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555;">
+                    <span>Afficher</span>
                     <select onchange="window.location.href = '{{ route('admin.abonnements.index') }}?per_page=' + this.value + '&search={{ $search }}'" 
-                        style="padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s; min-width: 60px;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                        style="padding: 4px 6px; border: 1px solid #adb1b8; border-radius: 0; background: #f0f2f2; font-size: 0.8rem; color: #111; cursor: pointer; outline: none;">
                         <option value="8" {{ $perPage == 8 ? 'selected' : '' }}>8</option>
+                        <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25</option>
                         <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
                         <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100</option>
                     </select>
-                    lignes
+                    <span>résultats par page</span>
                 </div>
-                <div style="font-size: 0.85rem; color: #333;">
-                    <form action="{{ route('admin.abonnements.index') }}" method="GET" style="display: flex; align-items: center;">
+
+                <div style="font-size: 0.8rem;">
+                    <form action="{{ route('admin.abonnements.index') }}" method="GET" style="display: flex; align-items: center; gap: 8px;">
                         <input type="hidden" name="per_page" value="{{ $perPage }}">
-                        Chercher: <input type="text" name="search" value="{{ $search }}" 
-                            placeholder="Tapez et Entrée..."
-                            style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; margin-left: 5px; background-color: #fff; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                        <span style="color: #555;">Rechercher :</span>
+                        <input type="text" name="search" value="{{ $search }}" 
+                            placeholder="Nom du pack..."
+                            style="padding: 6px 10px; border: 1px solid #adb1b8; border-radius: 0; outline: none; width: 220px; font-size: 0.8rem;">
                     </form>
                 </div>
             </div>
 
-            <!-- Table -->
-            <table style="width: 100%; border-collapse: collapse; border: 1px solid #eee;">
+            <!-- Table Amazon Design -->
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e7e7e7;">
                 <thead>
-                    <tr style="background: #fff; border-bottom: 2px solid #eee;">
-                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333; width: 180px;">Nom du Pack</th>
-                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333;">Description</th>
-                        <th style="padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.82rem; font-weight: 700; color: #333; width: 100px;">Commission</th>
-                        <th style="padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.82rem; font-weight: 700; color: #333; width: 100px;">Annonces</th>
-                        <th style="padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.82rem; font-weight: 700; color: #333; width: 100px;">Statut</th>
-                        <th style="padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.82rem; font-weight: 700; color: #333; width: 130px;">Prix Mensuel</th>
-                        <th style="padding: 10px; border: 1px solid #eee; text-align: right; font-size: 0.82rem; font-weight: 700; color: #333; width: 100px;">Action</th>
+                    <tr style="background: #f6f6f6; border-bottom: 1px solid #e7e7e7;">
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Nom du Pack</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Description</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 100px;">Com.</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 80px;">Annonces</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 100px;">Statut</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 120px;">Prix</th>
+                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 150px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($abonnements as $abonnement)
-                        <tr style="transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
-                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #333; font-weight: 500; font-family: inherit;">
-                                <span style="background: #fff3e0; color: #e67e00; padding: 4px 10px; border-radius: 4px; font-weight: 600; font-size: 0.75rem;">{{ ucfirst($abonnement->nom) }}</span>
+                        <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #0066c0; font-weight: 500; border-right: 1px solid #e7e7e7;">
+                                {{ ucfirst($abonnement->nom) }}
                             </td>
-                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit;">{{ ucfirst(Str::limit($abonnement->description, 50)) }}</td>
-                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit; text-align: center;">{{ $abonnement->commission }} %</td>
-                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #555; font-family: inherit; text-align: center;">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #e7e7e7;">{{ Str::limit($abonnement->description, 60) }}</td>
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; text-align: center; border-right: 1px solid #e7e7e7;">{{ $abonnement->commission }}%</td>
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; text-align: center; border-right: 1px solid #e7e7e7;">
                                 @if($abonnement->nombre_annonces > 0)
                                     <span style="font-weight: 600;">{{ $abonnement->nombre_annonces }}</span>
                                 @else
-                                    <span style="font-style: italic; opacity: 0.7;">illimité</span>
+                                    <span style="font-style: italic; color: #999;">∞</span>
                                 @endif
                             </td>
-                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; font-family: inherit; text-align: center;">
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
                                 @if($abonnement->actif)
-                                    <span style="background: #dcfce7; color: #16a34a; padding: 4px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;">ACTIF</span>
+                                    <span style="font-size: 0.75rem; color: #569b00; font-weight: 600;">Actif</span>
                                 @else
-                                    <span style="background: #ffedd5; color: #9a3412; padding: 4px 12px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;">INACTIF</span>
+                                    <span style="font-size: 0.75rem; color: #c40000; font-weight: 600;">Inactif</span>
                                 @endif
                             </td>
-                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #333; font-weight: 600; font-family: inherit; text-align: center;">{{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} F</td>
-                            <td style="padding: 10px; border: 1px solid #eee; text-align: right;">
-                                <div style="display: flex; gap: 4px; justify-content: flex-end;">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; font-weight: 600; text-align: center; border-right: 1px solid #e7e7e7;">
+                                {{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} F
+                            </td>
+                            <td style="padding: 12px 15px; text-align: right;">
+                                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
                                     <a href="{{ route('admin.abonnements.edit', $abonnement) }}" 
-                                       style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #eff6ff; color: #2563eb; border-radius: 6px; font-size: 0.85rem; text-decoration: none; border: 1px solid #dbeafe; transition: all 0.2s;" 
-                                       onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background='#eff6ff'"
-                                       title="Modifier">
-                                        <i class="fas fa-edit"></i>
+                                       style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
+                                       onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
+                                       onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
+                                       Modifier
                                     </a>
-
-                                    <form id="suspend-form-{{ $abonnement->id }}" action="{{ route('admin.abonnements.toggle-status', $abonnement) }}" method="POST" style="display:inline;">
+                                    <span style="color: #ddd;">|</span>
+                                    <form action="{{ route('admin.abonnements.toggle-status', $abonnement) }}" method="POST" style="display:inline;">
                                         @csrf @method('PATCH')
-                                        <button type="button" onclick="confirmSuspend({{ $abonnement->id }}, {{ $abonnement->actif ? 'true' : 'false' }})" 
-                                                style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: {{ $abonnement->actif ? '#fff7ed' : '#f0fdf4' }}; color: {{ $abonnement->actif ? '#c2410c' : '#15803d' }}; border-radius: 6px; font-size: 0.8rem; border: 1px solid {{ $abonnement->actif ? '#ffedd5' : '#dcfce7' }}; cursor: pointer; transition: all 0.2s;" 
-                                                onmouseover="this.style.background='{{ $abonnement->actif ? '#ffedd5' : '#dcfce7' }}'" onmouseout="this.style.background='{{ $abonnement->actif ? '#fff7ed' : '#f0fdf4' }}'"
-                                                title="{{ $abonnement->actif ? 'Suspendre' : 'Activer' }}">
-                                            <i class="fas fa-{{ $abonnement->actif ? 'lock' : 'lock-open' }}"></i>
+                                        <button type="submit" 
+                                                style="background: none; border: none; color: #0066c0; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                                onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
+                                                onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
+                                            {{ $abonnement->actif ? 'Suspendre' : 'Activer' }}
                                         </button>
                                     </form>
-
+                                    <span style="color: #ddd;">|</span>
                                     <form id="delete-form-{{ $abonnement->id }}" action="{{ route('admin.abonnements.destroy', $abonnement) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
+                                        @csrf @method('DELETE')
                                         <button type="button" onclick="confirmDelete({{ $abonnement->id }})" 
-                                                style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #fef2f2; color: #dc2626; border-radius: 6px; font-size: 0.85rem; border: 1px solid #fee2e2; cursor: pointer; transition: all 0.2s;" 
-                                                onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'"
-                                                title="Supprimer">
-                                            <i class="fas fa-trash"></i>
+                                                style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                                onmouseover="this.style.textDecoration='underline'" 
+                                                onmouseout="this.style.textDecoration='none'">
+                                            Supprimer
                                         </button>
                                     </form>
                                 </div>
@@ -136,30 +140,30 @@
                 </tbody>
             </table>
 
-            <!-- Pagination Info & Links type image -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
-                <div style="font-size: 0.85rem; color: #666;">
-                    ligne {{ $abonnements->firstItem() ?? 0 }} sur {{ $abonnements->total() }}
+            <!-- Pagination Info & Links Harmonisée -->
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0; margin-top: 10px;">
+                <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
+                    Affichage de {{ $abonnements->firstItem() ?? 0 }} à {{ $abonnements->lastItem() ?? 0 }} sur {{ $abonnements->total() }} résultats
                 </div>
-                <div style="display: flex; gap: 0; border: 1px solid #ddd; border-radius: 4px; overflow: hidden;">
+                <div style="display: flex; border: 1px solid #adb1b8; border-radius: 0; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: #fff;">
                     @if($abonnements->onFirstPage())
-                        <span style="padding: 6px 12px; background: #fff; border: none; border-right: 1px solid #ddd; font-size: 0.85rem; color: #ccc; cursor: not-allowed;">Prec</span>
+                        <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;">Précédent</span>
                     @else
-                        <a href="{{ $abonnements->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; border: none; border-right: 1px solid #ddd; font-size: 0.85rem; color: #333; cursor: pointer; text-decoration: none;">Prec</a>
+                        <a href="{{ $abonnements->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">Précédent</a>
                     @endif
 
-                    @for($i = 1; $i <= $abonnements->lastPage(); $i++)
+                    @foreach(range(1, $abonnements->lastPage()) as $i)
                         @if($i == $abonnements->currentPage())
-                            <span style="padding: 6px 12px; background: #eff6ff; border: none; border-right: 1px solid #ddd; font-size: 0.85rem; color: #2563eb; font-weight: 700; cursor: default;">{{ $i }}</span>
+                            <span style="padding: 6px 12px; background: linear-gradient(to bottom, #f7dfa5, #f0c14b); color: #111; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #a88734;">{{ $i }}</span>
                         @else
-                            <a href="{{ $abonnements->url($i) }}" style="padding: 6px 12px; background: #fff; border: none; border-right: 1px solid #ddd; font-size: 0.85rem; color: #333; cursor: pointer; text-decoration: none;">{{ $i }}</a>
+                            <a href="{{ $abonnements->url($i) }}" style="padding: 6px 12px; background: #fff; color: #555; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">{{ $i }}</a>
                         @endif
-                    @endfor
+                    @endforeach
 
                     @if($abonnements->hasMorePages())
-                        <a href="{{ $abonnements->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; border: none; font-size: 0.85rem; color: #333; cursor: pointer; text-decoration: none;">Suiv</a>
+                        <a href="{{ $abonnements->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;">Suivant</a>
                     @else
-                        <span style="padding: 6px 12px; background: #fff; border: none; font-size: 0.85rem; color: #ccc; cursor: not-allowed;">Suiv</span>
+                        <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;">Suivant</span>
                     @endif
                 </div>
             </div>

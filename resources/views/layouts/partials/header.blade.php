@@ -101,45 +101,6 @@
                                         
                                         <div class="auth-separator"></div>
                                         
-                                        
-                                        @if(auth()->check() && (auth()->user()->hasRole('transporteur') || auth()->user()->hasRole('admin')))
-                                            <a href="{{ route('transporteur.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
-                                                <div style="display:flex; align-items:center; gap:8px;">
-                                                    <i class="fa-solid fa-truck"></i> Espace Transporteur
-                                                </div>
-                                            </a>
-                                        @endif
-                                        @if(auth()->check() && (auth()->user()->hasRole('livreur') || auth()->user()->hasRole('admin')))
-                                            <a href="{{ route('livreur.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
-                                                <div style="display:flex; align-items:center; gap:8px;">
-                                                    <i class="fa-solid fa-motorcycle"></i> Espace Livreur
-                                                </div>
-                                            </a>
-                                        @endif
-                                        @if(auth()->check() && (auth()->user()->hasRole('point_relais') || auth()->user()->hasRole('admin')))
-                                            <a href="{{ route('relais.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
-                                                <div style="display:flex; align-items:center; gap:8px;">
-                                                    <i class="fa-solid fa-store"></i> Point Relais
-                                                </div>
-                                            </a>
-                                        @endif
-                                        
-                                        <div class="auth-separator"></div>
-                                        
-                                        @if(auth()->check() && auth()->user()->hasRole('admin'))
-                                            <a href="{{ route('admin.categories.l1') }}" class="auth-menu-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Catégories & Architecture</a>
-                                            <a href="{{ route('admin.users.index') }}" class="auth-menu-item {{ request()->routeIs('admin.users.index') && !request()->has('role') ? 'active' : '' }}">Gestion des Utilisateurs</a>
-                                            <a href="#" class="auth-menu-item">Rôles et permissions</a>
-                                            <a href="{{ route('admin.settings.index') }}" class="auth-menu-item {{ request()->routeIs('admin.settings.index') ? 'active' : '' }}">Configuration Générale</a>
-                                            <div class="auth-separator"></div>
-                                        @endif
-
-                                        <a href="{{ route('annonces.create') }}" class="auth-menu-item">Mettre en vente un produit</a>
-                                        <a href="{{ route('annonces.index', ['vendeur' => auth()->id()]) }}" class="auth-menu-item">Mes articles en vente</a>
-                                        <a href="{{ route('vendeur.orders') }}" class="auth-menu-item">Toutes mes ventes</a>
-                                        
-                                        <div class="auth-separator"></div>
-                                        
                                         <form method="POST" action="{{ route('logout') }}" id="logout-form-dropdown">
                                             @csrf
                                             <a href="#" class="auth-menu-item" onclick="event.preventDefault(); document.getElementById('logout-form-dropdown').submit();" style="color: #0099ff;">
@@ -178,32 +139,6 @@
                                         <a href="{{ route('account.orders') }}" class="auth-menu-item">Suivi de commande</a>
                                         <a href="{{ route('vendeur.wallet.index') }}" class="auth-menu-item">Mon porte-monnaie</a>
                                         <a href="{{ route('conversations.index') }}" class="auth-menu-item">Mes Messages</a>
-                                        <div class="auth-separator"></div>
-                                        
-                                        
-                                        @if(auth()->check() && (auth()->user()->hasRole('transporteur') || auth()->user()->hasRole('admin')))
-                                            <a href="{{ route('transporteur.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
-                                                <div style="display:flex; align-items:center; gap:8px;">
-                                                    <i class="fa-solid fa-truck"></i> Espace Transporteur
-                                                </div>
-                                            </a>
-                                        @endif
-                                        @if(auth()->check() && (auth()->user()->hasRole('livreur') || auth()->user()->hasRole('admin')))
-                                            <a href="{{ route('livreur.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
-                                                <div style="display:flex; align-items:center; gap:8px;">
-                                                    <i class="fa-solid fa-motorcycle"></i> Espace Livreur
-                                                </div>
-                                            </a>
-                                        @endif
-                                        @if(auth()->check() && (auth()->user()->hasRole('point_relais') || auth()->user()->hasRole('admin')))
-                                            <a href="{{ route('relais.dashboard') }}" class="auth-menu-item" style="color:#ff8c00; font-weight:600;">
-                                                <div style="display:flex; align-items:center; gap:8px;">
-                                                    <i class="fa-solid fa-store"></i> Point Relais
-                                                </div>
-                                            </a>
-                                        @endif
-                                        
-                                        <div class="auth-separator"></div>
                                         <form method="POST" action="{{ route('logout') }}" id="logout-form-dropdown-mobile">
                                             @csrf
                                             <a href="#" class="auth-menu-item" onclick="event.preventDefault(); document.getElementById('logout-form-dropdown-mobile').submit();" style="color: #0099ff;">

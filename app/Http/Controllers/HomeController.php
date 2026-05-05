@@ -14,46 +14,21 @@ class HomeController extends Controller
     public function index()
     {
         // 0. Bannières publicitaires
-        $banners = Banner::where('active', true)
-            ->orderBy('order', 'asc')
-            ->get();
+        $banners = Banner::active()->orderBy('order', 'asc')->get();
 
-        // 1. Nos offres imbattables : Les produits les moins chers (top 4)
-        $offresImbattables = Annonce::publiees()
-            ->orderBy('prix', 'asc')
-            ->take(8)
-            ->get();
+        // 1. Sections Dynamiques (Nouveau système)
+        $homeSections = \App\Models\HomeSection::active()->ordered()->get()->map(function ($section) {
+            $section->products = $section->getProducts();
+            return $section;
+        });
 
-        // 2. Top des produits les plus consultés : Top 4 par vues
+        // 2. Top des produits les plus consultés (Conservé pour le moment car format particulier)
         $topConsultes = Annonce::publiees()
             ->orderBy('vues', 'desc')
-            ->take(4)
+            ->take(15)
             ->get();
 
-        // 3. Nos top produits du moment : Annonces à la une (aléatoire ou top 4)
-        $topProduits = Annonce::publiees()
-            ->aLaUne()
-            ->inRandomOrder()
-            ->take(4)
-            ->get();
-
-        // Si pas assez d'annonces à la une, on complète avec des annonces récentes
-        if ($topProduits->count() < 4) {
-            $extra = Annonce::publiees()
-                ->whereNotIn('id', $topProduits->pluck('id'))
-                ->latest()
-                ->take(4 - $topProduits->count())
-                ->get();
-            $topProduits = $topProduits->concat($extra);
-        }
-
-        // 4. Dernières opportunités : Les plus récentes
-        $dernieresOpportunites = Annonce::publiees()
-            ->latest()
-            ->take(4)
-            ->get();
-
-        // 5. Actualités (Highlights) Bento Grid
+        // 3. Actualités (Highlights) Bento Grid
         $highlightTabs = \App\Models\HighlightTab::where('active', true)
             ->with(['highlights' => function($query) {
                 $query->where('active', true)->orderBy('position');
@@ -61,13 +36,59 @@ class HomeController extends Controller
             ->orderBy('position')
             ->get();
 
+        // 4. Nos top produits du moment : Filtrés par état
+        $topNeufs = Annonce::publiees()
+            ->whereHas('produit', function($q) { $q->where('etat', 'neuf'); })
+            ->latest()
+            ->take(10)
+            ->get();
+
+        $topOccasions = Annonce::publiees()
+            ->whereHas('produit', function($q) { $q->where('etat', 'occasion'); })
+            ->latest()
+            ->take(10)
+            ->get();
+
+        $topReconditionnes = Annonce::publiees()
+            ->whereHas('produit', function($q) { $q->where('etat', 'reconditionne'); })
+            ->latest()
+            ->take(10)
+            ->get();
+
+        // 5. Le meilleur de nos catégories
+        $famillesList = \App\Models\Category::getFamilles();
+        $bestCategories = [];
+        foreach ($famillesList as $familleName) {
+            $familleParent = \App\Models\Category::whereNull('parent_id')
+                ->where('nom', 'like', '%' . $familleName . '%')
+                ->first();
+            
+            if ($familleParent) {
+                $firstLevel2 = \App\Models\Category::where('parent_id', $familleParent->id)
+                    ->actives()
+                    ->parOrdre()
+                    ->first();
+                
+                if ($firstLevel2) {
+                    $bestCategories[] = [
+                        'famille' => $familleName,
+                        'title' => $familleName,
+                        'parent' => $firstLevel2,
+                        'items' => $firstLevel2->enfantsActifs()->take(10)->get()
+                    ];
+                }
+            }
+        }
+
         return view('home', compact(
             'banners',
-            'offresImbattables',
+            'homeSections',
             'topConsultes',
-            'topProduits',
-            'dernieresOpportunites',
-            'highlightTabs'
+            'highlightTabs',
+            'topNeufs',
+            'topOccasions',
+            'topReconditionnes',
+            'bestCategories'
         ));
     }
 }

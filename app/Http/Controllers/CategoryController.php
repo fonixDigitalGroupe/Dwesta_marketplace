@@ -18,8 +18,36 @@ class CategoryController extends Controller
             ->with(['parent', 'enfantsActifs.enfantsActifs'])
             ->firstOrFail();
 
+        // Si ce n'est pas une catégorie racine et qu'on n'est pas en mode liste,
+        // on redirige vers la racine avec les paramètres de filtrage
+        if ($category->parent_id !== null && request('view') !== 'list') {
+            $ancetres = $category->ancetres; // Liste ordonnée de la racine jusqu'au parent
+            $racine = $ancetres[0];
+            
+            $params = [];
+            if (count($ancetres) === 1) {
+                // On est au niveau N2
+                $params['active'] = $category->id;
+            } else {
+                // On est au niveau N3
+                $params['active'] = $ancetres[1]->id;
+                $params['n3'] = $category->id;
+            }
+            
+            return redirect()->route('categories.show', array_merge(['slug' => $racine->slug], $params));
+        }
+
         // Charger les annonces de cette catégorie et de ses enfants
-        $categoryIds = $category->getAllDescendantIds();
+        $targetCategory = $category;
+        if ($category->parent_id === null) {
+            if (request()->filled('n3')) {
+                $targetCategory = Category::find(request('n3')) ?? $category;
+            } elseif (request()->filled('active')) {
+                $targetCategory = Category::find(request('active')) ?? $category;
+            }
+        }
+        
+        $categoryIds = $targetCategory->getAllDescendantIds();
         
         $query = Annonce::publiees()
             ->whereIn('categorie_id', $categoryIds)
@@ -68,6 +96,7 @@ class CategoryController extends Controller
 
         $selectionAnnonces = collect();
         $offresReductions = collect();
+        $topConsultes = collect();
         
         if ($category->parent_id === null) {
             $selectionAnnonces = Annonce::publiees()
@@ -88,9 +117,27 @@ class CategoryController extends Controller
                 ->latest('publiee_le')
                 ->limit(15)
                 ->get();
+                
+            // Top des produits les plus consultés
+            $topConsultes = Annonce::publiees()
+                ->whereIn('categorie_id', $categoryIds)
+                ->with(['photos', 'category.parent', 'vendeur.professionnel', 'options', 'produit'])
+                ->orderBy('vues', 'desc')
+                ->limit(15)
+                ->get();
         }
 
-        return view('categories.show', compact('category', 'annonces', 'dealsMarchands', 'selectionAnnonces', 'offresReductions'));
+        // Fetch banners for this category or its family
+        $banner = \App\Models\Banner::active()
+            ->where(function ($q) use ($category) {
+                $q->where('category_id', $category->id)
+                  ->orWhere('famille', $category->famille);
+            })
+            ->orderByRaw("CASE WHEN category_id = {$category->id} THEN 0 ELSE 1 END")
+            ->orderBy('order')
+            ->first();
+
+        return view('categories.show', compact('category', 'annonces', 'dealsMarchands', 'selectionAnnonces', 'offresReductions', 'banner', 'topConsultes'));
     }
 
     public function getFilters(Category $category)

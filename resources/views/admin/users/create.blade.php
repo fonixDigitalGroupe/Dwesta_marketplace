@@ -6,145 +6,191 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <style>
         .main-content { background-color: #f8f9fa !important; }
+        
+        /* Input Amazon Style */
+        input[type="text"]:focus, 
+        input[type="email"]:focus, 
+        input[type="tel"]:focus, 
+        input[type="password"]:focus, 
+        textarea:focus, 
+        select:focus {
+            border-color: #e77600 !important;
+            box-shadow: 0 0 3px 2px rgba(228,121,17,0.5) !important;
+            outline: none;
+        }
+
+        .amazon-card {
+            background: #fff;
+            border: 1px solid #e7e7e7;
+            border-radius: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #111;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e7e7e7;
+        }
+
+        .btn-amazon-primary {
+            background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+            border: 1px solid #a88734;
+            color: #111;
+            padding: 8px 24px;
+            border-radius: 0;
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-decoration: none;
+            box-shadow: 0 1px 0 rgba(255,255,255,.4) inset;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-amazon-primary:hover {
+            background: linear-gradient(to bottom, #f5d78e, #eeb933);
+            border-color: #9c7e31;
+        }
+
+        .btn-amazon-secondary {
+            background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
+            border: 1px solid #adb1b8;
+            color: #111;
+            padding: 8px 24px;
+            border-radius: 0;
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-decoration: none;
+            box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .iti { width: 100%; }
-        .iti__selected-flag { padding-right: 12px !important; position: relative; }
-        .iti__selected-flag::after { content: ""; position: absolute; right: 0; top: 20%; bottom: 20%; width: 1px; background-color: #e0e0e0; pointer-events: none; }
+        .iti__selected-flag { padding-right: 12px !important; position: relative; border-radius: 0 !important; }
+        .iti__selected-flag::after { content: ""; position: absolute; right: 0; top: 20%; bottom: 20%; width: 1px; background-color: #adb1b8; pointer-events: none; }
         #telephone { padding-left: 55px !important; }
     </style>
 @endpush
 
 @section('content')
-    <div style="max-width: 100%;">
-        <!-- Main Conteneur -->
-        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1.5rem;">
+<div style="max-width: 1200px; margin: 0 auto;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Créer un nouvel utilisateur</h1>
+        <a href="{{ route('admin.users.index') }}" class="btn-amazon-secondary" style="gap: 8px;">
+            <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour à la liste
+        </a>
+    </div>
+
+    <form action="{{ route('admin.users.store') }}" method="POST">
+        @csrf
+
+        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: stretch;">
             
-            <div style="margin-bottom: 0.5rem;">
-                <h1 style="font-size: 1.25rem; font-weight: 700; color: #333; margin: 0;">Créer un nouvel utilisateur</h1>
-            </div>
-            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1rem;"></div>
-
-            <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1rem;">
-                <a href="{{ route('admin.users.index') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#e67e00'" onmouseout="this.style.borderColor='#ddd'">
-                    Retour à la liste <i class="fas fa-undo" style="font-size: 0.75rem; opacity: 0.6;"></i>
-                </a>
-            </div>
-
-            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
-
-            <form action="{{ route('admin.users.store') }}" method="POST">
-                @csrf
-
-                <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start;">
-                    <!-- Left Column -->
-                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                        <div style="background: #fdfdfd; border: 1px solid #f3f3f3; border-radius: 4px; padding: 1.5rem;">
-                            <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                                Informations Personnelles
-                            </h3>
-                            
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
-                                <div>
-                                    <label for="prenom" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Prénom <small style="color: red;">*</small></label>
-                                    <input type="text" name="prenom" id="prenom" value="{{ old('prenom') }}" required
-                                        style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                        oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)"
-                                        onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                                </div>
-                                <div>
-                                    <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Nom <small style="color: red;">*</small></label>
-                                    <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required
-                                        style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                        oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)"
-                                        onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                                </div>
-                            </div>
-
-                            <div style="margin-bottom: 1.5rem;">
-                                <label for="email" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Adresse Email <small style="color: red;">*</small></label>
-                                <input type="email" name="email" id="email" value="{{ old('email') }}" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                            </div>
-
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
-                                <div>
-                                    <label for="telephone" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Téléphone</label>
-                                    <input type="tel" id="telephone" value="{{ old('telephone') }}"
-                                        style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                        onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                                    <input type="hidden" name="telephone" id="full_telephone" value="{{ old('telephone') }}">
-                                </div>
-                                <div>
-                                    <label for="nationalite" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Nationalité</label>
-                                    <select name="nationalite" id="nationalite"
-                                        style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff; cursor: pointer; transition: all 0.2s;"
-                                        onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                                        <option value="">Sélectionner...</option>
-                                        @php
-                                        $countries = ['Sénégal', 'Afrique du Sud', 'Algérie', 'Angola', 'Bénin', 'Burkina Faso', 'Cameroun', 'Centrafrique', 'Congo', 'Côte d\'Ivoire', 'Égypte', 'Gabon', 'Guinée', 'Mali', 'Maroc', 'Mauritanie', 'Niger', 'Nigeria', 'Tchad', 'Togo', 'Tunisie', 'Française'];
-                                    @endphp
-                                    @foreach($countries as $country)
-                                            <option value="{{ $country }}" {{ old('nationalite') == $country ? 'selected' : '' }}>{{ $country }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label for="adresse" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Adresse complète</label>
-                                <textarea name="adresse" id="adresse" rows="2"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s; resize: vertical; font-family: inherit;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">{{ old('adresse') }}</textarea>
-                            </div>
-                        </div>
+            <!-- Left Column: Personnel -->
+            <div class="amazon-card">
+                <h3 class="section-title">Informations Personnelles</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div>
+                        <label for="prenom" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Prénom <small style="color: red;">*</small></label>
+                        <input type="text" name="prenom" id="prenom" value="{{ old('prenom') }}" required
+                            placeholder="Ex: Moussa"
+                            style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc;">
                     </div>
-
-                    <!-- Right Column -->
-                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                        <div style="background: #fdfdfd; border: 1px solid #f3f3f3; border-radius: 4px; padding: 1.5rem;">
-                            <h3 style="font-size: 0.9rem; color: #333; font-weight: 600; margin-bottom: 1.25rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">Configuration</h3>
-                            
-                            <div style="margin-bottom: 1.5rem;">
-                                <label for="role" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Rôle <small style="color: red;">*</small></label>
-                                <select name="role" id="role" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff; cursor: pointer; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                                    <option value="">Choisir un rôle...</option>
-                                    @foreach($roles as $value => $label)
-                                        <option value="{{ $value }}" {{ old('role') == $value ? 'selected' : '' }}>{{ $label }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div style="margin-bottom: 1.5rem;">
-                                <label for="password" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Mot de passe</label>
-                                <input type="password" name="password" id="password" autocomplete="new-password" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                            </div>
-
-                            <div style="margin-bottom: 1.5rem;">
-                                <label for="password_confirmation" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Confirmation</label>
-                                <input type="password" name="password_confirmation" id="password_confirmation" autocomplete="new-password" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                            </div>
-
-                            <!-- Buttons on the same line -->
-                            <div style="display: flex; gap: 10px; margin-top: 1rem;">
-                                <a href="{{ route('admin.users.index') }}" style="flex: 1; display: flex; justify-content: center; padding: 12px; background: #dc2626; border: none; border-radius: 6px; color: #fff; text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                                    Annuler
-                                </a>
-                                <button type="submit" style="flex: 1; background-color: #e67e00; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                                    Créer l'utilisateur
-                                </button>
-                            </div>
-                        </div>
+                    <div>
+                        <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Nom <small style="color: red;">*</small></label>
+                        <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required
+                            placeholder="Ex: Ndiaye"
+                            style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc;">
                     </div>
                 </div>
-            </form>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="email" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Adresse Email <small style="color: red;">*</small></label>
+                    <input type="email" name="email" id="email" value="{{ old('email') }}" required
+                        placeholder="exemple@email.com"
+                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div>
+                        <label for="telephone" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Téléphone</label>
+                        <input type="tel" id="telephone" value="{{ old('telephone') }}"
+                            style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc;">
+                        <input type="hidden" name="telephone" id="full_telephone" value="{{ old('telephone') }}">
+                    </div>
+                    <div>
+                        <label for="nationalite" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Nationalité</label>
+                        <select name="nationalite" id="nationalite"
+                            style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc; cursor: pointer;">
+                            <option value="">Sélectionner...</option>
+                            @php
+                                $countries = ['Sénégal', 'Afrique du Sud', 'Algérie', 'Angola', 'Bénin', 'Burkina Faso', 'Cameroun', 'Centrafrique', 'Congo', 'Côte d\'Ivoire', 'Égypte', 'Gabon', 'Guinée', 'Mali', 'Maroc', 'Mauritanie', 'Niger', 'Nigeria', 'Tchad', 'Togo', 'Tunisie', 'Française'];
+                            @endphp
+                            @foreach($countries as $country)
+                                <option value="{{ $country }}" {{ old('nationalite') == $country ? 'selected' : '' }}>{{ $country }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="adresse" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Adresse complète</label>
+                    <textarea name="adresse" id="adresse" rows="4"
+                        placeholder="Quartier, Rue, Ville..."
+                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc; resize: vertical; font-family: inherit;">{{ old('adresse') }}</textarea>
+                </div>
+            </div>
+
+            <!-- Right Column: Config -->
+            <div class="amazon-card">
+                <h3 class="section-title">Accès & Rôle</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="role" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Rôle système <small style="color: red;">*</small></label>
+                    <select name="role" id="role" required
+                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc; cursor: pointer;">
+                        <option value="">Choisir un rôle...</option>
+                        @foreach($roles as $value => $label)
+                            <option value="{{ $value }}" {{ old('role') == $value ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="password" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Mot de passe <small style="color: red;">*</small></label>
+                    <input type="password" name="password" id="password" autocomplete="new-password" required
+                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label for="password_confirmation" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Confirmer mot de passe</label>
+                    <input type="password" name="password_confirmation" id="password_confirmation" autocomplete="new-password" required
+                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc;">
+                </div>
+
+                <!-- Footer Actions in sidebar -->
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px;">
+                    <button type="submit" class="btn-amazon-primary" style="padding: 12px;">
+                        Créer le compte utilisateur
+                    </button>
+                    <a href="{{ route('admin.users.index') }}" class="btn-amazon-secondary" style="padding: 12px;">
+                        Annuler
+                    </a>
+                </div>
+            </div>
         </div>
-    </div>
+    </form>
+</div>
 
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>

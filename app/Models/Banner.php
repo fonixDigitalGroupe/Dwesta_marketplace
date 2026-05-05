@@ -8,6 +8,11 @@ class Banner extends Model
 {
     protected $fillable = [
         'title',
+        'slug',
+        'description',
+        'famille',
+
+        'category_id',
         'image_url',
         'link_url',
         'promo_discount',

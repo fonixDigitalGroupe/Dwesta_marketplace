@@ -27,7 +27,7 @@
     /* Main Grid */
     .rk-main-grid {
         display: grid;
-        grid-template-columns: 80px 500px 1fr; /* Thumbnails | Main Image | Details */
+        grid-template-columns: 80px 600px 1fr; /* Thumbnails | Main Image | Details */
         gap: 1.5rem;
         max-width: 1280px;
         margin: 0 auto;
@@ -59,8 +59,8 @@
     .rk-thumb img { width: 100%; height: 100%; object-fit: contain; }
 
     .rk-main-image {
-        width: 100%;
-        height: 500px;
+        height: 550px;
+        max-height: 85vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -68,9 +68,9 @@
         position: relative;
     }
     .rk-main-image img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
     .rk-wishlist-btn {
         position: absolute;
@@ -280,98 +280,115 @@
         font-size: 0.8rem;
     }
 
-    /* Pro Row Styling to match image */
-    .rk-pro-container {
-        max-width: 1280px;
-        margin: 0 auto;
-        border: 1px solid #e0e0e0;
-        background: #fff;
+    /* Premium Flat Product Card Styles (Consistent with Home) */
+    .n1-top-grid {
         display: flex;
         flex-wrap: nowrap;
-        overflow-x: auto;
-        overflow-y: hidden;
-        scrollbar-width: thin;
-        -webkit-overflow-scrolling: touch;
-    }
-    .rk-pro-container::-webkit-scrollbar {
-        height: 6px;
-    }
-    .rk-pro-container::-webkit-scrollbar-thumb {
-        background: #ddd;
-        border-radius: 3px;
-    }
-    .rk-pro-item {
-        flex: 0 0 250px;
-        border-right: 1px solid #e0e0e0;
-    }
-    .rk-pro-item:last-child {
-        border-right: none;
-    }
-    .rk-pro-container .annonce-card-component {
-        border: none !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        height: 100% !important;
-    }
-    .rk-pro-container .annonce-card-component .card-img {
-        max-height: 120px !important;
-        width: auto !important;
-        margin: 0 auto;
-    }
-    .rk-pro-container .annonce-card-component h3 {
-        font-size: 0.95rem !important;
-        font-weight: 600 !important;
-        height: auto !important;
-        -webkit-line-clamp: 2 !important;
-        margin-bottom: 0px !important;
-    }
-    .rk-pro-container .annonce-card-component .rk-stars {
-        margin-bottom: 5px;
-    }
-    .rk-pro-container .annonce-card-component span[style*="color: #db0001"] {
-        font-size: 1.2rem !important;
-        font-weight: 900 !important;
-    }
-    .rk-pro-container .annonce-card-component span[style*="color: #db0001"]:after {
-        content: " Neuf";
-        font-size: 0.85rem;
-        font-weight: 800;
-        margin-left: 5px;
-    }
-    /* Hide the original state separator and text if they exist */
-    .rk-pro-container .annonce-card-component span[style*="font-weight: bold; color: #db0001"] {
-        display: none !important;
-    }
-    .rk-pro-container .annonce-card-component span[style*="font-size: 0.75rem; font-weight: 700; color: #db0001"] {
-        display: none !important;
-    }
-    
-    .rk-pro-container .annonce-card-component div[style*="margin-top: auto"] > div:first-child {
-        margin-bottom: 15px !important;
+        gap: 15px;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        padding: 20px 5px;
     }
 
-    .rk-pro-container .annonce-card-component div[style*="padding-top: 4px"] {
-        display: none !important;
+    .premium-card-flat {
+        flex: 0 0 190px;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 1.1rem;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.2s;
+        box-sizing: border-box;
     }
     
-    .rk-pro-container .annonce-card-component .card-img {
-        max-height: 160px !important;
-        margin-bottom: 10px;
+    .premium-card-flat:hover {
+        border-color: #eee;
+    }
+
+    .card-media-flat {
+        width: 100%;
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
     }
     
-    .rk-pro-container .annonce-card-component span[style*="border: 1px solid #ddd"] {
-        padding: 1px 6px !important;
-        font-size: 8px !important;
+    .card-media-flat img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .card-info-flat {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
     
-    .rk-pro-container .annonce-card-component div[style*="aspect-ratio: 1"] {
-        padding: 8px !important;
-        aspect-ratio: auto !important;
-        height: 130px !important;
+    .card-title-flat {
+        font-size: 0.85rem;
+        line-height: 1.4;
+        color: #1a1a1a;
+        margin-bottom: 0.8rem;
+        height: 2.4rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        font-weight: 500;
     }
-    .rk-pro-container .annonce-card-component div[style*="padding: 0.9rem"] {
-        padding: 0.6rem !important;
-        flex: none !important;
+
+    .card-price-row-flat {
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+        margin-top: auto;
+    }
+    
+    .price-prefix {
+        font-size: 0.75rem;
+        color: #666;
+        font-weight: 500;
+    }
+    
+    .price-value-flat {
+        color: #ff8c00;
+        font-weight: 800;
+        font-size: 1rem;
+    }
+
+
+    .carousel-arrow-btn {
+        width: 35px;
+        height: 35px;
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        transition: all 0.2s;
+        z-index: 10;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .rk-sponsor-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #888;
+        font-weight: 700;
+        margin-bottom: 4px;
+        display: block;
     }
     .rk-best-offers {
         background: transparent;
@@ -383,8 +400,7 @@
     .rk-section-header {
         max-width: 1280px;
         margin: 3rem auto 1rem auto;
-        padding: 0 1rem 0.75rem 1rem;
-        border-bottom: 2px solid #f0f0f0;
+        padding: 0 1rem 0.5rem 1rem;
         position: relative;
         z-index: 5;
     }
@@ -415,8 +431,7 @@
         font-size: 1rem;
     }
     .rk-wishlist-btn:hover { 
-        transform: scale(1.1);
-        box-shadow: 0 6px 15px rgba(0,0,0,0.15) !important;
+        transform: none;
     }
     .rk-wishlist-btn:active { 
         transform: scale(0.95);
@@ -462,13 +477,13 @@
         </div>
 
         <!-- Center: Main Image -->
-        <div class="rk-main-image" style="background: #fbfbfb; border: 1px solid #f0f0f0; border-radius: 12px; overflow: hidden; box-shadow: inset 0 0 10px rgba(0,0,0,0.02); position: relative;">
+        <div class="rk-main-image" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; position: relative;">
             @if($annonce->video)
                 <video id="display-video" controls autoplay muted style="width: 100%; height: 100%; border-radius: 12px;">
                     <source src="{{ $annonce->video->url }}" type="video/mp4">
                     Votre navigateur ne supporte pas la lecture de vidéos.
                 </video>
-                <img id="display-image" src="" alt="{{ $annonce->titre }}" style="display: none; max-width: 100%; max-height: 100%; object-fit: contain;">
+                <img id="display-image" src="" alt="{{ $annonce->titre }}" style="display: none; width: 100%; height: 100%; object-fit: cover;">
             @else
                 @php $photoPrincipale = $annonce->photoPrincipale(); @endphp
                 @if($photoPrincipale)
@@ -485,7 +500,7 @@
             <button class="rk-wishlist-btn" 
                     id="wishlist-btn" 
                     data-annonce-slug="{{ $annonce->slug }}"
-                    style="position: absolute; top: 15px; right: 15px; background: white; border: none; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #666; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: all 0.3s ease; z-index: 20;">
+                    style="position: absolute; top: 15px; right: 15px; background: white; border: 1px solid #eee; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #666; transition: all 0.3s ease; z-index: 20;">
                 <i class="{{ auth()->check() && auth()->user()->favorites()->where('annonce_id', $annonce->id)->exists() ? 'fas' : 'far' }} fa-heart" 
                    style="font-size: 1.4rem; color: {{ auth()->check() && auth()->user()->favorites()->where('annonce_id', $annonce->id)->exists() ? '#bf0000' : '#666' }};"></i>
             </button>
@@ -530,7 +545,7 @@
                      @if($annonce->category)
                     <div class="rk-spec-separator" style="margin: 0 10px;">|</div>
                     <div class="rk-spec-item">
-                        <span class="rk-spec-label"><i class="fas fa-folder" style="margin-right: 5px;"></i> Catégorie :</span>
+                        <span class="rk-spec-label"><i class="fas fa-th-large" style="margin-right: 5px;"></i> Catégorie :</span>
                         <span class="rk-spec-value">{{ $annonce->category->nom }}</span>
                     </div>
                     @endif
@@ -538,11 +553,11 @@
             </div>
 
             <!-- Price & Action -->
-            <div class="rk-price-box" style="display: flex; align-items: center; border: 1px solid #e0e0e0; background: #ffffff; padding: 1.25rem; margin-top: 1.5rem; border-radius: 0;">
+            <div class="rk-price-box" style="display: flex; align-items: center; background: #ffffff; padding: 1.25rem; margin-top: 1.5rem; border-radius: 0;">
                 <div style="flex: 1; border-right: 1px solid #e0e0e0; padding-right: 1rem;">
                     <div style="font-size: 0.8rem; color: #888; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.5px;">Prix de vente</div>
-                    <div class="rk-main-price" id="main-price" style="color: #db0001; font-weight: 900;">
-                        {{ number_format($annonce->prix, 0, ',', ' ') }} <span style="font-size: 1.2rem;">FCFA</span>
+                    <div class="rk-main-price" id="main-price" style="color: #ff8c00; font-weight: 900; font-size: 1.8rem;">
+                        {{ number_format($annonce->prix, 0, ',', ' ') }} <span style="font-size: 1rem;">FCFA</span>
                     </div>
                 </div>
                 
@@ -552,7 +567,7 @@
                         @csrf
                         <input type="hidden" name="annonce_id" value="{{ $annonce->id }}">
                         <input type="hidden" name="quantite" value="1">
-                        <button type="submit" class="rk-btn-cart" style="padding: 0.75rem 1.5rem; border-radius: 0; background: #ff8c00; font-size: 0.9rem;">
+                        <button type="submit" class="rk-btn-cart" style="padding: 0.75rem 1.5rem; border-radius: 0; background: #000; font-size: 0.9rem;">
                             <i class="fas fa-shopping-cart" style="margin-right: 0.75rem;"></i> Ajouter au panier
                         </button>
                     </form>
@@ -565,7 +580,7 @@
             </div>
             
             <!-- Seller Info -->
-            <div class="rk-seller-card" style="background: #ffffff; padding: 1.25rem; border: 1px solid #e0e0e0; margin-top: 1.5rem; border-radius: 0; display: flex; align-items: center; gap: 1.25rem;">
+            <div class="rk-seller-card" style="background: #ffffff; padding: 1.25rem; margin-top: 1.5rem; border-radius: 0; display: flex; align-items: center; gap: 1.25rem; border-bottom: 1px solid #eee;">
                  <div class="rk-seller-avatar" style="width: 50px; height: 50px; background: #f8f9fa; border: 1px solid #eee; border-radius: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #adb5bd;">
                      <i class="fas fa-store"></i>
                  </div>
@@ -590,25 +605,10 @@
                      </div>
                  </div>
                  <div style="padding-left: 1rem; border-left: 1px solid #eee;">
-                    <a href="#" style="font-size: 0.8rem; color: #004aad; font-weight: 700; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderBottom='1px solid #004aad'" onmouseout="this.style.borderBottom='1px solid transparent'">Voir la boutique</a>
+                    <a href="#" style="font-size: 0.8rem; color: #ff8c00; font-weight: 700; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderBottom='1px solid #ff8c00'" onmouseout="this.style.borderBottom='1px solid transparent'">Voir la boutique</a>
                  </div>
             </div>
 
-            <!-- Trust Badges -->
-            <div class="rk-trust-badges">
-                <div class="rk-trust-item">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>Paiement sécurisé</span>
-                </div>
-                <div class="rk-trust-item">
-                    <i class="fas fa-shipping-fast"></i>
-                    <span>Livraison rapide</span>
-                </div>
-                <div class="rk-trust-item">
-                    <i class="fas fa-undo"></i>
-                    <span>Retours acceptés</span>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -655,150 +655,48 @@
     @if(isset($recommandations['meilleures_offres_pro']) && $recommandations['meilleures_offres_pro']->count() > 0)
     <div class="rk-section-header" style="margin-top: 4rem;">
         <span class="rk-sponsor-label">Sponsorisée</span>
-        <h2 class="rk-offers-title" style="margin-top: 0;">Les meilleures offres de nos vendeurs professionnels</h2>
+        <h2 class="rk-offers-title" style="margin-top: 0;">Meilleures offres Pros</h2>
     </div>
-    <div class="rk-best-offers" style="background: transparent; padding-top: 0.5rem; padding-bottom: 2rem; position: relative;">
-    <div style="display: flex; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; border: 1px solid #e0e0e0; background: #fff; max-width: 1280px; margin: 0 auto;">
-        @foreach($recommandations['meilleures_offres_pro'] as $rec)
-        @php
-            $rating = $rec->note_moyenne;
-            $full = floor($rating); $half = ($rating - $full) >= 0.5; $empty = 5 - $full - ($half?1:0);
-        @endphp
-        <a href="{{ route('annonces.show', $rec->slug) }}" style="flex: 0 0 210px; min-width: 210px; border-right: 1px solid #e0e0e0; text-decoration: none; color: inherit; display: flex; flex-direction: column; background: #fff; padding: 0;">
-            <div style="height: 160px; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 10px;">
-                @if($rec->photoPrincipale())
-                    <img src="{{ Storage::url($rec->photoPrincipale()->chemin) }}" alt="{{ $rec->titre }}" style="max-height: 140px; max-width: 100%; object-fit: contain;">
-                @else
-                    <div style="color: #ccc; font-size: 0.75rem;">Pas d'image</div>
-                @endif
-            </div>
-            <div style="padding: 0.75rem; flex: 1; display: flex; flex-direction: column; gap: 4px;">
-                @if($rec->produit && $rec->produit->marque)
-                    <div style="font-size: 0.7rem; color: #888;">{{ $rec->produit->marque }}</div>
-                @endif
-                <div style="font-size: 0.82rem; font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #1a1a1a;">{{ $rec->titre }}</div>
-                <div style="display: flex; gap: 2px; align-items: center; margin-top: 2px;">
-                    <div style="color: #ffbc00; font-size: 0.7rem;">
-                        @for($i=0;$i<$full;$i++)<i class="fas fa-star"></i>@endfor
-                        @if($half)<i class="fas fa-star-half-alt"></i>@endif
-                        @for($i=0;$i<$empty;$i++)<i class="far fa-star"></i>@endfor
-                    </div>
-                    <span style="font-size: 0.68rem; color: #777;">{{ $rec->nombre_avis ?? 0 }} avis</span>
-                </div>
-                <div style="margin-top: 4px;">
-                    <span style="font-size: 1.1rem; font-weight: 900; color: #db0001;">{{ number_format($rec->prix, 0, ',', ' ') }} FCFA</span>
-                    <span style="font-size: 0.78rem; font-weight: 700; color: #db0001; margin-left: 4px;">{{ ucfirst($rec->metadata?->etat ?? 'Neuf') }}</span>
-                </div>
-                @if($rec->vendeur && $rec->vendeur->type === 'professionnel')
-                <div style="font-size: 0.7rem; color: #777; margin-top: 4px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                    <span>Par <strong style="color: #333;">{{ $rec->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}</strong></span>
-                    <span style="background: #fff; color: #333; font-size: 8px; font-weight: 800; padding: 1px 5px; border: 1px solid #ccc; text-transform: uppercase;">PRO</span>
-                </div>
-                @endif
-            </div>
-        </a>
-        @endforeach
-    </div>
+    <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px;">
+        <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-pro', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
+        <div class="n1-top-grid" id="carousel-pro" style="display: flex; flex-wrap: nowrap; overflow-x: hidden; scroll-behavior: smooth; padding: 20px 0; gap: 15px;">
+            @foreach($recommandations['meilleures_offres_pro'] as $rec)
+                @include('partials.product-card-premium', ['annonce' => $rec])
+            @endforeach
+        </div>
+        <button class="carousel-arrow-btn next" onclick="scrollCarousel('carousel-pro', 1)" style="right: 0; border-radius: 50% 0 0 50%; border-right: none;"><i class="fas fa-chevron-right"></i></button>
     </div>
     @endif
 
     <!-- Clients Also Viewed Section -->
     @if(isset($recommandations['aussi_vus']) && $recommandations['aussi_vus']->count() > 0)
     <div class="rk-section-header">
-        <h2 class="rk-offers-title">Les clients ayant vu ce produit ont également vu</h2>
+        <h2 class="rk-offers-title">Articles également vus</h2>
     </div>
-    <div class="rk-best-offers" style="background: transparent; padding-top: 0.5rem; padding-bottom: 2rem; position: relative;">
-    <div style="display: flex; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; border: 1px solid #e0e0e0; background: #fff; max-width: 1280px; margin: 0 auto;">
-        @foreach($recommandations['aussi_vus'] as $rec)
-        @php
-            $rating = $rec->note_moyenne;
-            $full = floor($rating); $half = ($rating - $full) >= 0.5; $empty = 5 - $full - ($half?1:0);
-        @endphp
-        <a href="{{ route('annonces.show', $rec->slug) }}" style="flex: 0 0 210px; min-width: 210px; border-right: 1px solid #e0e0e0; text-decoration: none; color: inherit; display: flex; flex-direction: column; background: #fff;">
-            <div style="height: 160px; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 10px;">
-                @if($rec->photoPrincipale())
-                    <img src="{{ Storage::url($rec->photoPrincipale()->chemin) }}" alt="{{ $rec->titre }}" style="max-height: 140px; max-width: 100%; object-fit: contain;">
-                @else
-                    <div style="color: #ccc; font-size: 0.75rem;">Pas d'image</div>
-                @endif
-            </div>
-            <div style="padding: 0.75rem; flex: 1; display: flex; flex-direction: column; gap: 4px;">
-                @if($rec->produit && $rec->produit->marque)
-                    <div style="font-size: 0.7rem; color: #888;">{{ $rec->produit->marque }}</div>
-                @endif
-                <div style="font-size: 0.82rem; font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #1a1a1a;">{{ $rec->titre }}</div>
-                <div style="display: flex; gap: 2px; align-items: center; margin-top: 2px;">
-                    <div style="color: #ffbc00; font-size: 0.7rem;">
-                        @for($i=0;$i<$full;$i++)<i class="fas fa-star"></i>@endfor
-                        @if($half)<i class="fas fa-star-half-alt"></i>@endif
-                        @for($i=0;$i<$empty;$i++)<i class="far fa-star"></i>@endfor
-                    </div>
-                    <span style="font-size: 0.68rem; color: #777;">{{ $rec->nombre_avis ?? 0 }} avis</span>
-                </div>
-                <div style="margin-top: 4px;">
-                    <span style="font-size: 1.1rem; font-weight: 900; color: #db0001;">{{ number_format($rec->prix, 0, ',', ' ') }} FCFA</span>
-                    <span style="font-size: 0.78rem; font-weight: 700; color: #db0001; margin-left: 4px;">{{ ucfirst($rec->metadata?->etat ?? 'Neuf') }}</span>
-                </div>
-                @if($rec->vendeur && $rec->vendeur->type === 'professionnel')
-                <div style="font-size: 0.7rem; color: #777; margin-top: 4px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                    <span>Par <strong style="color: #333;">{{ $rec->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}</strong></span>
-                    <span style="background: #fff; color: #333; font-size: 8px; font-weight: 800; padding: 1px 5px; border: 1px solid #ccc; text-transform: uppercase;">PRO</span>
-                </div>
-                @endif
-            </div>
-        </a>
-        @endforeach
-    </div>
+    <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px; margin-bottom: 3rem;">
+        <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-seen', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
+        <div class="n1-top-grid" id="carousel-seen">
+            @foreach($recommandations['aussi_vus'] as $rec)
+                @include('partials.product-card-premium', ['annonce' => $rec, 'hideSeller' => true])
+            @endforeach
+        </div>
+        <button class="carousel-arrow-btn next" onclick="scrollCarousel('carousel-seen', 1)" style="right: 0; border-radius: 50% 0 0 50%; border-right: none;"><i class="fas fa-chevron-right"></i></button>
     </div>
     @endif
 
     <!-- Clients Also Liked Section -->
     @if(isset($recommandations['aussi_aimes']) && $recommandations['aussi_aimes']->count() > 0)
     <div class="rk-section-header">
-        <h2 class="rk-offers-title">Les clients ayant vu ce produit ont également aimé</h2>
+        <h2 class="rk-offers-title">Articles également aimés</h2>
     </div>
-    <div class="rk-best-offers" style="background: transparent; padding-top: 0.5rem; padding-bottom: 4rem; position: relative;">
-    <div style="display: flex; flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; border: 1px solid #e0e0e0; background: #fff; max-width: 1280px; margin: 0 auto;">
-        @foreach($recommandations['aussi_aimes'] as $rec)
-        @php
-            $rating = $rec->note_moyenne;
-            $full = floor($rating); $half = ($rating - $full) >= 0.5; $empty = 5 - $full - ($half?1:0);
-        @endphp
-        <a href="{{ route('annonces.show', $rec->slug) }}" style="flex: 0 0 210px; min-width: 210px; border-right: 1px solid #e0e0e0; text-decoration: none; color: inherit; display: flex; flex-direction: column; background: #fff;">
-            <div style="height: 160px; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 10px;">
-                @if($rec->photoPrincipale())
-                    <img src="{{ Storage::url($rec->photoPrincipale()->chemin) }}" alt="{{ $rec->titre }}" style="max-height: 140px; max-width: 100%; object-fit: contain;">
-                @else
-                    <div style="color: #ccc; font-size: 0.75rem;">Pas d'image</div>
-                @endif
-            </div>
-            <div style="padding: 0.75rem; flex: 1; display: flex; flex-direction: column; gap: 4px;">
-                @if($rec->produit && $rec->produit->marque)
-                    <div style="font-size: 0.7rem; color: #888;">{{ $rec->produit->marque }}</div>
-                @endif
-                <div style="font-size: 0.82rem; font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: #1a1a1a;">{{ $rec->titre }}</div>
-                <div style="display: flex; gap: 2px; align-items: center; margin-top: 2px;">
-                    <div style="color: #ffbc00; font-size: 0.7rem;">
-                        @for($i=0;$i<$full;$i++)<i class="fas fa-star"></i>@endfor
-                        @if($half)<i class="fas fa-star-half-alt"></i>@endif
-                        @for($i=0;$i<$empty;$i++)<i class="far fa-star"></i>@endfor
-                    </div>
-                    <span style="font-size: 0.68rem; color: #777;">{{ $rec->nombre_avis ?? 0 }} avis</span>
-                </div>
-                <div style="margin-top: 4px;">
-                    <span style="font-size: 1.1rem; font-weight: 900; color: #db0001;">{{ number_format($rec->prix, 0, ',', ' ') }} FCFA</span>
-                    <span style="font-size: 0.78rem; font-weight: 700; color: #db0001; margin-left: 4px;">{{ ucfirst($rec->metadata?->etat ?? 'Neuf') }}</span>
-                </div>
-                @if($rec->vendeur && $rec->vendeur->type === 'professionnel')
-                <div style="font-size: 0.7rem; color: #777; margin-top: 4px; display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
-                    <span>Par <strong style="color: #333;">{{ $rec->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}</strong></span>
-                    <span style="background: #fff; color: #333; font-size: 8px; font-weight: 800; padding: 1px 5px; border: 1px solid #ccc; text-transform: uppercase;">PRO</span>
-                </div>
-                @endif
-            </div>
-        </a>
-        @endforeach
-    </div>
+    <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px; margin-bottom: 4rem;">
+        <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-liked', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
+        <div class="n1-top-grid" id="carousel-liked">
+            @foreach($recommandations['aussi_aimes'] as $rec)
+                @include('partials.product-card-premium', ['annonce' => $rec, 'hideSeller' => true])
+            @endforeach
+        </div>
+        <button class="carousel-arrow-btn next" onclick="scrollCarousel('carousel-liked', 1)" style="right: 0; border-radius: 50% 0 0 50%; border-right: none;"><i class="fas fa-chevron-right"></i></button>
     </div>
     @endif
 </div>
@@ -845,13 +743,22 @@
                 displayImage.style.display = 'block';
                 displayImage.src = url;
             } else {
-                const imgHtml = `<img id="display-image" src="${url}" alt="{{ $annonce->titre }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">`;
+                const imgHtml = `<img id="display-image" src="${url}" alt="{{ $annonce->titre }}" style="width: 100%; height: 100%; object-fit: cover;">`;
                 container.insertAdjacentHTML('afterbegin', imgHtml);
             }
         }
         
         document.querySelectorAll('.rk-thumb').forEach(t => t.classList.remove('active'));
         thumb.classList.add('active');
+    }
+
+    function scrollCarousel(id, direction) {
+        const carousel = document.getElementById(id);
+        const cardWidth = carousel.querySelector('.premium-card-flat')?.offsetWidth + 15 || 205;
+        carousel.scrollBy({
+            left: cardWidth * 3 * direction,
+            behavior: 'smooth'
+        });
     }
 
     // Wishlist Toggle Logic (using event delegation for robustness)

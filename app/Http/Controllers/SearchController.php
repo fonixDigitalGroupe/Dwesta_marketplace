@@ -17,13 +17,31 @@ class SearchController extends Controller
         $query = Annonce::publiees()->with(['photos', 'category', 'vendeur.user', 'options', 'produit', 'vehicule']);
         $category = null;
 
-        // Recherche textuelle
+        // Recherche textuelle intelligente
         $searchTerm = $request->q ?? $request->search;
         if ($searchTerm) {
-            $query->where(function($q) use ($searchTerm) {
-                $q->where('titre', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('description', 'LIKE', "%{$searchTerm}%");
-            });
+            // Nettoyage et découpage du terme en mots-clés (min 2 lettres)
+            $keywords = collect(explode(' ', $searchTerm))
+                ->filter(fn($word) => strlen($word) >= 2)
+                ->map(fn($word) => trim($word))
+                ->all();
+
+            if (!empty($keywords)) {
+                $query->where(function($q) use ($keywords) {
+                    foreach ($keywords as $word) {
+                        $q->where(function($sq) use ($word) {
+                            $sq->where('titre', 'LIKE', "%{$word}%")
+                              ->orWhere('description', 'LIKE', "%{$word}%")
+                              ->orWhereHas('category', function($cq) use ($word) {
+                                  $cq->where('nom', 'LIKE', "%{$word}%");
+                              })
+                              ->orWhereHas('vendeur.professionnel', function($vq) use ($word) {
+                                  $vq->where('nom_entreprise', 'LIKE', "%{$word}%");
+                              });
+                        });
+                    }
+                });
+            }
         }
 
         // Filtre par catégorie
@@ -95,6 +113,11 @@ class SearchController extends Controller
             });
         }
 
+        // Filtre par Promotion (Pour les bannières)
+        if ($request->has('promo') || $request->has('promotion')) {
+            $query->enPromotion();
+        }
+
         // Tri
         $sort = $request->get('sort', 'relevance');
         switch ($sort) {
@@ -119,11 +142,34 @@ class SearchController extends Controller
         }
 
         $annonces = $query->paginate(24)->withQueryString();
+
+        // Tentative de trouver le "vrai mot" (Correction intelligente du titre)
+        $bestMatch = $searchTerm;
+        if ($annonces->total() > 0 && $searchTerm) {
+            $firstProduct = $annonces->first();
+            
+            // 1. Chercher si le terme ressemble énormément à une catégorie
+            $matchingCategory = Category::where('actif', true)
+                ->get()
+                ->filter(function($c) use ($searchTerm) {
+                    $similarity = 0;
+                    similar_text(strtolower($searchTerm), strtolower($c->nom), $percentage);
+                    return $percentage > 85; 
+                })->first();
+
+            if ($matchingCategory) {
+                $bestMatch = $matchingCategory->nom;
+            } 
+            // 2. Sinon, si c'est un produit très spécifique, on peut suggérer le titre propre
+            elseif ($annonces->total() < 5) {
+                $bestMatch = $firstProduct->titre;
+            }
+        }
         
         // Données pour la sidebar de filtres
         $categories = Category::whereNull('parent_id')->with('enfantsActifs')->get();
         
-        return view('search.index', compact('annonces', 'categories', 'category'));
+        return view('search.index', compact('annonces', 'categories', 'category', 'bestMatch'));
     }
 
     /**

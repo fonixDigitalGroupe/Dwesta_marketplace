@@ -2,93 +2,115 @@
 
 @section('title', 'Gestion des Onglets - Actualités')
 
-@section('breadcrumbs')
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <a href="{{ route('admin.highlights.index') }}" style="color: #666; text-decoration: none;">Actualités</a>
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <span style="color: #333; font-weight: 500;">Gestion des Onglets</span>
-@endsection
+@push('styles')
+<style>
+    .main-content { background-color: #f8f9fa !important; }
+    select:focus, input:focus {
+        border-color: #e67e00 !important;
+        box-shadow: 0 0 0 2px rgba(230,126,0,0.05) !important;
+        outline: none;
+    }
+</style>
+@endpush
 
 @section('content')
-<div style="max-width: 1200px;">
-    <header style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-            <h1 style="font-size: 1.375rem; color: #333; font-weight: 600; margin-bottom: 0.25rem;">Onglets de la Grille</h1>
-        </div>
-        <a href="{{ route('admin.highlight-tabs.create') }}" 
-           style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background-color: #000; color: #fff; border-radius: 8px; transition: all 0.2s; text-decoration: none;" 
-           title="Nouvel onglet">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
-        </a>
-    </header>
+    <div style="max-width: 100%;">
 
-    <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 2px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
-        <div style="padding: 0.875rem 1.25rem; border-bottom: 1px solid #e5e5e5; background: #fafafa;">
-            <span style="font-size: 0.8rem; color: #666;">{{ $tabs->count() }} onglet(s) configuré(s)</span>
-        </div>
+        <!-- Main Conteneur -->
+        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1.5rem;">
+            
+            <div style="margin-bottom: 0.5rem;">
+                <h1 style="font-size: 1.25rem; font-weight: 700; color: #333; margin: 0;">Onglets de la Bento Grid</h1>
+            </div>
+            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
 
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="text-align: left;">
-                    <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Nom</th>
-                    <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5; width: 80px;">Ordre</th>
-                    <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5; width: 120px;">Statut</th>
-                    <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5; text-align: right; width: 150px;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($tabs as $tab)
-                    <tr style="border-bottom: 1px solid #e5e5e5;">
-                        <td style="padding: 0.875rem 1.25rem;">
-                            <div style="font-size: 0.875rem; color: #333; font-weight: 500;">{{ $tab->name }}</div>
-                        </td>
+            <!-- Action Bar -->
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 1.5rem;">
+                <a href="{{ route('admin.highlight-tabs.create') }}" style="display: flex; align-items: center; gap: 8px; background: #e67e00; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                    Nouvel Onglet <i class="fas fa-plus-square"></i>
+                </a>
+                <a href="{{ route('admin.highlights.index') }}" style="display: flex; align-items: center; gap: 8px; background: #333; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                    Retour aux Actualités <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
 
-                        <td style="padding: 0.875rem 1.25rem;">
-                            <span style="font-size: 0.875rem; color: #666;">{{ $tab->position }}</span>
-                        </td>
-                        <td style="padding: 0.875rem 1.25rem;">
-                            <span style="font-size: 0.75rem; font-weight: 600; color: {{ $tab->active ? '#16a34a' : '#ca8a04' }};">
-                                {{ $tab->active ? 'Actif' : 'Désactivé' }}
-                            </span>
-                        </td>
-                        <td style="padding: 0.875rem 1.25rem; text-align: right;">
-                            <div style="display: flex; justify-content: flex-end; gap: 4px;">
-                                <a href="{{ route('admin.highlight-tabs.edit', $tab) }}" 
-                                   style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #004aad; background: #eef2ff; border-radius: 8px; transition: all 0.2s; text-decoration: none;" 
-                                   title="Modifier"
-                                   onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#eef2ff'">
-                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                </a>
-                                <form action="{{ route('admin.highlight-tabs.destroy', $tab) }}" method="POST" onsubmit="return confirm('Supprimer cet onglet ? (Les actualités associées bloqueront la suppression)')" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #ef4444; background: #fff1f2; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;" 
-                                            title="Supprimer"
-                                            onmouseover="this.style.background='#ffe4e6'" onmouseout="this.style.background='#fff1f2'">
-                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
+            <!-- Table -->
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid #eee;">
+                <thead>
+                    <tr style="background: #fff; border-bottom: 2px solid #eee;">
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.82rem; font-weight: 700; color: #333; width: 80px;">Pos</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333;">Nom de l'onglet</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333; width: 120px;">Statut</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: right; font-size: 0.82rem; font-weight: 700; color: #333; width: 150px;">Action</th>
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" style="padding: 3rem; text-align: center; color: #999; font-size: 0.875rem;">
-                            Aucun onglet trouvé.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @forelse($tabs as $tab)
+                        <tr style="transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.85rem; font-weight: 600; color: #333;">
+                                #{{ $tab->position }}
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #333;">
+                                <div style="font-weight: 600; color: #333;">{{ $tab->name }}</div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #eee;">
+                                @if($tab->active)
+                                    <span style="background: #e6f9ed; color: #1e7e34; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">Actif</span>
+                                @else
+                                    <span style="background: #fff5f5; color: #c53030; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">Désactivé</span>
+                                @endif
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #eee; text-align: right;">
+                                <div style="display: flex; gap: 6px; justify-content: flex-end;">
+                                    <a href="{{ route('admin.highlight-tabs.edit', $tab) }}" 
+                                       style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #eff6ff; color: #2563eb; border-radius: 6px; font-size: 0.8rem; text-decoration: none; border: 1px solid #dbeafe; transition: all 0.2s;" 
+                                       title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    
+                                    <form id="delete-tab-{{ $tab->id }}" action="{{ route('admin.highlight-tabs.destroy', $tab) }}" method="POST" style="display:inline;">
+                                        @csrf @method('DELETE')
+                                        <button type="button" onclick="confirmDeleteTab({{ $tab->id }})" 
+                                                style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #fef2f2; color: #dc2626; border-radius: 6px; font-size: 0.8rem; border: 1px solid #fee2e2; cursor: pointer; transition: all 0.2s;" 
+                                                title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" style="padding: 3rem; text-align: center; color: #94a3b8; font-size: 0.9rem;">
+                                Aucun onglet trouvé.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
-
+    @push('scripts')
+    <script>
+        function confirmDeleteTab(id) {
+            Swal.fire({
+                title: 'Supprimer cet onglet ?',
+                text: "Attention : si cet onglet contient des actualités, la suppression sera bloquée par la base de données.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Oui, supprimer !',
+                cancelButtonText: 'Annuler',
+                borderRadius: '12px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-tab-' + id).submit();
+                }
+            })
+        }
+    </script>
+    @endpush
 @endsection

@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             MessageSeeder::class,           // Messages
             CreditTransactionSeeder::class, // Crédits
             LitigeSeeder::class,            // Litiges
+            HighlightSeeder::class,         // Actualités (Bento Grid)
         ]);
     }
 }

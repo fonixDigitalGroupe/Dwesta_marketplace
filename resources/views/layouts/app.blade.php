@@ -19,6 +19,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background-color: #ffffff; /* Page background white as requested */
             color: #333;
+            overflow-x: hidden;
         }
 
         [x-cloak] {
@@ -502,6 +503,8 @@
 
 
     @yield('content')
+
+    @include('layouts.partials.footer')
 
 
     <script>

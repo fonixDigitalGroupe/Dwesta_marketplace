@@ -58,8 +58,7 @@
         position: sticky;
         top: 0;
         z-index: 1000;
-        border-bottom: 1px solid #ebebeb;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
     }
     .n1-horizontal-menu {
         max-width: 1200px;
@@ -82,16 +81,16 @@
         justify-content: center;
         width: 36px;
         height: 36px;
-        background-color: #004aad;
-        color: #ffffff;
+        background-color: #f1f5f9;
+        color: #475569;
         border: none;
         border-radius: 50%;
         text-decoration: none;
         flex-shrink: 0;
         font-size: 0.85rem;
-        transition: background-color 0.2s;
+        transition: all 0.2s ease, transform 0.15s;
     }
-    .n1-nav-home-btn:hover { background-color: #002e6b; color: #fff; }
+    .n1-nav-home-btn:hover { background-color: #ee8800; color: #fff; transform: scale(1.08); }
 
     body { 
         margin: 0; 
@@ -129,16 +128,18 @@
         white-space: nowrap;
         transition: color 0.2s;
     }
-    .n1-cat-nav-link:hover { color: #004aad; }
+    .n1-cat-nav-link:hover { color: #ee8800; font-weight: 600; }
     .n1-cat-nav-link.active {
-        background-color: #004aad;
+        background-color: #ee8800;
         color: #fff !important;
-        padding: 5px 15px;
+        padding: 5px 16px;
         border-radius: 20px;
         font-weight: 600;
+        border-bottom: none;
     }
     .n1-nav-home-btn.active {
-        background-color: #004aad !important;
+        background-color: #ee8800 !important;
+        color: #fff !important;
     }
 
     .n1-promo-bar {
@@ -177,6 +178,134 @@
     
     .ads-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
     .catalog-main-column { overflow: hidden; }
+
+    /* Top Consulted Section */
+    .n1-top-consulted-section {
+        padding: 3rem 0;
+        background: #fff;
+    }
+    .n1-top-consulted-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #333;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .n1-top-consulted-carousel {
+        position: relative;
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 50px;
+    }
+    .n1-top-grid {
+        display: flex;
+        gap: 12px;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        padding: 10px 0;
+    }
+    .n1-top-card {
+        flex: 0 0 calc(16.66% - 10px);
+        min-width: 190px;
+        background: #fff;
+        border: 1px solid #efefef;
+        border-radius: 8px;
+        padding: 1.25rem;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .n1-top-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        border-color: #ddd;
+    }
+    .n1-top-media {
+        width: 100%;
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    .n1-top-media img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    .n1-top-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .n1-top-item-title {
+        font-size: 0.85rem;
+        line-height: 1.4;
+        color: #555;
+        margin-bottom: 0.8rem;
+        height: 2.8rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    .n1-top-price-row {
+        margin-bottom: 0.8rem;
+    }
+    .n1-top-price-state {
+        font-size: 0.85rem;
+        color: #333;
+        font-weight: 500;
+    }
+    .n1-top-price-val {
+        color: #ee8800;
+        font-weight: 700;
+        font-size: 1.05rem;
+    }
+    .n1-top-rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: auto;
+    }
+    .n1-top-stars {
+        color: #ffc107;
+        font-size: 0.75rem;
+        display: flex;
+    }
+    .n1-top-rating-count {
+        font-size: 0.75rem;
+        color: #999;
+    }
+    .n1-top-footer {
+        text-align: center;
+        margin-top: 2rem;
+    }
+    .btn-voir-plus-outline {
+        display: inline-block;
+        padding: 0.8rem 3rem;
+        border: 1.5px solid #333;
+        border-radius: 999px;
+        background: #fff;
+        color: #333;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .btn-voir-plus-outline:hover {
+        background: #333;
+        color: #fff;
+    }
+    
+    @media (max-width: 1200px) {
+        .n1-top-card { flex: 0 0 calc(25% - 10px); }
+    }
+    @media (max-width: 768px) {
+        .n1-top-card { flex: 0 0 calc(50% - 10px); }
+    }
 </style>
 @endpush
 
@@ -184,26 +313,46 @@
 
 <!-- GRANDE PRESENTATION POUR LES CATEGORIES DE NIVEAU 1 -->
 @if($category->parent_id === null && request('view') !== 'list')
+    @if($banner)
     <div class="n1-promo-bar">
         <div class="n1-promo-content">
             <span class="n1-promo-badge">
                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-top: -2px;"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
                 Durée limitée !
             </span>
-            <span class="n1-promo-text"><strong>20€ OFFERTS*</strong> dès 149€ d'achat avec le code <span class="n1-promo-code">JARDIN20</span></span>
+            <span class="n1-promo-text">
+                @if($banner->promo_discount)
+                    <strong>{{ $banner->promo_discount }} OFFERTS*</strong> 
+                    @if($banner->promo_conditions) {{ $banner->promo_conditions }} @endif
+                    @if($banner->promo_code) avec le code <span class="n1-promo-code">{{ $banner->promo_code }}</span> @endif
+                @else
+                    {{ $banner->title }}
+                @endif
+            </span>
         </div>
     </div>
+    @endif
 
-    <div class="n1-grand-banner" 
-         @if($category->slug === 'e-commerce') 
-            style="background-image: url('https://images.samsung.com/is/image/samsung/assets/sn/home/2024/Galaxy_S24_Ultra_Main_KV_1440x640_pc.jpg');" 
-         @endif>
+    @php
+        $bgImage = 'https://images.unsplash.com/photo-1589923188900-85dae523342b?q=80&w=2070&auto=format&fit=crop';
+        if ($banner) {
+            $bgImage = $banner->image_url;
+        } elseif ($category->image) {
+            $bgImage = $category->image;
+        } elseif ($category->slug === 'e-commerce') {
+            $bgImage = 'https://images.samsung.com/is/image/samsung/assets/sn/home/2024/Galaxy_S24_Ultra_Main_KV_1440x640_pc.jpg';
+        }
+    @endphp
+    <div class="n1-grand-banner" style="background-image: url('{{ $bgImage }}');">
+        @if($banner && $banner->link_url)
+            <a href="{{ $banner->link_url }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5;"></a>
+        @endif
     </div>
 
     <div class="n1-horizontal-menu-wrapper">
         <div class="n1-horizontal-menu">
             <a href="#" class="n1-nav-home-btn active" onclick="filterWholePage('all', this); return false;" title="Accueil catégorie">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="white" width="18" height="18">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" width="18" height="18">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                 </svg>
             </a>
@@ -215,6 +364,64 @@
             @endif
         </div>
     </div>
+@endif
+
+@if($category->parent_id === null && request('view') !== 'list' && isset($topConsultes) && $topConsultes->count() > 0)
+    <section class="n1-top-consulted-section">
+        <h2 class="n1-top-consulted-title">Top des produits les plus consultés</h2>
+        
+        <div class="n1-top-consulted-carousel">
+            <button class="n1-carousel-arrow n1-arrow-left" onclick="n1CarouselScroll('n1-top-products', -1)" aria-label="Précédent" style="background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            
+            <div class="n1-top-grid" id="n1-top-products">
+                @foreach($topConsultes as $annonce)
+                    @php
+                        $itemN2Id = ($annonce->category->parent && $annonce->category->parent->parent_id === null) ? $annonce->categorie_id : $annonce->category->parent_id;
+                    @endphp
+                    <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-top-card global-filter-item" data-n2="{{ $itemN2Id }}">
+                        <div class="n1-top-media">
+                            @if($annonce->photoPrincipale())
+                                <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
+                            @else
+                                <div class="no-photo" style="font-size: 0.7rem; color: #ccc;">No photo</div>
+                            @endif
+                        </div>
+                        <div class="n1-top-info">
+                            <h3 class="n1-top-item-title">{{ $annonce->titre }}</h3>
+                            <div class="n1-top-price-row">
+                                <span class="n1-top-price-state">{{ $annonce->produit && $annonce->produit->etat == 'occasion' ? 'Occasions dès' : 'Neufs dès' }}</span>
+                                <span class="n1-top-price-val">{{ number_format($annonce->prix, 0, ',', ' ') }} €</span>
+                            </div>
+                            
+                            <div class="n1-top-rating">
+                                <div class="n1-top-stars">
+                                    @php $rating = rand(4, 5); @endphp
+                                    @for($i=0; $i<5; $i++)
+                                        @if($i < $rating)
+                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                        @else
+                                            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                        @endif
+                                    @endfor
+                                </div>
+                                <span class="n1-top-rating-count">{{ rand(5, 120) }}</span>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+
+            <button class="n1-carousel-arrow n1-arrow-right" onclick="n1CarouselScroll('n1-top-products', 1)" aria-label="Suivant" style="background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+        </div>
+
+        <div class="n1-top-footer">
+            <a href="{{ route('categories.show', ['slug' => $category->slug, 'view' => 'list']) }}" class="btn-voir-plus-outline">Voir plus</a>
+        </div>
+    </section>
 @endif
 
 <div class="catalog-page-container">
@@ -299,7 +506,7 @@
                         <a href="#" class="btn-voir-plus-white">Voir plus d'offres</a>
                     </div>
                 </div>
-            @else
+            @elseif($annonces->count() > 0)
                 <div class="n1-offers-section">
                     <h2 class="n1-offers-title">Nos produits phares</h2>
                     <div class="n1-carousel-wrapper">
@@ -307,7 +514,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
                         </button>
                         <div class="n1-catalog-grid" id="n1-carousel-offers">
-                            @forelse($annonces as $annonce)
+                            @foreach($annonces as $annonce)
                                 @php
                                     $itemN2Id = ($annonce->category->parent && $annonce->category->parent->parent_id === null) ? $annonce->categorie_id : $annonce->category->parent_id;
                                 @endphp
@@ -327,26 +534,20 @@
                                         </div>
                                     </div>
                                 </a>
-                            @empty
-                                <div class="empty-state">
-                                    <p>Aucun produit trouvé dans cette catégorie.</p>
-                                    <a href="{{ route('home') }}" class="btn-back">Retour à l'accueil</a>
-                                </div>
-                            @endforelse
+                            @endforeach
+                        </div>
+                        <button class="n1-carousel-arrow n1-arrow-right" onclick="n1CarouselScroll('n1-carousel-offers', 1)" aria-label="Suivant">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
                     </div>
-                    <button class="n1-carousel-arrow n1-arrow-right" onclick="n1CarouselScroll('n1-carousel-offers', 1)" aria-label="Suivant">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-                    </button>
+                    
+                    <div class="n1-section-footer">
+                        <a href="#" class="btn-voir-plus-white">Voir plus d'offres</a>
+                    </div>
                 </div>
-                
-                <div class="n1-section-footer">
-                    <a href="#" class="btn-voir-plus-white">Voir plus d'offres</a>
-                </div>
-                </div>
+            @endif
 
-                @endif
-
-                @if($dealsMarchands->count() > 0)
+            @if($dealsMarchands->count() > 0)
                 <div class="n1-offers-section" style="margin-top: 2rem; background: #fff; padding: 2rem 0; border-radius: 8px;">
                     <h2 class="n1-offers-title" style="color: #333;">Nos deals marchands du moment</h2>
                     <div class="n1-carousel-wrapper">
@@ -391,107 +592,109 @@
                     <div class="n1-section-footer" style="margin-top: 1.5rem; text-align: center;">
                         <button class="btn-voir-plus" onclick="toggleDealsGrid()" style="border-color: #333; color: #333;">Voir plus de deals</button>
                     </div>
-                    @endif
                 </div>
                 @endif
+            @endif
 
-                <div class="n1-selection-section">
-                    <div class="n1-selection-container">
-                        <h2 class="n1-selection-title">Notre sélection {{ $category->nom }}</h2>
-                        
-                        <div class="n1-filter-bar">
-                            <div class="n1-filter-item">
-                                <select name="id_categorie_n2" onchange="updateN3Dropdown()">
-                                    <option value="">Catégories</option>
-                                    @foreach($category->enfantsActifs as $enfant)
-                                        <option value="{{ $enfant->id }}" data-slug="{{ $enfant->slug }}">{{ $enfant->nom }}</option>
-                                    @endforeach
-                                </select>
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                            </div>
-                            <div class="n1-filter-item">
-                                <select name="id_categorie_n3" id="n3-select" onchange="applyN1Filters()">
-                                    <option value="">Sous-catégories</option>
-                                </select>
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                            </div>
-                            <div class="n1-filter-item">
-                                <select name="etat" onchange="applyN1Filters()">
-                                    <option value="">État</option>
-                                    <option value="neuf">Neuf</option>
-                                    <option value="occasion">Occasion</option>
-                                    <option value="reconditionne">Reconditionné</option>
-                                </select>
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                            </div>
-                            <div class="n1-filter-item">
-                                <select name="prix" onchange="applyN1Filters()">
-                                    <option value="">Prix</option>
-                                    <option value="0-50000">0 - 50 000 FCFA</option>
-                                    <option value="50000-200000">50 000 - 200 000 FCFA</option>
-                                    <option value="200000+">Plus de 200 000 FCFA</option>
-                                </select>
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-                            </div>
-                        </div>
-
-                        <div class="n1-selection-grid" id="selection-grid">
-                            @foreach($selectionAnnonces as $index => $annonce)
-                                @php
-                                    $n2Id = null;
-                                    $n3Id = null;
-                                    $cat = $annonce->category;
-                                    if ($cat) {
-                                        if ($cat->parent_id == $category->id) {
-                                            $n2Id = $cat->id;
-                                        } elseif ($cat->parent && $cat->parent->parent_id == $category->id) {
-                                            $n2Id = $cat->parent_id;
-                                            $n3Id = $cat->id;
-                                        }
-                                    }
-                                    $normEtat = 'neuf';
-                                    $rawEtat = strtolower($annonce->produit->etat ?? 'neuf');
-                                    if (strpos($rawEtat, 'occasion') !== false) $normEtat = 'occasion';
-                                    elseif (strpos($rawEtat, 'reconditionne') !== false) $normEtat = 'reconditionne';
-                                @endphp
-                                <div class="n1-selection-item global-filter-item {{ $index >= 18 ? 'selection-hidden' : '' }}"
-                                     data-n2="{{ $n2Id }}"
-                                     data-n3="{{ $n3Id }}"
-                                     data-etat="{{ $normEtat }}"
-                                     data-price="{{ $annonce->prix }}"
-                                     style="{{ $index >= 18 ? 'display: none;' : '' }}">
-                                    <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-promo-card">
-                                        <div class="n1-card-media">
-                                            @if($annonce->photoPrincipale())
-                                                <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
-                                            @else
-                                                <div class="no-photo">Pas de photo</div>
-                                            @endif
-                                        </div>
-                                        <div class="n1-card-title">{{ \Illuminate\Support\Str::limit($annonce->titre, 55) }}</div>
-                                        
-                                        <div class="n1-merchant-deals-info">
-                                            <div class="n1-v2-price-row">
-                                                <span class="n1-v2-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
-                                                <span class="n1-v2-state">{{ $annonce->produit ? ucfirst($annonce->produit->etat) : 'Neuf' }}</span>
-                                            </div>
-                                            <div class="n1-v2-merchant-row">
-                                                <span class="n1-v2-shop-name">Par {{ $annonce->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}</span>
-                                                <span class="n1-v2-badge-pro">PRO</span>
-                                            </div>
-                                        </div>
-                                    </a>
+                @if($selectionAnnonces->count() > 0)
+                    <div class="n1-selection-section">
+                        <div class="n1-selection-container">
+                            <h2 class="n1-selection-title">Notre sélection {{ $category->nom }}</h2>
+                            
+                            <div class="n1-filter-bar">
+                                <div class="n1-filter-item">
+                                    <select name="id_categorie_n2" onchange="updateN3Dropdown()">
+                                        <option value="">Catégories</option>
+                                        @foreach($category->enfantsActifs as $enfant)
+                                            <option value="{{ $enfant->id }}" data-slug="{{ $enfant->slug }}">{{ $enfant->nom }}</option>
+                                        @endforeach
+                                    </select>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
                                 </div>
-                            @endforeach
-                        </div>
-
-                        @if($selectionAnnonces->count() > 18)
-                            <div class="n1-selection-footer">
-                                <button class="btn-voir-plus" onclick="redirectVoirPlus('{{ $category->slug }}')">Voir plus</button>
+                                <div class="n1-filter-item">
+                                    <select name="id_categorie_n3" id="n3-select" onchange="applyN1Filters()">
+                                        <option value="">Sous-catégories</option>
+                                    </select>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                                </div>
+                                <div class="n1-filter-item">
+                                    <select name="etat" onchange="applyN1Filters()">
+                                        <option value="">État</option>
+                                        <option value="neuf">Neuf</option>
+                                        <option value="occasion">Occasion</option>
+                                        <option value="reconditionne">Reconditionné</option>
+                                    </select>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                                </div>
+                                <div class="n1-filter-item">
+                                    <select name="prix" onchange="applyN1Filters()">
+                                        <option value="">Prix</option>
+                                        <option value="0-50000">0 - 50 000 FCFA</option>
+                                        <option value="50000-200000">50 000 - 200 000 FCFA</option>
+                                        <option value="200000+">Plus de 200 000 FCFA</option>
+                                    </select>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                                </div>
                             </div>
-                        @endif
+
+                            <div class="n1-selection-grid" id="selection-grid">
+                                @foreach($selectionAnnonces as $index => $annonce)
+                                    @php
+                                        $n2Id = null;
+                                        $n3Id = null;
+                                        $cat = $annonce->category;
+                                        if ($cat) {
+                                            if ($cat->parent_id == $category->id) {
+                                                $n2Id = $cat->id;
+                                            } elseif ($cat->parent && $cat->parent->parent_id == $category->id) {
+                                                $n2Id = $cat->parent_id;
+                                                $n3Id = $cat->id;
+                                            }
+                                        }
+                                        $normEtat = 'neuf';
+                                        $rawEtat = strtolower($annonce->produit->etat ?? 'neuf');
+                                        if (strpos($rawEtat, 'occasion') !== false) $normEtat = 'occasion';
+                                        elseif (strpos($rawEtat, 'reconditionne') !== false) $normEtat = 'reconditionne';
+                                    @endphp
+                                    <div class="n1-selection-item global-filter-item {{ $index >= 18 ? 'selection-hidden' : '' }}"
+                                         data-n2="{{ $n2Id }}"
+                                         data-n3="{{ $n3Id }}"
+                                         data-etat="{{ $normEtat }}"
+                                         data-price="{{ $annonce->prix }}"
+                                         style="{{ $index >= 18 ? 'display: none;' : '' }}">
+                                        <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-promo-card">
+                                            <div class="n1-card-media">
+                                                @if($annonce->photoPrincipale())
+                                                    <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
+                                                @else
+                                                    <div class="no-photo">Pas de photo</div>
+                                                @endif
+                                            </div>
+                                            <div class="n1-card-title">{{ \Illuminate\Support\Str::limit($annonce->titre, 55) }}</div>
+                                            
+                                            <div class="n1-merchant-deals-info">
+                                                <div class="n1-v2-price-row">
+                                                    <span class="n1-v2-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                                    <span class="n1-v2-state">{{ $annonce->produit ? ucfirst($annonce->produit->etat) : 'Neuf' }}</span>
+                                                </div>
+                                                <div class="n1-v2-merchant-row">
+                                                    <span class="n1-v2-shop-name">Par {{ $annonce->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}</span>
+                                                    <span class="n1-v2-badge-pro">PRO</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            @if($selectionAnnonces->count() > 18)
+                                <div class="n1-selection-footer">
+                                    <button class="btn-voir-plus" onclick="redirectVoirPlus('{{ $category->slug }}')">Voir plus</button>
+                                </div>
+                            @endif
+                        </div>
                     </div>
-                </div>
+                @endif
             @else
                 <!-- Grille Classique pour N2 / N3 -->
                 <div class="catalog-grid">
@@ -629,7 +832,7 @@
     }
     .n1-carousel-arrow:hover {
         box-shadow: 0 3px 12px rgba(0,0,0,0.22);
-        color: #004aad;
+        color: #111;
     }
     .n1-arrow-left  { left: 8px; }
     .n1-arrow-right { right: 8px; }
@@ -770,12 +973,13 @@
         text-decoration: line-through;
     }
     .n1-discount-badge {
-        background: #007bff;
+        background: #ee8800;
         color: white;
         font-size: 11px;
         font-weight: 700;
-        padding: 1px 4px;
-        border-radius: 3px;
+        padding: 2px 5px;
+        border-radius: 4px;
+        letter-spacing: 0.3px;
     }
     .n1-actual-price {
         font-size: 18px;
@@ -784,12 +988,13 @@
         margin-top: 4px;
     }
 
-    /* Notre Sélection Styling (Blue Gradient + Noise Overlay) */
+    /* Notre Sélection Styling (Professional Cool Gray) */
     .n1-selection-section {
-        background: linear-gradient(180deg, #002e6b 0%, #004aad 100%);
-        padding: 4rem 0;
+        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+        padding: 5rem 0;
         margin-top: 2rem;
-        position: relative; /* For noise overlay */
+        position: relative;
+        border-top: 1px solid #e2e8f0;
     }
     .n1-selection-section::before {
         content: "";
@@ -806,7 +1011,7 @@
     }
     .n1-selection-title {
         text-align: center;
-        color: #fff;
+        color: #1a1a1a;
         font-size: 1.8rem;
         font-weight: 700;
         margin-bottom: 2.5rem;
@@ -877,8 +1082,8 @@
     }
     .btn-voir-plus {
         background: transparent;
-        color: #fff;
-        border: 1px solid rgba(255, 255, 255, 0.8);
+        color: #333;
+        border: 1px solid rgba(0, 0, 0, 0.3);
         padding: 0.8rem 3rem;
         border-radius: 30px;
         font-weight: 600;
@@ -889,7 +1094,7 @@
         letter-spacing: 0.5px;
     }
     .btn-voir-plus:hover {
-        background: rgba(255,255,255,0.1);
+        background: rgba(0,0,0,0.06);
         transform: translateY(-2px);
     }
 

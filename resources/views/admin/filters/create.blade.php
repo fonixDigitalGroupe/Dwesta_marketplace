@@ -1,309 +1,290 @@
 @extends('layouts.admin')
 
-@section('title', 'Créer un critère')
+@section('title', 'Créer un critère de filtrage')
 
 @push('styles')
     <style>
         .main-content { background-color: #f8f9fa !important; }
-        .checkbox-container {
-            display: flex;
+        
+        /* Input Amazon Style */
+        input[type="text"]:focus, 
+        select:focus {
+            border-color: #e77600 !important;
+            box-shadow: 0 0 3px 2px rgba(228,121,17,0.5) !important;
+            outline: none;
+        }
+
+        .amazon-card {
+            background: #fff;
+            border: 1px solid #e7e7e7;
+            border-radius: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #111;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e7e7e7;
+        }
+
+        .btn-amazon-primary {
+            background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+            border: 1px solid #a88734;
+            color: #111;
+            padding: 8px 24px;
+            border-radius: 0;
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-decoration: none;
+            box-shadow: 0 1px 0 rgba(255,255,255,.4) inset;
+            cursor: pointer;
+            display: inline-flex;
             align-items: center;
-            position: relative;
-            padding-left: 35px;
-            margin-bottom: 0;
-            cursor: pointer;
-            font-size: 14px;
-            user-select: none;
+            justify-content: center;
         }
-        .checkbox-container input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-            height: 0;
-            width: 0;
+        .btn-amazon-primary:hover {
+            background: linear-gradient(to bottom, #f5d78e, #eeb933);
+            border-color: #9c7e31;
         }
-        .checkmark {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 22px;
-            width: 22px;
-            background-color: #eee;
-            border-radius: 6px;
+
+        .btn-amazon-secondary {
+            background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
+            border: 1px solid #adb1b8;
+            color: #111;
+            padding: 8px 24px;
+            border-radius: 0;
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-decoration: none;
+            box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-option-btn {
+            background: #fff;
+            border: 1px solid #adb1b8;
+            color: #c40000;
+            padding: 0 12px;
+            cursor: pointer;
             transition: all 0.2s;
         }
-        .checkbox-container:hover input ~ .checkmark {
-            background-color: #ccc;
-        }
-        .checkbox-container input:checked ~ .checkmark {
-            background-color: #e67e00;
-        }
-        .checkmark:after {
-            content: "\f00c";
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            position: absolute;
-            display: none;
-            color: white;
-            font-size: 12px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .checkbox-container input:checked ~ .checkmark:after {
-            display: block;
+        .remove-option-btn:hover {
+            background: #f7f8fa;
+            border-color: #c40000;
         }
     </style>
 @endpush
 
 @section('content')
-    <div style="max-width: 100%;">
-        <!-- Main Conteneur -->
-        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1.5rem;">
-            
-            <div style="margin-bottom: 0.5rem;">
-                <h1 style="font-size: 1.25rem; font-weight: 700; color: #333; margin: 0;">Créer un Nouveau Critère</h1>
-            </div>
-            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1rem;"></div>
-
-            <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1rem;">
-                <a href="{{ route('admin.filters.index') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#e67e00'" onmouseout="this.style.borderColor='#ddd'">
-                    Retour à la liste <i class="fas fa-undo" style="font-size: 0.75rem; opacity: 0.6;"></i>
-                </a>
-            </div>
-
-            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
-
-            <form action="{{ route('admin.filters.store') }}" method="POST">
-                @csrf
-
-                <!-- Grid Layout Side-by-Side -->
-                <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: stretch;">
-                    
-                    <!-- Left Column: Identité -->
-                    <div style="background: #fdfdfd; border: 1px solid #f3f3f3; border-radius: 4px; padding: 1.5rem;">
-                        <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                            Identité du Critère
-                        </h3>
-                        
-                        <div style="display: grid; gap: 1.5rem;">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                                <!-- Sélection Niveau 1 -->
-                                <div>
-                                    <label for="l1_category_id" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Niveau 1 <small style="color: red;">*</small></label>
-                                    <select id="l1_category_id" 
-                                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; outline: none; background: #fff; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
-                                        <option value="">-- Choisir --</option>
-                                        @foreach($parents as $parent)
-                                            <option value="{{ $parent->id }}">{{ $parent->nom }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <!-- Sélection Niveau 2 -->
-                                <div>
-                                    <label for="l2_category_id" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Niveau 2 <small style="color: red;">*</small></label>
-                                    <select id="l2_category_id" disabled
-                                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; outline: none; background: #fdfdfd; cursor: not-allowed; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
-                                        <option value="">-- Choisir --</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                                <!-- Sélection Niveau 3 -->
-                                <div>
-                                    <label for="category_id" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Niveau 3 <small style="color: red;">*</small></label>
-                                    <select name="category_id" id="category_id" required disabled
-                                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; outline: none; background: #fdfdfd; cursor: not-allowed; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
-                                        <option value="">-- Choisir --</option>
-                                    </select>
-                                    <div id="loader" style="display: none; font-size: 0.75rem; color: #666; margin-top: 4px; align-items: center; gap: 5px;">
-                                        <i class="fas fa-spinner fa-spin"></i> Chargement...
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Nom du Critère <small style="color: red;">*</small></label>
-                                    <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required placeholder="Ex: Couleur, Pointure..."
-                                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; outline: none; transition: all 0.2s; text-transform: capitalize;"
-                                        onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
-                                </div>
-                            </div>
-
-                            <input type="hidden" name="type" value="select">
-                        </div>
-                    </div>
-
-                    <!-- Right Column: Options & Paramètres -->
-                    <div style="background: #fdfdfd; border: 1px solid #f3f3f3; border-radius: 4px; padding: 1.5rem; display: flex; flex-direction: column;">
-                        <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                            Options & Paramètres
-                        </h3>
-
-                        <div style="flex: 1;">
-                            <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 12px;">Options de filtrage</label>
-                            
-                            <div id="options-group">
-                                <div id="options-container" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
-                                    <!-- Dynamic options will be added here -->
-                                </div>
-
-                                <div style="display: flex; gap: 10px; align-items: center;">
-                                    <input type="text" id="new-option-input" placeholder="Ajouter une option..."
-                                        style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.9rem; outline: none; transition: all 0.2s;"
-                                        onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
-                                    <button type="button" id="add-option-btn-v2" 
-                                        style="width: 40px; height: 40px; background: #e67e00; color: #fff; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s;"
-                                        onmouseover="this.style.background='#cf7100'" onmouseout="this.style.background='#e67e00'">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Actions Footer -->
-                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 12px;">
-                    <a href="{{ route('admin.filters.index') }}" 
-                        style="background: #fff; border: 1px solid #ddd; color: #333; padding: 10px 24px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; text-decoration: none; transition: all 0.2s;"
-                        onmouseover="this.style.background='#f9f9f9'; this.style.borderColor='#ccc'" 
-                        onmouseout="this.style.background='#fff'; this.style.borderColor='#ddd'">
-                        Annuler
-                    </a>
-                    <button type="submit" 
-                        style="background: #e67e00; color: #fff; border: none; padding: 10px 30px; border-radius: 6px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s;"
-                        onmouseover="this.style.background='#cf7100'" 
-                        onmouseout="this.style.background='#e67e00'">
-                        Enregistrer
-                    </button>
-                </div>
-            </form>
-        </div>
+<div style="max-width: 1200px; margin: 0 auto;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Nouveau critère de filtrage</h1>
+        <a href="{{ route('admin.filters.index') }}" class="btn-amazon-secondary" style="gap: 8px;">
+            <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour à la liste
+        </a>
     </div>
 
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const l1Select = document.getElementById('l1_category_id');
-            const l2Select = document.getElementById('l2_category_id');
-            const l3Select = document.getElementById('category_id');
-            const loader = document.getElementById('loader');
+    <form action="{{ route('admin.filters.store') }}" method="POST">
+        @csrf
 
-            function resetSelect(select, placeholder) {
-                select.innerHTML = `<option value="">-- Choisir --</option>`;
-                select.disabled = true;
-                select.style.background = '#fdfdfd';
-                select.style.cursor = 'not-allowed';
-            }
-
-            function enableSelect(select) {
-                select.disabled = false;
-                select.style.background = '#fff';
-                select.style.cursor = 'pointer';
-            }
-
-            l1Select.addEventListener('change', function() {
-                const parentId = this.value;
-                resetSelect(l2Select);
-                resetSelect(l3Select);
-                
-                if (!parentId) return;
-
-                loader.style.display = 'flex';
-                fetch(`/admin/filters/categories/${parentId}/children`)
-                    .then(response => response.json())
-                    .then(data => {
-                        l2Select.innerHTML = '<option value="">-- Choisir --</option>';
-                        data.forEach(child => {
-                            const option = document.createElement('option');
-                            option.value = child.id;
-                            option.textContent = child.nom;
-                            l2Select.appendChild(option);
-                        });
-                        enableSelect(l2Select);
-                        loader.style.display = 'none';
-                    })
-                    .catch(error => {
-                        console.error('Error fetching categories:', error);
-                        loader.style.display = 'none';
-                    });
-            });
-
-            l2Select.addEventListener('change', function() {
-                const parentId = this.value;
-                resetSelect(l3Select);
-                
-                if (!parentId) return;
-
-                loader.style.display = 'flex';
-                fetch(`/admin/filters/categories/${parentId}/children`)
-                    .then(response => response.json())
-                    .then(data => {
-                        l3Select.innerHTML = '<option value="">-- Choisir --</option>';
-                        data.forEach(child => {
-                            const option = document.createElement('option');
-                            option.value = child.id;
-                            option.textContent = child.nom;
-                            l3Select.appendChild(option);
-                        });
-                        enableSelect(l3Select);
-                        loader.style.display = 'none';
-                    })
-                    .catch(error => {
-                        console.error('Error fetching categories:', error);
-                        loader.style.display = 'none';
-                    });
-            });
-
-            const optionsContainer = document.getElementById('options-container');
-            const newOptionInput = document.getElementById('new-option-input');
-            const addOptionBtn = document.getElementById('add-option-btn-v2');
+        <div style="display: grid; grid-template-columns: 1fr 400px; gap: 20px; align-items: stretch;">
             
-            function addOption(value = '') {
-                if (!value) return;
+            <!-- Left Column: Identité -->
+            <div class="amazon-card">
+                <h3 class="section-title">Identité du Critère</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div>
+                        <label for="l1_category_id" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Niveau 1 <small style="color: red;">*</small></label>
+                        <select id="l1_category_id" 
+                            style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc; cursor: pointer;">
+                            <option value="">-- Choisir --</option>
+                            @foreach($parents as $parent)
+                                <option value="{{ $parent->id }}">{{ $parent->nom }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                const div = document.createElement('div');
-                div.style.display = 'flex';
-                div.style.gap = '8px';
-                div.innerHTML = `
-                    <input type="text" name="options[]" value="${value}" placeholder="Nom de l'option"
-                        style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; outline: none; transition: border-color 0.2s; text-transform: capitalize;">
-                    <button type="button" class="remove-option-btn" 
-                        style="padding: 10px 14px; background: #fff1f2; color: #e74c3c; border: none; border-radius: 4px; cursor: pointer; transition: opacity 0.2s;"
-                        onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                        <i class="fas fa-times"></i>
+                    <div>
+                        <label for="l2_category_id" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Niveau 2 <small style="color: red;">*</small></label>
+                        <select id="l2_category_id" disabled
+                            style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #f7f8fa; cursor: not-allowed;">
+                            <option value="">-- Choisir --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div>
+                        <label for="category_id" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Niveau 3 <small style="color: red;">*</small></label>
+                        <select name="category_id" id="category_id" required disabled
+                            style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #f7f8fa; cursor: not-allowed;">
+                            <option value="">-- Choisir --</option>
+                        </select>
+                        <div id="loader" style="display: none; font-size: 0.75rem; color: #0066c0; margin-top: 6px; align-items: center; gap: 5px;">
+                            <i class="fas fa-spinner fa-spin"></i> Chargement des catégories...
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Nom du Critère <small style="color: red;">*</small></label>
+                        <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required 
+                            placeholder="Ex: Couleur, Pointure..."
+                            style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc; text-transform: capitalize;">
+                    </div>
+                </div>
+
+                <input type="hidden" name="type" value="select">
+            </div>
+
+            <!-- Right Column: Options -->
+            <div class="amazon-card" style="display: flex; flex-direction: column;">
+                <h3 class="section-title">Options de filtrage</h3>
+
+                <div style="flex: 1;">
+                    <p style="font-size: 0.8rem; color: #555; margin-bottom: 15px;">Ajoutez les valeurs possibles pour ce critère (ex: Rouge, XL, 42...).</p>
+                    
+                    <div id="options-container" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+                        <!-- Options insérées dynamiquement -->
+                    </div>
+
+                    <div style="display: flex; gap: 0; align-items: stretch;">
+                        <input type="text" id="new-option-input" placeholder="Saisir une option..."
+                            style="flex: 1; padding: 8px 12px; border: 1px solid #adb1b8; border-right: none; border-radius: 0; font-size: 0.85rem; outline: none; background: #fff;">
+                        <button type="button" id="add-option-btn-v2" class="btn-amazon-secondary" style="padding: 0 15px; border-left: none;">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <button type="submit" class="btn-amazon-primary" style="padding: 12px;">
+                        Enregistrer le critère
                     </button>
-                `;
-                
-                div.querySelector('.remove-option-btn').onclick = function() {
-                    div.remove();
-                };
-                
-                div.querySelector('input').onfocus = function() { this.style.borderColor = '#e67e00'; };
-                div.querySelector('input').onblur = function() { this.style.borderColor = '#ddd'; };
-                
-                optionsContainer.appendChild(div);
-            }
+                    <a href="{{ route('admin.filters.index') }}" class="btn-amazon-secondary" style="padding: 12px;">
+                        Annuler
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
-            addOptionBtn.addEventListener('click', function() {
-                const val = newOptionInput.value.trim();
-                if (val) {
-                    addOption(val);
-                    newOptionInput.value = '';
-                    newOptionInput.focus();
-                }
-            });
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const l1Select = document.getElementById('l1_category_id');
+        const l2Select = document.getElementById('l2_category_id');
+        const l3Select = document.getElementById('category_id');
+        const loader = document.getElementById('loader');
 
-            newOptionInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    addOptionBtn.click();
-                }
-            });
+        function resetSelect(select) {
+            select.innerHTML = `<option value="">-- Choisir --</option>`;
+            select.disabled = true;
+            select.style.background = '#f7f8fa';
+            select.style.cursor = 'not-allowed';
+        }
+
+        function enableSelect(select) {
+            select.disabled = false;
+            select.style.background = '#fcfcfc';
+            select.style.cursor = 'pointer';
+        }
+
+        l1Select.addEventListener('change', function() {
+            const parentId = this.value;
+            resetSelect(l2Select);
+            resetSelect(l3Select);
+            if (!parentId) return;
+
+            loader.style.display = 'flex';
+            fetch(`/admin/filters/categories/${parentId}/children`)
+                .then(response => response.json())
+                .then(data => {
+                    l2Select.innerHTML = '<option value="">-- Choisir --</option>';
+                    data.forEach(child => {
+                        const option = document.createElement('option');
+                        option.value = child.id;
+                        option.textContent = child.nom;
+                        l2Select.appendChild(option);
+                    });
+                    enableSelect(l2Select);
+                    loader.style.display = 'none';
+                });
         });
-    </script>
-    @endpush
+
+        l2Select.addEventListener('change', function() {
+            const parentId = this.value;
+            resetSelect(l3Select);
+            if (!parentId) return;
+
+            loader.style.display = 'flex';
+            fetch(`/admin/filters/categories/${parentId}/children`)
+                .then(response => response.json())
+                .then(data => {
+                    l3Select.innerHTML = '<option value="">-- Choisir --</option>';
+                    data.forEach(child => {
+                        const option = document.createElement('option');
+                        option.value = child.id;
+                        option.textContent = child.nom;
+                        l3Select.appendChild(option);
+                    });
+                    enableSelect(l3Select);
+                    loader.style.display = 'none';
+                });
+        });
+
+        const container = document.getElementById('options-container');
+        const input = document.getElementById('new-option-input');
+        const btn = document.getElementById('add-option-btn-v2');
+
+        function addOption(val = '') {
+            if (!val) return;
+            const div = document.createElement('div');
+            div.style.display = 'flex';
+            div.style.gap = '0';
+            div.innerHTML = `
+                <input type="text" name="options[]" value="${val}" required
+                    style="flex: 1; padding: 8px 12px; border: 1px solid #adb1b8; border-right: none; border-radius: 0; font-size: 0.85rem; outline: none; background: #fff; text-transform: capitalize;">
+                <button type="button" class="remove-option-btn" style="border-radius: 0;">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            div.querySelector('.remove-option-btn').onclick = () => div.remove();
+            div.querySelector('input').onfocus = function() {
+                this.style.borderColor = '#e77600';
+                this.style.boxShadow = '0 0 3px 2px rgba(228,121,17,0.5)';
+            };
+            div.querySelector('input').onblur = function() {
+                this.style.borderColor = '#adb1b8';
+                this.style.boxShadow = 'none';
+            };
+            container.appendChild(div);
+        }
+
+        btn.onclick = () => {
+            addOption(input.value.trim());
+            input.value = '';
+            input.focus();
+        };
+
+        input.onkeypress = (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                btn.click();
+            }
+        };
+    });
+</script>
+@endpush
 @endsection

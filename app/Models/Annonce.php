@@ -29,16 +29,20 @@ class Annonce extends Model
         'raison_rejet',
         'publiee_le',
         'expire_le',
+        'prix_original',
+        'promo_expires_at',
         'vues',
     ];
 
     protected $casts = [
         'prix' => 'decimal:2',
+        'prix_original' => 'decimal:2',
         'nb_photos' => 'integer',
         'video_achetee' => 'boolean',
         'vues' => 'integer',
         'publiee_le' => 'datetime',
         'expire_le' => 'datetime',
+        'promo_expires_at' => 'datetime',
     ];
 
     // Types d'annonces
@@ -253,6 +257,39 @@ class Annonce extends Model
     public function incrementerVues(): void
     {
         $this->increment('vues');
+    }
+
+    /**
+     * Obtenir le pourcentage de réduction
+     */
+    public function getDiscountPercentageAttribute(): int
+    {
+        if (!$this->prix_original || $this->prix_original <= $this->prix) {
+            return 0;
+        }
+        return (int) round((($this->prix_original - $this->prix) / $this->prix_original) * 100);
+    }
+
+    /**
+     * Vérifier si l'annonce est en promotion active
+     */
+    public function estEnPromo(): bool
+    {
+        return $this->prix_original > $this->prix && 
+               (!$this->promo_expires_at || $this->promo_expires_at->isFuture());
+    }
+
+    /**
+     * Scope pour les annonces en promotion
+     */
+    public function scopeEnPromotion($query)
+    {
+        return $query->whereNotNull('prix_original')
+            ->whereColumn('prix_original', '>', 'prix')
+            ->where(function ($q) {
+                $q->whereNull('promo_expires_at')
+                    ->orWhere('promo_expires_at', '>', now());
+            });
     }
 
     /**

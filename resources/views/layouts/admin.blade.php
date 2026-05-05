@@ -15,22 +15,14 @@
             --mady-red: #bf0000;
             --mady-red-hover: #a00000;
             --mady-blue: #004aad;
-            --sidebar-bg: #002e6b; /* Even darker blue for a more professional look */
-            --sidebar-text: rgba(255, 255, 255, 0.85);
+            --sidebar-bg: #002e6b; /* Brand Navy Blue */
+            --sidebar-text: rgba(255, 255, 255, 0.7);
             --sidebar-text-hover: #ffffff;
-            --sidebar-hover: rgba(255, 255, 255, 0.1);
+            --sidebar-hover: rgba(255, 255, 255, 0.08);
             --sidebar-active: rgba(255, 255, 255, 0.15);
-            --sidebar-text-hover: #ffffff;
+            --sidebar-text-active: #ffffff;
+            --sidebar-accent: #ff8c00; /* Brand Orange */
             --slate-50: #f8fafc;
-            --slate-100: #f1f5f9;
-            --slate-200: #e2e8f0;
-            --slate-300: #cbd5e1;
-            --slate-400: #94a3b8;
-            --slate-500: #64748b;
-            --slate-600: #475569;
-            --slate-700: #334155;
-            --slate-800: #1e293b;
-            --slate-900: #0f172a;
         }
 
         * {
@@ -60,17 +52,18 @@
             width: 100vw;
         }
 
-        /* Sidebar Dark Theme Refined */
+        /* Sidebar Refined */
         .sidebar {
-            width: 260px; /* Adjusted for better balance */
+            width: 220px; /* More compact width */
             background-color: var(--sidebar-bg);
             color: var(--sidebar-text);
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* Control scroll on menu div instead */
+            overflow: hidden;
             flex-shrink: 0;
             z-index: 100;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.05);
+            box-shadow: 1px 0 0 rgba(255,255,255,0.05);
+            border-right: none;
         }
 
         .sidebar-brand {
@@ -78,59 +71,51 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 60px;
+            height: 70px;
+            background: #ffffff; /* Logo area stays bright */
+            border-bottom: 1px solid #e5e7eb;
         }
 
-        .sidebar-user {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid #1f2937;
+        .sidebar-brand img {
+            height: 30px;
+            width: auto;
+            max-width: 85%;
+            object-fit: contain;
         }
 
-        .sidebar-user h2 {
-            font-size: 0.95rem;
-            color: #fff;
-            font-weight: 600;
-            margin: 0;
-        }
-
-        .sidebar-section {
-            padding: 0;
-        }
-
-        .sidebar-title {
-            padding: 1.25rem 1.75rem 0.5rem 1.75rem;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: rgba(255, 255, 255, 0.4);
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .sidebar-separator {
+            margin: 0.6rem 1.25rem 0.1rem;
+            height: 1px;
+            background: rgba(255,255,255,0.08);
         }
 
         .sidebar-container {
             flex: 1;
             overflow-y: auto;
-            padding-bottom: 2rem;
+            padding: 0.5rem 0.65rem;
         }
 
         .sidebar-menu {
             list-style: none;
             padding: 0;
             margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
 
         .sidebar-menu li a {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 0.75rem 1.5rem;
+            gap: 10px;
+            padding: 0.5rem 0.85rem;
             color: var(--sidebar-text);
             text-decoration: none;
             font-size: 0.875rem;
             font-weight: 500;
-            transition: all 0.2s;
+            border-radius: 0;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
 
         .sidebar-menu li a:hover {
@@ -143,15 +128,48 @@
             color: #fff;
         }
 
-        .sidebar-menu li a.active i {
-            color: #ff8c00 !important;
-            opacity: 1;
+        .sidebar-menu li a.active::before {
+            content: '';
+            position: absolute;
+            left: -0.75rem;
+            top: 0.75rem;
+            bottom: 0.75rem;
+            width: 3px;
+            background-color: var(--sidebar-accent);
+            border-radius: 0 4px 4px 0;
         }
 
         .sidebar-menu li a i {
             width: 20px;
             text-align: center;
             font-size: 1rem;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .sidebar-menu li a.active i,
+        .sidebar-menu li a:hover i {
+            opacity: 1;
+            color: var(--sidebar-accent);
+        }
+
+        .sidebar-submenu {
+            margin-top: 4px;
+            border-left: 1px solid rgba(255,255,255,0.05);
+            margin-left: 1.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .sidebar-submenu a {
+            font-size: 0.8rem !important;
+            padding: 0.5rem 1rem !important;
+            opacity: 0.8;
+        }
+
+        .sidebar-submenu a:hover {
+            opacity: 1;
         }
 
         /* Main Content Area */
@@ -230,7 +248,7 @@
 
         /* Breadcrumb Refined */
         .breadcrumb {
-            padding: 1rem 1.5rem 0.5rem 1.5rem;
+            padding: 0.5rem 1.5rem 0.25rem 1.5rem;
             font-size: 0.8rem;
             color: #6b7280;
             max-width: 1400px;
@@ -249,7 +267,7 @@
 
         /* Viewport Padding */
         .viewport {
-            padding: 1.5rem;
+            padding: 0.75rem 1.5rem;
             max-width: 1400px;
             width: 100%;
             margin: 0 auto;

@@ -240,7 +240,9 @@
 
             <div class="catalog-header">
                 <h1 class="header-title">
-                    @if(request('q'))
+                    @if(isset($bestMatch))
+                        {{ $bestMatch }}
+                    @elseif(request('q'))
                         {{ request('q') }}
                     @else
                         Toutes les annonces
@@ -322,7 +324,6 @@
                 @empty
                     <div class="empty-state">
                         <p>Aucun produit ne correspond à vos critères.</p>
-                        <a href="{{ route('home') }}" class="btn-back">Retour à l'accueil</a>
                     </div>
                 @endforelse
             </div>

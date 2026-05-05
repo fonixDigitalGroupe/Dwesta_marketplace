@@ -35,6 +35,7 @@ class Category extends Model
         'slug',
         'description',
         'icone',
+        'image',
         'ordre',
         'actif',
         'famille',
@@ -228,6 +229,21 @@ class Category extends Model
         }
 
         return $ids->unique();
+    }
+
+    /**
+     * Obtenir la catégorie et tous ses descendants (récursif)
+     * Retourne une collection d'objets Category
+     */
+    public function descendantsAndSelf(): \Illuminate\Support\Collection
+    {
+        $categories = collect([$this]);
+
+        foreach ($this->enfantsActifs as $enfant) {
+            $categories = $categories->merge($enfant->descendantsAndSelf());
+        }
+
+        return $categories;
     }
     /**
      * Décale les ordres d'affichage si nécessaire

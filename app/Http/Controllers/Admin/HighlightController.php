@@ -5,19 +5,29 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Highlight;
 use App\Models\HighlightTab;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class HighlightController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $highlights = Highlight::with('highlightTab')
-            ->join('highlight_tabs', 'highlights.highlight_tab_id', '=', 'highlight_tabs.id')
-            ->orderBy('highlight_tabs.position')
+        $query = Highlight::with(['highlightTab', 'highlightTab.highlights'])
+            ->join('highlight_tabs', 'highlights.highlight_tab_id', '=', 'highlight_tabs.id');
+
+        if ($request->filled('search')) {
+            $query->where(function($q) use ($request) {
+                $q->where('highlights.title', 'like', '%' . $request->search . '%')
+                  ->orWhere('highlights.subtitle', 'like', '%' . $request->search . '%')
+                  ->orWhere('highlight_tabs.name', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        $highlights = $query->orderBy('highlight_tabs.position')
             ->orderBy('highlights.position')
             ->select('highlights.*')
-            ->get();
+            ->paginate($request->get('per_page', 10));
         
         $tabs = HighlightTab::orderBy('position')->pluck('name', 'id')->toArray();
 
@@ -27,6 +37,9 @@ class HighlightController extends Controller
     public function create()
     {
         $tabs = HighlightTab::where('active', true)->orderBy('position')->get();
+        // Load categories with parents to compute full paths
+        $categories = Category::where('actif', true)->with('parent.parent')->get()
+            ->sortBy('chemin');
 
         $positions = [
             1 => 'Position 1 (Grand - Haut Gauche)',
@@ -35,7 +48,7 @@ class HighlightController extends Controller
             4 => 'Position 4 (Large - Bas Droite)',
         ];
 
-        return view('admin.highlights.create', compact('tabs', 'positions'));
+        return view('admin.highlights.create', compact('tabs', 'positions', 'categories'));
     }
 
     public function store(Request $request)
@@ -51,7 +64,7 @@ class HighlightController extends Controller
             'title'            => 'required|string|max:255',
             'subtitle'         => 'nullable|string|max:255',
             'image'            => ($existing ? 'nullable' : 'required') . '|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'link_url'         => 'nullable|url',
+            'link_url'         => 'nullable|string',
         ]);
 
         $data = $request->only(['highlight_tab_id', 'position', 'title', 'subtitle', 'link_url']);
@@ -76,6 +89,9 @@ class HighlightController extends Controller
     public function edit(Highlight $highlight)
     {
         $tabs = HighlightTab::where('active', true)->orderBy('position')->get();
+        // Load categories with parents to compute full paths
+        $categories = Category::where('actif', true)->with('parent.parent')->get()
+            ->sortBy('chemin');
 
         $positions = [
             1 => 'Position 1 (Grand - Haut Gauche)',
@@ -84,7 +100,7 @@ class HighlightController extends Controller
             4 => 'Position 4 (Large - Bas Droite)',
         ];
 
-        return view('admin.highlights.edit', compact('highlight', 'tabs', 'positions'));
+        return view('admin.highlights.edit', compact('highlight', 'tabs', 'positions', 'categories'));
     }
 
     public function update(Request $request, Highlight $highlight)
@@ -95,7 +111,7 @@ class HighlightController extends Controller
             'title' => 'required|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'link_url' => 'nullable|url',
+            'link_url' => 'nullable|string',
         ]);
 
         $data = $request->only(['highlight_tab_id', 'position', 'title', 'subtitle', 'link_url']);

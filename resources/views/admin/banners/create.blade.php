@@ -45,6 +45,29 @@
                         </h3>
                         
                         <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div>
+                                    <label for="famille" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Famille de la page</label>
+                                    <select name="famille" id="famille" 
+                                        style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff;">
+                                        <option value="">-- Bannière Globale --</option>
+                                        @foreach($familles as $famille)
+                                            <option value="{{ $famille }}" {{ old('famille') == $famille ? 'selected' : '' }}>{{ $famille }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="category_id" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Catégorie (optionnel)</label>
+                                    <select name="category_id" id="category_id" 
+                                        style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff;">
+                                        <option value="">-- Toutes les catégories --</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->nom }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
                             <div>
                                 <label for="title" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Titre de la bannière <small style="color: red;">*</small></label>
                                 <input type="text" name="title" id="title" value="{{ old('title') }}" required
@@ -53,10 +76,37 @@
                             </div>
 
                             <div>
-                                <label for="link_url" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">URL de redirection</label>
-                                <input type="url" name="link_url" id="link_url" value="{{ old('link_url') }}"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#e67e00'" placeholder="https://..." onblur="this.style.borderColor='#e0e0e0'">
+                                <label for="link_url" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">URL de redirection (Catégorie)</label>
+                                <select name="link_url" id="link_url"
+                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff; transition: all 0.2s;"
+                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
+                                    <option value="">-- Sélectionner une catégorie --</option>
+                                    @foreach($categories as $category)
+                                        @php
+                                            $ancetres = $category->ancetres ?? [];
+                                            $catUrl = '';
+                                            if (count($ancetres) > 0) {
+                                                $racine = $ancetres[0];
+                                                $params = ['slug' => $racine->slug];
+                                                if (count($ancetres) === 1) {
+                                                    // N2
+                                                    $params['active'] = $category->id;
+                                                } else {
+                                                    // N3
+                                                    $params['active'] = $ancetres[1]->id;
+                                                    $params['n3'] = $category->id;
+                                                }
+                                                $catUrl = route('categories.show', $params, false);
+                                            } else {
+                                                // N1 (Root)
+                                                $catUrl = route('categories.show', $category->slug, false);
+                                            }
+                                        @endphp
+                                        <option value="{{ $catUrl }}" {{ old('link_url') == $catUrl ? 'selected' : '' }}>
+                                            {{ $category->chemin ?? $category->nom }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>

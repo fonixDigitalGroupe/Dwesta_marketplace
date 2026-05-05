@@ -19,6 +19,7 @@ class BannerController extends Controller
 
         $banners = Banner::when($search, function ($query, $search) {
                 return $query->where('title', 'like', "%{$search}%")
+                            ->orWhere('famille', 'like', "%{$search}%")
                             ->orWhere('link_url', 'like', "%{$search}%");
             })
             ->orderBy('order')
@@ -33,7 +34,9 @@ class BannerController extends Controller
      */
     public function create()
     {
-        return view('admin.banners.create');
+        $familles = \App\Models\Category::getFamilles();
+        $categories = \App\Models\Category::whereNull('parent_id')->get();
+        return view('admin.banners.create', compact('familles', 'categories'));
     }
 
     /**
@@ -43,6 +46,8 @@ class BannerController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'famille' => 'nullable|string|max:50',
+            'category_id' => 'nullable|exists:categories,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'link_url' => 'nullable|url',
             'promo_discount' => 'nullable|string|max:20',
@@ -77,7 +82,9 @@ class BannerController extends Controller
      */
     public function edit(Banner $banner)
     {
-        return view('admin.banners.edit', compact('banner'));
+        $familles = \App\Models\Category::getFamilles();
+        $categories = \App\Models\Category::whereNull('parent_id')->get();
+        return view('admin.banners.edit', compact('banner', 'familles', 'categories'));
     }
 
     /**
@@ -87,6 +94,8 @@ class BannerController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'famille' => 'nullable|string|max:50',
+            'category_id' => 'nullable|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'link_url' => 'nullable|url',
             'promo_discount' => 'nullable|string|max:20',

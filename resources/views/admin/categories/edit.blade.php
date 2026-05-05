@@ -5,222 +5,307 @@
 @push('styles')
     <style>
         .main-content { background-color: #f8f9fa !important; }
+        
+        /* Input Amazon Style */
+        input[type="text"], 
+        input[type="number"], 
+        textarea, 
+        select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #adb1b8;
+            border-radius: 0;
+            font-size: 0.85rem;
+            outline: none;
+            background: #fcfcfc;
+            color: #111;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #e77600 !important;
+            box-shadow: 0 0 3px 2px rgba(228,121,17,0.5) !important;
+        }
+
+        .amazon-card {
+            background: #fff;
+            border: 1px solid #e7e7e7;
+            border-radius: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #111;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e7e7e7;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #111;
+            margin-bottom: 8px;
+        }
+
+        .btn-amazon-primary {
+            background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+            border: 1px solid #a88734;
+            color: #111;
+            padding: 10px 24px;
+            border-radius: 0;
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-decoration: none;
+            box-shadow: 0 1px 0 rgba(255,255,255,.4) inset;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn-amazon-primary:hover {
+            background: linear-gradient(to bottom, #f5d78e, #eeb933);
+            border-color: #9c7e31;
+        }
+
+        .btn-amazon-secondary {
+            background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
+            border: 1px solid #adb1b8;
+            color: #111;
+            padding: 10px 24px;
+            border-radius: 0;
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-decoration: none;
+            box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            border: 1px solid #adb1b8;
+            border-radius: 0;
+            cursor: pointer;
+            color: #555;
+            transition: all 0.2s;
+        }
+        .icon-btn.active {
+            border-color: #e77600;
+            background: #fdf5ec;
+            color: #e77600;
+            box-shadow: 0 0 3px 2px rgba(228,121,17,0.3);
+        }
     </style>
 @endpush
 
 @section('content')
-    <div style="max-width: 100%;">
-        <!-- Main Conteneur -->
-        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1.5rem;">
-            
-            <div style="margin-bottom: 0.5rem;">
-                <h1 style="font-size: 1.25rem; font-weight: 700; color: #333; margin: 0;">Modifier la catégorie</h1>
-            </div>
-            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1rem;"></div>
-
-            <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1rem;">
-                <a href="{{ route('admin.categories.l1') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#e67e00'" onmouseout="this.style.borderColor='#ddd'">
-                    Retour au catalogue <i class="fas fa-undo" style="font-size: 0.75rem; opacity: 0.6;"></i>
-                </a>
-            </div>
-
-            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
-
-            <form action="{{ route('admin.categories.update', $category) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start;">
-                <!-- Left Column -->
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    
-                    <!-- Section 1: Identité -->
-                    <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 1.5rem;">
-                        <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                            Identité Commerciale
-                        </h3>
-
-                        <div style="display: grid; gap: 1.5rem;">
-                            <div>
-                                <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Nom de la catégorie <small style="color: red;">*</small></label>
-                                <input type="text" name="nom" id="nom" value="{{ old('nom', $category->nom) }}" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; outline: none; transition: all 0.2s; color: #333;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'"
-                                    oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
-                                @error('nom') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
-                            </div>
-
-                            <div>
-                                <label for="description" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Description (SEO & Info)</label>
-                                <textarea name="description" id="description" rows="4"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; outline: none; transition: all 0.2s; resize: vertical; color: #333; font-family: inherit;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'"
-                                    oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">{{ old('description', $category->description) }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section 2: Structure -->
-                    <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 1.5rem;">
-                        <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                            Architecture
-                        </h3>
-
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                            <div>
-                                <label for="parent_id" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Catégorie Parente</label>
-                                <select name="parent_id" id="parent_id"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; outline: none; background: #fff; cursor: pointer; color: #333; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                                    <option value="">-- Racine --</option>
-                                    @foreach($categoriesTree as $treeItem)
-                                        @if($treeItem->id != $category->id)
-                                            <option value="{{ $treeItem->id }}" {{ old('parent_id', $category->parent_id) == $treeItem->id ? 'selected' : '' }}>{{ $treeItem->nom }}
-                                            </option>
-                                            @foreach($treeItem->enfants as $child)
-                                                @if($child->id != $category->id)
-                                                    <option value="{{ $child->id }}" {{ old('parent_id', $category->parent_id) == $child->id ? 'selected' : '' }}>&nbsp;&nbsp;↳ {{ $child->nom }}</option>
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="ordre" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Ordre d'affichage</label>
-                                <input type="number" name="ordre" id="ordre" value="{{ old('ordre', $category->ordre) }}"
-                                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.9rem; outline: none;">
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Right Column -->
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-
-                    <div id="config-section" style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 1.5rem;">
-                        <h3 style="font-size: 0.9rem; color: #333; font-weight: 600; margin-bottom: 1.25rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">Configuration</h3>
-                        
-                        <!-- Famille Selection (Only for Root) -->
-                        <div id="famille-group" style="margin-bottom: 0;">
-                            <label for="famille" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Famille (Catégorie Principale) <small style="color: red;">*</small></label>
-                            <select name="famille" id="famille"
-                                style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; outline: none; background: #fff; cursor: pointer; color: #333; transition: all 0.2s;"
-                                onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                                <option value="">-- Sélectionner une famille --</option>
-                                @foreach(\App\Models\Category::getFamilles() as $famille)
-                                    <option value="{{ $famille }}" {{ old('famille', $category->famille) == $famille ? 'selected' : '' }}>{{ $famille }}</option>
-                                @endforeach
-                            </select>
-                            <p style="font-size: 0.75rem; color: #888; margin-top: 6px; font-style: italic;">Requis uniquement pour les catégories principale.</p>
-                        </div>
-                    </div>
-
-                    <div style="background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 1.5rem;">
-                        <h3 style="font-size: 0.9rem; color: #333; font-weight: 600; margin-bottom: 1.25rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">Visuel & État</h3>
-
-                        <div style="display: grid; gap: 1.5rem;">
-                            <div>
-                                <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 12px;">Icône de catégorie</label>
-
-                                <input type="hidden" name="icone" id="icone_input" value="{{ old('icone', $category->icone) }}">
-
-                                <div id="icon-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px;">
-                                    <script>
-                                        const icons = [
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>',
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>',
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>',
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>',
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>',
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>',
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12v10H4V12M2 7h20v5H2z"></path></svg>',
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"/></svg>',
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>',
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10a5 5 0 0 1 5 5v2a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5v-2a5 5 0 0 1 5-5z"></path></svg>',
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>',
-                                            '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>'
-                                        ];
-
-                                        const grid = document.getElementById('icon-grid');
-                                        const currentIcon = document.getElementById('icone_input').value;
-
-                                        icons.forEach(svg => {
-                                            const btn = document.createElement('button');
-                                            btn.type = 'button';
-                                            btn.className = 'icon-option';
-                                            btn.innerHTML = svg;
-                                            btn.style.cssText = 'padding: 10px; border: 1px solid #e0e0e0; border-radius: 6px; background: #fff; cursor: pointer; color: #999; transition: all 0.2s; display: flex; align-items: center; justify-content: center;';
-
-                                            if (currentIcon === svg) {
-                                                btn.style.borderColor = '#e67e00';
-                                                btn.style.color = '#e67e00';
-                                                btn.style.background = '#fcf4ec';
-                                            }
-
-                                            btn.onclick = function () {
-                                                document.querySelectorAll('.icon-option').forEach(b => {
-                                                    b.style.borderColor = '#e0e0e0';
-                                                    b.style.color = '#999';
-                                                    b.style.background = '#fff';
-                                                });
-                                                this.style.borderColor = '#e67e00';
-                                                this.style.color = '#e67e00';
-                                                this.style.background = '#fcf4ec';
-                                                document.getElementById('icone_input').value = svg;
-                                            };
-                                            grid.appendChild(btn);
-                                        });
-                                    </script>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div style="display: flex; gap: 12px; margin-top: 1.5rem;">
-                            <a href="{{ route('admin.categories.l1') }}" 
-                                style="flex: 1; background: #fff; border: 1px solid #ddd; color: #333; text-align: center; text-decoration: none; padding: 12px; border-radius: 6px; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
-                                onmouseover="this.style.background='#f9f9f9'; this.style.borderColor='#ccc'" 
-                                onmouseout="this.style.background='#fff'; this.style.borderColor='#ddd'">
-                                Annuler
-                            </a>
-                            <button type="submit" 
-                                style="flex: 2; background: #e67e00; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; font-size: 0.95rem; display: flex; align-items: center; justify-content: center;"
-                                onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                                Enregistrer
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
+<div style="max-width: 1200px; margin: 0 auto;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Modifier la catégorie : {{ $category->nom }}</h1>
+        <a href="{{ route('admin.categories.l1') }}" class="btn-amazon-secondary" style="display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour au catalogue
+        </a>
     </div>
 
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const parentSelect = document.getElementById('parent_id');
-            const configSection = document.getElementById('config-section');
-            const familleSelect = document.getElementById('famille');
+    <form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
 
-            function toggleFamille() {
-                if (parentSelect.value === "") {
-                    // C'est une racine
-                    configSection.style.display = 'block';
-                    familleSelect.setAttribute('required', 'required');
-                } else {
-                    // C'est une sous-catégorie
-                    configSection.style.display = 'none';
-                    familleSelect.removeAttribute('required');
-                    familleSelect.value = ""; // Reset value
-                }
-            }
+        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: stretch;">
+            
+            <!-- Left Column -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                
+                <div class="amazon-card">
+                    <h3 class="section-title">Identité Commerciale</h3>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label for="nom" class="field-label">Nom de la catégorie <small style="color: red;">*</small></label>
+                        <input type="text" name="nom" id="nom" value="{{ old('nom', $category->nom) }}" required 
+                               oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
+                        @error('nom') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                    </div>
 
-            parentSelect.addEventListener('change', toggleFamille);
-            toggleFamille(); // Run on load
+                    <div style="margin-bottom: 0;">
+                        <label for="description" class="field-label">Description (SEO & Info)</label>
+                        <textarea name="description" id="description" rows="5"
+                                  oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">{{ old('description', $category->description) }}</textarea>
+                    </div>
+                </div>
+
+                <div class="amazon-card">
+                    <h3 class="section-title">Architecture</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label for="parent_id" class="field-label">Catégorie Parente</label>
+                            <select name="parent_id" id="parent_id">
+                                <option value="">-- Racine (Niveau 1) --</option>
+                                @foreach($categoriesTree as $treeItem)
+                                    @if($treeItem->id != $category->id)
+                                        <option value="{{ $treeItem->id }}" {{ old('parent_id', $category->parent_id) == $treeItem->id ? 'selected' : '' }}>{{ $treeItem->nom }}</option>
+                                        @foreach($treeItem->enfants as $child)
+                                            @if($child->id != $category->id)
+                                                <option value="{{ $child->id }}" {{ old('parent_id', $category->parent_id) == $child->id ? 'selected' : '' }}>
+                                                    &nbsp;&nbsp;↳ {{ $child->nom }} (L2)</option>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="ordre" class="field-label">Ordre d'affichage</label>
+                            <input type="number" name="ordre" id="ordre" value="{{ old('ordre', $category->ordre) }}" min="1">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+
+                <div id="config-section" class="amazon-card" style="display: none;">
+                    <h3 class="section-title">Configuration</h3>
+                    
+                    <div style="margin-bottom: 0;">
+                        <label for="famille" class="field-label">Famille <small style="color: red;">*</small></label>
+                        <select name="famille" id="famille">
+                            <option value="">-- Sélectionner une famille --</option>
+                            @foreach(\App\Models\Category::getFamilles() as $famille)
+                                <option value="{{ $famille }}" {{ old('famille', $category->famille) == $famille ? 'selected' : '' }}>
+                                    {{ $famille }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <p style="font-size: 0.75rem; color: #666; margin-top: 8px; font-style: italic;">Requis uniquement pour les catégories principales.</p>
+                    </div>
+                </div>
+
+                <div class="amazon-card" style="flex: 1; display: flex; flex-direction: column;">
+                    <h3 class="section-title">Visuel & État</h3>
+
+                    <div style="margin-bottom: 25px;">
+                        <label class="field-label">Icône de catégorie</label>
+                        <input type="hidden" name="icone" id="icone_input" value="{{ old('icone', $category->icone) }}">
+                        
+                        <div id="icon-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+                            <!-- Icons dynamic logic here -->
+                        </div>
+                    </div>
+
+                    <div id="category-image-group" style="display: none;">
+                        <label class="field-label">Image de couverture</label>
+                        
+                        <div style="border: 1px solid #adb1b8; padding: 15px; text-align: center; background: #fcfcfc; cursor: pointer; position: relative;" 
+                             onclick="document.getElementById('image-input').click()">
+                            
+                            <div id="dropzone-content" {!! $category->image ? 'style="display:none"' : '' !!}>
+                                <i class="fas fa-camera" style="font-size: 1.5rem; color: #999; margin-bottom: 8px;"></i>
+                                <p style="font-size: 0.75rem; color: #555; margin: 0; font-weight: 600;">CHANGER L'IMAGE</p>
+                            </div>
+                            <img id="preview-img" src="{{ $category->image }}" style="{{ $category->image ? 'display: inline-block;' : 'display: none;' }} max-width: 100%; max-height: 120px; object-fit: contain; margin-top: 5px;">
+                        </div>
+                        <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="previewImage(this)">
+                    </div>
+
+                    <div style="margin-top: auto; padding-top: 30px; display: grid; gap: 10px;">
+                        <button type="submit" class="btn-amazon-primary" style="font-weight: 700;">
+                            ENREGISTRER LES MODIFICATIONS
+                        </button>
+                        <a href="{{ route('admin.categories.l1') }}" class="btn-amazon-secondary">
+                            ANNULER
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+@push('scripts')
+<script>
+    const icons = [
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>',
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>',
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>',
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>',
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>',
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>',
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12v10H4V12M2 7h20v5H2z"></path></svg>',
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"/></svg>',
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>',
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10a5 5 0 0 1 5 5v2a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5v-2a5 5 0 0 1 5-5z"></path></svg>',
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>',
+        '<svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>'
+    ];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const grid = document.getElementById('icon-grid');
+        const iconeInput = document.getElementById('icone_input');
+
+        icons.forEach(svg => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'icon-btn';
+            btn.innerHTML = svg;
+            if (iconeInput.value === svg) btn.classList.add('active');
+
+            btn.onclick = function () {
+                document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                iconeInput.value = svg;
+            };
+            grid.appendChild(btn);
         });
-    </script>
-    @endpush
+
+        const parentSelect = document.getElementById('parent_id');
+        const configSection = document.getElementById('config-section');
+        const imageGroup = document.getElementById('category-image-group');
+        const familleSelect = document.getElementById('famille');
+
+        function toggleFamille() {
+            if (parentSelect.value === "") {
+                configSection.style.display = 'block';
+                imageGroup.style.display = 'block';
+                familleSelect.setAttribute('required', 'required');
+            } else {
+                configSection.style.display = 'none';
+                imageGroup.style.display = 'none';
+                familleSelect.removeAttribute('required');
+                familleSelect.value = "";
+            }
+        }
+
+        parentSelect.addEventListener('change', toggleFamille);
+        toggleFamille();
+    });
+
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('preview-img');
+                const dropzone = document.getElementById('dropzone-content');
+                preview.src = e.target.result;
+                preview.style.display = 'inline-block';
+                if (dropzone) dropzone.style.display = 'none';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+@endpush
 @endsection

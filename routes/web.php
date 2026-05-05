@@ -194,7 +194,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
 
         // Gestion des Rôles & Permissions
-        // Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class)->only(['index', 'edit', 'update']);
+        Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
 
         // Gestion Logistique
         Route::prefix('transporteurs')->name('transporteurs.')->group(function () {
@@ -228,6 +228,10 @@ Route::middleware('auth')->group(function () {
         // Gestion des Bannières
         Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class);
         Route::patch('banners/{banner}/toggle-status', [\App\Http\Controllers\Admin\BannerController::class, 'toggleStatus'])->name('banners.toggle-status');
+
+        // Gestion des Codes Promo (Coupons)
+        Route::resource('coupons', \App\Http\Controllers\Admin\CouponController::class);
+        Route::patch('coupons/{coupon}/toggle-status', [\App\Http\Controllers\Admin\CouponController::class, 'toggleActive'])->name('coupons.toggle-status');
 
         // Gestion des Actualités (Highlights)
         Route::resource('highlight-tabs', \App\Http\Controllers\Admin\HighlightTabController::class);
@@ -395,6 +399,9 @@ Route::get('/page-pro/{slug}', [PageProController::class, 'show'])->name('page-p
 
 // Catégories publiques (accessible sans authentification)
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+
+// Collections / Promos (Bannières)
+Route::get('/collections/{slug}', [App\Http\Controllers\CollectionController::class, 'show'])->name('collections.show');
 
 // Recherche publique
 Route::get('/recherche', [\App\Http\Controllers\SearchController::class, 'index'])->name('search.index');

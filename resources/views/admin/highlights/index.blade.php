@@ -2,134 +2,227 @@
 
 @section('title', 'Gestion des Actualités')
 
-@section('breadcrumbs')
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <span style="color: #333; font-weight: 500;">Gestion des Actualités</span>
-@endsection
+@push('styles')
+<style>
+    .main-content { background-color: #f8f9fa !important; }
+    select:focus, input:focus {
+        border-color: #e67e00 !important;
+        box-shadow: 0 0 0 2px rgba(230,126,0,0.05) !important;
+        outline: none;
+    }
+</style>
+@endpush
 
 @section('content')
-<div style="max-width: 1200px;">
-    <header style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-            <h1 style="font-size: 1.375rem; color: #333; font-weight: 600; margin-bottom: 0.25rem;">Les actualités Karnou</h1>
-            <p style="font-size: 0.95rem; color: #666;">Vue d'ensemble de tous les éléments.</p>
-        </div>
-        <a href="{{ route('admin.highlights.create') }}" 
-           style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background-color: #000; color: #fff; border-radius: 8px; transition: all 0.2s; text-decoration: none;" 
-           title="Ajouter un élément">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-            </svg>
-        </a>
-    </header>
+    <div style="max-width: 100%;">
 
-    <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 2px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">
-        <div style="padding: 0.875rem 1.25rem; border-bottom: 1px solid #e5e5e5; background: #fafafa;">
-            <span style="font-size: 0.8rem; color: #666;">{{ $highlights->count() }} élément(s) configuré(s) au total</span>
-        </div>
-        
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr style="text-align: left;">
-                    <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5; width: 80px;">Visuel</th>
-                    <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Titre / Sous-titre</th>
-                    <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5;">Catégorie (Onglet)</th>
-                    <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5; width: 100px;">Position</th>
-                    <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5; width: 120px;">Statut</th>
-                    <th style="padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 600; color: #64748b; border-bottom: 1px solid #e5e5e5; text-align: right; width: 120px;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($highlights as $highlight)
-                    <tr style="border-bottom: 1px solid #e5e5e5;">
-                        <td style="padding: 0.875rem 1.25rem;">
-                            <img src="{{ $highlight->image_url }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid #eee;">
-                        </td>
-                        <td style="padding: 0.875rem 1.25rem;">
-                            <div style="font-size: 0.875rem; color: #333; font-weight: 600;">{{ $highlight->title }}</div>
-                            <div style="font-size: 0.8rem; color: #666;">{{ $highlight->subtitle ?? '-' }}</div>
-                        </td>
-                        <td style="padding: 0.875rem 1.25rem;">
-                            <span style="font-size: 0.75rem; color: #333; font-weight: 600; background: #f1f5f9; padding: 4px 10px; border-radius: 999px;">
-                                {{ $highlight->highlightTab->name ?? 'N/A' }}
-                            </span>
-                        </td>
-                        <td style="padding: 0.875rem 1.25rem;">
-                            <span style="background: {{ match($highlight->position) { 1 => '#e0f2fe', 4 => '#fef3c7', default => '#f1f5f9' } }}; 
-                                         color: {{ match($highlight->position) { 1 => '#0369a1', 4 => '#92400e', default => '#475569' } }}; 
-                                         padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600;">
-                                Pos {{ $highlight->position }}
-                            </span>
-                        </td>
-                        <td style="padding: 0.875rem 1.25rem;">
-                            <span style="font-size: 0.75rem; font-weight: 600; color: {{ $highlight->active ? '#16a34a' : '#ca8a04' }};">
-                                {{ $highlight->active ? 'Actif' : 'Masqué' }}
-                            </span>
-                        </td>
-                        <td style="padding: 0.875rem 1.25rem; text-align: right;">
-                            <div style="display: flex; justify-content: flex-end; gap: 4px;">
-                                <a href="{{ route('admin.highlights.edit', $highlight) }}" 
-                                   style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #004aad; background: #eef2ff; border-radius: 8px; transition: all 0.2s;" 
-                                   title="Modifier"
-                                   onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#eef2ff'">
-                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                </a>
-                                <form action="{{ route('admin.highlights.destroy', $highlight) }}" method="POST" onsubmit="return confirm('Supprimer cet élément ?')" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #ef4444; background: #fff1f2; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;" 
-                                            title="Supprimer"
-                                            onmouseover="this.style.background='#ffe4e6'" onmouseout="this.style.background='#fff1f2'">
-                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" style="padding: 3rem; text-align: center; color: #999; font-size: 0.875rem;">
-                            Aucun élément trouvé.
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<script>
-function toggleHighlightStatus(id, btn) {
-    fetch(`/admin/highlights/${id}/toggle-status`, {
-        method: 'PATCH',
-        headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.success) {
-            const circle = btn.querySelector('span');
-            const label = btn.nextElementSibling;
+        <!-- Main Conteneur -->
+        <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1.5rem;">
             
-            if(data.active) {
-                btn.style.background = '#10b981';
-                circle.style.left = '16px';
-                label.textContent = 'Actif';
-                label.style.color = '#10b981';
-            } else {
-                btn.style.background = '#ccc';
-                circle.style.left = '2px';
-                label.textContent = 'Masqué';
-                label.style.color = '#666';
-            }
+            <div style="margin-bottom: 0.5rem;">
+                <h1 style="font-size: 1.25rem; font-weight: 700; color: #333; margin: 0;">Gestion des Actualités</h1>
+            </div>
+            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
+
+            <!-- Action Bar -->
+            <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 1.5rem;">
+                <a href="{{ route('admin.highlights.create') }}" style="display: flex; align-items: center; gap: 8px; background: #e67e00; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                    Nouveau <i class="fas fa-plus-square"></i>
+                </a>
+                <a href="{{ route('admin.highlight-tabs.index') }}" style="display: flex; align-items: center; gap: 8px; background: #333; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                    Gérer les Onglets <i class="fas fa-layer-group"></i>
+                </a>
+                <a href="javascript:window.print()" style="display: flex; align-items: center; gap: 8px; background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                    Imprimer <i class="fas fa-print"></i>
+                </a>
+            </div>
+            <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
+
+            <!-- Toolbar (Afficher / Chercher) -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 15px; font-size: 0.85rem; color: #333;">
+                    <div>
+                        Afficher 
+                        <select onchange="window.location.href = '{{ request()->fullUrlWithQuery(['per_page' => '']) }}'.replace('per_page=', 'per_page=' + this.value)" 
+                            style="padding: 8px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s; min-width: 60px;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                            <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+                            <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                        </select>
+                        lignes
+                    </div>
+                </div>
+
+                <div style="font-size: 0.85rem; color: #333;">
+                    <form action="{{ route('admin.highlights.index') }}" method="GET" style="display: flex; align-items: center;">
+                        @if(request('per_page')) <input type="hidden" name="per_page" value="{{ request('per_page') }}"> @endif
+                        Chercher: <input type="text" name="search" value="{{ request('search') }}" 
+                            placeholder="Tapez et Entrée..."
+                            style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; margin-left: 5px; background-color: #fff; transition: all 0.2s; font-size: 0.85rem; min-width: 200px;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Table -->
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid #eee;">
+                <thead>
+                    <tr style="background: #fff; border-bottom: 2px solid #eee;">
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.82rem; font-weight: 700; color: #333; width: 120px;">Position</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.82rem; font-weight: 700; color: #333; width: 80px;">Visuel</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333;">Contenu de l'Actualité</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333; width: 180px;">Onglet parent</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: left; font-size: 0.82rem; font-weight: 700; color: #333; width: 100px;">Statut</th>
+                        <th style="padding: 10px; border: 1px solid #eee; text-align: right; font-size: 0.82rem; font-weight: 700; color: #333; width: 150px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($highlights as $highlight)
+                        <tr style="transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 10px; border: 1px solid #eee; text-align: center; font-size: 0.85rem; font-weight: 600; color: #333;">
+                                <span style="background: {{ match($highlight->position) { 1 => '#e0f2fe', 4 => '#fef3c7', default => '#f1f5f9' } }}; 
+                                             color: {{ match($highlight->position) { 1 => '#0369a1', 4 => '#92400e', default => '#475569' } }}; 
+                                             padding: 4px 10px; border-radius: 9999px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase;">
+                                    Position {{ $highlight->position }}
+                                </span>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #eee; text-align: center;">
+                                <img src="{{ $highlight->image_url }}" alt="{{ $highlight->title }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 4px; border: 1px solid #eee;">
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.85rem; color: #333;">
+                                <div style="font-weight: 600; color: #333; margin-bottom: 2px;">{{ $highlight->title }}</div>
+                                @if($highlight->subtitle)
+                                    <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 4px;">{{ $highlight->subtitle }}</div>
+                                @endif
+                                @if($highlight->link_url)
+                                    <div style="font-size: 0.75rem; color: #2563eb; font-weight: 500;">
+                                        <i class="fas fa-link" style="font-size: 0.7rem; opacity: 0.7;"></i> {{ Str::limit($highlight->link_url, 40) }}
+                                    </div>
+                                @endif
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #eee; font-size: 0.8rem; color: #333; font-weight: 500;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span>{{ $highlight->highlightTab->name ?? 'Sans onglet' }}</span>
+                                </div>
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #eee;">
+                                @if($highlight->active)
+                                    <span style="background: #e6f9ed; color: #1e7e34; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">Actif</span>
+                                @else
+                                    <span style="background: #fff5f5; color: #c53030; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;">Masqué</span>
+                                @endif
+                            </td>
+                            <td style="padding: 10px; border: 1px solid #eee; text-align: right;">
+                                <div style="display: flex; gap: 6px; justify-content: flex-end;">
+                                    <a href="{{ route('admin.highlights.edit', $highlight) }}" 
+                                       style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #eff6ff; color: #2563eb; border-radius: 6px; font-size: 0.8rem; text-decoration: none; border: 1px solid #dbeafe; transition: all 0.2s;" 
+                                       onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background='#eff6ff'"
+                                       title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form id="toggle-form-{{ $highlight->id }}" action="{{ route('admin.highlights.toggle-status', $highlight) }}" method="POST" style="display:inline;">
+                                        @csrf @method('PATCH')
+                                        <button type="button" onclick="confirmToggle({{ $highlight->id }}, {{ $highlight->active ? 'true' : 'false' }})" 
+                                                style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: {{ $highlight->active ? '#fff7ed' : '#f0fdf4' }}; color: {{ $highlight->active ? '#c2410c' : '#15803d' }}; border-radius: 6px; font-size: 0.8rem; border: 1px solid {{ $highlight->active ? '#ffedd5' : '#dcfce7' }}; cursor: pointer; transition: all 0.2s;" 
+                                                onmouseover="this.style.background='{{ $highlight->active ? '#ffedd5' : '#dcfce7' }}'" onmouseout="this.style.background='{{ $highlight->active ? '#fff7ed' : '#f0fdf4' }}'"
+                                                title="{{ $highlight->active ? 'Masquer' : 'Afficher' }}">
+                                            <i class="fas fa-{{ $highlight->active ? 'eye-slash' : 'eye' }}"></i>
+                                        </button>
+                                    </form>
+                                    <form id="delete-form-{{ $highlight->id }}" action="{{ route('admin.highlights.destroy', $highlight) }}" method="POST" style="display:inline;">
+                                        @csrf @method('DELETE')
+                                        <button type="button" onclick="confirmDelete({{ $highlight->id }})" 
+                                                style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #fef2f2; color: #dc2626; border-radius: 6px; font-size: 0.8rem; border: 1px solid #fee2e2; cursor: pointer; transition: all 0.2s;" 
+                                                onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='#fef2f2'"
+                                                title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" style="padding: 3rem; text-align: center; color: #94a3b8; font-size: 0.9rem;">
+                                <i class="fas fa-newspaper" style="font-size: 2rem; display: block; margin-bottom: 1rem; opacity: 0.3;"></i>
+                                Aucune actualité trouvée.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            <!-- Pagination logic -->
+            @if(method_exists($highlights, 'total') && $highlights->total() > 0)
+                <div style="border-top: 1px solid #f3f3f3; margin-top: 1.5rem; padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 0.85rem; color: #64748b; font-weight: 500;">
+                        ligne {{ $highlights->firstItem() ?? 0 }} sur {{ $highlights->total() }}
+                    </div>
+                    <div style="display: flex; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; background: #fff;">
+                        @if($highlights->onFirstPage())
+                            <span style="padding: 8px 16px; background: #fff; color: #94a3b8; font-size: 0.85rem; border-right: 1px solid #e2e8f0; cursor: not-allowed; font-weight: 500;">Prec</span>
+                        @else
+                            <a href="{{ $highlights->previousPageUrl() }}" style="padding: 8px 16px; background: #fff; color: #2563eb; text-decoration: none; font-size: 0.85rem; border-right: 1px solid #e2e8f0; transition: all 0.2s; font-weight: 500;" onmouseover="this.style.background='#f8fafc'">Prec</a>
+                        @endif
+
+                        @foreach($highlights->getUrlRange(1, $highlights->lastPage()) as $page => $url)
+                            @if($page == $highlights->currentPage())
+                                <span style="padding: 8px 16px; background: #eff6ff; color: #2563eb; font-weight: 700; font-size: 0.85rem; {{ $loop->last ? '' : 'border-right: 1px solid #e2e8f0;' }}">{{ $page }}</span>
+                            @else
+                                <a href="{{ $url }}" style="padding: 8px 16px; background: #fff; color: #2563eb; text-decoration: none; font-size: 0.85rem; border-right: 1px solid #e2e8f0; transition: all 0.2s; font-weight: 500;" onmouseover="this.style.background='#f8fafc'">{{ $page }}</a>
+                            @endif
+                        @endforeach
+
+                        @if($highlights->hasMorePages())
+                            <a href="{{ $highlights->nextPageUrl() }}" style="padding: 8px 16px; background: #fff; color: #2563eb; text-decoration: none; font-size: 0.85rem; transition: all 0.2s; font-weight: 500; border-left: 1px solid #e2e8f0;" onmouseover="this.style.background='#f8fafc'">Suiv</a>
+                        @else
+                            <span style="padding: 8px 16px; background: #fff; color: #94a3b8; font-size: 0.85rem; cursor: not-allowed; font-weight: 500; border-left: 1px solid #e2e8f0;">Suiv</span>
+                        @endif
+                    </div>
+                </div>
+            @endif
+        </div>
+    </div>
+
+    @push('scripts')
+    <script>
+        function confirmToggle(id, isActive) {
+            const actionText = isActive ? 'masquer' : 'afficher';
+            const actionColor = isActive ? '#e67e00' : '#1e7e34';
+            
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: `Voulez-vous vraiment ${actionText} cet élément ?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: actionColor,
+                cancelButtonColor: '#64748b',
+                confirmButtonText: `Oui, ${actionText} !`,
+                cancelButtonText: 'Annuler',
+                borderRadius: '12px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('toggle-form-' + id).submit();
+                }
+            })
         }
-    });
-}
-</script>
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Cette action est irréversible !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e11d48',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Oui, supprimer !',
+                cancelButtonText: 'Annuler',
+                borderRadius: '12px'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+    @endpush
 @endsection
