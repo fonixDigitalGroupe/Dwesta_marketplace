@@ -21,12 +21,14 @@
 
 @section('content')
     <div style="max-width: 100%;">
+        @include('admin.partials.settings-tabs')
+        
         <!-- Main Conteneur style Amazon Card -->
-        <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
+        <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
-                    {{ $currentTitle }}
+                    {{ $level == 1 ? 'Gestion des Catégories' : ($level == 2 ? 'Gestion des Sous-Catégories' : 'Gestion des Types de Produits') }}
                 </h1>
                 
                 <div style="display: flex; gap: 8px;">
@@ -43,18 +45,9 @@
 
             <!-- Barre de filtres grise -->
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px 20px; border-radius: 0; margin-bottom: 20px;">
-                <form action="{{ route('admin.categories.l'.$level) }}" method="GET" style="display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 20px;">
+                <form action="{{ route('admin.categories.l'.$level) }}" method="GET" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
                     <input type="hidden" name="per_page" value="{{ request('per_page', 8) }}">
                     
-                    <div style="display: flex; gap: 20px; align-items: end;">
-                        <div style="display: flex; flex-direction: column;">
-                            <label class="filter-label">Rechercher</label>
-                            <input type="text" name="search" value="{{ request('search') }}" 
-                                placeholder="Nom de la catégorie..."
-                                style="padding: 6px 12px; border: 1px solid #adb1b8; border-radius: 0; outline: none; font-size: 0.85rem; width: 250px;">
-                        </div>
-                    </div>
-
                     <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555;">
                         <span>Afficher</span>
                         <select onchange="window.location.href = '{{ request()->fullUrlWithQuery(['per_page' => '']) }}'.replace('per_page=', 'per_page=' + this.value)" 
@@ -65,6 +58,13 @@
                             <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
                         </select>
                         <span>résultats</span>
+                    </div>
+
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <span style="font-size: 0.8rem; color: #555; font-weight: 500;">Rechercher :</span>
+                        <input type="text" name="search" value="{{ request('search') }}" 
+                            placeholder="Nom de la catégorie..."
+                            style="padding: 6px 12px; border: 1px solid #adb1b8; border-radius: 0; outline: none; font-size: 0.85rem; width: 250px;">
                     </div>
                 </form>
             </div>
@@ -145,16 +145,6 @@
                                        Modifier
                                     </a>
                                     <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.categories.toggle-status', $category) }}" method="POST" style="display:inline;">
-                                        @csrf @method('PATCH')
-                                        <button type="submit" 
-                                                style="background: none; border: none; color: #0066c0; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                                onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
-                                                onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
-                                            {{ $category->actif ? 'Suspendre' : 'Activer' }}
-                                        </button>
-                                    </form>
-                                    <span style="color: #ddd;">|</span>
                                     <form id="delete-form-{{ $category->id }}" action="{{ route('admin.categories.destroy', $category) }}" method="POST" style="display:inline;">
                                         @csrf @method('DELETE')
                                         <button type="button" onclick="confirmDelete({{ $category->id }})" 
@@ -214,25 +204,4 @@
         </div>
     </div>
 
-    @push('scripts')
-    <script>
-        function confirmDelete(id) {
-            Swal.fire({
-                title: 'Êtes-vous sûr ?',
-                text: "Cette action est irréversible !",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e67e00',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Oui, supprimer !',
-                cancelButtonText: 'Annuler',
-                borderRadius: '0'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + id).submit();
-                }
-            })
-        }
-    </script>
-    @endpush
 @endsection

@@ -46,15 +46,14 @@
 @endpush
 
 @section('content')
-<div class="breadcrumb">
-    <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('account.index') }}">Mon Compte</a> > <span>Mes avis</span>
-</div>
 
 <div class="dashboard-container">
     @include('partials.profile-sidebar')
 
     <main class="main-content">
-        <h1 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 1.5rem;">Mes avis</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+            <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Mes avis</h1>
+        </div>
 
         @if($avis->isEmpty())
             <div style="background: white; padding: 3rem; text-align: center; border-radius: 8px; border: 1px solid #eee;">

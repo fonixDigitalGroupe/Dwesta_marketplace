@@ -116,7 +116,7 @@ Route::middleware('auth')->group(function () {
     // Page Pro (routes spécifiques AVANT la route avec paramètre)
     Route::prefix('page-pro')->name('page-pro.')->group(function () {
         Route::get('/edit', [PageProController::class, 'edit'])->name('edit');
-        Route::put('/update', [PageProController::class, 'update'])->name('update');
+        Route::match(['post', 'put'], '/update', [PageProController::class, 'update'])->name('update');
     });
 
     // Avis
@@ -232,6 +232,10 @@ Route::middleware('auth')->group(function () {
         // Gestion des Codes Promo (Coupons)
         Route::resource('coupons', \App\Http\Controllers\Admin\CouponController::class);
         Route::patch('coupons/{coupon}/toggle-status', [\App\Http\Controllers\Admin\CouponController::class, 'toggleActive'])->name('coupons.toggle-status');
+
+        // Gestion des Cartes Cadeaux
+        Route::patch('gift_cards/{giftCardOption}/toggle-status', [\App\Http\Controllers\Admin\GiftCardOptionController::class, 'toggleStatus'])->name('gift_cards.toggle-status');
+        Route::resource('gift_cards', \App\Http\Controllers\Admin\GiftCardOptionController::class)->parameters(['gift_cards' => 'giftCardOption']);
 
         // Gestion des Actualités (Highlights)
         Route::resource('highlight-tabs', \App\Http\Controllers\Admin\HighlightTabController::class);

@@ -15,6 +15,7 @@ class PagePro extends Model
 
     protected $fillable = [
         'vendeur_id',
+        'nom_boutique',
         'slug',
         'logo',
         'banniere',

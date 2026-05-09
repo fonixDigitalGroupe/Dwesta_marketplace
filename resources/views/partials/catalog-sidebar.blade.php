@@ -74,17 +74,17 @@
                 <div class="filter-label-alt">ETAT</div>
                 <div class="checkbox-group">
                     <label class="rakuten-checkbox">
-                        <input type="checkbox" name="etat[]" value="Neuf" @if(is_array(request('etat')) && in_array('Neuf', request('etat'))) checked @endif onchange="this.form.submit()">
+                        <input type="checkbox" name="etat[]" value="neuf" @if(is_array(request('etat')) && in_array('neuf', request('etat'))) checked @endif onchange="this.form.submit()">
                         <span class="box"></span> 
                         <span class="label-text">Neuf</span>
                     </label>
                     <label class="rakuten-checkbox">
-                        <input type="checkbox" name="etat[]" value="Occasion" @if(is_array(request('etat')) && in_array('Occasion', request('etat'))) checked @endif onchange="this.form.submit()">
+                        <input type="checkbox" name="etat[]" value="occasion" @if(is_array(request('etat')) && in_array('occasion', request('etat'))) checked @endif onchange="this.form.submit()">
                         <span class="box"></span> 
                         <span class="label-text">Occasion</span>
                     </label>
                     <label class="rakuten-checkbox">
-                        <input type="checkbox" name="etat[]" value="Reconditionné" @if(is_array(request('etat')) && in_array('Reconditionné', request('etat'))) checked @endif onchange="this.form.submit()">
+                        <input type="checkbox" name="etat[]" value="reconditionne" @if(is_array(request('etat')) && in_array('reconditionne', request('etat'))) checked @endif onchange="this.form.submit()">
                         <span class="box"></span> 
                         <span class="label-text">Reconditionné</span>
                     </label>
@@ -95,7 +95,7 @@
 @endif
 
             <div class="filter-group-alt">
-                <div class="filter-label-alt">PRIX</div>
+                <div class="filter-label-alt">PRIX (FCFA)</div>
                 <div class="rakuten-price-inputs">
                     <div class="price-box">
                         <input type="number" name="min_prix" placeholder="Min" value="{{ request('min_prix') }}">
@@ -201,9 +201,10 @@
         line-height: 1.4;
     }
 
-    .menu-item a:hover {
+    .menu-item a:hover, .menu-item a.active {
         background-color: #f9f9f9;
-        color: #bf0000;
+        color: #000;
+        font-weight: 800;
     }
 
     .menu-item.category-main a {
@@ -338,9 +339,21 @@
         flex: 1;
     }
 
+    .price-box::after {
+        content: 'CFA';
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.65rem;
+        color: #999;
+        pointer-events: none;
+    }
+
     .price-box input {
         width: 100%;
         padding: 0.4rem;
+        padding-right: 28px;
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 0.75rem;
@@ -359,7 +372,7 @@
     }
 
     .p-ok-btn {
-        background: #ff6600;
+        background: #004aad; /* Bleu Header */
         color: #fff;
         border: none;
         padding: 0.4rem 0.6rem;
@@ -371,7 +384,7 @@
     }
 
     .p-ok-btn:hover {
-        background: #e65c00;
+        background: #003a8a;
     }
 
     .sidebar-input-alt {

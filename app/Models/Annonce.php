@@ -233,17 +233,84 @@ class Annonce extends Model
     }
 
     /**
+     * Obtenir l'état brut (slug)
+     */
+    public function getEtatAttribute(): ?string
+    {
+        if ($this->type === self::TYPE_PRODUIT && $this->produit) {
+            return $this->produit->etat;
+        } elseif ($this->type === self::TYPE_VEHICULE && $this->vehicule) {
+            return $this->vehicule->etat;
+        }
+        return null;
+    }
+
+    /**
+     * Détermine si l'état doit être affiché
+     */
+    public function getShouldShowEtatAttribute(): bool
+    {
+        $famille = $this->category->famille ?? null;
+        return !($famille === Category::FAMILLE_SERVICES || $famille === Category::FAMILLE_IMMOBILIER);
+    }
+
+    /**
+     * Retourne la couleur associée à l'état
+     */
+    public function getEtatCouleurAttribute()
+    {
+        $famille = $this->category->famille ?? null;
+        if ($famille === Category::FAMILLE_SERVICES || $famille === Category::FAMILLE_IMMOBILIER) {
+            return 'transparent';
+        }
+
+        return match($this->etat) {
+            'neuf' => '#28a745', // Vert
+            'reconditionne' => '#007bff', // Bleu
+            'occasion' => '#d32f2f', // Rouge
+            default => '#565959',
+        };
+    }
+
+    /**
      * Obtenir le libellé de l'état (Neuf/Occasion)
      */
+    /**
+     * Retourne le libellé du bouton "Voir" selon la famille de catégorie
+     */
+    public function getLabelVoirBoutonAttribute()
+    {
+        $famille = $this->category->famille ?? null;
+        
+        return match($famille) {
+            'Services' => 'Voir le service',
+            'Immobilier' => 'Voir l\'annonce',
+            default => 'Voir le produit',
+        };
+    }
+
     public function getEtatLibelleAttribute(): string
     {
-        $etat = null;
-        if ($this->type === self::TYPE_PRODUIT && $this->produit) {
-            $etat = $this->produit->etat;
-        } elseif ($this->type === self::TYPE_VEHICULE && $this->vehicule) {
-            $etat = $this->vehicule->etat;
+        $famille = $this->category->famille ?? null;
+        if ($famille === Category::FAMILLE_SERVICES || $famille === Category::FAMILLE_IMMOBILIER) {
+            return '';
         }
-        return $etat ? ucfirst($etat) : 'Occasion';
+
+        $etat = $this->etat;
+
+        if (!$etat) {
+            return 'Occasion';
+        }
+
+        $labels = [
+            'neuf'          => 'Neuf',
+            'occasion'      => 'Occasion',
+            'reconditionne' => 'Reconditionné',
+            'reconditionné' => 'Reconditionné',
+            'comme_neuf'    => 'Comme neuf',
+        ];
+
+        return $labels[$etat] ?? ucfirst(str_replace('_', ' ', $etat));
     }
 
     public function filteredAttributes(): HasMany

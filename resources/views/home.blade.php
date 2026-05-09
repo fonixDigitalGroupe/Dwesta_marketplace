@@ -64,8 +64,6 @@
         .category-card:hover {
             border-color: #bf0000;
             color: #bf0000;
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .category-icon {
@@ -83,9 +81,10 @@
 @endpush
 
 @section('content')
-    <div class="main-content">
-        <!-- Hero Section -->
-        <div class="hero-slider">
+    <div style="background: white; margin-top: -1.5rem; padding: 1.5rem 0 2rem 0;">
+        <div class="main-content">
+            <!-- Hero Section -->
+            <div class="hero-slider">
             <div class="slider-container" id="sliderContainer">
                 @if($banners->count() > 0)
                     @foreach($banners as $banner)
@@ -96,25 +95,6 @@
                                 
                                 <div class="banner-inner-container">
                                     <div class="banner-text-content">
-                                        @if($banner->promo_discount)
-                                            <div class="banner-badge-promo" style="display: inline-block; background: #bf0000; color: #fff; padding: 4px 12px; border-radius: 4px; font-weight: 800; font-size: 0.9rem; margin-bottom: 1rem; text-transform: uppercase;">{{ $banner->promo_discount }}</div>
-                                        @endif
-                                        
-                                        <h2 class="banner-title" style="margin-bottom: 1rem;">{!! str_replace(' ', ' <span>', $banner->title) !!}</span></h2>
-                                        
-                                        @if($banner->promo_code)
-                                            <div style="margin-bottom: 2rem; color: #fff; font-weight: 500;">
-                                                Code: <strong style="background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; border: 1px dashed #fff;">{{ $banner->promo_code }}</strong>
-                                            </div>
-                                        @endif
-
-                                        @if($banner->has_payment_4x)
-                                            <div class="payment-4x-badge" style="display: flex; align-items: center; gap: 8px; margin-bottom: 2rem; color: #fff; font-weight: 700;">
-                                                <i class="fas fa-credit-card"></i> Paiement en 4x disponible
-                                            </div>
-                                        @endif
-
-                                        <a href="{{ $banner->link_url ?? '#' }}" class="banner-cta">Découvrir <i class="fas fa-arrow-right" style="margin-left: 10px; font-size: 0.8rem;"></i></a>
                                     </div>
                                     
 
@@ -144,17 +124,87 @@
             @endif
         </div>
 
+        <!-- Section Promotions & Cashback Partenaires -->
+        <div class="promo-brand-carousel-wrapper">
+        <button class="brand-carousel-btn prev" id="promo-brand-prev" onclick="scrollBrandCarousel(-1)" aria-label="Précédent" style="display:none;">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <div class="promo-brand-cards" id="promo-brand-carousel">
+                @foreach($proSellers as $seller)
+                    <a href="{{ $seller->pagePro->url }}" class="brand-card">
+                        <div class="brand-card-content">
+                            <div class="brand-card-logo">
+                                @if($seller->pagePro && $seller->pagePro->logo)
+                                    <div class="brand-logo-circle">
+                                        <img src="{{ Storage::url($seller->pagePro->logo) }}" alt="{{ $seller->identite }}">
+                                    </div>
+                                @else
+                                    <div class="brand-logo-circle">
+                                        <img src="{{ asset('mock_logos/' . ($loop->index % 2 == 0 ? 'logo1.png' : 'logo2.png')) }}" alt="{{ $seller->identite }}">
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="brand-card-info">
+                                <div class="brand-card-promo-val">{{ $seller->promo_val }}</div>
+                                @if($seller->promo_sub)
+                                    <div class="brand-card-promo-sub">{{ $seller->promo_sub }}</div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="brand-card-middle-text">{{ $seller->identite }}</div>
+                        <div class="brand-card-red-footer">
+                            <div class="footer-plus-icon">
+                                <i class="fas fa-plus" style="color: #fff;"></i>
+                            </div>
+                            <span class="footer-karnou-text">Karnou <span class="marchand-badge">Marchand Pro</span></span>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+
+            <button class="brand-carousel-btn next" id="promo-brand-next" onclick="scrollBrandCarousel(1)" aria-label="Suivant">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-content">
+
+        @if(isset($topConsultes) && $topConsultes->count() > 0)
+        <section class="n1-top-consulted-section" style="margin-top: 1rem;">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <h2 class="sections-global-title" style="margin-bottom: 0;">Top des produits les plus consultés</h2>
+            </div>
+            
+            <div class="n1-top-consulted-carousel">
+                <button class="carousel-arrow-btn btn-left" onclick="scrollCarousel('n1-top-products', -1)" aria-label="Précédent">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                
+                <div class="n1-top-grid" id="n1-top-products">
+                    @foreach($topConsultes as $annonce)
+                        @include('partials.product-card-premium', ['annonce' => $annonce])
+                    @endforeach
+                </div>
+
+                <button class="carousel-arrow-btn btn-right" onclick="scrollCarousel('n1-top-products', 1)" aria-label="Suivant">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+
+            <div class="n1-top-footer" style="text-align: center; margin-top: 2rem;">
+                <a href="{{ route('search.index', ['sort' => 'vues_desc']) }}" class="btn-clean-pill">Découvrir plus</a>
+            </div>
+        </section>
+        @endif
+
         <!-- Sections Dynamiques -->
         @foreach($homeSections as $section)
-            @if($section->products->count() > 0)
+            @if($section->products->count() > 0 && !Str::contains($section->title, ['Ventes Flash', 'Les plus consultés', 'Prix cassés', 'Nouveautés']))
                 <section class="n1-top-consulted-section" style="margin-top: 3rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                        <h2 class="sections-global-title" style="margin-bottom: 0; text-align: left;">{{ $section->title }}</h2>
-                        @if($section->source_type == 'flash_sale')
-                            <div class="flash-sale-timer" style="display: flex; align-items: center; gap: 10px; background: #fee2e2; padding: 5px 15px; border-radius: 20px; color: #dc2626; font-weight: 700; font-size: 0.9rem;">
-                                <i class="fas fa-bolt"></i> VENTE FLASH <span id="timer-{{ $section->id }}">00:00:00</span>
-                            </div>
-                        @endif
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h2 class="sections-global-title" style="margin-bottom: 0;">{{ $section->title }}</h2>
                     </div>
                     
                     @if($section->type == 'slider' || $section->type == 'list')
@@ -184,31 +234,7 @@
             @endif
         @endforeach
 
-        @if(isset($topConsultes) && $topConsultes->count() > 0)
-        <section class="n1-top-consulted-section" style="margin-top: 4rem;">
-            <h2 class="sections-global-title">Top des produits les plus consultés</h2>
-            
-            <div class="n1-top-consulted-carousel">
-                <button class="carousel-arrow-btn btn-left" onclick="scrollCarousel('n1-top-products', -1)" aria-label="Précédent">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-                </button>
-                
-                <div class="n1-top-grid" id="n1-top-products">
-                    @foreach($topConsultes as $annonce)
-                        @include('partials.product-card-premium', ['annonce' => $annonce])
-                    @endforeach
-                </div>
 
-                <button class="carousel-arrow-btn btn-right" onclick="scrollCarousel('n1-top-products', 1)" aria-label="Suivant">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-                </button>
-            </div>
-
-            <div class="n1-top-footer">
-                <a href="{{ route('search.index', ['sort' => 'vues_desc']) }}" class="btn-clean-pill">Voir plus</a>
-            </div>
-        </section>
-        @endif
 
         @if(isset($highlightTabs) && $highlightTabs->count() > 0)
         <!-- Actualités (Bento Grid) -->
@@ -228,68 +254,46 @@
                 <div class="news-tab-contents">
                     @foreach($highlightTabs as $tab)
                         <div id="tab-{{ $tab->id }}" class="news-tab-content {{ $loop->first ? 'active' : '' }}">
-                            <div class="bento-grid">
+                            <div class="bento-grid-custom">
                                 @php
                                     $highlights = $tab->highlights->keyBy('position');
                                 @endphp
                                 
-                                {{-- Position 1: Grand Carré Gauche --}}
-                                @if(isset($highlights[1]))
-                                    <a href="{{ $highlights[1]->link_url ?? '#' }}" class="bento-item large">
-                                        <div class="bento-img-wrapper">
-                                            <img src="{{ $highlights[1]->image_url }}" alt="{{ $highlights[1]->title }}">
-                                        </div>
-                                        <div class="bento-content">
-                                            <h3>{{ $highlights[1]->title }}</h3>
-                                            <p>{{ $highlights[1]->subtitle }}</p>
-                                        </div>
-                                    </a>
-                                @endif
-
-                                <div class="bento-small-group">
-                                    {{-- Position 2: Petit Haut Droite --}}
-                                    @if(isset($highlights[2]))
-                                        <a href="{{ $highlights[2]->link_url ?? '#' }}" class="bento-item small">
-                                            <div class="bento-img-wrapper">
-                                                <img src="{{ $highlights[2]->image_url }}" alt="{{ $highlights[2]->title }}">
-                                            </div>
-                                            <div class="bento-content">
-                                                <h3>{{ $highlights[2]->title }}</h3>
-                                                <p>{{ $highlights[2]->subtitle }}</p>
-                                            </div>
-                                        </a>
-                                    @endif
-
-                                    {{-- Position 3: Petit Bas Droite --}}
-                                    @if(isset($highlights[3]))
-                                        <a href="{{ $highlights[3]->link_url ?? '#' }}" class="bento-item small">
-                                            <div class="bento-img-wrapper">
-                                                <img src="{{ $highlights[3]->image_url }}" alt="{{ $highlights[3]->title }}">
-                                            </div>
-                                            <div class="bento-content">
-                                                <h3>{{ $highlights[3]->title }}</h3>
-                                                <p>{{ $highlights[3]->subtitle }}</p>
-                                            </div>
+                                <div class="bento-left">
+                                    {{-- Position 1: Grand Carré Gauche --}}
+                                    @if(isset($highlights[1]))
+                                        <a href="{{ $highlights[1]->link_url ?? '#' }}" class="bento-item-custom full-height">
+                                            <img src="{{ $highlights[1]->image_url }}" alt="Actualité {{ $tab->name }}">
                                         </a>
                                     @endif
                                 </div>
 
-                                {{-- Position 4: Large Horizontal Bas --}}
-                                @if(isset($highlights[4]))
-                                    <a href="{{ $highlights[4]->link_url ?? '#' }}" class="bento-item wide">
-                                        <div class="bento-img-wrapper">
-                                            <img src="{{ $highlights[4]->image_url }}" alt="{{ $highlights[4]->title }}">
-                                        </div>
-                                        <div class="bento-content">
-                                            <div class="wide-header">
-                                                <span class="category-tag">{{ $tab->name }}</span>
-                                                <h3>{{ $highlights[4]->title }}</h3>
-                                            </div>
-                                            <p>{{ $highlights[4]->subtitle }}</p>
-                                            <span class="btn-discover">Découvrir <i class="fas fa-arrow-right"></i></span>
-                                        </div>
-                                    </a>
-                                @endif
+                                <div class="bento-right">
+                                    <div class="bento-right-top">
+                                        {{-- Position 2: Petit Haut Gauche --}}
+                                        @if(isset($highlights[2]))
+                                            <a href="{{ $highlights[2]->link_url ?? '#' }}" class="bento-item-custom">
+                                                <img src="{{ $highlights[2]->image_url }}" alt="Actualité {{ $tab->name }}">
+                                            </a>
+                                        @endif
+
+                                        {{-- Position 3: Petit Haut Droite --}}
+                                        @if(isset($highlights[3]))
+                                            <a href="{{ $highlights[3]->link_url ?? '#' }}" class="bento-item-custom">
+                                                <img src="{{ $highlights[3]->image_url }}" alt="Actualité {{ $tab->name }}">
+                                            </a>
+                                        @endif
+                                    </div>
+
+                                    <div class="bento-right-bottom">
+                                        {{-- Position 4: Large Horizontal Bas --}}
+                                        @if(isset($highlights[4]))
+                                            <a href="{{ $highlights[4]->link_url ?? '#' }}" class="bento-item-custom">
+                                                <img src="{{ $highlights[4]->image_url }}" alt="Actualité {{ $tab->name }}">
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -300,12 +304,12 @@
 
         <!-- Nos top produits du moment (Tabs Section) -->
         <section class="top-produits-moment-section">
-            <div class="actualites-container">
+            <div style="width: 95%; margin: 0 auto;">
                 <h2 class="sections-global-title">Nos top produits du moment</h2>
                 
                 <div class="news-tabs">
-                    <button class="news-tab-btn active" onclick="switchMainTab('tab-neufs', this)">Neufs</button>
-                    <button class="news-tab-btn" onclick="switchMainTab('tab-reconditionnes', this)">Reconditionné certifié</button>
+                    <button class="news-tab-btn active" onclick="switchMainTab('tab-neufs', this)">Neuf</button>
+                    <button class="news-tab-btn" onclick="switchMainTab('tab-reconditionnes', this)">Reconditionné</button>
                     <button class="news-tab-btn" onclick="switchMainTab('tab-occasions', this)">Occasion</button>
                 </div>
 
@@ -349,104 +353,164 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
 
+        <!-- Univers Karnous -->
+        <section class="best-categories-section" style="margin-top: -1.5rem;">
+            <style>
+                .univers-karnous-grid {
+                    display: flex;
+                    justify-content: center;
+                    gap: 3rem;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 1rem 2rem;
+                }
+                .univers-item {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                    text-decoration: none;
+                    color: inherit;
+                    width: 280px;
+                }
+                .univers-circle {
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    margin-bottom: 1.5rem;
+                }
+                .univers-circle-1 {
+                    background-color: #f5f5f5;
+                }
+                .univers-circle-2 {
+                    background-color: #f5f5f5;
+                }
+                @media (max-width: 768px) {
+                    .univers-karnous-grid {
+                        flex-direction: column;
+                        gap: 3rem;
+                    }
+                }
+            </style>
 
-        <!-- L'univers KARNOU -->
-        <section class="karnou-universe-section">
             <div class="actualites-container">
-                <div class="rakuten-separator-bar"></div>
-                <h2 class="sections-global-title">L'univers KARNOU</h2>
+                <div style="height: 48px; background-color: #f3f3f3; border-radius: 20px 0 0 20px; margin: 0 -40px 3rem 0;"></div>
+                <h2 class="sections-global-title">Univers KARNOU</h2>
                 
-                <div class="universe-grid">
-                    <a href="#" class="universe-item">
-                        <div class="universe-circle">
-                            <span class="brand-part" style="color: #000; font-weight: 900; font-size: 1.15rem;">Karnou</span>
-                            <span class="service-part" style="color: #bf0000; font-weight: 500; font-size: 1.15rem; margin-left: 4px;">agence</span>
+                <div class="univers-karnous-grid">
+                    
+                    <!-- Karnou Logistique -->
+                    <a href="#" class="univers-item">
+                        <div class="univers-circle univers-circle-1">
+                            <i class="fas fa-truck-fast" style="font-size: 2.2rem; color: #ff9900;"></i>
                         </div>
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; margin: 0 0 0.5rem 0; color: #222;">Karnou Logistique</h3>
+                        <p style="font-size: 0.95rem; color: #666; margin: 0; line-height: 1.4;">La solution d'expédition rapide et fiable pour toutes vos livraisons.</p>
                     </a>
 
-                    <a href="#" class="universe-item">
-                        <div class="universe-circle">
-                            <span class="brand-part" style="color: #000; font-weight: 900; font-size: 1.15rem;">Karnou</span>
-                            <span class="service-part" style="color: #000; font-weight: 500; font-size: 1.15rem; margin-left: 4px;">logistique</span>
+                    <!-- Karnou Agence -->
+                    <a href="#" class="univers-item">
+                        <div class="univers-circle univers-circle-2">
+                            <i class="fas fa-handshake" style="font-size: 2.2rem; color: #ff9900;"></i>
                         </div>
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; margin: 0 0 0.5rem 0; color: #222;">Karnou Agence</h3>
+                        <p style="font-size: 0.95rem; color: #666; margin: 0; line-height: 1.4;">Notre réseau d'agences partenaires à votre service partout dans le pays.</p>
                     </a>
-
-                    <a href="#" class="universe-item">
-                        <div class="universe-circle">
-                            <span class="brand-part" style="color: #000; font-weight: 900; font-size: 1.15rem;">Karnou</span>
-                            <span class="service-part" style="color: #720e9e; font-weight: 500; font-size: 1.15rem; margin-left: 4px;">services</span>
-                        </div>
-                    </a>
+                    
                 </div>
+            </div>
+        </section>
 
-                <!-- Barre Institutionnelle RCA -->
-                <div class="rca-legal-bar">
-                    <div class="rca-flag-container">
-                        <div class="rca-flag">
-                            <div class="rca-stripe stripe-blue"></div>
-                            <div class="rca-stripe stripe-white"></div>
-                            <div class="rca-stripe stripe-green"></div>
-                            <div class="rca-stripe stripe-yellow"></div>
-                            <div class="rca-vertical-red"></div>
-                            <div class="rca-star">★</div>
-                        </div>
+        <!-- Avertissement Légal -->
+        <section style="max-width: 800px; margin: 0 auto 1.5rem auto; padding: 0 2rem;">
+            <div style="border: 4px solid #000; padding: 10px 20px; display: flex; align-items: center; gap: 15px; background: #fff;">
+                <div style="display: flex; flex-direction: column; align-items: center; border: 1px solid #ddd; padding: 6px 10px; flex-shrink: 0;">
+                    <!-- Drapeau Centrafrique stylisé en CSS -->
+                    <div style="display: flex; width: 45px; height: 30px; flex-direction: column; position: relative;">
+                        <div style="background: #003082; flex:1;"></div>
+                        <div style="background: #fff; flex:1;"></div>
+                        <div style="background: #289728; flex:1;"></div>
+                        <div style="background: #ffce00; flex:1;"></div>
+                        <div style="position: absolute; left: 50%; top: 0; bottom: 0; width: 8px; background: #d21034; transform: translateX(-50%);"></div>
+                        <i class="fas fa-star" style="position: absolute; top: 1px; left: 2px; color: #ffce00; font-size: 6px;"></i>
                     </div>
-                    <div class="rca-legal-text">
-                        <strong>Interdiction de vente de boissons alcooliques aux mineurs de moins de 18 ans</strong><br>
-                        La preuve de majorité de l'acheteur est exigée au moment de la vente en ligne.
-                        <div class="rca-legal-subtext">CODE DE LA SANTÉ PUBLIQUE, ART. L. 3342-1 ET L. 3353-3</div>
+                    <div style="font-size: 0.45rem; text-transform: uppercase; margin-top: 4px; font-weight: 800; text-align: center; line-height: 1.1;">République<br>Centrafricaine</div>
+                </div>
+                <div style="flex: 1;">
+                    <div style="font-weight: 900; font-size: 0.9rem; color: #111; line-height: 1.2;">Interdiction de vente de boissons alcooliques aux mineurs de moins de 18 ans</div>
+                    <div style="font-size: 0.8rem; color: #333; margin-top: 2px;">La preuve de majorité de l'acheteur est exigée au moment de la vente en ligne.</div>
+                </div>
+                <div style="font-size: 0.5rem; color: #999; text-transform: uppercase; text-align: right; line-height: 1.2; flex-shrink: 0;">
+                    Lois à<br>préciser
+                </div>
+            </div>
+        </section>
+
+    </div></div>
+    
+    <!-- SEO Block Karnou -->
+    <section style="background-color: #f7f7f7; padding: 0.4rem 0 2rem 0; margin-top: 2rem; width: 100%; display: flex; align-items: flex-start; justify-content: center;">
+        <div style="width: 100%; padding: 0 2rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 700; color: #111; margin: 0; text-align: center; line-height: 1.4;">
+                Karnou est la marketplace leader en République Centrafricaine pour l'achat de produits neufs, reconditionnés ou d'occasion au meilleur prix
+            </h3>
+        </div>
+    </section>
+
+    <!-- Le meilleur de nos catégories -->
+    @if(isset($bestCategories) && count($bestCategories) > 0)
+    <section class="best-categories-section" style="background-color: #fff; padding: 4rem 0;">
+        <div class="actualites-container">
+            <h2 class="sections-global-title">Le meilleur de nos catégories</h2>
+            
+            <div class="best-categories-grid">
+                @foreach($bestCategories as $data)
+                    <div class="best-category-col">
+                        <h3 class="best-category-title">Top {{ $data['topNumber'] }} {{ $data['title'] }}</h3>
+                        <ul class="best-category-list">
+                            @foreach($data['items']->take(5) as $item)
+                                <li><a href="{{ route('search.index', ['category' => $item->slug]) }}" title="{{ $item->nom }}" style="color: #555; text-decoration: none; font-size: 0.9rem; line-height: 1.6;">{{ $item->nom }}</a></li>
+                            @endforeach
+                        </ul>
+                        @if($data['items']->count() > 5)
+                            <a href="{{ route('search.index', ['category' => $data['root_parent']->slug]) }}" class="best-category-more" style="display: block; color: #004aad; font-weight: 700; text-decoration: none; font-size: 0.9rem;">Voir plus</a>
+                        @endif
                     </div>
-                </div>
+                @endforeach
             </div>
-        </section>
-
-        <!-- Marketing Footer Section -->
-        <section class="marketing-footer-section">
-            <div class="marketing-footer-container">
-                <p><strong>Karnou est la marketplace leader pour l'achat de produits neufs, reconditionnés ou d'occasion au meilleur prix</strong></p>
-            </div>
-        </section>
-
-        <!-- Le meilleur de nos catégories -->
-        @if(isset($bestCategories) && count($bestCategories) > 0)
-        <section class="best-categories-section">
-            <div class="actualites-container">
-                <h2 class="sections-global-title">Le meilleur de nos catégories</h2>
-                
-                <div class="best-categories-grid">
-                    @foreach($bestCategories as $data)
-                        <div class="best-category-col">
-                            <h3 class="best-category-title">{{ $data['title'] }}</h3>
-                            <ul class="best-category-list">
-                                @foreach($data['items'] as $item)
-                                    <li><a href="{{ route('search.index', ['category' => $item->id]) }}" title="{{ $item->nom }}">{{ $item->nom }}</a></li>
-                                @endforeach
-                            </ul>
-                            <a href="{{ route('search.index', ['category' => $data['parent']->id]) }}" class="best-category-more">Voir plus</a>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-        @endif
-    </div>
+        </div>
+        <!-- Séparateur horizontal pleine largeur -->
+        <div style="border-bottom: 2px solid #eeeeee; margin-top: 1.5rem; width: 100%;"></div>
+    </section>
+    @endif
 @endsection
 
 @push('styles')
 <style>
     .main-content {
-        background: white;
+        background: transparent;
         padding-top: 0;
+    }
+
+    /* Supprimer l'animation pour les cartes dans Top des produits */
+    #n1-top-products .premium-card-flat:hover {
+        transform: none !important;
+        box-shadow: none !important;
+        border-color: #eee !important;
     }
 
     /* Actualités Section */
     .actualites-section {
-        padding: 4rem 0;
+        padding: 2.5rem 0;
         background: #fff;
-        border-top: 1px solid #f0f0f0;
     }
     .actualites-container {
         max-width: 1400px;
@@ -455,19 +519,18 @@
     }
     .sections-global-title {
         font-family: 'Outfit', sans-serif;
-        font-size: 1.6rem;
+        font-size: 1.4rem;
         font-weight: 700;
         color: #1a1a1a;
         text-align: center;
-        margin-bottom: 3.5rem;
+        margin-bottom: 2rem;
     }
 
     .news-tabs {
         display: flex;
         justify-content: center;
-        gap: 2.5rem;
+        gap: 4.5rem;
         margin-bottom: 3rem;
-        border-bottom: 2px solid #f0f0f0;
         padding-bottom: 0;
     }
     .news-tab-btn {
@@ -505,7 +568,6 @@
     }
     .news-tab-content.active {
         display: block;
-        animation: fadeIn 0.5s ease-out;
     }
 
     @keyframes fadeIn {
@@ -513,129 +575,71 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Bento Grid */
-    .bento-grid {
+    /* Bento Grid Custom (Inspiration Leroy Merlin) */
+    .bento-grid-custom {
         display: grid;
-        grid-template-columns: 1fr 0.8fr;
+        grid-template-columns: 1fr 1.2fr;
         gap: 20px;
     }
-    .bento-small-group {
+    
+    .bento-left {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .bento-right {
         display: flex;
         flex-direction: column;
         gap: 20px;
     }
-    .bento-item {
-        position: relative;
+    
+    .bento-right-top {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        flex: 1; /* Prend l'espace pour équilibrer la hauteur */
+    }
+    
+    .bento-right-bottom {
+        flex: none;
+    }
+    
+    .bento-item-custom {
         background: #fff;
         border-radius: 12px;
         overflow: hidden;
         text-decoration: none;
         color: inherit;
-        display: flex;
-        flex-direction: column;
-        box-shadow: none;
-        border: 1px solid #eee;
-    }
-    .bento-item:hover {
-        border-color: #ddd;
-    }
-
-    .bento-img-wrapper {
-        position: relative;
+        display: block;
+        height: 100%;
         width: 100%;
-        overflow: hidden;
     }
-    .bento-img-wrapper img {
+    
+    .bento-item-custom:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .bento-item-custom img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: none;
+        display: block;
     }
-    .bento-item:hover .bento-img-wrapper img {
-        transform: none;
+    
+    .bento-item-custom.full-height {
+        min-height: 400px;
     }
-
-    .bento-badge {
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        background: #ee8800;
-        color: #fff;
-        padding: 4px 12px;
-        border-radius: 999px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        z-index: 2;
-    }
-
-    .bento-item.large {
-        grid-row: span 1;
-    }
-    .bento-item.large .bento-img-wrapper {
-        height: 400px;
-    }
-    .bento-item.small .bento-img-wrapper {
-        height: 150px;
-    }
-    .bento-item.wide {
-        grid-column: span 2;
-        flex-direction: row;
-        height: 250px;
-    }
-    .bento-item.wide .bento-img-wrapper {
-        width: 45%;
-        height: 100%;
-    }
-    .bento-item.wide .bento-content {
-        width: 55%;
-        padding: 2.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .bento-content {
-        padding: 1.5rem;
-    }
-    .bento-content h3 {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        color: #1a1a1a;
-    }
-    .bento-content p {
-        font-size: 0.9rem;
-        color: #666;
-        line-height: 1.5;
-        margin-bottom: 1rem;
-    }
-
-    .category-tag {
-        display: inline-block;
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: #ee8800;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 0.5rem;
-    }
-
-    .btn-discover {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #ee8800;
-        margin-top: auto;
+    
+    .bento-right-bottom .bento-item-custom {
+        height: 190px; /* Adapte la hauteur du bloc horizontal bas */
     }
 
     @media (max-width: 992px) {
-        .bento-grid { grid-template-columns: 1fr; }
-        .bento-item.wide { grid-column: span 1; flex-direction: column; height: auto; }
-        .bento-item.wide .bento-img-wrapper { width: 100%; height: 200px; }
-        .bento-item.wide .bento-content { width: 100%; padding: 1.5rem; }
+        .bento-grid-custom { grid-template-columns: 1fr; }
+        .bento-right-bottom .bento-item-custom { height: auto; min-height: 200px;}
+        .bento-item-custom.full-height { min-height: 300px; }
+        .news-tabs { gap: 1.5rem; margin-bottom: 2rem; }
     }
 
     .home-grid {
@@ -695,23 +699,23 @@
         transform: translateY(-50%) scale(1.1);
     }
     
-    .carousel-arrow-left { border-radius: 50%; left: 0; }
-    .carousel-arrow-right { border-radius: 50%; right: 0; }
+    .carousel-arrow-left { border-radius: 50%; left: -22px; }
+    .carousel-arrow-right { border-radius: 50%; right: -22px; }
 
     /* Rakuten-Style Hero Section CSS */
     .hero-slider {
         position: relative;
-        max-width: 100%;
-        margin-top: 20px; /* Reduced to push banner up */
-        margin-bottom: 4rem; /* Increased spacing after banner */
-        background: white;
+        width: 95%;
+        margin: 10px auto 2rem auto;
+        background: transparent;
     }
     
     .slider-container {
         position: relative;
-        height: 340px; /* Increased to 340px as requested */
+        height: 320px;
         width: 100%;
-        overflow: visible; /* Allow shape to overflow */
+        overflow: hidden;
+        border-radius: 8px;
     }
 
     .slider-slide {
@@ -745,16 +749,7 @@
         background-position: center;
         z-index: 0;
     }
-    .banner-bg-image::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%);
-        z-index: 1;
-    }
+
 
 
     .banner-inner-container {
@@ -806,7 +801,7 @@
         flex: 1;
         max-width: 50%;
         color: white;
-        margin-top: 150px; /* Pushes the button lower on the banner */
+        margin-top: 100px; /* Ajusté pour la nouvelle hauteur */
     }
 
     .banner-title {
@@ -969,8 +964,8 @@
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     
-    .slider-btn.next { right: 1rem; }
-    .slider-btn.prev { left: 1rem; }
+    .slider-btn.next { right: -22px; }
+    .slider-btn.prev { left: -22px; }
     
     .slider-btn:hover {
         background-color: #f1f1f1;
@@ -1030,7 +1025,7 @@
 
     /* Top Consulted Section (Style Page Catégories) */
     .n1-top-consulted-section {
-        padding: 3rem 0;
+        padding: 1.5rem 0;
         background: #fff;
     }
     .n1-top-consulted-title {
@@ -1043,13 +1038,13 @@
     }
     .n1-top-consulted-carousel {
         position: relative;
-        max-width: 1300px;
+        width: 95%;
         margin: 0 auto;
-        padding: 0 50px;
+        padding: 0;
     }
     .n1-top-card {
         flex: 0 0 calc(16.66% - 13px);
-        min-width: 190px;
+        min-width: 215px;
         background: #fff;
         border: 1px solid #efefef;
         border-radius: 8px;
@@ -1061,8 +1056,6 @@
         transition: transform 0.2s, box-shadow 0.2s;
     }
     .n1-top-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
         border-color: #ddd;
     }
     .n1-top-media {
@@ -1162,14 +1155,206 @@
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
     .carousel-arrow-btn:hover { background: #f5f5f5; border-color: #ee8800; color: #ee8800; }
-    .btn-left { left: 0; }
-    .btn-right { right: 0; }
+    .btn-left { left: -22px; }
+    .btn-right { right: -22px; }
 
     @media (max-width: 1200px) {
         .n1-top-card { flex: 0 0 calc(25% - 10px); }
     }
     @media (max-width: 768px) {
         .n1-top-card { flex: 0 0 calc(50% - 10px); }
+    }
+    .promo-brand-carousel-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 95%;
+        margin: 10px auto;
+        padding: 0;
+    }
+
+    .promo-brand-cards {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding: 10px 5px 10px 0;
+        scrollbar-width: none; /* Firefox */
+        width: 100%;
+    }
+
+    .promo-brand-cards::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+    }
+
+    .brand-card {
+        flex: 0 0 310px;
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        box-shadow: none;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .brand-carousel-btn {
+        position: absolute;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid #eee;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: transform 0.2s, background 0.2s;
+        color: #333;
+    }
+
+    .brand-carousel-btn:hover {
+        background: #f8f8f8;
+        transform: scale(1.05);
+    }
+
+    .brand-carousel-btn.prev {
+        left: -22px;
+    }
+
+    .brand-carousel-btn.next {
+        right: -22px;
+    }
+
+    .brand-card-content {
+        display: flex;
+        align-items: center;
+        padding: 1.2rem 1.2rem 0.8rem 1.2rem;
+        gap: 15px;
+    }
+
+    .brand-card-logo {
+        width: 100px;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 60px;
+    }
+    
+    .brand-card-logo img {
+        max-width: 100%;
+        max-height: 55px;
+        object-fit: contain;
+        background: #ffffff;
+        padding: 2px;
+        border-radius: 4px;
+    }
+
+    .brand-logo-circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: none;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+    }
+
+    .brand-logo-circle img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.2); /* Zoom léger pour supprimer les bordures de l'image source */
+        background: transparent;
+    }
+
+    .brand-logo-circle.fallback {
+        background: #f8f8f8;
+        color: #999;
+        font-size: 1.4rem;
+        border: 1px solid #eee;
+    }
+
+    .brand-card-info {
+        flex: 1.5;
+        text-align: right;
+    }
+
+    .brand-card-promo-val {
+        font-weight: 900;
+        font-size: 1.4rem;
+        color: #1a1a1a;
+        line-height: 1;
+    }
+
+    .brand-card-promo-sub {
+        font-size: 0.8rem;
+        color: #666;
+        margin-top: 4px;
+    }
+
+    .brand-card-middle-text {
+        text-align: center;
+        font-size: 0.95rem;
+        color: #000;
+        padding-bottom: 1.2rem;
+        font-weight: 500;
+        letter-spacing: 0;
+    }
+
+    .brand-card-red-footer {
+        width: 100%;
+        background: #004aad;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+        gap: 8px;
+        margin-top: auto;
+        border-radius: 0;
+    }
+
+    .footer-plus-icon {
+        font-size: 0.85rem;
+        color: #f39c12; /* Orange sombre */
+    }
+
+    .footer-karnou-text {
+        font-weight: 400;
+        font-size: 0.85rem;
+        letter-spacing: 0.2px;
+    }
+
+    .marchand-badge {
+        font-weight: 700;
+        background: transparent;
+        color: #fff;
+        margin-left: 4px;
+        text-transform: uppercase;
+    }
+
+    /* Ajustement responsive pour petits écrans */
+    @media (max-width: 900px) {
+        .promo-brand-cards {
+            max-width: 100%;
+        }
+        .brand-card {
+            flex: 0 0 calc(50% - 7.5px);
+        }
+    }
+    @media (max-width: 600px) {
+        .brand-card {
+            flex: 0 0 calc(85%);
+        }
     }
 </style>
 @endpush
@@ -1248,7 +1433,7 @@
 <style>
     /* Nos top produits du moment */
     .top-produits-moment-section {
-        padding: 4rem 0;
+        padding: 0.5rem 0 2.5rem 0;
         background: #fff;
     }
     .main-tab-content {
@@ -1256,12 +1441,11 @@
     }
     .main-tab-content.active {
         display: block;
-        animation: fadeIn 0.4s ease;
     }
 
     .product-carousel-wrapper {
         position: relative;
-        padding: 0 40px;
+        padding: 0;
     }
 
     /* Flat Product Card (Inspiré Rakuten/Image) */
@@ -1271,11 +1455,11 @@
         gap: 15px;
         overflow-x: hidden;
         scroll-behavior: smooth;
-        padding: 20px 5px;
+        padding: 20px 0;
     }
 
     .premium-card-flat {
-        flex: 0 0 190px;
+        flex: 0 0 215px;
         background: #fff;
         border: 1px solid #eee;
         border-radius: 12px;
@@ -1317,23 +1501,40 @@
         flex-direction: column;
     }
     .card-title-flat {
-        font-size: 0.85rem;
-        line-height: 1.4;
+        font-size: 1rem;
+        line-height: 1.3;
         color: #1a1a1a;
-        margin-bottom: 1rem;
-        height: 2.4rem;
+        margin-bottom: 6px;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
-        font-weight: 500;
+        font-weight: 800;
     }
+
+    /* Avis clients */
+    .card-review-row {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        color: #f5a623;
+        font-size: 0.8rem;
+        margin: 4px 0 6px 0;
+    }
+    .card-review-count {
+        color: #007185;
+        font-size: 0.8rem;
+        margin-left: 4px;
+        font-weight: 400;
+    }
+
 
     .card-price-row-flat {
         margin-bottom: 0.5rem;
         display: flex;
-        align-items: baseline;
-        gap: 6px;
+        align-items: center;
+        gap: 4px;
+        flex-wrap: wrap;
         margin-top: auto;
     }
     .price-prefix {
@@ -1342,9 +1543,19 @@
         font-weight: 700;
     }
     .price-value-flat {
-        color: #ff8c00;
+        color: #ff9900;
+        font-weight: 800;
+        font-size: 1.25rem;
+    }
+    .card-price-separator {
+        color: #bbb;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1;
+    }
+    .card-etat-badge {
+        font-size: 0.8rem;
         font-weight: 700;
-        font-size: 1.05rem;
     }
 
 
@@ -1376,153 +1587,93 @@
 
     .btn-clean-pill {
         display: inline-block;
-        padding: 0.75rem 3.5rem;
-        border: 1px solid #331f1f;
+        padding: 0.7rem 3.5rem;
+        border: 1.2px solid #1a1a1a;
         border-radius: 999px;
-        background: #fff;
-        color: #331f1f;
-        font-weight: 600;
+        background: #fdfdfd;
+        color: #1a1a1a;
+        font-weight: 700;
         text-decoration: none;
         transition: all 0.2s;
         font-family: 'Outfit', sans-serif;
         font-size: 0.95rem;
     }
     .btn-clean-pill:hover {
-        background: #331f1f;
-        color: #fff;
+        background: #f0f0f0;
+        transform: translateY(-2px);
     }
 
     /* L'univers KARNOU */
     .karnou-universe-section {
-        padding: 0 0 5rem 0;
+        padding: 0 0 4rem 0;
         background: #fff;
     }
-    .rakuten-separator-bar {
-        width: 100%;
-        height: 35px;
-        background: #f8f8f8;
-        border-radius: 999px;
-        margin-bottom: 4rem;
-    }
-    .universe-grid {
-        display: flex;
-        justify-content: center;
-        gap: 3rem;
-        flex-wrap: wrap;
-    }
-    .universe-item {
-        text-decoration: none;
-    }
-    .universe-circle {
-        width: 180px;
-        height: 180px;
-        background: #fafafa;
-        border-radius: 50%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        box-shadow: none;
-        border: none;
-        padding: 30px;
-    }
-    .brand-part, .service-part {
-        font-family: 'Outfit', sans-serif;
-        white-space: nowrap;
-    }
+    /* L'univers KARNOU - AliExpress Style */
 
-    /* Barre RCA Legal - Imposante avec double cadre */
-    .rca-legal-bar {
-        margin-top: 6rem;
-        border: 8px double #000; /* Effet "Double Cadre" traditionnel et imposant */
-        background: #fff;
-        padding: 0;
-        display: flex;
-        align-items: stretch; /* Permet au drapeau de prendre toute la hauteur */
-        justify-content: flex-start;
-        width: 100%;
-        max-width: 950px;
-        margin: 2.5rem auto;
-        min-height: 42px; /* Ultra compact */
-        box-sizing: border-box;
-        border: 4px double #000; /* Bordure un peu plus fine pour la petite taille */
-        overflow: hidden;
-    }
-    
-    .rca-flag-container {
-        padding: 0; /* Supprimé pour que le drapeau touche les bords */
-        background: #fff;
-        border-right: 3px solid #000; /* Séparateur vertical plus net */
+    /* Barre Légale Moderne */
+    .rca-legal-bar-modern {
+        max-width: 850px;
+        margin: 0 auto;
+        border: 4px double #000;
+        padding: 6px 1px;
         display: flex;
         align-items: center;
-        justify-content: center;
+        gap: 15px;
+        background: #fff;
     }
-    
-    .rca-flag {
-        position: relative;
-        width: 65px;
-        height: 100%;
+    .marianne-container {
         display: flex;
         flex-direction: column;
-        border: none; /* Pas de bordure interne si on touche déjà le bord */
-        overflow: hidden;
+        align-items: center;
+        border-right: 2px solid #000;
+        padding-right: 15px;
+        padding-left: 10px;
+        min-width: 100px;
     }
-    
-    .rca-stripe {
-        flex: 1;
-        width: 100%;
+    .marianne-logo {
+        display: flex;
+        width: 45px;
+        height: 24px;
+        border: 1px solid #000;
+        margin-bottom: 2px;
     }
-    .stripe-blue { background: #003082; }
-    .stripe-white { background: #FFFFFF; }
-    .stripe-green { background: #288133; }
-    .stripe-yellow { background: #FCD116; }
-    
-    .rca-vertical-red {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 22px; /* Proportionnel à la nouvelle largeur */
-        height: 100%;
-        background: #D21034;
-        z-index: 2;
+    .marianne-blue { flex: 1; background: #000091; }
+    .marianne-white { 
+        flex: 1; 
+        background: #fff; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        font-size: 10px;
+        color: #000;
     }
-    
-    .rca-star {
-        position: absolute;
-        top: 4px;
-        left: 8px;
-        color: #FCD116;
-        font-size: 14px; /* Star size adjusted */
-        z-index: 3;
-        line-height: 1;
-    }
-    
-    .rca-legal-text {
-        font-family: 'Outfit', sans-serif;
-        font-size: 0.78rem;
+    .marianne-red { flex: 1; background: #e1000f; }
+    .marianne-text {
+        font-size: 7px;
+        font-weight: 900;
         line-height: 1.1;
-        color: #000;
-        padding: 4px 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+        text-align: center;
+    }
+    .legal-warning-text {
         flex: 1;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.85rem;
+        line-height: 1.2;
     }
-    
-    .rca-legal-text strong {
+    .legal-warning-text strong {
+        font-size: 1rem;
         font-weight: 800;
-        font-size: 1.25rem;
     }
-    
-    .rca-legal-subtext {
+    .legal-warning-text span {
+        font-size: 0.8rem;
+        color: #333;
+    }
+    .legal-code {
         text-align: right;
-        font-size: 0.75rem;
+        font-size: 0.6rem;
         font-weight: 700;
-        color: #000;
-        margin-top: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
+        margin-top: 2px;
+        padding-right: 10px;
     }
 
     .n1-top-footer {
@@ -1539,66 +1690,67 @@
     }
 
 
-    /* Le meilleur de nos catégories - Version Image */
+    /* Le meilleur de nos catégories - Version Image AliExpress */
     .best-categories-section {
-        padding: 5rem 0 0;
+        padding: 1rem 0 5rem 0;
         background: #fff;
     }
     .best-categories-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 5rem;
-        max-width: 1200px;
+        gap: 3rem;
+        max-width: 1350px;
         margin: 0 auto;
-        padding-left: 4rem;
-        border-bottom: 1px solid #e5e5e5; /* La ligne grise */
-        padding-bottom: 1.2rem; /* Rapproché encore plus du "Voir plus" */
-        margin-bottom: 3rem;
+        padding: 0 4rem;
     }
     .best-category-col {
         display: flex;
         flex-direction: column;
-        align-items: flex-start; /* Aligné à gauche pour le même X */
+        align-items: flex-start;
+        height: 100%;
     }
     .best-category-title {
         font-family: 'Outfit', sans-serif;
-        font-size: 1.25rem;
-        font-weight: 900;
+        font-size: 1.15rem;
+        font-weight: 800;
         color: #000;
-        margin-bottom: 2.5rem;
-        border-bottom: none;
-        padding-bottom: 0;
+        margin-bottom: 2rem;
+        min-height: 3rem; /* Aligne les titres */
     }
     .best-category-list {
         list-style: none;
         padding: 0;
-        margin: 0;
-        display: flex; /* Utilisation de flex-column pour la verticalité parfaite */
-        flex-direction: column;
-        gap: 0.8rem;
-        margin-bottom: 2.5rem;
+        margin: 0 0 1.5rem 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+        flex-grow: 1; /* Prend tout l'espace restant pour pousser le bouton */
+    }
+    .best-category-more {
+        margin-top: auto !important;
     }
     .best-category-list li a {
         font-size: 0.95rem;
-        color: #444;
-        font-weight: 600;
+        color: #333;
+        font-weight: 700;
         text-decoration: none;
-        transition: color 0.2s;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        transition: color 0.1s;
         display: block;
+        line-height: 1.3;
     }
     .best-category-list li a:hover {
-        color: #bf0000;
-        transform: none;
+        text-decoration: underline;
     }
     .best-category-more {
         font-size: 1.05rem;
-        font-weight: 900;
+        font-weight: 800;
         color: #000;
         text-decoration: none;
-        margin-top: auto;
+        margin-top: 0.5rem;
+    }
+    .best-category-more:hover {
+        text-decoration: underline;
+    }
         display: inline-block;
         transition: opacity 0.2s;
     }
@@ -1623,27 +1775,28 @@
     /* Marketing Footer */
     .marketing-footer-section {
         background: #f6f6f6;
-        padding: 3.5rem 1rem;
+        padding: 2.5rem 1rem;
         margin-top: 0;
-        width: 100vw;
-        position: relative;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
         border-top: 1px solid #eee;
     }
     .marketing-footer-container {
-        max-width: 1100px;
+        max-width: 1200px;
         margin: 0 auto;
         text-align: center;
+        position: relative;
     }
     .marketing-footer-container p {
         font-family: 'Outfit', sans-serif;
-        font-size: 1.3rem;
-        color: #1a1a1a;
-        line-height: 1.5;
+        font-size: 1.25rem;
+        color: #333;
+        font-weight: 700;
+        line-height: 1.4;
         margin: 0;
+    }
+    .footer-arrow-down {
+        margin-top: 10px;
+        color: #ccc;
+        font-size: 1.2rem;
     }
 
     @media (max-width: 768px) {
@@ -1677,6 +1830,33 @@
             behavior: 'smooth'
         });
     }
+
+    // Smart arrows for boutique carousel
+    function updateBrandArrows() {
+        const carousel = document.getElementById('promo-brand-carousel');
+        const prevBtn = document.getElementById('promo-brand-prev');
+        const nextBtn = document.getElementById('promo-brand-next');
+        if (!carousel || !prevBtn || !nextBtn) return;
+        const atStart = carousel.scrollLeft <= 2;
+        const atEnd = carousel.scrollLeft + carousel.offsetWidth >= carousel.scrollWidth - 2;
+        prevBtn.style.display = atStart ? 'none' : 'flex';
+        nextBtn.style.display = atEnd ? 'none' : 'flex';
+    }
+
+    function scrollBrandCarousel(direction) {
+        const carousel = document.getElementById('promo-brand-carousel');
+        const scrollAmount = carousel.offsetWidth * 0.8;
+        carousel.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        setTimeout(updateBrandArrows, 400);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const carousel = document.getElementById('promo-brand-carousel');
+        if (carousel) {
+            updateBrandArrows();
+            carousel.addEventListener('scroll', updateBrandArrows);
+        }
+    });
 
     // Scope specific switch function for News Bento
     function switchNewsTab(tabId, btn) {

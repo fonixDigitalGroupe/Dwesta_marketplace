@@ -226,9 +226,6 @@
 @endpush
 
 @section('content')
-    <div class="breadcrumb">
-        <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('profile.show') }}">Mon Compte</a> > <span>Compte Vendeur</span>
-    </div>
 
     <div class="dashboard-container">
         @include('partials.profile-sidebar')
@@ -236,8 +233,8 @@
         <!-- Main Content -->
         <main class="main-content">
             
-            <div class="content-header">
-                <h1>Mon compte vendeur</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+                <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Mon compte vendeur</h1>
             </div>
 
             <div class="rakuten-content-container">
@@ -316,16 +313,17 @@
                     </p>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top: 2.5rem; border-bottom: 1px solid #f0f0f0; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
-                    <h2 class="rakuten-title" style="margin: 0; border: none; padding: 0;">Identité & Documents KYC</h2>
-                    <div style="display: flex; gap: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                    <h2 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Identité & Documents KYC</h2>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
                         @if($vendeur->estParticulier())
-                            <a href="{{ route('vendeur.create') }}" class="btn-rakuten" style="background: #333; font-size: 0.85rem; padding: 0.5rem 1rem;">Passer en compte Professionnel</a>
+                            <a href="{{ route('vendeur.create') }}" style="color: #666; font-size: 0.8rem; text-decoration: underline;">Passer en compte Pro</a>
                         @endif
                         
-                        @if($vendeur->statut_verification !== 'verifie')
-                            <a href="{{ route('vendeur.create') }}" class="btn-rakuten-outline">Modifier mon profil</a>
-                        @endif
+                        <a href="{{ route('vendeur.create') }}" style="color: #004aad; font-size: 0.9rem; display: flex; align-items: center; gap: 5px; text-decoration: none; font-weight: 600;">
+                            <i class="fas fa-edit"></i>
+                            Modifier
+                        </a>
                     </div>
                 </div>
 
@@ -379,6 +377,9 @@
                 @endif
 
                 @if($vendeur->estProfessionnel() && $vendeur->professionnel)
+                    <div style="color: #f68b1e; font-weight: 700; font-size: 0.95rem; margin-bottom: 1.5rem;">
+                        Vous avez un compte vendeur professionnel
+                    </div>
                     <div class="info-grid">
                         <div class="rakuten-field-group">
                             <div class="rakuten-field">

@@ -22,8 +22,12 @@
 
 @section('content')
     <div style="max-width: 100%;">
+        @if(!$isSellerView)
+            @include('admin.partials.settings-tabs')
+        @endif
+
         <!-- Main Conteneur style Amazon Card -->
-        <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
+        <div style="background: #fff; border: 1px solid #e7e7e7; {{ !$isSellerView ? 'border-top: none;' : '' }} border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
@@ -42,18 +46,27 @@
                 </div>
             </div>
 
-            <!-- Barre de filtres grise -->
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px 20px; border-radius: 0; margin-bottom: 20px;">
-                <form action="{{ route('admin.users.index') }}" method="GET" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) 250px; gap: 20px; align-items: end;">
-                    <input type="hidden" name="per_page" value="{{ $perPage }}">
-                    
-                    <div>
-                        <label class="filter-label">Filtrer par Rôle</label>
-                        <select name="role" onchange="this.form.submit()" class="filter-select" style="width: 100%;">
+            <!-- Barre de recherche simplifiée Style Amazon -->
+            <div style="background: #fbfbfc; border: 1px solid #e7e7e7; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-radius: 4px;">
+                <div style="display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #111;">
+                    <span>Afficher</span>
+                    <select onchange="window.location.href = '{{ route('admin.users.index') }}?per_page=' + this.value + '&role={{ $role }}&search={{ $search }}'" 
+                        style="padding: 4px 10px; border: 1px solid #adb1b8; border-radius: 3px; background: #fff; font-size: 0.85rem; color: #111; cursor: pointer; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                        <option value="8" {{ $perPage == 8 ? 'selected' : '' }}>8</option>
+                        <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25</option>
+                        <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                    <span>résultats</span>
+
+                    <div style="margin-left: 20px; display: flex; align-items: center; gap: 10px;">
+                        <span style="color: #555;">Rôle :</span>
+                        <select onchange="window.location.href = '{{ route('admin.users.index') }}?per_page={{ $perPage }}&role=' + this.value + '&search={{ $search }}'" 
+                            style="padding: 4px 10px; border: 1px solid #adb1b8; border-radius: 3px; background: #fff; font-size: 0.85rem; color: #111; cursor: pointer; outline: none;">
                             @if($isSellerView)
                                 <option value="vendeur" {{ $role == 'vendeur' ? 'selected' : '' }}>Tous les Vendeurs</option>
-                                <option value="vendeur_pro" {{ $role == 'vendeur_pro' ? 'selected' : '' }}>Vendeur pro</option>
-                                <option value="vendeur_particulier" {{ $role == 'vendeur_particulier' ? 'selected' : '' }}>Vendeur part</option>
+                                <option value="vendeur_pro" {{ $role == 'vendeur_pro' ? 'selected' : '' }}>Vendeur Pro</option>
+                                <option value="vendeur_particulier" {{ $role == 'vendeur_particulier' ? 'selected' : '' }}>Vendeur Part</option>
                             @else
                                 <option value="" {{ $role == '' ? 'selected' : '' }}>Tous les utilisateurs</option>
                                 <option value="admin" {{ $role == 'admin' ? 'selected' : '' }}>Administrateurs</option>
@@ -64,48 +77,18 @@
                             @endif
                         </select>
                     </div>
+                </div>
 
-                    <div>
-                        <label class="filter-label">Nationalité / Pays</label>
-                        <select name="nationalite" onchange="this.form.submit()" class="filter-select" style="width: 100%;">
-                            <option value="">Tous les pays</option>
-                            @php
-                                $countriesList = [
-                                    'Sénégal' => '🇸🇳', 'Afrique du Sud' => '🇿🇦', 'Algérie' => '🇩🇿', 'Angola' => '🇦🇴', 'Bénin' => '🇧🇯', 
-                                    'Burkina Faso' => '🇧🇫', 'Cameroun' => '🇨🇲', 'Congo' => '🇨🇬', "Côte d'Ivoire" => '🇨🇮', 'Égypte' => '🇪🇬',
-                                    'Gabon' => '🇬🇦', 'Ghana' => '🇬🇭', 'Guinée' => '🇬🇳', 'Mali' => '🇲🇱', 'Maroc' => '🇲🇦', 
-                                    'Mauritanie' => '🇲🇷', 'Niger' => '🇳🇪', 'Nigeria' => '🇳🇬', 'Tchad' => '🇹🇩', 'Togo' => '🇹🇬', 
-                                    'Tunisie' => '🇹🇳', 'Française' => '🇫🇷'
-                                ];
-                            @endphp
-                            @foreach($countriesList as $name => $flag)
-                                <option value="{{ $name }}" {{ request('nationalite') == $name ? 'selected' : '' }}>
-                                    {{ $flag }} {{ $name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div style="display: flex; flex-direction: column;">
-                        <label class="filter-label">Recherche</label>
-                        <input type="text" name="search" value="{{ $search }}" 
-                            placeholder="Nom, email, téléphone..."
-                            style="padding: 6px 12px; border: 1px solid #adb1b8; border-radius: 0; outline: none; font-size: 0.85rem;">
-                    </div>
+                <form action="{{ route('admin.users.index') }}" method="GET" style="display: flex; align-items: center; gap: 12px;">
+                    <input type="hidden" name="per_page" value="{{ $perPage }}">
+                    <input type="hidden" name="role" value="{{ $role }}">
+                    <label style="font-size: 0.85rem; color: #111; font-weight: 400;">Rechercher :</label>
+                    <input type="text" name="search" value="{{ $search ?? '' }}" 
+                        placeholder="Nom, email, tel..."
+                        style="width: 250px; padding: 6px 12px; border: 1px solid #adb1b8; border-radius: 3px; outline: none; font-size: 0.85rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05) inset;">
                 </form>
             </div>
 
-            <!-- Pagination density info -->
-            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555; margin-bottom: 15px;">
-                <span>Afficher</span>
-                <select onchange="window.location.href = '{{ route('admin.users.index') }}?per_page=' + this.value + '&role={{ $role }}&nationalite={{ request('nationalite') }}&search={{ $search }}'" 
-                    style="padding: 3px 6px; border: 1px solid #adb1b8; border-radius: 0; background: #f0f2f2; font-size: 0.8rem; color: #111; cursor: pointer; outline: none;">
-                    <option value="8" {{ $perPage == 8 ? 'selected' : '' }}>8</option>
-                    <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25</option>
-                    <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
-                    <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100</option>
-                </select>
-                <span>résultats par page</span>
             </div>
 
             <!-- Table Amazon Design -->
@@ -174,16 +157,12 @@
                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
                                        Modifier
                                     </a>
-                                    <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.users.suspend', $user) }}" method="POST" style="display:inline;">
-                                        @csrf @method('PATCH')
-                                        <button type="submit" 
-                                                style="background: none; border: none; color: #0066c0; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                                onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
-                                                onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
-                                            {{ $user->is_active ? 'Suspendre' : 'Activer' }}
-                                        </button>
-                                    </form>
+                                    <a href="{{ route('admin.users.edit', $user) }}" 
+                                       style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
+                                       onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
+                                       onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
+                                       Modifier
+                                    </a>
                                     <span style="color: #ddd;">|</span>
                                     <form id="delete-form-{{ $user->id }}" action="{{ route('admin.users.destroy', $user) }}" method="POST" style="display:inline;">
                                         @csrf @method('DELETE')
@@ -242,25 +221,4 @@
         </div>
     </div>
 
-    @push('scripts')
-    <script>
-        function confirmDelete(id) {
-            Swal.fire({
-                title: 'Êtes-vous sûr ?',
-                text: "Cette action est irréversible !",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e67e00',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Oui, supprimer !',
-                cancelButtonText: 'Annuler',
-                borderRadius: '0'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + id).submit();
-                }
-            })
-        }
-    </script>
-    @endpush
 @endsection

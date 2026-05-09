@@ -533,11 +533,13 @@
 
                 <div style="font-weight: 800; color: #1a1a1a; margin-top: 1.5rem; margin-bottom: 0.75rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Caractéristiques techniques</div>
                 <div class="rk-specs-horizontal" style="margin-top: 0.5rem;">
-                    <div class="rk-spec-item">
-                        <span class="rk-spec-label"><i class="fas fa-tag" style="margin-right: 5px;"></i> État :</span>
-                        <span class="rk-spec-value" style="color: #bf0000;">{{ $annonce->produit->etat ?? 'Neuf' }}</span>
-                    </div>
-                    <div class="rk-spec-separator" style="margin: 0 10px;">|</div>
+                    @if($annonce->should_show_etat)
+                        <div class="rk-spec-item">
+                            <span class="rk-spec-label"><i class="fas fa-tag" style="margin-right: 5px;"></i> État :</span>
+                            <span class="rk-spec-value" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
+                        </div>
+                        <div class="rk-spec-separator" style="margin: 0 10px;">|</div>
+                    @endif
                     <div class="rk-spec-item">
                         <span class="rk-spec-label"><i class="fas fa-check-circle" style="margin-right: 5px;"></i> Disponibilité :</span>
                         <span class="rk-spec-value" style="color: #28a745;">{{ ucfirst(str_replace('_', ' ', $annonce->disponibilite)) }}</span>

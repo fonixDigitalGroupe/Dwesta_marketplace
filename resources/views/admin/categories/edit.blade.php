@@ -103,136 +103,203 @@
             color: #e77600;
             box-shadow: 0 0 3px 2px rgba(228,121,17,0.3);
         }
+
+        /* Custom Checkbox Amazon Style */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 4px 0;
+            user-select: none;
+            font-size: 0.85rem;
+            color: #111;
+        }
+        
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .checkmark {
+            height: 16px;
+            width: 16px;
+            background-color: #fff;
+            border: 1px solid #adb1b8;
+            border-radius: 2px;
+            position: relative;
+            transition: all 0.1s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05) inset;
+        }
+        
+        .checkbox-container:hover input ~ .checkmark {
+            border-color: #e77600;
+            box-shadow: 0 0 3px rgba(228,121,17,0.5);
+        }
+        
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: #fff;
+            border-color: #e77600;
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 5px;
+            top: 1px;
+            width: 4px;
+            height: 8px;
+            border: solid #e77600;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
     </style>
 @endpush
 
 @section('content')
 <div style="max-width: 1200px; margin: 0 auto;">
     
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Modifier la catégorie : {{ $category->nom }}</h1>
-        <a href="{{ route('admin.categories.l1') }}" class="btn-amazon-secondary" style="display: flex; align-items: center; gap: 8px;">
-            <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour au catalogue
-        </a>
-    </div>
+    @include('admin.partials.settings-tabs')
 
-    <form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+    <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; padding: 25px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Modifier la catégorie : {{ $category->nom }}</h1>
+            <a href="{{ route('admin.categories.l1') }}" class="btn-amazon-secondary" style="display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour au catalogue
+            </a>
+        </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: stretch;">
-            
-            <!-- Left Column -->
-            <div style="display: flex; flex-direction: column; gap: 20px;">
+        <form action="{{ route('admin.categories.update', $category) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
+            <div style="display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: start;">
                 
-                <div class="amazon-card">
-                    <h3 class="section-title">Identité Commerciale</h3>
+                <!-- Left Column -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
                     
-                    <div style="margin-bottom: 20px;">
-                        <label for="nom" class="field-label">Nom de la catégorie <small style="color: red;">*</small></label>
-                        <input type="text" name="nom" id="nom" value="{{ old('nom', $category->nom) }}" required 
-                               oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
-                        @error('nom') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div style="margin-bottom: 0;">
-                        <label for="description" class="field-label">Description (SEO & Info)</label>
-                        <textarea name="description" id="description" rows="5"
-                                  oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">{{ old('description', $category->description) }}</textarea>
-                    </div>
-                </div>
-
-                <div class="amazon-card">
-                    <h3 class="section-title">Architecture</h3>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div>
-                            <label for="parent_id" class="field-label">Catégorie Parente</label>
-                            <select name="parent_id" id="parent_id">
-                                <option value="">-- Racine (Niveau 1) --</option>
-                                @foreach($categoriesTree as $treeItem)
-                                    @if($treeItem->id != $category->id)
-                                        <option value="{{ $treeItem->id }}" {{ old('parent_id', $category->parent_id) == $treeItem->id ? 'selected' : '' }}>{{ $treeItem->nom }}</option>
-                                        @foreach($treeItem->enfants as $child)
-                                            @if($child->id != $category->id)
-                                                <option value="{{ $child->id }}" {{ old('parent_id', $category->parent_id) == $child->id ? 'selected' : '' }}>
-                                                    &nbsp;&nbsp;↳ {{ $child->nom }} (L2)</option>
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                @endforeach
-                            </select>
+                    <div class="amazon-card" style="margin: 0;">
+                        <h3 class="section-title">Identité Commerciale</h3>
+                        <div style="margin-bottom: 15px;">
+                            <label for="nom" class="field-label">Nom de la catégorie <small style="color: red;">*</small></label>
+                            <input type="text" name="nom" id="nom" value="{{ old('nom', $category->nom) }}" required 
+                                   oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
+                            @error('nom') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                         </div>
-
-                        <div>
-                            <label for="ordre" class="field-label">Ordre d'affichage</label>
-                            <input type="number" name="ordre" id="ordre" value="{{ old('ordre', $category->ordre) }}" min="1">
+                        <div style="margin-bottom: 0;">
+                            <label for="description" class="field-label">Description (SEO & Info)</label>
+                            <textarea name="description" id="description" rows="4"
+                                      oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">{{ old('description', $category->description) }}</textarea>
                         </div>
                     </div>
-                </div>
 
-            </div>
-
-            <!-- Right Column -->
-            <div style="display: flex; flex-direction: column; gap: 20px;">
-
-                <div id="config-section" class="amazon-card" style="display: none;">
-                    <h3 class="section-title">Configuration</h3>
-                    
-                    <div style="margin-bottom: 0;">
-                        <label for="famille" class="field-label">Famille <small style="color: red;">*</small></label>
-                        <select name="famille" id="famille">
-                            <option value="">-- Sélectionner une famille --</option>
-                            @foreach(\App\Models\Category::getFamilles() as $famille)
-                                <option value="{{ $famille }}" {{ old('famille', $category->famille) == $famille ? 'selected' : '' }}>
-                                    {{ $famille }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <p style="font-size: 0.75rem; color: #666; margin-top: 8px; font-style: italic;">Requis uniquement pour les catégories principales.</p>
+                    <div class="amazon-card" style="margin: 0; min-height: 260px;">
+                        <h3 class="section-title">Architecture</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <label for="parent_id" class="field-label">Catégorie Parente</label>
+                                <select name="parent_id" id="parent_id">
+                                    <option value="">-- Racine (Niveau 1) --</option>
+                                    @foreach($categoriesTree as $treeItem)
+                                        @if($treeItem->id != $category->id)
+                                            <option value="{{ $treeItem->id }}" {{ old('parent_id', $category->parent_id) == $treeItem->id ? 'selected' : '' }}>{{ $treeItem->nom }}</option>
+                                            @foreach($treeItem->enfants as $child)
+                                                @if($child->id != $category->id)
+                                                    <option value="{{ $child->id }}" {{ old('parent_id', $category->parent_id) == $child->id ? 'selected' : '' }}>
+                                                        &nbsp;&nbsp;↳ {{ $child->nom }} (L2)</option>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label for="ordre" class="field-label">Ordre d'affichage</label>
+                                <input type="number" name="ordre" id="ordre" value="{{ old('ordre', $category->ordre) }}" min="1">
+                            </div>
+                        </div>
                     </div>
+
                 </div>
 
-                <div class="amazon-card" style="flex: 1; display: flex; flex-direction: column;">
-                    <h3 class="section-title">Visuel & État</h3>
-
-                    <div style="margin-bottom: 25px;">
+                <!-- Right Column: Unified Card -->
+                <div class="amazon-card" style="margin: 0; display: flex; flex-direction: column;">
+                    
+                    <!-- Visual Section -->
+                    <h3 class="section-title" style="margin-bottom: 15px;">Visuel & État</h3>
+                    
+                    <div style="margin-bottom: 15px;">
                         <label class="field-label">Icône de catégorie</label>
                         <input type="hidden" name="icone" id="icone_input" value="{{ old('icone', $category->icone) }}">
-                        
-                        <div id="icon-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+                        <div id="icon-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
                             <!-- Icons dynamic logic here -->
                         </div>
                     </div>
-
-                    <div id="category-image-group" style="display: none;">
+                    <div id="category-image-group" style="display: none; margin-bottom: 15px;">
                         <label class="field-label">Image de couverture</label>
-                        
-                        <div style="border: 1px solid #adb1b8; padding: 15px; text-align: center; background: #fcfcfc; cursor: pointer; position: relative;" 
+                        <div style="border: 1px solid #adb1b8; padding: 40px 20px; text-align: center; background: #fcfcfc; cursor: pointer; position: relative;" 
                              onclick="document.getElementById('image-input').click()">
-                            
                             <div id="dropzone-content" {!! $category->image ? 'style="display:none"' : '' !!}>
-                                <i class="fas fa-camera" style="font-size: 1.5rem; color: #999; margin-bottom: 8px;"></i>
-                                <p style="font-size: 0.75rem; color: #555; margin: 0; font-weight: 600;">CHANGER L'IMAGE</p>
+                                <i class="fas fa-camera" style="font-size: 2rem; color: #999; margin-bottom: 10px;"></i>
+                                <p style="font-size: 0.8rem; color: #555; margin: 0; font-weight: 600;">CHANGER L'IMAGE DE COUVERTURE</p>
                             </div>
-                            <img id="preview-img" src="{{ $category->image }}" style="{{ $category->image ? 'display: inline-block;' : 'display: none;' }} max-width: 100%; max-height: 120px; object-fit: contain; margin-top: 5px;">
+                            <img id="preview-img" src="{{ $category->image }}" style="{{ $category->image ? 'display: inline-block;' : 'display: none;' }} max-width: 100%; max-height: 180px; object-fit: contain; margin-top: 5px;">
                         </div>
                         <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="previewImage(this)">
                     </div>
 
-                    <div style="margin-top: auto; padding-top: 30px; display: grid; gap: 10px;">
-                        <button type="submit" class="btn-amazon-primary" style="font-weight: 700;">
-                            ENREGISTRER LES MODIFICATIONS
+                    <!-- Configuration Section (Conditional visibility via JS) -->
+                    <div id="config-section" style="display: none; border-top: 1px solid #e7e7e7; padding-top: 15px; margin-top: 5px;">
+                        <h3 class="section-title" style="margin-bottom: 15px;">Configuration</h3>
+                        <div style="margin-bottom: 0;">
+                            <label for="famille" class="field-label">Famille <small style="color: red;">*</small></label>
+                            <select name="famille" id="famille">
+                                <option value="">-- Sélectionner une famille --</option>
+                                @foreach(\App\Models\Category::getFamilles() as $famille)
+                                    <option value="{{ $famille }}" {{ old('famille', $category->famille) == $famille ? 'selected' : '' }}>
+                                        {{ $famille }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Status Section -->
+                    <div style="border-top: 1px solid #e7e7e7; padding-top: 20px; margin-top: 20px; margin-bottom: 20px;">
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="actif" value="1" {{ $category->actif ? 'checked' : '' }}>
+                            <span class="checkmark"></span>
+                            <span style="font-weight: 700;">Activer cette catégorie</span>
+                        </label>
+                        <p style="font-size: 0.75rem; color: #555; margin-left: 24px; margin-top: 4px;">
+                            Si décoché, cette catégorie et ses sous-catégories ne seront plus visibles sur le site.
+                        </p>
+                    </div>
+
+                    <!-- Actions Row (Inside Container) -->
+                    <div style="border-top: 1px solid #e7e7e7; padding-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                        <button type="submit" class="btn-amazon-primary" style="width: 100%; font-weight: 700; margin: 0; padding: 12px 0;">
+                            ENREGISTRER
                         </button>
-                        <a href="{{ route('admin.categories.l1') }}" class="btn-amazon-secondary">
+                        <a href="{{ route('admin.categories.l1') }}" class="btn-amazon-secondary" style="width: 100%; margin: 0; padding: 12px 0;">
                             ANNULER
                         </a>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
-    </form>
+
+
+        </form>
+    </div>
 </div>
 
 @push('scripts')

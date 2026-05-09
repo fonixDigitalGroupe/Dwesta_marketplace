@@ -137,10 +137,12 @@
             this.removeLogoFlag = true;
             this.isCustomLogo = false;
             this.$refs.logoInput.value = '';
-        }
     }" style="max-width: 1200px; margin: 0 auto;">
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    @include('admin.partials.settings-tabs')
+
+    <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; padding: 25px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Configuration Générale</h1>
         <a href="{{ route('admin.dashboard') }}" class="btn-amazon-secondary">
             <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour au tableau de bord
@@ -326,5 +328,32 @@
 
         </div>
     </form>
+    </div>
 </div>
+@push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/24.5.0/js/intlTelInput.min.js" defer></script>
+<script>
+    window.initPhoneField = function(el) {
+        if (!el || el.dataset.itiInit) return;
+        
+        const doInit = () => {
+            if (window.intlTelInput) {
+                window.intlTelInput(el, {
+                    initialCountry: 'sn',
+                    separateDialCode: true,
+                    dropdownContainer: document.body,
+                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/24.5.0/js/utils.js"
+                });
+                el.dataset.itiInit = 'true';
+            }
+        };
+
+        if (window.intlTelInput) {
+            doInit();
+        } else {
+            document.addEventListener('DOMContentLoaded', doInit);
+        }
+    };
+</script>
+@endpush
 @endsection

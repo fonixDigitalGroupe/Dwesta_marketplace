@@ -4,152 +4,219 @@
 
 @push('styles')
 <style>
+    html, body {
+        background-color: white;
+    }
+
+    /* Hide number input spinners */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
     /* Global Shop Styles */
     .shop-container {
-        max-width: 1200px;
+        background-color: white;
+        max-width: none;
         margin: 0 auto;
-        padding: 0 1rem 3rem;
+        padding: 0 0 4rem 0;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     /* Header / Banner Area */
-    .shop-header {
+    .shop-header-container {
         position: relative;
-        margin-bottom: 3rem;
-        background: white;
-        border-radius: 0 0 12px 12px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        overflow: hidden;
+        margin-bottom: 0; /* Reduced as card is now sticky and adds its own space */
+        width: 100%;
     }
 
     .shop-banner {
-        height: 300px;
-        background-color: #eee;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-    }
-    
-    .shop-banner::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 100px;
-        background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+        height: 240px;
+        background-color: #fff;
+        background-size: cover; /* Back to cover for full width as requested */
+        background-position: center 20%; /* Prioritize top for the text */
+        width: 100%;
     }
 
-    .shop-info-bar {
-        position: relative;
-        padding: 20px 30px;
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        margin-top: -80px; /* Overlap banner */
-        z-index: 10;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-
-    .shop-identity {
-        display: flex;
-        align-items: flex-end;
-        gap: 20px;
-    }
-
-    .shop-logo {
-        width: 160px;
-        height: 160px;
+    /* Floating identity card */
+    .shop-identity-card {
+        position: sticky;
+        top: 0px; /* Adjust if the main site header is also sticky */
+        margin: -60px auto 0 auto; /* Negative margin to overlap banner */
+        width: 100%;
+        max-width: 1250px; /* Increased from 1150px */
         background: white;
-        border-radius: 12px;
-        border: 4px solid white;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        object-fit: cover;
-        flex-shrink: 0;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+        padding: 15px 30px;
+        display: flex;
+        align-items: center;
+        z-index: 1000;
+        gap: 25px;
+        border: 1px solid #eee;
+        transition: all 0.3s ease;
     }
 
-    .shop-logo-placeholder {
-        width: 160px;
-        height: 160px;
-        background: #f5f5f5;
-        border-radius: 12px;
-        border: 4px solid white;
+    .shop-logo-box {
+        width: 80px;
+        height: 80px;
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 3rem;
-        font-weight: bold;
-        color: #ddd;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        padding: 5px;
+        flex-shrink: 0;
     }
 
-    .shop-text {
-        padding-bottom: 10px;
-        color: white;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Shadow for banner overlap */
+    .shop-logo-box img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
     }
 
-    .shop-name {
-        font-size: 2rem;
-        font-weight: 800;
-        margin: 0 0 5px 0;
-        line-height: 1.2;
-    }
-
-    .shop-badges {
+    .shop-meta-info {
+        flex: 1;
         display: flex;
-        gap: 10px;
+        flex-direction: column;
+        gap: 4px;
     }
 
-    .badge {
-        font-size: 0.75rem;
-        padding: 4px 10px;
-        border-radius: 50px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .badge-verified {
-        background: #e3f2fd;
-        color: #1565c0;
+    .shop-name-row {
         display: flex;
         align-items: center;
-        gap: 5px;
-        text-shadow: none;
-    }
-
-    .badge-pro {
-        background: #f3e5f5;
-        color: #7b1fa2;
-        text-shadow: none;
-    }
-
-    .shop-actions {
-        padding-bottom: 10px;
-        display: flex;
         gap: 10px;
     }
 
-    .btn-contact {
-        background: {{ $pagePro->couleur_primaire ?? '#333' }};
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
+    .shop-name-text {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: #1a1a1a;
+    }
+
+    .tag-pro {
+        background: #fff;
+        color: #666;
+        font-size: 9px;
+        font-weight: 800;
+        padding: 2px 6px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        text-transform: uppercase;
+    }
+
+    .shop-stats-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    .shop-rating-stars { color: #ffc107; font-size: 0.8rem; }
+    
+    .mentions-legales {
+        font-size: 0.75rem;
+        color: #004aad; /* Professional blue as requested */
+        text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        text-decoration: none;
-        transition: opacity 0.2s;
-        text-shadow: none;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        gap: 4px;
+        margin-top: 5px;
+        transition: color 0.2s;
     }
 
-    .btn-contact:hover { opacity: 0.9; }
+    .mentions-legales:hover {
+        color: #004aad;
+        text-decoration: underline;
+    }
+
+    /* Internal Search Bar */
+    .shop-search-container {
+        width: 350px;
+        position: relative;
+    }
+
+    .shop-search-input {
+        width: 100%;
+        padding: 10px 15px 10px 40px;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        background: #fbfbfb;
+        outline: none;
+    }
+
+    .shop-search-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+    }
+
+    /* Layout structure */
+    .shop-layout {
+        margin-top: 0;
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 0; 
+        border-top: 1px solid #eee;
+        padding-bottom: 0;
+    }
+
+    /* Main Content Area Styling */
+    .shop-info-section {
+        background: transparent;
+        border: none;
+        padding: 10px 40px;
+        margin-bottom: 0;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .shop-breadcrumb {
+        font-size: 0.75rem;
+        color: #999;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+    }
+
+    .shop-breadcrumb a { color: #999; text-decoration: none; }
+    .shop-breadcrumb a:hover { text-decoration: underline; }
+
+    .shop-title-main {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #000;
+        margin-bottom: 12px;
+        letter-spacing: -0.5px;
+    }
+
+    .shop-description-text {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: #666;
+        max-width: 850px;
+        margin-bottom: 5px;
+    }
+
+    .voir-plus-link {
+        font-weight: 700;
+        color: #333;
+        text-decoration: underline;
+        margin-left: 5px;
+        cursor: pointer;
+    }
+
+
 
     /* Fix text color when not overlapping banner for responsiveness if wrapped */
     @media (max-width: 768px) {
@@ -184,35 +251,186 @@
         }
     }
 
-    /* Main Content Layout */
-    .shop-grid {
-        display: grid;
-        grid-template-columns: 280px 1fr;
-        gap: 30px;
-    }
 
-    /* Sidebar Styles */
+
+    /* Sidebar Styling Refinement */
     .shop-sidebar {
-        align-self: start;
+        border-right: 1px solid #eeeeee;
+        padding: 0;
+        background: #fff;
     }
 
-    .sidebar-block {
-        background: white;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        padding: 20px;
-        margin-bottom: 20px;
+    .sidebar-section {
+        padding: 15px 20px;
+        border-bottom: 1px solid #eeeeee;
     }
 
-    .sidebar-title {
-        font-size: 1rem;
-        font-weight: 700;
-        margin-bottom: 15px;
+    .sidebar-section:last-child { border-bottom: none; }
+
+    .sidebar-header {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #000;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+    }
+
+    .sidebar-subtitle {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #000;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .category-list, .status-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .category-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-decoration: none;
         color: #333;
-        border-bottom: 2px solid {{ $pagePro->couleur_primaire ?? '#f0f0f0' }};
-        padding-bottom: 10px;
-        display: inline-block;
+        font-size: 0.95rem;
     }
+
+    .category-item.parent {
+        font-weight: 700;
+        color: #000;
+    }
+
+    .category-item.child {
+        padding-left: 15px;
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .category-item:hover { color: {{ $pagePro->couleur_primaire ?? '#004aad' }}; text-decoration: underline; }
+    .category-item.active { color: {{ $pagePro->couleur_primaire ?? '#004aad' }}; font-weight: 800; text-decoration: underline; }
+
+    /* Custom Checkbox Color */
+    input[type="checkbox"] {
+        accent-color: {{ $pagePro->couleur_primaire ?? '#004aad' }};
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-menu li a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        color: #333;
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: all 0.2s;
+    }
+
+    .sidebar-menu li a:hover {
+        color: #000;
+        font-weight: 700;
+    }
+
+    .sidebar-menu li a.active {
+        color: #000;
+        font-weight: 800;
+    }
+
+    .filter-count {
+        color: #999;
+        font-size: 0.75rem;
+        font-weight: 400;
+    }
+
+    /* Price Filter Rakuten Style */
+    .price-filter-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .price-input-box {
+        position: relative;
+        flex: 1;
+    }
+
+    .price-input-box input {
+        width: 100%;
+        padding: 8px 22px 8px 8px;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        outline: none;
+        box-sizing: border-box;
+        background: #f9f9f9;
+    }
+
+    .price-currency {
+        position: absolute;
+        right: 7px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-weight: 500;
+        font-size: 0.7rem;
+        color: #aaa;
+        letter-spacing: 0.5px;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    .btn-price-ok {
+        background: #004aad; /* Bleu Header */
+        color: #fff;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn-price-ok:hover {
+        background: #003a8a;
+    }
+
+    /* Checkbox list (Shipping & Reviews) */
+    .status-list { list-style: none; padding: 0; margin: 0; }
+    .filter-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 8px;
+        font-size: 0.85rem;
+        color: #333;
+        cursor: pointer;
+    }
+
+    .filter-item input {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        accent-color: #004aad;
+    }
+
+    .star-rating {
+        color: #f5a623;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+    }
+
 
     .category-list {
         list-style: none;
@@ -252,82 +470,202 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #eee;
+        padding: 12px 40px;
+        background: white;
+        border-top: 1px solid #eeeeee;
+        border-bottom: 1px solid #eeeeee;
     }
 
-    .products-count { font-size: 1.1rem; color: #666; }
-    
+    .products-header-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .products-header-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+    }
+
+    .view-icons {
+        display: flex;
+        gap: 10px;
+        color: #aaa;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+    .view-icons i.active, .view-icons i:hover { color: #333; }
+
+    .view-divider {
+        width: 1px;
+        height: 18px;
+        background: #ddd;
+    }
+
+    .products-count { font-size: 0.9rem; color: #555; }
+    .products-count strong { color: #000; font-weight: 700; }
+
     .sort-select {
         border: 1px solid #ddd;
         border-radius: 4px;
-        padding: 5px 10px;
-        color: #555;
+        padding: 6px 30px 6px 12px;
+        color: #333;
+        font-size: 0.88rem;
         outline: none;
+        appearance: none;
+        min-width: 180px;
+        background: #ffffff; /* Fond blanc */
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .sort-select:hover {
+        background: #e8e8e8;
+        border-color: #ccc;
+    }
+
+    .sort-about-link {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 4px;
+    }
+
+    .sort-about-link a {
+        color: #004aad; /* Bleu Header */
+        text-decoration: underline;
+        font-weight: 600;
+    }
+
+    .sort-about-link a:hover {
+        color: #003a8a;
+    }
+
+
+    .products-count { font-size: 1.1rem; color: #666; }
+    
+    .view-icons {
+        display: flex;
+        gap: 15px;
+        color: #666;
+        font-size: 1.1rem;
     }
 
     .products-grid-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 20px;
+        grid-template-columns: repeat(4, 1fr);
+        background: #fff;
+        border-top: 1px solid #eeeeee;
     }
 
     .product-card {
         background: white;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: transform 0.2s, box-shadow 0.2s;
+        padding: 20px;
         text-decoration: none;
         color: inherit;
         display: flex;
         flex-direction: column;
+        min-height: 480px;
+        border-right: 1px solid #eeeeee;
+        border-bottom: 1px solid #eeeeee;
+        position: relative;
     }
 
     .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        border-color: #ddd;
+        z-index: 1 !important;
+        box-shadow: none !important;
     }
-
+    
     .product-image-container {
-        height: 200px;
-        background: #f9f9f9;
-        position: relative;
-        overflow: hidden;
+        height: 220px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .product-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
     }
 
     .product-info {
-        padding: 15px;
-        flex-grow: 1;
         display: flex;
         flex-direction: column;
+        gap: 3px;
+        flex-grow: 1;
     }
 
     .product-title {
-        font-size: 0.95rem;
-        font-weight: 500;
-        margin-bottom: 5px;
+        font-size: 1rem;
+        font-weight: 800;
         color: #333;
-        line-height: 1.4;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        line-height: 1.3;
+        margin-bottom: 0;
     }
 
-    .product-price {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #bf0000;
+    .product-subtitle {
+        font-size: 0.8rem;
+        color: #777;
+    }
+
+    .review-stars {
+        color: #f5a623;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        margin: 2px 0;
+    }
+
+    .review-count {
+        color: #007185;
+        font-size: 0.8rem;
+        margin-left: 5px;
+        text-decoration: none;
+    }
+
+    .product-price-row {
+        margin: 5px 0;
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+    }
+
+    .product-price-value {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #ff9900;
+    }
+
+    .product-status {
+        font-size: 0.85rem;
+        color: #000;
+        font-weight: 800;
+        margin-left: 5px;
+    }
+
+    .btn-voir-produit {
         margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 15px;
+        border: 1px solid #333;
+        color: #000;
+        font-weight: 700;
+        font-size: 0.85rem;
+        border-radius: 4px;
+        transition: background 0.2s;
+        text-decoration: none;
+        background: #fff;
+    }
+
+    .btn-voir-produit:hover {
+        background: #f9f9f9;
     }
 
     /* About Section (Bottom) */
@@ -352,173 +690,498 @@
         border-bottom: 1px solid #f0f0f0;
         padding-bottom: 8px;
     }
-    .star-rating { color: #fbc02d; font-size: 0.9rem; }
-    
+    /* Pagination Refinement */
+    .custom-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 80px;
+        margin-top: 0;
+        padding-top: 40px;
+        padding-bottom: 30px;
+        border-top: 1px solid #dfdfdf;
+        border-bottom: 1px solid #dfdfdf;
+        background: white;
+    }
+
+    .page-numbers {
+        display: flex;
+        gap: 20px;
+    }
+
+    .page-link-custom {
+        text-decoration: none;
+        color: #777;
+        font-weight: 500;
+        font-size: 1.1rem;
+        padding-bottom: 5px;
+        position: relative;
+    }
+
+    .page-link-custom.active {
+        color: #000;
+        font-weight: 800;
+    }
+
+    .page-link-custom.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #000;
+    }
+
+    .pagination-next-btn {
+        background: #000;
+        color: white;
+        text-decoration: none;
+        padding: 12px 25px;
+        font-weight: 700;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: background 0.2s;
+    }
+
+    .pagination-next-btn:hover {
+        background: #222;
+    }
+
+    .pagination-next-btn.disabled {
+        background: #f5f5f5;
+        color: #ccc;
+        cursor: not-allowed;
+        pointer-events: none;
+        border: 1px solid #eee;
+    }
 </style>
 @endpush
 
 @section('content')
 <div class="shop-container">
     
-    <!-- Banner & Header -->
-    <header class="shop-header">
+    <!-- Banner Section -->
+    <div class="shop-header-container">
         <div class="shop-banner" style="{{ $pagePro->banniere ? 'background-image: url('.Storage::url($pagePro->banniere).')' : '' }}"></div>
-        
-        <div class="shop-info-bar">
-            <div class="shop-identity">
-                @if($pagePro->logo)
-                    <img src="{{ Storage::url($pagePro->logo) }}" class="shop-logo" alt="Logo">
-                @else
-                    <div class="shop-logo-placeholder">
-                        {{ substr($pagePro->vendeur->identite, 0, 1) }}
-                    </div>
-                @endif
+    </div>
 
-                <div class="shop-text">
-                    <h1 class="shop-name">{{ $pagePro->vendeur->identite }}</h1>
-                    <div class="shop-badges">
-                        @if($pagePro->vendeur->estVerifie())
-                            <span class="badge badge-verified">
-                                <svg width="12" height="12" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                                Vérifié
-                            </span>
-                        @endif
-                        @if($pagePro->vendeur->estProfessionnel())
-                            <span class="badge badge-pro">PRO</span>
-                        @endif
-                    </div>
-                </div>
-            </div>
-
-            <div class="shop-actions">
-                <a href="{{ route('conversations.create', ['recipient_id' => $pagePro->vendeur->user->id]) }}" class="btn-contact">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    Contacter le vendeur
-                </a>
-            </div>
+    <!-- Sticky Identity Card (Moved outside for persistent scroll) -->
+    <div class="shop-identity-card">
+        <div class="shop-logo-box">
+            @if($pagePro->logo)
+                <img src="{{ Storage::url($pagePro->logo) }}" alt="Logo">
+            @else
+                <i class="fas fa-store" style="font-size: 2rem; color: #eee;"></i>
+            @endif
         </div>
-    </header>
+
+        <div class="shop-meta-info">
+            <div class="shop-name-row">
+                <span class="shop-name-text">{{ $pagePro->nom_boutique ?? $pagePro->vendeur->identite }}</span>
+                <span class="tag-pro">PRO</span>
+            </div>
+            <div class="shop-stats-row">
+                <span class="shop-rating-stars"><i class="fas fa-star"></i> {{ number_format($boutique_rating, 1, ',', '') }}/5</span>
+                <span>sur {{ number_format($boutique_sales, 0, ',', ' ') }} {{ $boutique_sales > 1 ? 'ventes' : 'vente' }}</span>
+            </div>
+            <a href="#" class="mentions-legales">
+                <i class="fas fa-info-circle"></i> Mentions légales
+            </a>
+        </div>
+
+        <form action="{{ route('page-pro.show', $pagePro->slug) }}" method="GET" class="shop-search-container">
+            <i class="fas fa-search shop-search-icon" onclick="this.parentElement.submit()" style="cursor:pointer;"></i>
+            <input type="text" name="q" class="shop-search-input" value="{{ request('q') }}" placeholder="Rechercher chez {{ $pagePro->nom_boutique ?? $pagePro->vendeur->identite }}">
+        </form>
+    </div>
 
     <!-- Main Content Layout -->
-    <div class="shop-grid">
+    <div class="shop-layout">
         
         <!-- Sidebar -->
         <aside class="shop-sidebar">
-            <!-- Contact Info Block -->
-            <div class="sidebar-block">
-                <h3 class="sidebar-title">Contact</h3>
-                @if($pagePro->telephone_contact)
-                    <div class="contact-info-item">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                        <span>{{ $pagePro->telephone_contact }}</span>
-                    </div>
-                @endif
-                @if($pagePro->email_contact)
-                    <div class="contact-info-item">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        <span class="text-truncate">{{ $pagePro->email_contact }}</span>
-                    </div>
-                @endif
-                @if($pagePro->site_web)
-                    <div class="contact-info-item">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
-                        <a href="{{ $pagePro->site_web }}" target="_blank">Visiter le site web</a>
-                    </div>
-                @endif
-            </div>
-
+            
             <!-- Categories Block -->
-            <div class="sidebar-block">
-                <h3 class="sidebar-title">Catégories</h3>
-                <ul class="category-list">
-                    <li><a href="?category=" class="{{ !request('category') ? 'active' : '' }}">Toutes les catégories</a></li>
-                    @foreach($annonces->pluck('categorie')->unique('id') as $cat)
-                        @if($cat)
-                            <li><a href="?category={{ $cat->id }}" class="{{ request('category') == $cat->id ? 'active' : '' }}">{{ $cat->nom }}</a></li>
-                        @endif
+            <div class="sidebar-section">
+                <div class="sidebar-header">Catégories</div>
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="{{ route('page-pro.show', $pagePro->slug) }}" class="{{ is_null($active_category) ? 'active' : '' }}">
+                            <span>Tous les produits</span>
+                            <span class="filter-count">+ {{ number_format($pagePro->vendeur->annonces()->where('statut', 'publiee')->count(), 0, ',', ' ') }}</span>
+                        </a>
+                    </li>
+                    @foreach($vendeur_categories as $cat)
+                        @php
+                            $isLevel3 = $cat->parent && $cat->parent->parent_id !== null;
+                            $isActive = $active_category == $cat->id;
+                        @endphp
+                        <li style="{{ $isLevel3 ? 'margin-left: 15px;' : '' }}">
+                            <a href="?category={{ $cat->id }}&sort={{ request('sort', 'latest') }}" class="{{ $isActive ? 'active' : '' }}">
+                                <span>{{ $cat->nom }}</span>
+                                <span class="filter-count">+ {{ number_format($cat->annonces_count, 0, ',', ' ') }}</span>
+                            </a>
+                        </li>
                     @endforeach
                 </ul>
             </div>
 
-            <!-- Reviews Summary Block -->
-            @if($avis->count() > 0)
-            <div class="sidebar-block">
-                <h3 class="sidebar-title">Avis Clients</h3>
-                <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px;">
-                    <span style="font-size: 2rem; font-weight: 800; color: #333;">4.8</span>
-                    <span class="star-rating">★★★★★</span>
-                </div>
-                <div style="font-size: 0.9rem; color: #666;">{{ $avis->count() }} avis vérifiés</div>
+            <!-- Filtres -->
+            <div class="sidebar-section">
+                <div class="sidebar-header">Filtres</div>
                 
-                <div class="reviews-mini">
-                    @foreach($avis->take(3) as $a)
-                        <div class="review-item">
-                            <div style="display: flex; justify-content: space-between;">
-                                <strong>{{ $a->user->prenom }}</strong>
-                                <span class="star-rating" style="font-size: 0.7rem;">{{ str_repeat('★', $a->note) }}</span>
-                            </div>
-                            <div style="font-style: italic; margin-top: 2px;">"{{ Str::limit($a->commentaire, 50) }}"</div>
+                <!-- Prix -->
+                <div style="margin-bottom: 20px;">
+                    <div class="sidebar-subtitle">Prix (FCFA)</div>
+                    <div class="price-filter-row">
+                        <div class="price-input-box">
+                            <input type="number" id="price_min" placeholder="Min" value="{{ request('price_min') }}">
+                            <span class="price-currency">CFA</span>
                         </div>
+                        <span style="color: #999;">-</span>
+                        <div class="price-input-box">
+                            <input type="number" id="price_max" placeholder="Max" value="{{ request('price_max') }}">
+                            <span class="price-currency">CFA</span>
+                        </div>
+                        <button class="btn-price-ok" onclick="applyPriceFilter()">Ok</button>
+                    </div>
+                </div>
+
+                <!-- Shipping Options -->
+                <div style="margin-bottom: 20px;">
+                    <div class="sidebar-subtitle">Options d'expédition</div>
+                    <label class="filter-item">
+                        <input type="checkbox"> <span>Livraison gratuite</span>
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox"> <span>Livraison rapide</span>
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" checked> 
+                        <span>Expédié par <span style="font-weight:900; color:#000;">Kar</span><span style="font-weight:900; color:#bf0000;">nou</span></span>
+                    </label>
+                </div>
+
+                <!-- Avis client -->
+                <div style="margin-bottom: 20px;">
+                    <div class="sidebar-subtitle">Avis client</div>
+                    @foreach([4 => 4, 3 => 3, 2 => 2, 1 => 1] as $seuil)
+                    <div class="status-item-wrap" style="margin-bottom: 8px;">
+                        <label class="filter-item" style="margin-bottom: 0;">
+                            <input type="checkbox" class="rating-checkbox" {{ request('rating') == $seuil ? 'checked' : '' }}>
+                            <div class="star-rating">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <i class="{{ $i <= $seuil ? 'fas fa-star' : 'far fa-star' }}"></i>
+                                @endfor
+                            </div>
+                            <span style="font-size: 0.85rem; color: #555;">& plus</span>
+                            <span class="filter-count" style="margin-left: auto;">{{ $avis_stats[$seuil] ?? 0 }}</span>
+                        </label>
+                    </div>
                     @endforeach
                 </div>
+
+                <!-- État -->
+                <div style="margin-bottom: 20px;">
+                    <div class="sidebar-subtitle">État</div>
+                    @foreach(['neuf' => 'Neuf', 'reconditionne' => 'Reconditionné', 'occasion' => 'Occasion'] as $val => $label)
+                    <label class="filter-item">
+                        <input type="checkbox" class="etat-checkbox" data-val="{{ $val }}" {{ request('etat') == $val ? 'checked' : '' }}>
+                        <span>{{ $label }}</span>
+                    </label>
+                    @endforeach
+                </div>
+
+                @if($category_filters->count() > 0)
+                <!-- Critères dynamiques -->
+                <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+                    <div class="sidebar-header" style="margin-bottom: 15px;">Critères</div>
+                    @foreach($category_filters as $filter)
+                    <div style="margin-bottom: 15px;">
+                        <span class="sidebar-subtitle" style="font-size: 0.7rem; color: #666;">{{ $filter->nom }}</span>
+                        @if(is_array($filter->options))
+                            @foreach($filter->options as $option)
+                            <label class="filter-item">
+                                <input type="checkbox" class="filter-checkbox" 
+                                       data-filter-id="{{ $filter->id }}" 
+                                       data-val="{{ $option }}"
+                                       {{ (request()->has('filters.'.$filter->id) && request('filters')[$filter->id] == $option) ? 'checked' : '' }}>
+                                <span>{{ $option }}</span>
+                            </label>
+                            @endforeach
+                        @endif
+                    </div>
+                    @endforeach
+                </div>
+                @endif
             </div>
-            @endif
+
         </aside>
 
-        <!-- Product Grid Area -->
-        <main>
-            <!-- About Description (Mobile only or Top) -->
-            @if($pagePro->description)
-                <div class="about-section" style="margin-top: 0; margin-bottom: 30px;">
-                    <h3 style="font-weight: 700; margin-bottom: 10px; font-size: 1.1rem;">À propos</h3>
-                    <p style="color: #555; line-height: 1.6;">{{ $pagePro->description }}</p>
-                </div>
-            @endif
+        <!-- Main Content Area -->
+        <main class="shop-main">
+            
+            <!-- Boutique Identity Section -->
+            <section class="shop-info-section">
 
-            <div class="products-header">
-                <div class="products-count">
-                    <strong>{{ $annonces->total() }}</strong> produits disponibles
+                @if($active_category_obj)
+                    {{-- MODE CATÉGORIE : arborescence + titre catégorie --}}
+                    <div class="shop-breadcrumb">
+                        <a href="{{ route('page-pro.show', $pagePro->slug) }}" style="font-weight:700; color:#666;">
+                            {{ $pagePro->nom_boutique ?? $pagePro->vendeur->identite }}
+                        </a>
+                        <span style="color:#ccc;">&gt;</span>
+                        {{-- Parent de la catégorie s'il existe --}}
+                        @if($active_category_obj->parent)
+                            <a href="?category={{ $active_category_obj->parent->id }}">{{ $active_category_obj->parent->nom }}</a>
+                            <span style="color:#ccc;">&gt;</span>
+                        @endif
+                        <a href="?category={{ $active_category_obj->id }}" style="color:#1a1a1a; font-weight:600;">
+                            {{ $active_category_obj->nom }}
+                        </a>
+                    </div>
+
+                    <h1 class="shop-title-main">{{ $active_category_obj->nom }}</h1>
+
+                @elseif(request()->filled('q'))
+                    {{-- MODE RECHERCHE : breadcrumb spécifique sans description --}}
+                    <div class="shop-breadcrumb">
+                        <a href="{{ route('page-pro.show', $pagePro->slug) }}" style="font-weight:700; color:#666;">
+                            {{ $pagePro->nom_boutique ?? $pagePro->vendeur->identite }}
+                        </a>
+                        <span style="color:#ccc;">&gt;</span>
+                        <span style="color:#1a1a1a; font-weight:600;">Résultats pour "{{ request('q') }}"</span>
+                    </div>
+
+                    <h1 class="shop-title-main">Recherche : "{{ request('q') }}"</h1>
+
+                @else
+                    {{-- MODE TOUS LES PRODUITS : breadcrumb simple + description boutiqu --}}
+                    <div class="shop-breadcrumb">
+                        <a href="{{ route('page-pro.show', $pagePro->slug) }}" style="font-weight:700; color:#666;">
+                            {{ $pagePro->nom_boutique ?? $pagePro->vendeur->identite }}
+                        </a>
+                        <span style="color:#ccc;">&gt;</span>
+                        <a href="#">Tous les produits</a>
+                    </div>
+
+                    <h1 class="shop-title-main">{{ $pagePro->nom_boutique ?? $pagePro->vendeur->identite }}</h1>
+
+                    <div class="shop-description-text">
+                        {{ Str::limit($pagePro->description, 250) }}
+                        @if(strlen($pagePro->description) > 250)
+                            <span class="voir-plus-link">Voir plus</span>
+                        @endif
+                    </div>
+                @endif
+
+            </section>
+
+            <!-- Products List -->
+            <div class="products-section">
+                <div class="products-header">
+                    <!-- Left: count -->
+                    <div class="products-header-left">
+                        <div class="products-count">
+                            <strong>{{ $annonces->total() }}</strong> résultats
+                        </div>
+                    </div>
+
+                    <!-- Right: Sort dropdown + about link -->
+                    <div class="products-header-right">
+                        <div style="position:relative;">
+                            <select onchange="window.location.href=this.value" class="sort-select">
+                                <option value="?sort=latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Meilleures ventes</option>
+                                <option value="?sort=price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Prix croissant</option>
+                                <option value="?sort=price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Prix décroissant</option>
+                                <option value="?sort=newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Nouveautés</option>
+                            </select>
+                            <i class="fas fa-chevron-down" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); font-size:0.65rem; color:#999; pointer-events:none;"></i>
+                        </div>
+                        <div class="sort-about-link">A propos de <a href="#">«&nbsp;Meilleures ventes&nbsp;»</a></div>
+                    </div>
                 </div>
-                <div>
-                    <select onchange="window.location.href=this.value" class="sort-select">
-                        <option value="?sort=latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Nouveautés</option>
-                        <option value="?sort=price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Prix croissant</option>
-                        <option value="?sort=price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Prix décroissant</option>
-                    </select>
-                </div>
+
+                @if($annonces->count() > 0)
+                    <div class="products-grid-container">
+                        @foreach($annonces as $annonce)
+                            <a href="{{ route('annonces.show', $annonce->slug) }}" class="product-card">
+                                <div class="product-image-container">
+                                    @if($annonce->photoPrincipale())
+                                        <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" class="product-image" alt="{{ $annonce->titre }}">
+                                    @else
+                                        <i class="fas fa-image fa-4x" style="color:#f0f0f0;"></i>
+                                    @endif
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-title">{{ $annonce->titre }}</h3>
+                                    
+                                    <div class="product-price-row">
+                                        @if($annonce->should_show_etat)
+                                            <span class="product-status" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
+                                            <span style="color: #666; font-size: 0.85rem; margin: 0 2px;">dès</span>
+                                        @endif
+                                        <span class="product-price-value">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                    </div>
+
+                                    <div class="review-stars">
+                                        @php
+                                            $moyenneNote = $annonce->note_moyenne;
+                                            $nbAvis = $annonce->nombre_avis;
+                                        @endphp
+                                        
+                                        @for($i = 1; $i <= 5; $i++)
+                                            @if($i <= floor($moyenneNote))
+                                                <i class="fas fa-star"></i>
+                                            @elseif($i == ceil($moyenneNote) && ($moyenneNote - floor($moyenneNote)) >= 0.5)
+                                                <i class="fas fa-star-half-alt"></i>
+                                            @else
+                                                <i class="far fa-star"></i>
+                                            @endif
+                                        @endfor
+                                        <span class="review-count">({{ $nbAvis }})</span>
+                                    </div>
+
+                                    @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
+                                        <div style="font-size: 0.78rem; color: #666; margin-bottom: 10px;">
+                                            par <span style="color: #333;">{{ $annonce->vendeur->identite }}</span> <span class="tag-pro" style="margin-left: 2px;">PRO</span>
+                                        </div>
+                                    @endif
+
+                                    <div class="btn-voir-produit">
+                                        <span>{{ $annonce->label_voir_bouton }}</span>
+                                        <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                    <div class="custom-pagination">
+                        <div class="page-numbers">
+                            @for ($i = 1; $i <= $annonces->lastPage(); $i++)
+                                <a href="{{ $annonces->url($i) }}" class="page-link-custom {{ $annonces->currentPage() == $i ? 'active' : '' }}">
+                                    {{ $i }}
+                                </a>
+                            @endfor
+                        </div>
+                        <a href="{{ $annonces->nextPageUrl() ?? '#' }}" class="pagination-next-btn {{ !$annonces->hasMorePages() ? 'disabled' : '' }}">
+                            Suivant <i class="fas fa-chevron-right" style="font-size: 0.8rem;"></i>
+                        </a>
+                    </div>
+                @else
+                    <div style="text-align: center; padding: 100px 20px; background: white; border: 1px solid #eee; border-radius: 12px;">
+                        <i class="fas fa-box-open" style="font-size: 3rem; color: #eee; margin-bottom: 20px;"></i>
+                        <h3 style="font-weight: 600; font-size: 1.2rem; color: #1a1a1a;">Aucun produit disponible</h3>
+                        <p style="color: #666;">Ce vendeur n'a pas encore ajouté de produits dans cette section.</p>
+                    </div>
+                @endif
             </div>
 
-            @if($annonces->count() > 0)
-                <div class="products-grid-container">
-                    @foreach($annonces as $annonce)
-                        <a href="{{ route('annonces.show', $annonce->slug) }}" class="product-card">
-                            <div class="product-image-container">
-                                @if($annonce->photoPrincipale())
-                                    <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" class="product-image" alt="{{ $annonce->titre }}">
-                                @else
-                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #aaa;">
-                                        Sans image
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="product-info">
-                                <h3 class="product-title">{{ $annonce->titre }}</h3>
-                                <div class="product-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</div>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-                <div style="margin-top: 40px;">
-                    {{ $annonces->links() }}
-                </div>
-            @else
-                <div style="text-align: center; padding: 60px; background: white; border: 1px solid #eee; border-radius: 8px;">
-                    <svg style="width: 64px; height: 64px; margin: 0 auto 20px; color: #ddd;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
-                    <h3 style="font-weight: 600; font-size: 1.2rem; color: #333;">Aucun produit trouvé</h3>
-                    <p style="color: #777;">Cette boutique n'a pas encore mis de produits en ligne dans cette catégorie.</p>
-                </div>
-            @endif
         </main>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function applyPriceFilter() {
+    const min = document.getElementById('price_min').value.trim();
+    const max = document.getElementById('price_max').value.trim();
+
+    // Construire l'URL en conservant les paramètres existants
+    const params = new URLSearchParams(window.location.search);
+    
+    if (min !== '') params.set('price_min', min);
+    else params.delete('price_min');
+    
+    if (max !== '') params.set('price_max', max);
+    else params.delete('price_max');
+
+    // Revenir à la première page
+    params.delete('page');
+
+    window.location.href = window.location.pathname + '?' + params.toString();
+}
+
+// Permettre la touche Entrée dans les champs de prix
+document.addEventListener('DOMContentLoaded', function() {
+    ['price_min', 'price_max'].forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') applyPriceFilter();
+        });
+    });
+
+    // Filtrage par note via les checkboxes
+    document.querySelectorAll('.rating-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const allCheckboxes = document.querySelectorAll('.rating-checkbox');
+            
+            // Décocher les autres
+            allCheckboxes.forEach(cb => { if (cb !== this) cb.checked = false; });
+
+            const params = new URLSearchParams(window.location.search);
+            params.delete('page');
+
+            if (this.checked) {
+                // Trouver la note associée (position dans la liste : 4, 3, 2, 1)
+                const items = Array.from(allCheckboxes);
+                const index = items.indexOf(this);
+                const notes = [4, 3, 2, 1];
+                params.set('rating', notes[index]);
+            } else {
+                params.delete('rating');
+            }
+
+            window.location.href = window.location.pathname + '?' + params.toString();
+        });
+    });
+
+    // Filtrage par état (Neuf / Reconditionné / Occasion)
+    document.querySelectorAll('.etat-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            // Décocher les autres
+            document.querySelectorAll('.etat-checkbox').forEach(cb => {
+                if (cb !== this) cb.checked = false;
+            });
+
+            const params = new URLSearchParams(window.location.search);
+            params.delete('page');
+
+            if (this.checked) {
+                params.set('etat', this.dataset.val);
+            } else {
+                params.delete('etat');
+            }
+
+            window.location.href = window.location.pathname + '?' + params.toString();
+        });
+    });
+
+    // Filtrage par critères (dynamiques)
+    document.querySelectorAll('.filter-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const filterId = this.dataset.filterId;
+            // Décocher les autres pour le MÊME filtre
+            document.querySelectorAll(`.filter-checkbox[data-filter-id="${filterId}"]`).forEach(cb => {
+                if (cb !== this) cb.checked = false;
+            });
+
+            const params = new URLSearchParams(window.location.search);
+            params.delete('page');
+
+            if (this.checked) {
+                params.set(`filters[${filterId}]`, this.dataset.val);
+            } else {
+                params.delete(`filters[${filterId}]`);
+            }
+
+            window.location.href = window.location.pathname + '?' + params.toString();
+        });
+    });
+});
+</script>
+@endpush

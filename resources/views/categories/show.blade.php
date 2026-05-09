@@ -390,10 +390,12 @@
                         </div>
                         <div class="n1-top-info">
                             <h3 class="n1-top-item-title">{{ $annonce->titre }}</h3>
-                            <div class="n1-top-price-row">
-                                <span class="n1-top-price-state">{{ $annonce->produit && $annonce->produit->etat == 'occasion' ? 'Occasions dès' : 'Neufs dès' }}</span>
-                                <span class="n1-top-price-val">{{ number_format($annonce->prix, 0, ',', ' ') }} €</span>
-                            </div>
+                                <div class="n1-top-price-row">
+                                    @if($annonce->should_show_etat)
+                                        <span class="n1-top-price-state" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat == 'occasion' ? 'Occasions dès' : ($annonce->etat == 'reconditionne' ? 'Reconditionnés dès' : 'Neufs dès') }}</span>
+                                    @endif
+                                    <span class="n1-top-price-val" style="font-weight: 800;">{{ number_format($annonce->prix, 0, ',', ' ') }} €</span>
+                                </div>
                             
                             <div class="n1-top-rating">
                                 <div class="n1-top-stars">
@@ -574,7 +576,9 @@
                                     <div class="n1-merchant-deals-info">
                                         <div class="n1-v2-price-row">
                                             <span class="n1-v2-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
-                                            <span class="n1-v2-state">{{ $annonce->produit ? ucfirst($annonce->produit->etat) : 'Neuf' }}</span>
+                                            @if($annonce->should_show_etat)
+                                                <span class="n1-v2-state" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
+                                            @endif
                                         </div>
                                         <div class="n1-v2-merchant-row">
                                             <span class="n1-v2-shop-name">Par {{ $annonce->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}</span>
@@ -675,7 +679,9 @@
                                             <div class="n1-merchant-deals-info">
                                                 <div class="n1-v2-price-row">
                                                     <span class="n1-v2-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
-                                                    <span class="n1-v2-state">{{ $annonce->produit ? ucfirst($annonce->produit->etat) : 'Neuf' }}</span>
+                                                    @if($annonce->should_show_etat)
+                                                        <span class="n1-v2-state" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
+                                                    @endif
                                                 </div>
                                                 <div class="n1-v2-merchant-row">
                                                     <span class="n1-v2-shop-name">Par {{ $annonce->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}</span>
@@ -734,11 +740,13 @@
                                     </div>
 
                                     <div class="card-price-state">
-                                        <span class="price-val">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
-                                        <span class="state-sep">·</span>
-                                        <span class="state-label">
-                                            {{ $annonce->etat_libelle }}
-                                        </span>
+                                        <span class="price-val" style="font-weight: 800;">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                        @if($annonce->should_show_etat)
+                                            <span class="state-sep">·</span>
+                                            <span class="state-label" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">
+                                                {{ $annonce->etat_libelle }}
+                                            </span>
+                                        @endif
                                     </div>
 
                                     @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
@@ -752,7 +760,7 @@
                                     @endif
 
                                     <div class="card-actions">
-                                        <span class="btn-see-product">Voir le produit <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+                                        <span class="btn-see-product">{{ $annonce->label_voir_bouton }} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
                                     </div>
                                 </div>
                             </a>
@@ -896,8 +904,8 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        color: #bf0000;
-        font-weight: 700;
+        color: #000;
+        font-weight: 800; /* Plus gras */
         font-size: 16px;
     }
     .n1-v2-merchant-row {
@@ -1394,12 +1402,12 @@
     .price-val {
         font-size: 1.15rem;
         font-weight: 800;
-        color: #db0001;
+        color: #000;
     }
 
     .state-sep {
         font-weight: bold;
-        color: #db0001;
+        color: #000;
     }
 
     .state-label {

@@ -13,23 +13,35 @@ class HighlightController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Highlight::with(['highlightTab', 'highlightTab.highlights'])
+        $tabs = HighlightTab::orderBy('position')->pluck('name', 'id')->toArray();
+
+        // Par défaut : rediriger vers le premier onglet
+        if (!$request->filled('tab') && !empty($tabs)) {
+            $firstTabId = array_key_first($tabs);
+            return redirect()->route('admin.highlights.index', array_merge(
+                $request->except('tab'),
+                ['tab' => $firstTabId]
+            ));
+        }
+
+        $query = Highlight::with(['highlightTab'])
             ->join('highlight_tabs', 'highlights.highlight_tab_id', '=', 'highlight_tabs.id');
 
         if ($request->filled('search')) {
             $query->where(function($q) use ($request) {
                 $q->where('highlights.title', 'like', '%' . $request->search . '%')
-                  ->orWhere('highlights.subtitle', 'like', '%' . $request->search . '%')
-                  ->orWhere('highlight_tabs.name', 'like', '%' . $request->search . '%');
+                  ->orWhere('highlights.subtitle', 'like', '%' . $request->search . '%');
             });
         }
 
-        $highlights = $query->orderBy('highlight_tabs.position')
-            ->orderBy('highlights.position')
+        if ($request->filled('tab')) {
+            $query->where('highlights.highlight_tab_id', $request->tab);
+        }
+
+        $highlights = $query->orderBy('highlights.position')
             ->select('highlights.*')
-            ->paginate($request->get('per_page', 10));
-        
-        $tabs = HighlightTab::orderBy('position')->pluck('name', 'id')->toArray();
+            ->paginate($request->get('per_page', 10))
+            ->withQueryString();
 
         return view('admin.highlights.index', compact('highlights', 'tabs'));
     }

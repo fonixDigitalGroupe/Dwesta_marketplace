@@ -3,22 +3,35 @@
     <div class="footer-reinsurance">
         <div class="footer-container">
             <div class="reinsurance-grid">
+                <!-- Choix -->
                 <div class="reinsurance-item">
-                    <img src="https://image.rakuten.co.jp/rakuten/gold/img/footer/icon_choice.png" alt="Le choix" class="reinsurance-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1170/1170577.png'">
+                    <div class="reinsurance-icon-box">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
                     <div class="reinsurance-text">
                         <span class="reinsurance-label">Le choix</span>
                         <span class="reinsurance-value">Neuf et occasion</span>
                     </div>
                 </div>
+
+
+
+                <!-- Sécurité -->
                 <div class="reinsurance-item">
-                    <img src="https://image.rakuten.co.jp/rakuten/gold/img/footer/icon_security.png" alt="La sécurité" class="reinsurance-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1067/1067555.png'">
+                    <div class="reinsurance-icon-box">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
                     <div class="reinsurance-text">
                         <span class="reinsurance-label">La sécurité</span>
                         <span class="reinsurance-value">Satisfait ou remboursé</span>
                     </div>
                 </div>
+
+                <!-- Service Client -->
                 <div class="reinsurance-item">
-                    <img src="https://image.rakuten.co.jp/rakuten/gold/img/footer/icon_service.png" alt="Le service clients" class="reinsurance-icon" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1041/1041916.png'">
+                    <div class="reinsurance-icon-box">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
                     <div class="reinsurance-text">
                         <span class="reinsurance-label">Le service clients</span>
                         <span class="reinsurance-value">À votre écoute</span>
@@ -56,6 +69,8 @@
                         <li><a href="#">Politique Vie privée</a></li>
                         <li><a href="#">Gestion des cookies</a></li>
                         <li><a href="#">A propos de Karnou</a></li>
+                        <li><a href="#">Agence</a></li>
+                        <li><a href="#">Logistique</a></li>
                     </ul>
                 </div>
             </div>
@@ -95,7 +110,7 @@
     /* Section 1: Réassurance */
     .footer-reinsurance {
         background: #fff;
-        padding: 2.5rem 0;
+        padding: 1.5rem 0;
         border-bottom: 2.5px solid #f2f2f2;
     }
 
@@ -118,17 +133,27 @@
     }
 
     .club-r-mini-logo {
-        font-size: 1.5rem;
-        font-weight: 400;
-        color: #000;
+        font-size: 1.8rem;
+        font-weight: 500;
+        color: #666;
+        letter-spacing: -1px;
     }
     .club-r-mini-logo .r-letter {
         font-weight: 800;
         background: #000;
         color: #fff;
-        padding: 0 4px;
+        padding: 0 5px;
         border-radius: 4px;
         margin-left: 2px;
+    }
+
+    .reinsurance-icon-box {
+        font-size: 2.2rem;
+        color: #666;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 50px;
     }
 
     .reinsurance-text {
@@ -138,19 +163,21 @@
 
     .reinsurance-label {
         font-size: 0.75rem;
-        color: #777;
+        color: #999;
         margin-bottom: 2px;
+        font-weight: 500;
     }
 
     .reinsurance-value {
-        font-size: 1rem;
-        font-weight: 900;
-        color: #000;
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #444;
         white-space: nowrap;
     }
 
     /* Section 2: Liens du footer */
     .footer-main {
+        background: #f9f9f9;
         padding: 5rem 0;
     }
 
@@ -192,8 +219,9 @@
 
     /* Section 3: Social & Paiement */
     .footer-bottom {
+        background: #fff;
         padding: 2.5rem 0 5rem;
-        border-top: 1px solid #f2f2f2;
+        border-top: 1px solid #eee;
     }
 
     .footer-bottom-flex {

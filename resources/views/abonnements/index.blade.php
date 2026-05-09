@@ -192,30 +192,22 @@
     }
 
     /* Override breadcrumb to match clean look */
-    .breadcrumb {
-        font-size: 0.85rem;
-        color: #888;
-        margin-bottom: 1.5rem;
-    }
-    .breadcrumb a { color: #555; text-decoration: none; }
-    .breadcrumb a:hover { color: #ef6c00; }
-</style>
+    </style>
 @endpush
 
 @section('content')
-    <div class="breadcrumb">
-        <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('profile.show') }}">Mon Compte</a> > <span>Mes abonnements</span>
-    </div>
 
     <div class="dashboard-container">
         @include('partials.profile-sidebar')
 
         <main class="main-content">
             <div class="subscription-container">
-                <h1 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem;">Mes abonnements</h1>
-                <p style="color: #666; margin-bottom: 2rem; font-size: 0.95rem;">
-                    Boostez votre activité en choisissant le forfait qui vous correspond.
-                </p>
+                <div style="display: flex; flex-direction: column; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+                    <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Mes abonnements</h1>
+                    <p style="color: #888; margin: 4px 0 0 0; font-size: 0.85rem;">
+                        Boostez votre activité en choisissant le forfait qui vous correspond.
+                    </p>
+                </div>
 
                 @if(session('success'))
                     <div style="background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #c8e6c9;">

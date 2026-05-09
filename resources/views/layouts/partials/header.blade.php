@@ -151,27 +151,7 @@
                         </div>
                     @endauth
 
-                        @auth
-                        @php $favCount = auth()->user()->favorites()->count(); @endphp
-                        <a href="{{ route('favorites.index') }}" class="header-link" title="Mes Favoris" style="position: relative;">
-                            <svg width="24" height="24" fill="{{ $favCount > 0 ? '#bf0000' : 'none' }}" stroke="{{ $favCount > 0 ? '#bf0000' : 'currentColor' }}" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                </path>
-                            </svg>
-                            @if($favCount > 0)
-                                <span style="position: absolute; top: -8px; right: -8px; background: #bf0000; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white;">{{ $favCount }}</span>
-                            @endif
-                        </a>
-                        @else
-                        <a href="{{ route('login') }}" class="header-link" title="Mes Favoris">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                                </path>
-                            </svg>
-                        </a>
-                        @endauth
+
 
                     @inject('cartService', 'App\Services\CartService')
                     <a href="{{ route('cart.index') }}" class="header-link" title="Mon Panier" style="position: relative;">
@@ -256,13 +236,13 @@
                 <!-- Right Pane: Hierarchical Content -->
                 <div x-show="selectedCategory" x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                style="flex: 1; overflow-y: auto; padding: 40px; background: #fff; border-left: 1px solid #eee;">
+                style="flex: 1; overflow-y: auto; padding: 0 40px; background: #fff; border-left: 1px solid #eee;">
                     @foreach($cats as $cat)
                         <div x-show="selectedCategory === {{ $cat->id }}" style="display: flex; gap: 60px;">
                             <!-- Hierarchical Groups -->
                         <div style="flex: 1; display: flex; flex-direction: column; gap: 0;">
                             @foreach($cat->enfantsActifs()->with('enfantsActifs')->get() as $sousCat)
-                                <div style="display: flex; border-bottom: 1px solid #eee; padding: 20px 0;">
+                                <div style="display: flex; border-bottom: 1px solid #eee; padding: 10px 0;">
                                     <!-- Level 2 Header -->
                                     <div style="width: 250px; padding-right: 30px;">
                                         <h3

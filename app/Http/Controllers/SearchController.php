@@ -14,7 +14,7 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Annonce::publiees()->with(['photos', 'category', 'vendeur.user', 'options', 'produit', 'vehicule']);
+        $query = Annonce::publiees()->with(['photos', 'category', 'vendeur.user', 'vendeur.professionnel', 'options', 'produit', 'vehicule', 'avisApprouves']);
         $category = null;
 
         // Recherche textuelle intelligente
@@ -64,7 +64,13 @@ class SearchController extends Controller
         // Filtre par état (si applicable au type produit)
         if ($request->filled('etat')) {
             $etats = is_array($request->etat) ? $request->etat : [$request->etat];
-            $query->whereIn('etat', $etats);
+            $query->where(function($q) use ($etats) {
+                $q->whereHas('produit', function($sq) use ($etats) {
+                    $sq->whereIn('etat', $etats);
+                })->orWhereHas('vehicule', function($sq) use ($etats) {
+                    $sq->whereIn('etat', $etats);
+                });
+            });
         }
 
         // Filtres Spécifiques Immobilier
@@ -117,6 +123,19 @@ class SearchController extends Controller
         if ($request->has('promo') || $request->has('promotion')) {
             $query->enPromotion();
         }
+        
+        // Filtres Dynamiques (Attributs/Critères)
+        if ($request->filled('f') && is_array($request->f)) {
+            foreach ($request->f as $filterSlug => $values) {
+                if (!empty($values)) {
+                    $query->whereHas('filteredAttributes', function($q) use ($filterSlug, $values) {
+                        $q->whereHas('filter', function($sq) use ($filterSlug) {
+                            $sq->where('slug', $filterSlug);
+                        })->whereIn('valeur', is_array($values) ? $values : [$values]);
+                    });
+                }
+            }
+        }
 
         // Tri
         $sort = $request->get('sort', 'relevance');
@@ -130,6 +149,9 @@ class SearchController extends Controller
             case 'newest':
                 $query->orderBy('publiee_le', 'desc');
                 break;
+            case 'vues_desc':
+                $query->orderBy('vues', 'desc');
+                break;
             default:
                 // Priorité : 1) Sponsorisé (À la une) | 2) Vendeurs pro | 3) Vues
                 $query
@@ -141,7 +163,7 @@ class SearchController extends Controller
                 break;
         }
 
-        $annonces = $query->paginate(24)->withQueryString();
+        $annonces = $query->paginate(20)->withQueryString();
 
         // Tentative de trouver le "vrai mot" (Correction intelligente du titre)
         $bestMatch = $searchTerm;
@@ -166,10 +188,55 @@ class SearchController extends Controller
             }
         }
         
-        // Données pour la sidebar de filtres
-        $categories = Category::whereNull('parent_id')->with('enfantsActifs')->get();
+        // Détection de la catégorie "active" pour la sidebar
+        $activeCategory = $category;
+        // Ne pas forcer la catégorie en fonction du 1er résultat s'il s'agit d'une recherche globale ou d'un tri global (Top des produits)
+        if (!$activeCategory && $annonces->total() > 0 && !request('q') && request('sort') !== 'vues_desc') {
+            // Conservation du comportement uniquement pour les autres cas potentiels
+            $activeCategory = $annonces->first()->category;
+        }
+
+        // Données pour la sidebar de filtres (Logique de tunnel de catégorie)
+        $sidebarCategories = collect();
+        $sidebarParent = null;
+
+        if ($activeCategory) {
+            if ($activeCategory->parent_id === null) {
+                // Si c'est une catégorie racine (Niveau 1)
+                $sidebarParent = $activeCategory;
+                $sidebarCategories = $activeCategory->enfantsActifs;
+            } else {
+                // Si c'est une catégorie de Niveau 2 ou 3
+                $sidebarParent = $activeCategory->parent;
+                $sidebarCategories = $sidebarParent->enfantsActifs;
+            }
+        } else {
+            // Aucune catégorie détectée : on affiche les racines
+            $sidebarCategories = Category::whereNull('parent_id')->actives()->get();
+        }
+
+        // Calcul des comptes réels par catégorie pour la sidebar
+        foreach ($sidebarCategories as $sideCat) {
+            $sideCat->real_count = (clone $query)->whereIn('categorie_id', $sideCat->descendantsAndSelf()->pluck('id'))->count();
+        }
         
-        return view('search.index', compact('annonces', 'categories', 'category', 'bestMatch'));
+        // Calcul des comptes pour la sidebar (États)
+        $countsEtats = [
+            'neuf' => (clone $query)->where(function($q) {
+                $q->whereHas('produit', fn($sq) => $sq->where('etat', 'neuf'))
+                  ->orWhereHas('vehicule', fn($sq) => $sq->where('etat', 'neuf'));
+            })->count(),
+            'occasion' => (clone $query)->where(function($q) {
+                $q->whereHas('produit', fn($sq) => $sq->where('etat', 'occasion'))
+                  ->orWhereHas('vehicule', fn($sq) => $sq->where('etat', 'occasion'));
+            })->count(),
+            'reconditionne' => (clone $query)->where(function($q) {
+                $q->whereHas('produit', fn($sq) => $sq->where('etat', 'reconditionne'))
+                  ->orWhereHas('vehicule', fn($sq) => $sq->where('etat', 'reconditionne'));
+            })->count(),
+        ];
+
+        return view('search.index', compact('annonces', 'sidebarCategories', 'sidebarParent', 'category', 'activeCategory', 'bestMatch', 'countsEtats'));
     }
 
     /**

@@ -16,8 +16,10 @@
 
 @section('content')
     <div style="max-width: 100%;">
+        @include('admin.partials.settings-tabs')
+
         <!-- Main Conteneur style Amazon Card -->
-        <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
+        <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
@@ -108,16 +110,6 @@
                                        Modifier
                                     </a>
                                     <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.abonnements.toggle-status', $abonnement) }}" method="POST" style="display:inline;">
-                                        @csrf @method('PATCH')
-                                        <button type="submit" 
-                                                style="background: none; border: none; color: #0066c0; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                                onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
-                                                onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
-                                            {{ $abonnement->actif ? 'Suspendre' : 'Activer' }}
-                                        </button>
-                                    </form>
-                                    <span style="color: #ddd;">|</span>
                                     <form id="delete-form-{{ $abonnement->id }}" action="{{ route('admin.abonnements.destroy', $abonnement) }}" method="POST" style="display:inline;">
                                         @csrf @method('DELETE')
                                         <button type="button" onclick="confirmDelete({{ $abonnement->id }})" 
@@ -171,45 +163,4 @@
     </div>
 
     @push('scripts')
-    <script>
-        function confirmDelete(id) {
-            Swal.fire({
-                title: 'Êtes-vous sûr ?',
-                text: "Cette action est irréversible !",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e67e00',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Oui, supprimer !',
-                cancelButtonText: 'Annuler',
-                borderRadius: '8px'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + id).submit();
-                }
-            })
-        }
-
-        function confirmSuspend(id, isActive) {
-            const actionText = isActive ? 'suspendre' : 'activer';
-            const actionColor = isActive ? '#ea580c' : '#16a34a';
-            
-            Swal.fire({
-                title: 'Êtes-vous sûr ?',
-                text: `Voulez-vous vraiment ${actionText} ce pack d'abonnement ?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: actionColor,
-                cancelButtonColor: '#64748b',
-                confirmButtonText: `Oui, ${actionText} !`,
-                cancelButtonText: 'Annuler',
-                borderRadius: '8px'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('suspend-form-' + id).submit();
-                }
-            })
-        }
-    </script>
-    @endpush
 @endsection

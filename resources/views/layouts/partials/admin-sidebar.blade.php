@@ -60,25 +60,13 @@
 
         <div class="sidebar-separator"></div>
 
-        <div class="sidebar-section" x-data="{ openParams: {{ request()->routeIs('admin.categories.*', 'admin.filters.*', 'admin.users.*', 'admin.settings.*', 'admin.credits.*', 'admin.abonnements.*') ? 'true' : 'false' }} }">
+        <div class="sidebar-section">
             <ul class="sidebar-menu">
                 <li>
-                    <a href="javascript:void(0)" @click="openParams = !openParams" style="display: flex; align-items: center; justify-content: space-between;">
-                        <span style="display: flex; align-items: center; gap: 12px;">
-                            <i class="fas fa-cog"></i>
-                            <span>Paramètres</span>
-                        </span>
-                        <i class="fas fa-chevron-down" style="font-size: 0.6rem; transition: transform 0.2s;" :style="openParams ? 'transform: rotate(180deg)' : ''"></i>
+                    <a href="{{ route('admin.categories.l1') }}" class="{{ request()->routeIs('admin.categories.*', 'admin.filters.*', 'admin.users.*', 'admin.settings.*', 'admin.credits.*', 'admin.abonnements.*', 'admin.roles.*') ? 'active' : '' }}">
+                        <i class="fas fa-cog"></i>
+                        <span>Paramètres</span>
                     </a>
-                    <ul class="sidebar-submenu" x-show="openParams" x-cloak>
-                        <li><a href="{{ route('admin.categories.l1') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}"><i class="fas fa-sitemap"></i> Catégories</a></li>
-                        <li><a href="{{ route('admin.filters.index') }}" class="{{ request()->routeIs('admin.filters.*') ? 'active' : '' }}"><i class="fas fa-filter"></i> Filtres</a></li>
-                        <li><a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.index') && !request()->has('role') ? 'active' : '' }}"><i class="fas fa-users"></i> Utilisateurs</a></li>
-                        <li><a href="{{ route('admin.settings.index') }}" class="{{ request()->routeIs('admin.settings.index') ? 'active' : '' }}"><i class="fas fa-tools"></i> Configuration</a></li>
-                        <li><a href="{{ route('admin.credits.packs') }}" class="{{ request()->routeIs('admin.credits.packs*') ? 'active' : '' }}"><i class="fas fa-coins"></i> Crédits</a></li>
-                        <li><a href="{{ route('admin.abonnements.index') }}" class="{{ request()->routeIs('admin.abonnements.*') ? 'active' : '' }}"><i class="fas fa-id-card"></i> Abonnements</a></li>
-                        <li><a href="{{ route('admin.roles.index') }}" class="{{ request()->routeIs('admin.roles.*') ? 'active' : '' }}"><i class="fas fa-shield-alt"></i> Rôles & Perms</a></li>
-                    </ul>
                 </li>
             </ul>
         </div>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Gestion des Critères de Filtrage')
+@section('title', 'Gestion des Critères')
 
 @push('styles')
 <style>
@@ -17,12 +17,14 @@
 
 @section('content')
     <div style="max-width: 100%;">
+        @include('admin.partials.settings-tabs')
+
         <!-- Main Conteneur style Amazon Card -->
-        <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
+        <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
-                    Gestion des Critères de Filtrage
+                    Gestion des Critères
                 </h1>
                 
                 <div style="display: flex; gap: 8px;">
@@ -37,55 +39,55 @@
                 </div>
             </div>
 
-            <!-- Barre de filtres grise -->
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px 20px; border-radius: 0; margin-bottom: 20px;">
-                <form action="{{ route('admin.filters.index') }}" method="GET" id="filter-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) 250px; gap: 20px; align-items: end;">
+            <!-- Sélection des catégories par niveau -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; background: #fff; padding: 15px; border: 1px solid #e7e7e7; border-radius: 4px;">
+                <div>
+                    <label class="filter-label">Niveau 1</label>
+                    <select id="l1_filter" class="filter-select" style="width: 100%;" onchange="applyFilter('l1', this.value)">
+                        <option value="">Sélectionner une catégorie L1</option>
+                        @foreach($parents as $parent)
+                            <option value="{{ $parent->id }}" {{ request('l1') == $parent->id ? 'selected' : '' }}>{{ $parent->nom }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label class="filter-label">Niveau 2</label>
+                    <select id="l2_filter" class="filter-select" style="width: 100%;" onchange="applyFilter('l2', this.value)" {{ !request('l1') ? 'disabled' : '' }}>
+                        <option value="">Sélectionner une catégorie L2</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="filter-label">Niveau 3</label>
+                    <select id="l3_filter" class="filter-select" style="width: 100%;" onchange="applyFilter('category_id', this.value)" {{ !request('l2') ? 'disabled' : '' }}>
+                        <option value="">Sélectionner une catégorie L3</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Barre de recherche simplifiée Style Amazon -->
+            <div style="background: #fbfbfc; border: 1px solid #e7e7e7; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-radius: 4px;">
+                <div style="display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #111;">
+                    <span>Afficher</span>
+                    <select onchange="window.location.href = '{{ route('admin.filters.index') }}?per_page=' + this.value + '&search={{ $search }}'" 
+                        style="padding: 4px 10px; border: 1px solid #adb1b8; border-radius: 3px; background: #fff; font-size: 0.85rem; color: #111; cursor: pointer; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                        <option value="8" {{ ($perPage ?? 8) == 8 ? 'selected' : '' }}>8</option>
+                        <option value="25" {{ ($perPage ?? 8) == 25 ? 'selected' : '' }}>25</option>
+                        <option value="50" {{ ($perPage ?? 8) == 50 ? 'selected' : '' }}>50</option>
+                        <option value="100" {{ ($perPage ?? 8) == 100 ? 'selected' : '' }}>100</option>
+                    </select>
+                    <span>résultats</span>
+                </div>
+
+                <form action="{{ route('admin.filters.index') }}" method="GET" style="display: flex; align-items: center; gap: 12px;">
                     <input type="hidden" name="per_page" value="{{ $perPage ?? 8 }}">
-                    
-                    <div>
-                        <label class="filter-label">Niveau 1</label>
-                        <select name="l1" id="l1_filter" onchange="this.form.submit()" class="filter-select" style="width: 100%;">
-                            <option value="">Toutes</option>
-                            @foreach($parents as $parent)
-                                <option value="{{ $parent->id }}" {{ request('l1') == $parent->id ? 'selected' : '' }}>{{ $parent->nom }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="filter-label">Niveau 2</label>
-                        <select name="l2" id="l2_filter" onchange="this.form.submit()" class="filter-select" style="width: 100%;" {{ !request('l1') ? 'disabled' : '' }}>
-                            <option value="">Toutes</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="filter-label">Niveau 3</label>
-                        <select name="category_id" id="l3_filter" onchange="this.form.submit()" class="filter-select" style="width: 100%;" {{ !request('l2') ? 'disabled' : '' }}>
-                            <option value="">Toutes</option>
-                        </select>
-                    </div>
-
-                    <div style="display: flex; flex-direction: column;">
-                        <label class="filter-label">Rechercher</label>
-                        <input type="text" name="search" value="{{ $search ?? '' }}" 
-                            placeholder="Nom du critère..."
-                            style="padding: 6px 12px; border: 1px solid #adb1b8; border-radius: 0; outline: none; font-size: 0.85rem;">
-                    </div>
+                    <label style="font-size: 0.85rem; color: #111; font-weight: 400;">Rechercher :</label>
+                    <input type="text" name="search" value="{{ $search ?? '' }}" 
+                        placeholder="Nom du critère..."
+                        style="width: 350px; padding: 6px 12px; border: 1px solid #adb1b8; border-radius: 3px; outline: none; font-size: 0.85rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05) inset;">
                 </form>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555; margin-bottom: 15px;">
-                <span>Afficher</span>
-                <select onchange="const form = document.getElementById('filter-form'); const input = document.createElement('input'); input.type = 'hidden'; input.name = 'per_page'; input.value = this.value; form.appendChild(input); form.submit();" 
-                    style="padding: 3px 6px; border: 1px solid #adb1b8; border-radius: 0; background: #f0f2f2; font-size: 0.8rem; color: #111; cursor: pointer; outline: none;">
-                    <option value="8" {{ ($perPage ?? 8) == 8 ? 'selected' : '' }}>8</option>
-                    <option value="25" {{ ($perPage ?? 8) == 25 ? 'selected' : '' }}>25</option>
-                    <option value="50" {{ ($perPage ?? 8) == 50 ? 'selected' : '' }}>50</option>
-                    <option value="100" {{ ($perPage ?? 8) == 100 ? 'selected' : '' }}>100</option>
-                </select>
-                <span>résultats par page</span>
-            </div>
+
 
             <!-- Table Amazon Design -->
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e7e7e7;">
@@ -94,6 +96,7 @@
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Critère</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 220px;">Catégorie</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Options de filtre</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 120px;">Statut</th>
                         <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 180px;">Actions</th>
                     </tr>
                 </thead>
@@ -119,6 +122,18 @@
                                     <span style="color: #999; font-style: italic; font-size: 0.8rem;">Aucune option définie</span>
                                 @endif
                             </td>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
+                                <form action="{{ route('admin.filters.toggle-status', $filter) }}" method="POST">
+                                    @csrf @method('PATCH')
+                                    <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0;">
+                                        @if($filter->is_filterable)
+                                            <span style="font-size: 0.75rem; color: #569b00; font-weight: 600;">Actif</span>
+                                        @else
+                                            <span style="font-size: 0.75rem; color: #c40000; font-weight: 600;">Suspendu</span>
+                                        @endif
+                                    </button>
+                                </form>
+                            </td>
                             <td style="padding: 12px 15px; text-align: right;">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
                                     <a href="{{ route('admin.filters.edit', $filter) }}" 
@@ -127,16 +142,6 @@
                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
                                        Modifier
                                     </a>
-                                    <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.filters.toggle-status', $filter) }}" method="POST" style="display:inline;">
-                                        @csrf @method('PATCH')
-                                        <button type="submit" 
-                                                style="background: none; border: none; color: #0066c0; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                                onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
-                                                onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
-                                            {{ $filter->is_filterable ? 'Désactiver' : 'Activer' }}
-                                        </button>
-                                    </form>
                                     <span style="color: #ddd;">|</span>
                                     <form id="delete-form-{{ $filter->id }}" action="{{ route('admin.filters.destroy', $filter) }}" method="POST" style="display:inline;">
                                         @csrf @method('DELETE')
@@ -152,7 +157,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
+                            <td colspan="5" style="padding: 3rem; text-align: center; color: #999; font-size: 0.85rem;">
                                 Aucun critère de filtrage trouvé.
                             </td>
                         </tr>
@@ -197,22 +202,26 @@
 
     @push('scripts')
     <script>
-        function confirmDelete(id) {
-            Swal.fire({
-                title: 'Êtes-vous sûr ?',
-                text: "Cette action est irréversible !",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e67e00',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Oui, supprimer !',
-                cancelButtonText: 'Annuler',
-                borderRadius: '0'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + id).submit();
+        function applyFilter(key, value) {
+            const url = new URL(window.location.href);
+            if (value) {
+                url.searchParams.set(key, value);
+                if (key === 'l1') {
+                    url.searchParams.delete('l2');
+                    url.searchParams.delete('category_id');
+                } else if (key === 'l2') {
+                    url.searchParams.delete('category_id');
                 }
-            })
+            } else {
+                url.searchParams.delete(key);
+                if (key === 'l1') {
+                    url.searchParams.delete('l2');
+                    url.searchParams.delete('category_id');
+                } else if (key === 'l2') {
+                    url.searchParams.delete('category_id');
+                }
+            }
+            window.location.href = url.toString();
         }
 
         document.addEventListener('DOMContentLoaded', function() {

@@ -354,11 +354,76 @@
         }
 
         /* Darker scrollbar for sidebar */
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #4b5563;
-        }
         .sidebar::-webkit-scrollbar-thumb:hover {
             background: #374151;
+        }
+
+        /* Professional Amazon-style SweetAlert */
+        .amazon-swal-popup {
+            border-radius: 0 !important;
+            padding: 1.5rem !important;
+            border: 1px solid #ddd !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+            max-width: 450px !important;
+        }
+        .amazon-swal-title {
+            font-size: 1.15rem !important;
+            font-weight: 600 !important;
+            color: #111 !important;
+            margin-bottom: 0.75rem !important;
+            padding: 0 !important;
+            text-align: left !important;
+        }
+        .amazon-swal-text {
+            font-size: 0.9rem !important;
+            color: #333 !important;
+            margin-bottom: 1.5rem !important;
+            text-align: left !important;
+        }
+        .amazon-swal-confirm {
+            background: linear-gradient(to bottom, #f7dfa5, #f0c14b) !important;
+            border: 1px solid #a88734 !important;
+            color: #111 !important;
+            padding: 8px 20px !important;
+            border-radius: 0 !important;
+            font-size: 0.85rem !important;
+            height: 31px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer;
+            box-shadow: 0 1px 0 rgba(255,255,255,.4) inset !important;
+        }
+        .amazon-swal-confirm:hover {
+            background: linear-gradient(to bottom, #f5d78e, #eeb933) !important;
+            border-color: #9c7e31 !important;
+        }
+        .amazon-swal-cancel {
+            background: linear-gradient(to bottom, #f7f8fa, #e7e9ec) !important;
+            border: 1px solid #adb1b8 !important;
+            color: #111 !important;
+            padding: 8px 20px !important;
+            border-radius: 0 !important;
+            font-size: 0.85rem !important;
+            height: 31px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer;
+            box-shadow: 0 1px 0 rgba(255,255,255,.6) inset !important;
+            margin-right: 10px !important;
+        }
+        .amazon-swal-cancel:hover {
+            background: linear-gradient(to bottom, #e7eaf0, #d8dade) !important;
+            border-color: #a2a6ac !important;
+        }
+        .swal2-actions {
+            justify-content: flex-end !important;
+            padding: 0 !important;
+            margin-top: 1rem !important;
+        }
+        .swal2-icon {
+            display: none !important; /* Hide standard icon for cleaner professional look */
         }
     </style>
     @stack('styles')
@@ -481,6 +546,42 @@
                 }, 5000);
             }
         });
+
+        // Global Professional Delete Confirmation
+        window.confirmDelete = function(param) {
+            let formId = param;
+            // If it's a number or a string that looks like an ID, prepend the prefix
+            if (!isNaN(param) && typeof param !== 'object') {
+                formId = 'delete-form-' + param;
+            }
+
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Cette action est irréversible !",
+                showCancelButton: true,
+                confirmButtonText: 'Oui, supprimer !',
+                cancelButtonText: 'Annuler',
+                reverseButtons: true,
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'amazon-swal-popup',
+                    confirmButton: 'amazon-swal-confirm',
+                    cancelButton: 'amazon-swal-cancel',
+                    title: 'amazon-swal-title',
+                    htmlContainer: 'amazon-swal-text',
+                    actions: 'amazon-swal-actions'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.getElementById(formId);
+                    if (form) {
+                        form.submit();
+                    } else {
+                        console.error('Form not found: ' + formId);
+                    }
+                }
+            });
+        };
     </script>
     @stack('scripts')
 </body>

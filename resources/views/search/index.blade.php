@@ -4,681 +4,694 @@
 
 @push('styles')
 <style>
-    .search-results-container {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 1rem;
+    :root {
+        --primary-color: #004aad;
+        --p-orange: #f0c14b;
+        --p-orange-hover: #f5d78e;
+        --p-blue: #007185;
+        --p-blue-hover: #c8f3fa;
+        --bg-gray: #f3f3f3;
+        --border-main: #D5D9D9;
+        --text-dark: #111;
+        --text-muted: #565959;
+    }
+
+    /* Hide number input spinners */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+
+    .catalog-page-container {
+        max-width: 1500px;
+        margin: 0 auto;
+        background: #fff;
+    }
+
+    .shop-layout {
         display: grid;
-        grid-template-columns: 280px 1fr;
-        gap: 2rem;
+        grid-template-columns: 240px 1fr;
+        gap: 0;
+        border-top: 1px solid #f5f5f5;
+        border-bottom: 1px solid #f5f5f5;
     }
 
-    /* Sidebar de filtres */
-    .filters-sidebar {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
-        height: fit-content;
-        position: sticky;
-        top: 1rem;
+    /* Sidebar area */
+    .sidebar-column {
+        border-right: 1px solid #eeeeee;
+        padding: 0 15px 20px 15px;
+        background: #fff;
     }
 
-    .filter-group {
-        margin-bottom: 2rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid #f0f0f0;
+    .sidebar-section {
+        margin-bottom: 5px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eeeeee;
     }
 
-    .filter-group:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-    }
-
-    .filter-title {
-        font-weight: bold;
-        font-size: 1rem;
-        margin-bottom: 1rem;
+    .sidebar-header {
+        background: #f7f7f7;
+        padding: 6px 15px;
+        font-size: 0.75rem;
+        font-weight: 800;
         color: #333;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid #eeeeee;
+        border-top: 1px solid #eeeeee;
+        margin: 0 -15px 15px -15px;
     }
 
-    .filter-list {
+    .sidebar-subtitle {
+        display: block;
+        font-weight: 800;
+        font-size: 0.75rem;
+        color: #000;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .sidebar-list {
         list-style: none;
         padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-list li {
+        margin-bottom: 8px;
+    }
+
+    .sidebar-list li a {
+        color: #444;
+        text-decoration: none;
+        font-size: 0.88rem;
+        transition: color 0.2s;
+    }
+
+    .sidebar-list li a:hover {
+        color: var(--primary-color);
+        text-decoration: underline;
+    }
+
+    .sidebar-list li a.active {
+        color: #000 !important;
+        font-weight: 800;
     }
 
     .filter-item {
-        margin-bottom: 0.5rem;
-    }
-
-    .filter-link {
-        text-decoration: none;
-        color: #666;
-        font-size: 0.9rem;
-        transition: color 0.2s;
         display: flex;
-        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+        font-size: 0.88rem;
+        color: #444;
+        cursor: pointer;
     }
 
-    .filter-link:hover, .filter-link.active {
-        color: #bf0000;
-        font-weight: 500;
+    .filter-item input {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        accent-color: var(--primary-color);
     }
 
-    .filter-count {
+    /* Price inputs stylisés */
+    .price-filter-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 5px;
+        padding-bottom: 15px;
+    }
+
+    .price-input-container {
+        position: relative;
+        flex: 1;
+    }
+
+    .price-input-container input {
+        width: 100%;
+        padding: 8px 25px 8px 10px;
+        border: 1px solid #f5f5f5;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        color: #333;
+        background: #f9f9f9;
+    }
+
+    .price-input-container .currency-symbol {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
         color: #999;
         font-size: 0.8rem;
     }
 
-    /* Grille de résultats */
+    .btn-ok {
+        background: #004aad; /* Bleu Header */
+        color: #fff;
+        border: none;
+        padding: 5px 12px;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn-ok:hover {
+        background: #003a8a;
+    }
+
+    .filter-count {
+        margin-left: auto;
+        color: #999;
+        font-size: 0.75rem;
+        font-weight: 400;
+    }
+
+    /* Main Area */
     .results-main {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
+        padding: 0;
     }
 
     .results-header {
+        padding: 15px 25px;
+        border-bottom: 1px solid #eee;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1rem;
+        background: #fff;
     }
 
     .results-count {
         font-size: 1.1rem;
-        color: #333;
+        color: #666;
+    }
+
+    .results-count strong {
+        color: #000;
+        font-weight: 700;
     }
 
     .sort-select {
-        padding: 0.5rem;
-        border: 1px solid #e0e0e0;
+        border: 1px solid #ddd;
         border-radius: 4px;
-        font-size: 0.9rem;
+        padding: 4px 30px 4px 12px;
+        color: #333;
+        font-size: 0.85rem;
         outline: none;
+        appearance: none;
+        background: #ffffff url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM5OTkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48cG9seWxpbmUgcG9pbnRzPSI2IDkgMTIgMTUgMTggOSI+PC9wb2x5bGluZT48L3N2Zz4=') no-repeat right 10px center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .sort-select:hover {
+        background-color: #e8e8e8;
+        border-color: #ccc;
     }
 
     .products-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(4, 1fr);
+        background: #fff;
+        border-top: 1px solid #eeeeee;
     }
 
     .product-card {
-        background: white;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: transform 0.2s, box-shadow 0.2s;
+        padding: 20px;
         text-decoration: none;
         color: inherit;
         display: flex;
         flex-direction: column;
+        border-right: 1px solid #f5f5f5;
+        border-bottom: 1px solid #f5f5f5;
+        transition: background 0.2s;
+        min-height: 480px;
+        background: #fff;
     }
 
     .product-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        border-color: #bf0000;
+        background: #fcfcfc;
+    }
+
+    .product-image-container {
+        height: 220px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .product-image {
-        position: relative;
-        aspect-ratio: 1;
-        background: #f9f9f9;
-    }
-
-    .product-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .product-badge {
-        position: absolute;
-        top: 0.5rem;
-        left: 0.5rem;
-        background: #bf0000;
-        color: white;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.7rem;
-        font-weight: bold;
-        text-transform: uppercase;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
     }
 
     .product-info {
-        padding: 1rem;
-        flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 3px;
+        flex-grow: 1;
     }
 
     .product-title {
         font-size: 0.95rem;
-        font-weight: 500;
-        line-height: 1.4;
+        font-weight: 800;
+        color: #333;
+        line-height: 1.3;
+        height: 2.6rem;
+        overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
-        overflow: hidden;
-        height: 2.8rem;
     }
 
-    .product-price {
+    .review-stars {
+        color: #f5a623;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        margin: 2px 0;
+    }
+
+    .review-count {
+        color: var(--p-blue);
+        font-size: 0.8rem;
+        margin-left: 5px;
+    }
+
+    .product-price-row {
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .product-price-value {
         font-size: 1.25rem;
-        font-weight: bold;
-        color: #bf0000;
+        color: #ff9900;
+        font-weight: 800; /* Prix en gras */
     }
 
-    .product-meta {
+    .product-view-btn {
+        margin-top: auto;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 0.8rem;
-        color: #999;
-    }
-
-    /* Pagination */
-    .pagination-container {
-        margin-top: 3rem;
-        display: flex;
-        justify-content: center;
-    }
-
-    /* Price Range */
-    .price-range-inputs {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-    }
-
-    .price-input {
-        width: 100%;
-        padding: 0.5rem;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
+        padding: 8px 15px;
+        border: 1px solid #333;
+        color: #000;
+        font-weight: 700;
         font-size: 0.85rem;
+        border-radius: 4px;
+        transition: background 0.2s;
+        text-decoration: none;
+        background: #fff;
     }
 
-    .apply-btn {
-        margin-top: 1rem;
-        width: 100%;
-        background: #333;
-        color: white;
-        border: none;
-        padding: 0.5rem;
-        border-radius: 4px;
-        cursor: pointer;
+    .sell-yours {
+        display: block;
+        margin-top: 10px;
+        font-size: 0.75rem;
+        color: #333;
+        text-decoration: underline;
+        text-align: left;
+    }
+
+    .product-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .tag-pro {
+        background: #fff;
+        color: #666;
+        font-size: 9px;
+        font-weight: 800;
+        padding: 2px 6px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        text-transform: uppercase;
+    }
+
+    .tag-sponsored {
+        font-size: 0.8rem;
+        color: var(--text-muted);
         font-weight: 500;
     }
 
-    .apply-btn:hover {
-        background: #000;
+    .empty-state {
+        grid-column: span 4;
+        padding: 100px 20px;
+        text-align: center;
+        color: #666;
+    }
+
+    .pagination-container {
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        border-top: 1px solid #eee;
+    }
+
+    .btn-pagination {
+        padding: 10px 30px;
+        background: #fff;
+        border: 1px solid #ddd;
+        color: #333;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 700;
+        font-size: 1rem;
+        transition: all 0.2s;
+    }
+
+    .btn-pagination:hover {
+        background: #f7f7f7;
+    }
+
+    .btn-pagination.next {
+        background: var(--primary-color);
+        color: #fff;
+        border: none;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .btn-pagination.next:hover {
+        opacity: 0.9;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+        .products-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 900px) {
+        .shop-layout { grid-template-columns: 1fr; }
+        .sidebar-column { display: none; }
+        .products-grid { grid-template-columns: repeat(2, 1fr); }
     }
 </style>
 @endpush
 
 @section('content')
 <div class="catalog-page-container">
-    <div class="catalog-layout">
+    <div class="shop-layout">
         <!-- Sidebar -->
-        <div class="catalog-sidebar-column">
-            @include('partials.catalog-sidebar')
-        </div>
+        <aside class="sidebar-column">
+            <!-- Categories -->
+            <div class="sidebar-section" style="padding-bottom: 0; border-bottom: none; margin-bottom: 0;">
+                <div class="sidebar-header">Catégories</div>
+                <ul class="sidebar-list">
+                    @if(!$sidebarParent)
+                        <li><a href="{{ route('search.index', ['q' => request('q')]) }}" class="{{ !request('category') ? 'active' : '' }}">Toutes catégories</a></li>
+                    @else
+                        <li style="margin-bottom: 15px;">
+                            <a href="{{ request()->fullUrlWithQuery(['category' => $sidebarParent->slug]) }}" style="font-weight: 800; color: #000; display: flex; align-items: center; gap: 5px; text-decoration: none;">
+                                <i class="fas fa-chevron-left" style="font-size: 0.7rem; color: #999;"></i> {{ $sidebarParent->nom }}
+                            </a>
+                        </li>
+                    @endif
 
-        <!-- Main Content -->
-        <main class="catalog-main-column">
-            <div class="catalog-breadcrumbs">
-                <a href="{{ route('home') }}">Accueil</a>
-                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin: 0 4px; opacity: 0.4;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
-                <span style="font-weight: 700; color: #000;">Recherche</span>
+                    @foreach($sidebarCategories as $cat)
+                        <li style="{{ $sidebarParent ? 'margin-left: 15px;' : '' }}">
+                            <a href="{{ request()->fullUrlWithQuery(['category' => $cat->slug]) }}" 
+                               class="{{ ($category && $category->slug == $cat->slug) || (!$category && $activeCategory && $activeCategory->id == $cat->id) ? 'active' : '' }}"
+                               style="{{ ($category && $category->slug == $cat->slug) || (!$category && $activeCategory && $activeCategory->id == $cat->id) ? 'font-weight: 800; color: #000;' : '' }} display: flex; justify-content: space-between; align-items: center;">
+                                <span>{{ $cat->nom }}</span>
+                                <span class="filter-count">+ {{ number_format($cat->real_count, 0, ',', ' ') }}</span>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
 
-            <div class="catalog-header">
-                <h1 class="header-title">
-                    @if(isset($bestMatch))
-                        {{ $bestMatch }}
-                    @elseif(request('q'))
-                        {{ request('q') }}
+            <!-- Filtres -->
+            <form action="{{ request()->url() }}" method="GET" id="filter-form">
+                @if(request('q')) <input type="hidden" name="q" value="{{ request('q') }}"> @endif
+                @if(request('category')) <input type="hidden" name="category" value="{{ request('category') }}"> @endif
+                
+
+                
+                <!-- Filtres -->
+                <div class="sidebar-header" style="margin-bottom: 5px;">Filtres</div>
+
+                @php
+                    $hideEtat = ($activeCategory && ($activeCategory->famille === 'Services' || $activeCategory->famille === 'Immobilier'));
+                @endphp
+
+                <!-- Etat -->
+                @if(!$hideEtat)
+                <div class="sidebar-section">
+                    <div class="sidebar-subtitle">État</div>
+                    <label class="filter-item">
+                        <input type="checkbox" name="etat[]" value="neuf" @if(is_array(request('etat')) && in_array('neuf', request('etat'))) checked @endif onchange="this.form.submit()">
+                        Neuf <span class="filter-count">+ {{ number_format($countsEtats['neuf'] ?? 0, 0, ',', ' ') }}</span>
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" name="etat[]" value="reconditionne" @if(is_array(request('etat')) && in_array('reconditionne', request('etat'))) checked @endif onchange="this.form.submit()">
+                        Reconditionné <span class="filter-count">+ {{ number_format($countsEtats['reconditionne'] ?? 0, 0, ',', ' ') }}</span>
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" name="etat[]" value="occasion" @if(is_array(request('etat')) && in_array('occasion', request('etat'))) checked @endif onchange="this.form.submit()">
+                        Occasion <span class="filter-count">+ {{ number_format($countsEtats['occasion'] ?? 0, 0, ',', ' ') }}</span>
+                    </label>
+                </div>
+                @endif
+
+                <!-- Prix -->
+                <div class="sidebar-section">
+                    <div class="sidebar-subtitle">Prix (FCFA)</div>
+                    <div class="price-filter-row">
+                        <div class="price-input-container">
+                            <input type="number" name="min_prix" placeholder="Min" value="{{ request('min_prix') }}">
+                            <span class="currency-symbol">CFA</span>
+                        </div>
+                        <span style="color: #999;">-</span>
+                        <div class="price-input-container">
+                            <input type="number" name="max_prix" placeholder="Max" value="{{ request('max_prix') }}">
+                            <span class="currency-symbol">CFA</span>
+                        </div>
+                        <button type="submit" class="btn-ok">Ok</button>
+                    </div>
+                </div>
+
+                <!-- Expédition -->
+                @if(!$hideEtat)
+                <div class="sidebar-section">
+                    <div class="sidebar-subtitle">Option d'expédition</div>
+                    <label class="filter-item">
+                        <input type="checkbox" name="shipping[]" value="free" @if(is_array(request('shipping')) && in_array('free', request('shipping'))) checked @endif onchange="this.form.submit()">
+                        Livraison gratuite
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" name="shipping[]" value="express" @if(is_array(request('shipping')) && in_array('express', request('shipping'))) checked @endif onchange="this.form.submit()">
+                        Livraison rapide
+                    </label>
+                </div>
+                @endif
+
+                <!-- Avis client -->
+                <div class="sidebar-section">
+                    <div class="sidebar-title">Avis client</div>
+                    @for($i = 4; $i >= 1; $i--)
+                        <label class="filter-item" style="cursor: pointer;">
+                            <input type="checkbox" name="rating[]" value="{{ $i }}" @if(is_array(request('rating')) && in_array($i, request('rating'))) checked @endif onchange="this.form.submit()">
+                            <div class="review-stars" style="margin: 0; font-size: 0.8rem;">
+                                @for($j = 1; $j <= 5; $j++)
+                                    <i class="{{ $j <= $i ? 'fas fa-star' : 'far fa-star' }}"></i>
+                                @endfor
+                            </div>
+                            <span style="font-size: 0.85rem; color: #555;">& plus</span>
+                        </label>
+                    @endfor
+                </div>
+
+                {{-- Critères spécifiques à la catégorie (Niveau 3) --}}
+                @if($category && $category->filters->count() > 0)
+                    <div class="sidebar-section">
+                        <div class="sidebar-title">Critères</div>
+                        @foreach($category->filters as $filter)
+                            @if($filter->is_filterable)
+                                <div style="margin-bottom: 15px; padding: 0 5px;">
+                                    <div style="font-size: 0.75rem; font-weight: 800; color: #000; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">
+                                        {{ $filter->nom }}
+                                    </div>
+                                    @if(in_array($filter->type, ['select', 'radio', 'checkbox']))
+                                        @php $options = is_array($filter->options) ? $filter->options : explode(',', $filter->options); @endphp
+                                        @foreach($options as $option)
+                                            <label class="filter-item" style="margin-bottom: 6px;">
+                                                <input type="checkbox" name="f[{{ $filter->slug }}][]" value="{{ trim($option) }}" 
+                                                    @if(is_array(request("f.{$filter->slug}")) && in_array(trim($option), request("f.{$filter->slug}"))) checked @endif 
+                                                    onchange="this.form.submit()">
+                                                <span style="font-size: 0.9rem; color: #444;">{{ trim($option) }}</span>
+                                            </label>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                @endif
+            </form>
+        </aside>
+
+        <!-- Main Results -->
+        <main class="results-main">
+            <!-- Breadcrumbs / Top header -->
+            <div style="padding: 15px 25px 0 25px; font-size: 0.75rem; color: #555;">
+                <a href="{{ route('home') }}" style="color: inherit; text-decoration: none;">Accueil</a>
+                <span style="margin: 0 5px;">></span>
+                @if(request('sort') === 'vues_desc' && !request('q'))
+                    <span style="color: #111; font-weight: 500;">Produits les plus consultés</span>
+                @elseif($category)
+                    @if($category->parent)
+                        <a href="{{ request()->fullUrlWithQuery(['category' => $category->parent->slug]) }}" style="color: inherit; text-decoration: none;">{{ $category->parent->nom }}</a>
+                        <span style="margin: 0 5px;">></span>
+                    @endif
+                    <span style="color: #111; font-weight: 500;">{{ $category->nom }}</span>
+                @else
+                    <span style="color: #111; font-weight: 500;">Recherche</span>
+                @endif
+            </div>
+
+            <div style="padding: 10px 25px 20px 25px;">
+                <h1 style="font-size: 1.8rem; font-weight: 800; color: #333; margin: 0;">
+                    @if(request('sort') === 'vues_desc' && !request('q'))
+                        Produits les plus consultés {{ $category ? '- ' . $category->nom : '' }}
                     @else
-                        Toutes les annonces
+                        {{ $category ? $category->nom : (request('q') ?: 'Recherche') }}
                     @endif
                 </h1>
             </div>
 
-            <div class="results-toolbar">
-                <h2 class="results-count">{{ $annonces->total() }} résultats</h2>
-                <div class="sort-options">
-                    <label>Trier par</label>
-                    <select onchange="window.location.href = this.value">
-                        <option value="{{ request()->fullUrlWithQuery(['sort' => 'relevance']) }}" @if(request('sort') == 'relevance') selected @endif>Le plus pertinent</option>
-                        <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}" @if(request('sort') == 'price_asc') selected @endif>Prix croissant</option>
-                        <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}" @if(request('sort') == 'price_desc') selected @endif>Prix décroissant</option>
-                        <option value="{{ request()->fullUrlWithQuery(['sort' => 'newest']) }}" @if(request('sort') == 'newest') selected @endif>Nouveautés</option>
-                    </select>
+
+            <div class="results-header" style="border-top: 1px solid #ddd; background: #fff; padding: 10px 25px;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="results-count" style="font-size: 0.9rem; color: #333;">
+                        @if($annonces->total() > 0)
+                            Plus de <strong>{{ number_format($annonces->total(), 0, ',', ' ') }} résultats</strong>
+                        @else
+                            Aucun résultat trouvé
+                        @endif
+                    </div>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <select class="sort-select" onchange="window.location.href=this.value">
+                            <option value="{{ request()->fullUrlWithQuery(['sort' => 'relevance']) }}" @if(request('sort') == 'relevance') selected @endif>Meilleures ventes</option>
+                            <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_asc']) }}" @if(request('sort') == 'price_asc') selected @endif>Prix : croissant</option>
+                            <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}" @if(request('sort') == 'price_desc') selected @endif>Prix : décroissant</option>
+                        </select>
+                    </div>
+                    <div style="font-size: 0.75rem; color: #666;">A propos de <a href="#" style="color: #004aad; text-decoration: underline; font-weight: 600;">Meilleures ventes</a></div>
                 </div>
             </div>
 
-            <div class="catalog-grid">
+            <!-- Grid -->
+            <div class="products-grid">
                 @forelse($annonces as $annonce)
-                    <a href="{{ route('annonces.show', $annonce->slug) }}" class="catalog-card">
-                        <div class="card-media">
+                    <a href="{{ route('annonces.show', $annonce->slug) }}" class="product-card">
+                        <div class="product-image-container">
                             @if($annonce->photoPrincipale())
-                                <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
+                                <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" class="product-image" alt="{{ $annonce->titre }}">
                             @else
-                                <div class="no-photo">Pas de photo</div>
+                                <div style="color: #ccc;">Aucune photo</div>
                             @endif
-                            @if($annonce->estALaUne()) <span class="badge-sponsored">Sponsorisée</span> @endif
                         </div>
-                        <div class="card-content">
-                            <h3 class="card-title">{{ $annonce->titre }}</h3>
+
+                        <div class="product-info">
+                            @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
+                                <div style="font-size: 0.75rem; color: #565959; margin-bottom: 2px; font-weight: 500;">Sponsorisée</div>
+                            @endif
+                            <h2 class="product-title">{{ $annonce->titre }}</h2>
                             
-                            <div class="card-rating">
-                                @php
-                                    $rating = $annonce->note_moyenne;
-                                    $fullStars = floor($rating);
-                                    $halfStar = ($rating - $fullStars) >= 0.5;
-                                    $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                            <div class="review-stars">
+                                @php 
+                                    $moyenneNote = $annonce->note_moyenne;
+                                    $nbAvis = $annonce->nombre_avis;
                                 @endphp
-                                <div class="stars">
-                                    @for($i = 0; $i < $fullStars; $i++)
+                                
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= floor($moyenneNote))
                                         <i class="fas fa-star"></i>
-                                    @endfor
-                                    @if($halfStar)
+                                    @elseif($i == ceil($moyenneNote) && ($moyenneNote - floor($moyenneNote)) >= 0.5)
                                         <i class="fas fa-star-half-alt"></i>
-                                    @endif
-                                    @for($i = 0; $i < $emptyStars; $i++)
+                                    @else
                                         <i class="far fa-star"></i>
-                                    @endfor
-                                </div>
-                                <span class="reviews-count">{{ $annonce->nombre_avis ?? 0 }} avis</span>
+                                    @endif
+                                @endfor
+                                <span class="review-count">({{ $nbAvis }})</span>
                             </div>
 
-                            <div class="card-price-state">
-                                <span class="price-val">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
-                                <span class="state-sep">·</span>
-                                <span class="state-label">
-                                    {{ $annonce->etat_libelle }}
-                                </span>
-                            </div>
+                             <div class="product-price-row">
+                                 <span class="product-price-value">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                 @if($annonce->should_show_etat)
+                                    <span class="product-status" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
+                                 @endif
+                             </div>
 
                             @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
-                            <div class="seller-info-line">
-                                <span class="seller-prefix">Par</span>
-                                <span class="seller-name-text">
-                                    {{ $annonce->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}
-                                    <span class="pro-tag">PRO</span>
-                                </span>
-                            </div>
+                                <div style="font-size: 0.78rem; color: #666; margin-bottom: 8px;">
+                                    Par <span style="color: #333;">{{ $annonce->vendeur->identite }}</span> <span class="tag-pro" style="margin-left: 2px;">PRO</span>
+                                </div>
                             @endif
 
-                            <div class="card-actions">
-                                <span class="btn-see-product">Voir le produit <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+                            <div class="product-view-btn">
+                                <span>{{ $annonce->label_voir_bouton }}</span>
+                                <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>
+                            </div>
+                            
+                             {{-- Sell yours removed --}}
+
+                            <div class="product-tags">
+                                @if($annonce->estALaUne())
+                                    <span class="tag-sponsored">Sponsorisé</span>
+                                @endif
                             </div>
                         </div>
                     </a>
                 @empty
                     <div class="empty-state">
-                        <p>Aucun produit ne correspond à vos critères.</p>
+                        <div style="font-size: 3rem; margin-bottom: 20px; opacity: 0.3;">🔍</div>
+                        <h3>Aucun résultat trouvé</h3>
+                        <p>Essayez d'utiliser des mots-clés plus génériques ou vérifiez l'orthographe.</p>
+                        <a href="{{ route('home') }}" style="color: var(--p-blue); text-decoration: underline; margin-top: 20px; display: inline-block;">Retour à l'accueil</a>
                     </div>
                 @endforelse
             </div>
 
-            <div class="pagination-wrapper">
-                {{ $annonces->links() }}
+            <!-- Pagination -->
+            <div class="pagination-container">
+                @if($annonces->hasPages())
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        @if(!$annonces->onFirstPage())
+                            <a href="{{ $annonces->previousPageUrl() }}" class="btn-pagination">
+                                <i class="fas fa-chevron-left"></i> Précédent
+                            </a>
+                        @endif
+                        
+                        @if($annonces->hasMorePages())
+                            <a href="{{ $annonces->nextPageUrl() }}" class="btn-pagination next">
+                                Suivant <i class="fas fa-chevron-right"></i>
+                            </a>
+                        @endif
+                    </div>
+                @endif
             </div>
         </main>
     </div>
 </div>
-
-<style>
-    /* Reuse styles from category page for consistency */
-    .catalog-page-container {
-        background-color: #fff;
-        min-height: 100vh;
-        padding: 0;
-    }
-
-    .catalog-layout {
-        max-width: 1400px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 210px 1fr;
-        gap: 2rem;
-    }
-
-    .catalog-breadcrumbs {
-        display: flex;
-        align-items: center;
-        font-size: 0.75rem;
-        color: #666;
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .catalog-breadcrumbs a {
-        color: #333;
-        text-decoration: none;
-    }
-
-    .catalog-breadcrumbs a:hover {
-        text-decoration: underline;
-    }
-
-    .catalog-header {
-        padding: 0.5rem 0;
-        margin-bottom: 1rem;
-        border-bottom: 1px solid #ebebeb;
-    }
-
-    .header-title {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #000;
-        letter-spacing: -0.01em;
-    }
-
-    .header-description {
-        font-size: 1rem;
-        color: #666;
-        line-height: 1.6;
-    }
-
-    .header-icon {
-        font-size: 3rem;
-        opacity: 0.1;
-    }
-
-    .results-toolbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid #eee;
-    }
-
-    .results-count {
-        font-size: 1.125rem;
-        font-weight: 700;
-        color: #000;
-    }
-
-    .sort-options {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .sort-options label {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #666;
-    }
-
-    .sort-options select {
-        padding: 0.5rem 1rem;
-        background: #fff;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 0.875rem;
-        outline: none;
-    }
-
-    .catalog-grid {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        gap: 0;
-        padding: 0;
-    }
-
-    .catalog-card {
-        background: #fff;
-        border-right: 1px solid #ebebeb;
-        border-bottom: 1px solid #ebebeb;
-        display: flex;
-        flex-direction: column;
-        transition: transform 0.2s, box-shadow 0.2s;
-        text-decoration: none;
-        color: inherit;
-    }
-
-    /* Pattern: 3 items (span 4) then 4 items (span 3) */
-    .catalog-card:nth-child(7n+1),
-    .catalog-card:nth-child(7n+2),
-    .catalog-card:nth-child(7n+3) {
-        grid-column: span 4;
-    }
-
-    .catalog-card:nth-child(7n+4),
-    .catalog-card:nth-child(7n+5),
-    .catalog-card:nth-child(7n+6),
-    .catalog-card:nth-child(7n+7),
-    .catalog-card:nth-child(7n) {
-        grid-column: span 3;
-    }
-
-    /* Remove right border for items at the end of their rows */
-    .catalog-card:nth-child(7n+3), /* End of 3-item row */
-    .catalog-card:nth-child(7n)   /* End of 4-item row */ {
-        border-right: none;
-    }
-
-    .catalog-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        border-color: #ddd;
-    }
-
-    .card-media {
-        aspect-ratio: 1;
-        background: #fcfcfc;
-        position: relative;
-    }
-
-    .card-media img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .no-photo {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        color: #ccc;
-        font-size: 0.8rem;
-    }
-
-    .badge-sponsored {
-        position: absolute;
-        top: 0.5rem;
-        left: 0.5rem;
-        background: #fff;
-        color: #111;
-        font-size: 0.6rem;
-        font-weight: 800;
-        padding: 0.2rem 0.5rem;
-        border-radius: 4px;
-        text-transform: uppercase;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        border: 1px solid #eee;
-        z-index: 10;
-    }
-
-    .badge-pro-card {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        background: #bf0000;
-        color: #fff;
-        font-size: 0.65rem;
-        font-weight: 800;
-        padding: 0.25rem 0.5rem;
-        border-radius: 2px;
-        text-transform: uppercase;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .card-content {
-        padding: 0.75rem 0.75rem 1rem 0.75rem;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-    }
-    
-    .card-title {
-        font-size: 0.85rem;
-        font-weight: 700;
-        line-height: 1.25;
-        height: 2.1rem;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        margin-bottom: 0.25rem;
-        color: #333;
-    }
-
-    .card-rating {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin-bottom: 0.25rem;
-    }
-
-    .card-rating .stars {
-        display: flex;
-        gap: 1px;
-        color: #ffbc00;
-        font-size: 0.8rem;
-    }
-
-    .card-rating .reviews-count {
-        font-size: 0.75rem;
-        color: #777;
-    }
-
-    .card-price-state {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        margin: 0.25rem 0;
-    }
-
-    .price-val {
-        font-size: 1.15rem;
-        font-weight: 800;
-        color: #db0001;
-    }
-
-    .state-sep {
-        font-weight: bold;
-        color: #db0001;
-    }
-
-    .state-label {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: #db0001;
-    }
-
-    .seller-info-line {
-        font-size: 0.75rem;
-        color: #777;
-        margin-bottom: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-    }
-
-    .seller-name-text {
-        font-weight: 600;
-        color: #333;
-    }
-
-    .pro-tag {
-        background: #fff;
-        color: #666;
-        font-size: 7px;
-        font-weight: 700;
-        padding: 1px 5px;
-        border-radius: 10px;
-        margin-left: 2px;
-        border: 1px solid #ddd;
-        text-transform: uppercase;
-        vertical-align: middle;
-    }
-
-    .card-actions {
-        margin-top: auto;
-    }
-
-    .btn-see-product {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        padding: 0.6rem;
-        border: 1.5px solid #111;
-        border-radius: 8px;
-        background: #fff;
-        color: #111;
-        font-size: 0.9rem;
-        font-weight: 800;
-        transition: all 0.2s;
-    }
-
-    .catalog-card:hover .btn-see-product {
-        background: #111;
-        color: #fff;
-    }
-
-    .pagination-wrapper {
-        margin-top: 4rem;
-        display: flex;
-        justify-content: center;
-    }
-
-    .empty-state {
-        grid-column: 1 / -1;
-        text-align: center;
-        padding: 5rem 2rem;
-        background: #fff;
-        border-radius: 4px;
-        border: 1px solid #eee;
-    }
-
-    .empty-state p {
-        color: #666;
-        margin-bottom: 2rem;
-    }
-
-    .btn-back {
-        display: inline-block;
-        padding: 0.75rem 1.5rem;
-        background: #000;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 4px;
-        font-weight: 600;
-    }
-
-    /* Responsive */
-    @media (max-width: 1024px) {
-        .catalog-layout {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-        .catalog-sidebar-column {
-            display: none;
-        }
-    }
-</style>
 @endsection

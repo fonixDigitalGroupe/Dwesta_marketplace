@@ -22,11 +22,13 @@ class HomeController extends Controller
             return $section;
         });
 
-        // 2. Top des produits les plus consultés (Conservé pour le moment car format particulier)
+        // 2. Top des produits les plus consultés (Mélange aléatoire des plus vus, max 20)
         $topConsultes = Annonce::publiees()
             ->orderBy('vues', 'desc')
-            ->take(15)
-            ->get();
+            ->take(50) // Prend les 50 produits les plus consultés (toutes catégories)
+            ->get()
+            ->shuffle() // Mélange aléatoirement
+            ->take(20); // Extrait 20 produits max
 
         // 3. Actualités (Highlights) Bento Grid
         $highlightTabs = \App\Models\HighlightTab::where('active', true)
@@ -70,15 +72,48 @@ class HomeController extends Controller
                     ->first();
                 
                 if ($firstLevel2) {
+                    $allSubCats = $firstLevel2->enfantsActifs()->get();
+                    $countTotal = $allSubCats->count();
+                    $topNumber = max(1, floor($countTotal / 2));
+                    
                     $bestCategories[] = [
                         'famille' => $familleName,
                         'title' => $familleName,
+                        'root_parent' => $familleParent,
                         'parent' => $firstLevel2,
-                        'items' => $firstLevel2->enfantsActifs()->take(10)->get()
+                        'items' => $allSubCats->take($topNumber),
+                        'topNumber' => $topNumber,
+                        'totalSub' => $countTotal
                     ];
                 }
             }
         }
+
+        // 6. Boutique Pro Sellers
+        $proSellers = \App\Models\Vendeur::where('type', 'professionnel')
+            ->where('statut_verification', 'verifie')
+            ->has('professionnel')
+            ->has('pagePro')
+            ->with(['professionnel', 'pagePro', 'annonces' => function($q) {
+                $q->publiees();
+            }])
+            ->inRandomOrder()
+            ->take(6)
+            ->get()
+            ->map(function($seller) {
+                $maxDiscount = $seller->annonces->map(function($a) {
+                    return $a->discount_percentage;
+                })->max();
+                
+                if ($maxDiscount > 0) {
+                    $seller->promo_val = "JUSQU'À -{$maxDiscount}%";
+                    $seller->promo_sub = "";
+                } else {
+                    $seller->promo_val = "DÉCOUVREZ";
+                    $seller->promo_sub = "la boutique";
+                }
+                return $seller;
+            });
 
         return view('home', compact(
             'banners',
@@ -88,7 +123,8 @@ class HomeController extends Controller
             'topNeufs',
             'topOccasions',
             'topReconditionnes',
-            'bestCategories'
+            'bestCategories',
+            'proSellers'
         ));
     }
 }

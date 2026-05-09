@@ -5,90 +5,150 @@
 @push('styles')
 <style>
     .main-content { background-color: #f8f9fa !important; }
-    input:focus, textarea:focus, select:focus {
-        border-color: #e67e00 !important;
-        box-shadow: 0 0 0 2px rgba(230,126,0,0.05) !important;
+    
+    .amazon-card {
+        background: #fff;
+        border: 1px solid #e7e7e7;
+        border-radius: 4px;
+        padding: 25px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #111;
+        margin-bottom: 8px;
+    }
+
+    .form-input, .form-select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #adb1b8;
+        border-radius: 3px;
+        font-size: 0.9rem;
+        transition: all 0.1s;
         outline: none;
+        background: #fff;
+    }
+
+    .form-input:focus, .form-select:focus {
+        border-color: #e77600 !important;
+        box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5) !important;
+    }
+
+    .btn-amazon-primary {
+        background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+        border: 1px solid #a88734;
+        border-radius: 3px;
+        color: #111;
+        padding: 8px 15px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-amazon-secondary {
+        background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
+        border: 1px solid #adb1b8;
+        border-radius: 3px;
+        color: #111;
+        padding: 8px 15px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
     }
 </style>
 @endpush
 
 @section('content')
-<div style="max-width: 100%;">
-    <!-- Main Conteneur -->
-    <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1.5rem;">
-        
-        <div style="margin-bottom: 0.5rem;">
-            <h1 style="font-size: 1.25rem; font-weight: 700; color: #333; margin: 0;">Modifier l'onglet #{{ $highlightTab->id }}</h1>
-        </div>
-        <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1rem;"></div>
-
-        <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1rem;">
-            <a href="{{ route('admin.highlight-tabs.index') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#e67e00'" onmouseout="this.style.borderColor='#ddd'">
-                Retour à la liste <i class="fas fa-undo" style="font-size: 0.75rem; opacity: 0.6;"></i>
-            </a>
-        </div>
-
-        <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
-
-        <form action="{{ route('admin.highlight-tabs.update', $highlightTab) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start;">
-                
-                <!-- Left Column -->
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    
-                    <div style="background: #fdfdfd; border: 1px solid #f3f3f3; border-radius: 4px; padding: 1.5rem;">
-                        <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                            Détails de l'onglet
-                        </h3>
-                        
-                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                            <div>
-                                <label for="name" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Nom de l'onglet <small style="color: red;">*</small></label>
-                                <input type="text" name="name" id="name" value="{{ old('name', $highlightTab->name) }}" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Column -->
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    
-                    <div style="background: #fdfdfd; border: 1px solid #f3f3f3; border-radius: 4px; padding: 1.5rem;">
-                        <h3 style="font-size: 0.9rem; color: #333; font-weight: 600; margin-bottom: 1.25rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">Configuration</h3>
-                        
-                        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-                            <div>
-                                <label for="position" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Ordre d'affichage</label>
-                                <input type="number" name="position" id="position" value="{{ old('position', $highlightTab->position) }}" min="0" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                            </div>
-
-                            <div style="padding: 10px; background: #fff; border: 1px solid #eee; border-radius: 6px; display: flex; align-items: center; gap: 10px;">
-                                <input type="checkbox" name="active" id="active" value="1" {{ old('active', $highlightTab->active) ? 'checked' : '' }} style="width: 18px; height: 18px; cursor: pointer;">
-                                <label for="active" style="font-size: 0.9rem; color: #333; font-weight: 500; cursor: pointer;">Onglet Actif</label>
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
-                            <a href="{{ route('admin.highlight-tabs.index') }}" style="flex: 1; display: flex; justify-content: center; padding: 12px; background: #dc2626; border: none; border-radius: 6px; color: #fff; text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                                Annuler
-                            </a>
-                            <button type="submit" style="flex: 1; background-color: #e67e00; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                                Enregistrer
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    
+    {{-- Header --}}
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h1 style="font-size: 1.5rem; font-weight: 500; color: #111; margin: 0;">Modifier l'Onglet</h1>
+        <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-secondary">
+            <i class="fas fa-arrow-left"></i> Retour à la liste
+        </a>
     </div>
+
+    <form action="{{ route('admin.highlight-tabs.update', $highlightTab) }}" method="POST">
+        @csrf
+        @method('PUT')
+
+        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 25px;">
+            
+            {{-- Colonne Gauche --}}
+            <div style="display: flex; flex-direction: column; gap: 25px;">
+                
+                <div class="amazon-card">
+                    <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                        Détails de l'onglet
+                    </h2>
+
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <label for="name" class="form-label">Nom de l'onglet <span style="color: #c40000;">*</span></label>
+                            <input type="text" name="name" id="name" value="{{ old('name', $highlightTab->name) }}" class="form-input" placeholder="Ex: E-commerce, Immobilier, Services..." required>
+                            <p style="font-size: 0.75rem; color: #555; margin-top: 5px;">Le nom qui apparaîtra sur la Bento Grid du site.</p>
+                        </div>
+
+                        <div>
+                            <label for="slug" class="form-label">Identifiant unique (Slug) <span style="font-weight: 400; color: #565959;">— automatique si vide</span></label>
+                            <input type="text" name="slug" id="slug" value="{{ old('slug', $highlightTab->slug) }}" class="form-input" placeholder="ex: e-commerce">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            {{-- Colonne Droite --}}
+            <div style="display: flex; flex-direction: column; gap: 25px;">
+                
+                <div class="amazon-card">
+                    <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 15px; color: #111;">Configuration</h2>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <label for="position" class="form-label">Ordre d'affichage</label>
+                            <input type="number" name="position" id="position" value="{{ old('position', $highlightTab->position) }}" min="0" class="form-input" required>
+                        </div>
+
+                        <div style="background: #fcfcfc; border: 1px solid #eee; padding: 15px; border-radius: 4px;">
+                            <div style="display: flex; align-items: start; gap: 10px;">
+                                <input type="checkbox" name="active" id="active" value="1" {{ old('active', $highlightTab->active) ? 'checked' : '' }} 
+                                       style="width: 18px; height: 18px; cursor: pointer; accent-color: #e47911; margin-top: 2px;">
+                                <label for="active" style="cursor: pointer;">
+                                    <div style="font-size: 0.85rem; font-weight: 700; color: #111;">Onglet actif</div>
+                                    <div style="font-size: 0.75rem; color: #555;">Désactivez pour masquer tout le groupe d'actualités.</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 25px; display: flex; flex-direction: column; gap: 12px;">
+                        <button type="submit" class="btn-amazon-primary" style="width: 100%; height: 40px;">
+                            Mettre à jour l'onglet
+                        </button>
+                        <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-secondary" style="width: 100%; height: 40px;">
+                            Annuler
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
 </div>
 @endsection

@@ -225,6 +225,18 @@ class Vendeur extends Model
         return $abonnementActif->abonnement->page_pro_personnalisable === true;
     }
 
+    public function getIdentiteAttribute(): string
+    {
+        if ($this->pagePro && $this->pagePro->nom_boutique) {
+            return $this->pagePro->nom_boutique;
+        }
+
+        if ($this->estProfessionnel() && $this->professionnel) {
+            return $this->professionnel->nom_entreprise;
+        }
+        return $this->user ? $this->user->name : 'Vendeur';
+    }
+
     /**
      * Obtenir l'URL de la boutique publique
      */

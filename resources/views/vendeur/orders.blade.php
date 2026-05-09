@@ -156,9 +156,6 @@
 @endpush
 
 @section('content')
-<div class="breadcrumb">
-    <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('vendeur.show') }}">Mon Compte Vendeur</a> > <span>Mes ventes</span>
-</div>
 
 <div class="dashboard-container">
     @include('partials.profile-sidebar')

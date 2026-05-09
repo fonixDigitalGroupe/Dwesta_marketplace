@@ -151,8 +151,8 @@
     @include('partials.profile-sidebar')
     
     <div class="main-content">
-        <div class="inbox-header">
-            <h1>Mes Messages</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+            <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Mes Messages</h1>
         </div>
 
         @if($conversations->count() > 0)

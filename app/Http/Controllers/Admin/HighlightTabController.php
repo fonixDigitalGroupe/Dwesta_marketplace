@@ -9,9 +9,16 @@ use Illuminate\Support\Str;
 
 class HighlightTabController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tabs = HighlightTab::orderBy('position')->get();
+        $query = HighlightTab::query()->orderBy('position');
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $tabs = $query->paginate($request->get('per_page', 10));
+        
         return view('admin.highlight_tabs.index', compact('tabs'));
     }
 

@@ -80,6 +80,64 @@
             background: #f7f8fa;
             border-color: #c40000;
         }
+
+        /* Custom Checkbox Amazon Style */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 4px 0;
+            user-select: none;
+            font-size: 0.85rem;
+            color: #111;
+        }
+        
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .checkmark {
+            height: 16px;
+            width: 16px;
+            background-color: #fff;
+            border: 1px solid #adb1b8;
+            border-radius: 2px;
+            position: relative;
+            transition: all 0.1s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05) inset;
+        }
+        
+        .checkbox-container:hover input ~ .checkmark {
+            border-color: #e77600;
+            box-shadow: 0 0 3px rgba(228,121,17,0.5);
+        }
+        
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: #fff;
+            border-color: #e77600;
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 5px;
+            top: 1px;
+            width: 4px;
+            height: 8px;
+            border: solid #e77600;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
     </style>
 @endpush
 
@@ -184,11 +242,23 @@
 
                 <!-- Footer Actions -->
                 <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                    <button type="submit" class="btn-amazon-primary" style="padding: 12px;">
-                        Enregistrer les modifications
+                    <!-- Status Section -->
+                    <div style="margin-bottom: 20px;">
+                        <label class="checkbox-container">
+                            <input type="checkbox" name="is_filterable" value="1" {{ $filter->is_filterable ? 'checked' : '' }}>
+                            <span class="checkmark"></span>
+                            <span style="font-weight: 700;">Activer ce critère</span>
+                        </label>
+                        <p style="font-size: 0.75rem; color: #555; margin-left: 24px; margin-top: 4px;">
+                            Si décoché, ce critère ne sera pas visible comme option de filtrage sur le site.
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn-amazon-primary" style="padding: 12px; font-weight: 700;">
+                        ENREGISTRER
                     </button>
                     <a href="{{ route('admin.filters.index') }}" class="btn-amazon-secondary" style="padding: 12px;">
-                        Annuler
+                        ANNULER
                     </a>
                 </div>
             </div>

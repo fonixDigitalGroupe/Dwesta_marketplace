@@ -4,199 +4,302 @@
 
 @push('styles')
 <style>
-    /* Ensure dashboard layout styles are available or scoped here if not global */
+    :root {
+        --amz-orange: #FF9900;
+        --amz-orange-light: #FFB33E;
+        --amz-dark: #232F3E;
+        --bg-body: #f9f9f9;
+        --border-main: #eeeeee;
+        --text-base: #111111;
+        --text-secondary: #565959;
+    }
+
+    body {
+        background-color: var(--bg-body);
+        color: var(--text-base);
+    }
+
     .dashboard-container {
-        max-width: 1400px;
-        margin: 0 auto 2rem;
-        padding: 0.5rem 2rem 2rem 7rem;
         display: grid;
-        grid-template-columns: 220px 1fr;
-        gap: 2.5rem;
+        grid-template-columns: 260px 1fr;
+        gap: 24px;
+        max-width: 1400px;
+        margin: 24px auto;
+        padding: 0 20px;
     }
 
-    @media (max-width: 1024px) {
-        .dashboard-container {
-            grid-template-columns: 1fr;
-            padding-left: 2rem;
-        }
+    .main-content {
+        background: transparent;
     }
 
-    .edit-pro-container {
+    .edit-pro-card {
         background: white;
-        border: 1px solid #e0e0e0;
+        border: 1px solid #f0f0f0;
         border-radius: 8px;
-        padding: 2rem;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
     }
 
-    .edit-section-title {
-        font-size: 1.2rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid #eee;
+    .edit-card-title {
+        font-size: 0.85rem;
+        font-weight: 600;
         color: #333;
-    }
-
-    .form-group {
-        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid #f5f5f5;
+        padding-bottom: 12px;
     }
 
     .form-label {
         display: block;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        color: #444;
-        font-size: 0.95rem;
+        font-weight: 500;
+        margin-bottom: 6px;
+        color: #555;
+        font-size: 0.9rem;
     }
 
     .form-control {
         width: 100%;
-        padding: 0.8rem;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 1rem;
-        transition: border-color 0.2s;
+        padding: 10px 12px;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        background: #fff;
     }
 
     .form-control:focus {
-        border-color: #bf0000;
+        border-color: #004aad;
+        box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
         outline: none;
     }
 
     .btn-save {
-        background: #bf0000;
-        color: white;
+        background: #004aad;
         border: none;
-        padding: 0.8rem 2rem;
-        border-radius: 4px;
-        font-weight: 700;
+        border-radius: 8px;
+        color: white;
+        padding: 12px 30px;
+        font-weight: 600;
         cursor: pointer;
-        font-size: 1rem;
+        font-size: 0.9rem;
         transition: background 0.2s;
     }
 
     .btn-save:hover {
-        background: #990000;
+        background: #003a85;
     }
 
-    .preview-image {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        border-radius: 50%;
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
+    .preview-section {
+        background: #F0F2F2;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid var(--border-main);
+        position: relative;
     }
-    
-    .preview-banner {
+
+    .logo-preview-box {
+        width: 130px;
+        height: 130px;
+        background: white;
+        border: 1px solid var(--border-main);
+        border-radius: 50%;
+        margin: 0 auto 15px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .banner-preview-box {
         width: 100%;
-        height: 150px;
-        object-fit: cover;
+        height: 130px;
+        background: white;
+        border: 1px solid var(--border-main);
         border-radius: 4px;
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .format-badge {
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        font-weight: 400;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .input-hint {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin-top: 4px;
+    }
+
+    .social-input-group {
+        display: flex;
+        align-items: center;
+        background: white;
+        border: 1px solid #888C8C;
+        border-radius: 4px;
+        padding-left: 12px;
+    }
+
+    .social-input-group:focus-within {
+        border-color: #007185;
+        box-shadow: 0 0 0 3px #c8f3fa;
+    }
+
+    .social-input-group i {
+        color: var(--text-secondary);
+    }
+
+    .social-input-group .form-control {
+        border: none;
+        box-shadow: none !important;
+    }
+
+    .section-header h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
     }
 </style>
 @endpush
 
 @section('content')
-    <div class="breadcrumb">
-        <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('profile.show') }}">Mon Compte</a> > <span>Ma Boutique</span>
-    </div>
 
     <div class="dashboard-container">
         @include('partials.profile-sidebar')
 
         <main class="main-content">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 style="font-size: 1.8rem; font-weight: 700; margin: 0;">Personnaliser ma Boutique</h1>
-                <a href="{{ route('page-pro.show', $pagePro->slug) }}" target="_blank" style="color: #bf0000; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 5px;">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                    Voir ma boutique en ligne
+            @if(session('success'))
+                <div style="background: #e6fcf5; color: #0ca678; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #c3fae8; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-check-circle"></i>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div style="background: #fff5f5; color: #fa5252; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #ffe3e3; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div style="background: #fff5f5; color: #fa5252; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #ffe3e3;">
+                    <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 1rem; margin-bottom: 2rem;">
+                <div>
+                    <h1 style="font-size: 1.1rem; font-weight: 600; color: var(--text-dark); margin: 0;">Personnalisation de la Boutique</h1>
+                </div>
+                <a href="{{ route('page-pro.show', $pagePro->slug) }}" target="_blank" class="btn-save" style="background: white; color: var(--primary-color); border: none; padding: 0.6rem 1.5rem; font-size: 0.9rem;">
+                    <i class="fas fa-eye" style="color: #FF9900; margin-right: 5px;"></i>
+                    Aperçu Public
                 </a>
             </div>
 
-            <div class="edit-pro-container">
-                <form action="{{ route('page-pro.update') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
+            <form action="{{ route('page-pro.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
-                    <div class="edit-section-title">Identité Visuelle</div>
+                <!-- Identité Visuelle -->
+                <div class="edit-pro-card">
+                    <div class="edit-card-title">
+                        <i class="fas fa-store" style="color: #FF9900;"></i>
+                        Fiche d'Identité de la Boutique
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 24px;">
+                        <label class="form-label">Nom commercial</label>
+                        <input type="text" name="nom_boutique" class="form-control" value="{{ old('nom_boutique', $pagePro->nom_boutique) }}" placeholder="Nom tel qu'il apparaîtra sur le site">
+                        <p class="input-hint">Utilisez un nom professionnel clair pour attirer les clients.</p>
+                    </div>
                     
-                    <div class="row" style="display: flex; flex-wrap: wrap; gap: 2rem;">
-                        <div style="flex: 1; min-width: 250px;">
-                            <div class="form-group">
-                                <label class="form-label">Logo de la boutique</label>
-                                @if($pagePro->logo)
-                                    <img src="{{ Storage::url($pagePro->logo) }}" class="preview-image">
-                                @endif
-                                <input type="file" name="logo" class="form-control" accept="image/*">
-                                <small style="color: #666;">Format carré recommandé (JPG, PNG)</small>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                        <div>
+                            <label class="form-label">Logo de la marque</label>
+                            <div class="preview-section">
+                                <div class="format-badge">Image carrée (ex: 500x500px)</div>
+                                <div class="logo-preview-box" id="logo-preview-wrapper">
+                                    @if($pagePro->logo)
+                                        <img src="{{ Storage::url($pagePro->logo) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    @else
+                                        <i class="fas fa-camera fa-2x" style="color: #ccc;"></i>
+                                    @endif
+                                </div>
+                                <input type="file" name="logo" class="form-control" accept="image/*" onchange="handleImagePreview(this, 'logo-preview-wrapper')">
                             </div>
                         </div>
 
-                        <div style="flex: 2; min-width: 300px;">
-                            <div class="form-group">
-                                <label class="form-label">Bannière d'en-tête</label>
-                                @if($pagePro->banniere)
-                                    <img src="{{ Storage::url($pagePro->banniere) }}" class="preview-banner">
-                                @endif
-                                <input type="file" name="banniere" class="form-control" accept="image/*">
-                                <small style="color: #666;">Image large recommandée (1200x300px)</small>
+                        <div>
+                            <label class="form-label">Bannière principale</label>
+                            <div class="preview-section">
+                                <div class="format-badge">Haute résolution (ex: 1500x400px)</div>
+                                <div class="banner-preview-box" id="banner-preview-wrapper">
+                                    @if($pagePro->banniere)
+                                        <img src="{{ Storage::url($pagePro->banniere) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    @else
+                                        <i class="fas fa-image fa-2x" style="color: #ccc;"></i>
+                                    @endif
+                                </div>
+                                <input type="file" name="banniere" class="form-control" accept="image/*" onchange="handleImagePreview(this, 'banner-preview-wrapper')">
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group" style="max-width: 200px;">
-                        <label class="form-label">Couleur Principale</label>
-                        <div style="display: flex; gap: 10px; align-items: center;">
-                            <input type="color" name="couleur_primaire" value="{{ $pagePro->couleur_primaire ?? '#3b82f6' }}" style="height: 40px; width: 60px; border: 1px solid #ccc; padding: 2px;">
-                            <span style="font-size: 0.9rem; color: #666;">Votre couleur de marque</span>
+                    <div style="margin-top: 24px;">
+                        <label class="form-label">Couleur de thème</label>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <input type="color" name="couleur_primaire" value="{{ $pagePro->couleur_primaire ?? '#004aad' }}" style="padding: 0; width: 60px; height: 35px; border: 1px solid #ddd; cursor: pointer;">
+                            <span class="input-hint">Affecte les boutons et les titres de votre boutique.</span>
                         </div>
                     </div>
+                </div>
 
-                    <div class="edit-section-title" style="margin-top: 2rem;">Informations & Contact</div>
-
+                <!-- Présentation -->
+                <div class="edit-pro-card">
+                    <div class="edit-card-title">
+                        <i class="fas fa-info-circle" style="color: #FF9900;"></i>
+                        Présentation de votre activité
+                    </div>
                     <div class="form-group">
-                        <label class="form-label">Description de la boutique</label>
-                        <textarea name="description" rows="5" class="form-control" placeholder="Présentez votre activité, vos produits, votre histoire...">{{ old('description', $pagePro->description) }}</textarea>
+                        <label class="form-label">Description détaillée</label>
+                        <textarea name="description" rows="8" class="form-control" placeholder="Racontez votre histoire et présentez vos produits...">{{ old('description', $pagePro->description) }}</textarea>
                     </div>
+                </div>
 
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                        <div class="form-group">
-                            <label class="form-label">Email Contact (Public)</label>
-                            <input type="email" name="email_contact" value="{{ old('email_contact', $pagePro->email_contact) }}" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Téléphone (Public)</label>
-                            <input type="text" name="telephone_contact" value="{{ old('telephone_contact', $pagePro->telephone_contact) }}" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Site Web (Optionnel)</label>
-                            <input type="url" name="site_web" value="{{ old('site_web', $pagePro->site_web) }}" class="form-control" placeholder="https://...">
-                        </div>
-                    </div>
 
-                    <div class="edit-section-title" style="margin-top: 2rem;">Réseaux Sociaux</div>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
-                        <div class="form-group">
-                            <label class="form-label">Facebook</label>
-                            <input type="url" name="facebook" value="{{ $pagePro->reseaux_sociaux['facebook'] ?? '' }}" class="form-control" placeholder="Lien profil Facebook">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Instagram</label>
-                            <input type="url" name="instagram" value="{{ $pagePro->reseaux_sociaux['instagram'] ?? '' }}" class="form-control" placeholder="Lien profil Instagram">
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 2rem; text-align: right;">
-                        <button type="submit" class="btn-save">
-                            Enregistrer les modifications
-                        </button>
-                    </div>
-                </form>
-            </div>
+                <div style="display: flex; justify-content: flex-end; padding: 20px 0;">
+                    <button type="submit" class="btn-save">
+                        Enregistrer ces informations
+                    </button>
+                </div>
+            </form>
         </main>
     </div>
+
+    <script>
+        function handleImagePreview(input, wrapperId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const wrapper = document.getElementById(wrapperId);
+                    wrapper.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 @endsection

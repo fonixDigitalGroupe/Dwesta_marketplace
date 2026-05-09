@@ -60,10 +60,11 @@ class CategoryFilterController extends Controller
             'category_id' => 'required|exists:categories,id',
             'nom' => 'required|string|max:255',
             'options' => 'nullable|array',
+            'is_filterable' => 'nullable|boolean',
         ]);
 
         $validated['type'] = 'select';
-        $validated['is_filterable'] = true;
+        $validated['is_filterable'] = $request->has('is_filterable');
         $validated['is_required'] = false;
         $validated['ordre'] = 0;
 
@@ -118,10 +119,11 @@ class CategoryFilterController extends Controller
             'category_id' => 'required|exists:categories,id',
             'nom' => 'required|string|max:255',
             'options' => 'nullable|array',
+            'is_filterable' => 'nullable|boolean',
         ]);
 
         $validated['type'] = 'select';
-        // is_filterable is managed via index table toggleStatus method
+        $validated['is_filterable'] = $request->has('is_filterable');
         $validated['is_required'] = false;
         $validated['ordre'] = $filter->ordre ?? 0;
 

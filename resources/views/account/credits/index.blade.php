@@ -4,40 +4,7 @@
 
 @push('styles')
     <style>
-        .dashboard-container {
-            display: flex;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 1rem 2rem;
-            gap: 2rem;
-        }
-
-        .breadcrumb {
-            max-width: 1200px;
-            margin: 1rem auto 0;
-            padding: 0 1rem;
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        .breadcrumb a {
-            color: #666;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            color: #333;
-            font-weight: bold;
-        }
-
-        .main-content {
-            flex: 1;
-            background: #fff;
-        }
+        /* Styles spécifiques Crédits */
 
         .account-header {
             display: flex;
@@ -58,9 +25,6 @@
 @endpush
 
 @section('content')
-    <div class="breadcrumb">
-        <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('account.index') }}">Mon Compte</a> > <span>Mes Crédits</span>
-    </div>
 
     <div class="dashboard-container">
         @include('partials.profile-sidebar')

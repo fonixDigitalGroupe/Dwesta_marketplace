@@ -4,54 +4,103 @@
 
 @push('styles')
     <style>
-        .dashboard-container {
-            display: flex;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 1rem 2rem;
-            gap: 2rem;
-        }
-
-        .breadcrumb {
-            max-width: 1200px;
-            margin: 1rem auto 0;
-            padding: 0 1rem;
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        .breadcrumb a {
-            color: #666;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .breadcrumb span {
-            color: #333;
-            font-weight: bold;
-        }
-
-        .main-content {
-            flex: 1;
-            background: #fff;
-        }
+        /* Styles spécifiques à la page compte */
 
         .account-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
             border-bottom: 1px solid #eee;
         }
 
         .account-header h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
+            font-size: 1.1rem;
+            font-weight: 600;
             color: #333;
+            margin: 0;
+        }
+
+        /* Jumia Cards Styles */
+        .jumia-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .jumia-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .jumia-card-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .jumia-card-header h2 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #333;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .jumia-card-body {
+            padding: 1rem;
+            flex: 1;
+        }
+
+        .jumia-card-body p {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.9rem;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .jumia-card-body .top-text {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .jumia-card-body .sub-text {
+            color: #8e8e93;
+            font-size: 0.85rem;
+        }
+
+        .jumia-link {
+            color: #004aad;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .jumia-link:hover {
+            text-decoration: underline;
+        }
+
+        .edit-icon {
+            color: #004aad;
+            font-size: 1.1rem;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .jumia-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .logout-link {
@@ -185,8 +234,6 @@
             line-height: 1.4;
             margin: 0;
         }
-        }
-
         .security-alert a {
             color: #0099ff;
             text-decoration: underline;
@@ -459,176 +506,64 @@
 @endpush
 
 @section('content')
-    <div class="breadcrumb">
-        <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('account.index') }}">Mon Compte</a> > <span>Mon compte</span>
-    </div>
 
     <div class="dashboard-container">
         @include('partials.profile-sidebar')
 
         <main class="main-content">
             <div class="account-header">
-                <h1>Mon compte</h1>
-                <form method="POST" action="{{ route('logout') }}" id="logout-form">
-                    @csrf
-                    <a href="#" class="logout-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                        </svg>
-                        Déconnexion
-                    </a>
-                </form>
+                <h1>Votre compte</h1>
             </div>
 
+            @php $u = auth()->user(); @endphp
 
-
-            <div class="security-alert">
-                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-                <p>
-                    Attention votre compte n'est pas correctement sécurisé ! Pour renforcer la sécurité de votre compte, veuillez paramétrer la double authentification <a href="#">ici</a>
-                </p>
-            </div>
-
-            <div class="survey-section" x-data="{ score: 2 }">
-                <h3>Recommanderiez-vous Karnou à vos proches? <span style="color: #999;">*</span></h3>
-                <p class="survey-subtext">0 = Pas du tout probable, 10 = Très probable</p>
-                <div class="score-buttons">
-                    <template x-for="i in [0,1,2,3,4,5,6,7,8,9,10]">
-                        <button type="button" class="score-btn" :class="{ 'active': score === i }" @click="score = i" x-text="i"></button>
-                    </template>
-                </div>
-                <button type="button" class="btn-send">
-                    Envoyer
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7-7 7M5 12h16" />
-                    </svg>
-                </button>
-            </div>
-
-
-
-            <div class="dashboard-columns-grid">
-                <!-- Column 1 -->
-                <div class="column-stack">
-                    <div class="karnou-card">
-                        <div class="karnou-card-header">
-                            <span class="icon orange-icon">🎁</span>
-                            <h2>Pas encore acheteur ?</h2>
-                        </div>
-                        <div class="karnou-card-body">
-                            <p>L'achat sur Karnou c'est :</p>
-                            <ul class="karnou-list">
-                                <li><b>200 000</b> nouveaux articles mis en vente par jour</li>
-                                <li><b>Prix bas toute l'année</b></li>
-                                <li>Produits <b>neufs et d'occasion</b></li>
-                                <li>Un système d'achat immédiat</li>
-                                <li>Le <u>paiement sécurisé</u></li>
-                                <li>La <u>garantie de bonne réception</u> des produits commandés</li>
-                            </ul>
-                            <a href="{{ route('search.index') }}" class="karnou-card-btn">Tous les produits</a>
-                            <div class="karnou-card-links">
-                                <a href="#">Comment acheter ?</a>
-                            </div>
-                        </div>
+            <div class="jumia-grid">
+                <!-- Informations personnelles -->
+                <div class="jumia-card">
+                    <div class="jumia-card-header">
+                        <h2>Informations personnelles</h2>
                     </div>
-
-                    <div class="karnou-card">
-                        <div class="karnou-card-header">
-                            <span class="icon red-icon">📌</span>
-                            <h2>Mes favoris</h2>
-                        </div>
-                        <div class="karnou-card-body">
-                            <div class="sub-card-links">
-
-                                <div>
-                                    <a href="{{ route('favorites.index') }}" class="sub-card-link-item">Voir ma liste de favoris</a>
-                                    <p class="sub-card-text">Pour acheter plus tard les produits qui vous intéressent... <a href="#" style="color: #666;">en savoir plus</a></p>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-
-                <!-- Column 2 -->
-                <div class="column-stack">
-                    <div class="karnou-card">
-                        <div class="karnou-card-header">
-                            <span class="icon blue-icon" style="font-size: 0.8rem; font-weight: 800;">FCFA</span>
-                            <h2>Pas encore vendeur ?</h2>
-                        </div>
-                        <div class="karnou-card-body">
-                            <ul class="karnou-list">
-                                <li>Mettre en vente, <b><u>c'est simple et rapide</u></b></li>
-                                <li>Votre paiement est <b><u>garanti à 100 %</u></b></li>
-                                <li>L'expédition de vos produits <b><u>est gratuite</u></b></li>
-                                <li>Vendez <b><u>près de chez vous</u></b> les produits volumineux</li>
-                                <li>Tout en bénéficiant d'un <b>Service Clients à votre écoute</b></li>
-                            </ul>
-                            <a href="{{ route('annonces.create') }}" class="karnou-card-btn">Vendre maintenant</a>
-                            <div class="karnou-card-links">
-                                <a href="#">Comment vendre ?</a>
-                                <a href="#">Calcul de mes paiements</a>
-                            </div>
-                        </div>
+                    <div class="jumia-card-body">
+                        <p class="top-text">{{ $u->prenom }} {{ $u->nom }}</p>
+                        <p class="sub-text">{{ $u->email }}</p>
                     </div>
                 </div>
 
-                <!-- Column 3 -->
-                <div class="column-stack">
-                    <div class="karnou-card">
-                        <div class="karnou-card-header">
-                            <span class="icon comm-icon">💬</span>
-                            <h2>Communauté</h2>
-                        </div>
-                        <div class="karnou-card-body">
-                            <div class="sub-card-links">
-                                <a href="{{ route('conversations.index') }}" class="sub-card-link-item">Mes messages</a>
-                                <a href="#" class="sub-card-link-item">Contacter Karnou</a>
-                            </div>
-                            
-
-                        </div>
+                <!-- Adresses -->
+                <div class="jumia-card">
+                    <div class="jumia-card-header">
+                        <h2>Adresses</h2>
+                        <a href="{{ route('profile.show') }}" class="edit-icon" style="color: #f68b1e;">
+                            <i class="fa-solid fa-pen"></i>
+                        </a>
                     </div>
-
-                    <div class="karnou-card">
-                        <div class="karnou-card-header">
-                            <span class="icon finance-icon">💳</span>
-                            <h2>Mes finances</h2>
-                        </div>
-                        <div class="karnou-card-body">
-                            <div class="sub-card-links">
-                                <a href="{{ route('vendeur.wallet.index') }}" class="sub-card-link-item">Mon Porte-Monnaie</a>
-                                <a href="#" class="sub-card-link-item">Mes paiements</a>
-                                <a href="#" class="sub-card-link-item">Mes déclarations</a>
-                                <div style="border-top: 1px dotted #ccc; margin: 0.5rem 0; padding-top: 0.5rem;">
-                                    <a href="#" class="sub-card-link-item">Besoin d'aide sur votre Porte-Monnaie ?</a>
-                                    <a href="#" class="sub-card-link-item">Besoin d'aide sur vos paiements ?</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="karnou-card">
-                        <div class="karnou-card-header">
-                            <span class="icon user-icon">👤</span>
-                            <h2>Mes informations</h2>
-                        </div>
-                        <div class="karnou-card-body">
-                            <div class="sub-card-links">
-                                <a href="{{ route('profile.show') }}" class="sub-card-link-item">Mon adresse e-mail</a>
-                                <a href="{{ route('profile.show') }}" class="sub-card-link-item">Mon mot de passe</a>
-                                <a href="{{ route('profile.show') }}" class="sub-card-link-item">Double authentification</a>
-
-                            </div>
-                        </div>
+                    <div class="jumia-card-body">
+                        <p class="top-text">Adresse par défaut :</p>
+                        @if($u->adresse)
+                            <p class="sub-text">{{ $u->prenom }} {{ $u->nom }}</p>
+                            <p class="sub-text">{{ $u->adresse }}</p>
+                            <p class="sub-text">{{ $u->code_postal }}</p>
+                            <p class="sub-text">{{ $u->telephone }}</p>
+                        @else
+                            <p class="sub-text">Aucune adresse enregistrée.</p>
+                        @endif
                     </div>
                 </div>
             </div>
+
+            <div class="jumia-grid" style="grid-template-columns: 1fr;">
+                <!-- Préférences de communication -->
+                <div class="jumia-card">
+                    <div class="jumia-card-header">
+                        <h2>Préférences de communication</h2>
+                    </div>
+                    <div class="jumia-card-body">
+                        <p>Gérez vos communications par e-mail pour rester informé des dernières nouvelles et offres.</p>
+                        <a href="#" class="jumia-link">Modifier les préférences de communication</a>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
 @endsection

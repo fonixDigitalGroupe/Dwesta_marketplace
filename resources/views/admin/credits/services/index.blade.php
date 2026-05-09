@@ -2,98 +2,137 @@
 
 @section('title', 'Tarification des Services')
 
-@section('breadcrumbs')
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <span style="color: #666;">Paramètres</span>
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <span style="color: #333; font-weight: 500;">Services Annonces</span>
-@endsection
+@push('styles')
+<style>
+    .main-content { background-color: #f8f9fa !important; }
+    .amazon-card {
+        background: #fff;
+        border: 1px solid #e7e7e7;
+        border-radius: 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        padding: 20px;
+    }
+</style>
+@endpush
 
 @section('content')
-    <div style="max-width: 900px;">
+    <div style="max-width: 100%;">
+        @include('admin.partials.settings-tabs')
 
-        <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-            <h1 style="font-size: 1.375rem; color: #333; font-weight: 600;">
-                Tarification des Services
-            </h1>
-            <a href="{{ route('admin.credits.services.create') }}"
-                style="display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; background-color: #000; color: #fff; border-radius: 8px; transition: all 0.2s;" 
-                title="Ajouter un service"
-                onmouseover="this.style.opacity='0.8'" 
-                onmouseout="this.style.opacity='1'">
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path>
-                </svg>
-            </a>
-        </div>
-
-        @if(session('success'))
-            <div style="background:#d4edda;color:#155724;padding:0.75rem 1rem;border-radius:6px;margin-bottom:1rem;">{{ session('success') }}</div>
-        @endif
-
-        <!-- Table Container -->
-        <div style="background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; overflow: hidden;">
-
-            <!-- Table Header -->
-            <div style="padding: 0.875rem 1.25rem; border-bottom: 1px solid #e5e5e5;">
-                <span style="font-size: 0.8rem; color: #666;">{{ $services->count() }} service(s)</span>
+        <!-- Main Conteneur style Amazon Card -->
+        <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
+                    Tarification des Services
+                </h1>
+                
+                <div style="display: flex; gap: 8px;">
+                    <a href="{{ route('admin.credits.services.create') }}" 
+                       style="background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
+                        Nouveau service
+                    </a>
+                    <a href="{{ route('admin.credits.dashboard') }}" 
+                       style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 6px;">
+                        Tableau de bord
+                    </a>
+                </div>
             </div>
 
-            <!-- Table -->
-            <table style="width: 100%; border-collapse: collapse;">
+            @if(session('success'))
+                <div style="background-color: #f3f9f4; border: 1px solid #28a745; color: #28a745; padding: 10px 15px; font-size: 0.85rem; margin-bottom: 20px;">
+                    <i class="fas fa-check-circle" style="margin-right: 5px;"></i> {{ session('success') }}
+                </div>
+            @endif
+
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e7e7e7;">
+                <thead>
+                    <tr style="background: #f6f6f6; border-bottom: 1px solid #e7e7e7;">
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Service</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 140px;">Crédits requis</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 140px;">Durée</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 100px;">Statut</th>
+                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 150px;">Actions</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    @foreach($services as $service)
-                        <tr style="border-bottom: 1px solid #e5e5e5;">
-                            <td style="padding: 0.875rem 0.5rem; padding-left: 1.25rem;">
-                                <div style="font-size: 0.875rem; color: #333; font-weight: 500;">{{ $service->nom }}</div>
-                                <span style="font-size: 0.75rem; color: #666; font-family: monospace;">{{ $service->cle }}</span>
+                    @forelse($services as $service)
+                        <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
+                                <div style="font-size: 0.85rem; color: #0066c0; font-weight: 500;">
+                                    {{ $service->nom }}
+                                </div>
+                                <div style="font-size: 0.75rem; color: #555; margin-top: 2px;">
+                                    Clé système : <span style="font-family: monospace; color: #111;">{{ $service->cle }}</span>
+                                </div>
                             </td>
-                            <td style="padding: 0.875rem 0.5rem; text-align: center;">
-                                <span style="font-size: 0.85rem; font-weight: 600;">{{ $service->credits_requis }} crédits</span>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
+                                <span style="font-size: 0.85rem; font-weight: 600; color: #111;">{{ $service->credits_requis }}</span>
                             </td>
-                            <td style="padding: 0.875rem 0.5rem; text-align: center;">
-                                <span style="font-size: 0.85rem; color: #666;">
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
+                                <span style="font-size: 0.85rem; color: #555;">
                                     {{ $service->duree_jours ? $service->duree_jours . ' jours' : 'Permanent' }}
                                 </span>
                             </td>
-                            <td style="padding: 0.875rem 0.5rem; text-align: center;">
-                                <span style="background:{{ $service->actif ? '#d4edda' : '#f8d7da' }};color:#333;padding:0.2rem 0.6rem;border-radius:4px;font-size:0.7rem;">
-                                    {{ $service->actif ? 'Actif' : 'Inactif' }}
-                                </span>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
+                                @if($service->actif)
+                                    <span style="font-size: 0.75rem; color: #569b00; font-weight: 600;">Actif</span>
+                                @else
+                                    <span style="font-size: 0.75rem; color: #c40000; font-weight: 600;">Inactif</span>
+                                @endif
                             </td>
-                            <td style="padding: 0.875rem 1.25rem; text-align: right; display: flex; justify-content: flex-end; gap: 4px;">
-                                <a href="{{ route('admin.credits.services.edit', $service) }}" 
-                                   style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #004aad; background: #eef2ff; border-radius: 8px; transition: all 0.2s;" 
-                                   title="Modifier"
-                                   onmouseover="this.style.background='#e0e7ff'; this.style.opacity='0.8'" 
-                                   onmouseout="this.style.background='#eef2ff'; this.style.opacity='1'">
-                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                    </svg>
-                                </a>
-
-                                <form action="{{ route('admin.credits.services.destroy', $service) }}" method="POST" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr ?');">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" 
-                                            style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #ef4444; background: #fff1f2; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;" 
-                                            title="Supprimer"
-                                            onmouseover="this.style.background='#ffe4e6'; this.style.transform='scale(1.05)'" 
-                                            onmouseout="this.style.background='#fff1f2'; this.style.transform='scale(1)'">
-                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                    </button>
-                                </form>
+                            <td style="padding: 12px 15px; text-align: right;">
+                                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                                    <a href="{{ route('admin.credits.services.edit', $service) }}" 
+                                       style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
+                                       onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
+                                       onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
+                                       Modifier
+                                    </a>
+                                    <span style="color: #ddd;">|</span>
+                                    <form id="delete-form-{{ $service->id }}" action="{{ route('admin.credits.services.destroy', $service) }}" method="POST" style="display:inline;">
+                                        @csrf @method('DELETE')
+                                        <button type="button" onclick="confirmDelete({{ $service->id }})" 
+                                                style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                                onmouseover="this.style.textDecoration='underline'" 
+                                                onmouseout="this.style.textDecoration='none'">
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
+                                Aucun service configuré.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Cette action est irréversible !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e67e00',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimer !',
+                cancelButtonText: 'Annuler',
+                borderRadius: '0'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+    @endpush
 @endsection

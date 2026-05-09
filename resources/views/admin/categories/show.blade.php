@@ -95,7 +95,7 @@
                                        style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
                                        onmouseover="this.style.textDecoration='underline'" 
                                        onmouseout="this.style.textDecoration='none'">
-                                       Gérer les enfants
+                                       Détails
                                     </a>
                                     <span style="color: #ddd;">|</span>
                                     <a href="{{ route('admin.categories.edit', $enfant) }}" 
@@ -104,16 +104,6 @@
                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
                                        Modifier
                                     </a>
-                                    <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.categories.toggle-status', $enfant) }}" method="POST" style="display:inline;">
-                                        @csrf @method('PATCH')
-                                        <button type="submit" 
-                                                style="background: none; border: none; color: #0066c0; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                                onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
-                                                onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
-                                            {{ $enfant->actif ? 'Suspendre' : 'Activer' }}
-                                        </button>
-                                    </form>
                                     <span style="color: #ddd;">|</span>
                                     <form id="delete-form-{{ $enfant->id }}" action="{{ route('admin.categories.destroy', $enfant) }}" method="POST" style="display:inline;">
                                         @csrf @method('DELETE')

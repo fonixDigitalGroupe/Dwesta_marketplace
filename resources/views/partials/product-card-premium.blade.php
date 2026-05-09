@@ -9,29 +9,32 @@
 
     <div class="card-info-flat">
         <h3 class="card-title-flat">{{ $annonce->titre }}</h3>
-        
-        <div class="card-price-row-flat" style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
-            <span class="price-value-flat" style="color: #ff8c00; font-weight: 700;">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
-            @if($annonce->prix_original && $annonce->prix_original > $annonce->prix)
-                <span class="original-price-flat" style="color: #999; text-decoration: line-through; font-size: 0.75rem;">{{ number_format($annonce->prix_original, 0, ',', ' ') }} FCFA</span>
-                <span class="discount-badge-flat" style="background: #ff4d4f; color: #fff; font-size: 0.65rem; padding: 1px 4px; border-radius: 3px; font-weight: 700;">-{{ $annonce->discount_percentage }}%</span>
+
+        {{-- Prix + État --}}
+        <div class="card-price-row-flat">
+            @if($annonce->should_show_etat)
+                <span class="card-etat-badge" style="color: {{ $annonce->etat_couleur }};">{{ $annonce->etat_libelle }}</span>
+                <span class="card-price-text" style="color: #666; font-size: 0.85rem; margin: 0 2px;">dès</span>
             @endif
+            <span class="price-value-flat">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
         </div>
 
-
-        @if($annonce->vendeur && (!isset($hideSeller) || !$hideSeller))
-        <div style="font-size: 0.7rem; color: #888; margin-top: 8px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap; border-top: 1px solid #f8f8f8; padding-top: 8px;">
-            <span>Par <strong>
-                @if($annonce->vendeur->type === 'professionnel' && $annonce->vendeur->professionnel)
-                    {{ $annonce->vendeur->professionnel->nom_entreprise }}
+        {{-- Avis clients --}}
+        <div class="card-review-row">
+            @php
+                $moyenneNote = $annonce->note_moyenne ?? 0;
+                $nbAvis      = $annonce->nombre_avis ?? 0;
+            @endphp
+            @for($i = 1; $i <= 5; $i++)
+                @if($i <= floor($moyenneNote))
+                    <i class="fas fa-star"></i>
+                @elseif($i == ceil($moyenneNote) && ($moyenneNote - floor($moyenneNote)) >= 0.5)
+                    <i class="fas fa-star-half-alt"></i>
                 @else
-                    {{ $annonce->vendeur->user->prenom ?? 'Vendeur' }}
+                    <i class="far fa-star"></i>
                 @endif
-            </strong></span>
-            @if($annonce->vendeur->type === 'professionnel')
-                <span style="background: #fff; color: #333; font-size: 7px; font-weight: 800; padding: 0px 4px; border: 1px solid #ddd; text-transform: uppercase;">PRO</span>
-            @endif
+            @endfor
+            <span class="card-review-count">({{ $nbAvis }})</span>
         </div>
-        @endif
     </div>
 </a>

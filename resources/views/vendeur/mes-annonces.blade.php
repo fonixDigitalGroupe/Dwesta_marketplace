@@ -261,17 +261,14 @@
 @endpush
 
 @section('content')
-    <div class="breadcrumb">
-        <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('profile.show') }}">Mon Compte</a> > <span>Mes annonces</span>
-    </div>
 
     <div class="dashboard-container">
         @include('partials.profile-sidebar')
 
         <main class="main-content">
             <!-- Header matching Profile style -->
-            <div class="content-header">
-                <h1>Mes annonces</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+                <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Mes annonces</h1>
                 <a href="{{ route('annonces.create') }}" class="btn-create-ad-outline">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #bf0000;">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>

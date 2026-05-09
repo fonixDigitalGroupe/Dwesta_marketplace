@@ -2,140 +2,196 @@
 
 @section('title', 'Gestion des Codes Promo')
 
-@section('breadcrumbs')
-    <span style="color: #111827; font-weight: 600;">Codes Promo</span>
-@endsection
+@push('styles')
+<style>
+    .main-content { background-color: #f8f9fa !important; }
+    select:focus, input:focus {
+        border-color: #adb1b8 !important;
+        box-shadow: 0 0 3px rgba(225,121,9,0.5) !important;
+        outline: none;
+    }
+</style>
+@endpush
 
 @section('content')
 <div style="max-width: 100%;">
-    <!-- En-tête -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-        <div>
-            <h1 style="font-size: 1.5rem; font-weight: 700; color: #111827; margin: 0 0 0.5rem 0;">Codes Promo</h1>
-            <p style="color: #6b7280; margin: 0; font-size: 0.95rem;">Gérez vos coupons de réduction et offres spéciales.</p>
-        </div>
-        <a href="{{ route('admin.coupons.create') }}" style="background-color: #004aad; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: background-color 0.2s;">
-            <i class="fas fa-plus"></i> Nouveau Code Promo
-        </a>
-    </div>
+    @include('admin.partials.settings-tabs')
 
-    <!-- Filtres & Grille -->
-    <div style="background: white; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        
-        @if($coupons->count() > 0)
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <thead>
-                        <tr style="background-color: #f9fafb; border-bottom: 1px solid #e5e7eb;">
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Code</th>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Réduction</th>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Validité</th>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Utilisation</th>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em;">Statut</th>
-                            <th style="padding: 1rem 1.5rem; font-size: 0.75rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; text-align: right;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($coupons as $coupon)
-                            <tr style="border-bottom: 1px solid #e5e7eb; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f9fafb'" onmouseout="this.style.backgroundColor='transparent'">
-                                <td style="padding: 1rem 1.5rem;">
-                                    <div style="font-weight: 700; color: #111827; font-size: 1rem;">{{ $coupon->code }}</div>
-                                    @if($coupon->category)
-                                        <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">{{ $coupon->category->nom }}</div>
-                                    @else
-                                        <div style="font-size: 0.8rem; color: #6b7280; margin-top: 4px;">Toutes catégories</div>
-                                    @endif
-                                </td>
-                                
-                                <td style="padding: 1rem 1.5rem; color: #374151;">
-                                    <span style="font-weight: 600; font-size: 1.1rem;">
-                                        {{ $coupon->type == 'percent' ? $coupon->value . '%' : number_format($coupon->value, 0, ',', ' ') . ' FCFA' }}
-                                    </span>
-                                    @if($coupon->min_purchase > 0)
-                                        <div style="font-size: 0.75rem; color: #6b7280;">Dès {{ number_format($coupon->min_purchase, 0, ',', ' ') }} FCFA</div>
-                                    @endif
-                                </td>
+    {{-- Main Conteneur style Amazon Card --}}
+    <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
 
-                                <td style="padding: 1rem 1.5rem;">
-                                    @if($coupon->start_date || $coupon->end_date)
-                                        <div style="font-size: 0.85rem; color: #4b5563;">
-                                            @if($coupon->start_date)Du {{ $coupon->start_date->format('d/m/Y') }}<br>@endif
-                                            @if($coupon->end_date)Au {{ $coupon->end_date->format('d/m/Y') }}@endif
-                                        </div>
-                                    @else
-                                        <span style="font-size: 0.85rem; color: #9ca3af;">Permanent</span>
-                                    @endif
-                                </td>
-
-                                <td style="padding: 1rem 1.5rem; font-size: 0.9rem; color: #374151;">
-                                    <strong>{{ $coupon->used_count }}</strong>
-                                    @if($coupon->usage_limit)
-                                        / {{ $coupon->usage_limit }}
-                                    @else
-                                        <span style="color: #9ca3af;">/ ∞</span>
-                                    @endif
-                                </td>
-
-                                <td style="padding: 1rem 1.5rem;">
-                                    <form action="{{ route('admin.coupons.toggle-status', $coupon) }}" method="POST" style="margin: 0;">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" 
-                                                title="Cliquez pour changer le statut"
-                                                style="background: none; border: none; padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
-                                                {{ $coupon->is_active ? 'background-color: #dcfce7; color: #166534;' : 'background-color: #fee2e2; color: #991b1b;' }}">
-                                            <i class="fas fa-circle" style="font-size: 0.4rem; margin-right: 4px; vertical-align: middle;"></i>
-                                            {{ $coupon->is_active ? 'Actif' : 'Inactif' }}
-                                        </button>
-                                    </form>
-                                </td>
-
-                                <td style="padding: 1rem 1.5rem; text-align: right;">
-                                    <div style="display: flex; gap: 8px; justify-content: flex-end;">
-                                        <a href="{{ route('admin.coupons.edit', $coupon) }}" 
-                                           style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; background-color: #f3f4f6; color: #4b5563; text-decoration: none; transition: all 0.2s;"
-                                           onmouseover="this.style.backgroundColor='#e5e7eb'; this.style.color='#111827';" 
-                                           onmouseout="this.style.backgroundColor='#f3f4f6'; this.style.color='#4b5563';">
-                                            <i class="fas fa-pen" style="font-size: 0.85rem;"></i>
-                                        </a>
-
-                                        <form action="{{ route('admin.coupons.destroy', $coupon) }}" method="POST" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce code promo ? Cette action est irréversible.');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" 
-                                                    style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; background-color: #fee2e2; color: #dc2626; border: none; cursor: pointer; transition: all 0.2s;"
-                                                    onmouseover="this.style.backgroundColor='#fecaca';" 
-                                                    onmouseout="this.style.backgroundColor='#fee2e2';">
-                                                <i class="fas fa-trash" style="font-size: 0.85rem;"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            @if($coupons->hasPages())
-                <div style="padding: 1rem 1.5rem; border-top: 1px solid #e5e7eb; background: #fff;">
-                    {{ $coupons->links() }}
-                </div>
-            @endif
-
-        @else
-            <div style="padding: 4rem 2rem; text-align: center;">
-                <div style="width: 64px; height: 64px; background: #f3f4f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto; color: #9ca3af;">
-                    <i class="fas fa-tags" style="font-size: 1.5rem;"></i>
-                </div>
-                <h3 style="font-size: 1.1rem; font-weight: 600; color: #111827; margin: 0 0 0.5rem 0;">Aucun code promo</h3>
-                <p style="color: #6b7280; font-size: 0.95rem; margin: 0 0 1.5rem 0;">Commencez par créer votre premier code promotionnel pour vos clients.</p>
-                <a href="{{ route('admin.coupons.create') }}" style="background-color: #004aad; color: white; padding: 0.6rem 1.25rem; border-radius: 6px; text-decoration: none; font-weight: 500; display: inline-block;">
-                    Ajouter un code
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
+                Gestion des Codes Promo
+            </h1>
+            <div style="display: flex; gap: 8px;">
+                <a href="{{ route('admin.coupons.create') }}"
+                   style="background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
+                    Nouveau code promo
+                </a>
+                <a href="javascript:window.print()"
+                   style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 6px;">
+                    Imprimer
                 </a>
             </div>
+        </div>
+
+        {{-- Barre de filtre --}}
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 16px; border-radius: 0; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555;">
+                <span>Afficher</span>
+                <select onchange="window.location.href = '{{ route('admin.coupons.index') }}?per_page=' + this.value + '&search={{ request('search') }}'"
+                    style="padding: 4px 6px; border: 1px solid #adb1b8; border-radius: 0; background: #f0f2f2; font-size: 0.8rem; color: #111; cursor: pointer; outline: none;">
+                    <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
+                    <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                </select>
+                <span>résultats par page</span>
+            </div>
+
+            <div style="font-size: 0.8rem;">
+                <form action="{{ route('admin.coupons.index') }}" method="GET"
+                      style="display: flex; align-items: center; gap: 8px;">
+                    <input type="hidden" name="per_page" value="{{ request('per_page', 10) }}">
+                    <span style="color: #555;">Rechercher :</span>
+                    <input type="text" name="search" value="{{ request('search') }}"
+                           placeholder="Code promo ou catégorie..."
+                           style="padding: 6px 10px; border: 1px solid #adb1b8; border-radius: 0; outline: none; width: 220px; font-size: 0.8rem;">
+                </form>
+            </div>
+        </div>
+
+        {{-- Table Amazon Design --}}
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e7e7e7;">
+            <thead>
+                <tr style="background: #f6f6f6; border-bottom: 1px solid #e7e7e7;">
+                    <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Code & Catégorie</th>
+                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 140px;">Réduction</th>
+                    <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 180px;">Période</th>
+                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 120px;">Utilisation</th>
+                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 90px;">Statut</th>
+                    <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 160px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($coupons as $coupon)
+                    <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.1s;"
+                        onmouseover="this.style.background='#f9f9f9'"
+                        onmouseout="this.style.background='transparent'">
+
+                        <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
+                            <div style="font-weight: 600; color: #111; font-size: 0.9rem; letter-spacing: 0.5px;">{{ $coupon->code }}</div>
+                            <div style="font-size: 0.75rem; color: #555; margin-top: 4px;">
+                                @if($coupon->category)
+                                    <i class="fas fa-tag"></i> {{ $coupon->category->nom }}
+                                @else
+                                    <i class="fas fa-globe"></i> Partout sur le site
+                                @endif
+                            </div>
+                        </td>
+
+                        <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
+                            <span style="font-weight: 700; color: #c40000; font-size: 1rem;">
+                                {{ $coupon->type == 'percent' ? $coupon->value . '%' : number_format($coupon->value, 0, ',', ' ') . ' F' }}
+                            </span>
+                            @if($coupon->min_purchase > 0)
+                                <div style="font-size: 0.7rem; color: #777;">Dès {{ number_format($coupon->min_purchase, 0, ',', ' ') }} F</div>
+                            @endif
+                        </td>
+
+                        <td style="padding: 12px 15px; font-size: 0.8rem; color: #555; border-right: 1px solid #e7e7e7;">
+                            @if($coupon->start_date || $coupon->end_date)
+                                <div>Du : {{ $coupon->start_date ? $coupon->start_date->format('d/m/Y') : '∞' }}</div>
+                                <div>Au : {{ $coupon->end_date ? $coupon->end_date->format('d/m/Y') : '∞' }}</div>
+                            @else
+                                <span style="color: #999; font-style: italic;">Illimité</span>
+                            @endif
+                        </td>
+
+                        <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
+                            <div style="font-weight: 700; color: #111;">{{ $coupon->used_count }}</div>
+                            <div style="font-size: 0.7rem; color: #777;">sur {{ $coupon->usage_limit ?? '∞' }}</div>
+                        </td>
+
+                        <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
+                            @if($coupon->is_active)
+                                <span style="font-size: 0.75rem; color: #569b00; font-weight: 600;">Actif</span>
+                            @else
+                                <span style="font-size: 0.75rem; color: #c40000; font-weight: 600;">Inactif</span>
+                            @endif
+                        </td>
+
+                        <td style="padding: 12px 15px; text-align: right;">
+                            <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                                <a href="{{ route('admin.coupons.edit', $coupon) }}"
+                                   style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
+                                   onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
+                                   onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
+                                    Modifier
+                                </a>
+                                <span style="color: #ddd;">|</span>
+                                <form id="delete-form-{{ $coupon->id }}"
+                                      action="{{ route('admin.coupons.destroy', $coupon) }}"
+                                      method="POST" style="display:inline;">
+                                    @csrf @method('DELETE')
+                                    <button type="button"
+                                            onclick="confirmDelete({{ $coupon->id }})"
+                                            style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                            onmouseover="this.style.textDecoration='underline'"
+                                            onmouseout="this.style.textDecoration='none'">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
+                            Aucun code promo trouvé.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+
+        {{-- Pagination Info & Links --}}
+        @if($coupons->total() > 0)
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0; margin-top: 10px;">
+            <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
+                Affichage de {{ $coupons->firstItem() ?? 0 }} à {{ $coupons->lastItem() ?? 0 }} sur {{ $coupons->total() }} résultats
+            </div>
+            <div style="display: flex; border: 1px solid #adb1b8; border-radius: 0; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: #fff;">
+                @if($coupons->onFirstPage())
+                    <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;">Précédent</span>
+                @else
+                    <a href="{{ $coupons->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">Précédent</a>
+                @endif
+
+                @php
+                    $pStart = max(1, $coupons->currentPage() - 2);
+                    $pEnd   = min($coupons->lastPage(), $pStart + 4);
+                @endphp
+
+                @for($i = $pStart; $i <= $pEnd; $i++)
+                    @if($i == $coupons->currentPage())
+                        <span style="padding: 6px 12px; background: linear-gradient(to bottom, #f7dfa5, #f0c14b); color: #111; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #a88734;">{{ $i }}</span>
+                    @else
+                        <a href="{{ $coupons->url($i) }}" style="padding: 6px 12px; background: #fff; color: #555; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">{{ $i }}</a>
+                    @endif
+                @endfor
+
+                @if($coupons->hasMorePages())
+                    <a href="{{ $coupons->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;">Suivant</a>
+                @else
+                    <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;">Suivant</span>
+                @endif
+            </div>
+        </div>
         @endif
+
     </div>
 </div>
+
 @endsection

@@ -40,11 +40,11 @@ class ProfileController extends Controller
             'telephone' => ['nullable', 'string', 'max:20', 'unique:users,telephone,' . $user->id],
             'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'adresse' => ['nullable', 'string', 'max:500'],
+            'code_postal' => ['nullable', 'string', 'max:10'],
             'avatar' => ['nullable', 'image', 'max:2048'],
-            'current_password_info' => ['required', 'current_password'],
         ], $messages);
 
-        $data = $request->only(['civilite', 'prenom', 'nom', 'nationalite', 'date_de_naissance', 'telephone', 'email', 'adresse']);
+        $data = $request->only(['civilite', 'prenom', 'nom', 'nationalite', 'date_de_naissance', 'telephone', 'email', 'adresse', 'code_postal']);
 
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');

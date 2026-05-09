@@ -5,169 +5,246 @@
 @push('styles')
 <style>
     .main-content { background-color: #f8f9fa !important; }
-    input:focus, textarea:focus, select:focus {
-        border-color: #e67e00 !important;
-        box-shadow: 0 0 0 2px rgba(230,126,0,0.05) !important;
+    
+    .amazon-card {
+        background: #fff;
+        border: 1px solid #e7e7e7;
+        border-radius: 4px;
+        padding: 25px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #111;
+        margin-bottom: 8px;
+    }
+
+    .form-input, .form-select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #adb1b8;
+        border-radius: 3px;
+        font-size: 0.9rem;
+        transition: all 0.1s;
         outline: none;
+        background: #fff;
+    }
+
+    .form-input:focus, .form-select:focus {
+        border-color: #e77600 !important;
+        box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5) !important;
+    }
+
+    .btn-amazon-primary {
+        background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+        border: 1px solid #a88734;
+        border-radius: 3px;
+        color: #111;
+        padding: 8px 15px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .btn-amazon-secondary {
+        background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
+        border: 1px solid #adb1b8;
+        border-radius: 3px;
+        color: #111;
+        padding: 8px 15px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        text-decoration: none;
+    }
+
+    .dropzone-amazon {
+        border: 1px dashed #adb1b8;
+        border-radius: 4px;
+        padding: 30px;
+        text-align: center;
+        background: #f9f9f9;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .dropzone-amazon:hover {
+        border-color: #e77600;
+        background: #fff;
     }
 </style>
 @endpush
 
 @section('content')
-<div style="max-width: 100%;">
-    <!-- Main Conteneur -->
-    <div style="background: #fff; border: 1px solid #eee; border-radius: 2px; padding: 1.5rem;">
-        
-        <div style="margin-bottom: 0.5rem;">
-            <h1 style="font-size: 1.25rem; font-weight: 700; color: #333; margin: 0;">Modifier l'élément #{{ $highlight->id }}</h1>
-        </div>
-        <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1rem;"></div>
-
-        <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1rem;">
-            <a href="{{ route('admin.highlights.index') }}" style="display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #ddd; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; color: #333; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: all 0.2s;" onmouseover="this.style.borderColor='#e67e00'" onmouseout="this.style.borderColor='#ddd'">
-                Retour à la liste <i class="fas fa-undo" style="font-size: 0.75rem; opacity: 0.6;"></i>
-            </a>
-        </div>
-
-        <div style="border-bottom: 1px solid #f3f3f3; margin-bottom: 1.5rem;"></div>
-
-        @if ($errors->any())
-        <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
-            <ul style="padding-left: 1.25rem; margin: 0;">
-                @foreach ($errors->all() as $error)
-                    <li style="font-size: 0.85rem; color: #dc2626;">{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
-
-        <form action="{{ route('admin.highlights.update', $highlight) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-
-            <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start;">
-                
-                <!-- Left Column -->
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    
-                    <div style="background: #fdfdfd; border: 1px solid #f3f3f3; border-radius: 4px; padding: 1.5rem;">
-                        <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                            Contenu de l'actualité
-                        </h3>
-                        
-                        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                            <div>
-                                <label for="title" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Titre principal <small style="color: red;">*</small></label>
-                                <input type="text" name="title" id="title" value="{{ old('title', $highlight->title) }}" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                            </div>
-
-                            <div>
-                                <label for="subtitle" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Sous-titre (optionnel)</label>
-                                <input type="text" name="subtitle" id="subtitle" value="{{ old('subtitle', $highlight->subtitle) }}"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                            </div>
-
-                            <div>
-                                <label for="link_url" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">URL de redirection (Catégorie)</label>
-                                <select name="link_url" id="link_url"
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff; transition: all 0.2s;"
-                                    onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#e0e0e0'">
-                                    <option value="">-- Sélectionner une catégorie --</option>
-                                    @foreach($categories as $category)
-                                        @php
-                                            $ancetres = $category->ancetres;
-                                            if (count($ancetres) > 0) {
-                                                $racine = $ancetres[0];
-                                                $params = ['slug' => $racine->slug];
-                                                if (count($ancetres) === 1) {
-                                                    // N2
-                                                    $params['active'] = $category->id;
-                                                } else {
-                                                    // N3
-                                                    $params['active'] = $ancetres[1]->id;
-                                                    $params['n3'] = $category->id;
-                                                }
-                                                $catUrl = route('categories.show', $params, false);
-                                            } else {
-                                                // N1 (Root)
-                                                $catUrl = route('categories.show', $category->slug, false);
-                                            }
-                                        @endphp
-                                        <option value="{{ $catUrl }}" {{ old('link_url', $highlight->link_url) == $catUrl ? 'selected' : '' }}>
-                                            {{ $category->chemin }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="background: #fdfdfd; border: 1px solid #f3f3f3; border-radius: 4px; padding: 1.5rem;">
-                        <h3 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                            Image d'illustration
-                        </h3>
-                        
-                        <div style="border: 2px dashed #e2e8f0; border-radius: 8px; padding: 2.5rem; text-align: center; background: #f8fafc; cursor: pointer; position: relative; transition: all 0.2s;" 
-                             onclick="document.getElementById('image-input').click()"
-                             onmouseover="this.style.borderColor='#e67e00'; this.style.background='#fff7ed'"
-                             onmouseout="this.style.borderColor='#e2e8f0'; this.style.background='#f8fafc'">
-                            
-                            <div id="dropzone-content" style="{{ $highlight->image_path ? 'display: none;' : '' }}">
-                                <i class="fas fa-cloud-upload-alt" style="font-size: 2.5rem; color: #94a3b8; margin-bottom: 1rem;"></i>
-                                <p style="font-size: 0.9rem; color: #64748b; font-weight: 500; margin: 0;">Cliquez pour changer l'image</p>
-                            </div>
-                            <img id="preview-img" src="{{ $highlight->image_url }}" style="{{ $highlight->image_path ? 'display: inline-block;' : 'display: none;' }} max-width: 100%; max-height: 200px; object-fit: contain; border-radius: 4px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-                        </div>
-                        <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="previewImage(this)">
-                    </div>
-
-                </div>
-
-                <!-- Right Column -->
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    
-                    <div style="background: #fdfdfd; border: 1px solid #f3f3f3; border-radius: 4px; padding: 1.5rem;">
-                        <h3 style="font-size: 0.9rem; color: #333; font-weight: 600; margin-bottom: 1.25rem; border-bottom: 1px solid #eee; padding-bottom: 10px;">Configuration</h3>
-                        
-                        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-                            <div>
-                                <label for="highlight_tab_id" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Onglet (Catégorie)</label>
-                                <select name="highlight_tab_id" id="highlight_tab_id" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff;">
-                                    @foreach($tabs as $tab)
-                                        <option value="{{ $tab->id }}" {{ old('highlight_tab_id', $highlight->highlight_tab_id) == $tab->id ? 'selected' : '' }}>{{ $tab->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div>
-                                <label for="position" style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px;">Position dans la grille</label>
-                                <select name="position" id="position" required
-                                    style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; background: #fff;">
-                                    @foreach($positions as $key => $label)
-                                        <option value="{{ $key }}" {{ old('position', $highlight->position) == $key ? 'selected' : '' }}>{{ $label }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
-                            <a href="{{ route('admin.highlights.index') }}" style="flex: 1; display: flex; justify-content: center; padding: 12px; background: #fff; border: 1px solid #ddd; border-radius: 6px; color: #333; text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: background 0.2s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='#fff'">
-                                Annuler
-                            </a>
-                            <button type="submit" style="flex: 1; background-color: #e67e00; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                                Enregistrer
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    
+    {{-- Header --}}
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h1 style="font-size: 1.5rem; font-weight: 500; color: #111; margin: 0;">Modifier l'Actualité</h1>
+        <a href="{{ route('admin.highlights.index') }}" class="btn-amazon-secondary">
+            <i class="fas fa-arrow-left"></i> Retour à la liste
+        </a>
     </div>
+
+    @if ($errors->any())
+    <div style="background: #FFF4F4; border: 1px solid #c40000; border-radius: 4px; padding: 15px; margin-bottom: 25px;">
+        <div style="color: #c40000; font-weight: 700; margin-bottom: 5px; font-size: 0.9rem;">
+            <i class="fas fa-exclamation-triangle"></i> Des erreurs sont survenues :
+        </div>
+        <ul style="margin: 0; padding-left: 20px;">
+            @foreach ($errors->all() as $error)
+                <li style="color: #c40000; font-size: 0.85rem;">{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    <form action="{{ route('admin.highlights.update', $highlight) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+
+        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 25px;">
+            
+            {{-- Colonne Gauche --}}
+            <div style="display: flex; flex-direction: column; gap: 25px;">
+                
+                <div class="amazon-card">
+                    <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                        Contenu de l'actualité
+                    </h2>
+
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <label for="title" class="form-label">Titre principal <span style="color: #c40000;">*</span></label>
+                            <input type="text" name="title" id="title" value="{{ old('title', $highlight->title) }}" class="form-input" placeholder="Ex: Mode Homme, Été 2025..." required>
+                        </div>
+
+                        <div>
+                            <label for="subtitle" class="form-label">Sous-titre <span style="font-weight: 400; color: #565959;">— optionnel</span></label>
+                            <input type="text" name="subtitle" id="subtitle" value="{{ old('subtitle', $highlight->subtitle) }}" class="form-input" placeholder="Ex: Nouveautés été">
+                        </div>
+
+                        <div>
+                            <label for="link_url" class="form-label">Catégorie de redirection</label>
+                            <select name="link_url" id="link_url" class="form-select">
+                                <option value="">-- Sélectionner une catégorie --</option>
+                                @foreach($categories as $category)
+                                    @php
+                                        $ancetres = $category->ancetres;
+                                        if (count($ancetres) > 0) {
+                                            $racine = $ancetres[0];
+                                            $params = ['slug' => $racine->slug];
+                                            if (count($ancetres) === 1) {
+                                                $params['active'] = $category->id;
+                                            } else {
+                                                $params['active'] = $ancetres[1]->id;
+                                                $params['n3'] = $category->id;
+                                            }
+                                            $catUrl = route('categories.show', $params, false);
+                                        } else {
+                                            $catUrl = route('categories.show', $category->slug, false);
+                                        }
+                                    @endphp
+                                    <option value="{{ $catUrl }}" {{ old('link_url', $highlight->link_url) == $catUrl ? 'selected' : '' }}>
+                                        {{ $category->chemin }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="amazon-card">
+                    <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                        Image d'illustration
+                    </h2>
+
+                    <div class="dropzone-amazon" onclick="document.getElementById('image-input').click()">
+                        <div id="dropzone-content" style="{{ $highlight->image_path ? 'display: none;' : '' }}">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 40px; color: #bbb; margin-bottom: 10px;"></i>
+                            <p style="font-size: 0.9rem; color: #111; font-weight: 700;">Changer l'image</p>
+                        </div>
+                        <img id="preview-img" src="{{ $highlight->image_url }}" style="{{ $highlight->image_path ? 'display: inline-block;' : 'display: none;' }} max-width: 100%; max-height: 250px; object-fit: contain; border-radius: 2px;">
+                        
+                        <div style="margin-top: 15px; color: #565959; font-size: 0.85rem;">
+                             Cliquer pour sélectionner un nouveau fichier
+                        </div>
+                    </div>
+                    <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="previewImage(this)">
+                </div>
+
+            </div>
+
+            {{-- Colonne Droite --}}
+            <div style="display: flex; flex-direction: column; gap: 25px;">
+                
+                <div class="amazon-card">
+                    <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 15px; color: #111;">Configuration</h2>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <label for="highlight_tab_id" class="form-label">Onglet parent <span style="color: #c40000;">*</span></label>
+                            <select name="highlight_tab_id" id="highlight_tab_id" class="form-select" required>
+                                @foreach($tabs as $tab)
+                                    <option value="{{ $tab->id }}" {{ old('highlight_tab_id', $highlight->highlight_tab_id) == $tab->id ? 'selected' : '' }}>{{ $tab->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="position" class="form-label">Position dans la grille <span style="color: #c40000;">*</span></label>
+                            <select name="position" id="position" class="form-select" required>
+                                @foreach($positions as $key => $label)
+                                    <option value="{{ $key }}" {{ old('position', $highlight->position) == $key ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div style="background: #fcfcfc; border: 1px solid #eee; padding: 15px; border-radius: 4px;">
+                            <div style="display: flex; align-items: start; gap: 10px;">
+                                <input type="checkbox" name="active" id="active" value="1" {{ old('active', $highlight->active) ? 'checked' : '' }} 
+                                       style="width: 18px; height: 18px; cursor: pointer; accent-color: #e47911; margin-top: 2px;">
+                                <label for="active" style="cursor: pointer;">
+                                    <div style="font-size: 0.85rem; font-weight: 700; color: #111;">Rendre visible sur le site</div>
+                                    <div style="font-size: 0.75rem; color: #555;">Désactivez pour masquer sans supprimer.</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 25px; display: flex; flex-direction: column; gap: 12px;">
+                        <button type="submit" class="btn-amazon-primary" style="width: 100%; height: 40px;">
+                            Enregistrer les modifications
+                        </button>
+                        <a href="{{ route('admin.highlights.index') }}" class="btn-amazon-secondary" style="width: 100%; height: 40px;">
+                            Annuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="amazon-card" style="padding: 20px; background: #fdfdfd; border-color: #e2e2e2;">
+                    <div style="font-size: 0.85rem; color: #555;">
+                        <i class="fas fa-info-circle" style="color: #0066c0; margin-right: 5px;"></i>
+                        Dernière mise à jour : <br>
+                        <strong style="color: #111;">{{ $highlight->updated_at->format('d/m/Y H:i') }}</strong>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </form>
 </div>
 
 <script>

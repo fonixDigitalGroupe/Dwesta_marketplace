@@ -100,15 +100,14 @@
 @endpush
 
 @section('content')
-<div class="breadcrumb">
-    <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('account.index') }}">Mon Compte</a> > <span>Cartes cadeaux</span>
-</div>
 
 <div class="dashboard-container">
     @include('partials.profile-sidebar')
 
     <main class="main-content gift-card-page">
-        <h1 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 1.5rem;">Cartes cadeaux</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+            <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Cartes cadeaux</h1>
+        </div>
 
         @if(session('success'))
             <div style="background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #c8e6c9;">
@@ -138,27 +137,25 @@
         <div class="gift-card-box">
             <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem;">Acheter une carte cadeau</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
-                <!-- Pack 5000 -->
-                <div style="border: 2px solid #eee; border-radius: 12px; padding: 1.5rem; text-align: center;">
-                    <div style="font-size: 1.5rem; font-weight: 900; margin-bottom: 0.5rem;">5 000 FCFA</div>
-                    <p style="color: #888; font-size: 0.8rem; margin-bottom: 1.5rem;">Idéal pour un petit cadeau</p>
-                    <form action="{{ route('gift-cards.buy') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="amount" value="5000">
-                        <button type="submit" style="width: 100%; padding: 0.75rem; border: none; background: #ef6c00; color: white; border-radius: 6px; font-weight: bold; cursor: pointer;">Acheter</button>
-                    </form>
-                </div>
-                <!-- Pack 10000 -->
-                <div style="border: 2px solid #ef6c00; border-radius: 12px; padding: 1.5rem; text-align: center; position: relative;">
-                    <span style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #ef6c00; color: white; font-size: 0.65rem; padding: 2px 10px; border-radius: 10px; font-weight: 800;">POPULAIRE</span>
-                    <div style="font-size: 1.5rem; font-weight: 900; margin-bottom: 0.5rem;">10 000 FCFA</div>
-                    <p style="color: #888; font-size: 0.8rem; margin-bottom: 1.5rem;">Le cadeau parfait</p>
-                    <form action="{{ route('gift-cards.buy') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="amount" value="10000">
-                        <button type="submit" style="width: 100%; padding: 0.75rem; border: none; background: #ef6c00; color: white; border-radius: 6px; font-weight: bold; cursor: pointer;">Acheter</button>
-                    </form>
-                </div>
+                @forelse($giftCardOptions as $option)
+                    <!-- Pack {{ $option->amount }} -->
+                    <div style="border: 2px solid {{ $option->is_popular ? '#ef6c00' : '#eee' }}; border-radius: 12px; padding: 1.5rem; text-align: center; position: relative;">
+                        @if($option->is_popular)
+                            <span style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #ef6c00; color: white; font-size: 0.65rem; padding: 2px 10px; border-radius: 10px; font-weight: 800; text-transform: uppercase;">Populaire</span>
+                        @endif
+                        <div style="font-size: 1.5rem; font-weight: 900; margin-bottom: 0.5rem;">{{ number_format($option->amount, 0, ',', ' ') }} FCFA</div>
+                        @if($option->description)
+                            <p style="color: #888; font-size: 0.8rem; margin-bottom: 1.5rem;">{{ $option->description }}</p>
+                        @endif
+                        <form action="{{ route('gift-cards.buy') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="amount" value="{{ $option->amount }}">
+                            <button type="submit" style="width: 100%; padding: 0.75rem; border: none; background: #ef6c00; color: white; border-radius: 6px; font-weight: bold; cursor: pointer;">Acheter</button>
+                        </form>
+                    </div>
+                @empty
+                    <p style="color: #666; font-size: 0.9rem;">Aucune option de carte cadeau n'est disponible pour le moment.</p>
+                @endforelse
             </div>
         </div>
 

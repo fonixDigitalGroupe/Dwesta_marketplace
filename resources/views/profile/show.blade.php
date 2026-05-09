@@ -10,7 +10,7 @@
 
         /* Rakuten Style Forms */
         .rakuten-form-container {
-            max-width: 600px;
+            max-width: 800px;
             padding: 1rem 0;
             text-align: left;
         }
@@ -45,7 +45,20 @@
 
         .rakuten-field-group {
             margin-bottom: 1rem;
-            max-width: 320px;
+            width: 100%;
+        }
+
+        .rakuten-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .rakuten-form-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .rakuten-field {
@@ -101,16 +114,15 @@
 
         .rakuten-success-alert {
             background-color: #f6fff6;
-            border: 1px solid #00a650;
-            color: #333;
-            padding: 0.5rem 0.75rem;
+            color: #00a650;
+            padding: 0.6rem 1rem;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.6rem;
             font-size: 0.88rem;
-            max-width: 100%;
-            border-radius: 2px;
+            font-weight: 600;
+            border-radius: 4px;
         }
 
         .rakuten-success-alert .success-icon {
@@ -137,8 +149,26 @@
             background: transparent;
         }
 
+        .rakuten-input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .rakuten-input option {
+            background: #fff;
+            color: #333;
+        }
+
+        .rakuten-input option:hover,
+        .rakuten-input option:focus,
+        .rakuten-input option:active,
+        .rakuten-input option:checked {
+            background-color: #eee !important;
+            background: #eee !important;
+        }
+
         .btn-rakuten {
-            background: #000;
+            background: #004aad;
             color: #fff;
             padding: 0.5rem 1.5rem;
             border: none;
@@ -181,23 +211,23 @@
         .content-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
+            padding-bottom: 0.5rem;
             margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
         }
 
         .content-header h1 {
-            font-size: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
             color: #333;
-            font-weight: 700;
+            margin: 0;
         }
     </style>
 @endpush
 
 @section('content')
     <!-- Breadcrumb (Above sidebar) -->
-    <div class="breadcrumb">
-        <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('profile.show') }}">Mon Compte</a> > <span>Mon Profil</span>
-    </div>
 
     <div class="dashboard-container">
         @include('partials.profile-sidebar')
@@ -246,62 +276,92 @@
                         </label>
                     </div>
 
-                    <div class="rakuten-field-group">
-                        <div class="rakuten-field">
-                            <label class="rakuten-label">Prénom</label>
-                            <input type="text" name="prenom" class="rakuten-input"
-                                value="{{ old('prenom', $user->prenom) }}" required>
+                    <div class="rakuten-form-grid">
+                        <div class="rakuten-field-group">
+                            <div class="rakuten-field">
+                                <label class="rakuten-label">Prénom</label>
+                                <input type="text" name="prenom" class="rakuten-input"
+                                    value="{{ old('prenom', $user->prenom) }}" required>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="rakuten-field-group">
-                        <div class="rakuten-field">
-                            <label class="rakuten-label">Nom</label>
-                            <input type="text" name="nom" class="rakuten-input" value="{{ old('nom', $user->nom) }}">
+                        <div class="rakuten-field-group">
+                            <div class="rakuten-field">
+                                <label class="rakuten-label">Nom</label>
+                                <input type="text" name="nom" class="rakuten-input" value="{{ old('nom', $user->nom) }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="rakuten-field-group">
-                        <div class="rakuten-field">
-                            <label class="rakuten-label">Nationalité</label>
-                            <input type="text" name="nationalite" class="rakuten-input"
-                                value="{{ old('nationalite', $user->nationalite) }}">
+                        <div class="rakuten-field-group">
+                            <div class="rakuten-field">
+                                <label class="rakuten-label">Nationalité</label>
+                                <select name="nationalite" class="rakuten-input" style="appearance: none; -webkit-appearance: none; cursor: pointer;">
+                                    @php
+                                        $countries = [
+                                            'Sénégal' => '🇸🇳', 
+                                            'Mali' => '🇲🇱', 
+                                            'Côte d\'Ivoire' => '🇨🇮', 
+                                            'Guinée' => '🇬🇳', 
+                                            'Mauritanie' => '🇲🇷', 
+                                            'Bénin' => '🇧🇯', 
+                                            'Burkina Faso' => '🇧🇫', 
+                                            'Cameroun' => '🇨🇲', 
+                                            'Congo' => '🇨🇬', 
+                                            'Gabon' => '🇬🇦', 
+                                            'Niger' => '🇳🇪', 
+                                            'Togo' => '🇹🇬', 
+                                            'Afrique du Sud' => '🇿🇦', 
+                                            'Algérie' => '🇩🇿', 
+                                            'Maroc' => '🇲🇦', 
+                                            'Tunisie' => '🇹🇳', 
+                                            'France' => '🇫🇷'
+                                        ];
+                                        $currentNationalite = old('nationalite', $user->nationalite);
+                                    @endphp
+                                    <option value="">Choisir un pays</option>
+                                    @foreach($countries as $name => $flag)
+                                        <option value="{{ $name }}" {{ $currentNationalite == $name ? 'selected' : '' }}>
+                                            {{ $flag }} {{ $name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="rakuten-field-group">
-                        <div class="rakuten-field">
-                            <label class="rakuten-label">Tel</label>
-                            <input type="tel" name="telephone" class="rakuten-input"
-                                value="{{ old('telephone', $user->telephone) }}">
+                        <div class="rakuten-field-group">
+                            <div class="rakuten-field">
+                                <label class="rakuten-label">Tel</label>
+                                <input type="tel" name="telephone" class="rakuten-input"
+                                    value="{{ old('telephone', $user->telephone) }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="rakuten-field-group">
-                        <div class="rakuten-field">
-                            <label class="rakuten-label">E-mail actuel</label>
-                            <input type="email" name="email" class="rakuten-input" value="{{ old('email', $user->email) }}"
-                                required>
+                        <div class="rakuten-field-group">
+                            <div class="rakuten-field">
+                                <label class="rakuten-label">Adresse</label>
+                                <input type="text" name="adresse" class="rakuten-input"
+                                    value="{{ old('adresse', $user->adresse) }}">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="rakuten-field-group">
-                        <div class="rakuten-field">
-                            <label class="rakuten-label">Mot de passe actuel</label>
-                            <div class="password-container">
-                                <input type="password" name="current_password_info"
-                                    class="rakuten-input password-toggle-input">
-                                <button type="button" class="eye-toggle" @click="togglePassword($event)">
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                </button>
+                        <div class="rakuten-field-group">
+                            <div class="rakuten-field">
+                                <label class="rakuten-label">Code Postal</label>
+                                <input type="text" name="code_postal" class="rakuten-input"
+                                    value="{{ old('code_postal', $user->code_postal) }}">
+                            </div>
+                        </div>
+
+                        <div class="rakuten-field-group" style="grid-column: span 2;">
+                            <div class="rakuten-field">
+                                <label class="rakuten-label">E-mail actuel</label>
+                                <input type="email" name="email" class="rakuten-input" value="{{ old('email', $user->email) }}"
+                                    required>
                             </div>
                         </div>
                     </div>
+
+
 
                     <button type="submit" class="btn-rakuten">Valider</button>
                 </form>

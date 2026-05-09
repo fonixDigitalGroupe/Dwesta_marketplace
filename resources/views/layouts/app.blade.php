@@ -17,7 +17,7 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #ffffff; /* Page background white as requested */
+            background-color: #f5f5f5; /* Premium Light Gray */
             color: #333;
             overflow-x: hidden;
         }
@@ -36,8 +36,11 @@
         /* Modern Header Design */
         .header {
             background-color: #ffffff;
-            position: relative;
-            z-index: 100;
+            position: sticky;
+            top: 0;
+            z-index: 2000;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            border-bottom: 1px solid #eee;
         }
 
         .header-row-1 {
@@ -292,12 +295,13 @@
         }
 
         .badge-style {
-            background: #eeeeee;
-            padding: 4px 16px;
+            background: #fcfcfc;
+            border: 1px solid #eee;
+            padding: 5px 14px;
             border-radius: 50px;
-            font-weight: 700; /* Unified font weight */
-            color: #333;
-            font-size: 0.9rem; /* Unified font size */
+            font-weight: 500;
+            color: #555;
+            font-size: 0.88rem;
             transition: all 0.2s;
             text-decoration: none;
             display: inline-flex;
@@ -428,7 +432,7 @@
         }
 
         .active-cat-item {
-            background: #000 !important;
+            background: #004aad !important;
             color: #fff !important;
         }
 
@@ -468,10 +472,10 @@
                 flex-wrap: wrap;
             }
 
-            .search-container {
-                order: 3;
+            .shop-container {
+                background-color: white;
                 max-width: none;
-                margin-top: 0.5rem;
+                margin: 0;
             }
 
             .header-actions {

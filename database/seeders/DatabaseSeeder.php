@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             CreditTransactionSeeder::class, // Crédits
             LitigeSeeder::class,            // Litiges
             HighlightSeeder::class,         // Actualités (Bento Grid)
+            GiftCardOptionSeeder::class,    // Options de cartes cadeaux
         ]);
     }
 }

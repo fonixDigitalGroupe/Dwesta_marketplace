@@ -288,9 +288,6 @@
         }
     </style>
 
-    <div class="breadcrumb">
-        <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('profile.show') }}">Mon Compte</a> > <span>Devenir Vendeur</span>
-    </div>
 
     <div class="dashboard-container">
         @include('partials.profile-sidebar')

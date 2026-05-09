@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GiftCard;
+use App\Models\GiftCardOption;
 use App\Services\CreditService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,13 +25,16 @@ class GiftCardController extends Controller
     {
         $user = Auth::user();
         
+        // Options de cartes cadeaux dynamiques
+        $giftCardOptions = GiftCardOption::where('is_active', true)->orderBy('amount')->get();
+
         // Cartes achetées par l'utilisateur
         $boughtCards = GiftCard::where('buyer_id', $user->id)->latest()->get();
         
         // Cartes utilisées par l'utilisateur
         $redeemedCards = GiftCard::where('user_id', $user->id)->latest()->get();
 
-        return view('gift_cards.index', compact('boughtCards', 'redeemedCards'));
+        return view('gift_cards.index', compact('giftCardOptions', 'boughtCards', 'redeemedCards'));
     }
 
     /**
