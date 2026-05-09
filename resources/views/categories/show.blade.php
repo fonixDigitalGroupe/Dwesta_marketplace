@@ -14,7 +14,7 @@
     /* N1 Grand Presentation Header */
     .n1-grand-banner {
         width: 100%;
-        height: 180px;
+        height: 260px;
         background-color: #ffffff;
         background-image: url('https://images.unsplash.com/photo-1589923188900-85dae523342b?q=80&w=2070&auto=format&fit=crop'); /* Placeholder image representing garden/tools */
         background-size: cover;
@@ -90,7 +90,7 @@
         font-size: 0.85rem;
         transition: all 0.2s ease, transform 0.15s;
     }
-    .n1-nav-home-btn:hover { background-color: #ee8800; color: #fff; transform: scale(1.08); }
+    .n1-nav-home-btn:hover { background-color: #004aad; color: #fff; transform: scale(1.08); }
 
     body { 
         margin: 0; 
@@ -128,9 +128,9 @@
         white-space: nowrap;
         transition: color 0.2s;
     }
-    .n1-cat-nav-link:hover { color: #ee8800; font-weight: 600; }
+    .n1-cat-nav-link:hover { color: #004aad; font-weight: 600; }
     .n1-cat-nav-link.active {
-        background-color: #ee8800;
+        background-color: #004aad;
         color: #fff !important;
         padding: 5px 16px;
         border-radius: 20px;
@@ -138,7 +138,7 @@
         border-bottom: none;
     }
     .n1-nav-home-btn.active {
-        background-color: #ee8800 !important;
+        background-color: #004aad !important;
         color: #fff !important;
     }
 
@@ -179,124 +179,153 @@
     .ads-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.5rem; }
     .catalog-main-column { overflow: hidden; }
 
-    /* Top Consulted Section */
+    /* Top Consulted Section (Homepage Style) */
     .n1-top-consulted-section {
-        padding: 3rem 0;
+        padding: 4rem 0 1rem 0;
         background: #fff;
+        margin-top: 2rem;
     }
-    .n1-top-consulted-title {
+    .sections-global-title {
         font-family: 'Outfit', sans-serif;
-        font-size: 1.6rem;
+        font-size: 1.4rem;
         font-weight: 700;
-        color: #333;
+        color: #1a1a1a;
         text-align: center;
         margin-bottom: 2rem;
     }
     .n1-top-consulted-carousel {
-        position: relative;
-        max-width: 1300px;
+        max-width: 1400px;
         margin: 0 auto;
+        position: relative;
         padding: 0 50px;
     }
     .n1-top-grid {
         display: flex;
-        gap: 12px;
+        gap: 1.5rem;
         overflow-x: hidden;
         scroll-behavior: smooth;
-        padding: 10px 0;
+        padding: 1.5rem 0.5rem;
     }
-    .n1-top-card {
-        flex: 0 0 calc(16.66% - 10px);
-        min-width: 190px;
+    
+    /* Product Card Premium (Flat Style) */
+    .premium-card-flat {
+        flex: 0 0 220px;
         background: #fff;
         border: 1px solid #efefef;
-        border-radius: 8px;
-        padding: 1.25rem;
+        border-radius: 12px;
+        padding: 1rem;
         text-decoration: none;
-        color: inherit;
         display: flex;
         flex-direction: column;
-        transition: transform 0.2s, box-shadow 0.2s;
+        height: 100%;
+        transition: border-color 0.2s;
     }
-    .n1-top-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        border-color: #ddd;
+    .premium-card-flat:hover {
+        border-color: #eee;
+        transform: none !important;
+        box-shadow: none !important;
     }
-    .n1-top-media {
+    .card-media-flat {
         width: 100%;
-        height: 160px;
+        height: 180px;
+        margin-bottom: 1rem;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1rem;
+        overflow: hidden;
+        background: #fff;
     }
-    .n1-top-media img {
+    .card-media-flat img {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
     }
-    .n1-top-info {
-        flex: 1;
+    .card-info-flat {
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
     }
-    .n1-top-item-title {
-        font-size: 0.85rem;
+    .card-title-flat {
+        font-size: 0.95rem;
         line-height: 1.4;
-        color: #555;
-        margin-bottom: 0.8rem;
-        height: 2.8rem;
+        color: #1a1a1a;
+        margin-bottom: 8px;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+        font-weight: 800;
+        min-height: 2.8rem;
     }
-    .n1-top-price-row {
-        margin-bottom: 0.8rem;
+    .card-price-row-flat {
+        margin-top: auto;
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        flex-wrap: wrap;
     }
-    .n1-top-price-state {
-        font-size: 0.85rem;
-        color: #333;
-        font-weight: 500;
+    .price-value-flat {
+        color: #ff9900;
+        font-weight: 800;
+        font-size: 1.2rem;
     }
-    .n1-top-price-val {
-        color: #ee8800;
+    .card-etat-badge {
+        font-size: 0.75rem;
         font-weight: 700;
-        font-size: 1.05rem;
+        text-transform: uppercase;
     }
-    .n1-top-rating {
+    .card-review-row {
         display: flex;
         align-items: center;
-        gap: 4px;
-        margin-top: auto;
-    }
-    .n1-top-stars {
+        gap: 2px;
         color: #ffc107;
         font-size: 0.75rem;
-        display: flex;
+        margin-top: 6px;
     }
-    .n1-top-rating-count {
-        font-size: 0.75rem;
-        color: #999;
+    .card-review-count {
+        color: #007185;
+        margin-left: 4px;
     }
-    .n1-top-footer {
-        text-align: center;
-        margin-top: 2rem;
-    }
-    .btn-voir-plus-outline {
-        display: inline-block;
-        padding: 0.8rem 3rem;
-        border: 1.5px solid #333;
-        border-radius: 999px;
+
+    .carousel-arrow-btn {
+        width: 44px;
+        height: 44px;
         background: #fff;
-        color: #333;
-        font-weight: 600;
+        border: 1px solid #e0e0e0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: all 0.2s;
+        z-index: 10;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .carousel-arrow-btn:hover {
+        background: #f8f8f8;
+        border-color: #004aad;
+        color: #004aad;
+    }
+    .btn-left { left: 0; }
+    .btn-right { right: 0; }
+
+    .btn-clean-pill {
+        display: inline-block;
+        padding: 0.7rem 3rem;
+        border: 1.5px solid #1a1a1a;
+        border-radius: 999px;
+        background: transparent;
+        color: #1a1a1a;
+        font-weight: 700;
         text-decoration: none;
         transition: all 0.2s;
+        font-family: 'Outfit', sans-serif;
     }
-    .btn-voir-plus-outline:hover {
-        background: #333;
+    .btn-clean-pill:hover {
+        background: #1a1a1a;
         color: #fff;
     }
     
@@ -368,10 +397,10 @@
 
 @if($category->parent_id === null && request('view') !== 'list' && isset($topConsultes) && $topConsultes->count() > 0)
     <section class="n1-top-consulted-section">
-        <h2 class="n1-top-consulted-title">Top des produits les plus consultés</h2>
+        <h2 class="sections-global-title">Top des produits les plus consultés</h2>
         
         <div class="n1-top-consulted-carousel">
-            <button class="n1-carousel-arrow n1-arrow-left" onclick="n1CarouselScroll('n1-top-products', -1)" aria-label="Précédent" style="background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <button class="carousel-arrow-btn btn-left" onclick="n1CarouselScroll('n1-top-products', -1)" aria-label="Précédent">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
             
@@ -380,49 +409,19 @@
                     @php
                         $itemN2Id = ($annonce->category->parent && $annonce->category->parent->parent_id === null) ? $annonce->categorie_id : $annonce->category->parent_id;
                     @endphp
-                    <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-top-card global-filter-item" data-n2="{{ $itemN2Id }}">
-                        <div class="n1-top-media">
-                            @if($annonce->photoPrincipale())
-                                <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
-                            @else
-                                <div class="no-photo" style="font-size: 0.7rem; color: #ccc;">No photo</div>
-                            @endif
-                        </div>
-                        <div class="n1-top-info">
-                            <h3 class="n1-top-item-title">{{ $annonce->titre }}</h3>
-                                <div class="n1-top-price-row">
-                                    @if($annonce->should_show_etat)
-                                        <span class="n1-top-price-state" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat == 'occasion' ? 'Occasions dès' : ($annonce->etat == 'reconditionne' ? 'Reconditionnés dès' : 'Neufs dès') }}</span>
-                                    @endif
-                                    <span class="n1-top-price-val" style="font-weight: 800;">{{ number_format($annonce->prix, 0, ',', ' ') }} €</span>
-                                </div>
-                            
-                            <div class="n1-top-rating">
-                                <div class="n1-top-stars">
-                                    @php $rating = rand(4, 5); @endphp
-                                    @for($i=0; $i<5; $i++)
-                                        @if($i < $rating)
-                                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                        @else
-                                            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                        @endif
-                                    @endfor
-                                </div>
-                                <span class="n1-top-rating-count">{{ rand(5, 120) }}</span>
-                            </div>
-                        </div>
-                    </a>
+                    @include('partials.product-card-premium', [
+                        'annonce' => $annonce, 
+                        'class' => 'global-filter-item', 
+                        'attributes' => 'data-n2="' . $itemN2Id . '"'
+                    ])
                 @endforeach
             </div>
 
-            <button class="n1-carousel-arrow n1-arrow-right" onclick="n1CarouselScroll('n1-top-products', 1)" aria-label="Suivant" style="background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <button class="carousel-arrow-btn btn-right" onclick="n1CarouselScroll('n1-top-products', 1)" aria-label="Suivant">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
         </div>
 
-        <div class="n1-top-footer">
-            <a href="{{ route('categories.show', ['slug' => $category->slug, 'view' => 'list']) }}" class="btn-voir-plus-outline">Voir plus</a>
-        </div>
     </section>
 @endif
 
@@ -510,41 +509,26 @@
                 </div>
             @elseif($annonces->count() > 0)
                 <div class="n1-offers-section">
-                    <h2 class="n1-offers-title">Nos produits phares</h2>
-                    <div class="n1-carousel-wrapper">
-                        <button class="n1-carousel-arrow n1-arrow-left" onclick="n1CarouselScroll('n1-carousel-offers', -1)" aria-label="Précédent">
+                    <h2 class="sections-global-title">Nos produits phares de nos marchands pro</h2>
+                    <div class="n1-top-consulted-carousel">
+                        <button class="carousel-arrow-btn btn-left" onclick="n1CarouselScroll('n1-carousel-offers', -1)" aria-label="Précédent">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
                         </button>
-                        <div class="n1-catalog-grid" id="n1-carousel-offers">
+                        <div class="n1-top-grid" id="n1-carousel-offers">
                             @foreach($annonces as $annonce)
                                 @php
                                     $itemN2Id = ($annonce->category->parent && $annonce->category->parent->parent_id === null) ? $annonce->categorie_id : $annonce->category->parent_id;
                                 @endphp
-                                <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-promo-card global-filter-item" data-n2="{{ $itemN2Id }}">
-                                    <div class="n1-card-media">
-                                        @if($annonce->photoPrincipale())
-                                            <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
-                                        @else
-                                            <div class="no-photo">Pas de photo</div>
-                                        @endif
-                                    </div>
-                                    <div class="n1-card-title">{{ \Illuminate\Support\Str::limit($annonce->titre, 55) }}</div>
-                                    
-                                    <div class="n1-card-footer">
-                                        <div class="n1-footer-left">
-                                            <div class="n1-actual-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</div>
-                                        </div>
-                                    </div>
-                                </a>
+                                @include('partials.product-card-premium', [
+                                    'annonce' => $annonce, 
+                                    'class' => 'global-filter-item', 
+                                    'attributes' => 'data-n2="' . $itemN2Id . '"'
+                                ])
                             @endforeach
                         </div>
-                        <button class="n1-carousel-arrow n1-arrow-right" onclick="n1CarouselScroll('n1-carousel-offers', 1)" aria-label="Suivant">
+                        <button class="carousel-arrow-btn btn-right" onclick="n1CarouselScroll('n1-carousel-offers', 1)" aria-label="Suivant">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
                         </button>
-                    </div>
-                    
-                    <div class="n1-section-footer">
-                        <a href="#" class="btn-voir-plus-white">Voir plus d'offres</a>
                     </div>
                 </div>
             @endif
@@ -592,18 +576,14 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
                         </button>
                     </div>
-                    @if($dealsMarchands->count() > 18)
-                    <div class="n1-section-footer" style="margin-top: 1.5rem; text-align: center;">
-                        <button class="btn-voir-plus" onclick="toggleDealsGrid()" style="border-color: #333; color: #333;">Voir plus de deals</button>
-                    </div>
                 </div>
                 @endif
-            @endif
+
 
                 @if($selectionAnnonces->count() > 0)
                     <div class="n1-selection-section">
                         <div class="n1-selection-container">
-                            <h2 class="n1-selection-title">Notre sélection {{ $category->nom }}</h2>
+                            <h2 class="sections-global-title">Notre sélection {{ $category->nom }}</h2>
                             
                             <div class="n1-filter-bar">
                                 <div class="n1-filter-item">
@@ -666,40 +646,14 @@
                                          data-etat="{{ $normEtat }}"
                                          data-price="{{ $annonce->prix }}"
                                          style="{{ $index >= 18 ? 'display: none;' : '' }}">
-                                        <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-promo-card">
-                                            <div class="n1-card-media">
-                                                @if($annonce->photoPrincipale())
-                                                    <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
-                                                @else
-                                                    <div class="no-photo">Pas de photo</div>
-                                                @endif
-                                            </div>
-                                            <div class="n1-card-title">{{ \Illuminate\Support\Str::limit($annonce->titre, 55) }}</div>
-                                            
-                                            <div class="n1-merchant-deals-info">
-                                                <div class="n1-v2-price-row">
-                                                    <span class="n1-v2-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
-                                                    @if($annonce->should_show_etat)
-                                                        <span class="n1-v2-state" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
-                                                    @endif
-                                                </div>
-                                                <div class="n1-v2-merchant-row">
-                                                    <span class="n1-v2-shop-name">Par {{ $annonce->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}</span>
-                                                    <span class="n1-v2-badge-pro">PRO</span>
-                                                </div>
-                                            </div>
-                                        </a>
+                                        @include('partials.product-card-premium', ['annonce' => $annonce])
                                     </div>
                                 @endforeach
                             </div>
 
-                            @if($selectionAnnonces->count() > 18)
-                                <div class="n1-selection-footer">
-                                    <button class="btn-voir-plus" onclick="redirectVoirPlus('{{ $category->slug }}')">Voir plus</button>
-                                </div>
-                            @endif
                         </div>
                     </div>
+
                 @endif
             @else
                 <!-- Grille Classique pour N2 / N3 -->
@@ -786,7 +740,7 @@
 <style>
     /* N1 Promo Cards Styling */
     .n1-offers-section {
-        padding: 1.5rem 0 3rem;
+        padding: 0.5rem 0 3rem;
         margin: 0 auto;
         max-width: 1300px; /* Limit width to show only ~5-6 cards */
         overflow: hidden;
@@ -998,31 +952,19 @@
 
     /* Notre Sélection Styling (Professional Cool Gray) */
     .n1-selection-section {
-        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+        background: #f5f5f5;
         padding: 5rem 0;
         margin-top: 2rem;
         position: relative;
-        border-top: 1px solid #e2e8f0;
-    }
-    .n1-selection-section::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        opacity: 0.05;
-        pointer-events: none;
     }
     .n1-selection-container {
-        max-width: 1200px;
+        max-width: 1250px;
         margin: 0 auto;
-        padding: 0 1rem;
-    }
-    .n1-selection-title {
-        text-align: center;
-        color: #1a1a1a;
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 2.5rem;
+        padding: 3rem 2rem;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        border: 1px solid #f0f0f0;
     }
     .n1-filter-bar {
         display: flex;
@@ -1043,7 +985,7 @@
         min-width: 260px;
         max-width: 320px;
         cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
         overflow: hidden;
     }
     .n1-filter-item select {
@@ -1164,7 +1106,6 @@
         display: grid;
         grid-template-columns: 240px 1fr;
         gap: 0;
-        border-top: 1px solid #ebebeb;
     }
 
     .catalog-layout.no-sidebar {

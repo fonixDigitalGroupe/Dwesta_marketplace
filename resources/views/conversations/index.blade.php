@@ -1,80 +1,125 @@
 @extends('layouts.app')
 
-@section('title', 'Messagerie - Mady Market')
+@section('title', 'Messagerie - Karnou')
 
 @push('styles')
 <style>
-    .inbox-wrapper {
-        max-width: 1000px;
-        margin: 3rem auto;
-        padding: 0 1.5rem;
-    }
-    .inbox-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-    }
-    .inbox-header h1 {
-        font-size: 1.75rem;
-        font-weight: 800;
-        color: #000;
-        margin: 0;
-    }
-    .inbox-card {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
-        border: 1px solid #eee;
+    /* WhatsApp Layout */
+    .main-content {
         overflow: hidden;
+        box-shadow: none !important;
+    }
+    .wa-container {
+        display: flex;
+        flex-direction: row-reverse;
+        height: 70vh;
+        max-height: 750px;
+        min-height: 500px;
+        background: #fff;
+        border-radius: 0;
+        box-shadow: none;
+        border: 1px solid #f0f0f0;
+        overflow: hidden;
+        margin-top: 0;
+    }
+    .wa-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: #f8f9fa;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+    .wa-sidebar {
+        width: 280px;
+        border-left: 1px solid #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        background: #fff;
+    }
+
+    @media (max-width: 767px) {
+        .wa-sidebar {
+            width: 100%;
+        }
+        .wa-main {
+            display: none;
+        }
+        .wa-container {
+            height: calc(100vh - 100px);
+            margin-bottom: 1rem;
+        }
+    }
+    .wa-sidebar-header {
+        height: 60px;
+        padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #f0f0f0;
+        font-weight: 700;
+        color: #1a1a1a;
+        background: #f8fafc;
+        font-size: 0.95rem;
+    }
+    .wa-list-container {
+        flex: 1;
+        overflow-y: auto;
+    }
+    /* Hide scrollbar for a cleaner look like WhatsApp */
+    .wa-list-container::-webkit-scrollbar { width: 6px; }
+    .wa-list-container::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+
+    .conv-list {
+        display: flex;
+        flex-direction: column;
     }
     .conv-item {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        padding: 1.25rem 1.5rem;
+        padding: 1rem;
         text-decoration: none;
         color: inherit;
-        border-bottom: 1px solid #f5f5f5;
-        transition: all 0.2s;
+        border-bottom: 1px solid #f8fafc;
+        transition: background 0.1s;
+        position: relative;
     }
-    .conv-item:last-child { border-bottom: none; }
-    .conv-item:hover {
-        background: #fafafa;
+    .conv-item:hover, .conv-item.active {
+        background: #f8fafc;
     }
-    .conv-item.unread {
-        background: #fff9f9;
-        border-left: 4px solid #bf0000;
+    .conv-item.active {
+        /* le trait vertical bleu a été retiré */
+    }
+    .conv-item.unread::before {
+        content: '';
+        /* retiré pour plus de neutralité */
     }
 
     .conv-main {
         display: flex;
+        width: 100%;
         align-items: center;
-        gap: 1.2rem;
-        flex: 1;
-        min-width: 0;
+        gap: 1rem;
     }
     .conv-avatar-wrapper {
         position: relative;
         flex-shrink: 0;
     }
     .conv-avatar {
-        width: 56px;
-        height: 56px;
+        width: 46px;
+        height: 46px;
         border-radius: 50%;
         object-fit: cover;
-        background: #f0f0f0;
     }
-    .unread-badge {
+    .unread-indicator {
         position: absolute;
         top: -2px;
         right: -2px;
-        background: #bf0000;
-        color: #fff;
-        font-size: 10px;
-        font-weight: 800;
-        padding: 2px 6px;
-        border-radius: 10px;
+        width: 12px;
+        height: 12px;
+        background: #475569; /* Gris Slate neutre et pro */
+        border-radius: 50%;
         border: 2px solid #fff;
     }
 
@@ -82,125 +127,110 @@
         min-width: 0;
         flex: 1;
     }
-    .conv-name {
-        font-weight: 700;
-        color: #000;
-        font-size: 1rem;
-        margin-bottom: 0.15rem;
-    }
-    .conv-annonce {
+    .conv-top-line {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 0.4rem;
-        font-size: 0.75rem;
-        color: #bf0000;
-        font-weight: 600;
-        margin-bottom: 0.3rem;
+        margin-bottom: 4px;
     }
-    .conv-snippet {
-        font-size: 0.85rem;
-        color: #666;
+    .conv-name {
+        font-weight: 500;
+        color: #333;
+        font-size: 0.9rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-    .unread .conv-snippet {
-        color: #000;
-        font-weight: 600;
-    }
-
-    .conv-meta {
-        text-align: right;
-        flex-shrink: 0;
-        margin-left: 1.5rem;
     }
     .conv-time {
         font-size: 0.75rem;
         color: #999;
     }
-    
-    .empty-inbox {
+    .conv-company {
+        font-size: 0.8rem;
+        color: #666;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 2px;
+    }
+    .conv-status {
+        display: flex;
+        gap: 6px;
+        font-size: 0.75rem;
+    }
+    .status-unread { color: #004aad; font-weight: 500; }
+    .status-product { color: #888; }
+    .conv-snippet {
+        font-size: 0.85rem;
+        color: #777;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .unread .conv-snippet {
+        color: #333;
+        font-weight: 500;
+    }
+
+    .wa-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: #f1f5f9;
+        align-items: center;
+        justify-content: center;
+    }
+    .wa-main-empty {
         text-align: center;
-        padding: 5rem 2rem;
-        background: #fff;
-        border-radius: 12px;
-        border: 1px solid #eee;
+        color: #64748b;
     }
-    .empty-icon {
-        font-size: 3rem;
-        color: #ddd;
-        margin-bottom: 1.5rem;
+    .wa-main-empty img {
+        width: 250px;
+        margin-bottom: 2rem;
+        opacity: 0.7;
     }
-    .empty-inbox h3 {
+    .wa-main-empty h2 {
         font-size: 1.25rem;
+        font-weight: 700;
         color: #333;
         margin-bottom: 0.5rem;
     }
-    .empty-inbox p { color: #888; }
+    .wa-main-empty p {
+        font-size: 0.9rem;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    .account-header h1 {
+        text-align: left;
+    }
 </style>
 @endpush
 
 @section('content')
-<nav class="breadcrumb">
-    <a href="{{ route('home') }}">Accueil</a> &gt; 
-    <a href="{{ route('account.index') }}">Mon compte</a> &gt; 
-    <span>Mes messages</span>
-</nav>
-
 <div class="dashboard-container">
     @include('partials.profile-sidebar')
     
     <div class="main-content">
-        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
-            <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Mes Messages</h1>
+        <div class="account-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+            <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Messagerie</h1>
+        </div>
+        <div class="wa-container">
+            {{-- 1. Liste à gauche (Standard Dashboard) --}}
+            @include('conversations._conversation_list')
+
+            {{-- 2. Zone principale à droite --}}
+            <div class="wa-main" style="flex: 1; display: flex; flex-direction: column; background: #f8f9fa; overflow: hidden; height: 100%;">
+                <div class="wa-main-empty" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f8f9fa; text-align: center; padding: 2rem; width: 100%;">
+                    <div style="width: 100px; height: 100px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; border: 1px solid #f1f5f9;">
+                        <i class="far fa-comment-alt" style="font-size: 2.5rem; color: #cbd5e1;"></i>
+                    </div>
+                    <h2 style="font-size: 1.1rem; font-weight: 600; color: #333; margin-bottom: 0.3rem;">Démarrer la discussion</h2>
+                    <p style="font-size: 1rem; color: #94a3b8; max-width: 400px; line-height: 1.6;">Sélectionnez un vendeur dans la liste sur la gauche pour voir vos messages et négocier en toute sécurité.</p>
+                </div>
+            </div>
         </div>
 
-        @if($conversations->count() > 0)
-            <div class="inbox-card">
-                @foreach($conversations as $conversation)
-                    @php
-                        $otherUser = $conversation->user1_id == Auth::id() ? $conversation->user2 : $conversation->user1;
-                        $lastMessage = $conversation->messages()->latest()->first();
-                        $unreadCount = $conversation->messages()->where('sender_id', '!=', Auth::id())->whereNull('read_at')->count();
-                    @endphp
-                    <a href="{{ route('conversations.show', $conversation) }}" class="conv-item {{ $unreadCount > 0 ? 'unread' : '' }}">
-                        <div class="conv-main">
-                            <div class="conv-avatar-wrapper">
-                                <img src="{{ $otherUser->avatar ? Storage::url($otherUser->avatar) : 'https://ui-avatars.com/api/?name='.urlencode($otherUser->name) }}" class="conv-avatar">
-                                @if($unreadCount > 0)
-                                    <span class="unread-badge">{{ $unreadCount }}</span>
-                                @endif
-                            </div>
-                            <div class="conv-content">
-                                <div class="conv-name">{{ $otherUser->name }}</div>
-                                @if($conversation->annonce)
-                                    <div class="conv-annonce">
-                                        <i class="fas fa-tag"></i>
-                                        {{ Str::limit($conversation->annonce->titre, 40) }}
-                                    </div>
-                                @endif
-                                <div class="conv-snippet">
-                                    {{ $lastMessage ? $lastMessage->content : 'Nouvelle conversation' }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="conv-meta">
-                            <div class="conv-time">
-                                {{ $lastMessage ? $lastMessage->created_at->diffForHumans() : $conversation->created_at->diffForHumans() }}
-                            </div>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-        @else
-            <div class="empty-inbox">
-                <div class="empty-icon">
-                    <i class="far fa-comments"></i>
-                </div>
-                <h3>Aucune conversation</h3>
-                <p>Commencez à discuter avec des vendeurs pour voir vos messages ici.</p>
-            </div>
-        @endif
+
     </div>
 </div>
 @endsection

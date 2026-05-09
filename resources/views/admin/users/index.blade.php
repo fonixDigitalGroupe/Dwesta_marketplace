@@ -222,3 +222,13 @@
     </div>
 
 @endsection
+
+@push('scripts')
+<script>
+    function confirmDelete(id) {
+        if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.')) {
+            document.getElementById('delete-form-' + id).submit();
+        }
+    }
+</script>
+@endpush

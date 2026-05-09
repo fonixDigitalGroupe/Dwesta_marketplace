@@ -1,4 +1,4 @@
-<a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-top-card premium-card-flat">
+<a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-top-card premium-card-flat {{ $class ?? '' }}" {!! $attributes ?? '' !!}>
     <div class="card-media-flat">
         @if($annonce->photoPrincipale())
             <img src="{{ asset('storage/' . $annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">

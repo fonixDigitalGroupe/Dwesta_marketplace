@@ -15,7 +15,7 @@
     .rk-breadcrumb {
         font-size: 0.8rem;
         color: #777;
-        padding: 1rem 0;
+        padding: 0.5rem 0 1rem 0;
         max-width: 1280px;
         margin: 0 auto;
         padding-left: 1rem;
@@ -27,7 +27,7 @@
     /* Main Grid */
     .rk-main-grid {
         display: grid;
-        grid-template-columns: 80px 600px 1fr; /* Thumbnails | Main Image | Details */
+        grid-template-columns: 80px 500px 1fr; /* Thumbnails | Main Image | Details */
         gap: 1.5rem;
         max-width: 1280px;
         margin: 0 auto;
@@ -59,8 +59,8 @@
     .rk-thumb img { width: 100%; height: 100%; object-fit: contain; }
 
     .rk-main-image {
-        height: 550px;
-        max-height: 85vh;
+        height: 450px;
+        max-height: 80vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -70,7 +70,7 @@
     .rk-main-image img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
     }
     .rk-wishlist-btn {
         position: absolute;
@@ -291,7 +291,7 @@
     }
 
     .premium-card-flat {
-        flex: 0 0 190px;
+        flex: 0 0 220px;
         background: #fff;
         border: 1px solid #eee;
         border-radius: 12px;
@@ -411,45 +411,130 @@
         margin: 0;
     }
 
-    /* Trust indicators */
-    .rk-trust-badges {
-        display: flex;
-        gap: 1.5rem;
-        margin-top: 2rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid #eee;
-    }
-    .rk-trust-item {
+    /* Shop Identity Card (as requested replacement for breadcrumb) */
+    .shop-identity-card-mini {
+        max-width: 1280px;
+        margin: 0 auto 1.5rem auto;
+        background: white;
+        padding: 10px 20px;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .shop-logo-box-mini {
+        width: 50px;
+        height: 50px;
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px;
+        flex-shrink: 0;
+    }
+
+    .shop-logo-box-mini img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .shop-meta-info-mini {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .shop-name-row-mini {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .shop-name-text-mini {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: #1a1a1a;
+        text-decoration: none;
+    }
+
+    .tag-pro-mini {
+        background: #fff;
+        color: #666;
+        font-size: 8px;
+        font-weight: 800;
+        padding: 1px 6px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        text-transform: uppercase;
+    }
+
+    .shop-stats-mini {
+        display: flex;
+        align-items: center;
+        gap: 12px;
         font-size: 0.8rem;
         color: #666;
     }
-    .rk-trust-item i {
-        color: #28a745;
-        font-size: 1rem;
+
+    .shop-rating-stars-mini { color: #ff9900; font-size: 0.75rem; }
+    
+    .mentions-legales-mini {
+        font-size: 0.75rem;
+        color: #004aad;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 2px;
+        font-weight: 600;
     }
-    .rk-wishlist-btn:hover { 
-        transform: none;
-    }
-    .rk-wishlist-btn:active { 
-        transform: scale(0.95);
+    .card-review-row i {
+        color: #ffc107;
+        font-size: 0.8rem;
     }
 </style>
 
 <div class="rakuten-page">
-    <!-- Breadcrumb -->
-    <nav class="rk-breadcrumb">
-        <a href="{{ route('home') }}">Accueil</a> &gt; 
-        @if($annonce->category)
-            <a href="{{ route('categories.show', $annonce->category->slug) }}">{{ $annonce->category->nom }}</a> &gt;
-        @endif
-        @if($annonce->produit && $annonce->produit->marque)
-           <span>{{ $annonce->produit->marque }}</span> &gt;
-        @endif
-        <span>{{ $annonce->titre }}</span>
-    </nav>
+    @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
+        <div class="shop-identity-card-mini">
+            <div class="shop-logo-box-mini">
+                @if($annonce->vendeur->pagePro && $annonce->vendeur->pagePro->logo)
+                    <img src="{{ Storage::url($annonce->vendeur->pagePro->logo) }}" alt="Logo">
+                @else
+                    <i class="fas fa-store" style="font-size: 1.5rem; color: #eee;"></i>
+                @endif
+            </div>
+
+            <div class="shop-meta-info-mini">
+                <div class="shop-name-row-mini">
+                    <a href="{{ $annonce->vendeur->getBoutiqueUrl() }}" class="shop-name-text-mini">{{ $annonce->vendeur->identite }}</a>
+                    <span class="tag-pro-mini">PRO</span>
+                </div>
+                <div class="shop-stats-mini">
+                    <span class="shop-rating-stars-mini">
+                        <i class="fas fa-star"></i> {{ number_format($boutique_rating, 1, ',', '') }}/5
+                    </span>
+                    <span>sur {{ number_format($boutique_avis_count, 0, ',', ' ') }} {{ $boutique_avis_count > 1 ? 'avis' : 'avis' }}</span>
+                </div>
+            </div>
+        </div>
+    @else
+        <!-- Breadcrumb (Private sellers) -->
+        <nav class="rk-breadcrumb">
+            <a href="{{ route('home') }}">Accueil</a> &gt; 
+            @if($annonce->category)
+                <a href="{{ route('categories.show', $annonce->category->slug) }}">{{ $annonce->category->nom }}</a> &gt;
+            @endif
+            @if($annonce->produit && $annonce->produit->marque)
+               <span>{{ $annonce->produit->marque }}</span> &gt;
+            @endif
+            <span>{{ $annonce->titre }}</span>
+        </nav>
+    @endif
 
     <div class="rk-main-grid">
         <!-- Left: Thumbnails -->
@@ -477,13 +562,13 @@
         </div>
 
         <!-- Center: Main Image -->
-        <div class="rk-main-image" style="background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; position: relative;">
+        <div class="rk-main-image" style="background: #ffffff; border: 1px solid #f2f2f2; border-radius: 4px; overflow: hidden; position: relative;">
             @if($annonce->video)
                 <video id="display-video" controls autoplay muted style="width: 100%; height: 100%; border-radius: 12px;">
                     <source src="{{ $annonce->video->url }}" type="video/mp4">
                     Votre navigateur ne supporte pas la lecture de vidéos.
                 </video>
-                <img id="display-image" src="" alt="{{ $annonce->titre }}" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+                <img id="display-image" src="" alt="{{ $annonce->titre }}" style="display: none; width: 100%; height: 100%; object-fit: contain;">
             @else
                 @php $photoPrincipale = $annonce->photoPrincipale(); @endphp
                 @if($photoPrincipale)
@@ -510,22 +595,30 @@
         <div class="rk-details">
             <!-- Header: Brand, Title, Stars -->
             <div style="margin-bottom: 1.5rem;">
-                @if($annonce->produit && $annonce->produit->marque)
-                    <div class="rk-brand">{{ $annonce->produit->marque }}</div>
-                @endif
                 <h1 class="rk-title">{{ $annonce->titre }}</h1>
                 
-                <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
-                    <div class="rk-stars">
-                        @for($i=1; $i<=5; $i++)
-                            <i class="fas fa-star" style="{{ $i <= $annonce->note_moyenne ? 'color: #ffbc00;' : 'color: #ddd;' }}"></i>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
+                    <div class="rk-stars" style="color: #ff9900; font-size: 0.85rem; display: flex; align-items: center; gap: 3px;">
+                        @php
+                            $moyenneNote = $annonce->note_moyenne;
+                            $nbAvis = $annonce->nombre_avis;
+                        @endphp
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <= floor($moyenneNote))
+                                <i class="fas fa-star"></i>
+                            @elseif($i == ceil($moyenneNote) && ($moyenneNote - floor($moyenneNote)) >= 0.5)
+                                <i class="fas fa-star-half-alt"></i>
+                            @else
+                                <i class="far fa-star"></i>
+                            @endif
                         @endfor
                     </div>
+                    <span style="color: #007185; font-size: 0.85rem; font-weight: 500;">({{ $nbAvis }})</span>
                 </div>
             </div>
 
             <!-- Content: Description & Specs -->
-            <div class="rk-content-section">
+            <div class="rk-content-section" style="margin-bottom: 0.5rem;">
                 <div style="font-weight: 800; color: #1a1a1a; margin-bottom: 0.75rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Description détaillée</div>
                 <div class="rk-description-text" style="color: #555; line-height: 1.6; font-size: 0.95rem;">
                     {!! nl2br(e($annonce->description)) !!}
@@ -555,7 +648,7 @@
             </div>
 
             <!-- Price & Action -->
-            <div class="rk-price-box" style="display: flex; align-items: center; background: #ffffff; padding: 1.25rem; margin-top: 1.5rem; border-radius: 0;">
+            <div class="rk-price-box" style="display: flex; align-items: center; background: #ffffff; padding: 0.5rem 1.25rem; margin-top: 0; border-radius: 0;">
                 <div style="flex: 1; border-right: 1px solid #e0e0e0; padding-right: 1rem;">
                     <div style="font-size: 0.8rem; color: #888; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.5px;">Prix de vente</div>
                     <div class="rk-main-price" id="main-price" style="color: #ff8c00; font-weight: 900; font-size: 1.8rem;">
@@ -574,42 +667,41 @@
                         </button>
                     </form>
                     @else
-                        <a href="{{ auth()->check() ? route('conversations.create', ['recipient_id' => $annonce->vendeur->user_id, 'annonce_id' => $annonce->id]) : route('login') }}" class="rk-btn-cart" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #000; padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem;">
+                        <a href="{{ auth()->check() ? route('conversations.create', ['recipient_id' => $annonce->vendeur->user_id, 'annonce_id' => $annonce->id, 'message' => 'Bonjour, je suis intéressé(e) par votre annonce « '.$annonce->titre.' ». Pouvez-vous me donner plus d\'informations ?']) : route('login') }}" class="rk-btn-cart" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #000; padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem;">
                             <i class="fas fa-envelope" style="margin-right: 0.75rem;"></i> Contacter le vendeur
                         </a>
                     @endif
                 </div>
-            </div>
+            </div> <!-- Close rk-price-box -->
             
-            <!-- Seller Info -->
-            <div class="rk-seller-card" style="background: #ffffff; padding: 1.25rem; margin-top: 1.5rem; border-radius: 0; display: flex; align-items: center; gap: 1.25rem; border-bottom: 1px solid #eee;">
-                 <div class="rk-seller-avatar" style="width: 50px; height: 50px; background: #f8f9fa; border: 1px solid #eee; border-radius: 0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #adb5bd;">
-                     <i class="fas fa-store"></i>
-                 </div>
-                 <div class="rk-seller-info" style="flex: 1;">
-                     <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 2px;">
-                        <i class="fas fa-check-circle" style="color: #28a745; font-size: 0.8rem;"></i>
-                        <span style="font-size: 0.75rem; color: #6c757d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Vendeur vérifié</span>
+            @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
+            <!-- Seller Info: Only shown for PRO sellers -->
+            <div class="rk-seller-card" style="background: #ffffff; padding: 1.5rem 0; margin-top: 0.5rem; border-radius: 0; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;">
+                <div style="display: flex; align-items: center; gap: 1.25rem;">
+                     <div class="rk-seller-avatar" style="width: 50px; height: 50px; background: #ffffff; border: 1px solid #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 2px;">
+                         @if($annonce->vendeur->pagePro && $annonce->vendeur->pagePro->logo)
+                            <img src="{{ Storage::url($annonce->vendeur->pagePro->logo) }}" alt="Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                         @else
+                            <i class="fas fa-store" style="font-size: 1.2rem; color: #adb5bd;"></i>
+                         @endif
                      </div>
-                     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                        <a href="#" class="rk-seller-name" style="color: #1a1a1a; font-weight: 900; font-size: 1.1rem; text-decoration: none; transition: color 0.2s;">
-                            @if($annonce->vendeur && $annonce->vendeur->professionnel)
-                                {{ $annonce->vendeur->professionnel->nom_entreprise }}
-                            @elseif($annonce->vendeur && $annonce->vendeur->user)
-                                {{ $annonce->vendeur->user->prenom }} {{ $annonce->vendeur->user->nom }}
-                            @else
-                                Vendeur inconnu
-                            @endif
-                        </a>
-                        @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
+                     <div class="rk-seller-info" style="flex: 1;">
+                          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 2px;">
+                            <span style="font-size: 0.75rem; color: #6c757d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Vendeur vérifié</span>
+                         </div>
+                          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                            <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" class="rk-seller-name" style="color: #1a1a1a; font-weight: 900; font-size: 1.1rem; text-decoration: none; transition: color 0.2s;">
+                                {{ $annonce->vendeur->identite }}
+                            </a>
                             <span style="background: #ffffff; color: #333; font-size: 9px; font-weight: 900; padding: 1px 7px; letter-spacing: 1px; border-radius: 0; text-transform: uppercase; border: 1px solid #ddd;">PRO</span>
-                        @endif
+                         </div>
                      </div>
-                 </div>
-                 <div style="padding-left: 1rem; border-left: 1px solid #eee;">
-                    <a href="#" style="font-size: 0.8rem; color: #ff8c00; font-weight: 700; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderBottom='1px solid #ff8c00'" onmouseout="this.style.borderBottom='1px solid transparent'">Voir la boutique</a>
-                 </div>
+                     <div style="padding-left: 1rem; border-left: 1px solid #eee;">
+                        <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" style="font-size: 0.8rem; color: #ff8c00; font-weight: 700; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderBottom='1px solid #ff8c00'" onmouseout="this.style.borderBottom='1px solid transparent'">Voir la boutique</a>
+                     </div>
+                </div>
             </div>
+            @endif
 
         </div>
     </div>
@@ -618,34 +710,70 @@
 
     <!-- Reviews Section -->
     @if($annonce->avisApprouves->count() > 0)
-    <div id="avis" class="rk-section-header" style="margin-top: 3rem; border-top: 1px solid #eee; padding-top: 2rem;">
+    <div id="avis" class="rk-section-header" style="margin-top: 5rem; border-top: 1px solid #eee; padding-top: 3rem;">
         <h2 class="rk-offers-title">Avis clients</h2>
-        <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
-            <div class="rk-stars">
-                @for($i=1; $i<=5; $i++)
-                    <i class="fas fa-star" style="{{ $i <= $annonce->note_moyenne ? 'color: #ffbc00;' : 'color: #ddd;' }}"></i>
-                @endfor
-            </div>
-            <span style="font-weight: 700; font-size: 1.1rem;">{{ number_format($annonce->note_moyenne, 1) }}/5</span>
-            <span style="color: #666;">({{ $annonce->nombre_avis }} avis)</span>
-        </div>
     </div>
 
-    <div class="rk-main-grid" style="margin-top: 1rem;">
-        <div style="grid-column: 1 / -1;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+    <div class="rk-main-grid" style="margin-top: 1rem; grid-template-columns: 300px 1fr; gap: 4rem;">
+        <!-- Left: Rating Summary (Style Sidebar Page Pro) -->
+        <div class="rating-summary-col">
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 12px; position: sticky; top: 100px;">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="font-size: 3rem; font-weight: 800; color: #1a1a1a; line-height: 1;">{{ number_format($annonce->note_moyenne, 1) }}</div>
+                    <div class="rk-stars" style="font-size: 1.2rem; margin: 0.5rem 0;">
+                        @for($i=1; $i<=5; $i++)
+                            <i class="fas fa-star" style="{{ $i <= $annonce->note_moyenne ? 'color: #ffbc00;' : 'color: #ddd;' }}"></i>
+                        @endfor
+                    </div>
+                    <div style="color: #666; font-size: 0.9rem;">Basé sur {{ $annonce->nombre_avis }} avis</div>
+                </div>
+
+                <div class="rating-distributions">
+                    @php
+                        $stats = [
+                            5 => $annonce->avisApprouves->where('note', 5)->count(),
+                            4 => $annonce->avisApprouves->where('note', 4)->count(),
+                            3 => $annonce->avisApprouves->where('note', 3)->count(),
+                            2 => $annonce->avisApprouves->where('note', 2)->count(),
+                            1 => $annonce->avisApprouves->where('note', 1)->count(),
+                        ];
+                        $total = max(1, $annonce->nombre_avis);
+                    @endphp
+                    @foreach([5, 4, 3, 2, 1] as $seuil)
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.85rem;">
+                            <span style="width: 45px; color: #555; white-space: nowrap;">{{ $seuil }} <i class="fas fa-star" style="color: #ffbc00; font-size: 0.7rem;"></i></span>
+                            <div style="flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
+                                <div style="width: {{ ($stats[$seuil] / $total) * 100 }}%; height: 100%; background: #ffbc00;"></div>
+                            </div>
+                            <span style="color: #999; width: 25px; text-align: right;">{{ $stats[$seuil] }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Reviews List -->
+        <div class="reviews-list-col">
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
                 @foreach($annonce->avisApprouves as $avis)
-                    <div style="padding: 1.5rem; background: #f9f9f9; border-radius: 8px; border-left: 4px solid #bf0000;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                            <span style="font-weight: 700;">{{ $avis->user->prenom }} {{ $avis->user->nom }}</span>
-                            <span style="color: #888; font-size: 0.8rem;">{{ $avis->created_at->format('d/m/Y') }}</span>
+                    <div style="padding-bottom: 2rem; border-bottom: 1px solid #f0f0f0;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 45px; height: 45px; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #999; font-size: 0.9rem;">
+                                    {{ strtoupper(substr($avis->user->prenom, 0, 1)) }}{{ strtoupper(substr($avis->user->nom, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <div style="font-weight: 700; color: #1a1a1a;">{{ $avis->user->prenom }} {{ $avis->user->nom }}</div>
+                                    <div class="rk-stars" style="font-size: 0.75rem;">
+                                        @for($i=1; $i<=5; $i++)
+                                            <i class="fas fa-star" style="{{ $i <= $avis->note ? 'color: #ffbc00;' : 'color: #ddd;' }}"></i>
+                                        @endfor
+                                    </div>
+                                </div>
+                            </div>
+                            <span style="color: #888; font-size: 0.85rem;">{{ $avis->created_at->translatedFormat('d F Y') }}</span>
                         </div>
-                        <div class="rk-stars" style="margin-bottom: 0.5rem; font-size: 0.8rem;">
-                            @for($i=1; $i<=5; $i++)
-                                <i class="fas fa-star" style="{{ $i <= $avis->note ? 'color: #ffbc00;' : 'color: #ddd;' }}"></i>
-                            @endfor
-                        </div>
-                        <p style="font-size: 0.9rem; color: #555; margin: 0;">{{ $avis->commentaire }}</p>
+                        <p style="font-size: 0.95rem; color: #444; line-height: 1.6; margin: 0; padding-left: 60px;">{{ $avis->commentaire }}</p>
                     </div>
                 @endforeach
             </div>
@@ -655,11 +783,12 @@
 
     <!-- Best Offers Section -->
     @if(isset($recommandations['meilleures_offres_pro']) && $recommandations['meilleures_offres_pro']->count() > 0)
-    <div class="rk-section-header" style="margin-top: 4rem;">
-        <span class="rk-sponsor-label">Sponsorisée</span>
-        <h2 class="rk-offers-title" style="margin-top: 0;">Meilleures offres Pros</h2>
-    </div>
-    <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px;">
+    <div style="background: #fff; padding-bottom: 2rem; padding-top: 4rem;">
+        <div class="rk-section-header" style="margin-top: 0; background: #fff;">
+            <span class="rk-sponsor-label">Sponsorisée</span>
+            <h2 class="rk-offers-title" style="margin-top: 0;">Meilleures offres Pros</h2>
+        </div>
+        <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px;">
         <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-pro', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
         <div class="n1-top-grid" id="carousel-pro" style="display: flex; flex-wrap: nowrap; overflow-x: hidden; scroll-behavior: smooth; padding: 20px 0; gap: 15px;">
             @foreach($recommandations['meilleures_offres_pro'] as $rec)
@@ -668,37 +797,24 @@
         </div>
         <button class="carousel-arrow-btn next" onclick="scrollCarousel('carousel-pro', 1)" style="right: 0; border-radius: 50% 0 0 50%; border-right: none;"><i class="fas fa-chevron-right"></i></button>
     </div>
+    </div>
     @endif
 
     <!-- Clients Also Viewed Section -->
     @if(isset($recommandations['aussi_vus']) && $recommandations['aussi_vus']->count() > 0)
-    <div class="rk-section-header">
-        <h2 class="rk-offers-title">Articles également vus</h2>
-    </div>
-    <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px; margin-bottom: 3rem;">
-        <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-seen', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
-        <div class="n1-top-grid" id="carousel-seen">
-            @foreach($recommandations['aussi_vus'] as $rec)
-                @include('partials.product-card-premium', ['annonce' => $rec, 'hideSeller' => true])
-            @endforeach
+    <div style="background: #fff; padding-bottom: 3rem; padding-top: 2rem;">
+        <div class="rk-section-header" style="background: #fff; margin-top: 0;">
+            <h2 class="rk-offers-title">Articles également vus</h2>
         </div>
-        <button class="carousel-arrow-btn next" onclick="scrollCarousel('carousel-seen', 1)" style="right: 0; border-radius: 50% 0 0 50%; border-right: none;"><i class="fas fa-chevron-right"></i></button>
-    </div>
-    @endif
-
-    <!-- Clients Also Liked Section -->
-    @if(isset($recommandations['aussi_aimes']) && $recommandations['aussi_aimes']->count() > 0)
-    <div class="rk-section-header">
-        <h2 class="rk-offers-title">Articles également aimés</h2>
-    </div>
-    <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px; margin-bottom: 4rem;">
-        <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-liked', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
-        <div class="n1-top-grid" id="carousel-liked">
-            @foreach($recommandations['aussi_aimes'] as $rec)
-                @include('partials.product-card-premium', ['annonce' => $rec, 'hideSeller' => true])
-            @endforeach
+        <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px;">
+            <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-seen', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
+            <div class="n1-top-grid" id="carousel-seen">
+                @foreach($recommandations['aussi_vus'] as $rec)
+                    @include('partials.product-card-premium', ['annonce' => $rec, 'hideSeller' => true])
+                @endforeach
+            </div>
+            <button class="carousel-arrow-btn next" onclick="scrollCarousel('carousel-seen', 1)" style="right: 0; border-radius: 50% 0 0 50%; border-right: none;"><i class="fas fa-chevron-right"></i></button>
         </div>
-        <button class="carousel-arrow-btn next" onclick="scrollCarousel('carousel-liked', 1)" style="right: 0; border-radius: 50% 0 0 50%; border-right: none;"><i class="fas fa-chevron-right"></i></button>
     </div>
     @endif
 </div>
@@ -745,7 +861,7 @@
                 displayImage.style.display = 'block';
                 displayImage.src = url;
             } else {
-                const imgHtml = `<img id="display-image" src="${url}" alt="{{ $annonce->titre }}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                const imgHtml = `<img id="display-image" src="${url}" alt="{{ $annonce->titre }}" style="width: 100%; height: 100%; object-fit: contain;">`;
                 container.insertAdjacentHTML('afterbegin', imgHtml);
             }
         }

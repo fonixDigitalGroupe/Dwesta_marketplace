@@ -13,7 +13,10 @@ class Message extends Model
         'conversation_id',
         'sender_id',
         'content',
+        'image_path',
+        'file_path',
         'read_at',
+        'annonce_id',
     ];
 
     protected $casts = [
@@ -28,5 +31,10 @@ class Message extends Model
     public function sender()
     {
         return $this->belongsTo(User::class, 'sender_id');
+    }
+
+    public function annonce()
+    {
+        return $this->belongsTo(Annonce::class);
     }
 }

@@ -123,7 +123,7 @@ class CategoryController extends Controller
                 ->whereIn('categorie_id', $categoryIds)
                 ->with(['photos', 'category.parent', 'vendeur.professionnel', 'options', 'produit'])
                 ->orderBy('vues', 'desc')
-                ->limit(15)
+                ->limit(40)
                 ->get();
         }
 

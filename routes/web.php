@@ -383,7 +383,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/create', [ConversationController::class, 'create'])->name('create');
         Route::post('/', [ConversationController::class, 'store'])->name('store');
         Route::get('/{conversation}', [ConversationController::class, 'show'])->name('show');
+        Route::delete('/{conversation}', [ConversationController::class, 'destroy'])->name('destroy');
         Route::post('/{conversation}/messages', [MessageController::class, 'store'])->name('messages.store');
+        Route::delete('/{conversation}/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+        Route::delete('/{conversation}/annonce', [ConversationController::class, 'removeAnnonce'])->name('remove-annonce');
     });
 
     // Favoris

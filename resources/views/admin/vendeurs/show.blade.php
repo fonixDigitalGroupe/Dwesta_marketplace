@@ -329,6 +329,29 @@
         </div>
     </div>
 
+    <!-- Danger Zone -->
+    <div style="margin-top: 3rem; padding: 2rem; border: 1px solid #fee2e2; background: #fff; border-radius: 0;">
+        <h3 style="font-size: 1rem; color: #991b1b; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            Zone de Danger
+        </h3>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 2rem;">
+            <div>
+                <p style="font-size: 0.85rem; color: #b91c1c; font-weight: 600; margin: 0;">Supprimer définitivement ce vendeur</p>
+                <p style="font-size: 0.8rem; color: #64748b; margin-top: 4px;">Attention : cette action supprimera le profil vendeur, ses annonces et son compte utilisateur. Cette opération est irréversible.</p>
+            </div>
+            <form action="{{ route('admin.users.destroy', $vendeur->user_id) }}" method="POST" onsubmit="return confirm('Êtes-vous certain de vouloir supprimer ce vendeur ainsi que son compte utilisateur ?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" style="white-space: nowrap; background: #dc2626; color: #fff; padding: 0.75rem 1.5rem; border: none; border-radius: 0; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;"
+                        onmouseover="this.style.background='#b91c1c'"
+                        onmouseout="this.style.background='#dc2626'">
+                    Supprimer le Vendeur
+                </button>
+            </form>
+        </div>
+    </div>
+
 </div>
 @endsection
 

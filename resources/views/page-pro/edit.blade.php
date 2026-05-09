@@ -29,29 +29,30 @@
     }
 
     .main-content {
-        background: transparent;
+        background: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        border: 1px solid #e0e0e0;
+        overflow: hidden;
+        padding: 0;
     }
 
     .edit-pro-card {
         background: white;
-        border: 1px solid #f0f0f0;
-        border-radius: 8px;
-        padding: 24px;
-        margin-bottom: 24px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        padding: 1.5rem;
+        border-bottom: 1px solid #f8f8f8;
     }
+    .edit-pro-card:last-child { border-bottom: none; }
 
     .edit-card-title {
         font-size: 0.85rem;
         font-weight: 600;
         color: #333;
         text-transform: uppercase;
-        margin-bottom: 20px;
+        margin-bottom: 1.5rem;
         display: flex;
         align-items: center;
-        gap: 10px;
-        border-bottom: 1px solid #f5f5f5;
-        padding-bottom: 12px;
+        gap: 12px;
     }
 
     .form-label {
@@ -201,12 +202,10 @@
                     </ul>
                 </div>
             @endif
-            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 1rem; margin-bottom: 2rem;">
-                <div>
-                    <h1 style="font-size: 1.1rem; font-weight: 600; color: var(--text-dark); margin: 0;">Personnalisation de la Boutique</h1>
-                </div>
-                <a href="{{ route('page-pro.show', $pagePro->slug) }}" target="_blank" class="btn-save" style="background: white; color: var(--primary-color); border: none; padding: 0.6rem 1.5rem; font-size: 0.9rem;">
-                    <i class="fas fa-eye" style="color: #FF9900; margin-right: 5px;"></i>
+            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding: 1.5rem 2rem; background: #fff;">
+                <h1 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; color: #1a1a1a; margin: 0;">Personnalisation de la Boutique</h1>
+                <a href="{{ route('page-pro.show', $pagePro->slug) }}" target="_blank" class="btn-save" style="background: #f1f5f9; color: #64748b; border: none; padding: 0.6rem 1.2rem; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; border-radius: 20px;">
+                    <i class="fas fa-eye" style="color: #004aad;"></i>
                     Aperçu Public
                 </a>
             </div>

@@ -25,9 +25,11 @@ class ConversationController extends Controller
     {
         $recipientId = $request->query('recipient_id');
         $recipient = User::findOrFail($recipientId);
+        $prefilledMessage = $request->query('message', '');
+        $annonceId = $request->query('annonce_id');
         
         // Check if conversation already exists
-        $existingConversation = Conversation::where(function ($query) use ($recipientId) {
+        $conversation = Conversation::where(function ($query) use ($recipientId) {
             $query->where('user1_id', Auth::id())
                   ->where('user2_id', $recipientId);
         })->orWhere(function ($query) use ($recipientId) {
@@ -35,11 +37,23 @@ class ConversationController extends Controller
                   ->where('user2_id', Auth::id());
         })->first();
 
-        if ($existingConversation) {
-            return redirect()->route('conversations.show', $existingConversation);
+        // Create if it doesn't exist
+        if (!$conversation) {
+            $conversation = Conversation::create([
+                'user1_id' => Auth::id(),
+                'user2_id' => $recipientId,
+                'annonce_id' => $annonceId,
+                'last_message_at' => now(),
+            ]);
+        } else if ($annonceId) {
+            // Update the pinned product if provided
+            $conversation->update(['annonce_id' => $annonceId]);
         }
 
-        return view('conversations.create', compact('recipient'));
+        // Always redirect to the WhatsApp-style show view
+        return redirect()->route('conversations.show', $conversation)
+            ->with('show_annonce_preview', true)
+            ->with('prefilled_message', $prefilledMessage);
     }
 
     /**
@@ -71,6 +85,9 @@ class ConversationController extends Controller
                 'annonce_id' => $request->input('annonce_id'),
                 'last_message_at' => now(),
             ]);
+        } else if ($request->input('annonce_id') && !$conversation->annonce_id) {
+            // Update annonce if there is none
+            $conversation->update(['annonce_id' => $request->input('annonce_id')]);
         }
 
         $conversation->messages()->create([
@@ -101,6 +118,38 @@ class ConversationController extends Controller
             ->whereNull('read_at')
             ->update(['read_at' => now()]);
 
-        return view('conversations.show', compact('conversation'));
+        $conversations = Auth::user()->conversations;
+
+        return view('conversations.show', compact('conversation', 'conversations'));
+    }
+
+    /**
+     * Détacher le produit épinglé de la conversation
+     */
+    public function removeAnnonce(Conversation $conversation)
+    {
+        if ($conversation->user1_id !== Auth::id() && $conversation->user2_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $conversation->update(['annonce_id' => null]);
+
+        return redirect()->route('conversations.show', $conversation);
+    }
+
+    /**
+     * Supprimer une conversation
+     */
+    public function destroy(Conversation $conversation)
+    {
+        if ($conversation->user1_id !== Auth::id() && $conversation->user2_id !== Auth::id()) {
+            abort(403);
+        }
+
+        // Supprimer les messages associés (ou ils seront supprimés en cascade si configuré en BD)
+        $conversation->messages()->delete();
+        $conversation->delete();
+
+        return redirect()->route('conversations.index')->with('success', 'Discussion supprimée avec succès.');
     }
 }

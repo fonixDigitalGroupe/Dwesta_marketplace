@@ -200,17 +200,20 @@
         <span>Favoris</span>
     </a>
 
-    <!-- Vendeurs suivis (Placeholder logic if route doesn't exist) -->
-    <a href="#" class="sidebar-item">
-        <i class="fa-solid fa-store"></i>
-        <span>Vendeurs suivis</span>
+    <!-- Mes crédits -->
+    <a href="{{ route('account.credits.index') }}" class="sidebar-item {{ request()->routeIs('account.credits.*') ? 'active' : '' }}">
+        <i class="fa-solid fa-coins"></i>
+        <span>Mes crédits</span>
+        @if($user->credit_balance > 0)
+            <span style="margin-left: auto; font-size: 0.72rem; font-weight: 700; color: #004aad; background: #eff6ff; padding: 2px 8px; border-radius: 10px; white-space: nowrap;">
+                {{ number_format($user->credit_balance, 0, ',', ' ') }} DA
+            </span>
+        @endif
     </a>
 
-    <!-- Vus récemment (Placeholder) -->
-    <a href="#" class="sidebar-item">
-        <i class="fa-solid fa-clock-rotate-left"></i>
-        <span>Vus récemment</span>
-    </a>
+
+
+
 
     <div class="sidebar-divider"></div>
 

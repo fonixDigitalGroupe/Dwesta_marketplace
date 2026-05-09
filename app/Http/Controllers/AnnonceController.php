@@ -256,7 +256,14 @@ class AnnonceController extends Controller
         // Obtenir les recommandations
         $recommandations = $this->recommandationService->getAllRecommandations($annonce);
 
-        return view('annonces.show', compact('annonce', 'peutLaisserAvis', 'recommandations'));
+        // Statistiques de la boutique
+        $vendeur = $annonce->vendeur;
+        $annonceIds = $vendeur->annonces()->pluck('id');
+        $boutique_rating = \App\Models\Avis::whereIn('annonce_id', $annonceIds)->avg('note') ?? 0;
+        $boutique_sales = \App\Models\OrderItem::whereIn('annonce_id', $annonceIds)->count();
+        $boutique_avis_count = \App\Models\Avis::whereIn('annonce_id', $annonceIds)->count();
+
+        return view('annonces.show', compact('annonce', 'peutLaisserAvis', 'recommandations', 'boutique_rating', 'boutique_sales', 'boutique_avis_count'));
     }
 
     /**

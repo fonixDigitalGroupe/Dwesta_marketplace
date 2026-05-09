@@ -62,23 +62,76 @@
         font-weight: 700;
         color: #000;
     }
-    .annonce-context {
+    .annonce-share-card {
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .annonce-share-media {
+        width: 100%;
+        height: 200px;
+        background: #f1f5f9;
+        overflow: hidden;
+        position: relative;
+    }
+    .annonce-share-media img,
+    .annonce-share-media video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .annonce-share-media .no-media-placeholder {
+        width: 100%;
+        height: 100%;
         display: flex;
         align-items: center;
-        gap: 1rem;
-        padding: 0.75rem 1rem;
-        background: #fff9f0;
-        border: 1px solid #ffecb3;
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
+        justify-content: center;
+        color: #94a3b8;
+        font-size: 3rem;
     }
-    .annonce-icon {
-        font-size: 1.2rem;
+    .annonce-share-body {
+        padding: 1rem 1.25rem;
+        border-top: 1px solid #f1f5f9;
+        background: #fafbff;
     }
-    .annonce-title {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #856404;
+    .annonce-share-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #004aad;
+        letter-spacing: 0.06em;
+        margin-bottom: 4px;
+    }
+    .annonce-share-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .annonce-share-price {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #004aad;
+        margin-bottom: 4px;
+    }
+    .annonce-share-desc {
+        font-size: 0.8rem;
+        color: #64748b;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
     .form-group {
         margin-bottom: 1.5rem;
@@ -145,8 +198,8 @@
             <form action="{{ route('conversations.store') }}" method="POST" class="message-form">
                 @csrf
                 <input type="hidden" name="recipient_id" value="{{ $recipient->id }}">
-                @if(request('annonce_id'))
-                    <input type="hidden" name="annonce_id" value="{{ request('annonce_id') }}">
+                @if(isset($annonceId) && $annonceId)
+                    <input type="hidden" name="annonce_id" value="{{ $annonceId }}">
                 @endif
 
                 <div class="recipient-info">
@@ -157,19 +210,39 @@
                     </div>
                 </div>
 
-                @if(request('annonce_id') && $annonce = \App\Models\Annonce::find(request('annonce_id')))
-                    <div class="annonce-context">
-                        <span class="annonce-icon">📦</span>
-                        <div class="annonce-details">
-                            <div style="font-size: 0.7rem; color: #b08d24; text-transform: uppercase; font-weight: 700;">Concernant</div>
-                            <div class="annonce-title">{{ $annonce->titre }}</div>
+                @if(isset($annonceId) && ($annonce = \App\Models\Annonce::with(['medias', 'produit'])->find($annonceId)))
+                    @php
+                        $media = $annonce->video ?: $annonce->photoPrincipale();
+                        $isVideo = $media && $media->type === 'video';
+                    @endphp
+                    <a href="{{ route('annonces.show', $annonce->slug) }}" class="annonce-share-card" target="_blank">
+                        <div class="annonce-share-media">
+                            @if($media)
+                                @if($isVideo)
+                                    <video src="{{ $media->url }}" muted playsinline preload="metadata"></video>
+                                @else
+                                    <img src="{{ $media->url }}" alt="{{ $annonce->titre }}">
+                                @endif
+                            @else
+                                <div class="no-media-placeholder"><i class="fas fa-image"></i></div>
+                            @endif
                         </div>
-                    </div>
+                        <div class="annonce-share-body">
+                            <div class="annonce-share-label">
+                                <i class="fas fa-link" style="margin-right:4px;"></i>Produit partagé
+                            </div>
+                            <div class="annonce-share-title">{{ $annonce->titre }}</div>
+                            <div class="annonce-share-price">{{ number_format($annonce->prix, 0, ',', ' ') }} CFA</div>
+                            @if($annonce->description)
+                                <div class="annonce-share-desc">{{ $annonce->description }}</div>
+                            @endif
+                        </div>
+                    </a>
                 @endif
 
                 <div class="form-group">
                     <label for="message">Votre message</label>
-                    <textarea name="message" id="message" class="form-textarea" placeholder="Dites quelque chose au vendeur..." required autofocus></textarea>
+                    <textarea name="message" id="message" class="form-textarea" placeholder="Dites quelque chose au vendeur..." required autofocus>{{ $prefilledMessage ?? '' }}</textarea>
                 </div>
 
                 <button type="submit" class="btn-send">
