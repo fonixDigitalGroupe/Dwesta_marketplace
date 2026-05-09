@@ -59,7 +59,10 @@ class MessageController extends Controller
 
         // Broadcasting event would go here
 
-        return redirect()->route('conversations.show', $conversation);
+        return redirect()->route('conversations.show', [
+            'conversation' => $conversation->id,
+            'layout' => $request->layout
+        ]);
     }
 
     /**

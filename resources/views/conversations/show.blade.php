@@ -27,6 +27,18 @@
         overflow: hidden;
         margin-top: 0;
     }
+
+    /* MINI LAYOUT ADJUSTMENTS */
+    @if(request('layout') == 'mini')
+    body { background: #fff !important; padding: 0 !important; margin: 0 !important; }
+    .header, .footer, .rk-breadcrumb, .breadcrumb, .partials-profile-sidebar, .sidebar, .account-header, .wa-sidebar { display: none !important; }
+    .main-content { padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; height: 100vh !important; }
+    .dashboard-container { display: block !important; margin: 0 !important; padding: 0 !important; border: none !important; }
+    .wa-container { height: 100vh !important; max-height: 100vh !important; border: none !important; }
+    .wa-main { width: 100% !important; height: 100vh !important; }
+    .messages-viewport { padding: 15px !important; }
+    .chat-input-box { padding: 12px 15px !important; }
+    @endif
     .wa-sidebar {
         width: 280px;
         border-left: 1px solid #f0f0f0;
@@ -577,14 +589,18 @@
 @endpush
 
 @section('content')
+@if(request('layout') != 'mini')
 <nav class="breadcrumb">
     <a href="{{ route('home') }}">Accueil</a> &gt; 
     <a href="{{ route('account.index') }}">Mon compte</a> &gt; 
     <a href="{{ route('conversations.index') }}">Mes messages</a>
 </nav>
+@endif
 
 <div class="dashboard-container">
-    @include('partials.profile-sidebar')
+    @if(request('layout') != 'mini')
+        @include('partials.profile-sidebar')
+    @endif
 
     <div class="main-content">
         <div class="account-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
@@ -732,7 +748,7 @@
                                         <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; padding: {{ $message->annonce ? '8px 16px 12px' : '8px 0 0' }}; margin-top: {{ $message->annonce ? '0' : '4px' }};">
                                             <div style="display: flex; gap: 15px; font-size: 0.72rem; font-weight: 500; color: #64748b;">
                                                 @if($isMine)
-                                                <form action="{{ route('conversations.messages.destroy', [$conversation, $message]) }}" method="POST" onsubmit="return confirm('Souhaitez-vous vraiment supprimer ce message ?');" style="margin: 0;">
+                                                <form action="{{ route('conversations.messages.destroy', [$conversation, $message, 'layout' => request('layout')]) }}" method="POST" onsubmit="return confirm('Souhaitez-vous vraiment supprimer ce message ?');" style="margin: 0;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" style="background: transparent; border: none; color: inherit; cursor: pointer; padding: 0; font-family: inherit; font-size: inherit; font-weight: inherit; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
@@ -767,6 +783,9 @@
                 <div class="chat-input-box" style="padding: 16px 24px; border-top: 1px solid #e5e7eb; background: #fff;">
                     <form action="{{ route('conversations.messages.store', $conversation) }}" id="chat-form" method="POST" enctype="multipart/form-data" style="margin: 0;">
                         @csrf
+                        @if(request('layout'))
+                            <input type="hidden" name="layout" value="{{ request('layout') }}">
+                        @endif
                         <input type="file" name="attachment" id="chat-attachment-input" style="display: none;" onchange="updateFileStatus(this)">
                         
                         {{-- Product Preview Area (if coming from an ad) --}}
@@ -992,8 +1011,9 @@
 
         window.confirmDeleteConv = function() {
             if (convIdToDelete) {
+                const layout = new URLSearchParams(window.location.search).get('layout') || '';
                 const form = document.getElementById('delete-conversation-form');
-                form.action = '/messagerie/' + convIdToDelete;
+                form.action = '/messagerie/' + convIdToDelete + (layout ? '?layout=' + layout : '');
                 form.submit();
             }
         };

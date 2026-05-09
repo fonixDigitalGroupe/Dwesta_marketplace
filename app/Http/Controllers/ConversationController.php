@@ -51,7 +51,10 @@ class ConversationController extends Controller
         }
 
         // Always redirect to the WhatsApp-style show view
-        return redirect()->route('conversations.show', $conversation)
+        return redirect()->route('conversations.show', [
+            'conversation' => $conversation->id,
+            'layout' => request('layout')
+        ])
             ->with('show_annonce_preview', true)
             ->with('prefilled_message', $prefilledMessage);
     }

@@ -26,6 +26,12 @@
             display: none !important;
         }
 
+        /* MINI LAYOUT BACKUP */
+        @if(request('layout') == 'mini')
+        .header, .footer, .top-banner, .top-banner + .header { display: none !important; visibility: hidden !important; }
+        body { padding-top: 0 !important; margin-top: 0 !important; background: #fff !important; }
+        @endif
+
         .top-banner {
             background-color: #004aad;
             height: 40px;
@@ -500,15 +506,21 @@
 </head>
 
 <body x-data="{ mobileMenuOpen: false }">
-    <div class="top-banner"></div>
+    @if(request('layout') != 'mini')
+        <div class="top-banner"></div>
+    @endif
 
 
-    @include('layouts.partials.header')
+    @if(request('layout') != 'mini')
+        @include('layouts.partials.header')
+    @endif
 
 
     @yield('content')
 
-    @include('layouts.partials.footer')
+    @if(request('layout') != 'mini')
+        @include('layouts.partials.footer')
+    @endif
 
 
     <script>

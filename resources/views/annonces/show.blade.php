@@ -66,11 +66,12 @@
         justify-content: center;
         background: #fff;
         position: relative;
+        padding: 10px; /* Petit dé-zoom pour voir tout le produit */
     }
     .rk-main-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain; /* Évite de zoomer/rogner l'image */
     }
     .rk-wishlist-btn {
         position: absolute;
@@ -564,11 +565,11 @@
         <!-- Center: Main Image -->
         <div class="rk-main-image" style="background: #ffffff; border: 1px solid #f2f2f2; border-radius: 4px; overflow: hidden; position: relative;">
             @if($annonce->video)
-                <video id="display-video" controls autoplay muted style="width: 100%; height: 100%; border-radius: 12px;">
+                <video id="display-video" controls autoplay muted style="max-width: 100%; max-height: 100%; border-radius: 12px;">
                     <source src="{{ $annonce->video->url }}" type="video/mp4">
                     Votre navigateur ne supporte pas la lecture de vidéos.
                 </video>
-                <img id="display-image" src="" alt="{{ $annonce->titre }}" style="display: none; width: 100%; height: 100%; object-fit: contain;">
+                <img id="display-image" src="" alt="{{ $annonce->titre }}" style="display: none; object-fit: contain;">
             @else
                 @php $photoPrincipale = $annonce->photoPrincipale(); @endphp
                 @if($photoPrincipale)
@@ -667,9 +668,19 @@
                         </button>
                     </form>
                     @else
-                        <a href="{{ auth()->check() ? route('conversations.create', ['recipient_id' => $annonce->vendeur->user_id, 'annonce_id' => $annonce->id, 'message' => 'Bonjour, je suis intéressé(e) par votre annonce « '.$annonce->titre.' ». Pouvez-vous me donner plus d\'informations ?']) : route('login') }}" class="rk-btn-cart" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #000; padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem;">
-                            <i class="fas fa-envelope" style="margin-right: 0.75rem;"></i> Contacter le vendeur
-                        </a>
+                        @if(auth()->check())
+                            <button onclick="openQuickChat('{{ route('conversations.create', ['recipient_id' => $annonce->vendeur->user_id, 'annonce_id' => $annonce->id]) }}')" class="rk-btn-cart" 
+                                style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #004aad; padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem; transition: background 0.2s;"
+                                onmouseover="this.style.background='#003d8f'" onmouseout="this.style.background='#004aad'">
+                                <i class="fas fa-envelope" style="margin-right: 0.75rem;"></i> Contacter le vendeur
+                            </button>
+                        @else
+                            <a href="{{ route('login') }}" class="rk-btn-cart" 
+                                style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #004aad; padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem; transition: background 0.2s;"
+                                onmouseover="this.style.background='#003d8f'" onmouseout="this.style.background='#004aad'">
+                                <i class="fas fa-envelope" style="margin-right: 0.75rem;"></i> Contacter le vendeur
+                            </a>
+                        @endif
                     @endif
                 </div>
             </div> <!-- Close rk-price-box -->
@@ -819,6 +830,32 @@
     @endif
 </div>
 
+{{-- Floating Quick Chat Window --}}
+@if(auth()->check())
+<div id="quick-chat-window" style="position: fixed; bottom: 0; right: 30px; width: 400px; height: 550px; background: #fff; border-top-left-radius: 12px; border-top-right-radius: 12px; box-shadow: 0 5px 40px rgba(0,0,0,0.2); z-index: 9999; display: none; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0; border-bottom: none;">
+    <div style="background: #fff; padding: 14px 20px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center;" id="quick-chat-header">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 34px; height: 32px; border-radius: 50%; background: #ea580c; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800;">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+            <div>
+                <div style="font-weight: 700; font-size: 0.9rem; color: #1e293b;">Messagerie</div>
+                <div style="font-size: 0.75rem; color: #10b981; font-weight: 600;">Discuter à l'instant</div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: center;">
+            <a href="{{ route('conversations.index') }}" target="_blank" title="Plein écran" style="color: #64748b; font-size: 0.95rem;"><i class="fas fa-expand-alt"></i></a>
+            <i class="fas fa-times" onclick="closeQuickChat()" style="color: #64748b; cursor: pointer; font-size: 1.2rem; padding: 4px;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#64748b'"></i>
+        </div>
+    </div>
+    <iframe id="quick-chat-iframe" src="" style="width: 100%; height: calc(100% - 60px); border: none; background: #fff;"></iframe>
+</div>
+
+<style>
+    #quick-chat-window.active { display: flex !important; }
+</style>
+@endif
+
 @push('scripts')
 <script>
     const basePrice = {{ $annonce->prix }};
@@ -929,6 +966,22 @@
             btn.style.pointerEvents = 'auto';
         });
     });
+
+    // Quick Chat Functions
+    function openQuickChat(url) {
+        // Add iframe=1 parameter to tell the layout to hide everything
+        const chatUrl = url + (url.includes('?') ? '&' : '?') + 'layout=mini';
+        const iframe = document.getElementById('quick-chat-iframe');
+        const window = document.getElementById('quick-chat-window');
+        
+        iframe.src = chatUrl;
+        window.classList.add('active');
+    }
+
+    function closeQuickChat() {
+        document.getElementById('quick-chat-window').classList.remove('active');
+        document.getElementById('quick-chat-iframe').src = "";
+    }
 </script>
 @endpush
 @endsection
