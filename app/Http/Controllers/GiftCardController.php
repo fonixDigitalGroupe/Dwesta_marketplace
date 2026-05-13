@@ -126,10 +126,9 @@ class GiftCardController extends Controller
     public function success(Request $request)
     {
         $sessionId = $request->get('session_id');
-        $amount = $request->get('amount');
         $user = Auth::user();
 
-        if (!$sessionId || !$amount) {
+        if (!$sessionId) {
             return redirect()->route('gift-cards.index');
         }
 
@@ -138,6 +137,8 @@ class GiftCardController extends Controller
             $session = $stripeService->getSession($sessionId);
 
             if ($session->payment_status === 'paid') {
+                $amount = $session->metadata->amount;
+
                 // Créer la carte cadeau effectivement
                 $giftCard = GiftCard::create([
                     'code' => GiftCard::generateCode(),

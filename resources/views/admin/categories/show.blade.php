@@ -7,7 +7,7 @@
     .main-content { background-color: #f8f9fa !important; }
     select:focus, input:focus {
         border-color: #adb1b8 !important;
-        box-shadow: 0 0 3px rgba(225,121,9,0.5) !important;
+        
         outline: none;
     }
     .filter-label { font-size: 0.8rem; color: #555; font-weight: 500; margin-bottom: 4px; display: block; }
@@ -30,7 +30,7 @@
                         <i class="fas fa-undo" style="font-size: 0.75rem; opacity: 0.6;"></i> Retour
                     </a>
                     <a href="{{ route('admin.categories.create') }}?parent_id={{ $category->id }}" 
-                       style="background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
+                       style="background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
                         Nouveau niveau enfant
                     </a>
                 </div>
@@ -147,7 +147,7 @@
 
                         @for($i = $eStart; $i <= $eEnd; $i++)
                             @if($i == $enfants->currentPage())
-                                <span style="padding: 6px 12px; background: linear-gradient(to bottom, #f7dfa5, #f0c14b); color: #111; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #a88734;">{{ $i }}</span>
+                                <span style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #004aad;">{{ $i }}</span>
                             @else
                                 <a href="{{ $enfants->url($i) }}" style="padding: 6px 12px; background: #fff; color: #555; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">{{ $i }}</a>
                             @endif

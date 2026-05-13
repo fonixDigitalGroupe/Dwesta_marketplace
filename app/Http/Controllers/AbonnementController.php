@@ -8,6 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SubscriptionConfirmed;
 
 class AbonnementController extends Controller
 {
@@ -22,7 +24,7 @@ class AbonnementController extends Controller
         
         if (!$user->estVendeurVerifie()) {
             return redirect()->route('vendeur.show')
-                ->with('error', 'Votre compte doit être vérifié par l\'administration pour accéder aux abonnements.');
+                ->with('error_banner', 'Votre compte doit être vérifié par l\'administration pour accéder aux abonnements.');
         }
 
         $vendeur = $user->vendeur;
@@ -46,16 +48,15 @@ class AbonnementController extends Controller
         $user = Auth::user();
         if (!$user->estVendeurVerifie()) {
             return redirect()->route('vendeur.show')
-                ->with('error', 'Votre compte doit être vérifié pour accéder au paiement.');
+                ->with('error_banner', 'Votre compte doit être vérifié pour accéder au paiement.');
         }
 
         $abonnement = Abonnement::findOrFail($request->abonnement_id);
-        
-        // Si c'est un forfait gratuit, on souscrit directement via la méthode subscribe
-        if ($abonnement->prix_mensuel == 0) {
-            // On redirige vers subscribe mais comme c'est une méthode POST, il faut un formulaire caché ou adapter la logique.
-            // Pour faire simple ici, on affiche quand même la confirmation pour "Activer", ou on adapte plus tard.
-            // Le user a dit "abonnement basic" (payant), donc on se concentre sur le flux payant.
+
+        // Sécurité vendeur particulier
+        if ($user->vendeur->estParticulier() && $abonnement->prix_mensuel > 0) {
+            return redirect()->route('abonnements.index')
+                ->with('error_banner', 'En tant que vendeur particulier, vous ne pouvez souscrire qu\'au forfait gratuit.');
         }
 
         return view('abonnements.checkout', compact('abonnement'));
@@ -75,14 +76,18 @@ class AbonnementController extends Controller
 
         if (!$user->estVendeurVerifie()) {
             return redirect()->route('vendeur.show')
-                ->with('error', 'Votre compte doit être vérifié pour souscrire à un abonnement.');
+                ->with('error_banner', 'Votre compte doit être vérifié pour souscrire à un abonnement.');
         }
 
         $vendeur = $user->vendeur;
         $abonnement = Abonnement::findOrFail($request->abonnement_id);
 
-        if (!$abonnement->stripe_price_id && $abonnement->prix_mensuel > 0) {
-            return back()->with('error', 'Cet abonnement n\'est pas encore configuré pour le paiement réel (stripe_price_id manquant).');
+        if ($vendeur->estParticulier() && $abonnement->prix_mensuel > 0) {
+            return back()->with('error', 'Restriction : Les vendeurs particuliers ne peuvent pas souscrire à des forfaits payants.');
+        }
+
+        if ($vendeur->estProfessionnel() && $abonnement->prix_mensuel == 0) {
+            return back()->with('error', 'Restriction : Les vendeurs professionnels doivent souscrire à un forfait Basic ou Expert.');
         }
 
         if ($abonnement->prix_mensuel == 0) {
@@ -90,7 +95,7 @@ class AbonnementController extends Controller
             try {
                 DB::beginTransaction();
                 VendeurAbonnement::where('vendeur_id', $vendeur->id)->update(['actif' => false]);
-                VendeurAbonnement::create([
+                $sub = VendeurAbonnement::create([
                     'vendeur_id' => $vendeur->id,
                     'abonnement_id' => $abonnement->id,
                     'date_debut' => Carbon::today(),
@@ -100,7 +105,10 @@ class AbonnementController extends Controller
                     'nombre_annonces_utilisees' => 0,
                 ]);
                 DB::commit();
-                return redirect()->route('abonnements.index')->with('success', "Vous avez activé le forfait gratuit !");
+
+                // Envoi de l'email de confirmation
+                Mail::to($user->email)->send(new SubscriptionConfirmed($sub));
+                return redirect()->route('vendeur.show')->with('success', "Vous avez activé le forfait gratuit !");
             } catch (\Exception $e) {
                 DB::rollBack();
                 return back()->with('error', $e->getMessage());
@@ -183,7 +191,7 @@ class AbonnementController extends Controller
                          // Activation immédiate (fallback webhook)
                          VendeurAbonnement::where('vendeur_id', $vendeur->id)->update(['actif' => false]);
                          
-                         VendeurAbonnement::create([
+                         $sub = VendeurAbonnement::create([
                             'vendeur_id' => $vendeur->id,
                             'abonnement_id' => $abonnement->id,
                             'date_debut' => Carbon::today(),
@@ -192,10 +200,13 @@ class AbonnementController extends Controller
                             'renouvellement_automatique' => true,
                             'nombre_annonces_utilisees' => 0,
                         ]);
+
+                        // Envoi de l'email de confirmation
+                        Mail::to($vendeur->user->email)->send(new SubscriptionConfirmed($sub));
                     }
                 }
 
-                return redirect()->route('abonnements.index')
+                return redirect()->route('vendeur.show')
                     ->with('success', 'Votre abonnement a été activé avec succès ! Bienvenue dans votre nouvelle offre.');
             }
         
@@ -203,7 +214,7 @@ class AbonnementController extends Controller
             return redirect()->route('abonnements.index')->with('error', 'Erreur lors de la vérification du paiement.');
         }
 
-        return redirect()->route('abonnements.index')
+        return redirect()->route('vendeur.show')
             ->with('info', 'Le paiement est en cours de traitement. Votre abonnement sera actif sous peu.');
     }
 }

@@ -4,6 +4,10 @@
 
 @push('styles')
     <style>
+        html, body, .dashboard-container, .main-content {
+            background-color: #fff !important;
+        }
+
         [x-cloak] {
             display: none !important;
         }

@@ -8,6 +8,7 @@ class Livreur extends Model
 {
     protected $fillable = [
         'user_id',
+        'matricule',
         'type_vehicule',
         'type_document',
         'numero_document',

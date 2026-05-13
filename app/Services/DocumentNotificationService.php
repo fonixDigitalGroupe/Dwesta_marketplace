@@ -85,7 +85,7 @@ class DocumentNotificationService
         if ($vendeur->estParticulier() && $vendeur->particulier) {
             $particulier = $vendeur->particulier;
             if ($particulier->date_expiration_document) {
-                $joursRestants = now()->diffInDays($particulier->date_expiration_document);
+                $joursRestants = ceil(now()->diffInMinutes($particulier->date_expiration_document, false) / (60 * 24));
                 
                 if ($joursRestants <= 30 && $joursRestants >= 0) {
                     $alertes[] = [
@@ -104,7 +104,7 @@ class DocumentNotificationService
         if ($vendeur->estProfessionnel() && $vendeur->professionnel) {
             $professionnel = $vendeur->professionnel;
             if ($professionnel->date_expiration_registre) {
-                $joursRestants = now()->diffInDays($professionnel->date_expiration_registre);
+                $joursRestants = ceil(now()->diffInMinutes($professionnel->date_expiration_registre, false) / (60 * 24));
                 
                 if ($joursRestants <= 30 && $joursRestants >= 0) {
                     $alertes[] = [
@@ -122,7 +122,7 @@ class DocumentNotificationService
         // Vérifier l'abonnement
         if ($vendeur->abonnementActif) {
             $abonnementActif = $vendeur->abonnementActif;
-            $joursRestants = now()->diffInDays($abonnementActif->date_fin);
+            $joursRestants = ceil(now()->diffInMinutes($abonnementActif->date_fin, false) / (60 * 24));
             
             if ($joursRestants <= 30 && $joursRestants >= 0) {
                 $alertes[] = [

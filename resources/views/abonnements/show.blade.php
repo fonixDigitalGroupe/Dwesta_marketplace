@@ -19,7 +19,7 @@
                         @if(auth()->user()->estVendeur())
                             <a href="{{ route('vendeur.show') }}"
                                 style="display: inline-block; color: #6c757d; text-decoration: none; font-weight: 500;">
-                                Mon compte vendeur
+                                Compte vendeur
                             </a>
                         @endif
                     @endauth
@@ -131,7 +131,7 @@
                             <strong>Vous devez créer un compte vendeur pour souscrire à un abonnement.</strong>
                             <a href="{{ route('vendeur.create') }}"
                                 style="display: block; margin-top: 0.5rem; color: #856404; text-decoration: underline;">
-                                Créer mon compte vendeur
+                                Créer un compte vendeur
                             </a>
                         </div>
                     @endif

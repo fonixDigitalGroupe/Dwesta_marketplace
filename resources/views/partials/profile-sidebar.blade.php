@@ -1,10 +1,13 @@
 @php 
-    $user = auth()->user(); 
+    $user = auth()->user();
     $unreadCount = \App\Models\Message::where('sender_id', '!=', $user->id)
         ->whereNull('read_at')
-        ->whereHas('conversation', function($q) use ($user) {
+        ->whereHas('conversation', function ($q) use ($user) {
             $q->where('user1_id', $user->id)->orWhere('user2_id', $user->id);
         })->count();
+    $isRejected = $user->vendeur && $user->vendeur->statut_verification === 'rejete';
+    $isProWithoutPlan = $user->vendeur && $user->vendeur->estProfessionnel() && $user->vendeur->estVerifie() && !$user->vendeur->aForfaitPayantActif();
+    $isInactiveForPro = $isRejected || $isProWithoutPlan;
 @endphp
 @push('styles')
     <style>
@@ -18,7 +21,7 @@
         }
 
         body {
-            background-color: #f5f5f5 !important;
+            background-color: #fff !important;
         }
 
         .sidebar {
@@ -27,7 +30,7 @@
             border-radius: 4px;
             padding: 0;
             height: fit-content;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: none;
             margin-left: 2rem;
         }
 
@@ -125,7 +128,7 @@
             padding: 0.75rem 2rem 2rem;
             border: 1px solid #eeeeee;
             border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: none;
         }
 
         .breadcrumb {
@@ -135,24 +138,36 @@
             font-size: 0.85rem;
             color: #666;
         }
-        
+
         .inactive-link {
-            padding: 10px 16px 10px 52px;
-            color: #999;
-            font-size: 0.85rem;
-            cursor: not-allowed;
-            display: block;
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            color: #ccc;
             text-decoration: none;
+            font-size: 0.9rem;
+            cursor: not-allowed;
+        }
+
+        .inactive-link i {
+            width: 24px;
+            margin-right: 12px;
+            font-size: 1.1rem;
+            color: #ddd;
+            text-align: center;
         }
 
         @media (max-width: 1024px) {
             .dashboard-container {
                 grid-template-columns: 1fr;
             }
+
             .sidebar {
                 display: none;
             }
-            .breadcrumb, .dashboard-container {
+
+            .breadcrumb,
+            .dashboard-container {
                 padding-left: 1rem;
                 padding-right: 1rem;
             }
@@ -162,19 +177,22 @@
 
 <aside class="sidebar">
     <!-- Votre compte -->
-    <a href="{{ route('account.index') }}" class="sidebar-item {{ request()->routeIs('account.index') ? 'active' : '' }}">
+    <a href="{{ route('account.index') }}"
+        class="sidebar-item {{ request()->routeIs('account.index') ? 'active' : '' }}">
         <i class="fa-solid fa-user"></i>
         <span>Votre compte Karnou</span>
     </a>
 
     <!-- Vos commandes -->
-    <a href="{{ route('account.orders') }}" class="sidebar-item {{ request()->routeIs('account.orders') ? 'active' : '' }}">
+    <a href="{{ route('account.orders') }}"
+        class="sidebar-item {{ request()->routeIs('account.orders') ? 'active' : '' }}">
         <i class="fa-solid fa-box"></i>
         <span>Vos commandes</span>
     </a>
 
     <!-- Boîte de réception -->
-    <a href="{{ route('conversations.index') }}" class="sidebar-item {{ request()->routeIs('conversations.*') ? 'active' : '' }}">
+    <a href="{{ route('conversations.index') }}"
+        class="sidebar-item {{ request()->routeIs('conversations.*') ? 'active' : '' }}">
         <i class="fa-solid fa-envelope"></i>
         <span>Boîte de réception</span>
         @if($unreadCount > 0)
@@ -189,38 +207,38 @@
     </a>
 
     <!-- Bons d'achat -->
-    <a href="{{ route('gift-cards.index') }}" class="sidebar-item {{ request()->routeIs('gift-cards.*') ? 'active' : '' }}">
+    <a href="{{ route('gift-cards.index') }}"
+        class="sidebar-item {{ request()->routeIs('gift-cards.*') ? 'active' : '' }}">
         <i class="fa-solid fa-ticket"></i>
         <span>Bons d'achat</span>
     </a>
 
     <!-- Favoris -->
-    <a href="{{ route('favorites.index') }}" class="sidebar-item {{ request()->routeIs('favorites.*') ? 'active' : '' }}">
+    <a href="{{ route('favorites.index') }}"
+        class="sidebar-item {{ request()->routeIs('favorites.*') ? 'active' : '' }}">
         <i class="fa-solid fa-heart"></i>
         <span>Favoris</span>
     </a>
 
-    <!-- Mes crédits -->
-    <a href="{{ route('account.credits.index') }}" class="sidebar-item {{ request()->routeIs('account.credits.*') ? 'active' : '' }}">
-        <i class="fa-solid fa-coins"></i>
-        <span>Mes crédits</span>
-        @if($user->credit_balance > 0)
-            <span style="margin-left: auto; font-size: 0.72rem; font-weight: 700; color: #004aad; background: #eff6ff; padding: 2px 8px; border-radius: 10px; white-space: nowrap;">
-                {{ number_format($user->credit_balance, 0, ',', ' ') }} DA
-            </span>
-        @endif
-    </a>
 
 
-
-
+    @if($user->hasRole('admin'))
+        <div class="sidebar-divider"></div>
+        <a href="{{ route('admin.dashboard') }}" class="sidebar-item" style="color: #0099ff;">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span style="font-weight: 700;">Back Office (Admin)</span>
+        </a>
+    @endif
 
     <div class="sidebar-divider"></div>
 
     <!-- Section: Gérez votre Compte -->
-    <div class="sidebar-group-title" style="font-weight: 500; font-size: 0.9rem; color: #333; padding-top: 10px;">Gérez votre Compte</div>
-    
-    <a href="{{ route('profile.show') }}" class="sidebar-item {{ request()->url() == route('profile.show') && !str_contains(request()->fullUrl(), 'preferences') ? 'active' : '' }}" style="padding-left: 16px;">
+    <div class="sidebar-group-title" style="font-weight: 500; font-size: 0.9rem; color: #333; padding-top: 10px;">Gérez
+        votre Compte</div>
+
+    <a href="{{ route('profile.show') }}"
+        class="sidebar-item {{ request()->url() == route('profile.show') && !str_contains(request()->fullUrl(), 'preferences') ? 'active' : '' }}"
+        style="padding-left: 16px;">
         <span style="font-size: 0.85rem; color: #555;">Adresses</span>
     </a>
 
@@ -234,42 +252,140 @@
 
     <!-- Vendeur Section -->
     <div class="sidebar-divider"></div>
+
+    <div class="sidebar-group-title" style="font-weight: 500; font-size: 0.9rem; color: #333; padding-top: 5px;">Vendre sur Karnou</div>
+
+    @if(!$user->vendeur)
+        <a href="{{ route('vendeur.create') }}" class="sidebar-item" style="color: #f68b1e;">
+            <i class="fa-solid fa-plus-circle"></i>
+            <span style="font-weight: 600;">Devenir vendeur</span>
+        </a>
+    @endif
+
     @if($user->vendeur)
-        <div class="sidebar-group-title" style="font-weight: 500; font-size: 0.9rem; color: #333; padding-top: 10px;">Vendre sur Karnou</div>
-        
         <a href="{{ route('vendeur.show') }}" class="sidebar-item {{ request()->routeIs('vendeur.show') ? 'active' : '' }}">
             <i class="fa-solid fa-id-card"></i>
             <span>État du compte</span>
         </a>
 
-        <a href="{{ route('vendeur.mes-annonces') }}" class="sidebar-item {{ request()->routeIs('vendeur.mes-annonces') ? 'active' : '' }}">
+        @if(!$isRejected)
+            <a href="{{ route('vendeur.mes-annonces') }}"
+                class="sidebar-item {{ request()->routeIs('vendeur.mes-annonces') ? 'active' : '' }}">
+                <i class="fa-solid fa-list"></i>
+                <span>Mes annonces</span>
+            </a>
+        @else
+            <div class="inactive-link" title="Compte rejeté">
+                <i class="fa-solid fa-list"></i>
+                <span>Mes annonces</span>
+            </div>
+        @endif
+    @else
+        <div class="inactive-link" title="Réservé aux vendeurs">
+            <i class="fa-solid fa-id-card"></i>
+            <span>État du compte</span>
+        </div>
+
+        <div class="inactive-link" title="Réservé aux vendeurs">
             <i class="fa-solid fa-list"></i>
             <span>Mes annonces</span>
-        </a>
+        </div>
+    @endif
 
-        @if($user->vendeur->aAccesPagePro())
-            <a href="{{ route('page-pro.edit') }}" class="sidebar-item {{ request()->routeIs('page-pro.edit') ? 'active' : '' }}">
+        @if(($user->vendeur && $user->vendeur->aAccesPagePro()) || $user->hasRole('admin'))
+            <a href="{{ $user->vendeur ? route('page-pro.edit') : route('vendeur.create') }}"
+                class="sidebar-item {{ request()->routeIs('page-pro.edit') ? 'active' : '' }}">
                 <i class="fa-solid fa-store"></i>
                 <span>Gérer ma Boutique PRO</span>
             </a>
+        @else
+            <div class="inactive-link" title="Réservé aux vendeurs professionnels">
+                <i class="fa-solid fa-store"></i>
+                <span>Gérer ma Boutique PRO</span>
+            </div>
         @endif
 
-        <a href="{{ route('vendeur.wallet.index') }}" class="sidebar-item {{ request()->routeIs('vendeur.wallet.*') ? 'active' : '' }}">
+        @if((($user->vendeur && $user->vendeur->estProfessionnel()) || $user->hasRole('admin')) && !$isInactiveForPro)
+            <a href="{{ $user->vendeur ? route('vendeur.stats') : route('vendeur.create') }}"
+                class="sidebar-item {{ request()->routeIs('vendeur.stats') ? 'active' : '' }}">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Statistiques de vente</span>
+            </a>
+        @else
+            <div class="inactive-link" title="{{ $isRejected ? 'Compte rejeté' : ($isProWithoutPlan ? 'Veuillez souscrire à un forfait Basic ou Expert' : 'Réservé aux vendeurs professionnels') }}">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Statistiques de vente</span>
+            </div>
+        @endif
+
+    @if($user->vendeur)
+        @if(!$isInactiveForPro)
+            <a href="{{ route('vendeur.wallet.index') }}"
+                class="sidebar-item {{ request()->routeIs('vendeur.wallet.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-wallet"></i>
+                <span>Mon Porte-Monnaie</span>
+            </a>
+        @else
+            <div class="inactive-link" title="{{ $isRejected ? 'Compte rejeté' : ($isProWithoutPlan ? 'Veuillez souscrire à un forfait Basic ou Expert' : 'Réservé aux vendeurs') }}">
+                <i class="fa-solid fa-wallet"></i>
+                <span>Mon Porte-Monnaie</span>
+            </div>
+        @endif
+    @else
+        <div class="inactive-link" title="Réservé aux vendeurs">
             <i class="fa-solid fa-wallet"></i>
             <span>Mon Porte-Monnaie</span>
-        </a>
+        </div>
+    @endif
 
-        @if($user->estVendeurOfficiel())
-            <a href="{{ route('abonnements.index') }}" class="sidebar-item {{ request()->routeIs('abonnements.*') ? 'active' : '' }}">
+    @if($user->vendeur)
+        @if(!$isRejected)
+            <a href="{{ route('account.credits.index') }}"
+                class="sidebar-item {{ request()->routeIs('account.credits.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-coins"></i>
+                <span>Mes crédits</span>
+                @if($user->credit_balance > 0)
+                    <span
+                        style="margin-left: auto; font-size: 0.72rem; font-weight: 700; color: #004aad; background: #eff6ff; padding: 2px 8px; border-radius: 10px; white-space: nowrap;">
+                        {{ number_format($user->credit_balance, 0, ',', ' ') }} DA
+                    </span>
+                @endif
+            </a>
+        @else
+            <div class="inactive-link" title="Compte rejeté">
+                <i class="fa-solid fa-coins"></i>
+                <span>Mes crédits</span>
+                @if($user->credit_balance > 0)
+                    <span
+                        style="margin-left: auto; font-size: 0.72rem; font-weight: 700; color: #ccc; background: #f9f9f9; padding: 2px 8px; border-radius: 10px; white-space: nowrap;">
+                        {{ number_format($user->credit_balance, 0, ',', ' ') }} DA
+                    </span>
+                @endif
+            </div>
+        @endif
+
+        @if(($user->estVendeurOfficiel() || $user->hasRole('admin')) && !$isRejected)
+            <a href="{{ route('abonnements.index') }}"
+                class="sidebar-item {{ request()->routeIs('abonnements.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-calendar-check"></i>
                 <span>Mes abonnements</span>
             </a>
+        @else
+            <div class="inactive-link" title="{{ $isRejected ? 'Compte rejeté' : 'Réservé aux vendeurs vérifiés' }}">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>Mes abonnements</span>
+            </div>
         @endif
     @else
-        <a href="{{ route('vendeur.create') }}" class="sidebar-item" style="color: #f68b1e;">
-            <i class="fa-solid fa-plus-circle"></i>
-            <span style="font-weight: 600;">Vendre sur Karnou</span>
-        </a>
+        <div class="inactive-link" title="Réservé aux vendeurs">
+            <i class="fa-solid fa-coins"></i>
+            <span>Mes crédits</span>
+        </div>
+
+        <div class="inactive-link" title="Réservé aux vendeurs">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>Mes abonnements</span>
+        </div>
     @endif
 
     <div class="sidebar-divider"></div>
@@ -278,7 +394,9 @@
     <form method="POST" action="{{ route('logout') }}" id="sidebar-logout-form" style="display: none;">
         @csrf
     </form>
-    <a href="#" class="sidebar-item" onclick="event.preventDefault(); document.getElementById('sidebar-logout-form').submit();" style="color: #c40000; margin-top: 10px;">
+    <a href="#" class="sidebar-item"
+        onclick="event.preventDefault(); document.getElementById('sidebar-logout-form').submit();"
+        style="color: #c40000; margin-top: 10px;">
         <i class="fa-solid fa-sign-out-alt"></i>
         <span>Déconnexion</span>
     </a>

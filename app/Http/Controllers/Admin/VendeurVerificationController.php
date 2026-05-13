@@ -42,13 +42,15 @@ class VendeurVerificationController extends Controller
         $vendeur->load(['user', 'particulier', 'professionnel']);
 
         // Générer les URLs temporaires pour les documents
-        if ($vendeur->estParticulier() && $vendeur->particulier && $vendeur->particulier->document_path) {
+        // On affiche les docs particulier s'ils existent (même si le vendeur passe en Pro)
+        if ($vendeur->particulier && $vendeur->particulier->document_path) {
             $vendeur->particulier->document_url = $this->documentUploadService->getDocumentUrl(
                 $vendeur->particulier->document_path
             );
         }
 
-        if ($vendeur->estProfessionnel() && $vendeur->professionnel && $vendeur->professionnel->registre_commerce_path) {
+        // On affiche les docs pro s'ils existent
+        if ($vendeur->professionnel && $vendeur->professionnel->registre_commerce_path) {
             $vendeur->professionnel->registre_url = $this->documentUploadService->getDocumentUrl(
                 $vendeur->professionnel->registre_commerce_path
             );
@@ -67,12 +69,24 @@ class VendeurVerificationController extends Controller
         ]);
 
         try {
-            $vendeur->update([
+            // Si c'est un particulier qui passe professionnel, on change son type maintenant
+            $updateData = [
                 'statut_verification' => 'verifie',
                 'verifie_le' => now(),
                 'verifie_par' => Auth::id(),
                 'raison_rejet' => null,
-            ]);
+            ];
+
+            if ($vendeur->professionnel()->exists()) {
+                $updateData['type'] = 'professionnel';
+                
+                // Supprimer les données particulier devenues obsolètes
+                if ($vendeur->particulier) {
+                    $vendeur->particulier->delete();
+                }
+            }
+
+            $vendeur->update($updateData);
 
             // Attribution du rôle vendeur (avant cahier des charges)
             $vendeur->user->assignRole('vendeur');

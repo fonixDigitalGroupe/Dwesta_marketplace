@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\AvisController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DocumentController;
@@ -57,6 +58,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
     Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware('throttle:6,1')->name('verification.resend');
 
+    // OTP Verification Routes
+    Route::get('/verify-otp', [OtpController::class, 'showVerifyForm'])->name('otp.verify');
+    Route::post('/verify-otp', [OtpController::class, 'verify'])->name('otp.verify.post');
+    Route::post('/verify-otp/resend', [OtpController::class, 'resend'])->name('otp.resend');
+
 
     // Routes nécessitant une vérification d'email
     Route::middleware(['verified'])->group(function () {
@@ -87,8 +93,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/professionnel', [VendeurController::class, 'storeProfessionnel'])->name('store.professionnel');
         Route::get('/mon-compte', [VendeurController::class, 'show'])->name('show');
         Route::get('/mes-annonces', [VendeurController::class, 'mesAnnonces'])->name('mes-annonces');
-        Route::get('/mes-ventes', [VendeurController::class, 'orders'])->name('orders');
-        Route::get('/mes-ventes/{order}', [VendeurController::class, 'orderShow'])->name('orders.show');
+        Route::get('/mes-commandes', [VendeurController::class, 'orders'])->name('orders');
+        Route::get('/mes-commandes/{order}', [VendeurController::class, 'orderShow'])->name('orders.show');
+        Route::get('/statistiques', [VendeurController::class, 'stats'])->name('stats');
         Route::put('/{vendeur}/document-particulier', [VendeurController::class, 'updateDocumentParticulier'])->name('update.document.particulier');
         Route::put('/{vendeur}/document-professionnel', [VendeurController::class, 'updateDocumentProfessionnel'])->name('update.document.professionnel');
 
@@ -190,6 +197,7 @@ Route::middleware('auth')->group(function () {
         });
 
         // Gestion des Utilisateurs
+        Route::post('/users/{user}/send-credentials', [\App\Http\Controllers\Admin\UserController::class, 'sendCredentials'])->name('users.send-credentials');
         Route::patch('/users/{user}/suspend', [\App\Http\Controllers\Admin\UserController::class, 'toggleStatus'])->name('users.suspend');
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
 

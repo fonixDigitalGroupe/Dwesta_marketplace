@@ -39,6 +39,12 @@ class GiftCardOptionController extends Controller
             'is_active' => 'boolean',
         ]);
 
+        if (GiftCardOption::count() >= 3) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['amount' => 'Vous ne pouvez pas enregistrer plus de 3 cartes cadeaux au total.']);
+        }
+
         $validated['is_popular'] = $request->has('is_popular');
         $validated['is_active'] = $request->has('is_active');
 

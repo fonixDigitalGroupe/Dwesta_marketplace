@@ -23,7 +23,7 @@
 
         input:focus, textarea:focus, select:focus {
             border-color: #e77600 !important;
-            box-shadow: 0 0 3px 2px rgba(228,121,17,0.5) !important;
+            
         }
 
         .amazon-card {
@@ -53,9 +53,7 @@
         }
 
         .btn-amazon-primary {
-            background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
-            border: 1px solid #a88734;
-            color: #111;
+            background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff;
             padding: 10px 24px;
             border-radius: 0;
             font-size: 0.85rem;
@@ -66,8 +64,8 @@
             text-align: center;
         }
         .btn-amazon-primary:hover {
-            background: linear-gradient(to bottom, #f5d78e, #eeb933);
-            border-color: #9c7e31;
+            background: linear-gradient(180deg, #0069d9 0%, #004494 100%);
+            border-color: #003d82;
         }
 
         .btn-amazon-secondary {
@@ -137,7 +135,7 @@
         
         .checkbox-container:hover input ~ .checkmark {
             border-color: #e77600;
-            box-shadow: 0 0 3px rgba(228,121,17,0.5);
+            
         }
         
         .checkbox-container input:checked ~ .checkmark {
@@ -164,11 +162,13 @@
     </style>
 @endpush
 
+@section('sub_header')
+    @include('admin.partials.settings-tabs')
+@endsection
+
 @section('content')
 <div style="max-width: 1200px; margin: 0 auto;">
     
-    @include('admin.partials.settings-tabs')
-
     <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; padding: 25px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Ajouter une catégorie</h1>

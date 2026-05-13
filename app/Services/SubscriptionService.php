@@ -28,8 +28,17 @@ class SubscriptionService
     public function canPublishAnnonce(Vendeur $vendeur): bool
     {
         // Vérifier le statut de vérification
-        if ($vendeur->statut_verification === 'rejeté') {
+        if ($vendeur->statut_verification === 'rejete') {
             return false;
+        }
+
+        // Si non vérifié, limiter à l'abonnement gratuit
+        if (!$vendeur->estVerifie()) {
+            $abonnementGratuit = \App\Models\Abonnement::where('type', \App\Models\Abonnement::TYPE_GRATUIT)->first();
+            if (!$abonnementGratuit) return false;
+            
+            $nombreAnnonces = $vendeur->annonces()->whereIn('statut', ['publiee', 'en_attente'])->count();
+            return $abonnementGratuit->nombre_annonces === 0 || $nombreAnnonces < $abonnementGratuit->nombre_annonces;
         }
 
         $abonnementActif = $vendeur->abonnementActif;
@@ -78,29 +87,23 @@ class SubscriptionService
      */
     public function getRemainingAnnonces(Vendeur $vendeur): int|string
     {
-        $abonnementActif = $vendeur->abonnementActif;
+        $abonnementActuel = $vendeur->abonnementActuel;
 
-        if (!$abonnementActif) {
-            // Abonnement gratuit
-            $abonnementGratuit = \App\Models\Abonnement::where('type', \App\Models\Abonnement::TYPE_GRATUIT)->first();
-            
-            if (!$abonnementGratuit) {
-                return 0;
-            }
-
-            $nombreAnnonces = $vendeur->annonces()->whereIn('statut', ['publiee', 'en_attente'])->count();
-            
-            return max(0, $abonnementGratuit->nombre_annonces - $nombreAnnonces);
+        if (!$abonnementActuel) {
+            return 0;
         }
 
-        $abonnement = $abonnementActif->abonnement;
-
-        // Si illimité (nombre_annonces = 0)
-        if ($abonnement->nombre_annonces === 0) {
+        // Si illimité (nombre_annonces = 0 ou null)
+        if ($abonnementActuel->nombre_annonces === 0 || $abonnementActuel->nombre_annonces === null) {
             return 'illimité';
         }
 
-        return max(0, $abonnement->nombre_annonces - $abonnementActif->nombre_annonces_utilisees);
+        // Compter les annonces RÉELLEMENT actives en base
+        $nombreAnnoncesActives = $vendeur->annonces()
+            ->whereIn('statut', ['publiee', 'en_attente'])
+            ->count();
+            
+        return max(0, $abonnementActuel->nombre_annonces - $nombreAnnoncesActives);
     }
 
     /**

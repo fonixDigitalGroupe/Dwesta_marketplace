@@ -24,7 +24,8 @@ class HighlightTabController extends Controller
 
     public function create()
     {
-        return view('admin.highlight_tabs.create');
+        $nextPosition = \App\Models\HighlightTab::max('position') + 1;
+        return view('admin.highlight_tabs.create', compact('nextPosition'));
     }
 
     public function store(Request $request)

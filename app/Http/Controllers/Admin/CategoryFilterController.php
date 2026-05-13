@@ -27,16 +27,16 @@ class CategoryFilterController extends Controller
             $query->where('category_id', $request->category_id);
         } elseif ($request->filled('l2')) {
             $l2Id = $request->l2;
-            $query->whereHas('category', function($q) use ($l2Id) {
+            $query->whereHas('category', function ($q) use ($l2Id) {
                 $q->where('parent_id', $l2Id) // L3 is child of L2
-                  ->orWhere('id', $l2Id);    // Cases where filter is directly on L2
+                    ->orWhere('id', $l2Id);    // Cases where filter is directly on L2
             });
         } elseif ($request->filled('l1')) {
             $l1Id = $request->l1;
-            $query->whereHas('category', function($q) use ($l1Id) {
-                $q->whereHas('parent', function($pq) use ($l1Id) {
+            $query->whereHas('category', function ($q) use ($l1Id) {
+                $q->whereHas('parent', function ($pq) use ($l1Id) {
                     $pq->where('parent_id', $l1Id); // L3 -> L2 -> L1
-                })->orWhereHas('parent', function($pq) use ($l1Id) {
+                })->orWhereHas('parent', function ($pq) use ($l1Id) {
                     $pq->where('id', $l1Id);        // L2 -> L1
                 })->orWhere('id', $l1Id);           // L1
             });
@@ -58,9 +58,18 @@ class CategoryFilterController extends Controller
     {
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
-            'nom' => 'required|string|max:255',
+            'nom' => [
+                'required',
+                'string',
+                'max:255',
+                \Illuminate\Validation\Rule::unique('category_filters')->where(function ($query) use ($request) {
+                    return $query->where('category_id', $request->category_id);
+                })
+            ],
             'options' => 'nullable|array',
             'is_filterable' => 'nullable|boolean',
+        ], [
+            'nom.unique' => 'Ce nom de critère est déjà utilisé pour cette catégorie.',
         ]);
 
         $validated['type'] = 'select';
@@ -75,7 +84,7 @@ class CategoryFilterController extends Controller
         }
 
         $validated['slug'] = Str::slug($validated['nom']);
-        
+
         // Ensure slug is unique per category
         $slug = $validated['slug'];
         $count = 1;
@@ -97,7 +106,7 @@ class CategoryFilterController extends Controller
     public function edit(CategoryFilter $filter)
     {
         $parents = Category::whereNull('parent_id')->get();
-        
+
         $item = $filter->category;
         $l3Id = $item->id;
         $l2Id = $item->parent_id;
@@ -117,9 +126,18 @@ class CategoryFilterController extends Controller
     {
         $validated = $request->validate([
             'category_id' => 'required|exists:categories,id',
-            'nom' => 'required|string|max:255',
+            'nom' => [
+                'required',
+                'string',
+                'max:255',
+                \Illuminate\Validation\Rule::unique('category_filters')->where(function ($query) use ($request) {
+                    return $query->where('category_id', $request->category_id);
+                })->ignore($filter->id)
+            ],
             'options' => 'nullable|array',
             'is_filterable' => 'nullable|boolean',
+        ], [
+            'nom.unique' => 'Ce nom de critère est déjà utilisé pour cette catégorie.',
         ]);
 
         $validated['type'] = 'select';

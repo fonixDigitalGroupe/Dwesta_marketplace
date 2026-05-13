@@ -3,41 +3,85 @@
 @section('title', 'Gestion des Options de Cartes Cadeaux')
 
 @push('styles')
-<style>
-    .main-content { background-color: #f8f9fa !important; }
-    select:focus, input:focus {
-        border-color: #adb1b8 !important;
-        box-shadow: 0 0 3px rgba(225,121,9,0.5) !important;
-        outline: none;
-    }
-</style>
+    <style>
+        .main-content {
+            background-color: #f8f9fa !important;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #adb1b8 !important;
+
+            outline: none;
+        }
+        @media print {
+            .sidebar, .navbar, .settings-tabs, .filters-bar, .actions-column, .pagination-container, .btn-amazon-primary, .btn-amazon-secondary, .admin-sub-header, header, footer {
+                display: none !important;
+            }
+            .main-content {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+            }
+            .container-fluid {
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            table {
+                width: 100% !important;
+                border: 1px solid #111 !important;
+            }
+            th, td {
+                border: 1px solid #111 !important;
+            }
+        }
+    </style>
 @endpush
+
+@section('sub_header')
+    @include('admin.partials.settings-tabs')
+@endsection
 
 @section('content')
     <div style="max-width: 100%;">
-        @include('admin.partials.settings-tabs')
 
         <!-- Main Conteneur style Amazon Card -->
-        <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
-            
+        <div
+            style="background: #fff; border: 1px solid #e7e7e7; border-top: none; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
+
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
                     Cartes Cadeaux
                 </h1>
-                
+
                 <div style="display: flex; gap: 8px;">
-                    <a href="{{ route('admin.gift_cards.create') }}" 
-                       style="background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
-                        Nouvelle carte cadeau
+                    <a href="javascript:window.print()"
+                        style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 6px;">
+                        Imprimer
                     </a>
+                    
+                    @if($giftCardOptions->total() < 3)
+                        <a href="{{ route('admin.gift_cards.create') }}"
+                            style="background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
+                            Nouvelle carte cadeau
+                        </a>
+                    @else
+                        <span title="Limite de 3 cartes cadeau atteinte"
+                            style="background: #f1f5f9; border: 1px solid #cbd5e1; color: #64748b; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; display: flex; align-items: center; gap: 6px; cursor: not-allowed;">
+                            <i class="fas fa-lock" style="font-size: 0.7rem;"></i> Nouvelle carte cadeau
+                        </span>
+                    @endif
                 </div>
             </div>
-            
+
             <!-- Barre de filtre -->
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 16px; border-radius: 0; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <div class="filters-bar"
+                style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 16px; border-radius: 0; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555;">
                     <span>Afficher</span>
-                    <select onchange="window.location.href = '{{ route('admin.gift_cards.index') }}?per_page=' + this.value + '&search={{ $search ?? '' }}'" 
+                    <select
+                        onchange="window.location.href = '{{ route('admin.gift_cards.index') }}?per_page=' + this.value + '&search={{ $search ?? '' }}'"
                         style="padding: 4px 6px; border: 1px solid #adb1b8; border-radius: 0; background: #f0f2f2; font-size: 0.8rem; color: #111; cursor: pointer; outline: none;">
                         <option value="10" {{ ($perPage ?? 10) == 10 ? 'selected' : '' }}>10</option>
                         <option value="25" {{ ($perPage ?? 10) == 25 ? 'selected' : '' }}>25</option>
@@ -47,11 +91,11 @@
                 </div>
 
                 <div style="font-size: 0.8rem;">
-                    <form action="{{ route('admin.gift_cards.index') }}" method="GET" style="display: flex; align-items: center; gap: 8px;">
+                    <form action="{{ route('admin.gift_cards.index') }}" method="GET"
+                        style="display: flex; align-items: center; gap: 8px;">
                         <input type="hidden" name="per_page" value="{{ $perPage ?? 10 }}">
                         <span style="color: #555;">Rechercher :</span>
-                        <input type="text" name="search" value="{{ $search ?? '' }}" 
-                            placeholder="Montant ou libellé..."
+                        <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Montant ou libellé..."
                             style="padding: 6px 10px; border: 1px solid #adb1b8; border-radius: 0; outline: none; width: 220px; font-size: 0.8rem;">
                     </form>
                 </div>
@@ -61,17 +105,29 @@
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e7e7e7;">
                 <thead>
                     <tr style="background: #f6f6f6; border-bottom: 1px solid #e7e7e7;">
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 150px;">Montant</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Libellé / Description</th>
-                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 100px;">Populaire</th>
-                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 100px;">Statut</th>
-                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 150px;">Actions</th>
+                        <th
+                            style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 150px;">
+                            Montant</th>
+                        <th
+                            style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">
+                            Libellé / Description</th>
+                        <th
+                            style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 100px;">
+                            Populaire</th>
+                        <th
+                            style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 100px;">
+                            Statut</th>
+                        <th
+                            style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 150px;" class="actions-column">
+                            Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($giftCardOptions as $option)
-                        <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
-                            <td style="padding: 12px 15px; font-size: 0.95rem; color: #111; font-weight: 700; border-right: 1px solid #e7e7e7;">
+                        <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.1s;"
+                            onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td
+                                style="padding: 12px 15px; font-size: 0.95rem; color: #111; font-weight: 700; border-right: 1px solid #e7e7e7;">
                                 {{ number_format($option->amount, 0, ',', ' ') }} F
                             </td>
                             <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #e7e7e7;">
@@ -79,7 +135,8 @@
                             </td>
                             <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
                                 @if($option->is_popular)
-                                    <span style="font-size: 0.70rem; background: #e77600; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">OUI</span>
+                                    <span
+                                        style="font-size: 0.70rem; background: #e77600; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 600;">OUI</span>
                                 @else
                                     <span style="font-size: 0.75rem; color: #999;">Non</span>
                                 @endif
@@ -91,21 +148,23 @@
                                     <span style="font-size: 0.75rem; color: #c40000; font-weight: 600;">Suspendue</span>
                                 @endif
                             </td>
-                            <td style="padding: 12px 15px; text-align: right;">
+                            <td style="padding: 12px 15px; text-align: right;" class="actions-column">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                                    <a href="{{ route('admin.gift_cards.edit', $option) }}" 
-                                       style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
-                                       onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
-                                       onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
-                                       Modifier
+                                    <a href="{{ route('admin.gift_cards.edit', $option) }}"
+                                        style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
+                                        onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
+                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
+                                        Modifier
                                     </a>
                                     <span style="color: #ddd;">|</span>
-                                    <form id="delete-form-{{ $option->id }}" action="{{ route('admin.gift_cards.destroy', $option) }}" method="POST" style="display:inline;">
+                                    <form id="delete-form-{{ $option->id }}"
+                                        action="{{ route('admin.gift_cards.destroy', $option) }}" method="POST"
+                                        style="display:inline;">
                                         @csrf @method('DELETE')
-                                        <button type="button" onclick="confirmDelete({{ $option->id }})" 
-                                                style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                                onmouseover="this.style.textDecoration='underline'" 
-                                                onmouseout="this.style.textDecoration='none'">
+                                        <button type="button" onclick="confirmDelete({{ $option->id }})"
+                                            style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                            onmouseover="this.style.textDecoration='underline'"
+                                            onmouseout="this.style.textDecoration='none'">
                                             Supprimer
                                         </button>
                                     </form>
@@ -114,7 +173,8 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
+                            <td colspan="5"
+                                style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
                                 Aucune option de carte cadeau disponible.
                             </td>
                         </tr>
@@ -124,32 +184,40 @@
 
             <!-- Pagination Info & Links Harmonisée -->
             @if($giftCardOptions->total() > 0)
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0; margin-top: 10px;">
-                <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
-                    Affichage de {{ $giftCardOptions->firstItem() ?? 0 }} à {{ $giftCardOptions->lastItem() ?? 0 }} sur {{ $giftCardOptions->total() }} résultats
-                </div>
-                <div style="display: flex; border: 1px solid #adb1b8; border-radius: 0; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: #fff;">
-                    @if($giftCardOptions->onFirstPage())
-                        <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;">Précédent</span>
-                    @else
-                        <a href="{{ $giftCardOptions->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">Précédent</a>
-                    @endif
-
-                    @foreach(range(1, $giftCardOptions->lastPage()) as $i)
-                        @if($i == $giftCardOptions->currentPage())
-                            <span style="padding: 6px 12px; background: linear-gradient(to bottom, #f7dfa5, #f0c14b); color: #111; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #a88734;">{{ $i }}</span>
+                <div class="pagination-container"
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0; margin-top: 10px;">
+                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
+                        Affichage de {{ $giftCardOptions->firstItem() ?? 0 }} à {{ $giftCardOptions->lastItem() ?? 0 }} sur
+                        {{ $giftCardOptions->total() }} résultats
+                    </div>
+                    <div
+                        style="display: flex; border: 1px solid #adb1b8; border-radius: 0; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: #fff;">
+                        @if($giftCardOptions->onFirstPage())
+                            <span
+                                style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;">Précédent</span>
                         @else
-                            <a href="{{ $giftCardOptions->url($i) }}" style="padding: 6px 12px; background: #fff; color: #555; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">{{ $i }}</a>
+                            <a href="{{ $giftCardOptions->previousPageUrl() }}"
+                                style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">Précédent</a>
                         @endif
-                    @endforeach
 
-                    @if($giftCardOptions->hasMorePages())
-                        <a href="{{ $giftCardOptions->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;">Suivant</a>
-                    @else
-                        <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;">Suivant</span>
-                    @endif
+                        @foreach(range(1, $giftCardOptions->lastPage()) as $i)
+                            @if($i == $giftCardOptions->currentPage())
+                                <span
+                                    style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #004aad;">{{ $i }}</span>
+                            @else
+                                <a href="{{ $giftCardOptions->url($i) }}"
+                                    style="padding: 6px 12px; background: #fff; color: #555; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">{{ $i }}</a>
+                            @endif
+                        @endforeach
+
+                        @if($giftCardOptions->hasMorePages())
+                            <a href="{{ $giftCardOptions->nextPageUrl() }}"
+                                style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;">Suivant</a>
+                        @else
+                            <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;">Suivant</span>
+                        @endif
+                    </div>
                 </div>
-            </div>
             @endif
         </div>
     </div>

@@ -2,102 +2,194 @@
 
 @section('title', 'Cartes Cadeaux - Mady Market')
 
-@push('styles')
 <style>
+    html, body, .dashboard-container, .main-content {
+        background-color: #fff !important;
+    }
+
     .gift-card-page {
         max-width: 900px;
     }
+
     .gift-card-box {
         background: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 12px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-    }
-    .gift-card-design {
-        background: linear-gradient(135deg, #f39c12 0%, #d35400 100%);
-        color: white;
-        padding: 1.5rem;
-        border-radius: 15px;
-        position: relative;
-        overflow: hidden;
+        border: 1px solid #eeeeee;
+        border-radius: 8px;
+        padding: 1.75rem;
         margin-bottom: 1.5rem;
-        box-shadow: 0 4px 15px rgba(211, 84, 0, 0.3);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
-    .gift-card-design::after {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-        pointer-events: none;
-    }
-    .card-logo {
-        font-weight: 900;
-        font-size: 1.2rem;
-        margin-bottom: 2rem;
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 1rem;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
     }
-    .card-amount {
-        font-size: 2.5rem;
-        font-weight: 900;
-        margin-bottom: 0.5rem;
+
+    .section-title i {
+        color: #004aad;
     }
-    .card-code {
-        font-family: monospace;
-        letter-spacing: 2px;
-        font-size: 1.2rem;
-        background: rgba(0,0,0,0.2);
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        display: inline-block;
+
+    .redeem-form .input-group {
+        display: flex;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        overflow: hidden;
+        transition: border-color 0.2s;
     }
+
+    .redeem-form .input-group:focus-within {
+        border-color: #004aad;
+    }
+
     .redeem-form input {
-        border-radius: 8px 0 0 8px !important;
-        border: 2px solid #e0e0e0;
+        border: none !important;
         padding: 0.75rem 1rem;
-        font-size: 1.1rem;
+        font-size: 1rem;
+        flex: 1;
+        outline: none;
         text-transform: uppercase;
-        letter-spacing: 2px;
+        letter-spacing: 1px;
     }
+
     .redeem-form button {
-        border-radius: 0 8px 8px 0 !important;
-        background: #222;
+        background: #004aad;
         color: white;
-        font-weight: bold;
+        border: none;
         padding: 0 1.5rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
     }
+
+    .redeem-form button:hover {
+        background: #003680;
+    }
+
+    /* Purchase Cards Grid */
+    .gift-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.25rem;
+    }
+
+    .purchase-card {
+        border: 1px solid #efefef;
+        border-radius: 10px;
+        padding: 1.5rem;
+        text-align: center;
+        transition: all 0.2s;
+        background: #fafafa;
+        position: relative;
+    }
+
+    .purchase-card:hover {
+        border-color: #004aad;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        background: #fff;
+    }
+
+    .purchase-card.popular {
+        border-color: #f68b1e;
+        background: #fff;
+    }
+
+    .popular-badge {
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #f68b1e;
+        color: white;
+        font-size: 0.65rem;
+        font-weight: 800;
+        padding: 2px 10px;
+        border-radius: 10px;
+        text-transform: uppercase;
+    }
+
+    .purchase-card .amount {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #f68b1e;
+        margin-bottom: 0.25rem;
+    }
+
+    .purchase-card .desc {
+        color: #777;
+        font-size: 0.8rem;
+        margin-bottom: 1.25rem;
+        height: 2.4rem;
+        overflow: hidden;
+    }
+
+    .btn-buy-now {
+        width: 100%;
+        padding: 0.65rem;
+        border: 1px solid #004aad;
+        background: #fff;
+        color: #004aad;
+        border-radius: 4px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-buy-now:hover {
+        background: #004aad;
+        color: #fff;
+    }
+
+    /* History Table */
     .table-cards {
         width: 100%;
         border-collapse: collapse;
+        font-size: 0.9rem;
     }
+
     .table-cards th {
         text-align: left;
-        padding: 1rem;
-        background: #f8f9fa;
+        padding: 0.75rem 1rem;
+        background: #fcfcfc;
         color: #888;
-        font-size: 0.8rem;
+        font-weight: 600;
+        font-size: 0.75rem;
         text-transform: uppercase;
-    }
-    .table-cards td {
-        padding: 1rem;
         border-bottom: 1px solid #eee;
     }
-    .status-badge {
-        padding: 0.2rem 0.6rem;
-        border-radius: 4px;
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-transform: uppercase;
+
+    .table-cards td {
+        padding: 1rem;
+        border-bottom: 1px solid #f9f9f9;
+        vertical-align: middle;
     }
+
+    .code-badge {
+        font-family: 'Courier New', monospace;
+        background: #f0f4f8;
+        color: #333;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-weight: 700;
+    }
+
+    .status-badge {
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        display: inline-block;
+    }
+
     .status-active { background: #e8f5e9; color: #2e7d32; }
-    .status-used { background: #eee; color: #888; }
+    .status-used { background: #f5f5f5; color: #999; }
 </style>
-@endpush
 
 @section('content')
 
@@ -122,46 +214,54 @@
         @endif
 
         <div class="gift-card-box">
-            <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">Utiliser un code</h2>
+            <h2 class="section-title">
+                <i class="fa-solid fa-ticket"></i>
+                Utiliser un code
+            </h2>
             <p style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">Entrez le code de votre carte cadeau pour créditer votre porte-monnaie.</p>
             
             <form action="{{ route('gift-cards.redeem') }}" method="POST" class="redeem-form">
                 @csrf
-                <div style="display: flex;">
-                    <input type="text" name="code" placeholder="XXXX-XXXX-XXXX" class="form-control" style="flex: 1;" required>
-                    <button type="submit" class="btn">Appliquer</button>
+                <div class="input-group">
+                    <input type="text" name="code" placeholder="XXXX-XXXX-XXXX" required>
+                    <button type="submit">Appliquer</button>
                 </div>
             </form>
         </div>
 
         <div class="gift-card-box">
-            <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem;">Acheter une carte cadeau</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+            <h2 class="section-title">
+                <i class="fa-solid fa-cart-shopping"></i>
+                Acheter une carte cadeau
+            </h2>
+            <div class="gift-cards-grid">
                 @forelse($giftCardOptions as $option)
-                    <!-- Pack {{ $option->amount }} -->
-                    <div style="border: 2px solid {{ $option->is_popular ? '#ef6c00' : '#eee' }}; border-radius: 12px; padding: 1.5rem; text-align: center; position: relative;">
+                    <div class="purchase-card {{ $option->is_popular ? 'popular' : '' }}">
                         @if($option->is_popular)
-                            <span style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #ef6c00; color: white; font-size: 0.65rem; padding: 2px 10px; border-radius: 10px; font-weight: 800; text-transform: uppercase;">Populaire</span>
+                            <span class="popular-badge">Populaire</span>
                         @endif
-                        <div style="font-size: 1.5rem; font-weight: 900; margin-bottom: 0.5rem;">{{ number_format($option->amount, 0, ',', ' ') }} FCFA</div>
-                        @if($option->description)
-                            <p style="color: #888; font-size: 0.8rem; margin-bottom: 1.5rem;">{{ $option->description }}</p>
-                        @endif
+                        <div class="amount">{{ number_format($option->amount, 0, ',', ' ') }} <small style="font-size: 0.8rem;">FCFA</small></div>
+                        <div class="desc">{{ $option->description ?: 'Créditez votre compte instantanément.' }}</div>
                         <form action="{{ route('gift-cards.buy') }}" method="POST">
                             @csrf
                             <input type="hidden" name="amount" value="{{ $option->amount }}">
-                            <button type="submit" style="width: 100%; padding: 0.75rem; border: none; background: #ef6c00; color: white; border-radius: 6px; font-weight: bold; cursor: pointer;">Acheter</button>
+                            <button type="submit" class="btn-buy-now">Acheter maintenant</button>
                         </form>
                     </div>
                 @empty
-                    <p style="color: #666; font-size: 0.9rem;">Aucune option de carte cadeau n'est disponible pour le moment.</p>
+                    <p style="color: #666; font-size: 0.9rem; grid-column: 1/-1; text-align: center; padding: 2rem;">Aucune option de carte cadeau n'est disponible pour le moment.</p>
                 @endforelse
             </div>
         </div>
 
         @if($boughtCards->isNotEmpty())
-            <div class="gift-card-box">
-                <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem;">Mes cartes achetées</h2>
+            <div class="gift-card-box" style="padding: 0; overflow: hidden;">
+                <div style="padding: 1.75rem 1.75rem 0.5rem 1.75rem;">
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        Mes cartes achetées
+                    </h2>
+                </div>
                 <div style="overflow-x: auto;">
                     <table class="table-cards">
                         <thead>
@@ -175,14 +275,14 @@
                         <tbody>
                             @foreach($boughtCards as $card)
                                 <tr>
-                                    <td style="font-family: monospace; font-weight: bold;">{{ $card->code }}</td>
-                                    <td>{{ number_format($card->amount, 0, ',', ' ') }} FCFA</td>
+                                    <td><span class="code-badge">{{ $card->code }}</span></td>
+                                    <td style="font-weight: 700; color: #333;">{{ number_format($card->amount, 0, ',', ' ') }} FCFA</td>
                                     <td>
                                         <span class="status-badge status-{{ $card->status }}">
                                             {{ $card->status == 'active' ? 'Disponible' : 'Utilisée' }}
                                         </span>
                                     </td>
-                                    <td style="color: #888; font-size: 0.85rem;">{{ $card->created_at->format('d/m/Y') }}</td>
+                                    <td style="color: #777;">{{ $card->created_at->format('d/m/Y') }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

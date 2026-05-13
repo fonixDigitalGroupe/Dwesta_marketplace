@@ -5,6 +5,7 @@
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <style>
+        body, .page-wrapper, main { background-color: #ffffff !important; }
         .iti { width: 100%; }
         .form-input-box { background-color: #ffffff; }
 
@@ -13,7 +14,7 @@
         /* Main Content */
         .main-content {
             max-width: 1000px;
-            margin: 2rem auto;
+            margin: 0.5rem auto;
             padding: 0 1rem;
         }
 
@@ -142,7 +143,7 @@
 
         .btn-black {
             width: 100%;
-            background: #000;
+            background: #004aad;
             color: white;
             border: none;
             padding: 0.5rem 2rem;
@@ -155,7 +156,7 @@
         }
 
         .btn-black:hover {
-            background: #333;
+            background: #003a8c;
         }
 
         /* New Client Section */

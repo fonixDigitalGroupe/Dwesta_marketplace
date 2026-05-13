@@ -1,159 +1,485 @@
 @extends('layouts.app')
 
-@section('title', 'Votre Panier - Mady Market')
+@section('title', 'Votre Panier - Dwesta')
 
 @push('styles')
 <style>
-    .cart-container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; display: grid; grid-template-columns: 1fr 350px; gap: 2rem; }
-    
-    .cart-main { background: transparent; }
-    .seller-group { background: white; border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 2rem; overflow: hidden; }
-    .seller-header { padding: 1rem 1.5rem; background: #f9f9f9; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; gap: 1rem; }
-    .seller-name { font-weight: bold; color: #333; }
-    .seller-badge { background: #eee; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.75rem; color: #666; }
+    :root {
+        --rk-primary: #ff8c00;
+        --rk-secondary: #004aad;
+        --rk-bg: #f8f9fa;
+        --rk-border: #eef0f2;
+        --rk-text-muted: #757575;
+    }
 
-    .cart-item { padding: 1.5rem; border-bottom: 1px solid #f0f0f0; display: grid; grid-template-columns: 100px 1fr 150px 120px; gap: 1.5rem; align-items: center; }
-    .cart-item:last-child { border-bottom: none; }
-    .item-image { width: 100px; height: 100px; background: #f5f5f5; border-radius: 4px; overflow: hidden; }
-    .item-image img { width: 100%; height: 100%; object-fit: cover; }
-    
-    .item-info { display: flex; flex-direction: column; gap: 0.5rem; }
-    .item-title { font-weight: 500; color: #333; text-decoration: none; font-size: 1.1rem; }
-    .item-title:hover { color: #bf0000; }
-    .item-variant { font-size: 0.85rem; color: #777; }
+    body { background-color: var(--rk-bg); }
 
-    .item-qty { display: flex; align-items: center; gap: 0.5rem; }
-    .qty-input { width: 50px; padding: 0.4rem; border: 1px solid #ddd; border-radius: 4px; text-align: center; }
-    
-    .item-price { text-align: right; font-weight: bold; font-size: 1.1rem; color: #333; }
-    .btn-remove { color: #999; border: none; background: none; cursor: pointer; font-size: 0.85rem; padding: 0; margin-top: 0.5rem; text-decoration: underline; }
-    .btn-remove:hover { color: #bf0000; }
+    .cart-wrapper {
+        max-width: 1300px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
 
-    .cart-sidebar { position: sticky; top: 2rem; }
-    .summary-card { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; }
-    .summary-title { font-size: 1.25rem; font-weight: bold; margin-bottom: 1.5rem; border-bottom: 1px solid #f0f0f0; padding-bottom: 1rem; }
-    .summary-row { display: flex; justify-content: space-between; margin-bottom: 1rem; color: #666; }
-    .summary-total { display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #f0f0f0; font-weight: bold; font-size: 1.3rem; color: #333; }
-    
-    .btn-checkout { display: block; width: 100%; background: #ff8c00; color: white; text-align: center; padding: 0.8rem 1rem; border-radius: 4px; font-weight: 700; font-size: 0.9rem; text-decoration: none; margin-top: 1.5rem; transition: opacity 0.2s; }
-    .btn-checkout:hover { opacity: 0.9; }
+    .cart-grid {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 2rem;
+        align-items: start;
+    }
 
-    .empty-cart { text-align: center; padding: 5rem 2rem; background: white; border: 1px solid #e0e0e0; border-radius: 8px; grid-column: 1 / -1; }
+    /* main content */
+    .cart-main-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .cart-section-title {
+        font-size: 1.75rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        color: #1a1a1a;
+    }
+
+    .vendor-card {
+        background: #fff;
+        border: 1px solid var(--rk-border);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .vendor-banner {
+        padding: 1rem 1.5rem;
+        background: #fff;
+        border-bottom: 1px solid var(--rk-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .vendor-info-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .vendor-avatar-mini {
+        width: 32px;
+        height: 32px;
+        background: #f0f0f0;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--rk-secondary);
+        font-size: 1rem;
+    }
+
+    .vendor-name-link {
+        font-weight: 700;
+        color: #333;
+        text-decoration: none;
+        font-size: 0.95rem;
+    }
+
+    .badge-pro {
+        background: #e1f5fe;
+        color: #039be5;
+        font-size: 0.7rem;
+        font-weight: 800;
+        padding: 2px 8px;
+        border-radius: 4px;
+        text-transform: uppercase;
+    }
+
+    .badge-verified {
+        color: #4caf50;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    /* cart items */
+    .item-row {
+        padding: 1.5rem;
+        display: grid;
+        grid-template-columns: 120px 1fr auto;
+        gap: 1.5rem;
+        border-bottom: 1px solid var(--rk-border);
+        transition: background 0.2s;
+    }
+
+    .item-row:last-child { border-bottom: none; }
+    .item-row:hover { background: #fafafa; }
+
+    .item-image-box {
+        width: 120px;
+        height: 120px;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .item-image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 4px;
+    }
+
+    .item-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .item-title-link {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #333;
+        text-decoration: none;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        margin-bottom: 4px;
+    }
+
+    .item-title-link:hover { color: var(--rk-secondary); }
+
+    .item-meta {
+        font-size: 0.85rem;
+        color: var(--rk-text-muted);
+        display: flex;
+        gap: 15px;
+    }
+
+    .item-actions {
+        display: flex;
+        gap: 20px;
+        margin-top: 10px;
+    }
+
+    .action-link {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--rk-secondary);
+        text-decoration: none;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    .action-link:hover { text-decoration: underline; }
+    .action-link.remove { color: #d32f2f; }
+
+    .item-pricing-zone {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 140px;
+    }
+
+    .item-price-unit {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: #1a1a1a;
+    }
+
+    .item-qty-selector {
+        display: flex;
+        align-items: center;
+        background: #f1f3f5;
+        border-radius: 20px;
+        padding: 2px;
+        width: fit-content;
+        margin-left: auto;
+    }
+
+    .qty-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: none;
+        background: #fff;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: transform 0.1s;
+    }
+
+    .qty-btn:active { transform: scale(0.9); }
+    .qty-val { width: 35px; text-align: center; font-weight: 700; font-size: 0.9rem; }
+
+    /* sidebar */
+    .cart-summary-sidebar {
+        position: sticky;
+        top: 2rem;
+    }
+
+    .summary-card-modern {
+        background: #fff;
+        border: 1px solid var(--rk-border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .summary-title {
+        font-weight: 800;
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--rk-border);
+    }
+
+    .summary-line {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        color: #444;
+    }
+
+    .summary-line.total {
+        margin-top: 1.5rem;
+        padding-top: 1.25rem;
+        border-top: 2px solid #f8f9fa;
+        font-weight: 900;
+        font-size: 1.4rem;
+        color: #000;
+    }
+
+    .btn-checkout-primary {
+        display: block;
+        width: 100%;
+        background: var(--rk-primary);
+        color: #fff;
+        text-align: center;
+        padding: 1rem;
+        border-radius: 8px;
+        font-weight: 800;
+        font-size: 1rem;
+        text-decoration: none;
+        margin-top: 1.5rem;
+        box-shadow: 0 4px 10px rgba(255, 140, 0, 0.3);
+        transition: all 0.2s;
+    }
+
+    .btn-checkout-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(255, 140, 0, 0.4);
+        background: #fb8c00;
+    }
+
+    .trust-badges {
+        margin-top: 2rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .trust-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        text-align: center;
+        font-size: 0.75rem;
+        color: #888;
+    }
+
+    .trust-item i { font-size: 1.2rem; color: #444; }
+
+    /* Empty state */
+    .empty-cart-hero {
+        background: #fff;
+        border-radius: 12px;
+        padding: 5rem 2rem;
+        text-align: center;
+        grid-column: 1 / -1;
+        border: 1px dashed #ced4da;
+    }
+
+    @media (max-width: 991px) {
+        .cart-grid { grid-template-columns: 1fr; }
+        .cart-summary-sidebar { position: static; }
+    }
 </style>
 @endpush
 
 @section('content')
-<div class="cart-container">
-    <div class="cart-main">
-        <h1 style="margin-bottom: 2rem; font-size: 1.75rem;">Mon Panier</h1>
-
-        @if(session('success'))
-            <div style="background: #e6fffa; color: #2c7a7b; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #b2f5ea;">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @forelse($cartGrouped as $vendeurId => $items)
-            @php $vendeur = $items->first()->annonce->vendeur; @endphp
-            <div class="seller-group">
-                <div class="seller-header">
-                    <span class="seller-name">Vendeur : 
-                        @if($vendeur && $vendeur->professionnel)
-                            {{ $vendeur->professionnel->nom_entreprise }}
-                        @elseif($vendeur && $vendeur->user)
-                            {{ $vendeur->user->prenom }} {{ $vendeur->user->nom }}
-                        @else
-                            Vendeur inconnu
-                        @endif
-                    </span>
-                    @if($vendeur && $vendeur->estVerifie())
-                        <span class="seller-badge">Vérifié ✅</span>
-                    @endif
+<div class="cart-wrapper">
+    <div class="cart-grid">
+        @if(count($cartGrouped) > 0)
+            <div class="cart-main-container">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.5rem;">
+                    <h1 class="cart-section-title">Mon Panier</h1>
+                    @php $itemCount = $cartGrouped->flatten()->sum('quantite'); @endphp
+                    <span style="color: var(--rk-text-muted); font-weight: 500;">({{ $itemCount }} {{ Str::plural('article', $itemCount) }})</span>
                 </div>
 
-                @foreach($items as $item)
-                    <div class="cart-item">
-                        <div class="item-image">
-                            @if($item->annonce->photoPrincipale())
-                                <img src="{{ Storage::url($item->annonce->photoPrincipale()->chemin) }}" alt="{{ $item->annonce->titre }}">
-                            @else
-                                <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #ccc;">📷</div>
-                            @endif
-                        </div>
-                        
-                        <div class="item-info">
-                            <a href="{{ route('annonces.show', $item->annonce->slug) }}" class="item-title">{{ $item->annonce->titre }}</a>
-                            @if($item->variante)
-                                <span class="item-variant">{{ $item->variante->type }} : {{ $item->variante->valeur }}</span>
+                @foreach($cartGrouped as $vendeurId => $items)
+                    @php $vendeur = $items->first()->annonce->vendeur; @endphp
+                    <div class="vendor-card">
+                        <div class="vendor-banner">
+                            <div class="vendor-info-box">
+                                <div class="vendor-avatar-mini"><i class="fas fa-store"></i></div>
+                                <div>
+                                    @if($vendeur && $vendeur->professionnel)
+                                        <a href="#" class="vendor-name-link">{{ $vendeur->professionnel->nom_entreprise }}</a>
+                                        <span class="badge-pro">PRO</span>
+                                    @elseif($vendeur && $vendeur->user)
+                                        <a href="#" class="vendor-name-link">{{ $vendeur->user->prenom }} {{ $vendeur->user->nom }}</a>
+                                    @else
+                                        <span class="vendor-name-link">Vendeur particulier</span>
+                                    @endif
+                                </div>
+                            </div>
+                            @if($vendeur && $vendeur->estVerifie())
+                                <div class="badge-verified">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Vendeur vérifié</span>
+                                </div>
                             @endif
                         </div>
 
-                        <div class="item-qty">
-                            <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display: flex; align-items: center; gap: 0.5rem;">
-                                @csrf
-                                @method('PATCH')
-                                <input type="number" name="quantite" value="{{ $item->quantite }}" min="1" class="qty-input" onchange="this.form.submit()">
-                            </form>
-                            <form action="{{ route('cart.destroy', $item->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-remove">Supprimer</button>
-                            </form>
-                        </div>
+                        <div class="vendor-items">
+                            @foreach($items as $item)
+                                <div class="item-row">
+                                    <div class="item-image-box">
+                                        @php $photo = $item->annonce->photoPrincipale(); @endphp
+                                        @if($photo)
+                                            <img src="{{ Storage::url($photo->chemin) }}" alt="{{ $item->annonce->titre }}">
+                                        @else
+                                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #ccc; background: #fafafa;">
+                                                <i class="fas fa-image" style="font-size: 2rem;"></i>
+                                            </div>
+                                        @endif
+                                    </div>
 
-                        <div class="item-price">
-                            @php 
-                                $prixU = $item->annonce->prix + ($item->variante ? $item->variante->prix_supplementaire : 0);
-                            @endphp
-                            {{ number_format($prixU * $item->quantite, 0, ',', ' ') }} FCFA
+                                    <div class="item-details">
+                                        <div>
+                                            <a href="{{ route('annonces.show', $item->annonce->slug) }}" class="item-title-link">
+                                                {{ $item->annonce->titre }}
+                                            </a>
+                                            <div class="item-meta">
+                                                <span><i class="fas fa-tag"></i> {{ $item->annonce->category->nom }}</span>
+                                                @if($item->variante)
+                                                    <span><strong>{{ $item->variante->type }}:</strong> {{ $item->variante->valeur }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="item-actions">
+                                            <form action="{{ route('cart.destroy', $item->id) }}" method="POST" id="remove-form-{{ $item->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="action-link remove">
+                                                    <i class="far fa-trash-alt"></i> Supprimer
+                                                </button>
+                                            </form>
+                                            <a class="action-link"><i class="far fa-heart"></i> Mettre de côté</a>
+                                        </div>
+                                    </div>
+
+                                    <div class="item-pricing-zone">
+                                        <div class="item-price-unit">
+                                            @php 
+                                                $prixU = $item->annonce->prix + ($item->variante ? $item->variante->prix_supplementaire : 0);
+                                            @endphp
+                                            {{ number_format($prixU * $item->quantite, 0, ',', ' ') }} DA
+                                        </div>
+                                        
+                                        <div class="item-qty-selector">
+                                            <form action="{{ route('cart.update', $item->id) }}" method="POST" style="display: flex; align-items: center;">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="button" class="qty-btn" onclick="updateQty(this, -1)">-</button>
+                                                <input type="text" name="quantite" value="{{ $item->quantite }}" class="qty-val" readonly>
+                                                <button type="button" class="qty-btn" onclick="updateQty(this, 1)">+</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                 @endforeach
             </div>
-        @empty
-            <div class="empty-cart">
-                <div style="font-size: 4rem; margin-bottom: 1rem;">🛒</div>
-                <h2>Votre panier est vide</h2>
-                <p style="color: #666; margin-bottom: 2rem;">Il est temps de dénicher les meilleures offres sur Mady Market !</p>
-                <a href="{{ route('home') }}" class="btn-checkout" style="display: inline-block; width: auto; padding: 1rem 3rem;">Retour à l'accueil</a>
+
+            <div class="cart-summary-sidebar">
+                <div class="summary-card-modern">
+                    <div class="summary-title">Récapitulatif</div>
+                    
+                    <div class="summary-line">
+                        <span>Sous-total ({{ $itemCount }} articles)</span>
+                        <span>{{ number_format($subtotal, 0, ',', ' ') }} DA</span>
+                    </div>
+                    
+                    <div class="summary-line">
+                        <span>Frais de livraison</span>
+                        <span style="color: #4caf50; font-weight: 600;">Calculés à l'étape suivante</span>
+                    </div>
+
+                    <div class="summary-line total">
+                        <span>Total (TTC)</span>
+                        <span>{{ number_format($subtotal, 0, ',', ' ') }} DA</span>
+                    </div>
+
+                    <a href="{{ route('checkout.step1') }}" class="btn-checkout-primary">
+                        COMMANDER LE PANIER
+                    </a>
+
+                    <div style="margin-top: 1.5rem; font-size: 0.8rem; color: #666; text-align: center;">
+                        <i class="fas fa-lock" style="margin-right: 5px;"></i> Transactions sécurisées et cryptées
+                    </div>
+                </div>
+
+                <div class="trust-badges">
+                    <div class="trust-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Paiement sécurisé</span>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-undo"></i>
+                        <span>Retours facilités</span>
+                    </div>
+                </div>
             </div>
-        @endforelse
+        @else
+            <div class="empty-cart-hero">
+                <div style="font-size: 4rem; color: #dee2e6; margin-bottom: 1.5rem;">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <h2 style="font-weight: 800; margin-bottom: 1rem;">Votre panier est vide</h2>
+                <p style="color: #6c757d; margin-bottom: 2rem;">Il semble que vous n'ayez pas encore ajouté d'articles à votre panier.</p>
+                <a href="{{ route('home') }}" class="btn-checkout-primary" style="display: inline-block; width: auto; padding-left: 3rem; padding-right: 3rem;">
+                    Continuer mes achats
+                </a>
+            </div>
+        @endif
     </div>
-
-    @if($cartGrouped->isNotEmpty())
-    <aside class="cart-sidebar">
-        <div class="summary-card">
-            <h2 class="summary-title">Récapitulatif</h2>
-            
-            <div class="summary-row">
-                <span>Articles ({{ $cartGrouped->flatten()->sum('quantite') }})</span>
-                <span>{{ number_format($subtotal, 0, ',', ' ') }} FCFA</span>
-            </div>
-            
-            <div class="summary-row">
-                <span>Frais de port</span>
-                <span style="color: #28a745;">Calculés à l'étape suivante</span>
-            </div>
-
-            <div class="summary-total">
-                <span>Total</span>
-                <span>{{ number_format($subtotal, 0, ',', ' ') }} FCFA</span>
-            </div>
-
-            <a href="{{ route('checkout.step1') }}" class="btn-checkout">Finaliser ma commande</a>
-            
-            <p style="font-size: 0.8rem; color: #999; margin-top: 1rem; text-align: center;">
-                <i class="fas fa-lock"></i> Paiement 100% sécurisé
-            </p>
-            
-            <form action="{{ route('cart.clear') }}" method="POST" style="margin-top: 1.5rem; text-align: center;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" style="background: none; border: none; color: #999; font-size: 0.85rem; cursor: pointer; text-decoration: underline;">Vider mon panier</button>
-            </form>
-        </div>
-
-    </aside>
-    @endif
 </div>
+
+<script>
+    function updateQty(btn, delta) {
+        const form = btn.closest('form');
+        const input = form.querySelector('.qty-val');
+        let newVal = parseInt(input.value) + delta;
+        if (newVal < 1) newVal = 1;
+        input.value = newVal;
+        form.submit();
+    }
+</script>
 @endsection

@@ -652,8 +652,13 @@
             <div class="rk-price-box" style="display: flex; align-items: center; background: #ffffff; padding: 0.5rem 1.25rem; margin-top: 0; border-radius: 0;">
                 <div style="flex: 1; border-right: 1px solid #e0e0e0; padding-right: 1rem;">
                     <div style="font-size: 0.8rem; color: #888; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.5px;">Prix de vente</div>
-                    <div class="rk-main-price" id="main-price" style="color: #ff8c00; font-weight: 900; font-size: 1.8rem;">
+                    <div class="rk-main-price" id="main-price" style="display: flex; align-items: baseline; gap: 10px; color: #ff8c00; font-weight: 900; font-size: 1.8rem;">
                         {{ number_format($annonce->prix, 0, ',', ' ') }} <span style="font-size: 1rem;">FCFA</span>
+                        @if($annonce->prix_original && $annonce->prix_original > $annonce->prix)
+                            <span style="font-size: 1rem; color: #999; text-decoration: line-through; font-weight: 400;">
+                                {{ number_format($annonce->prix_original, 0, ',', ' ') }}
+                            </span>
+                        @endif
                     </div>
                 </div>
                 

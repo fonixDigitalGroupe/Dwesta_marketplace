@@ -10,7 +10,7 @@
     input[type="text"]:focus, input[type="number"]:focus,
     textarea:focus, select:focus {
         border-color: #e77600 !important;
-        box-shadow: 0 0 3px 2px rgba(228,121,17,0.5) !important;
+        
         outline: none;
     }
 
@@ -45,7 +45,7 @@
     }
     .checkbox-container:hover input ~ .checkmark {
         border-color: #e77600;
-        box-shadow: 0 0 3px rgba(228,121,17,0.5);
+        
     }
     .checkbox-container input:checked ~ .checkmark {
         background-color: #fff;
@@ -83,10 +83,36 @@
         border-bottom: 1px solid #e7e7e7;
     }
 
-    .btn-amazon-primary {
-        background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
-        border: 1px solid #a88734;
+    .form-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
         color: #111;
+        margin-bottom: 8px;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #adb1b8;
+        border-radius: 0;
+        font-size: 0.85rem;
+        outline: none;
+        background: #fcfcfc;
+        box-sizing: border-box;
+    }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group:last-child { margin-bottom: 0; }
+
+    .form-error {
+        color: #bf0000;
+        font-size: 0.75rem;
+        margin-top: 6px;
+    }
+
+    .btn-amazon-primary {
+        background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff;
         padding: 8px 24px;
         border-radius: 0;
         font-size: 0.85rem;
@@ -100,8 +126,8 @@
         gap: 6px;
     }
     .btn-amazon-primary:hover {
-        background: linear-gradient(to bottom, #f5d78e, #eeb933);
-        border-color: #9c7e31;
+        background: linear-gradient(180deg, #0069d9 0%, #004494 100%);
+        border-color: #003d82;
         color: #111;
         text-decoration: none;
     }
@@ -132,96 +158,91 @@
 @endpush
 
 @section('content')
-<div style="max-width: 1200px; margin: 0 auto;">
+<div style="max-width: 100%; margin-top: -50px;">
 
-    {{-- En-tête de page --}}
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">
-            Nouvel Onglet "Bento Grid"
-        </h1>
-        <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-secondary">
-            <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i>
-            Retour à la liste
-        </a>
-    </div>
+    <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; padding: 25px;">
+        {{-- En-tête de page --}}
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Nouvel Onglet</h1>
+            <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-secondary" style="gap: 8px;">
+                <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour à la liste
+            </a>
+        </div>
 
-    <form method="POST" action="{{ route('admin.highlight-tabs.store') }}">
+        <form method="POST" action="{{ route('admin.highlight-tabs.store') }}">
         @csrf
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch;">
+        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 25px; align-items: start;">
 
-            {{-- Section 1 : Identité --}}
-            <div class="amazon-card">
-                <h3 class="section-title">Identité de l'Onglet</h3>
+            {{-- Colonne gauche : Identité --}}
+            <div style="display: flex; flex-direction: column; gap: 25px;">
+                <div class="amazon-card">
+                    <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                        Informations de l'Onglet
+                    </h2>
 
-                <div style="margin-bottom: 20px;">
-                    <label for="name" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">
-                        Nom de l'onglet <small style="color: red;">*</small>
-                    </label>
-                    <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0;
-                               font-size: 0.85rem; outline: none; background: #fcfcfc;"
-                        placeholder="Ex: Mode, High-Tech, Immobilier...">
-                    @error('name')
-                        <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div style="margin-bottom: 0;">
-                    <label for="slug" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">
-                        Slug (identifiant URL)
-                        <span style="font-weight: 400; color: #777; font-size: 0.78rem;">&nbsp;— généré automatiquement si vide</span>
-                    </label>
-                    <input type="text" name="slug" id="slug" value="{{ old('slug') }}"
-                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0;
-                               font-size: 0.85rem; outline: none; background: #fcfcfc;"
-                        placeholder="ex: mode-homme">
-                    @error('slug')
-                        <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p>
-                    @enderror
+                    <div class="form-group">
+                        <label for="name" class="form-label">
+                            Nom de l'onglet <span style="color: #c40000;">*</span>
+                        </label>
+                        <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                            class="form-input"
+                            placeholder="Ex: Mode, High-Tech, Immobilier...">
+                        @error('name')
+                            <p class="form-error">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
 
-            {{-- Section 2 : Configuration --}}
-            <div class="amazon-card">
-                <h3 class="section-title">Configuration</h3>
+            {{-- Colonne droite : Configuration --}}
+            <div style="display: flex; flex-direction: column; gap: 25px;">
+                <div class="amazon-card">
+                    <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 15px; color: #111;">Configuration</h2>
 
-                <div style="margin-bottom: 20px;">
-                    <label for="position" style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">
-                        Ordre d'affichage <small style="color: red;">*</small>
-                    </label>
-                    <input type="number" name="position" id="position" value="{{ old('position', 0) }}" min="0" required
-                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0;
-                               font-size: 0.85rem; outline: none; background: #fcfcfc;">
-                    <p style="color: #777; font-size: 0.75rem; margin-top: 6px;">
-                        Plus la valeur est basse, plus l'onglet apparaît en premier.
-                    </p>
-                    @error('position')
-                        <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p>
-                    @enderror
-                </div>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div class="form-group">
+                            <label for="position" class="form-label">
+                                Ordre d'affichage <span style="color: #c40000;">*</span>
+                            </label>
+                            <input type="number" name="position" id="position" value="{{ old('position', $nextPosition) }}" min="1" required
+                                class="form-input" style="background: #fff; height: 40px;">
+                            <p style="color: #777; font-size: 0.75rem; margin-top: 6px;">
+                                Plus la valeur est basse, plus l'onglet apparaît en premier.
+                            </p>
+                            @error('position')
+                                <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p>
+                            @enderror
+                        </div>
 
-                <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
-                    <label class="checkbox-container">
-                        <input type="checkbox" name="active" value="1" {{ old('active', true) ? 'checked' : '' }}>
-                        <span class="checkmark"></span>
-                        <span style="font-weight: 500;">Activer cet onglet (visible sur le site)</span>
-                    </label>
+                        <div class="form-group" style="padding-top: 5px;">
+                            <label class="checkbox-container" style="margin: 0; padding: 0;">
+                                <input type="checkbox" name="active" value="1"
+                                       {{ old('active', true) ? 'checked' : '' }}
+                                       style="width: 18px; height: 18px; cursor: pointer; accent-color: #e47911;">
+                                <span class="checkmark"></span>
+                                <div style="margin-left: 5px;">
+                                    <div style="font-size: 0.85rem; font-weight: 700; color: #111;">Activer cet onglet</div>
+                                    <div style="font-size: 0.75rem; color: #555;">Visible sur le site public.</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 12px;">
+                        <button type="submit" class="btn-amazon-primary" style="width: 100%; height: 40px; font-weight: 700;">
+                            Enregistrer l'onglet
+                        </button>
+                        <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-secondary" style="width: 100%; height: 40px;">
+                            Annuler
+                        </a>
+                    </div>
                 </div>
             </div>
 
         </div>
 
-        {{-- Footer Actions --}}
-        <div style="display: flex; justify-content: flex-end; gap: 15px; padding-top: 20px;">
-            <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-secondary">
-                Annuler
-            </a>
-            <button type="submit" class="btn-amazon-primary">
-                Enregistrer l'onglet
-            </button>
-        </div>
-
-    </form>
+        </form>
+    </div>
 </div>
 @endsection

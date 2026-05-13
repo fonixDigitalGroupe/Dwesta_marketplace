@@ -15,13 +15,15 @@
             --mady-red: #bf0000;
             --mady-red-hover: #a00000;
             --mady-blue: #004aad;
-            --sidebar-bg: #002e6b; /* Brand Navy Blue */
+            --sidebar-bg: #002e6b;
+            /* Brand Navy Blue */
             --sidebar-text: rgba(255, 255, 255, 0.7);
             --sidebar-text-hover: #ffffff;
             --sidebar-hover: rgba(255, 255, 255, 0.08);
             --sidebar-active: rgba(255, 255, 255, 0.15);
             --sidebar-text-active: #ffffff;
-            --sidebar-accent: #ff8c00; /* Brand Orange */
+            --sidebar-accent: #ff8c00;
+            /* Brand Orange */
             --slate-50: #f8fafc;
         }
 
@@ -54,7 +56,8 @@
 
         /* Sidebar Refined */
         .sidebar {
-            width: 220px; /* More compact width */
+            width: 220px;
+            /* More compact width */
             background-color: var(--sidebar-bg);
             color: var(--sidebar-text);
             display: flex;
@@ -62,7 +65,7 @@
             overflow: hidden;
             flex-shrink: 0;
             z-index: 100;
-            box-shadow: 1px 0 0 rgba(255,255,255,0.05);
+            box-shadow: 1px 0 0 rgba(255, 255, 255, 0.05);
             border-right: none;
         }
 
@@ -72,7 +75,8 @@
             align-items: center;
             justify-content: center;
             height: 70px;
-            background: #ffffff; /* Logo area stays bright */
+            background: #ffffff;
+            /* Logo area stays bright */
             border-bottom: 1px solid #e5e7eb;
         }
 
@@ -86,7 +90,7 @@
         .sidebar-separator {
             margin: 0.6rem 1.25rem 0.1rem;
             height: 1px;
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .sidebar-container {
@@ -155,7 +159,7 @@
 
         .sidebar-submenu {
             margin-top: 4px;
-            border-left: 1px solid rgba(255,255,255,0.05);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
             margin-left: 1.6rem;
             display: flex;
             flex-direction: column;
@@ -186,17 +190,22 @@
         .header {
             background-color: #ffffff;
             border-bottom: 1px solid #e5e7eb;
-            height: 64px;
+            height: 70px !important;
+            min-height: 70px !important;
+            max-height: 70px !important;
             display: flex;
             align-items: center;
             padding: 0 1.5rem;
             position: sticky;
             top: 0;
-            z-index: 50;
+            z-index: 40;
+            box-sizing: border-box;
+            overflow: hidden;
         }
 
         .header-container {
             width: 100%;
+            height: 70px !important;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -246,14 +255,25 @@
             color: #111827;
         }
 
+        .sub-header-slot {
+            background-color: #f9fafb;
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
         /* Breadcrumb Refined */
         .breadcrumb {
-            padding: 0.5rem 1.5rem 0.25rem 1.5rem;
+            padding: 0 1.5rem;
             font-size: 0.8rem;
             color: #6b7280;
             max-width: 1400px;
             width: 100%;
             margin: 0 auto;
+            display: flex;
+            align-items: center;
+            height: 50px;
         }
 
         .breadcrumb a {
@@ -333,8 +353,15 @@
         }
 
         @keyframes slideIn {
-            from { transform: translateY(10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         /* Custom Scrollbar Styles */
@@ -342,13 +369,16 @@
             width: 6px;
             height: 6px;
         }
+
         ::-webkit-scrollbar-track {
             background: #f1f5f9;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 10px;
         }
+
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
@@ -363,9 +393,10 @@
             border-radius: 0 !important;
             padding: 1.5rem !important;
             border: 1px solid #ddd !important;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
             max-width: 450px !important;
         }
+
         .amazon-swal-title {
             font-size: 1.15rem !important;
             font-weight: 600 !important;
@@ -374,12 +405,14 @@
             padding: 0 !important;
             text-align: left !important;
         }
+
         .amazon-swal-text {
             font-size: 0.9rem !important;
             color: #333 !important;
             margin-bottom: 1.5rem !important;
             text-align: left !important;
         }
+
         .amazon-swal-confirm {
             background: linear-gradient(to bottom, #f7dfa5, #f0c14b) !important;
             border: 1px solid #a88734 !important;
@@ -392,12 +425,14 @@
             align-items: center !important;
             justify-content: center !important;
             cursor: pointer;
-            box-shadow: 0 1px 0 rgba(255,255,255,.4) inset !important;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, .4) inset !important;
         }
+
         .amazon-swal-confirm:hover {
             background: linear-gradient(to bottom, #f5d78e, #eeb933) !important;
             border-color: #9c7e31 !important;
         }
+
         .amazon-swal-cancel {
             background: linear-gradient(to bottom, #f7f8fa, #e7e9ec) !important;
             border: 1px solid #adb1b8 !important;
@@ -410,20 +445,24 @@
             align-items: center !important;
             justify-content: center !important;
             cursor: pointer;
-            box-shadow: 0 1px 0 rgba(255,255,255,.6) inset !important;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, .6) inset !important;
             margin-right: 10px !important;
         }
+
         .amazon-swal-cancel:hover {
             background: linear-gradient(to bottom, #e7eaf0, #d8dade) !important;
             border-color: #a2a6ac !important;
         }
+
         .swal2-actions {
             justify-content: flex-end !important;
             padding: 0 !important;
             margin-top: 1rem !important;
         }
+
         .swal2-icon {
-            display: none !important; /* Hide standard icon for cleaner professional look */
+            display: none !important;
+            /* Hide standard icon for cleaner professional look */
         }
     </style>
     @stack('styles')
@@ -453,10 +492,12 @@
 
                         <div class="user-dropdown-container">
                             <div class="user-dropdown-trigger" id="userMenuTrigger">
-                                <div style="width: 32px; height: 32px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #4b5563;">
+                                <div
+                                    style="width: 32px; height: 32px; background: #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #4b5563;">
                                     <i class="fas fa-user text-sm"></i>
                                 </div>
-                                <span style="font-size: 0.875rem; font-weight: 600; color: #111827;">{{ auth()->user()->prenom }}</span>
+                                <span
+                                    style="font-size: 0.875rem; font-weight: 600; color: #111827;">{{ auth()->user()->prenom }}</span>
                                 <i class="fas fa-chevron-down" style="font-size: 0.75rem; opacity: 0.4;"></i>
                             </div>
                             <div class="user-dropdown-menu" id="userDropdownMenu">
@@ -478,34 +519,42 @@
                 </div>
             </header>
 
-            <!-- Breadcrumb -->
-            @hasSection('breadcrumbs')
-            <div class="breadcrumb">
-                <a href="{{ route('admin.dashboard') }}">Dashboard</a> <span style="margin: 0 0.5rem; opacity: 0.4;">/</span>
-                @yield('breadcrumbs')
+            <!-- Sub-Header (Breadcrumbs or Tabs) -->
+            <div class="sub-header-slot">
+                @hasSection('sub_header')
+                    @yield('sub_header')
+                @else
+                    @hasSection('breadcrumbs')
+                        <div class="breadcrumb">
+                            <a href="{{ route('admin.dashboard') }}">Dashboard</a> <span
+                                style="margin: 0 0.5rem; opacity: 0.4;">/</span>
+                            @yield('breadcrumbs')
+                        </div>
+                    @endif
+                @endif
             </div>
-            @endif
 
             <!-- Content -->
             <main class="viewport">
                 @if(session('success'))
-                    <div id="success-alert" style="background: #28a745; color: #fff; padding: 12px 20px; border-radius: 4px; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; font-weight: 500; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: opacity 0.5s ease-out; animation: slideIn 0.3s ease-out;" role="alert">
+                    <div id="success-alert"
+                        style="background: #28a745; color: #fff; padding: 12px 20px; border-radius: 4px; margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; font-weight: 500; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: opacity 0.5s ease-out; animation: slideIn 0.3s ease-out;"
+                        role="alert">
                         <i class="fas fa-check-circle"></i>
                         <span>{{ session('success') }}</span>
                     </div>
                 @endif
 
                 @if($errors->any())
-                    <div style="background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 1rem 1.25rem; margin-bottom: 1.5rem; border-radius: 12px; position: relative; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); animation: slideIn 0.3s ease-out;" role="alert">
+                    <div id="error-alert"
+                        style="background-color: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 1rem 1.25rem; margin-bottom: 1.5rem; border-radius: 0; position: relative; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); transition: opacity 0.5s ease-out; animation: slideIn 0.3s ease-out;"
+                        role="alert">
                         <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
-                            <div style="background: #fee2e2; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                <i class="fas fa-exclamation-triangle" style="font-size: 0.8rem;"></i>
-                            </div>
                             <span style="font-size: 0.875rem; font-weight: 600;">Oups ! Un petit problème :</span>
                         </div>
-                        <ul style="list-style: none; margin: 0; padding: 0 0 0 36px; font-size: 0.85rem; line-height: 1.5;">
+                        <ul style="list-style: none; margin: 0; padding: 0 0 0 10px; font-size: 0.85rem; line-height: 1.5;">
                             @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
+                                <li>- {{ $error }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -523,32 +572,35 @@
             const menu = document.getElementById('userDropdownMenu');
 
             if (trigger && menu) {
-                trigger.addEventListener('click', function(e) {
+                trigger.addEventListener('click', function (e) {
                     e.stopPropagation();
                     menu.classList.toggle('show');
                 });
 
-                document.addEventListener('click', function(e) {
-                    if(!trigger.contains(e.target) && !menu.contains(e.target)) {
+                document.addEventListener('click', function (e) {
+                    if (!trigger.contains(e.target) && !menu.contains(e.target)) {
                         menu.classList.remove('show');
                     }
                 });
             }
 
             // Auto-dismiss success alert
-            const successAlert = document.getElementById('success-alert');
-            if (successAlert) {
-                setTimeout(() => {
-                    successAlert.style.opacity = '0';
+            const alerts = ['success-alert', 'error-alert'];
+            alerts.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
                     setTimeout(() => {
-                        successAlert.remove();
-                    }, 500);
-                }, 5000);
-            }
+                        el.style.opacity = '0';
+                        setTimeout(() => {
+                            el.remove();
+                        }, 500);
+                    }, 5000);
+                }
+            });
         });
 
         // Global Professional Delete Confirmation
-        window.confirmDelete = function(param) {
+        window.confirmDelete = function (param) {
             let formId = param;
             // If it's a number or a string that looks like an ID, prepend the prefix
             if (!isNaN(param) && typeof param !== 'object') {

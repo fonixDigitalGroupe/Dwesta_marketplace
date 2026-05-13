@@ -2,6 +2,18 @@
 
 @section('title', 'Modifier mon Profil')
 
+@push('styles')
+    <style>
+        body {
+            background-color: #fff !important;
+        }
+        .main-content {
+            background-color: #fff;
+            min-height: 100vh;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div
         style="max-width: 600px; margin: 3rem auto; padding: 2rem; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">

@@ -10,9 +10,9 @@
             box-sizing: border-box;
         }
 
-        body {
+        body, .page-wrapper, main {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #ffffff;
+            background-color: #ffffff !important;
             color: #333;
         }
 
@@ -42,7 +42,7 @@
         /* Main Content */
         .main-content {
             max-width: 1000px;
-            margin: 1rem auto;
+            margin: 0.5rem auto;
             padding: 0 0.5rem;
         }
 
@@ -61,17 +61,18 @@
             font-size: 1.2rem;
             font-weight: bold;
             margin-bottom: 1.25rem;
+            text-align: center;
         }
 
         /* Form Layout */
         .register-card {
-            background: transparent;
-            padding: 0;
-            border: none;
-            border-right: 1px solid #f0f0f0;
-            box-shadow: 2px 0 4px -2px rgba(0, 0, 0, 0.1);
+            background: white;
+            padding: 2rem;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
             max-width: 600px;
-            margin: 0;
+            margin: 0 auto 3rem auto;
         }
 
         .form-section-wrapper {
@@ -98,7 +99,6 @@
 
         .form-input-box {
             width: 100%;
-            max-width: 300px;
             padding: 0.9rem 0.75rem 0.2rem 0.75rem;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -124,7 +124,7 @@
         .password-container,
         .phone-container {
             position: relative;
-            max-width: 300px;
+            max-width: 100%;
         }
 
         .input-container .floating-label,
@@ -192,7 +192,7 @@
 
         .password-container {
             position: relative;
-            max-width: 300px;
+            max-width: 100%;
         }
 
         .toggle-password {
@@ -207,7 +207,7 @@
 
         .email-container {
             position: relative;
-            max-width: 300px;
+            max-width: 100%;
         }
 
         .email-icon {
@@ -302,10 +302,7 @@
             font-size: 0.95rem;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 1rem;
-            transition: background 0.2s;
         }
-
         .btn-black:hover {
             background: #333;
         }
@@ -369,11 +366,14 @@
         }
 
         .btn-social .icon-box {
-            padding: 0.6rem 0.8rem;
-            border-right: 1px solid rgba(255,255,255,0.2);
+            padding: 0;
+            width: 46px;
+            height: 100%;
+            border-right: 1px solid rgba(255,255,255,0.15);
             display: flex;
             align-items: center;
             justify-content: center;
+            background: rgba(0,0,0,0.05);
         }
 
         .btn-social .text-box {
@@ -406,19 +406,11 @@
         }
 
         .btn-social svg {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             fill: white;
-        }
-
-        .btn-facebook:hover svg {
-            fill: white;
-        }
-
-        .btn-social svg {
-            width: 22px;
-            height: 22px;
             transition: all 0.3s ease;
+            display: block;
         }
 
         .error-message {
@@ -432,7 +424,7 @@
             margin-top: 2rem;
             font-size: 0.95rem;
             color: #333;
-            text-align: left;
+            text-align: center;
         }
 
         .login-link a {
@@ -458,7 +450,7 @@
     <style>
         .iti {
             width: 100%;
-            max-width: 300px;
+            max-width: 100%;
         }
         .alert-error {
             background-color: #fff5f5;
@@ -697,7 +689,7 @@
                     </label>
                 </div>
 
-                <div style="text-align: left;">
+                <div style="text-align: center;">
                     <button type="submit" class="btn-black">
                         Créer un compte
                     </button>

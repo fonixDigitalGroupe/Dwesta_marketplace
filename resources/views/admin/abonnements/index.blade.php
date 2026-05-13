@@ -7,16 +7,19 @@
     .main-content { background-color: #f8f9fa !important; }
     select:focus, input:focus {
         border-color: #adb1b8 !important;
-        box-shadow: 0 0 3px rgba(225,121,9,0.5) !important;
+        
         outline: none;
     }
 </style>
 @endpush
 
 
+@section('sub_header')
+    @include('admin.partials.settings-tabs')
+@endsection
+
 @section('content')
     <div style="max-width: 100%;">
-        @include('admin.partials.settings-tabs')
 
         <!-- Main Conteneur style Amazon Card -->
         <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
@@ -28,7 +31,7 @@
                 
                 <div style="display: flex; gap: 8px;">
                     <a href="{{ route('admin.abonnements.create') }}" 
-                       style="background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
+                       style="background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
                         Nouveau pack d'abonnement
                     </a>
                     <a href="javascript:window.print()" 
@@ -101,7 +104,7 @@
                             <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; font-weight: 600; text-align: center; border-right: 1px solid #e7e7e7;">
                                 {{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} F
                             </td>
-                            <td style="padding: 12px 15px; text-align: right;">
+                             <td style="padding: 12px 15px; text-align: right;">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
                                     <a href="{{ route('admin.abonnements.edit', $abonnement) }}" 
                                        style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
@@ -109,6 +112,16 @@
                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
                                        Modifier
                                     </a>
+                                    <span style="color: #ddd;">|</span>
+                                    <form action="{{ route('admin.abonnements.toggle-status', $abonnement) }}" method="POST" style="display:inline;">
+                                        @csrf @method('PATCH')
+                                        <button type="submit" 
+                                                style="background: none; border: none; color: #0066c0; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                                onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
+                                                onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
+                                            {{ $abonnement->actif ? 'Suspendre' : 'Activer' }}
+                                        </button>
+                                    </form>
                                     <span style="color: #ddd;">|</span>
                                     <form id="delete-form-{{ $abonnement->id }}" action="{{ route('admin.abonnements.destroy', $abonnement) }}" method="POST" style="display:inline;">
                                         @csrf @method('DELETE')
@@ -146,7 +159,7 @@
 
                     @foreach(range(1, $abonnements->lastPage()) as $i)
                         @if($i == $abonnements->currentPage())
-                            <span style="padding: 6px 12px; background: linear-gradient(to bottom, #f7dfa5, #f0c14b); color: #111; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #a88734;">{{ $i }}</span>
+                            <span style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #004aad;">{{ $i }}</span>
                         @else
                             <a href="{{ $abonnements->url($i) }}" style="padding: 6px 12px; background: #fff; color: #555; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">{{ $i }}</a>
                         @endif
@@ -162,5 +175,4 @@
         </div>
     </div>
 
-    @push('scripts')
 @endsection

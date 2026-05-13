@@ -93,9 +93,11 @@ class AnnonceController extends Controller
         $categories = Category::actives()->parOrdre()->get();
         $creditServices = \App\Models\CreditServiceConfig::actif()->get();
         $creditBalance = $this->creditService->solde($user);
+        $vendeur = $user->vendeur;
+        $annoncesRestantes = $vendeur ? $this->subscriptionService->getRemainingAnnonces($vendeur) : 5;
 
         // Utiliser la vue multi-étapes pour tous les types
-        return view('annonces.create', compact('categories', 'type', 'creditBalance', 'creditServices'));
+        return view('annonces.create', compact('categories', 'type', 'creditBalance', 'creditServices', 'annoncesRestantes'));
     }
 
     /**
@@ -149,7 +151,7 @@ class AnnonceController extends Controller
         // Vérifier les limites d'annonces selon l'abonnement
         if (!$this->subscriptionService->canPublishAnnonce($vendeur)) {
             $remaining = $this->subscriptionService->getRemainingAnnonces($vendeur);
-            return back()->withInput()->with('error', "Vous avez atteint la limite d'annonces de votre abonnement. Annonces restantes : {$remaining}. Passez à un abonnement supérieur pour publier plus d'annonces.");
+            return back()->withInput()->with('limit_error', "Limite d'annonces atteinte (0 restante).");
         }
 
         try {
@@ -292,8 +294,9 @@ class AnnonceController extends Controller
         $categories = Category::actives()->parOrdre()->get();
         $creditServices = \App\Models\CreditServiceConfig::actif()->get();
         $creditBalance = $this->creditService->solde($user);
+        $annoncesRestantes = $this->subscriptionService->getRemainingAnnonces($user->vendeur);
 
-        return view("annonces.edit-{$annonce->type}", compact('annonce', 'categories', 'creditServices', 'creditBalance'));
+        return view("annonces.edit-{$annonce->type}", compact('annonce', 'categories', 'creditServices', 'creditBalance', 'annoncesRestantes'));
     }
 
     /**
@@ -481,6 +484,7 @@ class AnnonceController extends Controller
         // Règles communes
         if ($type === Annonce::TYPE_PRODUIT || $type === Annonce::TYPE_IMMOBILIER || $type === Annonce::TYPE_VEHICULE) {
             $rules['prix'] = ['required', 'numeric', 'min:0'];
+            $rules['prix_original'] = ['nullable', 'numeric', 'min:0'];
             $rules['type_livraison'] = ['nullable', 'in:retrait_boutique,livraison_domicile,livraison_point_relais'];
             $rules['disponibilite'] = ['nullable', 'in:en_stock,rupture_stock,sur_commande'];
         }

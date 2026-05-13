@@ -47,20 +47,24 @@ class StripeService
     }
 
     /**
-     * Crée une session Checkout pour un abonnement
-     */
-    /**
-     * Crée une session Checkout pour un abonnement
+     * Crée une session Checkout pour un abonnement (Style Pay-as-you-go / One-off)
      */
     public function createSubscriptionSession(Vendeur $vendeur, Abonnement $plan, $successUrl, $cancelUrl)
     {
         return $this->stripe->checkout->sessions->create([
             'payment_method_types' => ['card'],
             'line_items' => [[
-                'price' => $plan->stripe_price_id,
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => "Abonnement {$plan->nom}",
+                        'description' => "Accès forfait {$plan->nom} pour 1 mois",
+                    ],
+                    'unit_amount' => (int)($plan->prix_mensuel / 655 * 100), // Meme conversion que pour les crédits
+                ],
                 'quantity' => 1,
             ]],
-            'mode' => 'subscription',
+            'mode' => 'payment',
             'success_url' => $successUrl . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => $cancelUrl,
             'client_reference_id' => $vendeur->id,
@@ -87,12 +91,12 @@ class StripeService
                         'name' => "Carte Cadeau Dwesta",
                         'description' => "Achat d'une carte cadeau de " . number_format($amount, 0) . " FCFA",
                     ],
-                    'unit_amount' => (int)($amount / 655 * 100), // Conversion approximative FCFA -> EUR pour le test (ou garder en FCFA si configuré)
+                    'unit_amount' => (int)($amount / 655 * 100), // Conversion approximative FCFA -> EUR
                 ],
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => $successUrl . '?session_id={CHECKOUT_SESSION_ID}&amount=' . $amount,
+            'success_url' => $successUrl . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => $cancelUrl,
             'metadata' => [
                 'user_id' => $user->id,

@@ -16,7 +16,7 @@
             <h1>Bienvenue sur Dwesta !</h1>
         </div>
         <div class="content">
-            <p>Bonjour {{ $user->name }},</p>
+            <p>Bonjour {{ $user->prenom . ' ' . $user->nom }},</p>
             <p>Nous sommes ravis de vous accueillir sur <strong>Dwesta Marketplace</strong>. Votre compte a été créé avec succès.</p>
             <p>Vous pouvez dès maintenant explorer nos offres, ajouter des produits à vos favoris et commencer à faire vos achats.</p>
             <p style="text-align: center;">

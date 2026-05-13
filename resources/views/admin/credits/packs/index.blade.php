@@ -7,29 +7,41 @@
     .main-content { background-color: #f8f9fa !important; }
     select:focus, input:focus {
         border-color: #adb1b8 !important;
-        box-shadow: 0 0 3px rgba(225,121,9,0.5) !important;
+        
         outline: none;
     }
 </style>
 @endpush
 
+@section('sub_header')
+    @include('admin.partials.settings-tabs')
+@endsection
+
 @section('content')
     <div style="max-width: 100%;">
-        @include('admin.partials.settings-tabs')
 
         <!-- Main Conteneur style Amazon Card -->
         <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
-                    Gestion des Packs de Crédits
-                </h1>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
+                        Gestion des Packs de Crédits
+                    </h1>
+                </div>
                 
                 <div style="display: flex; gap: 8px;">
-                    <a href="{{ route('admin.credits.packs.create') }}" 
-                       style="background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
-                        Nouveau pack de crédits
-                    </a>
+                    @if(\App\Models\CreditPack::count() >= 3)
+                        <span title="Limite de 3 packs atteinte" 
+                           style="background: #e7e9ec; border: 1px solid #adb1b8; color: #919191; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; cursor: not-allowed; display: flex; align-items: center; gap: 6px; opacity: 0.7;">
+                            Nouveau pack de crédits
+                        </span>
+                    @else
+                        <a href="{{ route('admin.credits.packs.create') }}" 
+                           style="background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
+                            Nouveau pack de crédits
+                        </a>
+                    @endif
                     <a href="javascript:window.print()" 
                        style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 6px;">
                         Imprimer
@@ -152,7 +164,7 @@
 
                     @foreach(range(1, $packs->lastPage()) as $i)
                         @if($i == $packs->currentPage())
-                            <span style="padding: 6px 12px; background: linear-gradient(to bottom, #f7dfa5, #f0c14b); color: #111; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #a88734;">{{ $i }}</span>
+                            <span style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #004aad;">{{ $i }}</span>
                         @else
                             <a href="{{ $packs->url($i) }}" style="padding: 6px 12px; background: #fff; color: #555; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">{{ $i }}</a>
                         @endif

@@ -17,7 +17,7 @@
                     </a>
                     <a href="{{ route('vendeur.show') }}"
                         style="display: inline-block; color: #6c757d; text-decoration: none; font-weight: 500;">
-                        Mon compte vendeur
+                        Compte vendeur
                     </a>
                 </div>
                 <h1 style="color: #333; margin-top: 0;">Mon Abonnement</h1>

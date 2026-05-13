@@ -36,14 +36,12 @@
 
     .form-input:focus, .form-select:focus {
         border-color: #e77600 !important;
-        box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5) !important;
+        
     }
 
     .btn-amazon-primary {
-        background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
-        border: 1px solid #a88734;
-        border-radius: 3px;
-        color: #111;
+        background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad;
+        border-radius: 3px; color: #fff;
         padding: 8px 15px;
         font-size: 0.85rem;
         cursor: pointer;

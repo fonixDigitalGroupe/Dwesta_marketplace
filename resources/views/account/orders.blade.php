@@ -4,6 +4,9 @@
 
 @push('styles')
 <style>
+    html, body, .dashboard-container, .main-content {
+        background-color: #fff !important;
+    }
     .orders-list {
         background: white;
         border: 1px solid #eee;

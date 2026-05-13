@@ -67,7 +67,13 @@ class CreditController extends Controller
             'prix'          => 'required|integer|min:0',
         ]);
 
-        $validated['actif'] = true;
+        if (CreditPack::count() >= 3) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['nom' => 'Vous ne pouvez pas enregistrer plus de 3 packs de crédits au total.']);
+        }
+
+        $validated['actif'] = $request->boolean('actif', true);
         $validated['ordre'] = 0;
 
         CreditPack::create($validated);

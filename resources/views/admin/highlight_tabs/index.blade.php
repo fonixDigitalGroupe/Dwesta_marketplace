@@ -5,23 +5,28 @@
 @push('styles')
 <style>
     .main-content { background-color: #f8f9fa !important; }
+    .sub-header-slot { display: none !important; }
     select:focus, input:focus {
         border-color: #adb1b8 !important;
-        box-shadow: 0 0 3px rgba(225,121,9,0.5) !important;
+        
         outline: none;
     }
 </style>
 @endpush
 
+@section('sub_header')
+    @include('admin.partials.settings-tabs')
+@endsection
+
 @section('content')
-<div style="max-width: 100%;">
+<div style="max-width: 100%; margin-top: -1px;">
 
     {{-- Main Conteneur style Amazon Card --}}
     <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
-                Gestion des Onglets (Bento Grid)
+                Gestion des Onglets
             </h1>
             <div style="display: flex; gap: 8px;">
                 <a href="{{ route('admin.highlights.index') }}"
@@ -29,7 +34,7 @@
                     <i class="fas fa-arrow-left" style="font-size: 0.75rem; opacity: 0.6;"></i> Retour aux Actualités
                 </a>
                 <a href="{{ route('admin.highlight-tabs.create') }}"
-                   style="background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
+                   style="background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
                     Nouveau groupe
                 </a>
             </div>
@@ -63,9 +68,8 @@
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e7e7e7;">
             <thead>
                 <tr style="background: #f6f6f6; border-bottom: 1px solid #e7e7e7;">
-                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 80px;">Pos.</th>
+                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 80px;">Ordre</th>
                     <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Nom de l'onglet</th>
-                    <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 150px;">Slug</th>
                     <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 100px;">Statut</th>
                     <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 150px;">Actions</th>
                 </tr>
@@ -78,9 +82,6 @@
                         </td>
                         <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; font-weight: 500; border-right: 1px solid #e7e7e7;">
                             {{ $tab->name }}
-                        </td>
-                        <td style="padding: 12px 15px; font-size: 0.8rem; color: #777; border-right: 1px solid #e7e7e7;">
-                            {{ $tab->slug }}
                         </td>
                         <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
                             @if($tab->active)
@@ -140,7 +141,7 @@
 
                     @for($i = $pStart; $i <= $pEnd; $i++)
                         @if($i == $tabs->currentPage())
-                            <span style="padding: 6px 12px; background: linear-gradient(to bottom, #f7dfa5, #f0c14b); color: #111; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #a88734;">{{ $i }}</span>
+                            <span style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #004aad;">{{ $i }}</span>
                         @else
                             <a href="{{ $tabs->url($i) }}" style="padding: 6px 12px; background: #fff; color: #555; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">{{ $i }}</a>
                         @endif

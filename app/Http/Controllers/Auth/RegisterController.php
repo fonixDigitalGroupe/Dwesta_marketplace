@@ -8,10 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\UserRegistered;
-use Illuminate\Auth\Events\Registered;
+use App\Notifications\EmailOtpNotification;
 
 class RegisterController extends Controller
 {
@@ -22,7 +19,6 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-
         $request->validate([
             'prenom' => ['required', 'string', 'max:255'],
             'nom' => ['required', 'string', 'max:255'],
@@ -37,24 +33,28 @@ class RegisterController extends Controller
             'telephone.required' => 'Le numéro de téléphone est requis.',
         ]);
 
+        $otp = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
+
         $user = User::create([
-            'prenom' => $request->prenom,
-            'nom' => $request->nom,
-            'email' => $request->email,
-            'nationalite' => $request->nationalite,
-            'adresse' => $request->adresse,
-            'telephone' => $request->telephone,
-            'password' => Hash::make($request->password),
+            'prenom'       => $request->prenom,
+            'nom'          => $request->nom,
+            'email'        => $request->email,
+            'nationalite'  => $request->nationalite,
+            'adresse'      => $request->adresse,
+            'telephone'    => $request->telephone,
+            'password'     => Hash::make($request->password),
+            'otp_code'     => $otp,
+            'otp_expires_at' => now()->addMinutes(15),
         ]);
 
         $user->assignRole('acheteur');
 
-        // Déclencher l'événement d'inscription (qui envoie le mail de vérification)
-        event(new Registered($user));
+        // Envoyer le code OTP par email (via Mailtrap en développement)
+        $user->notify(new EmailOtpNotification($otp));
 
         Auth::login($user);
 
-        return redirect()->route('profile.show');
+        return redirect()->route('otp.verify');
     }
 }
 

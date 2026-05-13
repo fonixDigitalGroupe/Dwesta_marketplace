@@ -113,7 +113,42 @@ class UserController extends Controller
         // Assignation du rôle
         $user->assignRole($validated['role']);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Utilisateur créé avec succès.',
+                'user' => [
+                    'id' => $user->id,
+                    'prenom' => $user->prenom,
+                    'nom' => $user->nom,
+                    'email' => $user->email,
+                    'password' => $request->password, // Envoyer le MDP en clair pour la popup
+                ]
+            ]);
+        }
+
         return redirect()->route('admin.users.index')->with('success', 'Utilisateur créé avec succès.');
+    }
+
+    /**
+     * Envoyer les accès par email.
+     */
+    public function sendCredentials(Request $request, User $user)
+    {
+        try {
+            $password = $request->password;
+            $user->notify(new \App\Notifications\UserCredentialsNotification($user->prenom, $user->email, $password));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Informations de connexion envoyées par email.'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de l\'envoi de l\'email : ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

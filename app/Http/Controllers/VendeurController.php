@@ -13,16 +13,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewVendorNotification;
+use App\Mail\VendorApplicationConfirmation;
 
 class VendeurController extends Controller
 {
     protected $documentUploadService;
     protected $documentNotificationService;
+    protected $subscriptionService;
 
-    public function __construct(DocumentUploadService $documentUploadService, DocumentNotificationService $documentNotificationService)
-    {
+    public function __construct(
+        DocumentUploadService $documentUploadService, 
+        DocumentNotificationService $documentNotificationService,
+        \App\Services\SubscriptionService $subscriptionService
+    ) {
         $this->documentUploadService = $documentUploadService;
         $this->documentNotificationService = $documentNotificationService;
+        $this->subscriptionService = $subscriptionService;
     }
 
     /**
@@ -33,14 +39,14 @@ class VendeurController extends Controller
         $user = Auth::user();
 
         // Vérifier si l'utilisateur est déjà un vendeur professionnel
-        if ($user->vendeur && $user->vendeur->estProfessionnel()) {
+        if ($user->vendeur && $user->vendeur->estProfessionnel() && !request()->has('update')) {
             return redirect()->route('vendeur.show')->with('info', 'Vous avez déjà un compte vendeur professionnel.');
         }
 
-        // Si c'est un vendeur particulier vérifié, il peut quand même accéder pour passer PRO
-        if ($user->vendeur && $user->vendeur->estParticulier() && $user->vendeur->estOfficiel()) {
+        // Si c'est un vendeur particulier vérifié, il peut quand même accéder pour passer PRO ou mettre à jour
+        if ($user->vendeur && $user->vendeur->estParticulier() && $user->vendeur->estOfficiel() && !request()->has('update')) {
             // On laisse passer vers la vue
-        } elseif ($user->estVendeurOfficiel()) {
+        } elseif ($user->estVendeurOfficiel() && !request()->has('update')) {
             return redirect()->route('vendeur.show')->with('info', 'Vous avez déjà un compte vendeur.');
         }
 
@@ -54,8 +60,8 @@ class VendeurController extends Controller
     {
         $user = Auth::user();
 
-        // Vérifier si l'utilisateur est déjà un vendeur particulier complet
-        if ($user->vendeur && $user->vendeur->estParticulier() && $user->vendeur->estOfficiel()) {
+        // Vérifier si l'utilisateur est déjà un vendeur particulier complet (sauf si demande d'update)
+        if ($user->vendeur && $user->vendeur->estParticulier() && $user->vendeur->estOfficiel() && !$request->has('update')) {
             return redirect()->route('vendeur.show')->with('error', 'Vous avez déjà un compte vendeur particulier.');
         }
 
@@ -115,10 +121,13 @@ class VendeurController extends Controller
 
             // Notification Admin
             Mail::to(config('mail.from.address'))->send(new NewVendorNotification($vendeur));
+            
+            // Notification Utilisateur
+            Mail::to($user->email)->send(new VendorApplicationConfirmation($vendeur));
 
             DB::commit();
 
-            return redirect()->route('vendeur.show');
+            return redirect()->route('vendeur.show')->with('success', 'Votre demande de compte vendeur a été soumise avec succès ! Un e-mail de confirmation a été envoyé à ' . $user->email . '.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erreur création compte vendeur particulier: ' . $e->getMessage());
@@ -134,8 +143,8 @@ class VendeurController extends Controller
     {
         $user = Auth::user();
 
-        // Vérifier si l'utilisateur est déjà un vendeur professionnel
-        if ($user->vendeur && $user->vendeur->estProfessionnel()) {
+        // Vérifier si l'utilisateur est déjà un vendeur professionnel (sauf si demande d'update)
+        if ($user->vendeur && $user->vendeur->estProfessionnel() && !$request->has('update')) {
             return redirect()->route('vendeur.show')->with('error', 'Vous avez déjà un compte vendeur professionnel.');
         }
 
@@ -158,16 +167,18 @@ class VendeurController extends Controller
             // Récupérer ou créer le vendeur
             $vendeur = $user->vendeur;
             if ($vendeur) {
+                // Sauvegarde de l'état si déjà vérifié particulier
+                $wasVerifiedParticular = $vendeur->estParticulier() && $vendeur->estVerifie();
+
+                // On ne change le type en 'professionnel' QUE si l'admin approuve plus tard
+                // pour permettre de garder les avantages particulier en attendant.
                 $vendeur->update([
-                    'type' => 'professionnel',
                     'statut_verification' => 'en_attente',
-                    'actif' => true,
+                    'raison_rejet' => null
                 ]);
 
-                // Supprimer le compte particulier s'il existait
-                if ($vendeur->particulier) {
-                    $vendeur->particulier->delete();
-                }
+                // On ne supprime pas encore le particulier si on est en transition
+                // if ($vendeur->particulier) { $vendeur->particulier->delete(); } // Supprimé pour garder les avantages
             } else {
                 $vendeur = Vendeur::create([
                     'user_id' => $user->id,
@@ -184,20 +195,22 @@ class VendeurController extends Controller
                 $vendeur->id
             );
 
-            // Créer le vendeur professionnel
-            VendeurProfessionnel::create([
-                'vendeur_id' => $vendeur->id,
-                'nom_entreprise' => $request->nom_entreprise,
-                'numero_registre_commerce' => $request->numero_registre_commerce,
-                'registre_commerce_path' => $registrePath,
-                'date_expiration_registre' => $request->date_expiration_registre,
-                'numero_identification_fiscale' => $request->numero_identification_fiscale,
-                'adresse_entreprise' => $request->adresse_entreprise,
-                'telephone_entreprise' => $request->telephone_entreprise,
-                'email_entreprise' => $request->email_entreprise,
-                'description_entreprise' => $request->description_entreprise,
-                'site_web' => $request->site_web,
-            ]);
+            // Créer ou mettre à jour le vendeur professionnel
+            VendeurProfessionnel::updateOrCreate(
+                ['vendeur_id' => $vendeur->id],
+                [
+                    'nom_entreprise' => $request->nom_entreprise,
+                    'numero_registre_commerce' => $request->numero_registre_commerce,
+                    'registre_commerce_path' => $registrePath,
+                    'date_expiration_registre' => $request->date_expiration_registre,
+                    'numero_identification_fiscale' => $request->numero_identification_fiscale,
+                    'adresse_entreprise' => $request->adresse_entreprise,
+                    'telephone_entreprise' => $request->telephone_entreprise,
+                    'email_entreprise' => $request->email_entreprise,
+                    'description_entreprise' => $request->description_entreprise,
+                    'site_web' => $request->site_web,
+                ]
+            );
 
             // Assigner le rôle Vendeur Professionnel
             $user->assignRole('Vendeur Professionnel');
@@ -205,9 +218,12 @@ class VendeurController extends Controller
             // Notification Admin
             Mail::to(config('mail.from.address'))->send(new NewVendorNotification($vendeur));
 
+            // Notification Utilisateur
+            Mail::to($user->email)->send(new VendorApplicationConfirmation($vendeur));
+
             DB::commit();
 
-            return redirect()->route('vendeur.show');
+            return redirect()->route('vendeur.show')->with('success', 'Votre demande de compte vendeur professionnel a été soumise avec succès ! Un e-mail de confirmation a été envoyé à ' . $user->email . '.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erreur création compte vendeur professionnel: ' . $e->getMessage());
@@ -233,7 +249,12 @@ class VendeurController extends Controller
         // Récupérer les alertes d'expiration
         $alertes = $this->documentNotificationService->getAlertesActives($vendeur);
 
-        return view('vendeur.show', compact('vendeur', 'alertes'));
+        // Récupérer les stats d'annonces
+        $nombreAnnoncesPubliees = $vendeur->annonces()->whereIn('statut', ['publiee', 'en_attente'])->count();
+        $annoncesRestantes = $this->subscriptionService->getRemainingAnnonces($vendeur);
+        $abonnementActuel = $vendeur->abonnementActuel;
+
+        return view('vendeur.show', compact('vendeur', 'alertes', 'nombreAnnoncesPubliees', 'annoncesRestantes', 'abonnementActuel'));
     }
 
     /**
@@ -458,5 +479,28 @@ class VendeurController extends Controller
         $order->load(['buyer', 'items.annonce.photos']);
 
         return view('vendeur.order-show', compact('order'));
+    }
+
+    /**
+     * Affiche les statistiques du vendeur
+     */
+    public function stats()
+    {
+        $user = Auth::user();
+        if (!$user->estVendeur()) {
+            return redirect()->route('vendeur.create');
+        }
+
+        $vendeur = $user->vendeur;
+        $orders = $vendeur->orders();
+
+        $stats = [
+            'total_orders' => $orders->count(),
+            'total_revenue' => $orders->where('statut', '!=', 'annule')->sum('total_produits'),
+            'orders_this_month' => $orders->whereMonth('created_at', now()->month)->count(),
+            'revenue_this_month' => $orders->whereMonth('created_at', now()->month)->where('statut', '!=', 'annule')->sum('total_produits'),
+        ];
+
+        return view('vendeur.stats', compact('vendeur', 'stats'));
     }
 }

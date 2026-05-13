@@ -1,120 +1,33 @@
-@extends('layouts.admin')
-
-@section('title', 'Modifier l\'Actualité')
-
-@push('styles')
-<style>
-    .main-content { background-color: #f8f9fa !important; }
-    
-    .amazon-card {
-        background: #fff;
-        border: 1px solid #e7e7e7;
-        border-radius: 4px;
-        padding: 25px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        margin-bottom: 20px;
-    }
-
-    .form-label {
-        display: block;
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #111;
-        margin-bottom: 8px;
-    }
-
-    .form-input, .form-select {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #adb1b8;
-        border-radius: 3px;
-        font-size: 0.9rem;
-        transition: all 0.1s;
-        outline: none;
-        background: #fff;
-    }
-
-    .form-input:focus, .form-select:focus {
-        border-color: #e77600 !important;
-        box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5) !important;
-    }
-
-    .btn-amazon-primary {
-        background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
-        border: 1px solid #a88734;
-        border-radius: 3px;
-        color: #111;
-        padding: 8px 15px;
-        font-size: 0.85rem;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        text-decoration: none;
-    }
-
-    .btn-amazon-secondary {
-        background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
-        border: 1px solid #adb1b8;
-        border-radius: 3px;
-        color: #111;
-        padding: 8px 15px;
-        font-size: 0.85rem;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        text-decoration: none;
-    }
-
-    .dropzone-amazon {
-        border: 1px dashed #adb1b8;
-        border-radius: 4px;
-        padding: 30px;
-        text-align: center;
-        background: #f9f9f9;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .dropzone-amazon:hover {
-        border-color: #e77600;
-        background: #fff;
-    }
-</style>
-@endpush
-
 @section('content')
-<div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
-    
-    {{-- Header --}}
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-        <h1 style="font-size: 1.5rem; font-weight: 500; color: #111; margin: 0;">Modifier l'Actualité</h1>
-        <a href="{{ route('admin.highlights.index') }}" class="btn-amazon-secondary">
-            <i class="fas fa-arrow-left"></i> Retour à la liste
-        </a>
-    </div>
+<div style="max-width: 100%; margin-top: -50px;">
 
-    @if ($errors->any())
-    <div style="background: #FFF4F4; border: 1px solid #c40000; border-radius: 4px; padding: 15px; margin-bottom: 25px;">
-        <div style="color: #c40000; font-weight: 700; margin-bottom: 5px; font-size: 0.9rem;">
-            <i class="fas fa-exclamation-triangle"></i> Des erreurs sont survenues :
+    <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; padding: 25px;">
+        {{-- Header --}}
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Modifier l'Actualité</h1>
+            <a href="{{ route('admin.highlights.index') }}" class="btn-amazon-secondary" style="gap: 8px;">
+                <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour à la liste
+            </a>
         </div>
-        <ul style="margin: 0; padding-left: 20px;">
-            @foreach ($errors->all() as $error)
-                <li style="color: #c40000; font-size: 0.85rem;">{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
 
-    <form action="{{ route('admin.highlights.update', $highlight) }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
+        @if ($errors->any())
+        <div style="background: #FFF4F4; border: 1px solid #c40000; border-radius: 4px; padding: 15px; margin-bottom: 25px;">
+            <div style="color: #c40000; font-weight: 700; margin-bottom: 5px; font-size: 0.9rem;">
+                <i class="fas fa-exclamation-triangle"></i> Des erreurs sont survenues :
+            </div>
+            <ul style="margin: 0; padding-left: 20px;">
+                @foreach ($errors->all() as $error)
+                    <li style="color: #c40000; font-size: 0.85rem;">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
 
-        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 25px;">
+        <form action="{{ route('admin.highlights.update', $highlight) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
+            <div style="display: grid; grid-template-columns: 1fr 380px; gap: 25px; align-items: start;">
             
             {{-- Colonne Gauche --}}
             <div style="display: flex; flex-direction: column; gap: 25px;">
@@ -131,13 +44,8 @@
                         </div>
 
                         <div>
-                            <label for="subtitle" class="form-label">Sous-titre <span style="font-weight: 400; color: #565959;">— optionnel</span></label>
-                            <input type="text" name="subtitle" id="subtitle" value="{{ old('subtitle', $highlight->subtitle) }}" class="form-input" placeholder="Ex: Nouveautés été">
-                        </div>
-
-                        <div>
                             <label for="link_url" class="form-label">Catégorie de redirection</label>
-                            <select name="link_url" id="link_url" class="form-select">
+                            <select name="link_url" id="link_url" class="form-select" style="background: #fff; height: 40px; cursor: pointer;">
                                 <option value="">-- Sélectionner une catégorie --</option>
                                 @foreach($categories as $category)
                                     @php
@@ -170,12 +78,12 @@
                         Image d'illustration
                     </h2>
 
-                    <div class="dropzone-amazon" onclick="document.getElementById('image-input').click()">
+                    <div class="dropzone-amazon" onclick="document.getElementById('image-input').click()" style="border-radius: 4px; border: 1px dashed #adb1b8; padding: 1.25rem; text-align: center; cursor: pointer; background: #fcfcfc;">
                         <div id="dropzone-content" style="{{ $highlight->image_path ? 'display: none;' : '' }}">
-                            <i class="fas fa-cloud-upload-alt" style="font-size: 40px; color: #bbb; margin-bottom: 10px;"></i>
-                            <p style="font-size: 0.9rem; color: #111; font-weight: 700;">Changer l'image</p>
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 30px; color: #adb1b8; margin-bottom: 5px;"></i>
+                            <p style="font-size: 0.85rem; color: #111; font-weight: 700;">Changer l'image</p>
                         </div>
-                        <img id="preview-img" src="{{ $highlight->image_url }}" style="{{ $highlight->image_path ? 'display: inline-block;' : 'display: none;' }} max-width: 100%; max-height: 250px; object-fit: contain; border-radius: 2px;">
+                        <img id="preview-img" src="{{ $highlight->image_url }}" style="{{ $highlight->image_path ? 'display: inline-block;' : 'display: none;' }} max-width: 100%; max-height: 160px; object-fit: contain; border-radius: 2px;">
                         
                         <div style="margin-top: 15px; color: #565959; font-size: 0.85rem;">
                              Cliquer pour sélectionner un nouveau fichier
@@ -195,7 +103,7 @@
                     <div style="display: flex; flex-direction: column; gap: 20px;">
                         <div>
                             <label for="highlight_tab_id" class="form-label">Onglet parent <span style="color: #c40000;">*</span></label>
-                            <select name="highlight_tab_id" id="highlight_tab_id" class="form-select" required>
+                            <select name="highlight_tab_id" id="highlight_tab_id" class="form-select" style="background: #fff; height: 40px; cursor: pointer;" required>
                                 @foreach($tabs as $tab)
                                     <option value="{{ $tab->id }}" {{ old('highlight_tab_id', $highlight->highlight_tab_id) == $tab->id ? 'selected' : '' }}>{{ $tab->name }}</option>
                                 @endforeach
@@ -204,14 +112,14 @@
 
                         <div>
                             <label for="position" class="form-label">Position dans la grille <span style="color: #c40000;">*</span></label>
-                            <select name="position" id="position" class="form-select" required>
+                            <select name="position" id="position" class="form-select" style="background: #fff; height: 40px; cursor: pointer;" required>
                                 @foreach($positions as $key => $label)
                                     <option value="{{ $key }}" {{ old('position', $highlight->position) == $key ? 'selected' : '' }}>{{ $label }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div style="background: #fcfcfc; border: 1px solid #eee; padding: 15px; border-radius: 4px;">
+                        <div style="padding-top: 5px;">
                             <div style="display: flex; align-items: start; gap: 10px;">
                                 <input type="checkbox" name="active" id="active" value="1" {{ old('active', $highlight->active) ? 'checked' : '' }} 
                                        style="width: 18px; height: 18px; cursor: pointer; accent-color: #e47911; margin-top: 2px;">
@@ -224,7 +132,7 @@
                     </div>
 
                     <div style="margin-top: 25px; display: flex; flex-direction: column; gap: 12px;">
-                        <button type="submit" class="btn-amazon-primary" style="width: 100%; height: 40px;">
+                        <button type="submit" class="btn-amazon-primary" style="width: 100%; height: 40px; font-weight: 700;">
                             Enregistrer les modifications
                         </button>
                         <a href="{{ route('admin.highlights.index') }}" class="btn-amazon-secondary" style="width: 100%; height: 40px;">

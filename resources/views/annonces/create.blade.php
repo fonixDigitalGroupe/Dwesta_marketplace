@@ -927,15 +927,25 @@
                 </div>
             @endif
 
-            @if(session('error'))
-                <div class="alert alert-danger mt-3" style="background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
-                    <strong>Erreur !</strong> {{ session('error') }}
+            @if(session('limit_error'))
+                <div class="alert alert-danger mt-3" style="background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; padding: 1rem; border-radius: 8px; margin-bottom: 2.5rem;">
+                    <strong>Erreur !</strong> {{ session('limit_error') }}
+                    
+                    <div style="margin-top: 1rem; border-top: 1px solid rgba(196, 0, 0, 0.1); padding-top: 0.75rem;">
+                        <a href="{{ route('vendeur.create', ['type' => 'professionnel']) }}" style="color: #721c24; font-weight: 700; text-decoration: underline; font-size: 0.95rem;">
+                            Passer à un compte PRO maintenant → pour Accéder aux outils professionnels et vendre sans limites !
+                        </a>
+                    </div>
                 </div>
             @endif
 
             @if($errors->any())
-                <div class="alert alert-danger mt-3" style="background-color: #f8d7da; border-color: #f5c6cb; color: #721c24; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
-                    <ul class="mb-0">
+                <div class="alert-error" style="background: #fff5f5; border: 1px solid #fccece; color: #c40000; padding: 1.25rem; border-radius: 8px; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(196, 0, 0, 0.05);">
+                    <div style="display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 0.75rem;">
+                        <i class="fas fa-exclamation-circle" style="font-size: 1.25rem; margin-top: 2px;"></i>
+                        <strong style="font-size: 1.1rem;">Veuillez corriger les erreurs suivantes :</strong>
+                    </div>
+                    <ul style="margin: 0; padding-left: 2.25rem; font-size: 0.95rem; line-height: 1.6;">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -1091,7 +1101,7 @@
 
                         <input type="file" id="photosInput" name="photos[]"
                             accept="image/jpeg,image/jpg,image/png,image/webp" multiple class="file-input-hidden"
-                            onchange="handleFiles(this.files)">
+                            onclick="this.value=null" onchange="handleFiles(this.files)">
                     </div>
 
                     <div class="form-group" style="margin-top: 2rem;">
@@ -1106,10 +1116,16 @@
                     <div style="display: flex; gap: 1rem; margin-top: 2rem;">
                         <div class="form-group" style="flex: 1;">
                             <label for="prix" class="form-label"
-                                style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Prix de
-                                vente</label>
+                                style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Prix actuel</label>
                             <input type="number" id="prix" name="prix" class="form-input" placeholder="Ex: 5000" min="0"
                                 required style="border-radius: 8px; border: 1.5px solid #e0e0e0; padding: 0.6rem 1rem; width: 100%; height: 45px;">
+                        </div>
+
+                        <div class="form-group" style="flex: 1;">
+                            <label for="prix_original" class="form-label"
+                                style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Ancien prix (facultatif)</label>
+                            <input type="number" id="prix_original" name="prix_original" class="form-input" placeholder="Ex: 7000" min="0"
+                                style="border-radius: 8px; border: 1.5px solid #e0e0e0; padding: 0.6rem 1rem; width: 100%; height: 45px;">
                         </div>
 
                         <div id="quantity-container" class="form-group" style="flex: 1;">
@@ -1136,7 +1152,7 @@
 
 
                     <input type="hidden" id="type_livraison" name="type_livraison" value="livraison_domicile" required>
-                    <input type="hidden" id="user_phone" name="user_phone" value="{{ auth()->user()->phone ?? '00000000' }}">
+                    <input type="hidden" id="user_phone" name="user_phone" value="{{ auth()->user()->telephone ?? '' }}">
                     <input type="hidden" id="code_postal" name="code_postal" value="{{ auth()->user()->code_postal ?? '00000' }}">
 
                     <div style="margin-bottom: 2rem;">
