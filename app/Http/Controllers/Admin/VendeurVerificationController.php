@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VendeurStatusUpdated;
+use App\Models\Abonnement;
+use App\Models\VendeurAbonnement;
+use Carbon\Carbon;
 
 class VendeurVerificationController extends Controller
 {
@@ -21,18 +24,6 @@ class VendeurVerificationController extends Controller
         // Le middleware 'auth' et 'role:Administrateur' sont déjà appliqués dans les routes
     }
 
-    /**
-     * Liste des vendeurs en attente de vérification
-     */
-    public function index()
-    {
-        $vendeursEnAttente = Vendeur::where('statut_verification', 'en_attente')
-            ->with(['user', 'particulier', 'professionnel'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(8);
-
-        return view('admin.vendeurs.verification', compact('vendeursEnAttente'));
-    }
 
     /**
      * Affiche les détails d'un vendeur pour vérification
@@ -94,7 +85,23 @@ class VendeurVerificationController extends Controller
             // Envoyer une notification au vendeur
             Mail::to($vendeur->user->email)->send(new VendeurStatusUpdated($vendeur));
 
-            return redirect()->route('admin.vendeurs.verification.index');
+            // Activation automatique du forfait gratuit s'il n'en a pas déjà un
+            if (!$vendeur->abonnements()->where('actif', true)->exists()) {
+                $abonnementGratuit = Abonnement::where('type', Abonnement::TYPE_GRATUIT)->first();
+                if ($abonnementGratuit) {
+                    VendeurAbonnement::create([
+                        'vendeur_id' => $vendeur->id,
+                        'abonnement_id' => $abonnementGratuit->id,
+                        'date_debut' => Carbon::today(),
+                        'date_fin' => Carbon::today()->addYears(10), // Longue durée pour le gratuit
+                        'actif' => true,
+                        'renouvellement_automatique' => false,
+                        'nombre_annonces_utilisees' => 0,
+                    ]);
+                }
+            }
+
+            return redirect()->route('admin.users.index', ['role' => 'vendeur'])->with('success', 'Vendeur approuvé avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur approbation vendeur: ' . $e->getMessage());
 
@@ -122,7 +129,7 @@ class VendeurVerificationController extends Controller
             // Envoyer une notification au vendeur avec la raison du rejet
             Mail::to($vendeur->user->email)->send(new VendeurStatusUpdated($vendeur));
 
-            return redirect()->route('admin.vendeurs.verification.index');
+            return redirect()->route('admin.users.index', ['role' => 'vendeur'])->with('info', 'Le dossier du vendeur a été rejeté.');
         } catch (\Exception $e) {
             Log::error('Erreur rejet vendeur: ' . $e->getMessage());
 

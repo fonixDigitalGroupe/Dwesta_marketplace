@@ -135,6 +135,29 @@ class CreditService
     }
 
     /**
+     * Ajoute des crédits à un utilisateur (Bonus, Cadeau, etc.)
+     */
+    public function addCredits(User $user, int $montant, string $description, string $type = 'gift_card_redeem', $related = null): void
+    {
+        DB::transaction(function () use ($user, $montant, $description, $type, $related) {
+            $userCredit = UserCredit::firstOrCreate(
+                ['user_id' => $user->id],
+                ['credits_disponibles' => 0]
+            );
+            $userCredit->increment('credits_disponibles', $montant);
+
+            CreditTransaction::create([
+                'user_id'      => $user->id,
+                'type'         => $type,
+                'montant'      => $montant,
+                'description'  => $description,
+                'related_type' => $related ? get_class($related) : null,
+                'related_id'   => $related ? $related->id : null,
+            ]);
+        });
+    }
+
+    /**
      * Désactive les services expirés (appelé par le scheduler).
      */
     public function expirerServicesDepasses(): int

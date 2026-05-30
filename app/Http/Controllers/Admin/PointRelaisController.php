@@ -200,9 +200,11 @@ class PointRelaisController extends Controller
             'horaires' => 'nullable|string',
             'managers' => 'nullable|array',
             'managers.*' => 'exists:users,id',
+            'est_point_special' => 'nullable|boolean',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
+        $validated['est_point_special'] = $request->has('est_point_special');
         
         if ($request->filled('full_telephone')) {
             $validated['telephone'] = $request->full_telephone;
@@ -243,9 +245,11 @@ class PointRelaisController extends Controller
             'horaires' => 'nullable|string',
             'managers' => 'nullable|array',
             'managers.*' => 'exists:users,id',
+            'est_point_special' => 'nullable|boolean',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
+        $validated['est_point_special'] = $request->has('est_point_special');
 
         if ($request->filled('full_telephone')) {
             $validated['telephone'] = $request->full_telephone;

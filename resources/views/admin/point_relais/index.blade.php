@@ -1,145 +1,251 @@
 @extends('layouts.admin')
 
-@section('title', 'Gestion des Dépôts Relais')
+@section('title', 'Gestion des Points Relais')
 
-@section('breadcrumbs')
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <span style="color: #333; font-weight: 500;">Dépôts Relais</span>
-@endsection
+@push('styles')
+    <style>
+        .main-content {
+            background-color: #f8f9fa !important;
+        }
+
+        select:focus,
+        input:focus {
+            border-color: #adb1b8 !important;
+            outline: none;
+        }
+
+        .btn-amazon-primary {
+            background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
+            border: 1px solid #1e40af;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-amazon-primary:hover {
+            background: linear-gradient(180deg, #1d4ed8 0%, #1e3a8a 100%);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            color: #fff;
+        }
+
+        .btn-amazon-secondary {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-amazon-secondary:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: #1e293b;
+        }
+
+        .badge-amazon {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .badge-amazon-success {
+            color: #569b00;
+            background: #f7fff0;
+        }
+
+        .badge-amazon-danger {
+            color: #c40000;
+            background: #fff5f5;
+        }
+
+        .badge-amazon-warning {
+            color: #c45500;
+            background: #fff8e1;
+            border: 1px solid #ffecb3;
+        }
+
+        @media print {
+            .sidebar, .navbar, .settings-tabs, .filters-bar, .actions-column, .pagination-container, .btn-amazon-primary, .btn-amazon-secondary, header, footer {
+                display: none !important;
+            }
+            .main-content {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+            }
+        }
+    </style>
+@endpush
 
 @section('content')
-    <div style="max-width: 1200px;">
+    <div style="max-width: 1600px; margin: 0 auto; width: 100%; padding-top: 0;">
+        <!-- Main Card -->
+        <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px; margin-top: -20px;">
 
-        <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-            <h2 style="font-size: 0.85rem; color: #555; font-weight: 700; text-transform: uppercase; margin: 0; letter-spacing: 0.05em;">
-                Gestion des Dépôts Relais
-            </h2>
-            <div style="display: flex; gap: 8px;">
-                <a href="{{ route('admin.point-relais.create') }}" style="display: flex; align-items: center; gap: 8px; background: #e67e00; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                    Nouveau Dépôt Relais <i class="fas fa-plus-square"></i>
-                </a>
-                <a href="javascript:window.print()" style="display: flex; align-items: center; gap: 8px; background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
-                    Imprimer <i class="fas fa-print"></i>
-                </a>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                    <i class="fas fa-map-marker-alt" style="font-size: 0.8rem;"></i>
+                    <span style="line-height: 1;">Points Relais</span>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                    <a href="javascript:window.print()" class="btn-amazon-secondary">
+                        <i class="fas fa-print"></i> Imprimer
+                    </a>
+                    <a href="{{ route('admin.point-relais.create') }}" class="btn-amazon-primary">
+                        <i class="fas fa-plus"></i> Nouveau Point Relais
+                    </a>
+                </div>
             </div>
-        </div>
 
+            <!-- Barre de filtre -->
+            <div class="filters-bar"
+                style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
+                <form action="{{ route('admin.point-relais.index') }}" method="GET" style="display: flex; align-items: center; flex: 1; position: relative;">
+                    <div style="display: flex; width: 100%; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher un point relais par nom, ville, adresse..."
+                            style="padding: 10px 16px; border: none; outline: none; flex: 1; font-size: 0.9rem; background: transparent;"
+                            onfocus="document.getElementById('search-container').style.borderColor='#ff9900'; document.getElementById('search-container').style.boxShadow='0 0 0 3px rgba(255, 153, 0, 0.15)'"
+                            onblur="document.getElementById('search-container').style.borderColor='#dee2e6'; document.getElementById('search-container').style.boxShadow='none'">
 
-
-        <!-- Table Container -->
-        <div style="background: #fff; border: 1px solid #e5e5e5; padding: 1rem;">
-
-            <!-- Barre d'outils secondaire -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 10px;">
-                <div style="display: flex; align-items: center; gap: 15px; font-size: 0.85rem; color: #333;">
-                    <div>
-                        Afficher 
-                        <select onchange="window.location.href = '{{ request()->url() }}?per_page=' + this.value" 
-                            style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; margin: 0 4px; background-color: #fff; outline: none; cursor: pointer; transition: all 0.2s;" onfocus="this.style.borderColor='#e67e00'" onblur="this.style.borderColor='#ddd'">
-                            <option value="8" {{ request('per_page', 8) == 8 ? 'selected' : '' }}>8</option>
-                            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                            <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                        </select>
-                        lignes
+                        <button type="submit"
+                            style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: none; color: #fff; padding: 0 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
+                            onmouseover="this.style.background='linear-gradient(180deg, #f08804 0%, #d87300 100%)'"
+                            onmouseout="this.style.background='linear-gradient(180deg, #ff9900 0%, #e77600 100%)'">
+                            <i class="fas fa-search" style="font-size: 1.1rem; text-shadow: 0 1px 1px rgba(0,0,0,0.1);"></i>
+                        </button>
                     </div>
-                </div>
-                <div style="font-size: 0.8rem; color: #666;">
-                    {{ $points->total() }} dépôt(s) relais au total
-                </div>
+
+                    @if(request('search'))
+                        <a href="{{ route('admin.point-relais.index') }}"
+                           style="margin-left: 15px; color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;"
+                           onmouseover="this.style.textDecoration='underline'"
+                           onmouseout="this.style.textDecoration='none'">
+                           Effacer
+                        </a>
+                    @endif
+                </form>
             </div>
 
-            <!-- Table -->
-            <table style="width: 100%; border-collapse: collapse;">
+            <!-- Table Amazon Design -->
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
                 <thead>
-                    <tr style="background: #fff; border-bottom: 2px solid #eee;">
-                        <th style="padding: 12px 1.25rem; font-size: 0.82rem; font-weight: 700; color: #333; border: 1px solid #eee;">Dépôt Relais</th>
-                        <th style="padding: 12px 1.25rem; font-size: 0.82rem; font-weight: 700; color: #333; border: 1px solid #eee;">Localisation</th>
-                        <th style="padding: 12px 1.25rem; font-size: 0.82rem; font-weight: 700; color: #333; border: 1px solid #eee;">Responsable</th>
-                        <th style="padding: 12px 1.25rem; font-size: 0.82rem; font-weight: 700; color: #333; border: 1px solid #eee;">Statut</th>
-                        <th style="padding: 12px 1.25rem; font-size: 0.82rem; font-weight: 700; color: #333; border: 1px solid #eee; text-align: right;">Actions</th>
+                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Point Relais</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Localisation</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Statut</th>
+                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 150px;" class="actions-column">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($points as $point)
-                        <tr style="border-bottom: 1px solid #e5e5e5;">
-                            <td style="padding: 0.875rem 1.25rem;">
-                                <div style="display: flex; align-items: center; gap: 10px;">
-
-                                    <div>
-                                        <div style="font-size: 0.875rem; color: #333; font-weight: 500;">{{ $point->nom }}</div>
-                                        <div style="font-size: 0.75rem; color: #999;">Créé le {{ $point->created_at->format('d/m/Y') }}</div>
-                                    </div>
+                        <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
+                            onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 12px 15px; font-size: 0.8rem; border-right: 1px solid #eff3f6;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="color: #0066c0; font-weight: 700;">{{ $point->nom }}</span>
+                                    @if($point->est_point_special)
+                                        <span class="badge-amazon badge-amazon-warning" title="Point Spécial Karnou">
+                                            <i class="fas fa-star" style="font-size: 0.6rem;"></i> SPÉCIAL
+                                        </span>
+                                    @endif
                                 </div>
                             </td>
-                            <td style="padding: 0.875rem 1.25rem;">
-                                <div style="font-size: 0.85rem; color: #333; font-weight: 500;">{{ $point->region }}, {{ $point->pays }}</div>
-                                <div style="font-size: 0.75rem; color: #666; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $point->adresse }}">
+                            <td style="padding: 12px 15px; font-size: 0.8rem; color: #555; border-right: 1px solid #eff3f6;">
+                                <div style="font-weight: 600; color: #111; margin-bottom: 2px;">{{ $point->region }}, {{ $point->pays }}</div>
+                                <div style="font-size: 0.75rem; color: #666; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $point->adresse }}">
                                     {{ $point->adresse }}
                                 </div>
                             </td>
-                            <td style="padding: 0.875rem 1.25rem;">
-                                @forelse($point->users as $manager)
-                                    <div style="font-size: 0.85rem; color: #666;">{{ $manager->prenom }} {{ $manager->nom }}</div>
-                                @empty
-                                    <span style="font-size: 0.8rem; color: #999; font-style: italic;">Aucun</span>
-                                @endforelse
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
+                                <span class="badge-amazon {{ $point->is_active ? 'badge-amazon-success' : 'badge-amazon-danger' }}">
+                                    {{ $point->is_active ? 'Actif' : 'Inactif' }}
+                                </span>
                             </td>
-                            <td style="padding: 0.875rem 1.25rem; border: 1px solid #eee;">
-                                @if($point->is_active)
-                                    <span style="background: #f0fdf4; color: #166534; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; border: 1px solid #bbf7d0;">
-                                        Actif
-                                    </span>
-                                @else
-                                    <span style="background: #fef2f2; color: #991b1b; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; border: 1px solid #fecaca;">
-                                        Inactif
-                                    </span>
-                                @endif
-                            </td>
-                            <td style="padding: 0.875rem 1.25rem; text-align: right; display: flex; justify-content: flex-end; gap: 4px;">
-                                <a href="{{ route('admin.point-relais.edit', $point) }}" 
-                                   style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #64748b; background: #f8fafc; border-radius: 8px; transition: all 0.2s;" 
-                                   title="Modifier"
-                                   onmouseover="this.style.background='#f1f5f9'; this.style.color='#0f172a'" 
-                                   onmouseout="this.style.background='#f8fafc'; this.style.color='#64748b'">
-                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                    </svg>
-                                </a>
-
-                                <form action="{{ route('admin.point-relais.destroy', $point) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" 
-                                            style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #ef4444; background: #fff1f2; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;" 
-                                            title="Supprimer"
-                                            onmouseover="this.style.background='#ffe4e6'; this.style.transform='scale(1.05)'" 
-                                            onmouseout="this.style.background='#fff1f2'; this.style.transform='scale(1)'"
-                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce dépôt relais ?')">
-                                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                    </button>
-                                </form>
+                            <td style="padding: 12px 15px; text-align: right;" class="actions-column">
+                                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                                    <a href="{{ route('admin.point-relais.edit', $point) }}"
+                                        style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
+                                        onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
+                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
+                                        Modifier
+                                    </a>
+                                    <span style="color: #ddd;">|</span>
+                                    <form action="{{ route('admin.point-relais.destroy', $point) }}" method="POST"
+                                        onsubmit="return confirm('Supprimer ce point relais ?')" style="display: inline;">
+                                        @csrf @method('DELETE')
+                                        <button type="submit"
+                                            style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                            onmouseover="this.style.textDecoration='underline'"
+                                            onmouseout="this.style.textDecoration='none'">
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5"
-                                style="padding: 3rem 1.25rem; text-align: center; color: #999; font-size: 0.875rem;">
-                                Aucun dépôt relais trouvé
+                            <td colspan="4" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
+                                Aucun point relais trouvé.
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
-            
-            <!-- Pagination -->
-            @if($points->hasPages())
-                <div style="padding: 1rem; border-top: 1px solid #e5e5e5;">
-                    {{ $points->appends(request()->query())->links() }}
+
+            <!-- Pagination Info & Links -->
+            @if($points->total() > 0)
+                <div class="pagination-container"
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #eff3f6; border-radius: 4px; margin-top: 20px;">
+                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
+                        <strong>{{ $points->total() }}</strong> lignes
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                        @if($points->onFirstPage())
+                            <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Précédent</span>
+                        @else
+                            <a href="{{ $points->previousPageUrl() }}"
+                                style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px; transition: all 0.2s;"
+                                onmouseover="this.style.borderColor='#dee2e6'; this.style.background='#f8fafc'"
+                                onmouseout="this.style.borderColor='#eff3f6'; this.style.background='#fff'">Précédent</a>
+                        @endif
+
+                        @foreach(range(max(1, $points->currentPage() - 2), min($points->lastPage(), $points->currentPage() + 2)) as $i)
+                            @if($i == $points->currentPage())
+                                <span style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border: 1px solid #1e40af; border-radius: 4px;">{{ $i }}</span>
+                            @else
+                                <a href="{{ $points->url($i) }}"
+                                    style="padding: 6px 12px; background: #fff; color: #64748b; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px; transition: all 0.2s;"
+                                    onmouseover="this.style.borderColor='#dee2e6'; this.style.background='#f8fafc'"
+                                    onmouseout="this.style.borderColor='#eff3f6'; this.style.background='#fff'">{{ $i }}</a>
+                            @endif
+                        @endforeach
+
+                        @if($points->hasMorePages())
+                            <a href="{{ $points->nextPageUrl() }}"
+                                style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px; transition: all 0.2s;"
+                                onmouseover="this.style.borderColor='#dee2e6'; this.style.background='#f8fafc'"
+                                onmouseout="this.style.borderColor='#eff3f6'; this.style.background='#fff'">Suivant</a>
+                        @else
+                            <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Suivant</span>
+                        @endif
+                    </div>
                 </div>
             @endif
         </div>

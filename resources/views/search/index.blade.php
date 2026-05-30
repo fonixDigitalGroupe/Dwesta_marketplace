@@ -492,12 +492,16 @@
                 <div class="sidebar-section">
                     <div class="sidebar-subtitle">Option d'expédition</div>
                     <label class="filter-item">
-                        <input type="checkbox" name="shipping[]" value="free" @if(is_array(request('shipping')) && in_array('free', request('shipping'))) checked @endif onchange="this.form.submit()">
-                        Livraison gratuite
+                        <input type="checkbox" name="shipping[]" value="retrait_point_relais" @if(is_array(request('shipping')) && in_array('retrait_point_relais', request('shipping'))) checked @endif onchange="this.form.submit()">
+                        Retrait en point retrait
                     </label>
                     <label class="filter-item">
-                        <input type="checkbox" name="shipping[]" value="express" @if(is_array(request('shipping')) && in_array('express', request('shipping'))) checked @endif onchange="this.form.submit()">
-                        Livraison rapide
+                        <input type="checkbox" name="shipping[]" value="retrait_boutique" @if(is_array(request('shipping')) && in_array('retrait_boutique', request('shipping'))) checked @endif onchange="this.form.submit()">
+                        Retrait en boutique
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" name="shipping[]" value="livraison_point_special" @if(is_array(request('shipping')) && in_array('livraison_point_special', request('shipping'))) checked @endif onchange="this.form.submit()">
+                        Livraison en point spécial
                     </label>
                 </div>
                 @endif
@@ -588,7 +592,6 @@
                     </div>
                 </div>
                 
-                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <select class="sort-select" onchange="window.location.href=this.value">
                             <option value="{{ request()->fullUrlWithQuery(['sort' => 'relevance']) }}" @if(request('sort') == 'relevance') selected @endif>Meilleures ventes</option>
@@ -596,8 +599,6 @@
                             <option value="{{ request()->fullUrlWithQuery(['sort' => 'price_desc']) }}" @if(request('sort') == 'price_desc') selected @endif>Prix : décroissant</option>
                         </select>
                     </div>
-                    <div style="font-size: 0.75rem; color: #666;">A propos de <a href="#" style="color: #004aad; text-decoration: underline; font-weight: 600;">Meilleures ventes</a></div>
-                </div>
             </div>
 
             <!-- Grid -->

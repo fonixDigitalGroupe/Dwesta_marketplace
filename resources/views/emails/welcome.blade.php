@@ -13,19 +13,19 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Bienvenue sur Dwesta !</h1>
+            <h1>Bienvenue sur Karnou !</h1>
         </div>
         <div class="content">
             <p>Bonjour {{ $user->prenom . ' ' . $user->nom }},</p>
-            <p>Nous sommes ravis de vous accueillir sur <strong>Dwesta Marketplace</strong>. Votre compte a été créé avec succès.</p>
+            <p>Nous sommes ravis de vous accueillir sur <strong>Karnou Marketplace</strong>. Votre compte a été créé avec succès.</p>
             <p>Vous pouvez dès maintenant explorer nos offres, ajouter des produits à vos favoris et commencer à faire vos achats.</p>
             <p style="text-align: center;">
                 <a href="{{ config('app.url') }}" class="btn">Accéder à la Marketplace</a>
             </p>
-            <p>À très bientôt,<br>L'équipe Dwesta</p>
+            <p>À très bientôt,<br>L'équipe Karnou</p>
         </div>
         <div class="footer">
-            &copy; {{ date('Y') }} Dwesta Marketplace. Tous droits réservés.
+            &copy; {{ date('Y') }} Karnou Marketplace. Tous droits réservés.
         </div>
     </div>
 </body>

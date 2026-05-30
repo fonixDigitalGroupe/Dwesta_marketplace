@@ -20,7 +20,6 @@
             background: #fff;
             border: 1px solid #e7e7e7;
             border-radius: 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             padding: 25px;
             margin-bottom: 20px;
         }
@@ -34,20 +33,27 @@
             border-bottom: 1px solid #e7e7e7;
         }
 
+        .btn-amazon-primary, .btn-amazon-secondary {
+            width: 100% !important;
+            height: 40px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-sizing: border-box !important;
+            padding: 0 24px !important;
+            font-size: 0.85rem;
+            font-weight: 400;
+            text-decoration: none;
+            cursor: pointer;
+            text-align: center;
+            border-radius: 4px;
+        }
+
         .btn-amazon-primary {
             background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
             border: 1px solid #004aad;
             color: #fff;
-            padding: 8px 24px;
-            border-radius: 0;
-            font-size: 0.85rem;
-            font-weight: 400;
-            text-decoration: none;
             box-shadow: 0 1px 0 rgba(255, 255, 255, .4) inset;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .btn-amazon-primary:hover {
@@ -59,16 +65,7 @@
             background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
             border: 1px solid #adb1b8;
             color: #111;
-            padding: 8px 24px;
-            border-radius: 0;
-            font-size: 0.85rem;
-            font-weight: 400;
-            text-decoration: none;
             box-shadow: 0 1px 0 rgba(255, 255, 255, .6) inset;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
         }
 
         .remove-option-btn {
@@ -153,11 +150,12 @@
     <div style="max-width: 100%;">
 
         <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; padding: 25px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e7e7e7; padding-bottom: 15px; margin-bottom: 20px;">
                 <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Modifier le critère :
                     {{ $filter->nom }}
                 </h1>
-                <a href="{{ route('admin.filters.index') }}" class="btn-amazon-secondary" style="gap: 8px;">
+                <a href="{{ route('admin.filters.index') }}" 
+                   style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 4px; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 8px;">
                     <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour à la liste
                 </a>
             </div>
@@ -178,7 +176,7 @@
                                     style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Niveau
                                     1 <small style="color: red;">*</small></label>
                                 <select id="l1_category_id"
-                                    style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc; cursor: pointer;">
+                                    style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 4px; font-size: 0.85rem; outline: none; background: #fcfcfc; cursor: pointer;">
                                     <option value="">-- Choisir --</option>
                                     @foreach($parents as $parent)
                                         <option value="{{ $parent->id }}" {{ $l1Id == $parent->id ? 'selected' : '' }}>
@@ -193,7 +191,7 @@
                                     style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Niveau
                                     2 <small style="color: red;">*</small></label>
                                 <select id="l2_category_id" {{ $l2Id ? '' : 'disabled' }}
-                                    style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: {{ $l2Id ? '#fcfcfc' : '#f7f8fa' }}; cursor: {{ $l2Id ? 'pointer' : 'not-allowed' }};">
+                                    style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 4px; font-size: 0.85rem; outline: none; background: {{ $l2Id ? '#fcfcfc' : '#f7f8fa' }}; cursor: {{ $l2Id ? 'pointer' : 'not-allowed' }};">
                                     <option value="">-- Choisir --</option>
                                 </select>
                             </div>
@@ -205,7 +203,7 @@
                                     style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Niveau
                                     3 <small style="color: red;">*</small></label>
                                 <select name="category_id" id="category_id" required {{ $l3Id ? '' : 'disabled' }}
-                                    style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: {{ $l3Id ? '#fcfcfc' : '#f7f8fa' }}; cursor: {{ $l3Id ? 'pointer' : 'not-allowed' }};">
+                                    style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 4px; font-size: 0.85rem; outline: none; background: {{ $l3Id ? '#fcfcfc' : '#f7f8fa' }}; cursor: {{ $l3Id ? 'pointer' : 'not-allowed' }};">
                                     <option value="">-- Choisir --</option>
                                 </select>
                                 <div id="loader"
@@ -220,7 +218,7 @@
                                     du Critère <small style="color: red;">*</small></label>
                                 <input type="text" name="nom" id="nom" value="{{ old('nom', $filter->nom) }}" required
                                     placeholder="Couleur"
-                                    style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc; text-transform: capitalize;">
+                                    style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 4px; font-size: 0.85rem; outline: none; background: #fcfcfc; text-transform: capitalize;">
                                 @error('nom')
                                     <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p>
                                 @enderror
@@ -243,7 +241,7 @@
                                         <div style="display: flex; gap: 0;">
                                             <input type="text" name="options[]" value="{{ $option }}" required
                                                 style="flex: 1; padding: 8px 12px; border: 1px solid #adb1b8; border-right: none; border-radius: 0; font-size: 0.85rem; outline: none; background: #fff; text-transform: capitalize;">
-                                            <button type="button" class="remove-option-btn" style="border-radius: 0;">
+                                            <button type="button" class="remove-option-btn" style="border-radius: 0; width: 40px;">
                                                 <i class="fas fa-times"></i>
                                             </button>
                                         </div>
@@ -256,7 +254,7 @@
                                     oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)"
                                     style="flex: 1; padding: 8px 12px; border: 1px solid #adb1b8; border-right: none; border-radius: 0; font-size: 0.85rem; outline: none; background: #fff;">
                                 <button type="button" id="add-option-btn-v2" class="btn-amazon-secondary"
-                                    style="padding: 0 15px; border-left: none;">
+                                    style="width: 40px !important; padding: 0 !important; border-left: none;">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
@@ -277,11 +275,10 @@
                                 </p>
                             </div>
 
-                            <button type="submit" class="btn-amazon-primary" style="padding: 12px; font-weight: 700;">
+                            <button type="submit" class="btn-amazon-primary" style="font-weight: 700;">
                                 ENREGISTRER
                             </button>
-                            <a href="{{ route('admin.filters.index') }}" class="btn-amazon-secondary"
-                                style="padding: 12px;">
+                            <a href="{{ route('admin.filters.index') }}" class="btn-amazon-secondary">
                                 ANNULER
                             </a>
                         </div>
@@ -378,7 +375,7 @@
                 div.innerHTML = `
                                 <input type="text" name="options[]" value="${val}" required
                                     style="flex: 1; padding: 8px 12px; border: 1px solid #adb1b8; border-right: none; border-radius: 0; font-size: 0.85rem; outline: none; background: #fff; text-transform: capitalize;">
-                                <button type="button" class="remove-option-btn" style="border-radius: 0;">
+                                <button type="button" class="remove-option-btn" style="border-radius: 0; width: 40px;">
                                     <i class="fas fa-times"></i>
                                 </button>
                             `;

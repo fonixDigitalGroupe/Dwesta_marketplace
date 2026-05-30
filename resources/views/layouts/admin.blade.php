@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Administration') - Dwesta</title>
+    <title>@yield('title', 'Administration') - Karnou</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
@@ -14,16 +14,14 @@
         :root {
             --mady-red: #bf0000;
             --mady-red-hover: #a00000;
-            --mady-blue: #004aad;
-            --sidebar-bg: #002e6b;
-            /* Brand Navy Blue */
+            --mady-blue: #3b82f6; /* Vibrant Blue Kelasi Style */
+            --sidebar-bg: linear-gradient(180deg, #1e40af 0%, #1e3a8a 100%); /* Royal Blue Kelasi Gradient */
             --sidebar-text: rgba(255, 255, 255, 0.7);
             --sidebar-text-hover: #ffffff;
             --sidebar-hover: rgba(255, 255, 255, 0.08);
-            --sidebar-active: rgba(255, 255, 255, 0.15);
-            --sidebar-text-active: #ffffff;
-            --sidebar-accent: #ff8c00;
-            /* Brand Orange */
+            --sidebar-active: rgba(255, 153, 0, 0.12); /* Vibrant Orange active tint */
+            --sidebar-text-active: #ff9900; /* Vibrant Orange active text */
+            --sidebar-accent: #ff9900; /* Vibrant Orange accent marker */
             --slate-50: #f8fafc;
         }
 
@@ -58,7 +56,7 @@
         .sidebar {
             width: 220px;
             /* More compact width */
-            background-color: var(--sidebar-bg);
+            background: var(--sidebar-bg);
             color: var(--sidebar-text);
             display: flex;
             flex-direction: column;
@@ -129,7 +127,7 @@
 
         .sidebar-menu li a.active {
             background-color: var(--sidebar-active);
-            color: #fff;
+            color: var(--sidebar-text-active) !important;
         }
 
         .sidebar-menu li a.active::before {
@@ -209,7 +207,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
@@ -256,11 +254,10 @@
         }
 
         .sub-header-slot {
-            background-color: #f9fafb;
-            min-height: 50px;
+            background-color: transparent;
+            min-height: 34px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
         }
 
         /* Breadcrumb Refined */
@@ -268,12 +265,12 @@
             padding: 0 1.5rem;
             font-size: 0.8rem;
             color: #6b7280;
-            max-width: 1400px;
+            max-width: 1600px;
             width: 100%;
             margin: 0 auto;
             display: flex;
             align-items: center;
-            height: 50px;
+            height: 40px;
         }
 
         .breadcrumb a {
@@ -287,8 +284,8 @@
 
         /* Viewport Padding */
         .viewport {
-            padding: 0.75rem 1.5rem;
-            max-width: 1400px;
+            padding: 1rem 1.5rem 1.5rem;
+            max-width: 1600px;
             width: 100%;
             margin: 0 auto;
         }

@@ -9,7 +9,7 @@
             background-color: #f8f9fa !important;
         }
 
-        /* Input Amazon Style */
+        /* Input Amazon Style Modernisé */
         input[type="text"],
         input[type="email"],
         input[type="tel"],
@@ -18,78 +18,101 @@
         textarea,
         select {
             width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #adb1b8;
-            border-radius: 0;
-            font-size: 0.85rem;
+            padding: 10px 14px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.82rem;
             outline: none;
-            background: #fcfcfc;
-            color: #111;
+            background: #fff;
+            color: #475569;
+            transition: all 0.2s;
         }
 
         input:focus,
         textarea:focus,
         select:focus {
-            border-color: #e77600 !important;
+            border-color: #ff9900 !important;
+            box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.15);
         }
 
         .amazon-card {
             background: #fff;
-            border: 1px solid #e7e7e7;
-            border-radius: 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            padding: 25px;
+            border: 1px solid #eff3f6;
+            border-radius: 8px;
+            padding: 24px;
             margin-bottom: 20px;
         }
 
         .section-title {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #111;
-            margin-bottom: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 16px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #e7e7e7;
+            border-bottom: 1px solid #f1f5f9;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
         .field-label {
             display: block;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #111;
-            margin-bottom: 8px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
+        /* Buttons Alignés avec Index */
         .btn-amazon-primary {
-            background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
-            border: 1px solid #004aad;
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
             color: #fff;
-            padding: 10px 24px;
-            border-radius: 0;
-            font-size: 0.85rem;
-            font-weight: 400;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
             text-decoration: none;
-            box-shadow: 0 1px 0 rgba(255, 255, 255, .4) inset;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
             cursor: pointer;
-            text-align: center;
+            width: 100%;
         }
 
         .btn-amazon-primary:hover {
-            background: linear-gradient(180deg, #0069d9 0%, #004494 100%);
-            border-color: #003d82;
+            background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: #fff;
         }
 
         .btn-amazon-secondary {
-            background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
-            border: 1px solid #adb1b8;
-            color: #111;
-            padding: 10px 24px;
-            border-radius: 0;
-            font-size: 0.85rem;
-            font-weight: 400;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
             text-decoration: none;
-            box-shadow: 0 1px 0 rgba(255, 255, 255, .6) inset;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
             cursor: pointer;
-            text-align: center;
+            width: 100%;
+        }
+
+        .btn-amazon-secondary:hover {
+            background: #f8fafc;
+            border-color: #dee2e6;
+            color: #1e293b;
         }
 
         .iti {
@@ -99,7 +122,7 @@
         .iti__selected-flag {
             padding-right: 12px !important;
             position: relative;
-            border-radius: 0 !important;
+            border-radius: 4px 0 0 4px !important;
         }
 
         .iti__selected-flag::after {
@@ -109,7 +132,7 @@
             top: 20%;
             bottom: 20%;
             width: 1px;
-            background-color: #adb1b8;
+            background-color: #dee2e6;
             pointer-events: none;
         }
 
@@ -136,43 +159,55 @@
         .modal-content {
             background-color: #fff;
             padding: 0;
-            border: 1px solid #888;
+            border: 1px solid #dee2e6;
             width: 500px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            border-radius: 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
         .modal-header {
             padding: 15px 25px;
-            background: #f6f6f6;
-            border-bottom: 1px solid #e7e7e7;
+            background: #f8fafc;
+            border-bottom: 1px solid #eff3f6;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+        .modal-header h3 {
+            font-size: 1.1rem;
+            color: #1e293b;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
         .modal-body {
-            padding: 25px;
+            padding: 24px;
         }
         .modal-footer {
-            padding: 15px 25px;
-            border-top: 1px solid #e7e7e7;
+            padding: 15px 24px;
+            border-top: 1px solid #eff3f6;
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-            background: #f6f6f6;
+            gap: 12px;
+            background: #f8fafc;
         }
         .credential-box {
-            background: #f3f3f3;
-            border: 1px solid #ddd;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
             padding: 15px;
             margin: 15px 0;
+            border-radius: 4px;
         }
         .credential-item {
             margin-bottom: 8px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            color: #475569;
         }
         .credential-item strong {
             display: inline-block;
             width: 100px;
+            color: #1e293b;
         }
     </style>
 @endpush
@@ -184,12 +219,17 @@
 @section('content')
     <div style="max-width: 1200px; margin: 0 auto;">
 
-        <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; padding: 25px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Créer un nouvel utilisateur</h1>
-                <a href="{{ route('admin.users.index') }}" class="btn-amazon-secondary"
-                    style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour à la liste
+        <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                        <i class="fas fa-plus" style="font-size: 0.8rem;"></i>
+                        <span>Nouvel utilisateur</span>
+                    </div>
+                </div>
+
+                <a href="{{ route('admin.users.index') }}" class="btn-amazon-secondary" style="width: auto !important; height: 32px !important; padding: 0 16px !important; font-size: 0.8rem;">
+                    <i class="fas fa-list" style="color: #ff9900;"></i> Voir les utilisateurs
                 </a>
             </div>
 
@@ -205,8 +245,7 @@
 
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                                 <div>
-                                    <label for="prenom" class="field-label">Prénom <small
-                                            style="color: red;">*</small></label>
+                                    <label for="prenom" class="field-label">Prénom <small style="color: red;">*</small></label>
                                     <input type="text" name="prenom" id="prenom" value="{{ old('prenom') }}" required
                                         oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
                                     @error('prenom')
@@ -214,8 +253,7 @@
                                     @enderror
                                 </div>
                                 <div>
-                                    <label for="nom" class="field-label">Nom <small
-                                            style="color: red;">*</small></label>
+                                    <label for="nom" class="field-label">Nom <small style="color: red;">*</small></label>
                                     <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required
                                         oninput="if(this.value) this.value = this.value.toUpperCase()">
                                     @error('nom')
@@ -225,8 +263,7 @@
                             </div>
 
                             <div style="margin-bottom: 20px;">
-                                <label for="email" class="field-label">Adresse Email <small
-                                        style="color: red;">*</small></label>
+                                <label for="email" class="field-label">Adresse Email <small style="color: red;">*</small></label>
                                 <input type="email" name="email" id="email" value="{{ old('email') }}" required
                                     placeholder="exemple@email.com">
                                 @error('email')
@@ -266,14 +303,16 @@
                     </div>
 
                     <!-- Right Column: Config -->
-                    <div class="amazon-card" style="margin: 0; display: flex; flex-direction: column;">
+                    <div class="amazon-card" style="margin: 0; display: flex; flex-direction: column; flex: 1;">
                         <h3 class="section-title">Accès & Rôle</h3>
 
                         <div style="margin-bottom: 20px;">
-                            <label for="role" class="field-label">Rôle système <small
-                                    style="color: red;">*</small></label>
+                            <label for="role" class="field-label">Rôle système <small style="color: red;">*</small></label>
                             <select name="role" id="role" required>
-                                <option value="admin" selected>Administrateur</option>
+                                <option value="">Choisir un rôle...</option>
+                                @foreach($roles as $value => $label)
+                                    <option value="{{ $value }}" {{ old('role') == $value ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
                             </select>
                             @error('role')
                                 <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p>
@@ -283,7 +322,7 @@
                         <div style="margin-bottom: 20px;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                                 <label for="password" class="field-label" style="margin-bottom: 0;">Mot de passe <small style="color: red;">*</small></label>
-                                <button type="button" onclick="generatePassword()" style="background: none; border: none; color: #007185; font-size: 0.75rem; cursor: pointer; padding: 0; font-weight: 500;">Générer un mot de passe</button>
+                                <button type="button" onclick="generatePassword()" style="background: none; border: none; color: #ff9900; font-size: 0.72rem; cursor: pointer; padding: 0; font-weight: 600; text-transform: uppercase;">Générer</button>
                             </div>
                             <div style="position: relative;">
                                 <input type="password" name="password" id="password" autocomplete="new-password" required>
@@ -297,7 +336,7 @@
                         </div>
 
                         <div style="margin-bottom: 20px;">
-                            <label for="password_confirmation" class="field-label">Confirmer mot de passe</label>
+                            <label for="password_confirmation" class="field-label" style="margin-bottom: 8px;">Confirmer mot de passe</label>
                             <div style="position: relative;">
                                 <input type="password" name="password_confirmation" id="password_confirmation" autocomplete="new-password" required>
                                 <button type="button" onclick="togglePasswordVisibility('password_confirmation')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #555; cursor: pointer; padding: 5px;">
@@ -306,18 +345,16 @@
                             </div>
                         </div>
 
-                        <!-- Actions Row (Inside Container) -->
-                        <div
-                            style="border-top: 1px solid #e7e7e7; padding-top: 20px; display: flex; flex-direction: column; gap: 10px; margin-top: auto;">
-                            <button type="submit" class="btn-amazon-primary"
-                                style="width: 100%; font-weight: 700; margin: 0; padding: 12px 0;">
-                                CRÉER LE COMPTE
-                            </button>
-                            <a href="{{ route('admin.users.index') }}" class="btn-amazon-secondary"
-                                style="width: 100%; margin: 0; padding: 12px 0;">
-                                ANNULER
-                            </a>
-                        </div>
+                    </div>
+
+                    <!-- Actions Row -->
+                    <div style="grid-column: 1 / -1; display: grid; grid-template-columns: 140px 140px; gap: 12px; justify-content: end; border-top: 1px solid #eff3f6; padding-top: 20px;">
+                        <button type="submit" class="btn-amazon-primary">
+                            CRÉER COMPTE
+                        </button>
+                        <a href="{{ route('admin.users.index') }}" class="btn-amazon-secondary">
+                            ANNULER
+                        </a>
                     </div>
                 </div>
             </form>
@@ -328,30 +365,27 @@
     <div id="successModal" class="amazon-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 style="margin: 0; font-size: 1.1rem; color: #111;">
-                    <i class="fas fa-check-circle" style="color: #007600;"></i> Utilisateur créé avec succès
+                <h3>
+                    <i class="fas fa-check-circle" style="color: #569b00; font-size: 1.25rem;"></i> Compte créé
                 </h3>
             </div>
             <div class="modal-body">
-                <p style="font-size: 0.9rem; margin-bottom: 15px;">Le compte de <strong><span id="modal_username"></span></strong> a été créé.</p>
+                <p style="font-size: 0.9rem; margin-bottom: 15px; color: #475569;">Le compte de <strong><span id="modal_username" style="color: #1e293b;"></span></strong> a été créé avec succès.</p>
                 <div class="credential-box">
-                    <div class="credential-item"><strong>Email :</strong> <span id="modal_email"></span></div>
-                    <div class="credential-item"><strong>Mot de passe :</strong> <span id="modal_password"></span></div>
+                    <div class="credential-item"><strong>Email :</strong> <span id="modal_email" style="font-weight: 500;"></span></div>
+                    <div class="credential-item"><strong>Mot de passe :</strong> <span id="modal_password" style="font-weight: 500;"></span></div>
                 </div>
-                <p style="font-size: 0.85rem; color: #555;">Vous pouvez maintenant envoyer ces informations de connexion par email à l'utilisateur.</p>
+                <p style="font-size: 0.82rem; color: #64748b; margin-top: 15px;">Vous pouvez maintenant envoyer ces informations de connexion par email.</p>
                 
-                <div id="email_status" style="margin-top: 15px; display: none; padding: 10px; font-size: 0.85rem;"></div>
+                <div id="email_status" style="margin-top: 15px; display: none; padding: 10px; font-size: 0.85rem; border-radius: 4px;"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="btnSendEmail" class="btn-amazon-primary" style="padding: 8px 15px;">
+                <button type="button" id="btnSendEmail" class="btn-amazon-primary" style="width: auto;">
                     <i class="fas fa-paper-plane" style="font-size: 0.8rem;"></i> Envoyer par email
                 </button>
-                <button type="button" onclick="closeModalAndRefresh()" class="btn-amazon-secondary" style="padding: 8px 15px;">
+                <button type="button" onclick="closeModalAndRefresh()" class="btn-amazon-secondary" style="width: auto;">
                     Fermer
                 </button>
-                <a href="{{ route('admin.users.index') }}" class="btn-amazon-secondary" style="padding: 8px 15px;">
-                    Retour à la liste
-                </a>
             </div>
         </div>
     </div>
@@ -420,7 +454,7 @@
                     const originalText = btn.innerHTML;
                     
                     btn.disabled = true;
-                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création...';
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> CRÉATION...';
                     
                     fetch(this.action, {
                         method: 'POST',
@@ -484,15 +518,15 @@
                 .then(data => {
                     statusDiv.style.display = 'block';
                     if (data.success) {
-                        statusDiv.style.background = '#e6f4ea';
-                        statusDiv.style.color = '#0d652d';
-                        statusDiv.style.border = '1px solid #0d652d';
+                        statusDiv.style.background = '#f7fff0';
+                        statusDiv.style.color = '#569b00';
+                        statusDiv.style.border = '1px solid #c6e9a6';
                         statusDiv.textContent = data.message;
                         btn.innerHTML = '<i class="fas fa-check"></i> Envoyé';
                     } else {
-                        statusDiv.style.background = '#fde8e8';
-                        statusDiv.style.color = '#c81e1e';
-                        statusDiv.style.border = '1px solid #c81e1e';
+                        statusDiv.style.background = '#fff5f5';
+                        statusDiv.style.color = '#c40000';
+                        statusDiv.style.border = '1px solid #ffcccc';
                         statusDiv.textContent = data.message;
                         btn.disabled = false;
                         btn.innerHTML = '<i class="fas fa-paper-plane"></i> Réessayer';
@@ -501,7 +535,9 @@
                 .catch(error => {
                     console.error('Error:', error);
                     statusDiv.style.display = 'block';
-                    statusDiv.style.background = '#fde8e8';
+                    statusDiv.style.background = '#fff5f5';
+                    statusDiv.style.color = '#c40000';
+                    statusDiv.style.border = '1px solid #ffcccc';
                     statusDiv.textContent = "Erreur lors de l'envoi.";
                     btn.disabled = false;
                     btn.innerHTML = '<i class="fas fa-paper-plane"></i> Réessayer';

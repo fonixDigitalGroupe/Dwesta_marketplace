@@ -50,7 +50,7 @@ class AnnonceMedia extends Model
      */
     public function getUrlAttribute(): string
     {
-        return Storage::disk('public')->url($this->chemin);
+        return '/storage/' . $this->chemin;
     }
 
     /**
@@ -65,7 +65,7 @@ class AnnonceMedia extends Model
         $thumbnailPath = str_replace('/photos/', '/thumbnails/', $this->chemin);
         
         if (Storage::disk('public')->exists($thumbnailPath)) {
-            return Storage::disk('public')->url($thumbnailPath);
+            return '/storage/' . $thumbnailPath;
         }
 
         // Si pas de thumbnail, retourner l'image originale

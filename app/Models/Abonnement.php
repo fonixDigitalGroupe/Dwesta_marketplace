@@ -18,6 +18,7 @@ class Abonnement extends Model
         'nom',
         'description',
         'nombre_annonces',
+        'limite_chiffre_affaires',
         'commission',
         'prix_mensuel',
         'page_pro',

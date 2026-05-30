@@ -1,322 +1,481 @@
 @extends('layouts.admin')
 
-@section('title', 'Modifier le Dépôt Relais')
+@section('title', 'Modifier le Point Relais')
 
-@section('breadcrumbs')
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <a href="{{ route('admin.point-relais.index') }}">Dépôts Relais</a>
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <span style="color: #333; font-weight: 500;">Modifier</span>
+@push('styles')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        /* Input Amazon Style Modernisé (Coherent with Filters) */
+        input[type="text"], 
+        input[type="tel"],
+        input[type="number"], 
+        textarea, 
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            outline: none;
+            background: #fff;
+            color: #475569;
+            transition: all 0.2s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #ff9900 !important;
+        }
+
+        .amazon-card {
+            background: #fff;
+            border: 1px solid #eff3f6;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f1f5f9;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .btn-amazon-primary {
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-amazon-primary:hover {
+            background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: #fff;
+        }
+
+        .btn-amazon-secondary {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-amazon-secondary:hover {
+            background: #f8fafc;
+            border-color: #dee2e6;
+            color: #1e293b;
+        }
+
+        /* Custom Checkbox */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #1e293b;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .checkmark {
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 2px solid #dee2e6;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: #ff9900;
+            border-color: #ff9900;
+        }
+        
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .iti { width: 100%; }
+        
+        #map {
+            width: 100%;
+            height: 300px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            margin-bottom: 12px;
+            z-index: 0;
+        }
+    </style>
+@endpush
+
+@section('sub_header')
+    @include('admin.partials.settings-tabs')
 @endsection
 
 @section('content')
-<div style="max-width: 1000px; margin: 0 auto;">
-
-    <header style="margin-bottom: 1.5rem;">
-        <h1 style="font-size: 1.5rem; color: #333; font-weight: 500; margin-bottom: 0.25rem;">Modifier : {{ $point_relais->nom }}</h1>
-        <p style="font-size: 0.95rem; color: #666; font-weight: 400;">Mettez à jour les informations et les responsables du lieu.</p>
-    </header>
-
-    <form action="{{ route('admin.point-relais.update', $point_relais) }}" method="POST" id="pointRelaisForm">
-        @csrf
-        @method('PUT')
-
-        <div style="display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start;">
+<div style="max-width: 1200px; margin: 0 auto;">
+    
+    <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                    <i class="fas fa-edit" style="font-size: 0.8rem;"></i>
+                    <span>Modifier le Point Relais : {{ $point_relais->nom }}</span>
+                </div>
+            </div>
             
-            <!-- Colonne Gauche -->
-            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <a href="{{ route('admin.point-relais.index') }}" class="btn-amazon-secondary" style="width: auto !important; height: 32px !important; padding: 0 16px !important; font-size: 0.8rem;">
+                <i class="fas fa-list" style="color: #ff9900;"></i> Voir les points relais
+            </a>
+        </div>
+
+        <form action="{{ route('admin.point-relais.update', $point_relais) }}" method="POST" id="pointRelaisForm">
+            @csrf
+            @method('PUT')
+
+            <div style="display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: start;">
                 
-                <!-- Section 1: Informations de base -->
-                <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
-                    <h2 style="font-size: 1.1rem; color: #333; font-weight: 500; margin-bottom: 1.5rem;">Informations Générales</h2>
+                <!-- Left Column -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
                     
-                    <div style="display: grid; gap: 1.25rem;">
-                        <div>
-                            <label for="nom" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Nom du Dépôt Relais <span style="color: red;">*</span></label>
-                            <input type="text" name="nom" id="nom" value="{{ old('nom', $point_relais->nom) }}" required
-                                   style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                   onfocus="this.style.borderColor='#ff750f'" onblur="this.style.borderColor='#e0e0e0'"
-                                   oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
+                    <div class="amazon-card" style="margin: 0;">
+                        <h3 class="section-title">Identité & Contact</h3>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label for="nom" class="field-label">Nom du Point Relais <small style="color: red;">*</small></label>
+                            <input type="text" name="nom" id="nom" value="{{ old('nom', $point_relais->nom) }}" required 
+                                   placeholder="Ex: Boutique Central Bangui"
+                                   oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
+                            @error('nom') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+                        <div style="margin-bottom: 15px;">
+                            <label for="managers" class="field-label">Responsable <small style="color: red;">*</small></label>
+                            <select name="managers[]" id="managers" required>
+                                <option value="">Sélectionner un responsable</option>
+                                @php $currentManagers = old('managers', $point_relais->users->pluck('id')->toArray()); @endphp
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}" {{ in_array($user->id, $currentManagers) ? 'selected' : '' }}>
+                                        {{ $user->prenom }} {{ $user->nom }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('managers') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div style="margin-bottom: 0;">
+                            <label for="telephone" class="field-label">Téléphone</label>
+                            <input type="tel" name="telephone" id="telephone" value="{{ old('telephone', $point_relais->telephone) }}" placeholder="7x xx xx xx">
+                            <input type="hidden" name="full_telephone" id="full_telephone">
+                        </div>
+                    </div>
+
+                    <div class="amazon-card" style="margin: 0;">
+                        <h3 class="section-title">Localisation Administrative</h3>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                             <div>
-                                <label for="pays" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Pays <span style="color: red;">*</span></label>
-                                <select name="pays" id="pays" required
-                                        style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s; background: white;"
-                                        onfocus="this.style.borderColor='#ff750f'" onblur="this.style.borderColor='#e0e0e0'">
+                                <label for="pays" class="field-label">Pays <small style="color: red;">*</small></label>
+                                <select name="pays" id="pays" required>
                                     <option value="">Sélectionner un pays</option>
                                     @php
-                                        $countries = [
-                                            "Sénégal", "France", "Côte d'Ivoire", "Mali", "Burkina Faso", "Guinée", "Mauritanie", "Gambie", "Bénin", "Togo", "Niger", "Cameroun", "Gabon", "Congo", "RDC", "Tchad", "Centrafrique", "Maroc", "Algérie", "Tunisie", "Belgique", "Suisse", "Canada", "USA", "Espagne", "Italie", "Allemagne", "Chine", "Dubaï"
-                                        ];
+                                        $countries = ["Sénégal", "France", "Côte d'Ivoire", "Mali", "Burkina Faso", "Guinée", "Mauritanie", "Gambie", "Bénin", "Togo", "Niger", "Cameroun", "Gabon", "Congo", "RDC", "Tchad", "Centrafrique", "Maroc", "Algérie", "Tunisie", "Belgique", "Suisse", "Canada", "USA", "Espagne", "Italie", "Allemagne", "Chine", "Dubaï"];
                                     @endphp
                                     @foreach($countries as $country)
                                         <option value="{{ $country }}" {{ old('pays', $point_relais->pays) == $country ? 'selected' : '' }}>{{ $country }}</option>
                                     @endforeach
-                                    <option value="Autre" {{ !in_array(old('pays', $point_relais->pays), $countries) ? 'selected' : '' }}>Autre...</option>
                                 </select>
                             </div>
                             <div>
-                                <label for="region" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Région <span style="color: red;">*</span></label>
-                                <select name="region" id="region" required
-                                        style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s; background: white;"
-                                        onfocus="this.style.borderColor='#ff750f'" onblur="this.style.borderColor='#e0e0e0'">
+                                <label for="region" class="field-label">Région <small style="color: red;">*</small></label>
+                                <select name="region" id="region" required>
                                     <option value="">Sélectionner une région</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div>
-                            <label for="adresse" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Adresse Complète <span style="color: red;">*</span></label>
-                            <textarea name="adresse" id="adresse" rows="2" required
-                                      style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                      onfocus="this.style.borderColor='#ff750f'" onblur="this.style.borderColor='#e0e0e0'"
-                                      oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">{{ old('adresse', $point_relais->adresse) }}</textarea>
+                        <div style="margin-bottom: 0;">
+                            <label for="adresse" class="field-label">Adresse Complète <small style="color: red;">*</small></label>
+                            <textarea name="adresse" id="adresse" rows="3" required
+                                      placeholder="Numéro, rue, quartier..."
+                                      oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">{{ old('adresse', $point_relais->adresse) }}</textarea>
+                            @error('adresse') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                         </div>
-
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 1.25rem;">
-                            <div>
-                                <label for="telephone" style="display: block; font-size: 0.85rem; font-weight: 500; color: #666; margin-bottom: 8px;">Téléphone</label>
-                                <input type="tel" name="telephone" id="telephone" value="{{ old('telephone', $point_relais->telephone) }}"
-                                       style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s;"
-                                       onfocus="this.style.borderColor='#ff750f'" onblur="this.style.borderColor='#e0e0e0'">
-                                <input type="hidden" name="full_telephone" id="full_telephone">
-                            </div>
-                        </div>
-
                     </div>
-                </div>
-            </div>
 
-            <!-- Colonne Droite -->
-            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                
-                {{-- Section Coordonnées retirée --}}
-                <input type="hidden" name="latitude" value="{{ old('latitude', $point_relais->latitude) }}">
-                <input type="hidden" name="longitude" value="{{ old('longitude', $point_relais->longitude) }}">
-
-                <!-- Section 3: Responsables -->
-                <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.25rem;">
-                    <h3 style="font-size: 1rem; color: #333; font-weight: 500; margin-bottom: 1rem;">Responsables</h3>
-                    <select name="managers[]" id="managers" required
-                            style="width: 100%; padding: 10px 14px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; color: #333; outline: none; transition: all 0.2s; background: white;"
-                            onfocus="this.style.borderColor='#ff750f'" onblur="this.style.borderColor='#e0e0e0'">
-                        <option value="">Sélectionner un responsable</option>
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}" {{ in_array($user->id, old('managers', $point_relais->users->pluck('id')->toArray())) ? 'selected' : '' }}>
-                                {{ $user->prenom }} {{ $user->nom }}
-                            </option>
-                        @endforeach
-                    </select>
                 </div>
 
-                <!-- Section 4: État -->
-                <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.25rem;">
-                    <label for="is_active" style="display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none;">
-                        <div style="position: relative; width: 20px; height: 20px;">
-                            <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $point_relais->is_active) ? 'checked' : '' }}
-                                   style="position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0;"
-                                   onchange="this.nextElementSibling.style.backgroundColor = this.checked ? '#ff750f' : '#fff'; this.nextElementSibling.style.borderColor = this.checked ? '#ff750f' : '#e0e0e0'">
-                            <div style="position: absolute; top: 0; left: 0; height: 20px; width: 20px; background-color: {{ old('is_active', $point_relais->is_active) ? '#ff750f' : '#fff' }}; border: 2px solid {{ old('is_active', $point_relais->is_active) ? '#ff750f' : '#e0e0e0' }}; border-radius: 4px; transition: all 0.2s;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: {{ old('is_active', $point_relais->is_active) ? 'block' : 'none' }};">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                </svg>
+                <!-- Right Column -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    
+                    <div class="amazon-card" style="margin: 0;">
+                        <h3 class="section-title">Position Géo-Exacte</h3>
+                        
+                        <div id="map"></div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                            <div>
+                                <label for="latitude" class="field-label">Latitude</label>
+                                <input type="text" name="latitude" id="latitude" value="{{ old('latitude', $point_relais->latitude) }}"
+                                       placeholder="0.000000" oninput="syncMapFromInputs()">
+                            </div>
+                            <div>
+                                <label for="longitude" class="field-label">Longitude</label>
+                                <input type="text" name="longitude" id="longitude" value="{{ old('longitude', $point_relais->longitude) }}"
+                                       placeholder="0.000000" oninput="syncMapFromInputs()">
                             </div>
                         </div>
-                        <span style="font-size: 0.9rem; font-weight: 550; color: #333;">Dépôt Relais Actif</span>
-                    </label>
+
+                        <button type="button" id="btn-geolocation" class="btn-amazon-secondary" style="font-size: 0.72rem; padding: 6px 12px;">
+                            <i class="fas fa-crosshairs"></i> Ma position actuelle
+                        </button>
+                    </div>
+
+                    <div class="amazon-card" style="margin: 0;">
+                        <h3 class="section-title">Statut & Publication</h3>
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="is_active" value="1" {{ old('is_active', $point_relais->is_active) ? 'checked' : '' }}>
+                                <span class="checkmark"></span>
+                                <span style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Point Relais Actif</span>
+                            </label>
+                            
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="est_point_special" value="1" {{ old('est_point_special', $point_relais->est_point_special) ? 'checked' : '' }}>
+                                <span class="checkmark"></span>
+                                <span style="font-size: 0.75rem; font-weight: 700; color: #ff9900; text-transform: uppercase; letter-spacing: 0.05em;">Point Spécial (Karnou)</span>
+                            </label>
+                        </div>
+                        
+                        <p style="font-size: 0.75rem; color: #64748b; margin-left: 28px; margin-top: 10px; line-height: 1.4;">
+                            Un <strong>Point Spécial</strong> est un lieu de retrait spécifique géré par Karnou.
+                        </p>
+                    </div>
+
                 </div>
 
-                <!-- Boutons d'action -->
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <button type="submit" style="background: #000; color: #fff; border: none; padding: 0.85rem; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center;">
-                        Mettre à jour
+                <!-- Actions Row -->
+                <div style="grid-column: 1 / -1; display: grid; grid-template-columns: 140px 140px; gap: 12px; justify-content: end; border-top: 1px solid #eff3f6; padding-top: 20px;">
+                    <button type="submit" class="btn-amazon-primary">
+                        METTRE À JOUR
                     </button>
-                    <a href="{{ route('admin.point-relais.index') }}" style="display: flex; justify-content: center; padding: 0.85rem; background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; color: #666; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: all 0.2s;"
-                       onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#fff'">
-                        Annuler
+                    <a href="{{ route('admin.point-relais.index') }}" class="btn-amazon-secondary">
+                        ANNULER
                     </a>
                 </div>
-            </div>
-        </div>
-    </form>
-</div>
 
-@push('styles')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
-<style>
-    .iti { width: 100%; }
-    .iti__flag-container { border-radius: 6px 0 0 6px; }
-</style>
-@endpush
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
 
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // Phone Input and Country Sync
-    document.addEventListener('DOMContentLoaded', function() {
+    let map, marker;
+
+    function initMap() {
+        const defaultLat = 4.361220, defaultLng = 18.558200;
+        const initialLat = parseFloat(document.getElementById('latitude').value) || defaultLat;
+        const initialLng = parseFloat(document.getElementById('longitude').value) || defaultLng;
+
+        map = L.map('map').setView([initialLat, initialLng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        marker = L.marker([initialLat, initialLng], {draggable: true}).addTo(map);
+
+        marker.on('dragend', function() {
+            const pos = marker.getLatLng();
+            document.getElementById('latitude').value = pos.lat.toFixed(6);
+            document.getElementById('longitude').value = pos.lng.toFixed(6);
+        });
+
+        map.on('click', function(e) {
+            marker.setLatLng(e.latlng);
+            document.getElementById('latitude').value = e.latlng.lat.toFixed(6);
+            document.getElementById('longitude').value = e.latlng.lng.toFixed(6);
+        });
+    }
+
+    function syncMapFromInputs() {
+        const lat = parseFloat(document.getElementById('latitude').value);
+        const lng = parseFloat(document.getElementById('longitude').value);
+        if (!isNaN(lat) && !isNaN(lng)) {
+            const pos = [lat, lng];
+            marker.setLatLng(pos);
+            map.panTo(pos);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        initMap();
+
         const phoneInput = document.querySelector("#telephone");
         const countrySelect = document.querySelector("#pays");
-        
-        if (phoneInput) {
-            const iti = window.intlTelInput(phoneInput, {
-                initialCountry: "sn",
-                separateDialCode: true,
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js",
-                preferredCountries: ["sn", "fr", "ci", "ml", "bf"]
+        const regionSelect = document.querySelector("#region");
+
+        const countryMap = {
+            "Sénégal": "sn", "France": "fr", "Côte d'Ivoire": "ci", "Mali": "ml", "Burkina Faso": "bf",
+            "Guinée": "gn", "Mauritanie": "mr", "Gambie": "gm", "Bénin": "bj", "Togo": "tg",
+            "Niger": "ne", "Cameroun": "cm", "Gabon": "ga", "Congo": "cg", "RDC": "cd",
+            "Tchad": "td", "Centrafrique": "cf", "Maroc": "ma", "Algérie": "dz", "Tunisie": "tn",
+            "Belgique": "be", "Suisse": "ch", "Canada": "ca", "USA": "us", "Espagne": "es",
+            "Italie": "it", "Allemagne": "de", "Chine": "cn", "Dubaï": "ae"
+        };
+
+        const regionsByCountry = {
+            "Centrafrique": ["Bangui", "Ombella-M'Poko", "Lobaye", "Mambéré-Kadéï", "Nana-Mambéré", "Sangha-Mbaéré", "Ouham", "Ouham-Pendé", "Nana-Grébizi", "Kémo", "Ouaka", "Basse-Kotto", "Mbomou", "Haut-Mbomou", "Bamingui-Bangoran", "Vakaga"],
+            "Sénégal": ["Dakar", "Diourbel", "Fatick", "Kaffrine", "Kaolack", "Kédougou", "Kolda", "Louga", "Matam", "Saint-Louis", "Sédhiou", "Tambacounda", "Thiès", "Ziguinchor"],
+            "France": ["Auvergne-Rhône-Alpes", "Bourgogne-Franche-Comté", "Bretagne", "Centre-Val de Loire", "Corse", "Grand Est", "Hauts-de-France", "Île-de-France", "Normandie", "Nouvelle-Aquitaine", "Occitanie", "Pays de la Loire", "Provence-Alpes-Côte d'Azur"],
+            "Côte d'Ivoire": ["Abidjan", "Bas-Sassandra", "Comoé", "Denguélé", "Gôh-Djiboua", "Lacs", "Lagunes", "Montagnes", "Sassandra-Marahoué", "Savanes", "Vallée du Bandama", "Woroba", "Zanzan"],
+            "Cameroun": ["Adamaoua", "Centre", "Est", "Extrême-Nord", "Littoral", "Nord", "Nord-Ouest", "Ouest", "Sud", "Sud-Ouest"],
+            "Mali": ["Kayes", "Koulikoro", "Sikasso", "Ségou", "Mopti", "Tombouctou", "Gao", "Kidal", "Taoudénit", "Ménaka", "Bamako"],
+            "Burkina Faso": ["Boucle du Mouhoun", "Cascades", "Centre", "Centre-Est", "Centre-Nord", "Centre-Ouest", "Centre-Sud", "Est", "Hauts-Bassins", "Nord", "Plateau-Central", "Sahel", "Sud-Ouest"],
+            "Guinée": ["Boké", "Conakry", "Faranah", "Kankan", "Kindia", "Labé", "Mamou", "Nzérékoré"],
+            "Tchad": ["N'Djamena", "Barh el Gazel", "Batha", "Borkou", "Chari-Baguirmi", "Ennedi-Est", "Ennedi-Ouest", "Guéra", "Hadjer-Lamis", "Kanem", "Lac", "Logone Occidental", "Logone Oriental", "Mandoul", "Mayo-Kebbi Est", "Mayo-Kebbi Ouest", "Moyen-Chari", "Ouaddaï", "Salamat", "Sila", "Tandjilé", "Tibesti", "Wadi Fira"],
+            "Maroc": ["Casablanca-Settat", "Rabat-Salé-Kénitra", "Fès-Meknès", "Tanger-Tétouan-Al Hoceïma", "Marrakech-Safi", "Béni Mellal-Khénifra"],
+        };
+
+        const countryCoordinates = {
+            "Centrafrique": [4.39, 18.55], "Sénégal": [14.49, -14.45], "France": [46.22, 2.21],
+            "Côte d'Ivoire": [7.53, -5.54], "Mali": [17.57, -3.99], "Burkina Faso": [12.23, -1.56],
+            "Guinée": [9.94, -9.69], "Mauritanie": [21.00, -10.94], "Gambie": [13.44, -15.31],
+            "Bénin": [9.30, 2.31], "Togo": [8.61, 0.82], "Niger": [17.60, 8.08],
+            "Cameroun": [7.36, 12.35], "Gabon": [-0.80, 11.60], "Congo": [-0.22, 15.82],
+            "RDC": [-4.03, 21.75], "Tchad": [15.45, 18.73], "Maroc": [31.79, -7.09],
+            "Algérie": [28.03, 1.65], "Tunisie": [33.88, 9.53], "Belgique": [50.50, 4.46],
+            "Suisse": [46.81, 8.22], "Canada": [56.13, -106.34], "USA": [37.09, -95.71],
+            "Espagne": [40.46, -3.74], "Italie": [41.87, 12.56], "Allemagne": [51.16, 10.45],
+            "Chine": [35.86, 104.19], "Dubaï": [25.20, 55.27]
+        };
+
+        const regionCoordinates = {
+            "Bangui": [4.3947, 18.5582], "Bamingui-Bangoran": [8.2733, 20.7122], "Basse-Kotto": [4.8719, 21.2845], "Haut-Mbomou": [6.2537, 25.4734], "Kémo": [5.8868, 19.3783], "Lobaye": [4.3526, 17.4795], "Mambéré-Kadéï": [4.7056, 15.9700], "Mbomou": [5.5568, 23.7633], "Nana-Grébizi": [7.1849, 19.3783], "Nana-Mambéré": [5.6932, 15.2195], "Ombella-M'Poko": [5.1189, 18.4276], "Ouaka": [6.3168, 20.7122], "Ouham": [7.0909, 17.6689], "Ouham-Pendé": [6.4851, 16.1581], "Sangha-Mbaéré": [3.4369, 16.3464], "Vakaga": [9.0000, 23.0000],
+            "Dakar": [14.7167, -17.4677], "Abidjan": [5.3600, -4.0083], "Bamako": [12.6392, -8.0029], "Ouagadougou": [12.3714, -1.5197],
+            "Conakry": [9.6412, -13.5784], "Douala": [4.0511, 9.7679], "Yaoundé": [3.8480, 11.5021], "Libreville": [0.4162, 9.4673],
+            "Brazzaville": [-4.2634, 15.2832], "Kinshasa": [-4.4419, 15.2663], "N'Djamena": [12.1348, 15.0557], "Casablanca": [33.5731, -7.5898]
+        };
+
+        const updateRegions = (country, currentRegion = null) => {
+            const regions = regionsByCountry[country] || [];
+            regionSelect.innerHTML = '<option value="">Sélectionner une région</option>';
+            regions.forEach(r => {
+                const opt = document.createElement('option');
+                opt.value = r; opt.textContent = r;
+                if (r === currentRegion) opt.selected = true;
+                regionSelect.appendChild(opt);
             });
-
-            // Set initial country if possible
-            const initialCountry = "{{ old('pays', $point_relais->pays) }}";
-            
-            // Sync country select with phone input
-            const countryMap = {
-                "Sénégal": "sn",
-                "France": "fr",
-                "Côte d'Ivoire": "ci",
-                "Mali": "ml",
-                "Burkina Faso": "bf",
-                "Guinée": "gn",
-                "Mauritanie": "mr",
-                "Gambie": "gm",
-                "Bénin": "bj",
-                "Togo": "tg",
-                "Niger": "ne",
-                "Cameroun": "cm",
-                "Gabon": "ga",
-                "Congo": "cg",
-                "RDC": "cd",
-                "Tchad": "td",
-                "Centrafrique": "cf",
-                "Maroc": "ma",
-                "Algérie": "dz",
-                "Tunisie": "tn",
-                "Belgique": "be",
-                "Suisse": "ch",
-                "Canada": "ca",
-                "USA": "us",
-                "Espagne": "es",
-                "Italie": "it",
-                "Allemagne": "de",
-                "Chine": "cn",
-                "Dubaï": "ae"
-            };
-
-            if (countryMap[initialCountry]) {
-                iti.setCountry(countryMap[initialCountry]);
+            if (regions.length === 0) {
+                const opt = document.createElement('option');
+                opt.value = currentRegion || "Autre"; opt.textContent = currentRegion || "Autre...";
+                opt.selected = true;
+                regionSelect.appendChild(opt);
             }
+        };
 
-            // Sync regions
-            const regionsByCountry = {
-                "Centrafrique": ["Bangui", "Ombella-M'Poko", "Lobaye", "Mambéré-Kadéï", "Nana-Mambéré", "Sangha-Mbaéré", "Ouham", "Ouham-Pendé", "Nana-Grébizi", "Kémo", "Ouaka", "Basse-Kotto", "Mbomou", "Haut-Mbomou", "Bamingui-Bangoran", "Vakaga"],
-                "Sénégal": ["Dakar", "Diourbel", "Fatick", "Kaffrine", "Kaolack", "Kédougou", "Kolda", "Louga", "Matam", "Saint-Louis", "Sédhiou", "Tambacounda", "Thiès", "Ziguinchor"],
-                "France": ["Auvergne-Rhône-Alpes", "Bourgogne-Franche-Comté", "Bretagne", "Centre-Val de Loire", "Corse", "Grand Est", "Hauts-de-France", "Île-de-France", "Normandie", "Nouvelle-Aquitaine", "Occitanie", "Pays de la Loire", "Provence-Alpes-Côte d'Azur"],
-                "Côte d'Ivoire": ["Abidjan", "Bas-Sassandra", "Comoé", "Denguélé", "Gôh-Djiboua", "Lacs", "Lagunes", "Montagnes", "Sassandra-Marahoué", "Savanes", "Vallée du Bandama", "Woroba", "Zanzan"],
-                "Cameroun": ["Adamaoua", "Centre", "Est", "Extrême-Nord", "Littoral", "Nord", "Nord-Ouest", "Ouest", "Sud", "Sud-Ouest"],
-                "Mali": ["Kayes", "Koulikoro", "Sikasso", "Ségou", "Mopti", "Tombouctou", "Gao", "Kidal", "Taoudénit", "Ménaka", "Bamako"],
-                "Burkina Faso": ["Boucle du Mouhoun", "Cascades", "Centre", "Centre-Est", "Centre-Nord", "Centre-Ouest", "Centre-Sud", "Est", "Hauts-Bassins", "Nord", "Plateau-Central", "Sahel", "Sud-Ouest"],
-                "Guinée": ["Boké", "Conakry", "Faranah", "Kankan", "Kindia", "Labé", "Mamou", "Nzérékoré"],
-                "Mauritanie": ["Adrar", "Assaba", "Brakna", "Dakhlet Nouadhibou", "Gorgol", "Guidimaka", "Hodh Ech Chargui", "Hodh El Gharbi", "Inchiri", "Tagant", "Tiris Zemmour", "Trarza", "Nouakchott Nord", "Nouakchott Ouest", "Nouakchott Sud"],
-                "Gambie": ["Banjul", "Kanifing", "Brikama", "Mansa Konko", "Kerewan", "Janjanbureh", "Basse Santa Su"],
-                "Bénin": ["Alibori", "Atacora", "Atlantique", "Borgou", "Collines", "Couffo", "Donga", "Littoral", "Mono", "Ouémé", "Plateau", "Zou"],
-                "Togo": ["Centrale", "Kara", "Maritime", "Plateaux", "Savanes"],
-                "Niger": ["Agadez", "Diffa", "Dosso", "Maradi", "Niamey", "Tahoua", "Tillabéri", "Zinder"],
-                "Gabon": ["Estuaire", "Haut-Ogooué", "Moyen-Ogooué", "Ngounié", "Nyanga", "Ogooué-Ivindo", "Ogooué-Lolo", "Ogooué-Maritime", "Woleu-Ntem"],
-                "Congo": ["Bouenza", "Brazzaville", "Cuvette", "Cuvette-Ouest", "Kouilou", "Lékoumou", "Likouala", "Niari", "Plateaux", "Pointe-Noire", "Pool", "Sangha"],
-                "RDC": ["Kinshasa", "Bas-Uele", "Equateur", "Haut-Katanga", "Haut-Lomami", "Haut-Uele", "Ituri", "Kasaï", "Kasaï-Central", "Kasaï-Oriental", "Kongo Central", "Kwango", "Kwilu", "Lomami", "Lualaba", "Mai-Ndombe", "Maniema", "Mongala", "Nord-Kivu", "Nord-Ubangi", "Sankuru", "Sud-Kivu", "Sud-Ubangi", "Tanganyika", "Tshopo", "Tshuapa"],
-                "Tchad": ["N'Djamena", "Barh el Gazel", "Batha", "Borkou", "Chari-Baguirmi", "Ennedi-Est", "Ennedi-Ouest", "Guéra", "Hadjer-Lamis", "Kanem", "Lac", "Logone Occidental", "Logone Oriental", "Mandoul", "Mayo-Kebbi Est", "Mayo-Kebbi Ouest", "Moyen-Chari", "Ouaddaï", "Salamat", "Sila", "Tandjilé", "Tibesti", "Wadi Fira"],
-                "Maroc": ["Casablanca-Settat", "Rabat-Salé-Kénitra", "Fès-Meknès", "Tanger-Tétouan-Al Hoceïma", "Marrakech-Safi", "Drâa-Tafilalet", "Béni Mellal-Khénifra", "l'Oriental", "Souss-Massa", "Guelmim-Oued Noun", "Laâyoune-Sakia El Hamra", "Dakhla-Oued Ed-Dahab"],
-                "Algérie": ["Alger", "Oran", "Constantine", "Annaba", "Blida", "Batna", "Djelfa", "Sétif", "Sidi Bel Abbès", "Biskra", "Tébessa", "Tiaret", "Béjaïa", "Tlemcen", "Béchar", "Skikda", "Mostaganem", "M'Sila", "Mascara", "Ouargla", "Tizi Ouzou"],
-                "Tunisie": ["Tunis", "Ariana", "Béja", "Ben Arous", "Bizerte", "Gabès", "Gafsa", "Jendouba", "Kairouan", "Kasserine", "Kébili", "Kef", "Mahdia", "Manouba", "Médenine", "Monastir", "Nabeul", "Sfax", "Sidi Bouzid", "Siliana", "Sousse", "Tataouine", "Tozeur", "Zaghouan"],
-                "Belgique": ["Bruxelles", "Anvers", "Brabant flamand", "Brabant wallon", "Flandre-Occidentale", "Flandre-Orientale", "Hainaut", "Liège", "Limbourg", "Luxembourg", "Namur"],
-                "Suisse": ["Zurich", "Berne", "Lucerne", "Uri", "Schwytz", "Obwald", "Nidwald", "Glaris", "Zoug", "Fribourg", "Soleure", "Bâle-Ville", "Bâle-Campagne", "Schaffhouse", "Appenzell Rhodes-Extérieures", "Appenzell Rhodes-Intérieures", "Saint-Gall", "Grisons", "Argovie", "Thurgovie", "Tessin", "Vaud", "Valais", "Neuchâtel", "Genève", "Jura"],
-                "Canada": ["Ontario", "Québec", "Colombie-Britannique", "Alberta", "Manitoba", "Saskatchewan", "Nouvelle-Écosse", "Nouveau-Brunswick", "Terre-Neuve-et-Labrador", "Île-du-Prince-Édouard"],
-                "USA": ["California", "Texas", "Florida", "New York", "Illinois", "Pennsylvania", "Ohio", "Georgia", "North Carolina", "Michigan", "New Jersey", "Virginia", "Washington", "Arizona", "Massachusetts", "Tennessee", "Indiana", "Maryland", "Missouri", "Wisconsin", "Colorado", "Minnesota", "South Carolina", "Alabama", "Louisiana", "Kentucky", "Oregon", "Oklahoma", "Connecticut", "Utah", "Iowa", "Nevada", "Arkansas", "Mississippi", "Kansas", "New Mexico", "Nebraska", "Idaho", "West Virginia", "Hawaii", "New Hampshire", "Maine", "Montana", "Rhode Island", "Delaware", "South Dakota", "North Dakota", "Alaska", "Vermont", "Wyoming"],
-                "Espagne": ["Andalousie", "Aragon", "Asturies", "Baléares", "Canaries", "Cantabrie", "Castille-La Manche", "Castille-et-León", "Catalogne", "Communauté de Madrid", "Communauté valencienne", "Estrémadure", "Galice", "La Rioja", "Murcie", "Navarre", "Pays basque"],
-                "Italie": ["Lombardie", "Latium", "Campanie", "Vénétie", "Sicile", "Émilie-Romagne", "Piémont", "Pouilles", "Toscane", "Calabre", "Sardaigne", "Ligurie", "Marches", "Abruzzes", "Frioul-Vénétie Julienne", "Trentin-Haut-Adige", "Ombrie", "Basilicate", "Molise", "Vallée d'Aoste"],
-                "Allemagne": ["Bade-Wurtemberg", "Basse-Saxe", "Bavière", "Berlin", "Brandebourg", "Brême", "Hambourg", "Hesse", "Mecklembourg-Poméranie-Occidentale", "Rhénanie-du-Nord-Westphalie", "Rhénanie-Palatinat", "Sarre", "Saxe", "Saxe-Anhalt", "Schleswig-Holstein", "Thuringe"],
-                "Chine": ["Guangdong", "Shandong", "Henan", "Sichuan", "Jiangsu", "Hebei", "Hunan", "Anhui", "Hubei", "Zhejiang", "Guangxi", "Yunnan", "Jiangxi", "Liaoning", "Heilongjiang", "Shaanxi", "Fujian", "Shanxi", "Guizhou", "Jilin", "Gansu", "Hainan", "Qinghai", "Taiwan", "Beijing", "Shanghai", "Tianjin", "Chongqing", "Nei Mongol", "Ningxia", "Xinjiang", "Xizang"],
-                "Dubaï": ["Abou Dabi", "Dubaï", "Charjah", "Ajman", "Oumm al Qaïwaïn", "Ras el Khaïmah", "Fujaïrah"]
-            };
+        const iti = window.intlTelInput(phoneInput, {
+            initialCountry: countryMap["{{ old('pays', $point_relais->pays) }}"] || "cf",
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+        });
 
-            const regionSelect = document.querySelector("#region");
-            const updateRegions = (country, currentRegion = null) => {
-                const regions = regionsByCountry[country] || [];
-                regionSelect.innerHTML = '<option value="">Sélectionner une région</option>';
-                regions.forEach(r => {
-                    const opt = document.createElement('option');
-                    opt.value = r;
-                    opt.textContent = r;
-                    if (r === currentRegion) opt.selected = true;
-                    regionSelect.appendChild(opt);
-                });
-                if (regions.length === 0) {
-                    const opt = document.createElement('option');
-                    opt.value = currentRegion || "Autre";
-                    opt.textContent = currentRegion || "Autre...";
-                    opt.selected = true;
-                    regionSelect.appendChild(opt);
-                }
-            };
+        countrySelect.addEventListener('change', function () {
+            updateRegions(this.value);
+            const code = countryMap[this.value];
+            if (code) iti.setCountry(code);
+            const coords = countryCoordinates[this.value];
+            if (coords) map.setView(coords, 6);
+        });
 
-            // Initial load
-            updateRegions(countrySelect.value, "{{ old('region', $point_relais->region) }}");
+        regionSelect.addEventListener('change', function () {
+            const coords = regionCoordinates[this.value];
+            if (coords) {
+                map.setView(coords, 12);
+                marker.setLatLng(coords);
+                document.getElementById('latitude').value = coords[0].toFixed(6);
+                document.getElementById('longitude').value = coords[1].toFixed(6);
+            }
+        });
 
-            countrySelect.addEventListener('change', function() {
-                const countryCode = countryMap[this.value];
-                if (countryCode) {
-                    iti.setCountry(countryCode);
-                }
-                updateRegions(this.value);
-            });
+        updateRegions("{{ old('pays', $point_relais->pays) }}", "{{ old('region', $point_relais->region) }}");
 
-            // Geolocation logic
-            const btnGeo = document.querySelector("#btn-geolocation");
-            if (btnGeo) {
-                btnGeo.addEventListener('click', function() {
-                    if ("geolocation" in navigator) {
-                        btnGeo.innerText = "Recherche en cours...";
-                        btnGeo.disabled = true;
-                        
-                        navigator.geolocation.getCurrentPosition(function(position) {
-                            document.querySelector("#latitude").value = position.coords.latitude.toFixed(8);
-                            document.querySelector("#longitude").value = position.coords.longitude.toFixed(8);
-                            btnGeo.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Position récupérée !';
-                            btnGeo.disabled = false;
-                            setTimeout(() => {
-                                btnGeo.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg> Ma position actuelle';
-                            }, 3000);
-                        }, function(error) {
-                            alert("Erreur de géolocalisation : " + error.message);
-                            btnGeo.innerText = "Ma position actuelle";
-                            btnGeo.disabled = false;
-                        });
-                    } else {
-                        alert("La géolocalisation n'est pas supportée par votre navigateur.");
-                    }
+        document.getElementById('btn-geolocation').onclick = () => {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(p => {
+                    const lat = p.coords.latitude, lng = p.coords.longitude;
+                    document.getElementById('latitude').value = lat.toFixed(6);
+                    document.getElementById('longitude').value = lng.toFixed(6);
+                    marker.setLatLng([lat, lng]);
+                    map.setView([lat, lng], 15);
                 });
             }
+        };
 
-            // Update hidden field with full phone number
-            phoneInput.addEventListener('blur', function() {
-                document.querySelector("#full_telephone").value = iti.getNumber();
-            });
-
-            // Toggle handling
-            const is_active_checkbox = document.getElementById('is_active');
-            if (is_active_checkbox) {
-                is_active_checkbox.addEventListener('change', function() {
-                    const checkIcon = this.nextElementSibling.querySelector('svg');
-                    if (checkIcon) checkIcon.style.display = this.checked ? 'block' : 'none';
-                });
-            }
-        }
+        phoneInput.addEventListener('blur', () => {
+            document.querySelector("#full_telephone").value = iti.getNumber();
+        });
     });
 </script>
 @endpush
-@endsection

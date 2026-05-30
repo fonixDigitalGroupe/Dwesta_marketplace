@@ -22,42 +22,60 @@ class CategoryController extends Controller
     public function indexL1(Request $request)
     {
         $query = Category::racines()->parOrdre();
+        $parents = Category::racines()->get();
         
         if ($request->filled('search')) {
             $query->where('nom', 'LIKE', '%' . $request->search . '%');
         }
 
         $categories = $query->paginate($request->get('per_page', 8))->appends($request->query());
-        return view('admin.categories.index', compact('categories'))->with('level', 1);
+        return view('admin.categories.index', compact('categories', 'parents'))->with('level', 1);
     }
 
     public function indexL2(Request $request)
     {
-        $query = Category::whereIn('parent_id', Category::racines()->pluck('id'))
+        $parents = Category::racines()->get();
+        
+        $query = Category::whereIn('parent_id', $parents->pluck('id'))
             ->with('parent')
             ->parOrdre();
+
+        if ($request->filled('l1')) {
+            $query->where('parent_id', $request->l1);
+        }
 
         if ($request->filled('search')) {
             $query->where('nom', 'LIKE', '%' . $request->search . '%');
         }
 
         $categories = $query->paginate($request->get('per_page', 8))->appends($request->query());
-        return view('admin.categories.index', compact('categories'))->with('level', 2);
+        return view('admin.categories.index', compact('categories', 'parents'))->with('level', 2);
     }
 
     public function indexL3(Request $request)
     {
-        $parentIds = Category::whereIn('parent_id', Category::racines()->pluck('id'))->pluck('id');
+        $parents = Category::racines()->get();
+        
+        $parentIds = Category::whereIn('parent_id', $parents->pluck('id'))
+            ->when($request->filled('l1'), function($q) use ($request) {
+                return $q->where('parent_id', $request->l1);
+            })
+            ->pluck('id');
+
         $query = Category::whereIn('parent_id', $parentIds)
             ->with('parent.parent')
             ->parOrdre();
+
+        if ($request->filled('l2')) {
+            $query->where('parent_id', $request->l2);
+        }
 
         if ($request->filled('search')) {
             $query->where('nom', 'LIKE', '%' . $request->search . '%');
         }
 
         $categories = $query->paginate($request->get('per_page', 8))->appends($request->query());
-        return view('admin.categories.index', compact('categories'))->with('level', 3);
+        return view('admin.categories.index', compact('categories', 'parents'))->with('level', 3);
     }
 
     /**
@@ -68,7 +86,22 @@ class CategoryController extends Controller
         // Récupérer l'arborescence complète pour le menu de sélection du parent
         $categoriesTree = Category::getArborescence();
 
-        return view('admin.categories.create', compact('categoriesTree'));
+        // Calculer le prochain ordre disponible pour chaque parent (y compris racine)
+        $nextOrders = Category::select('parent_id')
+            ->selectRaw('MAX(ordre) as max_ordre')
+            ->groupBy('parent_id')
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [($item->parent_id ?: 'root') => $item->max_ordre + 1];
+            })
+            ->toArray();
+
+        // Valeur par défaut si aucune catégorie n'existe encore
+        if (!isset($nextOrders['root'])) {
+            $nextOrders['root'] = 1;
+        }
+
+        return view('admin.categories.create', compact('categoriesTree', 'nextOrders'));
     }
 
     /**
@@ -259,9 +292,20 @@ class CategoryController extends Controller
         ];
 
         if ($request->hasFile('image')) {
-            // Optionnel : Supprimer l'ancienne image
+            // Supprimer l'ancienne image si elle existe
+            if ($category->image) {
+                $oldPath = str_replace('/storage/', '', $category->image);
+                Storage::disk('public')->delete($oldPath);
+            }
             $path = $request->file('image')->store('categories', 'public');
             $data['image'] = Storage::url($path);
+        } elseif ($request->boolean('remove_image')) {
+            // Suppression explicite de l'image
+            if ($category->image) {
+                $oldPath = str_replace('/storage/', '', $category->image);
+                Storage::disk('public')->delete($oldPath);
+            }
+            $data['image'] = null;
         }
 
         $category->update($data);

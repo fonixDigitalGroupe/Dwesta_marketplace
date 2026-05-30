@@ -19,6 +19,12 @@ class PointRelais extends Model
         'telephone',
         'horaires',
         'is_active',
+        'est_point_special',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'est_point_special' => 'boolean',
     ];
 
     public function users()

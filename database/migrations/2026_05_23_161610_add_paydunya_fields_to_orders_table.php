@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->foreignId('livreur_id')->nullable()->constrained('livreurs')->onDelete('set null')->after('vendeur_id');
+            $table->string('paydunya_token')->nullable()->after('stripe_payment_intent_id');
+            $table->string('paydunya_receipt_url')->nullable()->after('paydunya_token');
         });
     }
 
@@ -22,8 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropForeign(['livreur_id']);
-            $table->dropColumn('livreur_id');
+            $table->dropColumn(['paydunya_token', 'paydunya_receipt_url']);
         });
     }
 };

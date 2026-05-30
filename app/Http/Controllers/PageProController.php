@@ -106,6 +106,11 @@ class PageProController extends Controller
             });
         }
 
+        // Filtre par mode d'expédition
+        if (request()->filled('shipping')) {
+            $annoncesQuery->where('type_livraison', request('shipping'));
+        }
+
         // Filtre par critères dynamiques
         if (request()->filled('filters')) {
             $reqFilters = request('filters');

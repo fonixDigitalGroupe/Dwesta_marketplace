@@ -253,12 +253,6 @@ class AnnonceOptionService
                 'duree' => self::DUREE_A_LA_UNE,
                 'description' => 'Votre annonce apparaîtra en haut des résultats de recherche pendant 7 jours',
             ],
-            'urgent' => [
-                'nom' => 'Urgent',
-                'prix' => self::PRIX_URGENT,
-                'duree' => self::DUREE_URGENT,
-                'description' => 'Badge "Urgent" visible sur votre annonce pendant 7 jours',
-            ],
             'video' => [
                 'nom' => 'Vidéo',
                 'prix' => self::PRIX_VIDEO,

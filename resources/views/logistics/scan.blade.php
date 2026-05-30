@@ -26,21 +26,21 @@
 @section('content')
 <div class="scan-container">
     <div class="scan-header">
-        <div class="scan-icon">📲</div>
+        <div class="scan-icon"></div>
         <h1 style="font-size: 1.5rem; font-weight: bold;">Interface Point Relais</h1>
         <p style="color: #666;">Scannez le QR Code ou saisissez le jeton de suivi</p>
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success">✅ {{ session('success') }}</div>
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     @if(session('error'))
-        <div class="alert alert-error">❌ {{ session('error') }}</div>
+        <div class="alert alert-error">{{ session('error') }}</div>
     @endif
 
     @if(session('info'))
-        <div class="alert" style="background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8;">ℹ️ {{ session('info') }}</div>
+        <div class="alert" style="background: #ebf8ff; color: #2b6cb0; border: 1px solid #bee3f8;">{{ session('info') }}</div>
     @endif
 
     <form action="{{ route('logistics.scan.process') }}" method="POST">

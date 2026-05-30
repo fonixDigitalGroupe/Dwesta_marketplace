@@ -21,7 +21,7 @@
         .logo {
             font-size: 24px;
             font-weight: 800;
-            color: #004aad;
+            color: #111;
             margin-bottom: 30px;
             text-decoration: none;
         }
@@ -38,7 +38,6 @@
         }
         .info-box {
             background-color: #f8f9fa;
-            border-left: 4px solid #004aad;
             border-radius: 4px;
             padding: 20px;
             margin-bottom: 30px;

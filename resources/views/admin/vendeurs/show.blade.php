@@ -18,20 +18,20 @@
 
         .amazon-card {
             background: #fff;
-            border: 1px solid #e7e7e7;
-            border-radius: 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            padding: 25px;
+            border: 1px solid #f0f0f0;
+            border-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+            padding: 15px 25px 25px 25px;
             margin-bottom: 20px;
         }
 
         .section-title {
-            font-size: 1rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #111;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #e7e7e7;
+            border-bottom: 1px solid #f0f0f0;
             text-transform: uppercase;
             letter-spacing: 0.03em;
             display: flex;
@@ -39,14 +39,18 @@
             gap: 10px;
         }
 
+        .section-title i {
+            color: #f68b1e;
+        }
+
         .btn-amazon-primary {
             background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
             border: 1px solid #004aad;
             color: #fff;
             padding: 8px 24px;
-            border-radius: 0;
+            border-radius: 4px;
             font-size: 0.85rem;
-            font-weight: 400;
+            font-weight: 500;
             text-decoration: none;
             box-shadow: 0 1px 0 rgba(255, 255, 255, .4) inset;
             cursor: pointer;
@@ -56,31 +60,54 @@
             gap: 8px;
         }
 
+        .btn-amazon-orange {
+            background: linear-gradient(to bottom, #f68b1e, #e67e22);
+            border: 1px solid #d35400;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 1px 0 rgba(255, 255, 255, .2) inset;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-amazon-orange:hover {
+            background: linear-gradient(to bottom, #e67e22, #d35400);
+            border-color: #ba4a00;
+        }
+
         .btn-amazon-primary:hover {
             background: linear-gradient(180deg, #0069d9 0%, #004494 100%);
             border-color: #003d82;
         }
 
         .btn-amazon-secondary {
-            background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
-            border: 1px solid #adb1b8;
-            color: #111;
-            padding: 8px 24px;
-            border-radius: 0;
+            background: #fff;
+            border: 1px solid #ddd;
+            color: #565959;
+            padding: 6px 15px;
+            border-radius: 4px;
             font-size: 0.85rem;
-            font-weight: 400;
+            font-weight: 500;
             text-decoration: none;
-            box-shadow: 0 1px 0 rgba(255, 255, 255, .6) inset;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            transition: all 0.2s;
         }
 
         .btn-amazon-secondary:hover {
-            background: linear-gradient(to bottom, #e7eaf0, #d8dade);
-            border-color: #a2a6ac;
+            background: #f7f7f7;
+            border-color: #ccc;
+            color: #111;
         }
 
         .info-row {
@@ -142,7 +169,7 @@
         <!-- Top Action Bar -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
             <div style="display: flex; align-items: center; gap: 15px;">
-                <a href="{{ route('admin.vendeurs.verification.index') }}" class="btn-amazon-secondary"
+                <a href="{{ route('admin.users.index', ['role' => 'vendeur']) }}" class="btn-amazon-secondary"
                     style="padding: 6px 12px;">
                     <i class="fas fa-chevron-left"></i> Retour
                 </a>
@@ -165,12 +192,12 @@
             </div>
         </div>
 
-        <!-- Layout Grid -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch;">
-        <!-- Card: Informations Personnelles -->
-        <div class="amazon-card" style="margin-bottom: 0;">
+        <!-- Row 1: Informations Personnelles & Pièce Justificative (Hauteurs égales) -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; align-items: stretch;">
+            <!-- Card: Informations Personnelles -->
+            <div class="amazon-card" style="margin-bottom: 0;">
                 <h2 class="section-title">
-                    <i class="fas fa-user-circle"></i> Informations Personnelles
+                    Informations Personnelles
                 </h2>
                 <div class="info-row">
                     <span class="info-label">Nom Complet</span>
@@ -192,196 +219,204 @@
                     <span class="info-label">Inscrit le</span>
                     <span class="info-value">{{ $vendeur->created_at->format('d/m/Y à H:i') }}</span>
                 </div>
-        </div>
-        
-        <!-- Card: Pièce Justificative -->
-        <div class="amazon-card" style="display: flex; flex-direction: column; margin-bottom: 0;">
-            <h2 class="section-title">
-                <i class="fas fa-file-alt"></i> Pièce Justificative
-            </h2>
-            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fafafa; border: 1px dashed #adb1b8; padding: 15px;">
-                @php
-                    $docUrl = null;
-                    if($vendeur->estParticulier() && $vendeur->particulier) $docUrl = $vendeur->particulier->document_url;
-                    if($vendeur->estProfessionnel() && $vendeur->professionnel) $docUrl = $vendeur->professionnel->registre_url;
-                @endphp
-
-                @if($docUrl)
-                    <i class="far fa-file-pdf" style="font-size: 2rem; color: #adb1b8; margin-bottom: 10px;"></i>
-                    <p style="font-size: 0.8rem; color: #555; text-align: center; margin-bottom: 10px;">
-                        Un document a été fourni pour ce dossier.
-                    </p>
-                    <a href="{{ $docUrl }}" target="_blank" class="btn-amazon-primary">
-                        Visualiser le document <i class="fas fa-external-link-alt" style="font-size: 0.75rem;"></i>
-                    </a>
-                @else
-                    <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; color: #adb1b8; margin-bottom: 15px;"></i>
-                    <p style="font-size: 0.85rem; color: #888;">Aucun document joint.</p>
-                @endif
-            </div>
-        </div>
-
-        <!-- Left Column: Remaining Information -->
-        <div style="display: flex; flex-direction: column; gap: 20px;">
-            <!-- Identité / Entreprise -->
-            <div class="amazon-card">
-                @if($vendeur->estProfessionnel() && $vendeur->professionnel)
-                    <h2 class="section-title">
-                        <i class="fas fa-building"></i> Détails de l'Entreprise
-                    </h2>
-                    <div class="info-row">
-                        <span class="info-label">Raison Sociale</span>
-                        <span class="info-value" style="color: #004aad;">{{ $vendeur->professionnel->nom_entreprise }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">N° RCCM</span>
-                        <span class="info-value">{{ $vendeur->professionnel->numero_registre_commerce }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Dates Registre</span>
-                        <span class="info-value">
-                            Em: <span style="color: #569b00;">{{ $vendeur->professionnel->date_emission_registre ? $vendeur->professionnel->date_emission_registre->format('d/m/Y') : '-' }}</span>
-                            / Exp: <span style="color: #c40000;">{{ $vendeur->professionnel->date_expiration_registre ? $vendeur->professionnel->date_expiration_registre->format('d/m/Y') : '-' }}</span>
-                        </span>
-                    </div>
-                @else
-                    <h2 class="section-title">
-                        <i class="fas fa-id-card"></i> Pièce d'Identité
-                    </h2>
-                    <div class="info-row">
-                        <span class="info-label">Type de Document</span>
-                        <span class="info-value">{{ strtoupper($vendeur->particulier->type_document ?? 'N/A') }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Numéro</span>
-                        <span class="info-value">{{ $vendeur->particulier->numero_document ?? '-' }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Dates Pièce</span>
-                        <span class="info-value">
-                            Em: <span style="color: #569b00;">{{ ($vendeur->particulier && $vendeur->particulier->date_emission_document) ? $vendeur->particulier->date_emission_document->format('d/m/Y') : '-' }}</span>
-                            / Exp: <span style="color: #c40000;">{{ ($vendeur->particulier && $vendeur->particulier->date_expiration_document) ? $vendeur->particulier->date_expiration_document->format('d/m/Y') : '-' }}</span>
-                        </span>
-                    </div>
-                @endif
             </div>
 
-            <!-- Abonnement -->
-            <div class="amazon-card">
+            <!-- Card: Pièce Justificative -->
+            <div class="amazon-card" style="display: flex; flex-direction: column; margin-bottom: 0;">
                 <h2 class="section-title">
-                    <i class="fas fa-star"></i> Abonnement & Formule
+                    Pièce Justificative
                 </h2>
-                @php
-                    $formule = $vendeur->abonnement_actuel;
-                @endphp
-                <div class="info-row">
-                    <span class="info-label">Formule Actuelle</span>
-                    <span class="info-value">
-                        @if($vendeur->abonnementActif)
-                            <span style="color: #004aad;">{{ $formule->nom ?? $formule->type }}</span>
-                        @else
-                            <span style="color: #c45500;">Gratuit</span>
-                        @endif
-                    </span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Commission</span>
-                    <span class="info-value">{{ $formule ? $formule->commission : '0' }}%</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Page Pro</span>
-                    <span class="info-value">{{ ($formule && $formule->page_pro) ? 'Inclus' : 'Non Inclus' }}</span>
+                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fafafa; border: 1px dashed #ddd; padding: 25px; border-radius: 4px;">
+                    @php
+                        $docUrl = null;
+                        if($vendeur->estParticulier() && $vendeur->particulier) $docUrl = $vendeur->particulier->document_url;
+                        if($vendeur->estProfessionnel() && $vendeur->professionnel) $docUrl = $vendeur->professionnel->registre_url;
+                    @endphp
+
+                    @if($docUrl)
+                        <i class="far fa-file-pdf" style="font-size: 2.5rem; color: #adb1b8; margin-bottom: 15px;"></i>
+                        <p style="font-size: 0.85rem; color: #555; text-align: center; margin-bottom: 15px;">
+                            Un document a été fourni pour ce dossier et est prêt à être inspecté.
+                        </p>
+                        <a href="{{ $docUrl }}" target="_blank" class="btn-amazon-orange" style="margin-top: auto;">
+                            Visualiser le document
+                        </a>
+                    @else
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2.5rem; color: #adb1b8; margin-bottom: 15px;"></i>
+                        <p style="font-size: 0.85rem; color: #888;">Aucun document joint n'est disponible.</p>
+                    @endif
                 </div>
             </div>
         </div>
 
-        <!-- Right Column: Decision & Actions -->
-        <div style="display: flex; flex-direction: column; gap: 20px;">
-            @if($vendeur->statut_verification === 'en_attente')
-                <div class="amazon-card" style="border: 1px solid #fbd8b4; background: #fffcf9; flex: 1; display: flex; flex-direction: column;">
-                    <h2 class="section-title" style="border-bottom-color: #fbd8b4; color: #c45500;">
-                        <i class="fas fa-gavel"></i> Décision Administrative
-                    </h2>
-                    
-                    <div x-data="{ 
-                        decision: 'approve', 
-                        reason: 'Votre demande de compte vendeur n\'a pas pu être approuvée en l\'état sur Karnou. Veuillez vérifier que les informations fournies sont correctes, puis soumettez à nouveau votre dossier.',
-                        selectedFields: [],
-                        updateReason() {
-                            let base = 'Votre demande de compte vendeur n\'a pas pu être approuvée en l\'état sur Karnou. Veuillez vérifier que les informations fournies sont correctes, puis soumettez à nouveau votre dossier.';
-                            if (this.selectedFields.length > 0) {
-                                base += '\n\nChamps à revoir :\n' + this.selectedFields.map(f => ' - ' + f).join('\n');
-                            }
-                            this.reason = base;
-                        }
-                    }">
-                        <div style="display: flex; gap: 20px; margin-bottom: 20px;">
-                            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; cursor: pointer;">
-                                <input type="radio" x-model="decision" value="approve" name="decision_type">
-                                <span style="font-weight: 600; color: #16a34a;">Approuver</span>
-                            </label>
-                            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; cursor: pointer;">
-                                <input type="radio" x-model="decision" value="reject" name="decision_type">
-                                <span style="font-weight: 600; color: #b91c1c;">Rejeter</span>
-                            </label>
+        <!-- Row 2: Layout Grid pour le reste -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
+            
+            <!-- Left Column: Information Details -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+
+                <!-- Card: Identité / Entreprise -->
+                <div class="amazon-card" style="margin-bottom: 0;">
+                    @if($vendeur->estProfessionnel() && $vendeur->professionnel)
+                        <h2 class="section-title">
+                            <i class="fas fa-building"></i> Détails de l'Entreprise
+                        </h2>
+                        <div class="info-row">
+                            <span class="info-label">Raison Sociale</span>
+                            <span class="info-value" style="color: #004aad;">{{ $vendeur->professionnel->nom_entreprise }}</span>
                         </div>
+                        <div class="info-row">
+                            <span class="info-label">N° RCCM</span>
+                            <span class="info-value">{{ $vendeur->professionnel->numero_registre_commerce }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Dates Registre</span>
+                            <span class="info-value">
+                                Em: <span style="color: #569b00;">{{ $vendeur->professionnel->date_emission_registre ? $vendeur->professionnel->date_emission_registre->format('d/m/Y') : '-' }}</span>
+                                / Exp: <span style="color: #c40000;">{{ $vendeur->professionnel->date_expiration_registre ? $vendeur->professionnel->date_expiration_registre->format('d/m/Y') : '-' }}</span>
+                            </span>
+                        </div>
+                    @else
+                        <h2 class="section-title">
+                            Pièce d'Identité
+                        </h2>
+                        <div class="info-row">
+                            <span class="info-label">Type de Document</span>
+                            <span class="info-value">{{ strtoupper($vendeur->particulier->type_document ?? 'N/A') }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Numéro</span>
+                            <span class="info-value">{{ $vendeur->particulier->numero_document ?? '-' }}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Dates Pièce</span>
+                            <span class="info-value">
+                                Em: <span style="color: #569b00;">{{ ($vendeur->particulier && $vendeur->particulier->date_emission_document) ? $vendeur->particulier->date_emission_document->format('d/m/Y') : '-' }}</span>
+                                / Exp: <span style="color: #c40000;">{{ ($vendeur->particulier && $vendeur->particulier->date_expiration_document) ? $vendeur->particulier->date_expiration_document->format('d/m/Y') : '-' }}</span>
+                            </span>
+                        </div>
+                    @endif
+                </div>
 
-                        <!-- Form Approuver -->
-                        <form x-show="decision === 'approve'" method="POST" action="{{ route('admin.vendeurs.verification.approve', $vendeur) }}">
-                            @csrf
-                            <div style="margin-bottom: 15px;">
-                                <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px;">Commentaire (optionnel)</label>
-                                <textarea name="commentaire" rows="6" style="width: 100%; padding: 10px; border: 1px solid #adb1b8; font-size: 0.85rem;">Félicitations ! Votre identité a été confirmée. Vous pouvez désormais publier des annonces et effectuer des transactions en toute sécurité sur Karnou.</textarea>
-                            </div>
-                            <button type="submit" class="btn-amazon-primary" style="width: 100%; height: 40px; background: #16a34a; border-color: #15803d;">
-                                Confirmer l'approbation ✓
-                            </button>
-                        </form>
-
-                        <form x-show="decision === 'reject'" method="POST" action="{{ route('admin.vendeurs.verification.reject', $vendeur) }}">
-                            @csrf
-                            <div style="margin-bottom: 20px;">
-                                <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; color: #111;">Précisez les champs à revoir :</label>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #fff; padding: 15px; border: 1px solid #e7e7e7;">
-                                    @php
-                                        $fields = [
-                                            'Pièce d\'identité (CNI/Passeport)',
-                                            'Registre de Commerce (RCCM)',
-                                            'Nom / Prénom',
-                                            'Raison sociale',
-                                            'Coordonnées (Tel, Ville)',
-                                            'Document illisible',
-                                            'Document expiré',
-                                            'Photo du document (Verso manquant)'
-                                        ];
-                                    @endphp
-                                    @foreach($fields as $field)
-                                        <label style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; cursor: pointer;">
-                                            <input type="checkbox" value="{{ $field }}" x-model="selectedFields" @change="updateReason()">
-                                            <span>{{ $field }}</span>
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-
-                            <div style="margin-bottom: 15px;">
-                                <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px;">Motif du rejet (obligatoire)</label>
-                                <textarea name="raison_rejet" x-model="reason" required rows="6" style="width: 100%; padding: 10px; border: 1px solid #adb1b8; font-size: 0.85rem;"></textarea>
-                            </div>
-                            <button type="submit" class="btn-amazon-primary" style="width: 100%; height: 40px; background: #dc2626; border-color: #b91c1c;">
-                                Envoyer le rejet ✕
-                            </button>
-                        </form>
+                <!-- Card: Abonnement -->
+                <div class="amazon-card" style="margin-bottom: 0;">
+                    <h2 class="section-title">
+                        Abonnement & Formule
+                    </h2>
+                    @php
+                        $formule = $vendeur->abonnement_actuel;
+                    @endphp
+                    <div class="info-row">
+                        <span class="info-label">Formule Actuelle</span>
+                        <span class="info-value">
+                            @if($vendeur->abonnementActif)
+                                <span style="color: #004aad;">{{ $formule->nom ?? $formule->type }}</span>
+                            @else
+                                <span style="color: #c45500;">Gratuit</span>
+                            @endif
+                        </span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Commission</span>
+                        <span class="info-value">{{ $formule ? $formule->commission : '0' }}%</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Page Pro</span>
+                        <span class="info-value">{{ ($formule && $formule->page_pro) ? 'Inclus' : 'Non Inclus' }}</span>
                     </div>
                 </div>
-            @endif
+            </div>
+
+            <!-- Right Column: Documents & Decisions -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+
+
+                <!-- Decision & Actions -->
+                @if($vendeur->statut_verification === 'en_attente')
+                    <div class="amazon-card" style="border: 2px solid #fbd8b4; background: #fffcf9; margin-bottom: 0;">
+                        <h2 class="section-title" style="border-bottom-color: #fbd8b4; color: #c45500;">
+                            <i class="fas fa-gavel"></i> Décision Administrative
+                        </h2>
+                        
+                        <div x-data="{ 
+                            decision: 'approve', 
+                            reason: 'Votre demande de compte vendeur n\'a pas pu être approuvée en l\'état sur Karnou. Veuillez vérifier que les informations fournies sont correctes, puis soumettez à nouveau votre dossier.',
+                            selectedFields: [],
+                            updateReason() {
+                                let base = 'Votre demande de compte vendeur n\'a pas pu être approuvée en l\'état sur Karnou. Veuillez vérifier que les informations fournies sont correctes, puis soumettez à nouveau votre dossier.';
+                                if (this.selectedFields.length > 0) {
+                                    base += '\n\nChamps à revoir :\n' + this.selectedFields.map(f => ' - ' + f).join('\n');
+                                }
+                                this.reason = base;
+                            }
+                        }">
+                            <div style="display: flex; gap: 20px; margin-bottom: 25px; padding: 10px; background: #fff; border: 1px solid #e7e7e7; border-radius: 4px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; cursor: pointer; flex: 1; padding: 5px;">
+                                    <input type="radio" x-model="decision" value="approve" name="decision_type">
+                                    <span style="font-weight: 600; color: #16a34a;">Approuver</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; cursor: pointer; flex: 1; padding: 5px;">
+                                    <input type="radio" x-model="decision" value="reject" name="decision_type">
+                                    <span style="font-weight: 600; color: #b91c1c;">Rejeter</span>
+                                </label>
+                            </div>
+
+                            <!-- Form Approuver -->
+                            <form x-show="decision === 'approve'" method="POST" action="{{ route('admin.vendeurs.verification.approve', $vendeur) }}">
+                                @csrf
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px;">Commentaire (optionnel)</label>
+                                    <textarea name="commentaire" rows="5" style="width: 100%; padding: 10px; border: 1px solid #adb1b8; font-size: 0.85rem; border-radius: 4px; box-sizing: border-box;">Félicitations ! Votre identité a été confirmée. Vous pouvez désormais publier des annonces et effectuer des transactions en toute sécurité sur Karnou.</textarea>
+                                </div>
+                                <button type="submit" class="btn-amazon-primary" style="width: 100%; height: 44px; background: #16a34a; border-color: #15803d; font-size: 0.9rem; font-weight: 600;">
+                                    Continuer et Approuver ✓
+                                </button>
+                            </form>
+
+                            <form x-show="decision === 'reject'" method="POST" action="{{ route('admin.vendeurs.verification.reject', $vendeur) }}">
+                                @csrf
+                                <div style="margin-bottom: 20px;">
+                                    <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; color: #111;">Précisez les champs à revoir :</label>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #fff; padding: 15px; border: 1px solid #e7e7e7; border-radius: 4px;">
+                                        @php
+                                            $fields = [
+                                                'Pièce d\'identité (CNI/Passeport)',
+                                                'Registre de Commerce (RCCM)',
+                                                'Nom / Prénom',
+                                                'Raison sociale',
+                                                'Coordonnées (Tel, Ville)',
+                                                'Document illisible',
+                                                'Document expiré',
+                                                'Photo du document'
+                                            ];
+                                        @endphp
+                                        @foreach($fields as $field)
+                                            <label style="display: flex; align-items: start; gap: 8px; font-size: 0.8rem; cursor: pointer; line-height: 1.3;">
+                                                <input type="checkbox" value="{{ $field }}" x-model="selectedFields" @change="updateReason()" style="margin-top: 2px;">
+                                                <span>{{ $field }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <div style="margin-bottom: 15px;">
+                                    <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 5px;">Motif détaillé du rejet (obligatoire)</label>
+                                    <textarea name="raison_rejet" x-model="reason" required rows="6" style="width: 100%; padding: 10px; border: 1px solid #adb1b8; font-size: 0.85rem; border-radius: 4px; box-sizing: border-box;"></textarea>
+                                </div>
+                                <button type="submit" class="btn-amazon-primary" style="width: 100%; height: 44px; background: #dc2626; border-color: #b91c1c; font-size: 0.9rem; font-weight: 600;">
+                                    Rejeter le dossier ✕
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @endif
+            </div>
         </div>
-    </div>
 
     <!-- Subscription History Table -->
     <div class="amazon-card" style="margin-top: 5px;">
         <h2 class="section-title">
-            <i class="fas fa-history"></i> Historique des Abonnements
+            Historique des Abonnements
         </h2>
         <table class="table-amazon">
             <thead>

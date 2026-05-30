@@ -1,304 +1,262 @@
 @extends('layouts.app')
 
-@section('title', 'Personnaliser ma Boutique - Mady Market')
+@section('title', 'Personnaliser ma Boutique - Karnou')
 
 @push('styles')
 <style>
-    :root {
-        --amz-orange: #FF9900;
-        --amz-orange-light: #FFB33E;
-        --amz-dark: #232F3E;
-        --bg-body: #f9f9f9;
-        --border-main: #eeeeee;
-        --text-base: #111111;
-        --text-secondary: #565959;
+    .pro-page-edit {
+        max-width: 900px;
     }
 
-    body {
-        background-color: var(--bg-body);
-        color: var(--text-base);
+    .gift-card-box {
+        margin-bottom: 2.5rem;
     }
 
-    .dashboard-container {
-        display: grid;
-        grid-template-columns: 260px 1fr;
-        gap: 24px;
-        max-width: 1400px;
-        margin: 24px auto;
-        padding: 0 20px;
-    }
-
-    .main-content {
-        background: #fff;
-        border-radius: 4px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        border: 1px solid #e0e0e0;
-        overflow: hidden;
-        padding: 0;
-    }
-
-    .edit-pro-card {
-        background: white;
-        padding: 1.5rem;
-        border-bottom: 1px solid #f8f8f8;
-    }
-    .edit-pro-card:last-child { border-bottom: none; }
-
-    .edit-card-title {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #333;
+    .section-title {
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: #000;
         text-transform: uppercase;
-        margin-bottom: 1.5rem;
+        letter-spacing: 0.5px;
+        margin-bottom: 1.25rem;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
+    }
+
+    .section-title i {
+        color: #f68b1e;
+    }
+
+    .form-box {
+        background: #fff;
+        border: 1px solid #efefef;
+        border-radius: 10px;
+        padding: 2rem;
     }
 
     .form-label {
         display: block;
-        font-weight: 500;
-        margin-bottom: 6px;
-        color: #555;
-        font-size: 0.9rem;
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #666;
+        margin-bottom: 0.5rem;
     }
 
     .form-control {
         width: 100%;
-        padding: 10px 12px;
-        border: 1px solid #eee;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        background: #fff;
+        padding: 12px 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        transition: all 0.2s;
+        outline: none;
     }
 
     .form-control:focus {
         border-color: #004aad;
         box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
-        outline: none;
     }
 
-    .btn-save {
-        background: #004aad;
+    .btn-buy-now {
+        background: #f68b1e;
+        color: #fff;
         border: none;
         border-radius: 8px;
-        color: white;
-        padding: 12px 30px;
-        font-weight: 600;
-        cursor: pointer;
+        padding: 14px 30px;
+        font-weight: 800;
         font-size: 0.9rem;
-        transition: background 0.2s;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
     }
 
-    .btn-save:hover {
-        background: #003a85;
+    .btn-buy-now:hover {
+        background: #e07a10;
+        transform: translateY(-2px);
     }
 
-    .preview-section {
-        background: #F0F2F2;
-        padding: 20px;
-        border-radius: 8px;
-        border: 1px solid var(--border-main);
-        position: relative;
+    .preview-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
     }
 
-    .logo-preview-box {
-        width: 130px;
-        height: 130px;
-        background: white;
-        border: 1px solid var(--border-main);
+    .preview-container {
+        background: #f8fafc;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .logo-preview-wrapper {
+        width: 100px;
+        height: 100px;
+        background: #fff;
+        border: 1px solid #eee;
         border-radius: 50%;
-        margin: 0 auto 15px;
+        margin: 0 auto 1.25rem;
         overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    .banner-preview-box {
+    .banner-preview-wrapper {
         width: 100%;
-        height: 130px;
-        background: white;
-        border: 1px solid var(--border-main);
-        border-radius: 4px;
-        margin-bottom: 15px;
+        height: 100px;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        margin-bottom: 1.25rem;
         overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-
-    .format-badge {
-        font-size: 0.7rem;
-        color: var(--text-secondary);
-        font-weight: 400;
-        margin-bottom: 8px;
-        display: block;
     }
 
     .input-hint {
-        font-size: 0.75rem;
-        color: var(--text-secondary);
-        margin-top: 4px;
+        font-size: 0.7rem;
+        color: #999;
+        margin-top: 6px;
+        font-weight: 500;
     }
 
-    .social-input-group {
-        display: flex;
+    .btn-outline {
+        display: inline-flex;
         align-items: center;
-        background: white;
-        border: 1px solid #888C8C;
-        border-radius: 4px;
-        padding-left: 12px;
-    }
-
-    .social-input-group:focus-within {
-        border-color: #007185;
-        box-shadow: 0 0 0 3px #c8f3fa;
-    }
-
-    .social-input-group i {
-        color: var(--text-secondary);
-    }
-
-    .social-input-group .form-control {
-        border: none;
-        box-shadow: none !important;
-    }
-
-    .section-header h1 {
-        font-size: 1.5rem;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 20px;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+        font-size: 0.8rem;
         font-weight: 700;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .btn-outline:hover {
+        background: #f1f5f9;
+        border-color: #cbd5e1;
+    }
+
+    @media (max-width: 768px) {
+        .preview-grid { grid-template-columns: 1fr; }
     }
 </style>
 @endpush
 
 @section('content')
+<div class="dashboard-container">
+    @include('partials.profile-sidebar')
 
-    <div class="dashboard-container">
-        @include('partials.profile-sidebar')
+    <main class="main-content pro-page-edit">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid #eee;">
+            <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Ma Boutique Professionnelle</h1>
+            <a href="{{ route('page-pro.show', $pagePro->slug) }}" target="_blank" style="color: #f68b1e; text-decoration: none; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
+                Voir ma page
+            </a>
+        </div>
 
-        <main class="main-content">
-            @if(session('success'))
-                <div style="background: #e6fcf5; color: #0ca678; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #c3fae8; display: flex; align-items: center; gap: 0.5rem;">
-                    <i class="fas fa-check-circle"></i>
-                    {{ session('success') }}
+        @if(session('success'))
+            <div style="background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #c8e6c9; font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-check-circle"></i> {{ session('success') }}
+            </div>
+        @endif
+
+        @if($errors->any())
+            <div style="background: #fff5f5; color: #fa5252; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #ffe3e3;">
+                <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.85rem; font-weight: 600;">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{ route('page-pro.update') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+
+            <!-- Identité de la boutique -->
+            <div class="gift-card-box">
+                <h2 class="section-title">Identité Visuelle</h2>
+                <div class="form-box">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label class="form-label">Nom commercial</label>
+                        <input type="text" name="nom_boutique" class="form-control" value="{{ old('nom_boutique', $pagePro->nom_boutique) }}" placeholder="Ex: Ma Super Boutique">
+                        <p class="input-hint">Le nom qui sera affiché en haut de votre page pro.</p>
+                    </div>
+
+                    <div class="preview-grid">
+                        <div class="preview-container">
+                            <label class="form-label">Logo</label>
+                            <div class="logo-preview-wrapper" id="logo-preview-id">
+                                @if($pagePro->logo)
+                                    <img src="{{ Storage::url($pagePro->logo) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                @else
+                                    <i class="fas fa-camera" style="color: #ccc; font-size: 1.5rem;"></i>
+                                @endif
+                            </div>
+                            <input type="file" name="logo" class="form-control" style="font-size: 0.75rem;" accept="image/*" onchange="previewImg(this, 'logo-preview-id')">
+                        </div>
+
+                        <div class="preview-container">
+                            <label class="form-label">Bannière</label>
+                            <div class="banner-preview-wrapper" id="banner-preview-id">
+                                @if($pagePro->banniere)
+                                    <img src="{{ Storage::url($pagePro->banniere) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                @else
+                                    <i class="fas fa-image" style="color: #ccc; font-size: 1.5rem;"></i>
+                                @endif
+                            </div>
+                            <input type="file" name="banniere" class="form-control" style="font-size: 0.75rem;" accept="image/*" onchange="previewImg(this, 'banner-preview-id')">
+                        </div>
+                    </div>
                 </div>
-            @endif
-
-            @if(session('error'))
-                <div style="background: #fff5f5; color: #fa5252; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #ffe3e3; display: flex; align-items: center; gap: 0.5rem;">
-                    <i class="fas fa-exclamation-circle"></i>
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            @if($errors->any())
-                <div style="background: #fff5f5; color: #fa5252; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #ffe3e3;">
-                    <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.9rem;">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding: 1.5rem 2rem; background: #fff;">
-                <h1 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; font-weight: 700; color: #1a1a1a; margin: 0;">Personnalisation de la Boutique</h1>
-                <a href="{{ route('page-pro.show', $pagePro->slug) }}" target="_blank" class="btn-save" style="background: #f1f5f9; color: #64748b; border: none; padding: 0.6rem 1.2rem; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; border-radius: 20px;">
-                    <i class="fas fa-eye" style="color: #004aad;"></i>
-                    Aperçu Public
-                </a>
             </div>
 
-            <form action="{{ route('page-pro.update') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-
-                <!-- Identité Visuelle -->
-                <div class="edit-pro-card">
-                    <div class="edit-card-title">
-                        <i class="fas fa-store" style="color: #FF9900;"></i>
-                        Fiche d'Identité de la Boutique
+            <!-- Présentation -->
+            <div class="gift-card-box">
+                <h2 class="section-title">Présentation</h2>
+                <div class="form-box">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label class="form-label">Description de la boutique</label>
+                        <textarea name="description" rows="6" class="form-control" placeholder="Décrivez votre boutique, vos produits et votre expertise...">{{ old('description', $pagePro->description) }}</textarea>
                     </div>
 
-                    <div class="form-group" style="margin-bottom: 24px;">
-                        <label class="form-label">Nom commercial</label>
-                        <input type="text" name="nom_boutique" class="form-control" value="{{ old('nom_boutique', $pagePro->nom_boutique) }}" placeholder="Nom tel qu'il apparaîtra sur le site">
-                        <p class="input-hint">Utilisez un nom professionnel clair pour attirer les clients.</p>
-                    </div>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                        <div>
-                            <label class="form-label">Logo de la marque</label>
-                            <div class="preview-section">
-                                <div class="format-badge">Image carrée (ex: 500x500px)</div>
-                                <div class="logo-preview-box" id="logo-preview-wrapper">
-                                    @if($pagePro->logo)
-                                        <img src="{{ Storage::url($pagePro->logo) }}" style="width: 100%; height: 100%; object-fit: cover;">
-                                    @else
-                                        <i class="fas fa-camera fa-2x" style="color: #ccc;"></i>
-                                    @endif
-                                </div>
-                                <input type="file" name="logo" class="form-control" accept="image/*" onchange="handleImagePreview(this, 'logo-preview-wrapper')">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="form-label">Bannière principale</label>
-                            <div class="preview-section">
-                                <div class="format-badge">Haute résolution (ex: 1500x400px)</div>
-                                <div class="banner-preview-box" id="banner-preview-wrapper">
-                                    @if($pagePro->banniere)
-                                        <img src="{{ Storage::url($pagePro->banniere) }}" style="width: 100%; height: 100%; object-fit: cover;">
-                                    @else
-                                        <i class="fas fa-image fa-2x" style="color: #ccc;"></i>
-                                    @endif
-                                </div>
-                                <input type="file" name="banniere" class="form-control" accept="image/*" onchange="handleImagePreview(this, 'banner-preview-wrapper')">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 24px;">
-                        <label class="form-label">Couleur de thème</label>
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <input type="color" name="couleur_primaire" value="{{ $pagePro->couleur_primaire ?? '#004aad' }}" style="padding: 0; width: 60px; height: 35px; border: 1px solid #ddd; cursor: pointer;">
-                            <span class="input-hint">Affecte les boutons et les titres de votre boutique.</span>
-                        </div>
+                    <div>
+                        <label class="form-label">Couleur du thème</label>
+                        <input type="color" name="couleur_primaire" class="form-control" value="{{ $pagePro->couleur_primaire ?? '#004aad' }}" style="height: 48px; padding: 4px; cursor: pointer;">
+                        <p class="input-hint">Cette couleur sera utilisée pour les boutons et les accents de votre page.</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Présentation -->
-                <div class="edit-pro-card">
-                    <div class="edit-card-title">
-                        <i class="fas fa-info-circle" style="color: #FF9900;"></i>
-                        Présentation de votre activité
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Description détaillée</label>
-                        <textarea name="description" rows="8" class="form-control" placeholder="Racontez votre histoire et présentez vos produits...">{{ old('description', $pagePro->description) }}</textarea>
-                    </div>
-                </div>
+            <div style="text-align: right; margin-bottom: 4rem;">
+                <button type="submit" class="btn-buy-now">
+                    <i class="fas fa-save"></i> Enregistrer les modifications
+                </button>
+            </div>
+        </form>
+    </main>
+</div>
 
-
-                <div style="display: flex; justify-content: flex-end; padding: 20px 0;">
-                    <button type="submit" class="btn-save">
-                        Enregistrer ces informations
-                    </button>
-                </div>
-            </form>
-        </main>
-    </div>
-
-    <script>
-        function handleImagePreview(input, wrapperId) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const wrapper = document.getElementById(wrapperId);
-                    wrapper.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">`;
-                }
-                reader.readAsDataURL(input.files[0]);
+<script>
+    function previewImg(input, wrapperId) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(wrapperId).innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;">`;
             }
+            reader.readAsDataURL(input.files[0]);
         }
-    </script>
+    }
+</script>
 @endsection

@@ -4,10 +4,6 @@
 
 @push('styles')
     <style>
-        html, body, .dashboard-container, .main-content {
-            background-color: #fff !important;
-        }
-
         [x-cloak] {
             display: none !important;
         }
@@ -228,6 +224,7 @@
             margin: 0;
         }
     </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 @endpush
 
 @section('content')
@@ -363,9 +360,50 @@
                                     required>
                             </div>
                         </div>
+
+                        <!-- Full Geolocation Management Section -->
+                        <div id="profile-geolocation-section" class="rakuten-field-group" style="grid-column: span 2; margin-top: 1.5rem;">
+                            <h2 class="rakuten-title">Précision de votre localisation</h2>
+                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">
+                                Recherchez votre quartier ou déplacez le marqueur sur la carte pour définir votre position exacte.
+                            </p>
+                            
+                            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <input type="text" id="profile-address-search" placeholder="Tapez votre quartier ou adresse (ex: Rufisque Arafat 2)" style="flex: 1; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem;">
+                                <button type="button" id="btn-profile-search" class="btn-rakuten" style="width: auto; margin: 0; padding: 0 1.5rem;">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Rechercher
+                                </button>
+                            </div>
+
+                            <div id="profile-location-status-msg" style="margin-top: 0.5rem; padding: 0.75rem; border-radius: 4px; font-size: 0.85rem; display: none; margin-bottom: 0.5rem;"></div>
+
+                            <style>
+                                #profile-map {
+                                    height: 350px;
+                                    width: 100%;
+                                    border-radius: 4px;
+                                    border: 1px solid #ccc;
+                                    z-index: 10;
+                                }
+                                .profile-map-actions {
+                                    margin-top: 1rem;
+                                    display: flex;
+                                    gap: 1rem;
+                                }
+                            </style>
+                            
+                            <div id="profile-map"></div>
+
+                            <div class="profile-map-actions">
+                                <button type="button" id="btn-profile-geolocation" class="btn-rakuten" style="margin: 0; background: #f68b1e; flex: 1;">
+                                    <i class="fa-solid fa-location-crosshairs"></i> Me géolocaliser
+                                </button>
+                                <button type="button" id="btn-profile-save-location" class="btn-rakuten" style="margin: 0; background: #333; flex: 1; display: none;">
+                                    <i class="fa-solid fa-floppy-disk"></i> Valider ma position
+                                </button>
+                            </div>
+                        </div>
                     </div>
-
-
 
                     <button type="submit" class="btn-rakuten">Valider</button>
                 </form>
@@ -449,5 +487,151 @@
                 input.type = 'password';
             }
         }
+    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnGeo = document.getElementById('btn-profile-geolocation');
+            const btnSave = document.getElementById('btn-profile-save-location');
+            const btnSearch = document.getElementById('btn-profile-search');
+            const searchInput = document.getElementById('profile-address-search');
+            const statusMsg = document.getElementById('profile-location-status-msg');
+
+            function showStatus(message, type = 'info') {
+                if (!statusMsg) return;
+                statusMsg.innerHTML = message;
+                statusMsg.style.display = 'block';
+                if (type === 'success') {
+                    statusMsg.style.backgroundColor = '#d4edda';
+                    statusMsg.style.color = '#155724';
+                    statusMsg.style.border = '1px solid #c3e6cb';
+                } else if (type === 'error') {
+                    statusMsg.style.backgroundColor = '#f8d7da';
+                    statusMsg.style.color = '#721c24';
+                    statusMsg.style.border = '1px solid #f5c6cb';
+                } else {
+                    statusMsg.style.backgroundColor = '#e2e3e5';
+                    statusMsg.style.color = '#383d41';
+                    statusMsg.style.border = '1px solid #d6d8db';
+                }
+                if (type === 'success') {
+                    setTimeout(() => { statusMsg.style.display = 'none'; }, 5000);
+                }
+            }
+
+            const initialLat = {{ $user->latitude ?? 14.4974 }};
+            const initialLng = {{ $user->longitude ?? -17.4419 }};
+            const zoomLevel = {{ $user->latitude ? 15 : 6 }};
+
+            const mapPanel = document.getElementById('profile-map');
+            if (mapPanel) {
+                const map = L.map('profile-map').setView([initialLat, initialLng], zoomLevel);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                let marker = L.marker([initialLat, initialLng], { draggable: true }).addTo(map);
+
+                map.on('click', function(e) {
+                    marker.setLatLng(e.latlng);
+                    if (btnSave) btnSave.style.display = 'block';
+                });
+
+                marker.on('dragend', function() {
+                    if (btnSave) btnSave.style.display = 'block';
+                });
+
+                function searchAddress() {
+                    const query = searchInput.value;
+                    if (!query) return;
+                    const originalBtnContent = btnSearch.innerHTML;
+                    btnSearch.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    btnSearch.disabled = true;
+
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`)
+                        .then(response => response.json())
+                        .then(data => {
+                            btnSearch.innerHTML = originalBtnContent;
+                            btnSearch.disabled = false;
+                            if (data && data.length > 0) {
+                                const lat = parseFloat(data[0].lat);
+                                const lon = parseFloat(data[0].lon);
+                                map.setView([lat, lon], 16);
+                                marker.setLatLng([lat, lon]);
+                                if (btnSave) btnSave.style.display = 'block';
+                                showStatus('<strong>Lieu trouvé :</strong> La carte a été centrée. Ajustez le marqueur si nécessaire.', 'info');
+                            } else {
+                                showStatus('<strong>Non trouvé :</strong> Adresse introuvable.', 'error');
+                            }
+                        })
+                        .catch(() => {
+                            btnSearch.innerHTML = originalBtnContent;
+                            btnSearch.disabled = false;
+                            showStatus('Erreur lors de la recherche.', 'error');
+                        });
+                }
+
+                if (btnSearch) btnSearch.addEventListener('click', searchAddress);
+                if (searchInput) searchInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') searchAddress(); });
+
+                if (btnSave) {
+                    btnSave.addEventListener('click', function() {
+                        const pos = marker.getLatLng();
+                        const originalContent = btnSave.innerHTML;
+                        btnSave.disabled = true;
+                        btnSave.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sauvegarde...';
+
+                        fetch("{{ route('account.update-location') }}", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify({ latitude: pos.lat, longitude: pos.lng })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            btnSave.disabled = false;
+                            btnSave.innerHTML = originalContent;
+                            if (data.success) {
+                                btnSave.style.display = 'none';
+                                showStatus('<strong>Succès :</strong> ' + data.message, 'success');
+                            } else {
+                                showStatus('<strong>Erreur :</strong> ' + data.message, 'error');
+                            }
+                        })
+                        .catch(() => {
+                            btnSave.disabled = false;
+                            btnSave.innerHTML = originalContent;
+                            showStatus('Erreur réseau.', 'error');
+                        });
+                    });
+                }
+
+                if (btnGeo) {
+                    btnGeo.addEventListener('click', function() {
+                        const originalContent = btnGeo.innerHTML;
+                        btnGeo.disabled = true;
+                        btnGeo.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recherche...';
+
+                        navigator.geolocation.getCurrentPosition(function(position) {
+                            const lat = position.coords.latitude;
+                            const lng = position.coords.longitude;
+                            btnGeo.disabled = false;
+                            btnGeo.innerHTML = originalContent;
+                            map.setView([lat, lng], 18);
+                            marker.setLatLng([lat, lng]);
+                            if (btnSave) btnSave.style.display = 'block';
+                            showStatus('<strong>Position détectée :</strong> Ajustez le marqueur si nécessaire, puis validez.', 'info');
+                        }, function(error) {
+                            btnGeo.disabled = false;
+                            btnGeo.innerHTML = originalContent;
+                            showStatus('Erreur de géolocalisation.', 'error');
+                        }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+                    });
+                }
+            }
+        });
     </script>
 @endpush

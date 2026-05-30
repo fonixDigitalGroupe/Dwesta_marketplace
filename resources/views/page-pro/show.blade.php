@@ -122,7 +122,7 @@
     
     .mentions-legales {
         font-size: 0.75rem;
-        color: #004aad; /* Professional blue as requested */
+        color: {{ $pagePro->couleur_primaire ?? '#004aad' }};
         text-decoration: none;
         display: inline-flex;
         align-items: center;
@@ -132,7 +132,7 @@
     }
 
     .mentions-legales:hover {
-        color: #004aad;
+        filter: brightness(0.9);
         text-decoration: underline;
     }
 
@@ -389,7 +389,7 @@
     }
 
     .btn-price-ok {
-        background: #004aad; /* Bleu Header */
+        background: {{ $pagePro->couleur_primaire ?? '#004aad' }}; /* Dynamic Theme Color */
         color: #fff;
         border: none;
         padding: 5px 12px;
@@ -401,7 +401,7 @@
     }
 
     .btn-price-ok:hover {
-        background: #003a8a;
+        filter: brightness(0.9);
     }
 
     /* Checkbox list (Shipping & Reviews) */
@@ -420,7 +420,7 @@
         width: 16px;
         height: 16px;
         cursor: pointer;
-        accent-color: #004aad;
+        accent-color: {{ $pagePro->couleur_primaire ?? '#004aad' }};
     }
 
     .star-rating {
@@ -534,13 +534,13 @@
     }
 
     .sort-about-link a {
-        color: #004aad; /* Bleu Header */
+        color: {{ $pagePro->couleur_primaire ?? '#004aad' }}; /* Dynamic Theme Color */
         text-decoration: underline;
         font-weight: 600;
     }
 
     .sort-about-link a:hover {
-        color: #003a8a;
+        filter: brightness(0.9);
     }
 
 
@@ -787,9 +787,6 @@
                 <span class="shop-rating-stars"><i class="fas fa-star"></i> {{ number_format($boutique_rating, 1, ',', '') }}/5</span>
                 <span>sur {{ number_format($boutique_sales, 0, ',', ' ') }} {{ $boutique_sales > 1 ? 'ventes' : 'vente' }}</span>
             </div>
-            <a href="#" class="mentions-legales">
-                <i class="fas fa-info-circle"></i> Mentions légales
-            </a>
         </div>
 
         <form action="{{ route('page-pro.show', $pagePro->slug) }}" method="GET" class="shop-search-container">
@@ -854,14 +851,13 @@
                 <div style="margin-bottom: 20px;">
                     <div class="sidebar-subtitle">Options d'expédition</div>
                     <label class="filter-item">
-                        <input type="checkbox"> <span>Livraison gratuite</span>
+                        <input type="checkbox" class="shipping-checkbox" data-val="retrait_point_relais" {{ request('shipping') == 'retrait_point_relais' ? 'checked' : '' }}> <span>Retrait en point retrait</span>
                     </label>
                     <label class="filter-item">
-                        <input type="checkbox"> <span>Livraison rapide</span>
+                        <input type="checkbox" class="shipping-checkbox" data-val="retrait_boutique" {{ request('shipping') == 'retrait_boutique' ? 'checked' : '' }}> <span>Retrait en boutique</span>
                     </label>
                     <label class="filter-item">
-                        <input type="checkbox" checked> 
-                        <span>Expédié par <span style="font-weight:900; color:#000;">Kar</span><span style="font-weight:900; color:#bf0000;">nou</span></span>
+                        <input type="checkbox" class="shipping-checkbox" data-val="livraison_point_special" {{ request('shipping') == 'livraison_point_special' ? 'checked' : '' }}> <span>Livraison en point spécial</span>
                     </label>
                 </div>
 
@@ -1001,7 +997,6 @@
                             </select>
                             <i class="fas fa-chevron-down" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); font-size:0.65rem; color:#999; pointer-events:none;"></i>
                         </div>
-                        <div class="sort-about-link">A propos de <a href="#">«&nbsp;Meilleures ventes&nbsp;»</a></div>
                     </div>
                 </div>
 
@@ -1177,6 +1172,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 params.set(`filters[${filterId}]`, this.dataset.val);
             } else {
                 params.delete(`filters[${filterId}]`);
+            }
+
+            window.location.href = window.location.pathname + '?' + params.toString();
+        });
+    });
+
+    // Filtrage par mode d'expédition
+    document.querySelectorAll('.shipping-checkbox').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            // Décocher les autres
+            document.querySelectorAll('.shipping-checkbox').forEach(cb => {
+                if (cb !== this) cb.checked = false;
+            });
+
+            const params = new URLSearchParams(window.location.search);
+            params.delete('page');
+
+            if (this.checked) {
+                params.set('shipping', this.dataset.val);
+            } else {
+                params.delete('shipping');
             }
 
             window.location.href = window.location.pathname + '?' + params.toString();

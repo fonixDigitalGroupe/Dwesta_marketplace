@@ -1,322 +1,314 @@
 @extends('layouts.app')
 
 @push('styles')
-    <style>
-        :root {
-            --primary-blue: #004aad;
-            --primary-orange: #f68b1e;
-            --success-green: #00a650;
-            --pending-orange: #f39c12;
-            --text-main: #333;
-            --text-muted: #666;
-            --bg-gray: #f5f5f5;
-            --border-color: #eee;
-        }
+<style>
+    .wallet-page {
+        max-width: 900px;
+    }
 
-        /* Layout & Typography */
-        .wallet-card {
-            background: #fff;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-        }
+    .section-title {
+        font-size: 0.8rem;
+        font-weight: 800;
+        color: #000;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-        .rakuten-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin: 2rem 0 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
+    .section-title i {
+        color: #f68b1e;
+    }
 
-        /* Summary Bar */
-        .summary-bar {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-        }
+    /* Balance Dashboard Card (Matches Gift Card) */
+    .wallet-balance-card {
+        background: linear-gradient(135deg, #004aad 0%, #1a5ccc 100%);
+        border-radius: 16px;
+        padding: 2.5rem;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 2.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+    
+    .wallet-balance-card::before {
+        content: '';
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.06);
+        top: -100px;
+        right: -100px;
+    }
 
-        .summary-item {
-            background: #fff;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
+    .balance-details {
+        position: relative;
+        z-index: 2;
+    }
 
-        .summary-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
+    .balance-label {
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.75;
+        margin-bottom: 0.5rem;
+    }
 
-        .summary-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .balance-amount {
+        font-size: 3rem;
+        font-weight: 900;
+        line-height: 1;
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+    }
 
-        .summary-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+    .balance-amount small {
+        font-size: 1.25rem;
+        font-weight: 600;
+        opacity: 0.7;
+    }
 
-        .summary-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
+    .btn-withdraw-payout {
+        background: #f68b1e;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 2.5rem;
+        font-size: 0.9rem;
+        font-weight: 800;
+        cursor: pointer;
+        text-transform: uppercase;
+        transition: all 0.2s;
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-        .summary-icon.orange { background: #fff5eb; color: var(--primary-orange); }
-        .summary-icon.blue { background: #ebf5ff; color: var(--primary-blue); }
+    .btn-withdraw-payout:hover {
+        background: #e07a10;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(246, 139, 30, 0.3);
+    }
 
-        .summary-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #000;
-            line-height: 1.2;
-        }
+    /* History Table (Matches Gift Cards Mes cartes achetées) */
+    .table-history {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
 
-        .summary-desc {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
+    .table-history th {
+        text-align: left;
+        padding: 0.75rem 1rem;
+        background: #fff;
+        color: #888;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        border-bottom: 1px solid #eee;
+    }
 
-        /* Buttons */
-        .btn-withdraw {
-            background: var(--primary-blue);
-            color: #fff;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 6px;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 0.9rem;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: background 0.2s;
-            width: fit-content;
-        }
+    .table-history td {
+        padding: 1.25rem 1rem;
+        border-bottom: 1px solid #f9f9f9;
+        vertical-align: middle;
+    }
 
-        .btn-withdraw:hover {
-            background: #003a8c;
-            color: #fff;
-        }
+    .status-badge {
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        display: inline-block;
+    }
 
-        /* Table */
-        .table-container {
-            background: #fff;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
+    .status-available { background: #e8f5e9; color: #2e7d32; }
+    .status-pending { background: #fff8e6; color: #f68b1e; }
+    .status-withdrawn { background: #f5f5f5; color: #777; }
 
-        .table-rakuten {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    .amount-positive { color: #2e7d32; font-weight: 800; }
+    .amount-negative { color: #d32f2f; font-weight: 800; }
 
-        .table-rakuten th {
-            text-align: left;
-            padding: 1.25rem;
-            background: #fafafa;
-            border-bottom: 1px solid var(--border-color);
-            color: #777;
-            font-weight: 700;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
+    /* Modal Styling */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        backdrop-filter: blur(4px);
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
 
-        .table-rakuten td {
-            padding: 1.25rem;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 0.9rem;
-            color: var(--text-main);
-        }
+    .modal-container {
+        background: #fff;
+        width: 100%;
+        max-width: 440px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
 
-        .table-rakuten tr:last-child td { border-bottom: none; }
+    .modal-header {
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fafafa;
+    }
 
-        .table-rakuten tr:hover td { background-color: #f9f9f9; }
+    .modal-header h3 { margin: 0; font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* Status Badges */
-        .status-badge {
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
-            text-transform: uppercase;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
+    .payment-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
 
-        .status-available { background: #e6f7ef; color: #00a650; }
-        .status-pending { background: #fff8e6; color: #f39c12; }
-        .status-withdrawn { background: #f5f5f5; color: #888; }
+    .payment-option {
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
 
-        .amount-positive { color: #00a650; font-weight: 700; }
-        .amount-negative { color: #e74c3c; font-weight: 700; }
+    .payment-option:hover { border-color: #f68b1e; background: #fffbf8; }
+    .payment-option.active { border-color: #f68b1e; background: #fffbf8; box-shadow: inset 0 0 0 1px #f68b1e; }
+    .payment-option img { height: 35px; }
+    .payment-option span { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
 
-        /* Modal */
-        .custom-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-
-        .custom-modal-content {
-            background: #fff;
-            width: 100%;
-            max-width: 480px;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            overflow: hidden;
-        }
-
-        @media (max-width: 768px) {
-            .summary-bar { grid-template-columns: 1fr; }
-        }
-    </style>
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #666; margin-bottom: 0.5rem; }
+    .form-group input { 
+        width: 100%; 
+        padding: 10px 14px; 
+        border: 1px solid #ddd; 
+        border-radius: 8px; 
+        font-size: 1rem; 
+        font-weight: 700;
+        outline: none;
+    }
+    .form-group input:focus { border-color: #004aad; }
+</style>
 @endpush
 
 @section('content')
+<div class="dashboard-container">
+    @include('partials.profile-sidebar')
 
-    <div class="dashboard-container">
-        @include('partials.profile-sidebar')
+    <main class="main-content wallet-page">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+            <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Mon Portefeuille</h1>
+        </div>
 
-        <main class="main-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid #eee;">
-                <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Mon Portefeuille</h1>
+        @if(session('success'))
+            <div style="background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #c8e6c9; font-size: 0.9rem;">
+                {{ session('success') }}
             </div>
+        @endif
 
-            @if(session('success'))
-                <div style="background: #f6fff6; color: #00a650; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem;">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            <div class="summary-bar">
-                <!-- Solde Disponible -->
-                <div class="summary-item">
-                    <div class="summary-header">
-                        <div class="summary-label">Portefeuille Actuel</div>
-                        <div class="summary-icon orange">
-                            <i class="fas fa-wallet"></i>
-                        </div>
-                    </div>
-                    <div class="summary-value">{{ number_format($availableBalance) }} <span style="font-size: 1rem; font-weight: 600;">FCFA</span></div>
-                    <div class="summary-desc">Fonds disponibles pour retrait immédiat.</div>
-                    <button class="btn-withdraw" onclick="openWithdrawModal()">
-                        <i class="fas fa-arrow-down-long"></i> Retirer des fonds
-                    </button>
-                </div>
-
-                <!-- Solde en Attente -->
-                <div class="summary-item">
-                    <div class="summary-header">
-                        <div class="summary-label">En attente (Séquestre)</div>
-                        <div class="summary-icon blue">
-                            <i class="fas fa-history"></i>
-                        </div>
-                    </div>
-                    <div class="summary-value">{{ number_format($pendingBalance) }} <span style="font-size: 1rem; font-weight: 600;">FCFA</span></div>
-                    <div class="summary-desc">En attente de libération ({{ $pendingTransactions->count() }} transaction{{ $pendingTransactions->count() > 1 ? 's' : '' }}).</div>
-                </div>
+        @if(session('error'))
+            <div style="background: #ffebee; color: #c62828; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #ffcdd2; font-size: 0.9rem;">
+                {{ session('error') }}
             </div>
+        @endif
 
-            <!-- Historique -->
-            <div class="rakuten-title">
-                <i class="fas fa-list-ul"></i> Historique des Transactions
+        <!-- Card Balance (Design aligned with Gift Card Checker) -->
+        <div class="wallet-balance-card">
+            <div class="balance-details">
+                <div class="balance-label">Solde disponible</div>
+                <div class="balance-amount">
+                    {{ number_format($availableBalance, 0, ',', ' ') }}
+                    <small>FCFA</small>
+                </div>
             </div>
             
-            <div class="table-container">
-                <table class="table-rakuten">
+            <button class="btn-withdraw-payout" onclick="openPayout()">
+                <i class="fas fa-arrow-right-to-bracket" style="transform: rotate(-90deg);"></i>
+                Retirer des fonds
+            </button>
+        </div>
+
+        @if($pendingBalance > 0)
+        <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-clock" style="color: #f68b1e; font-size: 1.1rem;"></i>
+                <span style="font-size: 0.85rem; font-weight: 700; color: #666; text-transform: uppercase;">Libération prévue</span>
+            </div>
+            <div style="font-size: 1.1rem; font-weight: 800; color: #000;">
+                {{ number_format($pendingBalance, 0, ',', ' ') }} <small style="font-size: 0.8rem; opacity: 0.6;">FCFA</small>
+            </div>
+        </div>
+        @endif
+
+        <!-- History Transactions -->
+        <div class="gift-card-box">
+            <h2 class="section-title">
+                Historique des transactions
+            </h2>
+            <div style="overflow-x: auto; border: 1px solid #eee; border-radius: 8px;">
+                <table class="table-history">
                     <thead>
                         <tr>
+                            <th>Détails</th>
+                            <th style="text-align: right;">Montant</th>
+                            <th style="text-align: center;">Statut</th>
                             <th>Date</th>
-                            <th>Description</th>
-                            <th>Montant</th>
-                            <th>Statut</th>
-                            <th style="text-align: right;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($recentTransactions as $transaction)
+                        @forelse($recentTransactions as $tx)
                             <tr>
                                 <td>
-                                    <div style="font-weight: 700;">{{ $transaction->created_at->format('d/m/Y') }}</div>
-                                    <div style="font-size: 0.75rem; color: #999;">{{ $transaction->created_at->format('H:i') }}</div>
+                                    <div style="font-weight: 800; color: #000;">
+                                        @if($tx->order_id)
+                                            Vente #{{ $tx->order->reference }}
+                                        @else
+                                            {{ ($tx->metadata['type'] ?? '') == 'withdrawal' ? 'Retrait Mobile Money' : 'Ajustement' }}
+                                        @endif
+                                    </div>
+                                    <div style="font-size: 0.7rem; color: #999; font-family: monospace;">{{ $tx->reference_externe }}</div>
                                 </td>
-                                <td>
-                                    @if($transaction->order_id)
-                                        <div style="font-weight: 600;">Vente #{{ $transaction->order->reference }}</div>
-                                        <div style="font-size: 0.75rem; color: #888;">ID: {{ $transaction->reference_externe }}</div>
-                                    @else
-                                        <div style="font-weight: 600;">
-                                            {{ ($transaction->metadata['type'] ?? '') == 'withdrawal' ? 'Retrait de fonds' : 'Transaction' }}
-                                        </div>
-                                        <div style="font-size: 0.75rem; color: #888;">{{ $transaction->reference_externe }}</div>
-                                    @endif
+                                <td class="{{ $tx->montant > 0 ? 'amount-positive' : 'amount-negative' }}" style="text-align: right; font-size: 1rem;">
+                                    {{ $tx->montant > 0 ? '+' : '' }}{{ number_format($tx->montant, 0, ',', ' ') }} <small style="font-size: 0.75rem;">FCFA</small>
                                 </td>
-                                <td class="{{ $transaction->montant > 0 ? 'amount-positive' : 'amount-negative' }}">
-                                    {{ $transaction->montant > 0 ? '+' : '' }}{{ number_format($transaction->montant) }} FCFA
+                                <td style="text-align: center;">
+                                    @php
+                                        $s = $tx->wallet_status;
+                                        $label = $s == 'available' ? 'Disponible' : ($s == 'pending' ? 'En attente' : 'Retiré');
+                                        $badge = $s == 'available' ? 'available' : ($s == 'pending' ? 'pending' : 'withdrawn');
+                                    @endphp
+                                    <span class="status-badge status-{{ $badge }}">{{ $label }}</span>
                                 </td>
-                                <td>
-                                    @if($transaction->wallet_status == 'pending')
-                                        <span class="status-badge status-pending">
-                                            <i class="fas fa-clock"></i> En attente
-                                        </span>
-                                        <div style="font-size: 0.7rem; color: #999; margin-top: 3px;">Libéré le {{ $transaction->release_at->format('d/m/Y') }}</div>
-                                    @elseif($transaction->wallet_status == 'available')
-                                        <span class="status-badge status-available">
-                                            <i class="fas fa-check"></i> Disponible
-                                        </span>
-                                    @elseif($transaction->wallet_status == 'withdrawn')
-                                        <span class="status-badge status-withdrawn">
-                                            <i class="fas fa-paper-plane"></i> Retiré
-                                        </span>
-                                    @endif
-                                </td>
-                                <td style="text-align: right;">
-                                    @if($transaction->order_id)
-                                        <a href="{{ route('vendeur.orders.show', $transaction->order_id) }}" style="color: var(--primary-blue); font-size: 1rem;">
-                                            <i class="fas fa-circle-info"></i>
-                                        </a>
-                                    @endif
-                                </td>
+                                <td style="color: #777; font-size: 0.85rem;">{{ $tx->created_at->format('d/m/Y') }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" style="text-align: center; padding: 4rem; color: #999;">
-                                    <i class="fas fa-receipt" style="font-size: 2rem; display: block; margin-bottom: 1rem; opacity: 0.2;"></i>
-                                    Aucune transaction pour le moment
+                                <td colspan="5" style="text-align: center; padding: 4rem; color: #999; font-size: 0.9rem;">
+                                    Aucun mouvement enregistré.
                                 </td>
                             </tr>
                         @endforelse
@@ -329,70 +321,72 @@
                     {{ $recentTransactions->links() }}
                 </div>
             @endif
-        </main>
-    </div>
+        </div>
+    </main>
+</div>
 
-    <!-- Modal de Retrait -->
-    <div id="withdrawModalOverlay" class="custom-modal-overlay" style="display: {{ request()->has('withdraw') ? 'flex' : 'none' }};">
-        <div class="custom-modal-content">
-            <form action="{{ route('vendeur.wallet.withdraw') }}" method="POST">
-                @csrf
-                <div style="padding: 1.5rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #fafafa;">
-                    <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: #333;">Demande de retrait</h3>
-                    <button type="button" onclick="closeWithdrawModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #999;">&times;</button>
+<!-- Modal Payout -->
+<div id="payoutModal" class="modal-overlay" style="display: {{ request()->has('withdraw') ? 'flex' : 'none' }};">
+    <div class="modal-container">
+        <form action="{{ route('vendeur.wallet.withdraw') }}" method="POST">
+            @csrf
+            <div class="modal-header">
+                <h3>Demande de retrait</h3>
+                <button type="button" onclick="closePayout()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #bbb;">&times;</button>
+            </div>
+            
+            <div style="padding: 1.5rem;">
+                <div style="background: #f8fafc; border: 1px solid #eee; padding: 1.25rem; border-radius: 10px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #888;">Disponible</span>
+                    <b style="font-size: 1.25rem; font-weight: 800; color: #004aad;">{{ number_format($availableBalance, 0, ',', ' ') }} FCFA</b>
                 </div>
-                
-                <div style="padding: 1.5rem;">
-                    <div style="background: #fff8f1; border: 1px solid #ffe0b2; padding: 1.25rem; border-radius: 10px; margin-bottom: 1.5rem;">
-                        <span style="font-size: 0.75rem; color: #e65100; font-weight: 700; text-transform: uppercase;">Disponible</span>
-                        <div style="font-size: 1.75rem; font-weight: 800; color: #000;">{{ number_format($availableBalance) }} <span style="font-size: 1rem;">FCFA</span></div>
+
+                <div class="form-group">
+                    <label>Montant à retirer</label>
+                    <div style="position: relative;">
+                        <input type="number" name="montant" max="{{ $availableBalance }}" min="1" required placeholder="0">
+                        <span style="position: absolute; right: 14px; top: 10px; font-weight: 800; color: #bbb; font-size: 0.8rem;">FCFA</span>
                     </div>
-                    
-                    <div style="margin-bottom: 1.5rem;">
-                        <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 0.5rem;">Montant à retirer</label>
-                        <div style="position: relative;">
-                            <input type="number" name="montant" max="{{ $availableBalance }}" min="1" required 
-                                   style="width: 100%; padding: 0.85rem; border: 1px solid #ddd; border-radius: 8px; font-size: 1.1rem; font-weight: 600;"
-                                   placeholder="0">
-                            <span style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); font-weight: 700; color: #999;">FCFA</span>
+                </div>
+
+                <div class="form-group">
+                    <label>Numéro de téléphone</label>
+                    <input type="text" name="telephone" required value="{{ $user->telephone }}" placeholder="7x xxx xx xx">
+                </div>
+
+                <div class="form-group">
+                    <label>Mode de paiement</label>
+                    <div class="payment-grid">
+                        <div class="payment-option active" onclick="selectPay('om', this)">
+                            <img src="{{ asset('images/logoOM.png') }}" alt="OM">
+                            <span>Orange Money</span>
+                        </div>
+                        <div class="payment-option" onclick="selectPay('wave', this)">
+                            <img src="{{ asset('images/logowave.png') }}" alt="Wave">
+                            <span>Wave Cash</span>
                         </div>
                     </div>
-
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 0.5rem;">Mode de paiement</label>
-                        <select name="moyen" required style="width: 100%; padding: 0.85rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; background: #fff;">
-                            <option value="om">Orange Money</option>
-                            <option value="momo">MTN Mobile Money</option>
-                            <option value="virement">Virement bancaire</option>
-                        </select>
-                    </div>
+                    <input type="hidden" name="moyen" id="pay_method" value="om">
                 </div>
 
-                <div style="padding: 1.25rem 1.5rem; background: #fafafa; border-top: 1px solid #eee; display: flex; justify-content: flex-end; gap: 1rem;">
-                    <button type="button" onclick="closeWithdrawModal()" style="background: none; border: 1px solid #ddd; padding: 0.7rem 1.2rem; border-radius: 6px; font-weight: 600; cursor: pointer;">Annuler</button>
-                    <button type="submit" class="btn-withdraw" {{ $availableBalance <= 0 ? 'disabled' : '' }}>
-                        Confirmer le retrait
-                    </button>
-                </div>
-            </form>
-        </div>
+                <button type="submit" style="width: 100%; padding: 14px; background: #f68b1e; color: #fff; border: none; border-radius: 8px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; cursor: pointer; margin-top: 1rem;" {{ $availableBalance <= 0 ? 'disabled' : '' }}>
+                    Confirmer le transfert
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 
-    @push('scripts')
-    <script>
-        function openWithdrawModal() {
-            document.getElementById('withdrawModalOverlay').style.display = 'flex';
-        }
-        function closeWithdrawModal() {
-            document.getElementById('withdrawModalOverlay').style.display = 'none';
-        }
-        // Fermer en cliquant en dehors
-        window.onclick = function(event) {
-            let modal = document.getElementById('withdrawModalOverlay');
-            if (event.target == modal) {
-                closeWithdrawModal();
-            }
-        }
-    </script>
-    @endpush
+@push('scripts')
+<script>
+    function selectPay(m, el) {
+        document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('active'));
+        el.classList.add('active');
+        document.getElementById('pay_method').value = m;
+    }
+    function openPayout() { document.getElementById('payoutModal').style.display = 'flex'; }
+    function closePayout() { document.getElementById('payoutModal').style.display = 'none'; }
+    window.onclick = function(e) { if(e.target == document.getElementById('payoutModal')) closePayout(); }
+</script>
+@endpush
 @endsection

@@ -4,10 +4,6 @@
 
 @push('styles')
     <style>
-        html, body, .dashboard-container, .main-content {
-            background-color: #fff !important;
-        }
-
         /* Styles spécifiques à la page compte */
 
         .account-header {
@@ -41,7 +37,6 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .jumia-card-header {
@@ -83,7 +78,7 @@
         }
 
         .jumia-link {
-            color: #004aad;
+            color: #f68b1e;
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 500;
@@ -241,6 +236,55 @@
         .security-alert a {
             color: #0099ff;
             text-decoration: underline;
+        }
+
+        .profile-completion-alert {
+            background-color: #f0fbf0;
+            border: 1px solid #ccebcc;
+            padding: 1rem;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            color: #1b5e20;
+        }
+
+        .profile-completion-alert i {
+            font-size: 1.5rem;
+            color: #4caf50;
+        }
+
+        .profile-completion-alert .alert-content {
+            flex: 1;
+        }
+
+        .profile-completion-alert h4 {
+            margin: 0 0 5px 0;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .profile-completion-alert p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .profile-completion-alert .btn-complete {
+            background: #4caf50;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .profile-completion-alert .btn-complete:hover {
+            background: #43a047;
         }
 
         .survey-section {
@@ -506,6 +550,7 @@
         .user-icon { color: #e91e63; }
         .finance-icon { color: #607d8b; }
         .comm-icon { color: #673ab7; }
+
     </style>
 @endpush
 
@@ -520,6 +565,20 @@
             </div>
 
             @php $u = auth()->user(); @endphp
+
+            {{-- Alerte complétion profil si info manquante --}}
+            @if(!$u->adresse || !$u->latitude || !$u->longitude)
+                <div class="profile-completion-alert">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <div class="alert-content">
+                        <h4>Complétez votre profil !</h4>
+                        <p>Afin de profiter pleinement de Mady Market, veuillez renseigner votre adresse et votre position géographique.</p>
+                    </div>
+                    <a href="{{ route('profile.show') }}#profile-geolocation-section" class="btn-complete">
+                        Compléter mon profil
+                    </a>
+                </div>
+            @endif
 
             <div class="jumia-grid">
                 <!-- Informations personnelles -->
@@ -556,14 +615,20 @@
             </div>
 
             <div class="jumia-grid" style="grid-template-columns: 1fr;">
-                <!-- Préférences de communication -->
+                <!-- Localisation & Préférences -->
                 <div class="jumia-card">
                     <div class="jumia-card-header">
-                        <h2>Préférences de communication</h2>
+                        <h2>Localisation & Préférences</h2>
                     </div>
                     <div class="jumia-card-body">
-                        <p>Gérez vos communications par e-mail pour rester informé des dernières nouvelles et offres.</p>
-                        <a href="#" class="jumia-link">Modifier les préférences de communication</a>
+                        <p class="top-text">Votre localisation actuelle :</p>
+                        <p class="sub-text">{{ $u->nationalite ?? 'Non définie' }}</p>
+                        <p class="sub-text" id="user-address">{{ $u->adresse ?? 'Aucune adresse enregistrée' }}</p>
+                        
+
+                        <div style="margin-top: 1rem;" id="manage-location-link-container">
+                            <a href="{{ route('profile.show') }}#profile-geolocation-section" class="jumia-link" style="margin-top: 0;">Gérer ma localisation et mes préférences</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -571,3 +636,4 @@
         </main>
     </div>
 @endsection
+

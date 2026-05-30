@@ -22,7 +22,7 @@
         <div class="content">
             <p>Bonjour <strong>{{ $vendeurAbonnement->vendeur->identite }}</strong>,</p>
             
-            <p>Nous avons le plaisir de vous confirmer l'activation de votre nouvel abonnement sur <strong>Karnou / Dwesta Marketplace</strong>.</p>
+            <p>Nous avons le plaisir de vous confirmer l'activation de votre nouvel abonnement sur <strong>Karnou Marketplace</strong>.</p>
             
             <div class="plan-box">
                 <div class="plan-name">{{ $vendeurAbonnement->abonnement->nom }}</div>
@@ -43,7 +43,7 @@
             <p>L'équipe Karnou</p>
         </div>
         <div class="footer">
-            &copy; {{ date('Y') }} Dwesta Marketplace. Tous droits réservés.<br>
+            &copy; {{ date('Y') }} Karnou Marketplace. Tous droits réservés.<br>
             Ceci est un message automatique, merci de ne pas y répondre directement.
         </div>
     </div>

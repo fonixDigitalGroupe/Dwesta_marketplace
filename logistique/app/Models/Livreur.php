@@ -16,6 +16,8 @@ class Livreur extends Model
         'statut_verification',
         'raison_rejet',
         'actif',
+        'latitude',
+        'longitude',
     ];
 
     protected $casts = [

@@ -10,15 +10,23 @@ class PointRelais extends Model
 
     protected $fillable = [
         'nom',
+        'email',
         'adresse',
         'pays',
         'region',
-        'latitude',
-        'longitude',
         'google_maps_url',
         'telephone',
         'horaires',
         'is_active',
+        'latitude',
+        'longitude',
+    ];
+
+    protected $casts = [
+        'horaires'  => 'array',
+        'is_active' => 'boolean',
+        'latitude'  => 'float',
+        'longitude' => 'float',
     ];
 
     public function users()

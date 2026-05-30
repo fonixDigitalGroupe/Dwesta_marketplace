@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\GiftCard;
 use App\Models\GiftCardOption;
+use App\Models\CreditTransaction;
 use App\Services\CreditService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,9 +14,12 @@ class GiftCardController extends Controller
 {
     protected $creditService;
 
-    public function __construct(CreditService $creditService)
+    protected $payDunyaService;
+
+    public function __construct(CreditService $creditService, \App\Services\PayDunyaService $payDunyaService)
     {
         $this->creditService = $creditService;
+        $this->payDunyaService = $payDunyaService;
     }
 
     /**
@@ -73,7 +77,9 @@ class GiftCardController extends Controller
             $this->creditService->addCredits(
                 $user,
                 (int)$amountToRedeem,
-                "Utilisation de la carte cadeau : {$giftCard->code}"
+                "Utilisation de la carte cadeau : {$giftCard->code}",
+                'gift_card_redeem',
+                $giftCard
             );
 
             // Mettre à jour la carte cadeau
@@ -95,7 +101,7 @@ class GiftCardController extends Controller
     }
 
     /**
-     * Acheter une carte cadeau via Stripe
+     * Acheter une carte cadeau via PayDunya
      */
     public function buy(Request $request)
     {
@@ -106,55 +112,116 @@ class GiftCardController extends Controller
         $user = Auth::user();
         
         try {
-            $stripeService = new \App\Services\StripeService();
-            $session = $stripeService->createGiftCardSession(
-                $user, 
+            $session = $this->payDunyaService->createCheckoutSession(
                 $request->amount,
-                route('gift-cards.success'),
-                route('gift-cards.index')
+                "Achat de Carte Cadeau Dwesta",
+                route('paydunya.success'), 
+                route('gift-cards.index'),
+                [
+                    'user_id' => $user->id,
+                    'amount' => $request->amount,
+                    'type' => 'gift_card_purchase'
+                ]
             );
 
             return redirect($session->url);
         } catch (\Exception $e) {
-            return back()->with('error', 'Erreur Stripe : ' . $e->getMessage());
+            return back()->with('error', 'Erreur PayDunya : ' . $e->getMessage());
         }
     }
 
     /**
-     * Succès du paiement de la carte cadeau
+     * Retour succès (Legacy Stripe - redirected)
      */
     public function success(Request $request)
     {
-        $sessionId = $request->get('session_id');
-        $user = Auth::user();
+        return redirect()->route('gift-cards.index')->with('success', 'Votre paiement est en cours de traitement.');
+    }
 
-        if (!$sessionId) {
-            return redirect()->route('gift-cards.index');
+    /**
+     * Supprimer une carte cadeau
+     */
+    public function destroy(GiftCard $giftCard)
+    {
+        // Vérifier que c'est bien l'acheteur qui supprime
+        if ($giftCard->buyer_id !== Auth::id()) {
+            abort(403);
         }
 
-        try {
-            $stripeService = new \App\Services\StripeService();
-            $session = $stripeService->getSession($sessionId);
+        $giftCard->delete();
 
-            if ($session->payment_status === 'paid') {
-                $amount = $session->metadata->amount;
+        return back()->with('success', 'Votre carte cadeau a été supprimée avec succès.');
+    }
 
-                // Créer la carte cadeau effectivement
-                $giftCard = GiftCard::create([
-                    'code' => GiftCard::generateCode(),
-                    'amount' => $amount,
-                    'balance' => $amount,
-                    'status' => 'active',
-                    'buyer_id' => $user->id,
-                    'expiry_date' => now()->addYear(),
-                ]);
+    /**
+     * Vérifier le solde d'une carte cadeau (AJAX)
+     */
+    public function checkBalance(Request $request)
+    {
+        $request->validate(['code' => 'required|string']);
+        $code = strtoupper(trim($request->code));
+        $giftCard = GiftCard::where('code', $code)->first();
 
-                return redirect()->route('gift-cards.index')->with('success', "Paiement réussi ! Votre carte cadeau a été générée. Code : " . $giftCard->code);
-            }
-        } catch (\Exception $e) {
-            return redirect()->route('gift-cards.index')->with('error', 'Erreur lors de la vérification du paiement.');
+        if (!$giftCard) {
+            return response()->json(['success' => false, 'message' => 'Code introuvable.']);
         }
 
-        return redirect()->route('gift-cards.index');
+        if ($giftCard->expiry_date && $giftCard->expiry_date->isPast()) {
+            $giftCard->update(['status' => 'expired']);
+        }
+
+        return response()->json([
+            'success' => true,
+            'code' => $giftCard->code,
+            'amount' => (int)$giftCard->amount,
+            'balance' => (int)$giftCard->balance,
+            'status' => $giftCard->status,
+            'expiry' => $giftCard->expiry_date ? $giftCard->expiry_date->format('d/m/Y') : null,
+        ]);
+    }
+
+    /**
+     * Appliquer une carte cadeau lors du checkout (AJAX)
+     */
+    public function applyToCheckout(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+            'total' => 'required|numeric'
+        ]);
+
+        $code = strtoupper(trim($request->code));
+        $giftCard = GiftCard::where('code', $code)->first();
+
+        if (!$giftCard) {
+            return response()->json(['success' => false, 'message' => 'Code de carte cadeau invalide.'], 404);
+        }
+
+        if ($giftCard->status !== 'active' || $giftCard->balance <= 0) {
+            return response()->json(['success' => false, 'message' => 'Cette carte a déjà été utilisée ou est expirée.'], 400);
+        }
+
+        if ($giftCard->expiry_date && $giftCard->expiry_date->isPast()) {
+            $giftCard->update(['status' => 'expired']);
+            return response()->json(['success' => false, 'message' => 'Cette carte cadeau est expirée.'], 400);
+        }
+
+        $deduction = min($giftCard->balance, $request->total);
+        $newTotal = $request->total - $deduction;
+
+        // On stocke temporairement en session l'intention d'utiliser cette carte
+        session(['applied_gift_card' => [
+            'id' => $giftCard->id,
+            'code' => $giftCard->code,
+            'amount' => $deduction
+        ]]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Carte appliquée avec succès.',
+            'deduction' => (int)$deduction,
+            'newTotal' => (int)$newTotal,
+            'balance_remaining' => (int)($giftCard->balance - $deduction)
+        ]);
     }
 }

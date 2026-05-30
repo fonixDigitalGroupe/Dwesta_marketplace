@@ -137,6 +137,12 @@ class SearchController extends Controller
             }
         }
 
+        // Filtre par mode d'expédition
+        if ($request->filled('shipping')) {
+            $shippingMethods = is_array($request->shipping) ? $request->shipping : [$request->shipping];
+            $query->whereIn('type_livraison', $shippingMethods);
+        }
+
         // Tri
         $sort = $request->get('sort', 'relevance');
         switch ($sort) {

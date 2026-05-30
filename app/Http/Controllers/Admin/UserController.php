@@ -16,6 +16,7 @@ class UserController extends Controller
         $search = $request->get('search');
         $perPage = $request->get('per_page', 8);
         $role = $request->get('role', 'admin');
+        if ($role === 'client') $role = 'acheteur';
 
         $query = User::latest();
 
@@ -31,7 +32,7 @@ class UserController extends Controller
 
         // Filtre par rôle
         if ($role === 'admin') {
-            $query->role('admin');
+            $query->role(['admin', 'point relais']);
         } elseif ($role === 'vendeur_pro') {
             $query->whereHas('vendeur', function($q) {
                 $q->where('type', 'professionnel');
@@ -58,9 +59,36 @@ class UserController extends Controller
             $query->where('civilite', $request->civilite);
         }
 
+        // Nouveau Filtre: Type de Vendeur
+        $typeVendeur = $request->get('type_vendeur');
+        if (!empty($typeVendeur)) {
+            $query->whereHas('vendeur', function($q) use ($typeVendeur) {
+                $q->where('type', $typeVendeur);
+            });
+        }
+
+        // Nouveau Filtre: Statut
+        $status = $request->get('status');
+        if (!empty($status)) {
+            if ($status === 'suspendu') {
+                $query->where('is_active', false);
+            } elseif ($status === 'attente') {
+                $query->where('is_active', true)->whereHas('vendeur', function($q) {
+                    $q->where('statut_verification', '!=', 'verifie');
+                });
+            } elseif ($status === 'actif') {
+                $query->where('is_active', true)->where(function($q) {
+                    $q->doesntHave('vendeur')
+                      ->orWhereHas('vendeur', function($v) {
+                          $v->where('statut_verification', 'verifie');
+                      });
+                });
+            }
+        }
+
         $users = $query->paginate($perPage)->withQueryString();
 
-        return view('admin.users.index', compact('users', 'role', 'search', 'perPage'));
+        return view('admin.users.index', compact('users', 'role', 'search', 'perPage', 'typeVendeur', 'status'));
     }
 
     /**
@@ -74,8 +102,6 @@ class UserController extends Controller
         // Rôles spécifiques demandés
         $roles = [
             'admin' => 'Administrateur',
-            'transporteur' => 'Transporteur',
-            'livreur' => 'Livreur',
             'point relais' => 'Point Relais',
         ];
 
@@ -92,7 +118,7 @@ class UserController extends Controller
             'nom' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|string|in:admin,transporteur,livreur,point relais',
+            'role' => 'required|string|in:admin,point relais',
             'telephone' => 'nullable|string',
             'nationalite' => 'nullable|string',
             'adresse' => 'nullable|string',
@@ -166,8 +192,6 @@ class UserController extends Controller
     {
         $roles = [
             'admin' => 'Administrateur',
-            'transporteur' => 'Transporteur',
-            'livreur' => 'Livreur',
             'point relais' => 'Point Relais',
         ];
         return view('admin.users.edit', compact('user', 'roles'));

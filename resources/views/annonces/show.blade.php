@@ -565,15 +565,15 @@
         <!-- Center: Main Image -->
         <div class="rk-main-image" style="background: #ffffff; border: 1px solid #f2f2f2; border-radius: 4px; overflow: hidden; position: relative;">
             @if($annonce->video)
-                <video id="display-video" controls autoplay muted style="max-width: 100%; max-height: 100%; border-radius: 12px;">
+                <video id="display-video" controls autoplay muted style="width: 100%; height: 100%; max-width: 100%; max-height: 100%; border-radius: 12px; object-fit: contain;">
                     <source src="{{ $annonce->video->url }}" type="video/mp4">
                     Votre navigateur ne supporte pas la lecture de vidéos.
                 </video>
-                <img id="display-image" src="" alt="{{ $annonce->titre }}" style="display: none; object-fit: contain;">
+                <img id="display-image" src="" alt="{{ $annonce->titre }}" style="display: none; width: 100%; height: 100%; object-fit: contain;">
             @else
                 @php $photoPrincipale = $annonce->photoPrincipale(); @endphp
                 @if($photoPrincipale)
-                    <img id="display-image" src="{{ $photoPrincipale->url }}" alt="{{ $annonce->titre }}">
+                    <img id="display-image" src="{{ $photoPrincipale->url }}" alt="{{ $annonce->titre }}" style="width: 100%; height: 100%; object-fit: contain;">
                 @else
                     <div id="display-image-fallback" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #ccc;">
                         <i class="fas fa-image" style="font-size: 5rem; margin-bottom: 1rem; opacity: 0.3;"></i>
@@ -645,6 +645,23 @@
                         <span class="rk-spec-value">{{ $annonce->category->nom }}</span>
                     </div>
                     @endif
+                    @if($annonce->type_livraison)
+                    <div class="rk-spec-separator" style="margin: 0 10px;">|</div>
+                    <div class="rk-spec-item">
+                        <span class="rk-spec-label"><i class="fas fa-truck" style="margin-right: 5px;"></i> Expédition :</span>
+                        <span class="rk-spec-value">
+                            @if($annonce->type_livraison == 'retrait_point_relais')
+                                Retrait en point retrait
+                            @elseif($annonce->type_livraison == 'retrait_boutique')
+                                Retrait en boutique
+                            @elseif($annonce->type_livraison == 'livraison_point_special')
+                                Livraison en point spécial
+                            @else
+                                {{ ucfirst(str_replace('_', ' ', $annonce->type_livraison)) }}
+                            @endif
+                        </span>
+                    </div>
+                    @endif
                 </div>
             </div>
 
@@ -690,12 +707,12 @@
                 </div>
             </div> <!-- Close rk-price-box -->
             
-            @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
-            <!-- Seller Info: Only shown for PRO sellers -->
+            @if($annonce->vendeur)
+            <!-- Seller Info: Shown for all sellers -->
             <div class="rk-seller-card" style="background: #ffffff; padding: 1.5rem 0; margin-top: 0.5rem; border-radius: 0; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;">
                 <div style="display: flex; align-items: center; gap: 1.25rem;">
                      <div class="rk-seller-avatar" style="width: 50px; height: 50px; background: #ffffff; border: 1px solid #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 2px;">
-                         @if($annonce->vendeur->pagePro && $annonce->vendeur->pagePro->logo)
+                         @if($annonce->vendeur->type === 'professionnel' && $annonce->vendeur->pagePro && $annonce->vendeur->pagePro->logo)
                             <img src="{{ Storage::url($annonce->vendeur->pagePro->logo) }}" alt="Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                          @else
                             <i class="fas fa-store" style="font-size: 1.2rem; color: #adb5bd;"></i>
@@ -706,22 +723,33 @@
                             <span style="font-size: 0.75rem; color: #6c757d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Vendeur vérifié</span>
                          </div>
                           <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                            <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" class="rk-seller-name" style="color: #1a1a1a; font-weight: 900; font-size: 1.1rem; text-decoration: none; transition: color 0.2s;">
-                                {{ $annonce->vendeur->identite }}
-                            </a>
-                            <span style="background: #ffffff; color: #333; font-size: 9px; font-weight: 900; padding: 1px 7px; letter-spacing: 1px; border-radius: 0; text-transform: uppercase; border: 1px solid #ddd;">PRO</span>
+                            @if($annonce->vendeur->type === 'professionnel')
+                                <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" class="rk-seller-name" style="color: #1a1a1a; font-weight: 900; font-size: 1.1rem; text-decoration: none; transition: color 0.2s;">
+                                    {{ $annonce->vendeur->identite }}
+                                </a>
+                                <span style="background: #ffffff; color: #333; font-size: 9px; font-weight: 900; padding: 1px 7px; letter-spacing: 1px; border-radius: 0; text-transform: uppercase; border: 1px solid #ddd;">PRO</span>
+                            @else
+                                <span class="rk-seller-name" style="color: #1a1a1a; font-weight: 900; font-size: 1.1rem;">
+                                    {{ $annonce->vendeur->identite ?? ($annonce->user->prenom . ' ' . $annonce->user->nom) }}
+                                </span>
+                                <span style="background: #f8f9fa; color: #666; font-size: 9px; font-weight: 900; padding: 1px 7px; letter-spacing: 1px; border-radius: 0; text-transform: uppercase; border: 1px solid #ddd;">Particulier</span>
+                            @endif
                          </div>
                      </div>
+                     @if($annonce->vendeur->type === 'professionnel')
                      <div style="padding-left: 1rem; border-left: 1px solid #eee;">
                         <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" style="font-size: 0.8rem; color: #ff8c00; font-weight: 700; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderBottom='1px solid #ff8c00'" onmouseout="this.style.borderBottom='1px solid transparent'">Voir la boutique</a>
                      </div>
+                     @else
+                     <div style="padding-left: 1rem; border-left: 1px solid #eee;">
+                        <a href="#" style="font-size: 0.8rem; color: #2196F3; font-weight: 700; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderBottom='1px solid #2196F3'" onmouseout="this.style.borderBottom='1px solid transparent'">Voir le profil</a>
+                     </div>
+                     @endif
                 </div>
             </div>
             @endif
 
         </div>
-    </div>
-
     </div>
 
     <!-- Reviews Section -->

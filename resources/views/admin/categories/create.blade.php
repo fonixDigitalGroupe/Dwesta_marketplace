@@ -4,82 +4,104 @@
 
 @push('styles')
     <style>
-        .main-content { background-color: #f8f9fa !important; }
         
-        /* Input Amazon Style */
+        /* Input Amazon Style Modernisé */
         input[type="text"], 
         input[type="number"], 
         textarea, 
         select {
             width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #adb1b8;
-            border-radius: 0;
-            font-size: 0.85rem;
+            padding: 10px 14px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.82rem;
             outline: none;
-            background: #fcfcfc;
-            color: #111;
+            background: #fff;
+            color: #475569;
+            transition: all 0.2s;
         }
 
         input:focus, textarea:focus, select:focus {
-            border-color: #e77600 !important;
-            
+            border-color: #ff9900 !important;
         }
 
         .amazon-card {
             background: #fff;
-            border: 1px solid #e7e7e7;
-            border-radius: 0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            padding: 25px;
+            border: 1px solid #eff3f6;
+            border-radius: 8px;
+            padding: 24px;
             margin-bottom: 20px;
         }
 
         .section-title {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #111;
-            margin-bottom: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 16px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #e7e7e7;
+            border-bottom: 1px solid #f1f5f9;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
         .field-label {
             display: block;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #111;
-            margin-bottom: 8px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
+        /* Buttons Alignés avec Index */
         .btn-amazon-primary {
-            background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff;
-            padding: 10px 24px;
-            border-radius: 0;
-            font-size: 0.85rem;
-            font-weight: 400;
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
             text-decoration: none;
-            box-shadow: 0 1px 0 rgba(255,255,255,.4) inset;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
             cursor: pointer;
-            text-align: center;
+            width: 100%;
         }
+
         .btn-amazon-primary:hover {
-            background: linear-gradient(180deg, #0069d9 0%, #004494 100%);
-            border-color: #003d82;
+            background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .btn-amazon-secondary {
-            background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
-            border: 1px solid #adb1b8;
-            color: #111;
-            padding: 10px 24px;
-            border-radius: 0;
-            font-size: 0.85rem;
-            font-weight: 400;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
             text-decoration: none;
-            box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
             cursor: pointer;
-            text-align: center;
+            width: 100%;
+        }
+
+        .btn-amazon-secondary:hover {
+            background: #f8fafc;
+            border-color: #dee2e6;
+            color: #1e293b;
         }
 
         .icon-btn {
@@ -89,31 +111,32 @@
             align-items: center;
             justify-content: center;
             background: #fff;
-            border: 1px solid #adb1b8;
-            border-radius: 0;
+            border: 1px solid #eff3f6;
+            border-radius: 4px;
             cursor: pointer;
-            color: #555;
+            color: #64748b;
             transition: all 0.2s;
         }
+        .icon-btn:hover {
+            border-color: #ff9900;
+            background: rgba(255,153,0,0.02);
+        }
         .icon-btn.active {
-            border-color: #e77600;
-            background: #fdf5ec;
-            color: #e77600;
-            box-shadow: 0 0 3px 2px rgba(228,121,17,0.3);
+            border-color: #ff9900;
+            background: rgba(255, 153, 0, 0.08);
+            color: #ff9900;
         }
 
-        /* Custom Checkbox Amazon Style */
+        /* Custom Checkbox */
         .checkbox-container {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             cursor: pointer;
-            padding: 4px 0;
-            user-select: none;
             font-size: 0.85rem;
-            color: #111;
+            color: #1e293b;
         }
-        
+
         .checkbox-container input {
             position: absolute;
             opacity: 0;
@@ -123,24 +146,18 @@
         }
         
         .checkmark {
-            height: 16px;
-            width: 16px;
+            height: 18px;
+            width: 18px;
             background-color: #fff;
-            border: 1px solid #adb1b8;
-            border-radius: 2px;
+            border: 2px solid #dee2e6;
+            border-radius: 4px;
             position: relative;
-            transition: all 0.1s;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05) inset;
-        }
-        
-        .checkbox-container:hover input ~ .checkmark {
-            border-color: #e77600;
-            
+            transition: all 0.2s;
         }
         
         .checkbox-container input:checked ~ .checkmark {
-            background-color: #fff;
-            border-color: #e77600;
+            background-color: #ff9900;
+            border-color: #ff9900;
         }
         
         .checkmark:after {
@@ -148,10 +165,10 @@
             position: absolute;
             display: none;
             left: 5px;
-            top: 1px;
+            top: 2px;
             width: 4px;
             height: 8px;
-            border: solid #e77600;
+            border: solid white;
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
         }
@@ -169,11 +186,17 @@
 @section('content')
 <div style="max-width: 1200px; margin: 0 auto;">
     
-    <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; padding: 25px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Ajouter une catégorie</h1>
-            <a href="{{ route('admin.categories.l1') }}" class="btn-amazon-secondary" style="display: flex; align-items: center; gap: 8px;">
-                <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour au catalogue
+    <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                    <i class="fas fa-plus" style="font-size: 0.8rem;"></i>
+                    <span>Nouvelle catégorie</span>
+                </div>
+            </div>
+            
+            <a href="{{ route('admin.categories.l1') }}" class="btn-amazon-secondary" style="width: auto !important; height: 32px !important; padding: 0 16px !important; font-size: 0.8rem;">
+                <i class="fas fa-list" style="color: #ff9900;"></i> Voir le catalogue
             </a>
         </div>
 
@@ -219,15 +242,17 @@
                             </div>
                             <div>
                                 <label for="ordre" class="field-label">Ordre d'affichage</label>
-                                <input type="number" name="ordre" id="ordre" value="{{ old('ordre', 1) }}" min="1">
+                                <input type="number" name="ordre" id="ordre" value="{{ old('ordre', $nextOrders['root'] ?? 1) }}" min="1">
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- Right Column: Unified Card -->
-                <div class="amazon-card" style="margin: 0; display: flex; flex-direction: column;">
+                <!-- Right Column -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    
+                    <div class="amazon-card" style="margin: 0; display: flex; flex-direction: column;">
                     
                     <!-- Visual Section -->
                     <h3 class="section-title" style="margin-bottom: 15px;">Visuel & État</h3>
@@ -241,13 +266,19 @@
                     </div>
                     <div id="category-image-group" style="display: none; margin-bottom: 15px;">
                         <label class="field-label">Image de couverture</label>
-                        <div style="border: 1px solid #adb1b8; padding: 40px 20px; text-align: center; background: #fcfcfc; cursor: pointer; position: relative;" 
-                             onclick="document.getElementById('image-input').click()">
-                            <div id="dropzone-content">
+                        <div style="border: 1px solid #dee2e6; border-radius: 4px; padding: 40px 20px; text-align: center; background: #fff; cursor: pointer; position: relative;" 
+                             id="dropzone-container">
+                            <div id="dropzone-content" onclick="document.getElementById('image-input').click()">
                                 <i class="fas fa-camera" style="font-size: 2rem; color: #999; margin-bottom: 10px;"></i>
                                 <p style="font-size: 0.8rem; color: #555; margin: 0; font-weight: 600;">CHANGER L'IMAGE DE COUVERTURE</p>
                             </div>
-                            <img id="preview-img" style="display: none; max-width: 100%; max-height: 180px; object-fit: contain; margin-top: 5px;">
+                            <div id="preview-container" style="display: none; position: relative;">
+                                <img id="preview-img" style="max-width: 100%; max-height: 180px; object-fit: contain; margin-top: 5px;">
+                                <button type="button" onclick="removeImage()" 
+                                        style="position: absolute; top: -10px; right: -10px; background: #bf0000; color: #fff; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2); z-index: 10;">
+                                    <i class="fas fa-times" style="font-size: 0.8rem;"></i>
+                                </button>
+                            </div>
                         </div>
                         <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="previewImage(this)">
                     </div>
@@ -268,29 +299,32 @@
                         </div>
                     </div>
 
-                    <!-- Status Section -->
-                    <div style="border-top: 1px solid #e7e7e7; padding-top: 20px; margin-top: 20px; margin-bottom: 20px;">
-                        <label class="checkbox-container">
-                            <input type="checkbox" name="actif" value="1" checked>
-                            <span class="checkmark"></span>
-                            <span style="font-weight: 700;">Activer cette catégorie</span>
-                        </label>
-                        <p style="font-size: 0.75rem; color: #555; margin-left: 24px; margin-top: 4px;">
-                            Si décoché, cette catégorie et ses sous-catégories ne seront plus visibles sur le site.
-                        </p>
-                    </div>
-
-                    <!-- Actions Row (Inside Container) -->
-                    <div style="border-top: 1px solid #e7e7e7; padding-top: 20px; display: flex; flex-direction: column; gap: 10px;">
-                        <button type="submit" class="btn-amazon-primary" style="width: 100%; font-weight: 700; margin: 0; padding: 12px 0;">
-                            ENREGISTRER
-                        </button>
-                        <a href="{{ route('admin.categories.l1') }}" class="btn-amazon-secondary" style="width: 100%; margin: 0; padding: 12px 0;">
-                            ANNULER
-                        </a>
+                    <!-- Status & Actions -->
+                    <div style="border-top: 1px solid #f1f5f9; padding-top: 24px; margin-top: auto;">
+                        <div style="margin-bottom: 0;">
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="actif" value="1" checked>
+                                <span class="checkmark"></span>
+                                <span style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Activer cette catégorie</span>
+                            </label>
+                            <p style="font-size: 0.75rem; color: #64748b; margin-left: 28px; margin-top: 6px;">
+                                Si décoché, cette catégorie et ses sous-catégories ne seront plus visibles sur le site.
+                            </p>
+                        </div>
                     </div>
 
                 </div>
+
+                <!-- Actions Row (Outside Card) -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <button type="submit" class="btn-amazon-primary">
+                        ENREGISTRER
+                    </button>
+                    <a href="{{ route('admin.categories.l1') }}" class="btn-amazon-secondary">
+                        ANNULER
+                    </a>
+                </div>
+
             </div>
 
 
@@ -335,12 +369,26 @@
         });
 
         const parentSelect = document.getElementById('parent_id');
+        const orderInput = document.getElementById('ordre');
         const configSection = document.getElementById('config-section');
         const imageGroup = document.getElementById('category-image-group');
         const familleSelect = document.getElementById('famille');
 
+        // Prochains ordres par parent (injecté depuis PHP)
+        const nextOrders = @json($nextOrders);
+
         function toggleFamille() {
-            if (parentSelect.value === "") {
+            const val = parentSelect.value;
+            const key = val === "" ? 'root' : val;
+            
+            // Mise à jour automatique de l'ordre
+            if (nextOrders[key]) {
+                orderInput.value = nextOrders[key];
+            } else {
+                orderInput.value = 1; // Par défaut si aucun enfant
+            }
+
+            if (val === "") {
                 configSection.style.display = 'block';
                 imageGroup.style.display = 'block';
                 familleSelect.setAttribute('required', 'required');
@@ -360,14 +408,27 @@
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
-                const preview = document.getElementById('preview-img');
+                const previewImg = document.getElementById('preview-img');
+                const previewContainer = document.getElementById('preview-container');
                 const dropzone = document.getElementById('dropzone-content');
-                preview.src = e.target.result;
-                preview.style.display = 'inline-block';
+                previewImg.src = e.target.result;
+                previewContainer.style.display = 'block';
                 if (dropzone) dropzone.style.display = 'none';
             }
             reader.readAsDataURL(input.files[0]);
         }
+    }
+
+    function removeImage() {
+        const input = document.getElementById('image-input');
+        const previewContainer = document.getElementById('preview-container');
+        const dropzone = document.getElementById('dropzone-content');
+        const previewImg = document.getElementById('preview-img');
+
+        input.value = ""; // Clear file input
+        previewImg.src = "";
+        previewContainer.style.display = 'none';
+        if (dropzone) dropzone.style.display = 'block';
     }
 </script>
 @endpush

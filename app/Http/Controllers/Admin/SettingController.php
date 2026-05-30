@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CreditServiceConfig;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -21,6 +22,116 @@ class SettingController extends Controller
         }
 
         return view('admin.settings.index', compact('settings'));
+    }
+
+    public function visibility(Request $request)
+    {
+        $query = CreditServiceConfig::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nom', 'like', "%{$search}%")
+                  ->orWhere('cle', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+
+        $services = $query->orderBy('ordre')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.settings.visibility', compact('services'));
+    }
+
+    public function visibilityCreate()
+    {
+        return view('admin.settings.visibility-create');
+    }
+
+    public function visibilityStore(Request $request)
+    {
+        $validated = $request->validate([
+            'service_type'   => 'required|in:mise_en_avant,boost,video',
+            'description'    => 'nullable|string',
+            'credits_requis' => 'required|integer|min:0',
+            'duree_jours'    => 'nullable|integer|min:1',
+            'actif'          => 'boolean',
+            'ordre'          => 'integer',
+        ]);
+
+        $serviceInfo = $this->getServiceInfo($validated['service_type']);
+        
+        // Check if this service type already exists
+        if (CreditServiceConfig::where('cle', $serviceInfo['cle'])->exists()) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['service_type' => "Une configuration pour le service '{$serviceInfo['nom']}' existe déjà."]);
+        }
+
+        $validated['nom'] = $serviceInfo['nom'];
+        $validated['cle'] = $serviceInfo['cle'];
+        $validated['actif'] = $request->boolean('actif', true);
+        
+        CreditServiceConfig::create($validated);
+
+        return redirect()->route('admin.settings.visibility')->with('success', 'Option de visibilité créée avec succès.');
+    }
+
+    public function visibilityEdit(CreditServiceConfig $service)
+    {
+        return view('admin.settings.visibility-edit', compact('service'));
+    }
+
+    public function visibilityUpdate(Request $request, CreditServiceConfig $service)
+    {
+        $validated = $request->validate([
+            'service_type'   => 'required|in:mise_en_avant,boost,video',
+            'description'    => 'nullable|string',
+            'credits_requis' => 'required|integer|min:0',
+            'duree_jours'    => 'nullable|integer|min:1',
+            'actif'          => 'boolean',
+            'ordre'          => 'integer',
+        ]);
+
+        $serviceInfo = $this->getServiceInfo($validated['service_type']);
+        
+        // Check if changed to a type that already exists elsewhere
+        if ($service->cle !== $serviceInfo['cle'] && CreditServiceConfig::where('cle', $serviceInfo['cle'])->exists()) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['service_type' => "Une autre configuration pour le service '{$serviceInfo['nom']}' existe déjà."]);
+        }
+
+        $validated['nom'] = $serviceInfo['nom'];
+        $validated['cle'] = $serviceInfo['cle'];
+        $validated['actif'] = $request->boolean('actif');
+        
+        $service->update($validated);
+
+        return redirect()->route('admin.settings.visibility')->with('success', 'Option de visibilité mise à jour.');
+    }
+
+    private function getServiceInfo($type)
+    {
+        $map = [
+            'mise_en_avant' => ['nom' => 'Mise en avant', 'cle' => 'mise_en_avant'],
+            'boost'         => ['nom' => 'Boost visibilité', 'cle' => 'boost'],
+            'video'         => ['nom' => 'Ajout Vidéo', 'cle' => 'video'],
+        ];
+        return $map[$type] ?? null;
+    }
+
+    public function visibilityDestroy(CreditServiceConfig $service)
+    {
+        $service->delete();
+        return redirect()->route('admin.settings.visibility')->with('success', 'Option de visibilité supprimée.');
+    }
+
+    public function visibilityToggle(CreditServiceConfig $service)
+    {
+        $service->update(['actif' => !$service->actif]);
+        return redirect()->back()->with('success', 'Statut mis à jour.');
     }
 
     public function update(Request $request)

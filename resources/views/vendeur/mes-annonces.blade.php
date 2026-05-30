@@ -13,8 +13,8 @@
     /* Grid Layout */
     .listings-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Slightly smaller for sidebar layout */
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.25rem;
         margin-bottom: 3rem;
     }
 
@@ -24,16 +24,9 @@
         border-radius: 12px;
         overflow: hidden;
         border: 1px solid #eaeaea;
-        transition: all 0.3s ease;
         display: flex;
         flex-direction: column;
         position: relative;
-    }
-
-    .listing-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-        /* Border color change removed as requested */
     }
 
     .card-image-wrapper {
@@ -50,11 +43,6 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.5s ease;
-    }
-    
-    .listing-card:hover .card-image {
-        transform: scale(1.01); /* Reduced animation */
     }
 
     .no-image-placeholder {
@@ -82,7 +70,6 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
         backdrop-filter: blur(4px);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         z-index: 10;
     }
 
@@ -111,7 +98,7 @@
     }
     
     .card-content {
-        padding: 1rem;
+        padding: 0.75rem;
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -145,9 +132,9 @@
     }
 
     .listing-price {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 700;
-        color: #bf0000;
+        color: #f68b1e;
         margin-bottom: 0.75rem;
     }
 
@@ -165,6 +152,28 @@
         display: flex;
         align-items: center;
         gap: 0.25rem;
+    }
+
+    .card-review-row {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        color: #f5a623;
+        font-size: 0.8rem;
+        margin-bottom: 6px;
+    }
+
+    .card-review-count {
+        color: #007185;
+        font-size: 0.75rem;
+        margin-left: 4px;
+        font-weight: 400;
+    }
+
+    .card-etat-badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-right: 6px;
     }
 
     /* Card Actions */
@@ -241,7 +250,7 @@
 
     .btn-create-ad-outline {
         background-color: transparent;
-        color: #333;
+        color: #f68b1e;
         padding: 0.7rem 0;
         font-weight: 700;
         font-size: 0.95rem;
@@ -254,7 +263,7 @@
     }
     
     .btn-create-ad-outline:hover {
-        color: #000;
+        color: #e07a16;
         text-decoration: underline;
     }
 </style>
@@ -270,9 +279,6 @@
             <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
                 <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Mes annonces</h1>
                 <a href="{{ route('annonces.create') }}" class="btn-create-ad-outline">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #bf0000;">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
                     Mettre en vente
                 </a>
             </div>
@@ -330,10 +336,31 @@
                                     </h3>
 
                                     @if($annonce->prix)
-                                        <div class="listing-price">
-                                            {{ number_format($annonce->prix, 0, ',', ' ') }} FCFA
+                                        <div class="listing-price" style="display: flex; align-items: baseline;">
+                                            @if($annonce->should_show_etat)
+                                                <span class="card-etat-badge" style="color: {{ $annonce->etat_couleur }};">{{ $annonce->etat_libelle }}</span>
+                                            @endif
+                                            <span>{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
                                         </div>
                                     @endif
+
+                                    {{-- Avis clients --}}
+                                    @php
+                                        $moyenneNote = $annonce->note_moyenne ?? 0;
+                                        $nbAvis      = $annonce->nombre_avis ?? 0;
+                                    @endphp
+                                    <div class="card-review-row">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            @if($i <= floor($moyenneNote))
+                                                <i class="fa-solid fa-star"></i>
+                                            @elseif($i == ceil($moyenneNote) && ($moyenneNote - floor($moyenneNote)) >= 0.5)
+                                                <i class="fa-solid fa-star-half-stroke"></i>
+                                            @else
+                                                <i class="fa-regular fa-star"></i>
+                                            @endif
+                                        @endfor
+                                        <span class="card-review-count">({{ $nbAvis }})</span>
+                                    </div>
 
                                     <div class="listing-meta">
                                         <span>{{ $annonce->category->nom ?? 'Autre' }}</span>

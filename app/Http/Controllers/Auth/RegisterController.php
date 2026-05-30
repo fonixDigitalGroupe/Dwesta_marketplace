@@ -14,7 +14,8 @@ class RegisterController extends Controller
 {
     public function showRegistrationForm()
     {
-        return view('auth.register');
+        $countries = \App\Models\Country::active()->orderBy('name')->get();
+        return view('auth.register', compact('countries'));
     }
 
     public function register(Request $request)

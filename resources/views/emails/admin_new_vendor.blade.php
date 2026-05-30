@@ -45,7 +45,7 @@
 
             <p>Veuillez examiner les documents fournis dans l'administration pour approuver ou rejeter cette demande.</p>
             <p style="text-align: center;">
-                <a href="{{ route('admin.vendeurs.verification.index') }}" class="btn">Examiner le dossier</a>
+                <a href="{{ route('admin.users.index', ['role' => 'vendeur']) }}" class="btn">Examiner le dossier</a>
             </p>
         </div>
         <div class="footer">

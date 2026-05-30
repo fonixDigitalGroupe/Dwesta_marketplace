@@ -8,77 +8,139 @@
             background-color: #f8f9fa !important;
         }
 
-        /* Input Amazon Style */
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="tel"]:focus,
-        input[type="url"]:focus,
-        textarea:focus {
-            border-color: #e77600 !important;
-
+        /* Input Amazon Style Modernisé */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="url"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.82rem;
             outline: none;
+            background: #fff;
+            color: #475569;
+            transition: all 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #ff9900 !important;
+            box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.15);
         }
 
         .amazon-card {
             background: #fff;
-            border: 1px solid #e7e7e7;
-            border-radius: 0;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            padding: 25px;
+            border: 1px solid #eff3f6;
+            border-radius: 8px;
+            padding: 24px;
             margin-bottom: 20px;
         }
 
         .section-title {
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #111;
-            margin-bottom: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 16px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #e7e7e7;
+            border-bottom: 1px solid #f1f5f9;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
+        .field-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* Buttons Alignés avec Index */
         .btn-amazon-primary {
-            background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
-            border: 1px solid #004aad;
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
             color: #fff;
-            padding: 8px 24px;
-            border-radius: 0;
-            font-size: 0.85rem;
-            font-weight: 400;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
             text-decoration: none;
-            box-shadow: 0 1px 0 rgba(255, 255, 255, .4) inset;
-            cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
         }
 
         .btn-amazon-primary:hover {
-            background: linear-gradient(180deg, #0069d9 0%, #004494 100%);
-            border-color: #003d82;
+            background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: #fff;
         }
 
         .btn-amazon-secondary {
-            background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
-            border: 1px solid #adb1b8;
-            color: #111;
-            padding: 8px 24px;
-            border-radius: 0;
-            font-size: 0.85rem;
-            font-weight: 400;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
             text-decoration: none;
-            box-shadow: 0 1px 0 rgba(255, 255, 255, .6) inset;
-            cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
         }
 
         .btn-amazon-secondary:hover {
-            background: linear-gradient(to bottom, #e7eaf0, #d8dade);
-            border-color: #a2a6ac;
+            background: #f8fafc;
+            border-color: #dee2e6;
+            color: #1e293b;
+        }
+
+        .action-button {
+            width: 32px; 
+            height: 32px; 
+            border-radius: 4px;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            transition: all 0.1s;
+            cursor: pointer;
+            border: 1px solid #dee2e6;
+        }
+        
+        .action-button.danger {
+            background: #fff;
+            color: #c40000;
+        }
+        
+        .action-button.danger:hover {
+            background: #fff5f5;
+            border-color: #ffcccc;
+        }
+
+        .action-button.normal {
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        .action-button.normal:hover {
+            background: #e2e8f0;
         }
 
         /* intl-tel-input integration */
@@ -91,11 +153,11 @@
         }
 
         .iti--separate-dial-code .iti__selected-flag {
-            border-right: 1px solid #adb1b8 !important;
+            border-right: 1px solid #dee2e6 !important;
             padding-right: 10px !important;
-            margin-right: 5px !important;
-            background: #fcfcfc !important;
-            border-radius: 0 !important;
+            margin-right: -1px !important;
+            background: transparent !important;
+            border-radius: 4px 0 0 4px !important;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/24.5.0/css/intlTelInput.css">
@@ -155,220 +217,191 @@
             }
         }" style="max-width: 1200px; margin: 0 auto;">
 
-        <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; padding: 25px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Configuration Générale</h1>
+        <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 24px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                        <i class="fas fa-cogs" style="font-size: 0.8rem;"></i>
+                        <span>Configuration Générale</span>
+                    </div>
+                </div>
             </div>
 
-            <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data"
-                id="settings-form">
+            <form action="{{ route('admin.settings.update') }}" method="POST" enctype="multipart/form-data" id="settings-form">
                 @csrf
                 <input type="hidden" name="remove_logo" :value="removeLogoFlag ? '1' : '0'">
 
-                <div style="display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: start;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch;">
 
-                    <!-- Left Column -->
-                    <div style="display: flex; flex-direction: column;">
+                    <!-- Left Column: Visuel -->
+                    <div class="amazon-card" style="margin: 0; display: flex; flex-direction: column;">
+                        <h3 class="section-title">Visuel du Projet</h3>
+                        <p style="font-size: 0.82rem; color: #64748b; margin-bottom: 20px;">Personnalisez l'apparence de
+                            votre plateforme en ajoutant le logo officiel.</p>
 
-                        <!-- Logo Card -->
-                        <div class="amazon-card">
-                            <h3 class="section-title">Visuel du Projet</h3>
-                            <p style="font-size: 0.85rem; color: #555; margin-bottom: 20px;">Personnalisez l'apparence de
-                                votre plateforme en ajoutant le logo officiel.</p>
-
+                        <div
+                            style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 4px; padding: 20px; display: flex; align-items: flex-start; gap: 25px; flex-grow: 1;">
+                            <!-- Preview Box -->
                             <div
-                                style="background: #fcfcfc; border: 1px solid #e7e7e7; padding: 20px; display: flex; align-items: flex-start; gap: 25px;">
-                                <!-- Preview Box -->
-                                <div
-                                    style="flex-shrink: 0; width: 140px; height: 140px; background: #fff; border: 1px solid #adb1b8; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
-                                    <template x-if="logoPreview">
-                                        <div
-                                            style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                                            <img :src="logoPreview" alt="Logo"
-                                                style="max-width: 90%; max-height: 90%; object-fit: contain;">
-                                            <button type="button" @click="clearLogo" x-show="logoPreview && !removeLogoFlag"
-                                                style="position: absolute; top: 5px; right: 5px; width: 24px; height: 24px; background: #fff; border: 1px solid #adb1b8; color: #c40000; cursor: pointer; display: flex; align-items: center; justify-content: center;"
-                                                title="Supprimer">
-                                                <i class="fas fa-times" style="font-size: 0.75rem;"></i>
-                                            </button>
-                                        </div>
-                                    </template>
-                                    <template x-if="!logoPreview">
-                                        <div style="text-align: center; color: #999;">
-                                            <i class="far fa-image"
-                                                style="font-size: 2rem; margin-bottom: 5px; display: block;"></i>
-                                            <span style="font-size: 0.7rem;">AUCUN VISUEL</span>
-                                        </div>
-                                    </template>
-                                </div>
+                                style="flex-shrink: 0; width: 140px; height: 140px; background: #fff; border: 1px solid #cbd5e1; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                                <template x-if="logoPreview">
+                                    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                        <img :src="logoPreview" alt="Logo"
+                                            style="max-width: 90%; max-height: 90%; object-fit: contain;">
+                                        <button type="button" @click="clearLogo" x-show="logoPreview && !removeLogoFlag"
+                                            style="position: absolute; top: 5px; right: 5px; width: 24px; height: 24px; background: #fff; border: 1px solid #cbd5e1; color: #c40000; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center;"
+                                            title="Supprimer">
+                                            <i class="fas fa-times" style="font-size: 0.75rem;"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <template x-if="!logoPreview">
+                                    <div style="text-align: center; color: #94a3b8;">
+                                        <i class="far fa-image"
+                                            style="font-size: 2rem; margin-bottom: 5px; display: block;"></i>
+                                        <span style="font-size: 0.7rem; font-weight: 600;">AUCUN VISUEL</span>
+                                    </div>
+                                </template>
+                            </div>
 
-                                <!-- Actions -->
-                                <div style="flex-grow: 1;">
-                                    <h4 style="font-size: 0.9rem; font-weight: 700; color: #111; margin: 0 0 5px 0;">Logo de
-                                        marque</h4>
-                                    <p style="font-size: 0.8rem; color: #555; margin-bottom: 15px;">Format PNG ou SVG
-                                        recommandé pour une meilleure transparence.</p>
+                            <!-- Actions -->
+                            <div style="flex-grow: 1;">
+                                <h4 style="font-size: 0.9rem; font-weight: 700; color: #1e293b; margin: 0 0 5px 0;">Logo de marque</h4>
+                                <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 15px;">Format PNG ou SVG
+                                    recommandé pour une meilleure transparence.</p>
 
-                                    <button type="button" @click="$refs.logoInput.click()" class="btn-amazon-primary"
-                                        style="width: auto; padding: 6px 15px;">
-                                        <i class="fas fa-upload" style="font-size: 0.8rem;"></i> Choisir un fichier
-                                    </button>
-                                    <input type="file" x-ref="logoInput" name="logo" accept="image/*" style="display: none;"
-                                        @change="handleLogoChange">
-                                </div>
+                                <button type="button" @click="$refs.logoInput.click()" class="btn-amazon-primary"
+                                    style="width: auto; padding: 6px 15px;">
+                                    <i class="fas fa-upload" style="font-size: 0.8rem;"></i> Choisir un fichier
+                                </button>
+                                <input type="file" x-ref="logoInput" name="logo" accept="image/*" style="display: none;"
+                                    @change="handleLogoChange">
                             </div>
                         </div>
+                    </div>
 
+                    <!-- Right Column: Contact -->
+                    <div class="amazon-card" style="margin: 0; display: flex; flex-direction: column;">
+                        <h3 class="section-title">Contact & Coordonnées</h3>
+                        <div style="display: grid; gap: 20px; flex-grow: 1; align-content: start;">
+                            <div>
+                                <label class="field-label" style="margin-bottom: 8px;">Emails de contact</label>
+                                <template x-for="(email, index) in emails" :key="index">
+                                    <div style="display: flex; gap: 8px; margin-bottom: 10px; align-items: center;">
+                                        <input type="email" name="contact_emails[]" x-model="emails[index]" style="flex: 1;">
+
+                                        <button type="button" @click="removeEmail(index)" x-show="emails.length > 1" class="action-button danger">
+                                            <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
+                                        </button>
+
+                                        <button type="button" @click="addEmail" x-show="index === emails.length - 1" class="action-button normal">
+                                            <i class="fas fa-plus" style="font-size: 0.8rem;"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div>
+                                <label class="field-label" style="margin-bottom: 8px;">Téléphones</label>
+                                <template x-for="(phone, index) in phones" :key="index">
+                                    <div style="display: flex; gap: 8px; margin-bottom: 10px; align-items: center;">
+                                        <div style="flex: 1;">
+                                            <input type="tel" name="contact_phones[]" x-model="phones[index]"
+                                                x-init="window.initPhoneField($el)" style="width: 100%;">
+                                        </div>
+                                        <button type="button" @click="removePhone(index)" x-show="phones.length > 1" class="action-button danger">
+                                            <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
+                                        </button>
+                                        <button type="button" @click="addPhone" x-show="index === phones.length - 1" class="action-button normal">
+                                            <i class="fas fa-plus" style="font-size: 0.8rem;"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div>
+                                <label for="contact_address" class="field-label" style="margin-bottom: 8px;">Adresse Physique</label>
+                                <textarea name="contact_address" id="contact_address" rows="2"
+                                    style="resize: vertical; font-family: inherit;">{{ $settings['contact_address'] ?? '' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Left Column Remaining -->
+                    <div style="display: flex; flex-direction: column;">
                         <!-- Identity Card -->
                         <div class="amazon-card">
                             <h3 class="section-title">Identité du Projet</h3>
                             <div style="display: grid; gap: 20px;">
                                 <div>
-                                    <label for="site_name"
-                                        style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Nom
-                                        du Site</label>
-                                    <input type="text" name="site_name" id="site_name"
-                                        value="{{ $settings['site_name'] ?? 'Dwesta' }}"
-                                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc;">
+                                    <label for="site_name" class="field-label" style="margin-bottom: 8px;">Nom du Site</label>
+                                    <input type="text" name="site_name" id="site_name" value="{{ $settings['site_name'] ?? 'Dwesta' }}">
                                 </div>
                                 <div>
-                                    <label for="site_description"
-                                        style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Description
-                                        (Meta-data)</label>
+                                    <label for="site_description" class="field-label" style="margin-bottom: 8px;">Description (Meta-data)</label>
                                     <textarea name="site_description" id="site_description" rows="4"
-                                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc; resize: vertical; font-family: inherit;">{{ $settings['site_description'] ?? '' }}</textarea>
+                                        style="resize: vertical; font-family: inherit;">{{ $settings['site_description'] ?? '' }}</textarea>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Legal Card -->
-                        <div class="amazon-card">
+                        <div class="amazon-card" style="margin-bottom: 0;">
                             <h3 class="section-title">Informations Légales</h3>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                                 <div>
-                                    <label for="legal_rc"
-                                        style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Registre
-                                        de Commerce (RC)</label>
-                                    <input type="text" name="legal_rc" id="legal_rc"
-                                        value="{{ $settings['legal_rc'] ?? '' }}"
-                                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc;">
+                                    <label for="legal_rc" class="field-label" style="margin-bottom: 8px;">Registre de Commerce (RC)</label>
+                                    <input type="text" name="legal_rc" id="legal_rc" value="{{ $settings['legal_rc'] ?? '' }}">
                                 </div>
                                 <div>
-                                    <label for="legal_ninea"
-                                        style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">NINEA</label>
-                                    <input type="text" name="legal_ninea" id="legal_ninea"
-                                        value="{{ $settings['legal_ninea'] ?? '' }}"
-                                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc;">
+                                    <label for="legal_ninea" class="field-label" style="margin-bottom: 8px;">NINEA</label>
+                                    <input type="text" name="legal_ninea" id="legal_ninea" value="{{ $settings['legal_ninea'] ?? '' }}">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Column -->
+                    <!-- Row 2: Right Column Remaining -->
                     <div style="display: flex; flex-direction: column;">
-
-                        <!-- Contact Card -->
-                        <div class="amazon-card">
-                            <h3 class="section-title">Contact & Coordonnées</h3>
-                            <div style="display: grid; gap: 20px;">
-                                <div>
-                                    <label
-                                        style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Emails
-                                        de contact</label>
-                                    <template x-for="(email, index) in emails" :key="index">
-                                        <div style="display: flex; gap: 5px; margin-bottom: 8px; align-items: center;">
-                                            <input type="email" name="contact_emails[]" x-model="emails[index]"
-                                                style="flex: 1; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc;">
-
-                                            <button type="button" @click="removeEmail(index)" x-show="emails.length > 1"
-                                                style="width: 32px; height: 32px; background: #fff; border: 1px solid #adb1b8; color: #c40000; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                                                <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
-                                            </button>
-
-                                            <button type="button" @click="addEmail" x-show="index === emails.length - 1"
-                                                style="width: 32px; height: 32px; background: #f0f2f2; border: 1px solid #adb1b8; color: #111; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                                                <i class="fas fa-plus" style="font-size: 0.8rem;"></i>
-                                            </button>
-                                        </div>
-                                    </template>
-                                </div>
-
-                                <div>
-                                    <label
-                                        style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Téléphones</label>
-                                    <template x-for="(phone, index) in phones" :key="index">
-                                        <div style="display: flex; gap: 5px; margin-bottom: 8px; align-items: center;">
-                                            <div style="flex: 1;">
-                                                <input type="tel" name="contact_phones[]" x-model="phones[index]"
-                                                    x-init="window.initPhoneField($el)"
-                                                    style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc;">
-                                            </div>
-                                            <button type="button" @click="removePhone(index)" x-show="phones.length > 1"
-                                                style="width: 32px; height: 32px; background: #fff; border: 1px solid #adb1b8; color: #c40000; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                                                <i class="fas fa-trash-alt" style="font-size: 0.8rem;"></i>
-                                            </button>
-                                            <button type="button" @click="addPhone" x-show="index === phones.length - 1"
-                                                style="width: 32px; height: 32px; background: #f0f2f2; border: 1px solid #adb1b8; color: #111; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                                                <i class="fas fa-plus" style="font-size: 0.8rem;"></i>
-                                            </button>
-                                        </div>
-                                    </template>
-                                </div>
-
-                                <div>
-                                    <label for="contact_address"
-                                        style="display: block; font-size: 0.85rem; font-weight: 700; color: #111; margin-bottom: 8px;">Adresse
-                                        Physique</label>
-                                    <textarea name="contact_address" id="contact_address" rows="2"
-                                        style="width: 100%; padding: 8px 12px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none; background: #fcfcfc; font-family: inherit;">{{ $settings['contact_address'] ?? '' }}</textarea>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Social Card -->
-                        <div class="amazon-card">
+                        <div class="amazon-card" style="flex-grow: 1;">
                             <h3 class="section-title">Réseaux Sociaux</h3>
                             <div style="display: grid; gap: 12px;">
                                 <div>
-                                    <label
-                                        style="display: block; font-size: 0.8rem; font-weight: 500; color: #555; margin-bottom: 4px;">Facebook</label>
-                                    <input type="url" name="social_facebook"
-                                        value="{{ $settings['social_facebook'] ?? '' }}"
-                                        style="width: 100%; padding: 6px 10px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.8rem; outline: none; background: #fcfcfc;">
+                                    <label class="field-label" style="margin-bottom: 4px;">Facebook</label>
+                                    <input type="url" name="social_facebook" value="{{ $settings['social_facebook'] ?? '' }}">
                                 </div>
                                 <div>
-                                    <label
-                                        style="display: block; font-size: 0.8rem; font-weight: 500; color: #555; margin-bottom: 4px;">Instagram</label>
-                                    <input type="url" name="social_instagram"
-                                        value="{{ $settings['social_instagram'] ?? '' }}"
-                                        style="width: 100%; padding: 6px 10px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.8rem; outline: none; background: #fcfcfc;">
+                                    <label class="field-label" style="margin-bottom: 4px;">Instagram</label>
+                                    <input type="url" name="social_instagram" value="{{ $settings['social_instagram'] ?? '' }}">
                                 </div>
                                 <div>
-                                    <label
-                                        style="display: block; font-size: 0.8rem; font-weight: 500; color: #555; margin-bottom: 4px;">Twitter
-                                        / X</label>
-                                    <input type="url" name="social_twitter" value="{{ $settings['social_twitter'] ?? '' }}"
-                                        style="width: 100%; padding: 6px 10px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.8rem; outline: none; background: #fcfcfc;">
+                                    <label class="field-label" style="margin-bottom: 4px;">Twitter / X</label>
+                                    <input type="url" name="social_twitter" value="{{ $settings['social_twitter'] ?? '' }}">
                                 </div>
                                 <div>
-                                    <label
-                                        style="display: block; font-size: 0.8rem; font-weight: 500; color: #555; margin-bottom: 4px;">LinkedIn</label>
-                                    <input type="url" name="social_linkedin"
-                                        value="{{ $settings['social_linkedin'] ?? '' }}"
-                                        style="width: 100%; padding: 6px 10px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.8rem; outline: none; background: #fcfcfc;">
+                                    <label class="field-label" style="margin-bottom: 4px;">LinkedIn</label>
+                                    <input type="url" name="social_linkedin" value="{{ $settings['social_linkedin'] ?? '' }}">
+                                </div>
+                                <div>
+                                    <label class="field-label" style="margin-bottom: 4px;">YouTube</label>
+                                    <input type="url" name="social_youtube" value="{{ $settings['social_youtube'] ?? '' }}">
+                                </div>
+                                <div>
+                                    <label class="field-label" style="margin-bottom: 4px;">TikTok</label>
+                                    <input type="url" name="social_tiktok" value="{{ $settings['social_tiktok'] ?? '' }}">
                                 </div>
                             </div>
                         </div>
 
                         <!-- Footer Actions sticky or at bottom -->
-                        <div style="display: flex; gap: 10px; padding-top: 10px;">
-                            <button type="submit" class="btn-amazon-primary" style="flex: 1; padding: 12px;">
-                                Enregistrer
-                            </button>
-                            <a href="{{ route('admin.dashboard') }}" class="btn-amazon-secondary"
-                                style="flex: 1; padding: 12px;">
-                                Annuler
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; border-top: 1px solid #eff3f6; padding-top: 20px; margin-top: 20px;">
+                            <a href="{{ route('admin.dashboard') }}" class="btn-amazon-secondary" style="width: 100%;">
+                                ANNULER
                             </a>
+                            <button type="submit" class="btn-amazon-primary" style="width: 100%;">
+                                ENREGISTRER
+                            </button>
                         </div>
                     </div>
 

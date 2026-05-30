@@ -64,16 +64,16 @@ class LogisticsController extends Controller
     public function markAsReady(Order $order)
     {
         // Vérification que c'est bien le vendeur de la commande
-        if ($order->vendeur->user_id !== Auth::id()) {
-            abort(403);
+        if (!$order->seller || $order->seller->user_id !== Auth::id()) {
+            abort(403, 'Vous n\'êtes pas autorisé à modifier cette commande.');
         }
 
         if ($order->statut !== Order::STATUT_PAYE) {
-            return back()->with('error', 'La commande ne peut pas être marquée comme prête.');
+            return back()->with('error', 'La commande ne peut pas être mise en préparation (statut actuel : ' . $order->statut_label . ').');
         }
 
         $order->update(['statut' => Order::STATUT_PRET]);
 
-        return back()->with('success', 'Commande marquée comme prête pour le ramassage !');
+        return back()->with('success', 'Commande mise en préparation ! Le transporteur sera notifié.');
     }
 }

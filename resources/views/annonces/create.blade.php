@@ -435,25 +435,30 @@
 
         /* Step 3 Styles */
         .status-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
             margin-top: 1rem;
+            width: 100%;
         }
 
         .status-card {
+            flex: 1;
             border: 1.5px solid #e0e0e0;
             border-radius: 8px;
             padding: 1rem;
             display: flex;
+            flex-direction: row;
             align-items: center;
-            gap: 0.75rem;
+            text-align: left;
+            gap: 1rem;
             cursor: pointer;
             transition: all 0.2s ease;
             background: white;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #444;
             position: relative;
+            min-width: 0;
         }
 
         .status-card:hover {
@@ -471,6 +476,17 @@
             color: #ccc;
             cursor: not-allowed;
             border-style: solid;
+        }
+
+        .radio-circle {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50%;
+            position: relative;
+            background: white;
+            flex-shrink: 0;
+            margin-bottom: 4px;
         }
 
         .status-card.disabled .radio-circle {
@@ -915,6 +931,16 @@
                 </div>
                 <div class="step-content">
                     <div class="step-number">ETAPE 4</div>
+                    <div class="step-title">Expédition</div>
+                </div>
+            </div>
+            <div class="progress-step" data-step="5">
+                <div class="step-circle">
+                    <div class="step-dot"></div>
+                    <div class="step-check">✓</div>
+                </div>
+                <div class="step-content">
+                    <div class="step-number">ETAPE 5</div>
                     <div class="step-title">Booster votre annonce</div>
                 </div>
             </div>
@@ -1141,40 +1167,69 @@
                             onclick="previousStep()">Précédent </button><button type="button" class="btn btn-primary"
                             onclick="nextStep()">Continuer </button></div>
                 </div>
-                <!-- Étape 4: Booster votre annonce -->
+                <!-- Étape 4: Moyen d'expédition -->
                 <div class="form-step" id="step4">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
-                        <div>
-                            <h1 class="form-title" style="margin-bottom: 0.5rem;">🚀 Booster votre annonce</h1>
-                            <p class="instruction-text" style="color: #666; font-size: 0.95rem;">Mettez votre annonce en avant pour vendre plus vite.</p>
+                    <h1 class="form-title">🚚 Moyen d'expédition</h1>
+                    <div class="form-instructions">
+                        <p class="instruction-text">Choisissez comment vous souhaitez <strong style="color: #00A400;">envoyer</strong> votre article.</p>
+                    </div>
+
+                    <input type="hidden" id="type_livraison" name="type_livraison" value="retrait_point_relais" required>
+                    <input type="hidden" id="user_phone" name="user_phone" value="{{ auth()->user()->telephone ?? '' }}">
+                    <input type="hidden" id="code_postal" name="code_postal" value="{{ auth()->user()->code_postal ?? '00000' }}">
+
+                    <div class="status-cards-grid">
+                        <div class="status-card selected" onclick="selectShipping(this, 'retrait_point_relais')">
+                            <div class="radio-circle"></div>
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-weight: 600;">Retrait en point retrait</span>
+                                <small style="color: #666; font-size: 0.75rem;">Le client retire son colis en point retrait (point Karnou)</small>
+                            </div>
+                        </div>
+                        <div class="status-card" onclick="selectShipping(this, 'retrait_boutique')">
+                            <div class="radio-circle"></div>
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-weight: 600;">Retrait en boutique</span>
+                                <small style="color: #666; font-size: 0.75rem;">Le client retire son colis en boutique</small>
+                            </div>
+                        </div>
+                        <div class="status-card" onclick="selectShipping(this, 'livraison_point_special')">
+                            <div class="radio-circle"></div>
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-weight: 600;">Livraison en point spécial</span>
+                                <small style="color: #666; font-size: 0.75rem;">Livraison dans des lieux choisis par Karnou</small>
+                            </div>
                         </div>
                     </div>
 
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer</button>
+                    </div>
+                </div>
 
-                    <input type="hidden" id="type_livraison" name="type_livraison" value="livraison_domicile" required>
-                    <input type="hidden" id="user_phone" name="user_phone" value="{{ auth()->user()->telephone ?? '' }}">
-                    <input type="hidden" id="code_postal" name="code_postal" value="{{ auth()->user()->code_postal ?? '00000' }}">
+                <!-- Étape 5: Booster votre annonce -->
+                <div class="form-step" id="step5">
+                    <span id="user-credit-balance" style="display: none;">{{ $creditBalance }}</span>
 
                     <div style="margin-bottom: 2rem;">
                         <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Options de visibilité</h3>
                         <div style="display: flex; flex-direction: column; gap: 1rem;">
                             @foreach($creditServices as $service)
+                                @if($service->cle == 'urgent') @continue @endif
                                 <label class="service-card" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border: 2px solid #e0e0e0; border-radius: 12px; cursor: pointer; transition: all 0.2s; position: relative;">
                                     <input type="checkbox" name="services[]" value="{{ $service->cle }}" class="service-checkbox" data-cost="{{ $service->credits_requis }}" style="width: 20px; height: 20px; margin-top: 4px; accent-color: #ef6c00;">
                                     <div style="flex: 1;">
                                         <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 0.25rem; color: #333;">
                                             {{ $service->nom }}
-                                            @if($service->cle == 'mise_en_avant' || $service->cle == 'boost')
-                                                <span style="background: #eef2ff; color: #004aad; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: text-bottom;">Recommandé</span>
-                                            @endif
                                         </div>
                                         <div style="font-size: 0.9rem; color: #666; line-height: 1.4;">{{ $service->description }}</div>
                                         @if($service->duree_jours)
-                                            <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem; font-weight: 600;">⏳ Valable {{ $service->duree_jours }} jours</div>
+                                            <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem; font-weight: 600;">Valable {{ $service->duree_jours }} jours</div>
                                         @endif
                                     </div>
                                     <div style="font-weight: 800; font-size: 1.25rem; color: #ef6c00; white-space: nowrap;">
-                                        +{{ $service->credits_requis }} ⭐
+                                        +{{ $service->credits_requis }}
                                     </div>
                                 </label>
                             @endforeach
@@ -1198,7 +1253,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 1rem;">
                             <span style="font-weight: 700; font-size: 1.1rem; color: #000;">Total à payer :</span>
                             <span style="font-weight: 800; font-size: 1.5rem; color: #111;">
-                                <span id="total-cost-display">0</span> <span style="font-size: 1.2rem; color: #ffbe00;">⭐</span>
+                                <span id="total-cost-display">0</span>
                             </span>
                         </div>
                         <div id="insufficient-credits-warning" style="display: none; background: #fde8e8; color: #c62828; padding: 0.75rem 1rem; border-radius: 6px; margin-top: 1rem; font-size: 0.9rem; border: 1px solid #ffcdd2;">
@@ -1247,7 +1302,7 @@
     </div> <!-- Close create-annonce-container -->
     <script>      // Global variabl       es
         var currentStep = 1;
-        var totalSteps = 4;
+        var totalSteps = 5;
         var uploadedImages = [];
         var mainImageIndex = 0;
 
@@ -1441,6 +1496,10 @@
 
                     // Specific Rule: Hide condition if Services or Immobilier
                     if (condGroup) condGroup.style.display = isServiceOrImmo ? 'none' : 'block';
+                } else if (step === 4) {
+                    advisory.classList.add('active');
+                    if (content2) content2.style.display = 'none';
+                    if (content3) content3.style.display = 'block';
                 }
                 else {
                     advisory.classList.remove('active');
@@ -1451,7 +1510,13 @@
         function selectStatus(el, val) {
             if (el.classList.contains('disabled')) return;
             document.getElementById('etat_produit').value = val;
-            document.querySelectorAll('.status-card').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('#step3 .status-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function selectShipping(el, val) {
+            document.getElementById('type_livraison').value = val;
+            document.querySelectorAll('#step4 .status-card').forEach(c => c.classList.remove('selected'));
             el.classList.add('selected');
         }
 
@@ -1546,6 +1611,9 @@
                 if (uploadedImages.length > 8) { alert('Maximum 8 photos autorisées.'); return false; }
                 if (!price || price <= 0) { alert('Veuillez saisir un prix valide.'); return false; }
                 if (!qty || qty < 1) { alert('Veuillez saisir une quantité valide.'); return false; }
+            } else if (currentStep === 4) {
+                const shipping = document.getElementById('type_livraison').value;
+                if (!shipping) { alert('Veuillez sélectionner un moyen d\'expédition.'); return false; }
             }
             return true;
         }

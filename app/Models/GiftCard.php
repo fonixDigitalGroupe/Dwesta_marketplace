@@ -15,6 +15,7 @@ class GiftCard extends Model
         'user_id',
         'redeemed_at',
         'expiry_date',
+        'metadata',
     ];
 
     protected $casts = [
@@ -22,6 +23,7 @@ class GiftCard extends Model
         'balance' => 'decimal:2',
         'redeemed_at' => 'datetime',
         'expiry_date' => 'date',
+        'metadata' => 'array',
     ];
 
     public function buyer()

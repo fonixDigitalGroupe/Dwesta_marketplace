@@ -1,5 +1,5 @@
 @php 
-    $user = auth()->user();
+        $user = auth()->user();
     $unreadCount = \App\Models\Message::where('sender_id', '!=', $user->id)
         ->whereNull('read_at')
         ->whereHas('conversation', function ($q) use ($user) {
@@ -16,12 +16,12 @@
             margin: 0 auto;
             padding: 1.5rem 2rem;
             display: grid;
-            grid-template-columns: 240px 1fr;
-            gap: 1rem;
+            grid-template-columns: 300px 1fr;
+            gap: 1.5rem;
         }
 
         body {
-            background-color: #fff !important;
+            background-color: #f5f5f5 !important;
         }
 
         .sidebar {
@@ -40,7 +40,7 @@
             padding: 10px 16px;
             color: #333;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 1rem;
             transition: all 0.2s;
             border-bottom: 1px solid transparent;
         }
@@ -52,16 +52,16 @@
 
         .sidebar-item.active,
         .sidebar-item.active span {
-            color: #f68b1e !important;
+            color: #333 !important;
         }
 
         .sidebar-item.active {
             background-color: #ededed;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .sidebar-item.active i {
-            color: #f68b1e;
+            color: #333 !important;
             opacity: 1;
         }
 
@@ -88,7 +88,7 @@
             color: #333;
             font-weight: 700;
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 1.05rem;
         }
 
         .sidebar-header:hover {
@@ -97,7 +97,7 @@
 
         .sidebar-group-title {
             padding: 15px 16px 5px;
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             font-weight: 700;
             color: #000;
             background: #fff;
@@ -145,7 +145,7 @@
             padding: 10px 16px;
             color: #ccc;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 1rem;
             cursor: not-allowed;
         }
 
@@ -179,31 +179,31 @@
     <!-- Votre compte -->
     <a href="{{ route('account.index') }}"
         class="sidebar-item {{ request()->routeIs('account.index') ? 'active' : '' }}">
-        <i class="fa-solid fa-user"></i>
+        <i class="fa-regular fa-user"></i>
         <span>Votre compte Karnou</span>
     </a>
 
-    <!-- Vos commandes -->
+    <!-- Mes achats -->
     <a href="{{ route('account.orders') }}"
         class="sidebar-item {{ request()->routeIs('account.orders') ? 'active' : '' }}">
-        <i class="fa-solid fa-box"></i>
-        <span>Vos commandes</span>
+        <i class="fa-solid fa-shopping-bag"></i>
+        <span>Mes achats</span>
     </a>
 
     <!-- Boîte de réception -->
     <a href="{{ route('conversations.index') }}"
         class="sidebar-item {{ request()->routeIs('conversations.*') ? 'active' : '' }}">
-        <i class="fa-solid fa-envelope"></i>
+        <i class="fa-regular fa-envelope"></i>
         <span>Boîte de réception</span>
         @if($unreadCount > 0)
             <span class="badge-count">{{ $unreadCount }}</span>
         @endif
     </a>
 
-    <!-- Vos avis en attente -->
+    <!-- Mes avis -->
     <a href="{{ route('account.avis') }}" class="sidebar-item {{ request()->routeIs('account.avis') ? 'active' : '' }}">
-        <i class="fa-solid fa-comment-dots"></i>
-        <span>Vos avis en attente</span>
+        <i class="fa-regular fa-comment-dots"></i>
+        <span>Mes avis</span>
     </a>
 
     <!-- Bons d'achat -->
@@ -216,8 +216,15 @@
     <!-- Favoris -->
     <a href="{{ route('favorites.index') }}"
         class="sidebar-item {{ request()->routeIs('favorites.*') ? 'active' : '' }}">
-        <i class="fa-solid fa-heart"></i>
+        <i class="fa-regular fa-heart"></i>
         <span>Favoris</span>
+    </a>
+
+    <!-- Mes crédits -->
+    <a href="{{ route('account.credits.index') }}"
+        class="sidebar-item {{ request()->routeIs('account.credits.*') ? 'active' : '' }}">
+        <i class="fa-solid fa-coins"></i>
+        <span>Mes crédits</span>
     </a>
 
 
@@ -233,27 +240,22 @@
     <div class="sidebar-divider"></div>
 
     <!-- Section: Gérez votre Compte -->
-    <div class="sidebar-group-title" style="font-weight: 500; font-size: 0.9rem; color: #333; padding-top: 10px;">Gérez
+    <div class="sidebar-group-title" style="font-weight: 500; font-size: 1rem; color: #333; padding-top: 10px;">Gérez
         votre Compte</div>
+
+
 
     <a href="{{ route('profile.show') }}"
         class="sidebar-item {{ request()->url() == route('profile.show') && !str_contains(request()->fullUrl(), 'preferences') ? 'active' : '' }}"
         style="padding-left: 16px;">
-        <span style="font-size: 0.85rem; color: #555;">Adresses</span>
-    </a>
-
-    <a href="{{ route('profile.show') }}#changement-mot-de-passe" class="sidebar-item" style="padding-left: 16px;">
-        <span style="font-size: 0.85rem; color: #555;">Mon mot de passe</span>
-    </a>
-
-    <a href="#" class="sidebar-item" style="padding-left: 16px;">
-        <span style="font-size: 0.85rem; color: #555;">Préférences de communication</span>
+        <span style="font-size: 0.95rem; color: #555;">Localisation & Préférences</span>
     </a>
 
     <!-- Vendeur Section -->
     <div class="sidebar-divider"></div>
 
-    <div class="sidebar-group-title" style="font-weight: 500; font-size: 0.9rem; color: #333; padding-top: 5px;">Vendre sur Karnou</div>
+    <div class="sidebar-group-title" style="font-weight: 500; font-size: 1rem; color: #333; padding-top: 5px;">Vendre
+        sur Karnou</div>
 
     @if(!$user->vendeur)
         <a href="{{ route('vendeur.create') }}" class="sidebar-item" style="color: #f68b1e;">
@@ -264,7 +266,7 @@
 
     @if($user->vendeur)
         <a href="{{ route('vendeur.show') }}" class="sidebar-item {{ request()->routeIs('vendeur.show') ? 'active' : '' }}">
-            <i class="fa-solid fa-id-card"></i>
+            <i class="fa-regular fa-id-card"></i>
             <span>État du compte</span>
         </a>
 
@@ -274,15 +276,24 @@
                 <i class="fa-solid fa-list"></i>
                 <span>Mes annonces</span>
             </a>
+            <a href="{{ route('vendeur.orders') }}"
+                class="sidebar-item {{ request()->routeIs('vendeur.orders*') ? 'active' : '' }}">
+                <i class="fa-solid fa-box-open"></i>
+                <span>Mes ventes</span>
+            </a>
         @else
             <div class="inactive-link" title="Compte rejeté">
                 <i class="fa-solid fa-list"></i>
                 <span>Mes annonces</span>
             </div>
+            <div class="inactive-link" title="Compte rejeté">
+                <i class="fa-solid fa-box-open"></i>
+                <span>Mes ventes</span>
+            </div>
         @endif
     @else
         <div class="inactive-link" title="Réservé aux vendeurs">
-            <i class="fa-solid fa-id-card"></i>
+            <i class="fa-regular fa-id-card"></i>
             <span>État du compte</span>
         </div>
 
@@ -290,33 +301,38 @@
             <i class="fa-solid fa-list"></i>
             <span>Mes annonces</span>
         </div>
+        <div class="inactive-link" title="Réservé aux vendeurs">
+            <i class="fa-solid fa-box-open"></i>
+            <span>Mes ventes</span>
+        </div>
     @endif
 
-        @if(($user->vendeur && $user->vendeur->aAccesPagePro()) || $user->hasRole('admin'))
-            <a href="{{ $user->vendeur ? route('page-pro.edit') : route('vendeur.create') }}"
-                class="sidebar-item {{ request()->routeIs('page-pro.edit') ? 'active' : '' }}">
-                <i class="fa-solid fa-store"></i>
-                <span>Gérer ma Boutique PRO</span>
-            </a>
-        @else
-            <div class="inactive-link" title="Réservé aux vendeurs professionnels">
-                <i class="fa-solid fa-store"></i>
-                <span>Gérer ma Boutique PRO</span>
-            </div>
-        @endif
+    @if(($user->vendeur && $user->vendeur->aAccesPagePro()) || $user->hasRole('admin'))
+        <a href="{{ $user->vendeur ? route('page-pro.edit') : route('vendeur.create') }}"
+            class="sidebar-item {{ request()->routeIs('page-pro.edit') ? 'active' : '' }}">
+            <i class="fa-solid fa-store"></i>
+            <span>Gérer ma Boutique PRO</span>
+        </a>
+    @else
+        <div class="inactive-link" title="Réservé aux vendeurs professionnels">
+            <i class="fa-solid fa-store"></i>
+            <span>Gérer ma Boutique PRO</span>
+        </div>
+    @endif
 
-        @if((($user->vendeur && $user->vendeur->estProfessionnel()) || $user->hasRole('admin')) && !$isInactiveForPro)
-            <a href="{{ $user->vendeur ? route('vendeur.stats') : route('vendeur.create') }}"
-                class="sidebar-item {{ request()->routeIs('vendeur.stats') ? 'active' : '' }}">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Statistiques de vente</span>
-            </a>
-        @else
-            <div class="inactive-link" title="{{ $isRejected ? 'Compte rejeté' : ($isProWithoutPlan ? 'Veuillez souscrire à un forfait Basic ou Expert' : 'Réservé aux vendeurs professionnels') }}">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Statistiques de vente</span>
-            </div>
-        @endif
+    @if((($user->vendeur && $user->vendeur->estProfessionnel()) || $user->hasRole('admin')) && !$isInactiveForPro)
+        <a href="{{ $user->vendeur ? route('vendeur.stats') : route('vendeur.create') }}"
+            class="sidebar-item {{ request()->routeIs('vendeur.stats') ? 'active' : '' }}">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Statistiques de vente</span>
+        </a>
+    @else
+        <div class="inactive-link"
+            title="{{ $isRejected ? 'Compte rejeté' : ($isProWithoutPlan ? 'Veuillez souscrire à un forfait Basic ou Expert' : 'Réservé aux vendeurs professionnels') }}">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Statistiques de vente</span>
+        </div>
+    @endif
 
     @if($user->vendeur)
         @if(!$isInactiveForPro)
@@ -326,7 +342,8 @@
                 <span>Mon Porte-Monnaie</span>
             </a>
         @else
-            <div class="inactive-link" title="{{ $isRejected ? 'Compte rejeté' : ($isProWithoutPlan ? 'Veuillez souscrire à un forfait Basic ou Expert' : 'Réservé aux vendeurs') }}">
+            <div class="inactive-link"
+                title="{{ $isRejected ? 'Compte rejeté' : ($isProWithoutPlan ? 'Veuillez souscrire à un forfait Basic ou Expert' : 'Réservé aux vendeurs') }}">
                 <i class="fa-solid fa-wallet"></i>
                 <span>Mon Porte-Monnaie</span>
             </div>
@@ -338,52 +355,23 @@
         </div>
     @endif
 
-    @if($user->vendeur)
-        @if(!$isRejected)
-            <a href="{{ route('account.credits.index') }}"
-                class="sidebar-item {{ request()->routeIs('account.credits.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-coins"></i>
-                <span>Mes crédits</span>
-                @if($user->credit_balance > 0)
-                    <span
-                        style="margin-left: auto; font-size: 0.72rem; font-weight: 700; color: #004aad; background: #eff6ff; padding: 2px 8px; border-radius: 10px; white-space: nowrap;">
-                        {{ number_format($user->credit_balance, 0, ',', ' ') }} DA
-                    </span>
-                @endif
-            </a>
-        @else
-            <div class="inactive-link" title="Compte rejeté">
-                <i class="fa-solid fa-coins"></i>
-                <span>Mes crédits</span>
-                @if($user->credit_balance > 0)
-                    <span
-                        style="margin-left: auto; font-size: 0.72rem; font-weight: 700; color: #ccc; background: #f9f9f9; padding: 2px 8px; border-radius: 10px; white-space: nowrap;">
-                        {{ number_format($user->credit_balance, 0, ',', ' ') }} DA
-                    </span>
-                @endif
-            </div>
-        @endif
 
+    @if($user->vendeur)
         @if(($user->estVendeurOfficiel() || $user->hasRole('admin')) && !$isRejected)
             <a href="{{ route('abonnements.index') }}"
                 class="sidebar-item {{ request()->routeIs('abonnements.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-calendar-check"></i>
+                <i class="fa-regular fa-calendar-check"></i>
                 <span>Mes abonnements</span>
             </a>
         @else
             <div class="inactive-link" title="{{ $isRejected ? 'Compte rejeté' : 'Réservé aux vendeurs vérifiés' }}">
-                <i class="fa-solid fa-calendar-check"></i>
+                <i class="fa-regular fa-calendar-check"></i>
                 <span>Mes abonnements</span>
             </div>
         @endif
     @else
         <div class="inactive-link" title="Réservé aux vendeurs">
-            <i class="fa-solid fa-coins"></i>
-            <span>Mes crédits</span>
-        </div>
-
-        <div class="inactive-link" title="Réservé aux vendeurs">
-            <i class="fa-solid fa-calendar-check"></i>
+            <i class="fa-regular fa-calendar-check"></i>
             <span>Mes abonnements</span>
         </div>
     @endif

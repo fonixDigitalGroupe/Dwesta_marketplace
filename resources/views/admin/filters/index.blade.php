@@ -11,10 +11,68 @@
         select:focus,
         input:focus {
             border-color: #adb1b8 !important;
-
             outline: none;
         }
 
+        .btn-amazon-primary {
+            background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
+            border: 1px solid #1e40af;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-amazon-primary:hover {
+            background: linear-gradient(180deg, #1d4ed8 0%, #1e3a8a 100%);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            color: #fff;
+        }
+
+        .btn-amazon-secondary {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-amazon-secondary:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            color: #1e293b;
+        }
+
+        .badge-amazon {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .badge-amazon-success {
+            color: #569b00;
+            background: #f7fff0;
+        }
+
+        .badge-amazon-danger {
+            color: #c40000;
+            background: #fff5f5;
+        }
+        
         .filter-label {
             font-size: 0.8rem;
             color: #555;
@@ -25,13 +83,29 @@
 
         .filter-select {
             padding: 6px 10px;
-            border: 1px solid #adb1b8;
-            border-radius: 0;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
             background: #fff;
             font-size: 0.85rem;
             color: #111;
             outline: none;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-select:focus {
+            border-color: #ff9900 !important;
+            box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.15);
+        }
+
+        @media print {
+            .sidebar, .navbar, .settings-tabs, .filters-bar, .actions-column, .pagination-container, .btn-amazon-primary, .btn-amazon-secondary, .admin-sub-header, header, footer {
+                display: none !important;
+            }
+            .main-content {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+            }
         }
     </style>
 @endpush
@@ -41,124 +115,121 @@
 @endsection
 
 @section('content')
-    <div style="max-width: 100%;">
+    <div style="max-width: 1600px; margin: 0 auto; width: 100%; padding-top: 0;">
 
-        <!-- Main Conteneur style Amazon Card -->
-        <div
-            style="background: #fff; border: 1px solid #e7e7e7; border-top: none; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
+        <!-- Main Card -->
+        <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
-                    Gestion des Critères
-                </h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                        <i class="fas fa-filter" style="font-size: 0.8rem;"></i>
+                        <span style="line-height: 1;">Gestion des Critères</span>
+                    </div>
+                </div>
 
                 <div style="display: flex; gap: 8px;">
-                    <a href="{{ route('admin.filters.create') }}"
-                        style="background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
-                        Nouveau critère de filtrage
+                    <a href="javascript:window.print()" class="btn-amazon-secondary">
+                        <i class="fas fa-print"></i> Imprimer
                     </a>
-                    <a href="javascript:window.print()"
-                        style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 6px;">
-                        Imprimer
+                    <a href="{{ route('admin.filters.create') }}" class="btn-amazon-primary">
+                        <i class="fas fa-plus"></i> Nouveau critère de filtrage
                     </a>
                 </div>
             </div>
 
-            <!-- Sélection des catégories par niveau -->
-            <div
-                style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; background: #fff; padding: 15px; border: 1px solid #e7e7e7; border-radius: 4px;">
-                <div>
-                    <label class="filter-label">Niveau 1</label>
-                    <select id="l1_filter" class="filter-select" style="width: 100%;"
-                        onchange="applyFilter('l1', this.value)">
-                        <option value="">Sélectionner une catégorie L1</option>
-                        @foreach($parents as $parent)
-                            <option value="{{ $parent->id }}" {{ request('l1') == $parent->id ? 'selected' : '' }}>
-                                {{ $parent->nom }}</option>
-                        @endforeach
-                    </select>
+            <!-- Barre de filtre -->
+            <div class="filters-bar"
+                style="background: #f8fafc; border: 1px solid #eff3f6; padding: 15px 16px; border-radius: 4px; margin-bottom: 20px;">
+                
+                <!-- Sélection des catégories par niveau -->
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label class="filter-label">Niveau 1</label>
+                        <select id="l1_filter" class="filter-select" style="width: 100%;"
+                            onchange="applyFilter('l1', this.value)">
+                            <option value="">Sélectionner une catégorie L1</option>
+                            @foreach($parents as $parent)
+                                <option value="{{ $parent->id }}" {{ request('l1') == $parent->id ? 'selected' : '' }}>
+                                    {{ $parent->nom }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label class="filter-label">Niveau 2</label>
+                        <select id="l2_filter" class="filter-select" style="width: 100%;"
+                            onchange="applyFilter('l2', this.value)" {{ !request('l1') ? 'disabled' : '' }}>
+                            <option value="">Sélectionner une catégorie L2</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="filter-label">Niveau 3</label>
+                        <select id="l3_filter" class="filter-select" style="width: 100%;"
+                            onchange="applyFilter('category_id', this.value)" {{ !request('l2') ? 'disabled' : '' }}>
+                            <option value="">Sélectionner une catégorie L3</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label class="filter-label">Niveau 2</label>
-                    <select id="l2_filter" class="filter-select" style="width: 100%;"
-                        onchange="applyFilter('l2', this.value)" {{ !request('l1') ? 'disabled' : '' }}>
-                        <option value="">Sélectionner une catégorie L2</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="filter-label">Niveau 3</label>
-                    <select id="l3_filter" class="filter-select" style="width: 100%;"
-                        onchange="applyFilter('category_id', this.value)" {{ !request('l2') ? 'disabled' : '' }}>
-                        <option value="">Sélectionner une catégorie L3</option>
-                    </select>
-                </div>
-            </div>
+                
+                <!-- Recherche -->
+                <form action="{{ route('admin.filters.index') }}" method="GET" style="display: flex; gap: 15px; align-items: center; position: relative;">
+                    @if(request('l1')) <input type="hidden" name="l1" value="{{ request('l1') }}"> @endif
+                    @if(request('l2')) <input type="hidden" name="l2" value="{{ request('l2') }}"> @endif
+                    @if(request('category_id')) <input type="hidden" name="category_id" value="{{ request('category_id') }}"> @endif
+                    
 
-            <!-- Barre de recherche simplifiée Style Amazon -->
-            <div
-                style="background: #fbfbfc; border: 1px solid #e7e7e7; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-radius: 4px;">
-                <div style="display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #111;">
-                    <span>Afficher</span>
-                    <select
-                        onchange="window.location.href = '{{ route('admin.filters.index') }}?per_page=' + this.value + '&search={{ $search }}'"
-                        style="padding: 4px 10px; border: 1px solid #adb1b8; border-radius: 3px; background: #fff; font-size: 0.85rem; color: #111; cursor: pointer; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
-                        <option value="8" {{ ($perPage ?? 8) == 8 ? 'selected' : '' }}>8</option>
-                        <option value="25" {{ ($perPage ?? 8) == 25 ? 'selected' : '' }}>25</option>
-                        <option value="50" {{ ($perPage ?? 8) == 50 ? 'selected' : '' }}>50</option>
-                        <option value="100" {{ ($perPage ?? 8) == 100 ? 'selected' : '' }}>100</option>
-                    </select>
-                    <span>résultats</span>
-                </div>
 
-                <form action="{{ route('admin.filters.index') }}" method="GET"
-                    style="display: flex; align-items: center; gap: 12px;">
-                    <input type="hidden" name="per_page" value="{{ $perPage ?? 8 }}">
-                    <label style="font-size: 0.85rem; color: #111; font-weight: 400;">Rechercher :</label>
-                    <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Nom du critère..."
-                        style="width: 350px; padding: 6px 12px; border: 1px solid #adb1b8; border-radius: 3px; outline: none; font-size: 0.85rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05) inset;">
+                    <div style="display: flex; flex: 1; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher un critère..."
+                            style="padding: 10px 16px; border: none; outline: none; flex: 1; font-size: 0.9rem; background: transparent;"
+                            onfocus="document.getElementById('search-container').style.borderColor='#ff9900'; document.getElementById('search-container').style.boxShadow='0 0 0 3px rgba(255, 153, 0, 0.15)'"
+                            onblur="document.getElementById('search-container').style.borderColor='#dee2e6'; document.getElementById('search-container').style.boxShadow='none'">
+                        
+                        <button type="submit" 
+                            style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: none; color: #fff; padding: 0 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
+                            onmouseover="this.style.background='linear-gradient(180deg, #f08804 0%, #d87300 100%)'"
+                            onmouseout="this.style.background='linear-gradient(180deg, #ff9900 0%, #e77600 100%)'">
+                            <i class="fas fa-search" style="font-size: 1.1rem; text-shadow: 0 1px 1px rgba(0,0,0,0.1);"></i>
+                        </button>
+                    </div>
+                    
+                    @if(request('search') || request('l1') || request('l2') || request('category_id'))
+                        <a href="{{ route('admin.filters.index') }}" 
+                           style="color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;"
+                           onmouseover="this.style.textDecoration='underline'"
+                           onmouseout="this.style.textDecoration='none'">
+                           Effacer les filtres
+                        </a>
+                    @endif
                 </form>
             </div>
 
-
-
             <!-- Table Amazon Design -->
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e7e7e7;">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
                 <thead>
-                    <tr style="background: #f6f6f6; border-bottom: 1px solid #e7e7e7;">
-                        <th
-                            style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">
-                            Critère</th>
-                        <th
-                            style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 220px;">
-                            Catégorie</th>
-                        <th
-                            style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">
-                            Options de filtre</th>
-                        <th
-                            style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 120px;">
-                            Statut</th>
-                        <th
-                            style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 180px;">
-                            Actions</th>
+                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Critère</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 220px;">Catégorie</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Options de filtre</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Statut</th>
+                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 180px;" class="actions-column">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($filters as $filter)
-                        <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.1s;"
+                        <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
-                            <td
-                                style="padding: 12px 15px; font-size: 0.85rem; color: #0066c0; font-weight: 500; border-right: 1px solid #e7e7e7;">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #0066c0; font-weight: 500; border-right: 1px solid #eff3f6;">
                                 {{ ucfirst($filter->nom) }}
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #e7e7e7;">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">
                                 {{ $filter->category->nom ?? 'N/A' }}
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #e7e7e7;">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">
                                 @if(!empty($filter->options))
                                     <div style="display: flex; flex-wrap: wrap; gap: 6px;">
                                         @foreach($filter->options as $option)
-                                            <span
-                                                style="background: #fdf2f2; color: #111; padding: 1px 8px; border-radius: 0; font-size: 0.75rem; border: 1px solid #adb1b8;">
+                                            <span style="background: #f8fafc; color: #475569; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; border: 1px solid #e2e8f0;">
                                                 {{ $option }}
                                             </span>
                                         @endforeach
@@ -167,19 +238,17 @@
                                     <span style="color: #999; font-style: italic; font-size: 0.8rem;">Aucune option définie</span>
                                 @endif
                             </td>
-                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                                 <form action="{{ route('admin.filters.toggle-status', $filter) }}" method="POST">
                                     @csrf @method('PATCH')
                                     <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0;">
-                                        @if($filter->is_filterable)
-                                            <span style="font-size: 0.75rem; color: #569b00; font-weight: 600;">Actif</span>
-                                        @else
-                                            <span style="font-size: 0.75rem; color: #c40000; font-weight: 600;">Suspendu</span>
-                                        @endif
+                                        <span class="badge-amazon {{ $filter->is_filterable ? 'badge-amazon-success' : 'badge-amazon-danger' }}">
+                                            {{ $filter->is_filterable ? 'Actif' : 'Suspendu' }}
+                                        </span>
                                     </button>
                                 </form>
                             </td>
-                            <td style="padding: 12px 15px; text-align: right;">
+                            <td style="padding: 12px 15px; text-align: right;" class="actions-column">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
                                     <a href="{{ route('admin.filters.edit', $filter) }}"
                                         style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
@@ -204,7 +273,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="padding: 3rem; text-align: center; color: #999; font-size: 0.85rem;">
+                            <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
                                 Aucun critère de filtrage trouvé.
                             </td>
                         </tr>
@@ -212,46 +281,45 @@
                 </tbody>
             </table>
 
-            <!-- Pagination Info & Links Harmonisée -->
-            <div
-                style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0; margin-top: 10px;">
-                <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
-                    Affichage de {{ $filters->firstItem() ?? 0 }} à {{ $filters->lastItem() ?? 0 }} sur
-                    {{ $filters->total() }} résultats
-                </div>
-                <div
-                    style="display: flex; border: 1px solid #adb1b8; border-radius: 0; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: #fff;">
-                    @if($filters->onFirstPage())
-                        <span
-                            style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;">Précédent</span>
-                    @else
-                        <a href="{{ $filters->previousPageUrl() }}"
-                            style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">Précédent</a>
-                    @endif
-
-                    @php
-                        $fStart = max(1, $filters->currentPage() - 2);
-                        $fEnd = min($filters->lastPage(), $fStart + 4);
-                    @endphp
-
-                    @for($i = $fStart; $i <= $fEnd; $i++)
-                        @if($i == $filters->currentPage())
-                            <span
-                                style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #004aad;">{{ $i }}</span>
+            <!-- Pagination Info & Links -->
+            @if($filters->total() > 0)
+                <div class="pagination-container"
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #eff3f6; border-radius: 4px; margin-top: 20px;">
+                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
+                        <strong>{{ $filters->total() }}</strong> lignes
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                        @if($filters->onFirstPage())
+                            <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Précédent</span>
                         @else
-                            <a href="{{ $filters->url($i) }}"
-                                style="padding: 6px 12px; background: #fff; color: #555; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">{{ $i }}</a>
+                            <a href="{{ $filters->previousPageUrl() }}"
+                                style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px; transition: all 0.2s;"
+                                onmouseover="this.style.borderColor='#dee2e6'; this.style.background='#f8fafc'"
+                                onmouseout="this.style.borderColor='#eff3f6'; this.style.background='#fff'">Précédent</a>
                         @endif
-                    @endfor
 
-                    @if($filters->hasMorePages())
-                        <a href="{{ $filters->nextPageUrl() }}"
-                            style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;">Suivant</a>
-                    @else
-                        <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;">Suivant</span>
-                    @endif
+                        @foreach(range(max(1, $filters->currentPage() - 2), min($filters->lastPage(), $filters->currentPage() + 2)) as $i)
+                            @if($i == $filters->currentPage())
+                                <span style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border: 1px solid #1e40af; border-radius: 4px;">{{ $i }}</span>
+                            @else
+                                <a href="{{ $filters->url($i) }}"
+                                    style="padding: 6px 12px; background: #fff; color: #64748b; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px; transition: all 0.2s;"
+                                    onmouseover="this.style.borderColor='#dee2e6'; this.style.background='#f8fafc'"
+                                    onmouseout="this.style.borderColor='#eff3f6'; this.style.background='#fff'">{{ $i }}</a>
+                            @endif
+                        @endforeach
+
+                        @if($filters->hasMorePages())
+                            <a href="{{ $filters->nextPageUrl() }}"
+                                style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px; transition: all 0.2s;"
+                                onmouseover="this.style.borderColor='#dee2e6'; this.style.background='#f8fafc'"
+                                onmouseout="this.style.borderColor='#eff3f6'; this.style.background='#fff'">Suivant</a>
+                        @else
+                            <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Suivant</span>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 
@@ -276,7 +344,16 @@
                         url.searchParams.delete('category_id');
                     }
                 }
+                // Reset to page 1 on filter
+                url.searchParams.delete('page');
                 window.location.href = url.toString();
+            }
+
+            // Pour valider la perte de "confirmDelete" s'il est pas défini globalment
+            function confirmDelete(id) {
+                if (confirm('Voulez-vous vraiment supprimer ce critère ?')) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
             }
 
             document.addEventListener('DOMContentLoaded', function () {
@@ -312,20 +389,33 @@
                 }
 
                 l1Select.addEventListener('change', function () {
-                    fetchChildren(this.value, l2Select, 'Toutes');
-                    l3Select.innerHTML = '<option value="">Toutes</option>';
+                    if (!this.value) {
+                        l2Select.innerHTML = '<option value="">Sélectionner une catégorie L2</option>';
+                        l2Select.disabled = true;
+                        l3Select.innerHTML = '<option value="">Sélectionner une catégorie L3</option>';
+                        l3Select.disabled = true;
+                        return;
+                    }
+                    
+                    fetchChildren(this.value, l2Select, 'Sélectionner une catégorie L2');
+                    l3Select.innerHTML = '<option value="">Sélectionner une catégorie L3</option>';
                     l3Select.disabled = true;
                 });
 
                 l2Select.addEventListener('change', function () {
-                    fetchChildren(this.value, l3Select, 'Toutes');
+                    if (!this.value) {
+                        l3Select.innerHTML = '<option value="">Sélectionner une catégorie L3</option>';
+                        l3Select.disabled = true;
+                        return;
+                    }
+                    fetchChildren(this.value, l3Select, 'Sélectionner une catégorie L3');
                 });
 
                 if (l1Select.value) {
-                    fetchChildren(l1Select.value, l2Select, 'Toutes', initialL2Id)
+                    fetchChildren(l1Select.value, l2Select, 'Sélectionner une catégorie L2', initialL2Id)
                         .then(() => {
                             if (l2Select.value) {
-                                fetchChildren(l2Select.value, l3Select, 'Toutes', initialL3Id);
+                                fetchChildren(l2Select.value, l3Select, 'Sélectionner une catégorie L3', initialL3Id);
                             }
                         });
                 }

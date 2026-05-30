@@ -21,6 +21,8 @@ class Order extends Model
         'qr_code_token',
         'qr_code_path',
         'notes_vendeur',
+        'livreur_id',
+        'otp_livraison',
     ];
 
     // Constantes de statut Logistique

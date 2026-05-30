@@ -54,16 +54,12 @@ class AbonnementController extends Controller
             'prix_mensuel' => 'required|numeric|min:0',
             'commission' => 'required|numeric|min:0|max:100',
             'nombre_annonces' => 'required|integer|min:0',
+            'limite_chiffre_affaires' => 'nullable|integer|min:0',
             'actif' => 'boolean',
             'page_pro' => 'boolean',
         ]);
 
         $validated['actif'] = $request->has('actif');
-        $validated['page_pro'] = $request->has('page_pro');
-        $validated['page_pro_personnalisable'] = ($validated['type'] === Abonnement::TYPE_EXPERT);
-
-        $validated['nom'] = ucfirst($validated['type']);
-        $validated['actif'] = true; // Default to active for new packs
         $validated['ordre'] = Abonnement::max('ordre') + 1;
 
         Abonnement::create($validated);
@@ -103,6 +99,7 @@ class AbonnementController extends Controller
             'prix_mensuel' => 'required|numeric|min:0',
             'commission' => 'required|numeric|min:0|max:100',
             'nombre_annonces' => 'required|integer|min:0',
+            'limite_chiffre_affaires' => 'nullable|integer|min:0',
         ]);
 
         $validated['actif'] = $request->has('actif');

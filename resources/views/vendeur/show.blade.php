@@ -36,7 +36,6 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
 
         .jumia-card-header {
@@ -45,7 +44,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #fcfcfc;
         }
 
         .jumia-card-header h2 {

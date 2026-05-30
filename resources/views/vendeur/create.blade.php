@@ -54,7 +54,7 @@
         .type-card.selected {
             border-color: #f68b1e;
             border-width: 1.5px;
-            background-color: #fffaf5;
+            background-color: #fff;
         }
 
         .type-card.selected::after {
@@ -118,7 +118,7 @@
         .form-header {
             padding: 1rem 1.75rem;
             border-bottom: 1px solid #f0f0f0;
-            background: #fcfcfc;
+            background: #fff;
         }
 
         .form-header h2 {
@@ -183,7 +183,7 @@
             font-size: 0.95rem;
             outline: none;
             transition: all 0.2s;
-            background: #fafafa;
+            background: #fff;
         }
 
         .input-field:focus {
@@ -209,7 +209,7 @@
             padding: 2rem;
             border-radius: 8px;
             text-align: center;
-            background: #fafafa;
+            background: #fff;
             cursor: pointer;
             transition: all 0.2s;
         }
@@ -246,7 +246,7 @@
         }
 
         .btn-submit {
-            background: #004aad;
+            background: #f68b1e;
             color: white;
             border: none;
             padding: 0.85rem 2rem;
@@ -261,7 +261,7 @@
         }
 
         .btn-submit:hover {
-            background: #003680;
+            background: #e57a18;
         }
 
         .btn-back {
@@ -312,14 +312,6 @@
                 $raisonRejet = $isRejected ? $vendeur->raison_rejet : null;
             @endphp
 
-            @if(session('error_banner'))
-                <div class="error-banner-alert">
-                    <svg fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span>{{ session('error_banner') }}</span>
-                </div>
-            @endif
 
             @php
                 $shouldClearField = function($fieldName, $raisonRejet) {
@@ -360,6 +352,13 @@
                 @endif
             </div>
 
+            @if(session('error') || session('error_banner'))
+                <div class="alert-error" style="color: #e53e3e; font-size: 0.95rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span>{{ session('error') ?? session('error_banner') }}</span>
+                </div>
+            @endif
+
             <div style="margin-bottom: 1.5rem;">
                 <p style="font-size: 0.9rem; color: #666; margin: 0;">
                     @if(auth()->user()->estVendeurOfficiel())
@@ -375,16 +374,16 @@
             @if(!auth()->user()->estVendeur() || !auth()->user()->vendeur->estProfessionnel())
                 <div class="type-selector">
                     <div class="type-card" id="particulier-card" onclick="selectType('particulier')" @if(auth()->user()->vendeur && auth()->user()->vendeur->estParticulier()) style="opacity: 0.5; pointer-events: none;" @endif>
-                        <div class="type-icon" style="background: #f0f7ff; color: #004aad;">
-                            <i class="fa-solid fa-user"></i>
+                        <div class="type-icon" style="background: #fff5f0; color: #f68b1e;">
+                            <i class="fa-solid fa-user-tag"></i>
                         </div>
                         <div class="type-name">Vendeur Particulier</div>
                         <div class="type-desc">Idéal pour vendre des objets d'occasion ou occasionnels. Inscription simple avec votre CNI.</div>
                     </div>
 
                     <div class="type-card" id="professionnel-card" onclick="selectType('professionnel')">
-                        <div class="type-icon" style="background: #f0f7ff; color: #004aad;">
-                            <i class="fa-solid fa-building"></i>
+                        <div class="type-icon" style="background: #f8f8f8; color: #000;">
+                            <i class="fa-solid fa-shop"></i>
                         </div>
                         <div class="type-name">Vendeur Professionnel</div>
                         <div class="type-desc">Pour les entreprises, boutiques et artisans. Avantages pro, Page Pro exclusive et commissions réduites.</div>
@@ -400,7 +399,7 @@
 
             <div id="form-particulier" class="form-container">
                 <div class="form-header">
-                    <h2><i class="fa-solid fa-user-check"></i> Informations Vendeur Particulier</h2>
+                    <h2>Informations Vendeur Particulier</h2>
                 </div>
                 
                 <div class="form-body">
@@ -420,7 +419,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="label">Numéro du document <span>*</span></label>
-                                <input type="text" name="numero_document" class="input-field @if($errors->has('numero_document') || $shouldClearField('numero_document', $raisonRejet)) is-invalid @endif" placeholder="12345678" 
+                                <input type="text" name="numero_document" class="input-field @if($errors->has('numero_document') || $shouldClearField('numero_document', $raisonRejet)) is-invalid @endif" 
                                     value="{{ ($errors->has('numero_document') || $shouldClearField('numero_document', $raisonRejet)) ? '' : (old('numero_document') ?? ((auth()->user()->vendeur && auth()->user()->vendeur->particulier && auth()->user()->vendeur->particulier->numero_document !== 'A_COMPLETER') ? auth()->user()->vendeur->particulier->numero_document : '')) }}" required>
                                 @error('numero_document') <div class="error-message">{{ $message }}</div> @enderror
                                 @if($shouldClearField('numero_document', $raisonRejet)) <div class="error-message">veuillez corriger ce champ</div> @endif
@@ -471,7 +470,7 @@
 
             <div id="form-professionnel" class="form-container">
                 <div class="form-header">
-                    <h2><i class="fa-solid fa-building-circle-check"></i> Informations Professionnelles</h2>
+                    <h2>Informations Professionnelles</h2>
                 </div>
                 
                 <div class="form-body">
@@ -491,14 +490,14 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label class="label">Registre de Commerce (RCCM) <span>*</span></label>
-                                <input type="text" name="numero_registre_commerce" class="input-field @if($errors->has('numero_registre_commerce') || $shouldClearField('numero_registre_commerce', $raisonRejet)) is-invalid @endif" placeholder="RCA-BG-2024-B-001"
+                                <input type="text" name="numero_registre_commerce" class="input-field @if($errors->has('numero_registre_commerce') || $shouldClearField('numero_registre_commerce', $raisonRejet)) is-invalid @endif" 
                                     value="{{ ($errors->has('numero_registre_commerce') || $shouldClearField('numero_registre_commerce', $raisonRejet)) ? '' : (old('numero_registre_commerce') ?? ((auth()->user()->vendeur && auth()->user()->vendeur->professionnel) ? auth()->user()->vendeur->professionnel->numero_registre_commerce : '')) }}">
                                 @error('numero_registre_commerce') <div class="error-message">{{ $message }}</div> @enderror
                                 @if($shouldClearField('numero_registre_commerce', $raisonRejet)) <div class="error-message">veuillez corriger ce champ</div> @endif
                             </div>
                             <div class="form-group">
                                 <label class="label">Identification Fiscale (NIF) <span>*</span></label>
-                                <input type="text" name="numero_identification_fiscale" class="input-field @if($errors->has('numero_identification_fiscale') || $shouldClearField('numero_identification_fiscale', $raisonRejet)) is-invalid @endif" placeholder="123456 A"
+                                <input type="text" name="numero_identification_fiscale" class="input-field @if($errors->has('numero_identification_fiscale') || $shouldClearField('numero_identification_fiscale', $raisonRejet)) is-invalid @endif" 
                                     value="{{ ($errors->has('numero_identification_fiscale') || $shouldClearField('numero_identification_fiscale', $raisonRejet)) ? '' : (old('numero_identification_fiscale') ?? ((auth()->user()->vendeur && auth()->user()->vendeur->professionnel) ? auth()->user()->vendeur->professionnel->numero_identification_fiscale : '')) }}">
                                 @error('numero_identification_fiscale') <div class="error-message">{{ $message }}</div> @enderror
                                 @if($shouldClearField('numero_identification_fiscale', $raisonRejet)) <div class="error-message">veuillez corriger ce champ</div> @endif

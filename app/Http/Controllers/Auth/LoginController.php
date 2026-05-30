@@ -7,11 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
+use App\Models\Country;
+
 class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login');
+        $countries = Country::active()->get();
+        return view('auth.login', compact('countries'));
     }
 
     public function login(Request $request)
@@ -25,7 +28,7 @@ class LoginController extends Controller
 
         if (Auth::attempt([$loginField => $request->login, 'password' => $request->password], $request->boolean('remember'))) {
             $request->session()->regenerate();
-            
+
             $user = Auth::user();
 
             if ($user->hasRole('admin')) {

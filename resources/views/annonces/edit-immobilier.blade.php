@@ -355,7 +355,7 @@
             @csrf
             @method('PUT')
             <input type="hidden" name="type" value="immobilier">
-            <input type="hidden" id="type_livraison" name="type_livraison" value="{{ old('type_livraison', $annonce->type_livraison ?? 'livraison_domicile') }}">
+            <input type="hidden" id="type_livraison" name="type_livraison" value="{{ old('type_livraison', $annonce->type_livraison ?? 'retrait_point_relais') }}">
             <input type="hidden" id="user_phone" name="user_phone" value="{{ old('user_phone', $annonce->vendeur->user->telephone ?? auth()->user()->telephone ?? '00000000') }}">
             <input type="hidden" id="code_postal" name="code_postal" value="{{ old('code_postal', $annonce->code_postal ?? '00000') }}">
 
@@ -521,6 +521,7 @@
                         @endphp
 
                         @foreach($creditServices as $service)
+                            @if($service->cle == 'urgent') @continue @endif
                             @php
                                 $isAlreadyActive = in_array($service->cle, $activeServices);
                             @endphp

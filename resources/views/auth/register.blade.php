@@ -292,19 +292,22 @@
         }
 
         .btn-black {
+            display: block;
             width: 100%;
             max-width: 550px;
-            background: #000;
+            margin: 0 auto;
+            background: #004aad;
             color: white;
             border: none;
-            padding: 0.7rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             border-radius: 4px;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
+            transition: background 0.2s;
         }
         .btn-black:hover {
-            background: #333;
+            background: #003a8c;
         }
 
         .social-login-section {
@@ -351,9 +354,11 @@
         .btn-social {
             width: 100%;
             max-width: 550px;
+            margin: 0 auto;
             display: flex;
             align-items: center;
             padding: 0;
+            height: 48px;
             border: none;
             border-radius: 4px;
             color: white;
@@ -373,7 +378,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0,0,0,0.05);
         }
 
         .btn-social .text-box {
@@ -577,60 +581,11 @@
                             <select id="nationalite" name="nationalite" class="form-input-box" required
                                 style="padding-top: 1.2rem; padding-bottom: 0.1rem; appearance: none; cursor: pointer;">
                                 <option value="" disabled selected></option>
-                                <option value="Afrique du Sud">Afrique du Sud</option>
-                                <option value="Algérie">Algérie</option>
-                                <option value="Angola">Angola</option>
-                                <option value="Bénin">Bénin</option>
-                                <option value="Botswana">Botswana</option>
-                                <option value="Burkina Faso">Burkina Faso</option>
-                                <option value="Burundi">Burundi</option>
-                                <option value="Cameroun">Cameroun</option>
-                                <option value="Cap-Vert">Cap-Vert</option>
-                                <option value="Centrafrique">Centrafrique</option>
-                                <option value="Comores">Comores</option>
-                                <option value="Congo">Congo</option>
-                                <option value="Côte d'Ivoire">Côte d'Ivoire</option>
-                                <option value="Djibouti">Djibouti</option>
-                                <option value="Égypte">Égypte</option>
-                                <option value="Érythrée">Érythrée</option>
-                                <option value="Eswatini">Eswatini</option>
-                                <option value="Éthiopie">Éthiopie</option>
-                                <option value="Gabon">Gabon</option>
-                                <option value="Gambie">Gambie</option>
-                                <option value="Ghana">Ghana</option>
-                                <option value="Guinée">Guinée</option>
-                                <option value="Guinée-Bissau">Guinée-Bissau</option>
-                                <option value="Guinée équatoriale">Guinée équatoriale</option>
-                                <option value="Kenya">Kenya</option>
-                                <option value="Lesotho">Lesotho</option>
-                                <option value="Liberia">Liberia</option>
-                                <option value="Libye">Libye</option>
-                                <option value="Madagascar">Madagascar</option>
-                                <option value="Malawi">Malawi</option>
-                                <option value="Mali">Mali</option>
-                                <option value="Maroc">Maroc</option>
-                                <option value="Maurice">Maurice</option>
-                                <option value="Mauritanie">Mauritanie</option>
-                                <option value="Mozambique">Mozambique</option>
-                                <option value="Namibie">Namibie</option>
-                                <option value="Niger">Niger</option>
-                                <option value="Nigeria">Nigeria</option>
-                                <option value="Ouganda">Ouganda</option>
-                                <option value="République Démocratique du Congo">RDC</option>
-                                <option value="Rwanda">Rwanda</option>
-                                <option value="Sao Tomé-et-Principe">Sao Tomé-et-Principe</option>
-                                <option value="Sénégal">Sénégal</option>
-                                <option value="Seychelles">Seychelles</option>
-                                <option value="Sierra Leone">Sierra Leone</option>
-                                <option value="Somalie">Somalie</option>
-                                <option value="Soudan">Soudan</option>
-                                <option value="Soudan du Sud">Soudan du Sud</option>
-                                <option value="Tanzanie">Tanzanie</option>
-                                <option value="Tchad">Tchad</option>
-                                <option value="Togo">Togo</option>
-                                <option value="Tunisie">Tunisie</option>
-                                <option value="Zambie">Zambie</option>
-                                <option value="Zimbabwe">Zimbabwe</option>
+                                @foreach($countries as $country)
+                                    <option value="{{ $country->name }}" data-code="{{ strtolower($country->code) }}" {{ old('nationalite') == $country->name ? 'selected' : '' }}>
+                                        {{ $country->name }}
+                                    </option>
+                                @endforeach
                             </select>
                             <label class="floating-label">Nationalité</label>
                             <!-- dropdown arrow -->
@@ -678,16 +633,6 @@
                     </label>
                 </div>
 
-                <div class="form-group" style="font-size: 0.9rem;">
-                    <label style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem; cursor: pointer;">
-                        <input type="checkbox" name="newsletter_karnou" style="margin-top: 3px;">
-                        <span>Je souhaite recevoir les emails personnalisés de Karnou (promos, avantages fidélité, nouveautés...)</span>
-                    </label>
-                    <label style="display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer;">
-                        <input type="checkbox" name="newsletter_partners" style="margin-top: 3px;">
-                        <span>Je souhaite recevoir les offres personnalisées des partenaires de Karnou*</span>
-                    </label>
-                </div>
 
                 <div style="text-align: center;">
                     <button type="submit" class="btn-black">
@@ -742,63 +687,15 @@
             var fullPhoneInput = document.querySelector("#full_telephone");
             var nationaliteSelect = document.querySelector("select[name='nationalite']");
             
-            // Mapping between French country names and ISO codes
-            const countryMapping = {
-                'Afrique du Sud': 'za',
-                'Algérie': 'dz',
-                'Angola': 'ao',
-                'Bénin': 'bj',
-                'Botswana': 'bw',
-                'Burkina Faso': 'bf',
-                'Burundi': 'bi',
-                'Cameroun': 'cm',
-                'Cap-Vert': 'cv',
-                'Centrafrique': 'cf',
-                'Comores': 'km',
-                'Congo': 'cg',
-                "Côte d'Ivoire": 'ci',
-                'Djibouti': 'dj',
-                'Égypte': 'eg',
-                'Érythrée': 'er',
-                'Eswatini': 'sz',
-                'Éthiopie': 'et',
-                'Gabon': 'ga',
-                'Gambie': 'gm',
-                'Ghana': 'gh',
-                'Guinée': 'gn',
-                'Guinée-Bissau': 'gw',
-                'Guinée équatoriale': 'gq',
-                'Kenya': 'ke',
-                'Lesotho': 'ls',
-                'Liberia': 'lr',
-                'Libye': 'ly',
-                'Madagascar': 'mg',
-                'Malawi': 'mw',
-                'Mali': 'ml',
-                'Maroc': 'ma',
-                'Maurice': 'mu',
-                'Mauritanie': 'mr',
-                'Mozambique': 'mz',
-                'Namibie': 'na',
-                'Niger': 'ne',
-                'Nigeria': 'ng',
-                'Ouganda': 'ug',
-                'République Démocratique du Congo': 'cd',
-                'Rwanda': 'rw',
-                'Sao Tomé-et-Principe': 'st',
-                'Sénégal': 'sn',
-                'Seychelles': 'sc',
-                'Sierra Leone': 'sl',
-                'Somalie': 'so',
-                'Soudan': 'sd',
-                'Soudan du Sud': 'ss',
-                'Tanzanie': 'tz',
-                'Tchad': 'td',
-                'Togo': 'tg',
-                'Tunisie': 'tn',
-                'Zambie': 'zm',
-                'Zimbabwe': 'zw'
-            };
+            // Logic to update phone country based on selected nationality
+            nationaliteSelect.addEventListener('change', function() {
+                var selectedOption = this.options[this.selectedIndex];
+                var countryCode = selectedOption.getAttribute('data-code');
+                
+                if (countryCode) {
+                    iti.setCountry(countryCode);
+                }
+            });
             
             var iti = window.intlTelInput(input, {
                 initialCountry: "cf", // Default to Central African Republic

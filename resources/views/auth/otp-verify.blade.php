@@ -65,7 +65,7 @@
 
         .btn-verify {
             width: 100%;
-            background: #111;
+            background: #0066c0;
             color: white;
             border: none;
             padding: 0.8rem;
@@ -78,7 +78,7 @@
         }
 
         .btn-verify:hover {
-            background: #333;
+            background: #004aad;
         }
 
         .resend-container {

@@ -9,7 +9,7 @@
         background: #fff;
         border: 1px solid #eee;
         border-radius: 12px;
-        padding: 1.25rem;
+        padding: 0.75rem;
         text-decoration: none;
         color: inherit;
         display: flex;
@@ -24,11 +24,11 @@
 
     .card-media-flat {
         width: 100%;
-        height: 200px;
+        height: 160px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1.25rem;
+        margin-bottom: 0.75rem;
         background: #fff;
     }
 
@@ -210,13 +210,10 @@
             </div>
 
         @else
-            <div style="background: white; padding: 4rem 2rem; text-align: center; border-radius: 8px; border: 1px solid #eee;">
-                <i class="fas fa-heart" style="font-size: 3rem; color: #eee; display: block; margin-bottom: 1rem;"></i>
-                <h3 style="font-size: 1.1rem; color: #555; margin-bottom: 0.5rem;">Vous n'avez pas encore de favoris</h3>
-                <p style="color: #999; font-size: 0.9rem; margin-bottom: 1.5rem;">Ajoutez des annonces à vos favoris en cliquant sur ❤️</p>
-                <a href="{{ route('home') }}" style="background: #004aad; color: white; padding: 0.75rem 2rem; border-radius: 6px; text-decoration: none; font-weight: 700;">
-                    Explorer les annonces
-                </a>
+            <div style="padding: 3rem; text-align: center;">
+                <i class="fa-regular fa-heart" style="font-size: 4rem; color: #ddd; display: block; margin-bottom: 1.5rem;"></i>
+                <h3 style="margin-bottom: 0.5rem; color: #444;">Vous n'avez pas encore de favoris</h3>
+                <p style="color: #666; font-size: 0.95rem;">Ajoutez des annonces à vos favoris en cliquant sur ❤️</p>
             </div>
         @endif
     </main>

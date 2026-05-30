@@ -98,14 +98,9 @@
                                         <a href="{{ route('account.orders') }}" class="auth-menu-item">Suivi de commande</a>
                                         <a href="{{ route('vendeur.wallet.index') }}" class="auth-menu-item">Mon porte-monnaie</a>
                                         <a href="{{ route('conversations.index') }}" class="auth-menu-item">Mes Messages</a>
-                                        
-                                        <div class="auth-separator"></div>
-                                        
-                                        <form method="POST" action="{{ route('logout') }}" id="logout-form-dropdown">
+                                        <form method="POST" action="{{ route('logout') }}" id="logout-form">
                                             @csrf
-                                            <a href="#" class="auth-menu-item" onclick="event.preventDefault(); document.getElementById('logout-form-dropdown').submit();" style="color: #0099ff;">
-                                                Déconnexion
-                                            </a>
+                                            <a href="#" class="auth-menu-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Déconnexion</a>
                                         </form>
                                     </div>
                                 </div>
@@ -138,13 +133,6 @@
                                         </a>
                                         <a href="{{ route('account.orders') }}" class="auth-menu-item">Suivi de commande</a>
                                         <a href="{{ route('vendeur.wallet.index') }}" class="auth-menu-item">Mon porte-monnaie</a>
-                                        <a href="{{ route('conversations.index') }}" class="auth-menu-item">Mes Messages</a>
-                                        <form method="POST" action="{{ route('logout') }}" id="logout-form-dropdown-mobile">
-                                            @csrf
-                                            <a href="#" class="auth-menu-item" onclick="event.preventDefault(); document.getElementById('logout-form-dropdown-mobile').submit();" style="color: #0099ff;">
-                                                Déconnexion
-                                            </a>
-                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -360,7 +348,7 @@
         }
 
         .auth-btn-login {
-            background: #000;
+            background: #004aad;
             color: #fff;
             font-weight: 700;
             text-align: center;

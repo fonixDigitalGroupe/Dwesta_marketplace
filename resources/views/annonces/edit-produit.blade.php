@@ -383,25 +383,30 @@
 
         /* Step 3 Styles */
         .status-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
             margin-top: 1rem;
+            width: 100%;
         }
 
         .status-card {
+            flex: 1;
             border: 1.5px solid #e0e0e0;
             border-radius: 8px;
             padding: 1rem;
             display: flex;
+            flex-direction: row;
             align-items: center;
-            gap: 0.75rem;
+            text-align: left;
+            gap: 1rem;
             cursor: pointer;
             transition: all 0.2s ease;
             background: white;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #444;
             position: relative;
+            min-width: 0;
         }
 
         .status-card:hover {
@@ -750,6 +755,16 @@
                 </div>
                 <div class="step-content">
                     <div class="step-number">ETAPE 4</div>
+                    <div class="step-title">Expédition</div>
+                </div>
+            </div>
+            <div class="progress-step" data-step="5">
+                <div class="step-circle">
+                    <div class="step-dot"></div>
+                    <div class="step-check">✓</div>
+                </div>
+                <div class="step-content">
+                    <div class="step-number">ETAPE 5</div>
                     <div class="step-title">Booster votre annonce</div>
                 </div>
             </div>
@@ -946,21 +961,51 @@
                     </div>
                 </div>
 
-                <!-- Étape 4: Booster votre annonce -->
+                <!-- Étape 4: Moyen d'expédition -->
                 <div class="form-step" id="step4">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
-                        <div>
-                            <h1 class="form-title" style="margin-bottom: 0.5rem;">🚀 Booster votre annonce</h1>
-                            <p class="instruction-text" style="color: #666; font-size: 0.95rem;">Mettez votre annonce en avant pour vendre plus vite.</p>
+                    <h1 class="form-title">🚚 Moyen d'expédition</h1>
+                    <div class="form-instructions">
+                        <p class="instruction-text">Choisissez comment vous souhaitez <strong style="color: #00A400;">envoyer</strong> votre article.</p>
+                    </div>
+
+                    <input type="hidden" id="type_livraison" name="type_livraison" value="{{ old('type_livraison', $annonce->type_livraison ?? 'retrait_point_relais') }}" required>
+                    <input type="hidden" id="user_phone" name="user_phone" value="{{ old('user_phone', $annonce->vendeur->user->telephone ?? auth()->user()->telephone ?? '00000000') }}">
+                    
+                    <div class="status-cards-grid">
+                        <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'retrait_point_relais') == 'retrait_point_relais' ? 'selected' : '' }}" onclick="selectShipping(this, 'retrait_point_relais')">
+                            <div class="radio-circle"></div>
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-weight: 600;">Retrait en point retrait</span>
+                                <small style="color: #666; font-size: 0.75rem;">Le client retire son colis en point retrait (point Karnou)</small>
+                            </div>
+                        </div>
+                        <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'retrait_point_relais') == 'retrait_boutique' ? 'selected' : '' }}" onclick="selectShipping(this, 'retrait_boutique')">
+                            <div class="radio-circle"></div>
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-weight: 600;">Retrait en boutique</span>
+                                <small style="color: #666; font-size: 0.75rem;">Le client retire son colis en boutique</small>
+                            </div>
+                        </div>
+                        <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'retrait_point_relais') == 'livraison_point_special' ? 'selected' : '' }}" onclick="selectShipping(this, 'livraison_point_special')">
+                            <div class="radio-circle"></div>
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-weight: 600;">Livraison en point spécial</span>
+                                <small style="color: #666; font-size: 0.75rem;">Livraison dans des lieux choisis par Karnou</small>
+                            </div>
                         </div>
                     </div>
 
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent</button>
+                        <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer</button>
+                    </div>
+                </div>
 
-                    <input type="hidden" id="type_livraison" name="type_livraison" value="{{ old('type_livraison', $annonce->type_livraison ?? 'livraison_domicile') }}" required>
-                    <input type="hidden" id="user_phone" name="user_phone" value="{{ old('user_phone', $annonce->vendeur->user->telephone ?? auth()->user()->telephone ?? '00000000') }}">
-                    <input type="hidden" id="code_postal" name="code_postal" value="{{ old('code_postal', $annonce->code_postal ?? '00000') }}">
+                <!-- Étape 5: Booster votre annonce -->
+                <div class="form-step" id="step5">
+                    <span id="user-credit-balance" style="display: none;">{{ $creditBalance ?? 0 }}</span>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
 
-                    <div style="margin-bottom: 2rem;">
                         <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Options de visibilité</h3>
                         <div style="display: flex; flex-direction: column; gap: 1rem;">
                             @php
@@ -971,6 +1016,7 @@
                             @endphp
 
                             @foreach($creditServices as $service)
+                                @if($service->cle == 'urgent') @continue @endif
                                 @php
                                     $isAlreadyActive = in_array($service->cle, $activeServices);
                                 @endphp
@@ -1056,7 +1102,7 @@
 
     <script>
         var currentStep = parseInt("{{ old('current_step', 1) }}");
-        var totalSteps = 4;
+        var totalSteps = 5;
         var uploadedImages = [];
         var deletedMediaIds = [];
         const categoriesData = {
@@ -1262,10 +1308,20 @@
                 }
                 return true;
             }
+            if (currentStep === 4) {
+                const shipping = document.getElementById('type_livraison').value;
+                if (!shipping) { alert('Veuillez sélectionner un moyen d\'expédition.'); return false; }
+            }
             return true;
         }
 
-        // Add validation to form submission to catch step 4 credit check before submitting
+        function selectShipping(el, type) {
+            document.querySelectorAll('.status-card').forEach(card => card.classList.remove('selected'));
+            el.classList.add('selected');
+            document.getElementById('type_livraison').value = type;
+        }
+
+        // Add validation to form submission to catch step 5 credit check before submitting
         document.getElementById('createAnnonceForm').addEventListener('submit', function (e) {
             const statut = document.querySelector('input[name="statut"]:checked').value;
             if (statut === 'publiee') {

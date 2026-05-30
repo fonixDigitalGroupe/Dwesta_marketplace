@@ -19,7 +19,7 @@
         <!-- Main Conteneur style Amazon Card -->
         <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
             
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e7e7e7;">
                 <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
                     Architecture : {{ $category->nom }}
                 </h1>
@@ -36,24 +36,25 @@
                 </div>
             </div>
 
-            <!-- Barre de filtres grise -->
+            <!-- Barre de filtres grise Harmonisée -->
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px 20px; border-radius: 0; margin-bottom: 20px;">
-                <form action="{{ route('admin.categories.show', $category) }}" method="GET" style="display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 20px;">
-                    <input type="hidden" name="per_page" value="{{ request('per_page', 8) }}">
+                <form action="{{ route('admin.categories.show', $category) }}" method="GET" id="filter-wrapper"
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                    <input type="hidden" name="per_page" value="{{ request('per_page', 8) }}" id="per_page_input">
                     
-                    <div style="display: flex; gap: 20px; align-items: end;">
-                        <div style="display: flex; flex-direction: column;">
-                            <label class="filter-label">Rechercher dans les enfants</label>
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <span style="font-size: 0.8rem; color: #555; font-weight: 500;">Rechercher :</span>
                             <input type="text" name="search" value="{{ request('search') }}" 
                                 placeholder="Nom de la sous-catégorie..."
-                                style="padding: 6px 12px; border: 1px solid #adb1b8; border-radius: 0; outline: none; font-size: 0.85rem; width: 250px;">
+                                style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px; outline: none; font-size: 0.85rem; width: 250px;">
                         </div>
                     </div>
 
                     <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555;">
                         <span>Afficher</span>
-                        <select onchange="window.location.href = '{{ request()->fullUrlWithQuery(['per_page' => '']) }}'.replace('per_page=', 'per_page=' + this.value)" 
-                            style="padding: 3px 6px; border: 1px solid #adb1b8; border-radius: 0; background: #fcfcfc; font-size: 0.8rem; color: #111; cursor: pointer; outline: none;">
+                        <select onchange="document.getElementById('per_page_input').value=this.value; document.getElementById('filter-wrapper').submit()" 
+                            style="padding: 3px 6px; border: 1px solid #ddd; border-radius: 4px; background: #fcfcfc; font-size: 0.8rem; color: #111; cursor: pointer; outline: none;">
                             <option value="8" {{ request('per_page', 8) == 8 ? 'selected' : '' }}>8</option>
                             <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
                             <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>

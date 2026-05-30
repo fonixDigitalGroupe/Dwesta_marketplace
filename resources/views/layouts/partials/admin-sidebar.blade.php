@@ -25,20 +25,20 @@
 
         <div class="sidebar-section">
             <ul class="sidebar-menu">
-                <li><a href="{{ route('admin.vendeurs.verification.index') }}" class="{{ request()->routeIs('admin.vendeurs.verification.*') ? 'active' : '' }}">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Validation Vendeurs</span>
-                    @if(isset($pendingVendorsCount) && $pendingVendorsCount > 0)
-                        <span style="background: var(--mady-red); color: white; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 10px; margin-left: auto;">
-                            {{ $pendingVendorsCount }}
-                        </span>
-                    @endif
-                </a></li>
                 <li><a href="{{ route('admin.users.index', ['role' => 'vendeur']) }}" class="{{ request('role') == 'vendeur' ? 'active' : '' }}"><i class="fas fa-store"></i> <span>Liste Vendeurs</span></a></li>
+                <li><a href="{{ route('admin.users.index', ['role' => 'acheteur']) }}" class="{{ request('role') == 'acheteur' ? 'active' : '' }}"><i class="fas fa-users"></i> <span>Liste Clients</span></a></li>
+                <li><a href="{{ route('admin.annonces.index') }}" class="{{ request()->routeIs('admin.annonces.*') ? 'active' : '' }}"><i class="fas fa-clipboard-list"></i> <span>Articles</span></a></li>
+                <li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i class="fas fa-shopping-basket"></i> <span>Commandes</span></a></li>
             </ul>
         </div>
 
         <div class="sidebar-separator"></div>
+
+        <div class="sidebar-section">
+            <ul class="sidebar-menu">
+                <li><a href="{{ route('admin.finance.index') }}" class="{{ request()->routeIs('admin.finance.*') ? 'active' : '' }}"><i class="fas fa-chart-bar"></i> <span>Détails Financiers</span></a></li>
+            </ul>
+        </div>
 
         <div class="sidebar-section">
             <ul class="sidebar-menu">
@@ -54,7 +54,6 @@
             <ul class="sidebar-menu">
                 <li><a href="{{ route('admin.banners.index') }}" class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}"><i class="fas fa-images"></i> <span>Bannières</span></a></li>
                 <li><a href="{{ route('admin.highlights.index') }}" class="{{ request()->routeIs('admin.highlights.*') ? 'active' : '' }}"><i class="fas fa-bullhorn"></i> <span>Actualités</span></a></li>
-                <li><a href="{{ route('admin.coupons.index') }}" class="{{ request()->routeIs('admin.coupons.*') ? 'active' : '' }}"><i class="fas fa-ticket-alt"></i> <span>Codes Promo</span></a></li>
             </ul>
         </div>
 

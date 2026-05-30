@@ -4,9 +4,6 @@
 
 @push('styles')
 <style>
-    html, body, .dashboard-container, .main-content {
-        background-color: #fff !important;
-    }
     .avis-card {
         background: white;
         border: 1px solid #eee;
@@ -59,9 +56,10 @@
         </div>
 
         @if($avis->isEmpty())
-            <div style="background: white; padding: 3rem; text-align: center; border-radius: 8px; border: 1px solid #eee;">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">⭐</div>
-                <h3 style="margin-bottom: 0.5rem;">Vous n'avez encore laissé aucun avis.</h3>
+            <div style="padding: 3rem; text-align: center;">
+                <div style="font-size: 4rem; color: #ddd; margin-bottom: 1.5rem;"><i class="fa-regular fa-comment-dots"></i></div>
+                <h3 style="margin-bottom: 0.5rem; color: #444;">Vous n'avez encore laissé aucun avis.</h3>
+                <p style="color: #666; font-size: 0.95rem;">Laissez des avis sur vos achats pour guider la communauté Karnou.</p>
             </div>
         @else
             <div>

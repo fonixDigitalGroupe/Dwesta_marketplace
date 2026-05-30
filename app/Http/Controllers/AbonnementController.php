@@ -13,7 +13,12 @@ use App\Mail\SubscriptionConfirmed;
 
 class AbonnementController extends Controller
 {
-    // Constructor removed
+    protected $payDunyaService;
+
+    public function __construct(\App\Services\PayDunyaService $payDunyaService)
+    {
+        $this->payDunyaService = $payDunyaService;
+    }
 
     /**
      * Afficher les offres d'abonnement
@@ -115,18 +120,24 @@ class AbonnementController extends Controller
             }
         }
 
-        // Flux Stripe pour abonnement payant
+        // Flux PayDunya pour abonnement payant
         try {
-            $stripeService = new \App\Services\StripeService();
-            $session = $stripeService->createSubscriptionSession($vendeur, $abonnement, 
-                route('abonnements.success'), 
-                route('abonnements.index')
+            $session = $this->payDunyaService->createCheckoutSession(
+                $abonnement->prix_mensuel,
+                "Abonnement " . $abonnement->nom . " sur Dwesta",
+                route('paydunya.success'), 
+                route('abonnements.index'), // On peut aussi utiliser paydunya.cancel
+                [
+                    'vendeur_id' => $vendeur->id,
+                    'plan_id' => $abonnement->id,
+                    'type' => 'seller_subscription'
+                ]
             );
 
             return redirect($session->url);
 
         } catch (\Exception $e) {
-            return back()->with('error', 'Erreur Stripe : ' . $e->getMessage());
+            return back()->with('error', 'Erreur PayDunya : ' . $e->getMessage());
         }
     }
 
@@ -154,67 +165,10 @@ class AbonnementController extends Controller
     }
 
     /**
-     * Page de succès après paiement Stripe
+     * Page de succès (Legacy Stripe - redirected)
      */
     public function success(Request $request)
     {
-        $sessionId = $request->get('session_id');
-        
-        if (!$sessionId) {
-            return redirect()->route('abonnements.index');
-        }
-
-        try {
-            $stripeService = new \App\Services\StripeService();
-            $session = $stripeService->getSession($sessionId);
-            
-            if ($session->payment_status === 'paid' || $session->status === 'complete') {
-                
-                // On peut aussi activer ici "au cas où" le webhook tarde, mais l'idéal est de laisser le webhook gérer la source de vérité.
-                // Pour une meilleure UX, on active ici si ce n'est pas déjà fait.
-                
-                $vendeurId = $session->metadata->vendeur_id ?? null;
-                $planId = $session->metadata->plan_id ?? null;
-                $type = $session->metadata->type ?? null;
-
-                if ($type === 'seller_subscription' && $vendeurId && $planId) {
-                    $vendeur = \App\Models\Vendeur::find($vendeurId);
-                    $abonnement = Abonnement::find($planId);
-
-                    // Vérifier si l'abonnement est déjà actif (par le webhook)
-                    $exists = VendeurAbonnement::where('vendeur_id', $vendeurId)
-                        ->where('abonnement_id', $planId)
-                        ->where('created_at', '>=', Carbon::now()->subMinutes(5)) // Créé tout récemment
-                        ->exists();
-
-                    if (!$exists) {
-                         // Activation immédiate (fallback webhook)
-                         VendeurAbonnement::where('vendeur_id', $vendeur->id)->update(['actif' => false]);
-                         
-                         $sub = VendeurAbonnement::create([
-                            'vendeur_id' => $vendeur->id,
-                            'abonnement_id' => $abonnement->id,
-                            'date_debut' => Carbon::today(),
-                            'date_fin' => Carbon::today()->addMonth(),
-                            'actif' => true,
-                            'renouvellement_automatique' => true,
-                            'nombre_annonces_utilisees' => 0,
-                        ]);
-
-                        // Envoi de l'email de confirmation
-                        Mail::to($vendeur->user->email)->send(new SubscriptionConfirmed($sub));
-                    }
-                }
-
-                return redirect()->route('vendeur.show')
-                    ->with('success', 'Votre abonnement a été activé avec succès ! Bienvenue dans votre nouvelle offre.');
-            }
-        
-        } catch (\Exception $e) {
-            return redirect()->route('abonnements.index')->with('error', 'Erreur lors de la vérification du paiement.');
-        }
-
-        return redirect()->route('vendeur.show')
-            ->with('info', 'Le paiement est en cours de traitement. Votre abonnement sera actif sous peu.');
+        return redirect()->route('vendeur.show')->with('success', 'Votre abonnement est en cours de traitement.');
     }
 }

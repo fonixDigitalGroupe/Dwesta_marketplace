@@ -485,7 +485,7 @@ class AnnonceController extends Controller
         if ($type === Annonce::TYPE_PRODUIT || $type === Annonce::TYPE_IMMOBILIER || $type === Annonce::TYPE_VEHICULE) {
             $rules['prix'] = ['required', 'numeric', 'min:0'];
             $rules['prix_original'] = ['nullable', 'numeric', 'min:0'];
-            $rules['type_livraison'] = ['nullable', 'in:retrait_boutique,livraison_domicile,livraison_point_relais'];
+            $rules['type_livraison'] = ['nullable', 'in:retrait_boutique,retrait_point_relais,livraison_point_special'];
             $rules['disponibilite'] = ['nullable', 'in:en_stock,rupture_stock,sur_commande'];
         }
 

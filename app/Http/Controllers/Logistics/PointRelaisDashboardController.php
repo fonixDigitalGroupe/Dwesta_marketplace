@@ -21,9 +21,9 @@ class PointRelaisDashboardController extends Controller
             $q->where('user_id', $user->id);
         })->pluck('id');
 
-        // Commandes qui arrivent (En Route vers ce point relais)
+        // Commandes qui arrivent (En attente de réception)
         $ordersIncoming = Order::whereIn('destination_point_relais_id', $pointRelaisIds)
-            ->where('statut', Order::STATUT_EN_ROUTE)
+            ->whereIn('statut', [Order::STATUT_EN_ATTENTE, Order::STATUT_PAYE, Order::STATUT_PRET, Order::STATUT_EN_ROUTE])
             ->with(['buyer', 'items'])
             ->latest()
             ->get();
@@ -38,7 +38,7 @@ class PointRelaisDashboardController extends Controller
         // Statistiques pour le tableau de bord
         $stats = [
             'incoming_today' => Order::whereIn('destination_point_relais_id', $pointRelaisIds)
-                                     ->where('statut', Order::STATUT_EN_ROUTE)
+                                     ->whereIn('statut', [Order::STATUT_EN_ATTENTE, Order::STATUT_PAYE, Order::STATUT_PRET, Order::STATUT_EN_ROUTE])
                                      ->whereDate('updated_at', today())
                                      ->count(),
             'in_stock' => $ordersInStock->count(),

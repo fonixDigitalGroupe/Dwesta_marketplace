@@ -16,12 +16,13 @@ class CheckoutController extends Controller
 {
     protected $cartService;
     protected $logisticsService;
+    protected $payDunyaService;
 
-    public function __construct(CartService $cartService, LogisticsService $logisticsService)
+    public function __construct(CartService $cartService, LogisticsService $logisticsService, \App\Services\PayDunyaService $payDunyaService)
     {
         $this->cartService = $cartService;
         $this->logisticsService = $logisticsService;
-        // Middleware handled in routes/web.php in Laravel 11
+        $this->payDunyaService = $payDunyaService;
     }
 
     /**
@@ -37,7 +38,39 @@ class CheckoutController extends Controller
         $subtotal = $this->cartService->getSubtotal();
         $user = Auth::user();
 
-        return view('checkout.step1', compact('cartGrouped', 'subtotal', 'user'));
+        // Check if any items require point relais
+        $requiresPointRelais = false;
+        foreach ($cartGrouped as $vendeurId => $items) {
+            foreach ($items as $item) {
+                if (($item->annonce->type_livraison ?? '') === 'retrait_point_relais') {
+                    $requiresPointRelais = true;
+                    break 2;
+                }
+            }
+        }
+
+        $pointRelais = $requiresPointRelais ? \App\Models\PointRelais::where('is_active', true)->get() : \App\Models\PointRelais::where('is_active', true)->get();
+        $shippingRules = \App\Models\ShippingRule::active()->get();
+
+        // Préparer les origines des vendeurs pour le calcul JS
+        $sellerOrigins = [];
+        foreach ($cartGrouped as $vendeurId => $items) {
+            $vendeur = \App\Models\Vendeur::find($vendeurId);
+            $sellerOrigins[$vendeurId] = $this->resolveCountryId($vendeur->user->pays ?? 'Sénégal');
+        }
+        $userCountryId = $this->resolveCountryId($user->pays ?? 'Sénégal');
+
+        return view('checkout.step1', compact('cartGrouped', 'subtotal', 'user', 'requiresPointRelais', 'pointRelais', 'shippingRules', 'sellerOrigins', 'userCountryId'));
+    }
+
+    private function resolveCountryId(?string $countryName)
+    {
+        if (empty($countryName))
+            return null;
+        $c = \App\Models\Country::where('name', 'like', $countryName)
+            ->orWhere('code', 'like', $countryName)
+            ->first();
+        return $c ? $c->id : null;
     }
 
     /**
@@ -46,13 +79,59 @@ class CheckoutController extends Controller
     public function postStep1(Request $request)
     {
         $request->validate([
-            'adresse_livraison' => 'required|string|max:500',
-            'mode_livraison' => 'required|in:domicile,point_relais'
+            'adresse_livraison' => 'required_unless:mode_livraison,retrait_point_relais|string|max:500|nullable',
+            'mode_livraison' => 'required|string',
+            'point_relais_id' => 'required_if:mode_livraison,retrait_point_relais'
         ]);
 
+        $adresse = $request->adresse_livraison;
+        $shippingFee = 0;
+        $destCountryName = Auth::user()->pays ?? 'Sénégal';
+        $region = null;
+
+        if ($request->mode_livraison === 'retrait_point_relais' && $request->filled('point_relais_id')) {
+            $pr = \App\Models\PointRelais::find($request->point_relais_id);
+            if ($pr) {
+                $destCountryName = $pr->pays ?? 'Sénégal';
+                $region = $pr->region;
+                $ville = $pr->region ?? 'Dakar';
+                $adresse = "Point Relais : " . $pr->nom . " - " . $pr->adresse . " (" . $ville . ")";
+            }
+        } else {
+            $region = Auth::user()->ville;
+        }
+
+        $destCountryId = $this->resolveCountryId($destCountryName);
+
+        // On calcule la somme des frais pour chaque vendeur du panier
+        $cartGrouped = $this->cartService->getContentGroupedBySeller();
+        $shippingFee = 0;
+
+        foreach ($cartGrouped as $vendeurId => $items) {
+            $vendeur = \App\Models\Vendeur::find($vendeurId);
+            $sourceCountryId = $this->resolveCountryId($vendeur->user->pays ?? 'Sénégal');
+
+            $rule = \App\Models\ShippingRule::active()
+                ->where('delivery_type', $request->mode_livraison)
+                ->where('source_country_id', $sourceCountryId)
+                ->where('destination_country_id', $destCountryId)
+                ->where(function ($q) use ($region) {
+                    $q->where('zone_name', $region)
+                        ->orWhereNull('zone_name')
+                        ->orWhere('zone_name', '');
+                })
+                ->orderByRaw("CASE WHEN zone_name = ? THEN 0 ELSE 1 END", [$region])
+                ->first();
+
+            $shippingFee += $rule ? $rule->price : 0;
+        }
+
         session([
-            'checkout_adresse' => $request->adresse_livraison,
-            'checkout_mode' => $request->mode_livraison
+            'checkout_adresse' => $adresse ?? 'Sur place / Non spécifié',
+            'checkout_mode' => $request->mode_livraison,
+            'checkout_point_relais_id' => ($request->mode_livraison === 'retrait_point_relais') ? $request->point_relais_id : null,
+            'checkout_shipping_fee' => $shippingFee,
+            'checkout_dest_country_id' => $destCountryId
         ]);
 
         return redirect()->route('checkout.step2');
@@ -68,8 +147,9 @@ class CheckoutController extends Controller
         }
 
         $subtotal = $this->cartService->getSubtotal();
-        
-        return view('checkout.step2', compact('subtotal'));
+        $cartGrouped = $this->cartService->getContentGroupedBySeller();
+
+        return view('checkout.step2', compact('subtotal', 'cartGrouped'));
     }
 
     /**
@@ -77,8 +157,35 @@ class CheckoutController extends Controller
      */
     public function process(Request $request)
     {
+        // On accepte les données de livraison SI elles sont présentes (single page checkout)
+        // Sinon on les prend de la session (anciennes étapes)
+        if ($request->has('mode_livraison')) {
+            $request->validate([
+                'adresse_livraison' => 'required_unless:mode_livraison,retrait_point_relais|string|max:500|nullable',
+                'mode_livraison' => 'required|string',
+                'point_relais_id' => 'required_if:mode_livraison,retrait_point_relais'
+            ]);
+
+            $adresse = $request->adresse_livraison;
+            $mode = $request->mode_livraison;
+            $pointRelaisId = $request->point_relais_id;
+
+            if ($mode === 'retrait_point_relais' && $pointRelaisId) {
+                $pr = \App\Models\PointRelais::find($pointRelaisId);
+                if ($pr) {
+                    $ville = $pr->region ?? 'Dakar';
+                    $adresse = "Point Relais : " . $pr->nom . " - " . $pr->adresse . " (" . $ville . ")";
+                }
+            }
+        } else {
+            $adresse = session('checkout_adresse');
+            $mode = session('checkout_mode');
+            $pointRelaisId = session('checkout_point_relais_id');
+        }
+
         $request->validate([
-            'moyen_paiement' => 'required|in:om,momo,cb,paypal'
+            'gestion_paiement' => 'required|in:commande,livraison_buyer,livraison_receiver',
+            'moyen_paiement' => 'nullable|in:om,momo,cb,paypal,wave,wallet,gift_card'
         ]);
 
         $cartGrouped = $this->cartService->getContentGroupedBySeller();
@@ -86,8 +193,23 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index');
         }
 
-        $adresse = session('checkout_adresse');
-        $mode = session('checkout_mode');
+        $gestionPaiement = $request->gestion_paiement;
+        $moyenPaiement = $request->moyen_paiement;
+        $giftCardCode = strtoupper(trim($request->applied_gift_card_code ?? ''));
+
+        // Resolve applied gift card directly from POST data (more reliable than session)
+        $resolvedGiftCard = null;
+        if ($giftCardCode) {
+            $resolvedGiftCard = \App\Models\GiftCard::where('code', $giftCardCode)
+                ->where('status', 'active')
+                ->where('balance', '>', 0)
+                ->first();
+        }
+
+        // If gift card is present and no mobile payment selected, treat as gift_card payment
+        if ($gestionPaiement === 'commande' && empty($moyenPaiement)) {
+            $moyenPaiement = $resolvedGiftCard ? 'gift_card' : 'cb';
+        }
 
         try {
             DB::beginTransaction();
@@ -95,25 +217,48 @@ class CheckoutController extends Controller
             $orders = [];
             foreach ($cartGrouped as $vendeurId => $items) {
                 // Calcul du total pour CE vendeur
-                $totalProduits = $items->sum(function($item) {
+                $totalProduits = $items->sum(function ($item) {
                     return ($item->annonce->prix + ($item->variante ? $item->variante->prix_supplementaire : 0)) * $item->quantite;
                 });
 
-                $fraisPort = 0; 
+                $vendeurModel = \App\Models\Vendeur::find($vendeurId);
+                $sourceCountryId = $this->resolveCountryId($vendeurModel->user->pays ?? 'Sénégal');
+
+                // Destination country
+                if ($mode === 'retrait_point_relais' && isset($pr)) {
+                    $destCountryName = $pr->pays ?? 'Sénégal';
+                } else {
+                    $destCountryName = Auth::user()->pays ?? 'Sénégal';
+                }
+                $destCountryId = $this->resolveCountryId($destCountryName);
+
+                // On cherche la règle spécifique pour ce couple pays source / pays destination
+                $rule = \App\Models\ShippingRule::active()
+                    ->where('delivery_type', $mode)
+                    ->where('source_country_id', $sourceCountryId)
+                    ->where('destination_country_id', $destCountryId)
+                    ->first();
+
+                $fraisPort = $rule ? $rule->price : 0;
                 $totalFinal = $totalProduits + $fraisPort;
-                $commission = $totalProduits * 0.15;
+
+                $tauxCommission = $vendeurModel && $vendeurModel->abonnementActuel ? $vendeurModel->abonnementActuel->commission : 15;
+                $commission = $totalProduits * ($tauxCommission / 100);
 
                 $order = Order::create([
                     'user_id' => Auth::id(),
                     'vendeur_id' => $vendeurId,
-                    'reference' => 'MM-' . strtoupper(Str::random(8)),
+                    'reference' => (string) random_int(100000000, 999999999),
                     'total_produits' => $totalProduits,
                     'frais_port' => $fraisPort,
                     'commission_plateforme' => $commission,
                     'total_final' => $totalFinal,
-                    'statut' => 'en_attente', // En attente du paiement Stripe
+                    'statut' => 'en_attente',
                     'adresse_livraison' => $adresse,
                     'mode_livraison' => $mode,
+                    'gestion_paiement' => $gestionPaiement,
+                    'moyen_paiement' => $moyenPaiement,
+                    'destination_point_relais_id' => $pointRelaisId,
                 ]);
 
                 foreach ($items as $item) {
@@ -129,35 +274,92 @@ class CheckoutController extends Controller
                 $orders[] = $order;
             }
 
-            // Pour l'instant, on gère UNE session par tunnel d'achat même si plusieurs vendeurs (simplification)
-            // Dans une version plus complexe, on ferait un total global ou des paiements séparés.
-            // Ici on va créer une session Stripe pour le PREMIER order (ou le total si on veut regrouper)
-            // Vu le code actuel qui crée plusieurs ordres, on va rediriger vers Stripe pour le TOTAL du panier.
-            
-            $totalPanier = collect($orders)->sum('total_final');
-            $mainOrder = $orders[0]; // On utilise le premier pour la référence principale
-            
-            $stripeService = new \App\Services\StripeService();
-            $session = $stripeService->createCheckoutSession($mainOrder, 
-                route('checkout.success'), 
-                route('checkout.step2')
-            );
+            // Store order refs and payment type in session for success page
+            session([
+                'last_order_refs' => collect($orders)->pluck('reference')->toArray(),
+                'last_gestion_paiement' => $gestionPaiement,
+            ]);
 
-            // Associer l'ID de session à tous les ordres de cette transaction
-            foreach($orders as $o) {
-                $o->update(['stripe_session_id' => $session->id]);
+            if ($gestionPaiement === 'commande' && in_array($moyenPaiement, ['cb', 'om', 'wave', 'free', 'wallet', 'gift_card'])) {
+                $totalCombined = collect($orders)->sum('total_final');
+                
+                // Calculate deduction from the resolved gift card (from POST data)
+                $deduction = 0;
+                if ($resolvedGiftCard) {
+                    $deduction = min($totalCombined, $resolvedGiftCard->balance);
+                }
+
+                $remainingTotal = $totalCombined - $deduction;
+
+                \Illuminate\Support\Facades\Log::info('Checkout Gift Card Debug', [
+                    'gift_card_code' => $giftCardCode,
+                    'resolved_gift_card_id' => $resolvedGiftCard?->id,
+                    'total_combined' => $totalCombined,
+                    'deduction' => $deduction,
+                    'remaining_total' => $remainingTotal,
+                    'moyen_paiement' => $moyenPaiement,
+                ]);
+
+                if ($remainingTotal > 0 && $moyenPaiement !== 'gift_card') {
+                    // Partial or full mobile payment
+                    $paymentMethod = in_array($moyenPaiement, ['gift_card', 'cb']) ? null : $moyenPaiement;
+                    $session = $this->payDunyaService->createCheckoutSession(
+                        $remainingTotal,
+                        $deduction > 0 ? "Commande Dwesta (Carte Cadeau: -{$deduction} FCFA)" : "Commande Dwesta",
+                        route('paydunya.success'),
+                        route('paydunya.cancel'),
+                        [
+                            'order_ids' => collect($orders)->pluck('id')->toArray(), 
+                            'type' => 'marketplace_order',
+                            'gift_card_id' => $resolvedGiftCard?->id,
+                            'gift_card_amount' => $deduction
+                        ],
+                        $paymentMethod
+                    );
+
+                    foreach ($orders as $o) {
+                        $o->update(['paydunya_token' => $session->token]);
+                    }
+
+                    DB::commit();
+                    return redirect($session->url);
+                } else {
+                    // Fully paid by Gift Card!
+                    foreach ($orders as $o) {
+                        $o->update(['statut' => 'paye', 'moyen_paiement' => 'gift_card']);
+                        $this->logisticsService->generateLogisticsTokens($o);
+                    }
+
+                    // Deduct from gift card balance
+                    if ($resolvedGiftCard && $deduction > 0) {
+                        $newBalance = $resolvedGiftCard->balance - $deduction;
+                        $resolvedGiftCard->update([
+                            'balance' => $newBalance,
+                            'user_id' => Auth::id(),
+                            'redeemed_at' => now(),
+                            'status' => $newBalance <= 0 ? 'used' : 'active',
+                        ]);
+                    }
+
+                    DB::commit();
+                    session()->forget('applied_gift_card');
+                    return redirect()->route('checkout.success');
+                }
+            }
+
+            // Pour les paiements à la livraison, on confirme la commande avec statut "en attente de paiement"
+            if (in_array($gestionPaiement, ['livraison_buyer', 'livraison_receiver'])) {
+                foreach ($orders as $o) {
+                    $o->update(['statut' => Order::STATUT_EN_ATTENTE]);
+                }
             }
 
             DB::commit();
-
-            // Store order refs in session for success page
-            session(['last_order_refs' => collect($orders)->pluck('reference')->toArray()]);
-
-            return redirect($session->url);
+            return redirect()->route('checkout.success');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Une erreur est survenue lors de l\'initialisation du paiement : ' . $e->getMessage());
+            return back()->with('error', 'Une erreur est survenue lors de la validation de la commande : ' . $e->getMessage());
         }
     }
 
@@ -166,12 +368,28 @@ class CheckoutController extends Controller
      */
     public function success()
     {
-        // Vider le panier après confirmation de commande
+        // Récupérer les références des commandes pour la vue
+        $orderRefs = session('last_order_refs', []);
+
+        if (empty($orderRefs)) {
+            return redirect()->route('home');
+        }
+
+        // Vider le panier après confirmation de commande (si pas déjà fait)
         $this->cartService->clear();
 
-        // Nettoyer les données de session de checkout
-        session()->forget(['checkout_adresse', 'checkout_mode']);
+        $gestionPaiement = session('last_gestion_paiement', 'commande');
 
-        return view('checkout.success');
+        // Récupérer les vrais objets Order pour l'affichage riche
+        $orders = Order::whereIn('reference', $orderRefs)->with(['seller', 'items.annonce', 'items.variante'])->get();
+
+        if ($orders->isEmpty()) {
+            return redirect()->route('home');
+        }
+
+        // Nettoyer les données de session de checkout
+        session()->forget(['checkout_adresse', 'checkout_mode', 'checkout_point_relais_id', 'last_order_refs', 'last_gestion_paiement']);
+
+        return view('checkout.success', compact('orders', 'gestionPaiement'));
     }
 }

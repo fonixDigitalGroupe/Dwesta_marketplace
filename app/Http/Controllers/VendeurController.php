@@ -482,6 +482,31 @@ class VendeurController extends Controller
     }
 
     /**
+     * Génère et télécharge le bordereau d'expédition / facture avec QR Code
+     */
+    public function invoice(\App\Models\Order $order)
+    {
+        $user = Auth::user();
+
+        if (!$user->estVendeur()) {
+            return redirect()->route('vendeur.create');
+        }
+
+        $vendeur = $user->vendeur;
+
+        // Sécurité : la commande doit appartenir à ce vendeur
+        if ($order->vendeur_id !== $vendeur->id) {
+            abort(403, 'Accès non autorisé.');
+        }
+
+        $order->load(['buyer', 'items.annonce.photos']);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('vendeur.order-invoice', compact('order', 'vendeur'));
+        
+        return $pdf->download('facture-commande-' . $order->reference . '.pdf');
+    }
+
+    /**
      * Affiche les statistiques du vendeur
      */
     public function stats()
@@ -492,15 +517,22 @@ class VendeurController extends Controller
         }
 
         $vendeur = $user->vendeur;
-        $orders = $vendeur->orders();
+        $ordersQuery = $vendeur->orders()->where('statut', '!=', 'annule');
 
         $stats = [
-            'total_orders' => $orders->count(),
-            'total_revenue' => $orders->where('statut', '!=', 'annule')->sum('total_produits'),
-            'orders_this_month' => $orders->whereMonth('created_at', now()->month)->count(),
-            'revenue_this_month' => $orders->whereMonth('created_at', now()->month)->where('statut', '!=', 'annule')->sum('total_produits'),
+            'total_orders' => $ordersQuery->count(),
+            'total_revenue' => $ordersQuery->sum('total_produits'),
+            'total_commissions' => $ordersQuery->sum('commission_plateforme'),
+            'orders_this_month' => (clone $ordersQuery)->whereMonth('created_at', now()->month)->count(),
+            'revenue_this_month' => (clone $ordersQuery)->whereMonth('created_at', now()->month)->sum('total_produits'),
         ];
 
-        return view('vendeur.stats', compact('vendeur', 'stats'));
+        $recentOrders = $vendeur->orders()
+            ->with(['buyer', 'items.annonce'])
+            ->latest()
+            ->limit(10)
+            ->get();
+
+        return view('vendeur.stats', compact('vendeur', 'stats', 'recentOrders'));
     }
 }
