@@ -311,7 +311,7 @@
 
                     <!-- Phone Mode -->
                     <div class="form-group" id="phone-group" style="display: none; position: relative;">
-                        <input type="hidden" name="login" id="login-phone-value">
+                        <input type="hidden" id="login-phone-value">
                         <div class="phone-input-group">
                             @php $defaultDial = $countries->firstWhere('code', 'CF') ?? $countries->first(); @endphp
                             <div class="custom-dial" id="dial-code-wrapper">
@@ -406,18 +406,21 @@
         function toggleLoginMode(mode) {
             const emailGroup = document.getElementById('email-group');
             const phoneGroup = document.getElementById('phone-group');
+            const hiddenPhoneInput = document.getElementById('login-phone-value');
 
             if (mode === 'phone') {
                 emailGroup.style.display = 'none';
                 phoneGroup.style.display = 'block';
                 emailInput.name = '';
                 emailInput.required = false;
+                hiddenPhoneInput.name = 'login';
                 document.getElementById('login-phone-number').focus();
             } else {
                 emailGroup.style.display = 'block';
                 phoneGroup.style.display = 'none';
                 emailInput.name = 'login';
                 emailInput.required = true;
+                hiddenPhoneInput.name = '';
                 emailInput.focus();
             }
         }
