@@ -259,7 +259,7 @@
                     
                     <div style="margin-bottom: 15px;">
                         <label class="field-label">Icône de catégorie</label>
-                        <input type="hidden" name="icone" id="icone_input" value="{{ old('icone', '📦') }}">
+                        <input type="hidden" name="icone" id="icone_input" value="{{ old('icone', 'folder') }}">
                         <div id="icon-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
                             <!-- Icons dynamic logic here -->
                         </div>
