@@ -38,6 +38,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'register']);
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/register/check-email', [RegisterController::class, 'checkEmail'])->name('register.check-email');
 
     // OAuth
     Route::get('/auth/{provider}', [SocialAuthController::class, 'redirect'])->name('social.redirect');
@@ -481,4 +482,10 @@ Route::delete('/panier/vider', [CartController::class, 'clear'])->name('cart.cle
 // Routes de succès/annulation pour les abonnements (besoin d'être dans auth pour rediriger vers le dashboard par exemple)
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/abonnements/succes', [AbonnementController::class, 'success'])->name('abonnements.success');
+});
+
+// Registration Step 2: Complete Profile
+Route::middleware(['auth'])->group(function () {
+    Route::get('/register/complete', [RegisterController::class, 'showCompletionForm'])->name('register.complete');
+    Route::post('/register/complete', [RegisterController::class, 'completeRegistration'])->name('register.complete.post');
 });

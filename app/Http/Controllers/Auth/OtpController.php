@@ -57,7 +57,7 @@ class OtpController extends Controller
             'otp_expires_at' => null,
         ]);
 
-        return redirect()->route('account.index')->with('success', 'Votre compte a été vérifié avec succès !');
+        return redirect()->route('register.complete')->with('success', 'Votre compte a été vérifié avec succès ! Veuillez compléter votre profil.');
     }
 
     /**

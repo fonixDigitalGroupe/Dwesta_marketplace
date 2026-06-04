@@ -11,7 +11,11 @@ class ProfileController extends Controller
 {
     public function show()
     {
-        return view('profile.show', ['user' => Auth::user()]);
+        $countries = \App\Models\Country::active()->orderBy('name')->get();
+        return view('profile.show', [
+            'user' => Auth::user(),
+            'countries' => $countries
+        ]);
     }
 
     public function edit()

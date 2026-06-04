@@ -102,21 +102,22 @@
             height: 18px;
         }
 
-        .btn-black {
+        .btn-primary {
             width: 100%;
-            background: #000;
+            background: #004aad;
             color: white;
             border: none;
             padding: 0.75rem 2rem;
             border-radius: 4px;
             font-weight: bold;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
             margin-top: 1rem;
         }
 
-        .btn-black:hover {
-            opacity: 0.8;
+        .btn-primary:hover {
+            background: #003a8a;
+            box-shadow: 0 4px 12px rgba(0,74,173,0.15);
         }
 
         .error-message {
@@ -185,7 +186,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-black">
+                <button type="submit" class="btn-primary">
                     Enregistrer le nouveau mot de passe
                 </button>
             </form>

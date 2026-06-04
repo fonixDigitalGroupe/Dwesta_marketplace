@@ -243,7 +243,6 @@
 
                 @if(session('success'))
                     <div class="rakuten-success-alert">
-                        <div class="success-icon">✓</div>
                         <span>{{ session('success') }}</span>
                     </div>
                 @endif
@@ -268,11 +267,11 @@
                     <div class="rakuten-radio-group">
                         <span style="color: #333;">Civilité :</span>
                         <label class="rakuten-radio-item">
-                            <input type="radio" name="civilite" value="Madame" {{ old('civilite', $user->civilite) == 'Madame' ? 'checked' : '' }}>
+                            <input type="radio" name="civilite" value="madame" {{ strtolower(old('civilite', $user->civilite)) == 'madame' ? 'checked' : '' }}>
                             Madame
                         </label>
                         <label class="rakuten-radio-item">
-                            <input type="radio" name="civilite" value="Monsieur" {{ old('civilite', $user->civilite) == 'Monsieur' ? 'checked' : '' }}>
+                            <input type="radio" name="civilite" value="monsieur" {{ strtolower(old('civilite', $user->civilite)) == 'monsieur' ? 'checked' : '' }}>
                             Monsieur
                         </label>
                     </div>
@@ -297,32 +296,13 @@
                             <div class="rakuten-field">
                                 <label class="rakuten-label">Nationalité</label>
                                 <select name="nationalite" class="rakuten-input" style="appearance: none; -webkit-appearance: none; cursor: pointer;">
+                                    <option value="">Choisir un pays</option>
                                     @php
-                                        $countries = [
-                                            'Sénégal' => '🇸🇳', 
-                                            'Mali' => '🇲🇱', 
-                                            'Côte d\'Ivoire' => '🇨🇮', 
-                                            'Guinée' => '🇬🇳', 
-                                            'Mauritanie' => '🇲🇷', 
-                                            'Bénin' => '🇧🇯', 
-                                            'Burkina Faso' => '🇧🇫', 
-                                            'Cameroun' => '🇨🇲', 
-                                            'Congo' => '🇨🇬', 
-                                            'Gabon' => '🇬🇦', 
-                                            'Niger' => '🇳🇪', 
-                                            'Togo' => '🇹🇬', 
-                                            'Afrique du Sud' => '🇿🇦', 
-                                            'Algérie' => '🇩🇿', 
-                                            'Maroc' => '🇲🇦', 
-                                            'Tunisie' => '🇹🇳', 
-                                            'France' => '🇫🇷'
-                                        ];
                                         $currentNationalite = old('nationalite', $user->nationalite);
                                     @endphp
-                                    <option value="">Choisir un pays</option>
-                                    @foreach($countries as $name => $flag)
-                                        <option value="{{ $name }}" {{ $currentNationalite == $name ? 'selected' : '' }}>
-                                            {{ $flag }} {{ $name }}
+                                    @foreach($countries as $country)
+                                        <option value="{{ $country->name }}" {{ $currentNationalite == $country->name ? 'selected' : '' }}>
+                                            {{ $country->flag }} {{ $country->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -363,44 +343,55 @@
 
                         <!-- Full Geolocation Management Section -->
                         <div id="profile-geolocation-section" class="rakuten-field-group" style="grid-column: span 2; margin-top: 1.5rem;">
-                            <h2 class="rakuten-title">Précision de votre localisation</h2>
-                            <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">
-                                Recherchez votre quartier ou déplacez le marqueur sur la carte pour définir votre position exacte.
-                            </p>
+                            <h2 class="rakuten-title">Localisation</h2>
                             
-                            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                <input type="text" id="profile-address-search" placeholder="Tapez votre quartier ou adresse (ex: Rufisque Arafat 2)" style="flex: 1; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem;">
-                                <button type="button" id="btn-profile-search" class="btn-rakuten" style="width: auto; margin: 0; padding: 0 1.5rem;">
-                                    <i class="fa-solid fa-magnifying-glass"></i> Rechercher
-                                </button>
-                            </div>
+                            <!-- Toggle Button -->
+                            <button type="button" id="btn-toggle-map" class="btn-rakuten" style="margin: 0; background: #fff; color: #f68b1e; border: 1px solid #f68b1e; width: auto; padding: 0.5rem 1rem;">
+                                <i class="fa-solid fa-map-location-dot"></i> Préciser ma position sur la carte
+                            </button>
 
-                            <div id="profile-location-status-msg" style="margin-top: 0.5rem; padding: 0.75rem; border-radius: 4px; font-size: 0.85rem; display: none; margin-bottom: 0.5rem;"></div>
+                            <div id="map-collapsible-content" style="display: none; margin-top: 1.5rem;">
+                                <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">
+                                    Recherchez votre quartier ou déplacez le marqueur sur la carte pour définir votre position exacte.
+                                </p>
+                                
+                                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                    <input type="text" id="profile-address-search" placeholder="Tapez votre quartier ou adresse (ex: Rufisque Arafat 2)" style="flex: 1; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem;">
+                                    <button type="button" id="btn-profile-search" class="btn-rakuten" style="width: auto; margin: 0; padding: 0 1.5rem;">
+                                        <i class="fa-solid fa-magnifying-glass"></i> Rechercher
+                                    </button>
+                                </div>
 
-                            <style>
-                                #profile-map {
-                                    height: 350px;
-                                    width: 100%;
-                                    border-radius: 4px;
-                                    border: 1px solid #ccc;
-                                    z-index: 10;
-                                }
-                                .profile-map-actions {
-                                    margin-top: 1rem;
-                                    display: flex;
-                                    gap: 1rem;
-                                }
-                            </style>
-                            
-                            <div id="profile-map"></div>
+                                <div id="profile-location-status-msg" style="margin-top: 0.5rem; padding: 0.75rem; border-radius: 4px; font-size: 0.85rem; display: none; margin-bottom: 0.5rem;"></div>
 
-                            <div class="profile-map-actions">
-                                <button type="button" id="btn-profile-geolocation" class="btn-rakuten" style="margin: 0; background: #f68b1e; flex: 1;">
-                                    <i class="fa-solid fa-location-crosshairs"></i> Me géolocaliser
-                                </button>
-                                <button type="button" id="btn-profile-save-location" class="btn-rakuten" style="margin: 0; background: #333; flex: 1; display: none;">
-                                    <i class="fa-solid fa-floppy-disk"></i> Valider ma position
-                                </button>
+                                <style>
+                                    #profile-map {
+                                        height: 350px;
+                                        width: 100%;
+                                        border-radius: 4px;
+                                        border: 1px solid #ccc;
+                                        z-index: 10;
+                                    }
+                                    .profile-map-actions {
+                                        margin-top: 1rem;
+                                        display: flex;
+                                        gap: 1rem;
+                                    }
+                                </style>
+                                
+                                <div id="profile-map"></div>
+
+                                <div class="profile-map-actions">
+                                    <button type="button" id="btn-profile-geolocation" class="btn-rakuten" style="margin: 0; background: #f68b1e; flex: 1;">
+                                        <i class="fa-solid fa-location-crosshairs"></i> Me géolocaliser
+                                    </button>
+                                    <button type="button" id="btn-profile-save-location" class="btn-rakuten" style="margin: 0; background: #333; flex: 1; display: none;">
+                                        <i class="fa-solid fa-floppy-disk"></i> Valider ma position
+                                    </button>
+                                    <button type="button" id="btn-close-map" class="btn-rakuten" style="margin: 0; background: #eee; color: #333; flex: 0.5;">
+                                        Fermer la carte
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -409,65 +400,67 @@
                 </form>
 
                 <h2 id="changement-mot-de-passe" class="rakuten-title">Changement de mot de passe</h2>
-                <form action="{{ route('profile.password.update') }}" method="POST">
-                    @csrf
-                    @method('PUT')
+                <div style="max-width: 500px;">
+                    <form action="{{ route('profile.password.update') }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
-                    <div class="rakuten-field-group">
-                        <div class="rakuten-field">
-                            <label class="rakuten-label">Ancien mot de passe</label>
-                            <div class="password-container">
-                                <input type="password" name="current_password" class="rakuten-input password-toggle-input"
-                                    required>
-                                <button type="button" class="eye-toggle" @click="togglePassword($event)">
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                </button>
+                        <div class="rakuten-field-group">
+                            <div class="rakuten-field">
+                                <label class="rakuten-label">Ancien mot de passe</label>
+                                <div class="password-container">
+                                    <input type="password" name="current_password" class="rakuten-input password-toggle-input"
+                                        required>
+                                    <button type="button" class="eye-toggle" @click="togglePassword($event)">
+                                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="rakuten-field-group">
-                        <div class="rakuten-field">
-                            <label class="rakuten-label">Nouveau mot de passe</label>
-                            <div class="password-container">
-                                <input type="password" name="password" class="rakuten-input password-toggle-input" required>
-                                <button type="button" class="eye-toggle" @click="togglePassword($event)">
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                </button>
+                        <div class="rakuten-field-group">
+                            <div class="rakuten-field">
+                                <label class="rakuten-label">Nouveau mot de passe</label>
+                                <div class="password-container">
+                                    <input type="password" name="password" class="rakuten-input password-toggle-input" required>
+                                    <button type="button" class="eye-toggle" @click="togglePassword($event)">
+                                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="rakuten-field-group">
-                        <div class="rakuten-field">
-                            <label class="rakuten-label">Confirmez votre nouveau mot de passe</label>
-                            <div class="password-container">
-                                <input type="password" name="password_confirmation"
-                                    class="rakuten-input password-toggle-input" required>
-                                <button type="button" class="eye-toggle" @click="togglePassword($event)">
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                </button>
+                        <div class="rakuten-field-group">
+                            <div class="rakuten-field">
+                                <label class="rakuten-label">Confirmez votre nouveau mot de passe</label>
+                                <div class="password-container">
+                                    <input type="password" name="password_confirmation"
+                                        class="rakuten-input password-toggle-input" required>
+                                    <button type="button" class="eye-toggle" @click="togglePassword($event)">
+                                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <button type="submit" class="btn-rakuten">Valider</button>
-                </form>
+                        <button type="submit" class="btn-rakuten">Valider</button>
+                    </form>
+                </div>
             </div>
         </main>
     </div>
@@ -494,6 +487,9 @@
             const btnGeo = document.getElementById('btn-profile-geolocation');
             const btnSave = document.getElementById('btn-profile-save-location');
             const btnSearch = document.getElementById('btn-profile-search');
+            const btnToggleMap = document.getElementById('btn-toggle-map');
+            const btnCloseMap = document.getElementById('btn-close-map');
+            const mapCollapsible = document.getElementById('map-collapsible-content');
             const searchInput = document.getElementById('profile-address-search');
             const statusMsg = document.getElementById('profile-location-status-msg');
 
@@ -519,9 +515,13 @@
                 }
             }
 
-            const initialLat = {{ $user->latitude ?? 14.4974 }};
-            const initialLng = {{ $user->longitude ?? -17.4419 }};
-            const zoomLevel = {{ $user->latitude ? 15 : 6 }};
+            const userLat = {{ $user->latitude ?? 'null' }};
+            const userLng = {{ $user->longitude ?? 'null' }};
+            const userCountry = "{{ $user->nationalite }}";
+            
+            const initialLat = userLat ?? 14.4974;
+            const initialLng = userLng ?? -17.4419;
+            const zoomLevel = userLat ? 15 : 6;
 
             const mapPanel = document.getElementById('profile-map');
             if (mapPanel) {
@@ -533,6 +533,20 @@
 
                 let marker = L.marker([initialLat, initialLng], { draggable: true }).addTo(map);
 
+                // Fallback: Si pas de coordonnées, on centre sur le pays
+                if (!userLat && userCountry) {
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(userCountry)}&limit=1`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data && data.length > 0) {
+                                const lat = parseFloat(data[0].lat);
+                                const lon = parseFloat(data[0].lon);
+                                map.setView([lat, lon], 6);
+                                marker.setLatLng([lat, lon]);
+                            }
+                        });
+                }
+
                 map.on('click', function(e) {
                     marker.setLatLng(e.latlng);
                     if (btnSave) btnSave.style.display = 'block';
@@ -541,6 +555,23 @@
                 marker.on('dragend', function() {
                     if (btnSave) btnSave.style.display = 'block';
                 });
+
+                if (btnToggleMap && mapCollapsible) {
+                    btnToggleMap.addEventListener('click', function() {
+                        mapCollapsible.style.display = 'block';
+                        btnToggleMap.style.display = 'none';
+                        setTimeout(() => {
+                            map.invalidateSize();
+                        }, 200);
+                    });
+                }
+
+                if (btnCloseMap && mapCollapsible) {
+                    btnCloseMap.addEventListener('click', function() {
+                        mapCollapsible.style.display = 'none';
+                        btnToggleMap.style.display = 'inline-block';
+                    });
+                }
 
                 function searchAddress() {
                     const query = searchInput.value;
@@ -612,23 +643,42 @@
                 if (btnGeo) {
                     btnGeo.addEventListener('click', function() {
                         const originalContent = btnGeo.innerHTML;
-                        btnGeo.disabled = true;
-                        btnGeo.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recherche...';
+                        
+                        if (!navigator.geolocation) {
+                            showStatus('La géolocalisation n\'est pas supportée par votre navigateur.', 'error');
+                            return;
+                        }
 
-                        navigator.geolocation.getCurrentPosition(function(position) {
-                            const lat = position.coords.latitude;
-                            const lng = position.coords.longitude;
-                            btnGeo.disabled = false;
-                            btnGeo.innerHTML = originalContent;
-                            map.setView([lat, lng], 18);
-                            marker.setLatLng([lat, lng]);
-                            if (btnSave) btnSave.style.display = 'block';
-                            showStatus('<strong>Position détectée :</strong> Ajustez le marqueur si nécessaire, puis validez.', 'info');
-                        }, function(error) {
-                            btnGeo.disabled = false;
-                            btnGeo.innerHTML = originalContent;
-                            showStatus('Erreur de géolocalisation.', 'error');
-                        }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+                        btnGeo.disabled = true;
+                        btnGeo.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Localisation en cours...';
+
+                        navigator.geolocation.getCurrentPosition(
+                            (position) => {
+                                const lat = position.coords.latitude;
+                                const lng = position.coords.longitude;
+                                
+                                map.setView([lat, lng], 17);
+                                marker.setLatLng([lat, lng]);
+                                
+                                btnGeo.disabled = false;
+                                btnGeo.innerHTML = originalContent;
+                                if (btnSave) btnSave.style.display = 'block';
+                                showStatus('<strong>Succès :</strong> Votre position exacte a été trouvée.', 'info');
+                            },
+                            (error) => {
+                                btnGeo.disabled = false;
+                                btnGeo.innerHTML = originalContent;
+                                let errorMsg = 'Impossible de récupérer votre position.';
+                                if (error.code === 1) errorMsg = 'Géolocalisation refusée par l\'utilisateur.';
+                                else if (error.code === 2) errorMsg = 'Position indisponible.';
+                                showStatus('<strong>Erreur :</strong> ' + errorMsg, 'error');
+                            },
+                            {
+                                enableHighAccuracy: true,
+                                timeout: 10000,
+                                maximumAge: 0
+                            }
+                        );
                     });
                 }
             }

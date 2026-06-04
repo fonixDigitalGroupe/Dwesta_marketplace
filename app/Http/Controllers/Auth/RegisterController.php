@@ -20,42 +20,105 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
-            'prenom' => ['required', 'string', 'max:255'],
-            'nom' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'nationalite' => ['required', 'string', 'max:100'],
-            'adresse' => ['required', 'string', 'max:500'],
-            'telephone' => ['required', 'string', 'max:20', 'unique:users'],
-            'password' => ['required', Rules\Password::defaults()],
-        ], [
+        $phoneMode = $request->filled('reg_login_phone');
+        
+        // Validation simplifiée pour l'étape 1
+        $rules = [];
+        if ($phoneMode) {
+            $rules['reg_login_phone'] = ['required', 'string', 'max:25', 'unique:users,telephone'];
+        } else {
+            $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:users'];
+        }
+
+        $request->validate($rules, [
             'email.unique' => 'Cet email est déjà utilisé.',
-            'telephone.unique' => 'Ce numéro de téléphone est déjà utilisé.',
-            'telephone.required' => 'Le numéro de téléphone est requis.',
+            'reg_login_phone.unique' => 'Ce numéro de téléphone est déjà utilisé.',
         ]);
 
         $otp = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
 
+        // Création d'un utilisateur "Brouillon" pour l'étape 1
+        // Note: prenom et password sont obligatoires dans la DB
         $user = User::create([
-            'prenom'       => $request->prenom,
-            'nom'          => $request->nom,
-            'email'        => $request->email,
-            'nationalite'  => $request->nationalite,
-            'adresse'      => $request->adresse,
-            'telephone'    => $request->telephone,
-            'password'     => Hash::make($request->password),
+            'prenom'       => 'Utilisateur',
+            'nom'          => 'Karnou',
+            'email'        => $phoneMode ? null : $request->email,
+            'telephone'    => $phoneMode ? $request->reg_login_phone : null,
+            'password'     => Hash::make(\Illuminate\Support\Str::random(12)),
             'otp_code'     => $otp,
             'otp_expires_at' => now()->addMinutes(15),
+            'is_active'    => false, // Désactivé jusqu'à vérification OTP
         ]);
 
         $user->assignRole('acheteur');
 
-        // Envoyer le code OTP par email (via Mailtrap en développement)
-        $user->notify(new EmailOtpNotification($otp));
+        // Envoi de l'OTP
+        if (!$phoneMode && $user->email) {
+            $user->notify(new EmailOtpNotification($otp));
+        } elseif ($phoneMode && $user->telephone) {
+            // "Telescop" (Simulation via Laravel Telescope/Log)
+            $user->notify(new \App\Notifications\SmsOtpNotification($otp));
+        }
 
         Auth::login($user);
 
         return redirect()->route('otp.verify');
+    }
+
+    public function showCompletionForm()
+    {
+        $user = Auth::user();
+        if ($user->is_active) {
+            return redirect()->route('account.index');
+        }
+
+        $countries = \App\Models\Country::active()->orderBy('name')->get();
+        return view('auth.register-complete', compact('countries', 'user'));
+    }
+
+    public function completeRegistration(Request $request)
+    {
+        $request->validate([
+            'civilite' => ['required', 'string', 'in:madame,monsieur'],
+            'prenom'   => ['required', 'string', 'max:255'],
+            'nom'      => ['required', 'string', 'max:255'],
+            'nationalite' => ['required', 'string', 'max:100'],
+            'adresse'  => ['required', 'string', 'max:500'],
+            'birth_day'   => ['required', 'numeric', 'between:1,31'],
+            'birth_month' => ['required', 'numeric', 'between:1,12'],
+            'birth_year'  => ['required', 'numeric', 'between:1900,' . date('Y')],
+            'password' => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::min(6)],
+            'terms'    => ['accepted'],
+        ], [
+            'civilite.required' => 'Veuillez sélectionner votre civilité.',
+            'terms.accepted' => 'Vous devez accepter les conditions d\'utilisation.',
+            'password.min' => 'Le mot de passe doit faire au moins 6 caractères.',
+        ]);
+
+        $date_de_naissance = $request->birth_year . '-' . 
+                            str_pad($request->birth_month, 2, '0', STR_PAD_LEFT) . '-' . 
+                            str_pad($request->birth_day, 2, '0', STR_PAD_LEFT);
+
+        $user = Auth::user();
+        $user->update([
+            'civilite'     => $request->civilite,
+            'prenom'       => $request->prenom,
+            'nom'          => $request->nom,
+            'date_de_naissance' => $date_de_naissance,
+            'nationalite'  => $request->nationalite,
+            'adresse'      => $request->adresse,
+            'password'     => Hash::make($request->password),
+            'is_active'    => true,
+            'email_verified_at' => $user->email_verified_at ?? now(),
+        ]);
+
+        return redirect()->route('account.index')->with('success', 'Votre profil a été complété avec succès ! Bienvenue chez Karnou.');
+    }
+
+    public function checkEmail(Request $request)
+    {
+        $exists = User::where('email', $request->email)->exists();
+        return response()->json(['exists' => $exists]);
     }
 }
 

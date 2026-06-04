@@ -1,531 +1,702 @@
 @extends('layouts.app')
 
-@section('title', 'Création de compte - Mady Market')
+@section('title', 'Création de compte - Karnou')
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <style>
-        body,
-        .page-wrapper,
-        main {
-            background-color: #f8f9fa !important;
-        }
-
-        .iti {
-            width: 100%;
-        }
-
-        /* Main Content */
-        .main-content {
-            min-height: calc(100vh - 150px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem;
-        }
-
-        .auth-container {
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .auth-logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .auth-logo img {
-            max-height: 50px;
-        }
-
-        .auth-card {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            border: 1px solid #eaeaea;
-        }
-
-        .auth-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            text-align: center;
+        body {
+            background-color: #ffffff !important;
+            font-family: 'Inter', sans-serif;
             color: #333;
         }
 
-        .auth-subtitle {
-            font-size: 0.95rem;
+        .auth-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Auth Grid */
+        .auth-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .auth-centered-container {
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            width: 100%;
+        }
+
+        .auth-centered-container .auth-card {
+            max-width: 550px;
+            width: 100%;
+        }
+
+        .auth-card {
+            background: #fff;
+            padding: 2.5rem;
+            border: 1px solid #f5f5f5;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+
+        /* Breadcrumbs */
+        .breadcrumbs {
+            font-size: 0.85rem;
             color: #666;
-            text-align: center;
             margin-bottom: 2rem;
         }
 
+        .breadcrumbs a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .breadcrumbs span {
+            margin: 0 0.4rem;
+        }
+
+        /* Titles */
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #000;
+            text-align: center;
+        }
+
+        .section-header {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 2rem 0 1.25rem 0;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid #f0f0f0;
+            color: #000;
+        }
+
+        .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        /* Floating Labels */
         .form-group {
-            margin-bottom: 1.25rem;
-        }
-
-        .input-container {
             position: relative;
+            margin-bottom: 1.5rem;
         }
 
-        .form-input-box {
+        .floating-input {
             width: 100%;
-            padding: 1.25rem 1rem 0.5rem 1rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.2s;
+            padding: 1.15rem 0.85rem 0.45rem 0.85rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.95rem;
             background: #fff;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+            outline: none;
         }
 
-        .form-input-box:focus {
-            border-color: #004aad;
-            box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
+        .floating-input:focus {
+            border-color: #000;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.04);
         }
 
         .floating-label {
             position: absolute;
-            left: 1rem;
+            left: 0.85rem;
             top: 50%;
             transform: translateY(-50%);
-            color: #999;
-            font-size: 1rem;
-            transition: all 0.2s ease-out;
+            font-size: 0.95rem;
+            color: #666;
             pointer-events: none;
-            z-index: 10;
+            transition: all 0.2s ease;
+            background: transparent;
         }
 
-        .form-input-box:focus+.floating-label,
-        .form-input-box:not(:placeholder-shown)+.floating-label,
-        .iti:focus-within+.floating-label {
+        /* Floating effect when focused or has value */
+        .floating-input:focus ~ .floating-label,
+        .floating-input:not(:placeholder-shown) ~ .floating-label {
             top: 0.6rem;
+            font-size: 0.7rem;
+            color: #000;
+            font-weight: 600;
             transform: translateY(0);
-            font-size: 0.75rem;
-            color: #004aad;
+        }
+
+        /* Password Strength Checklist */
+        .strength-checklist {
+            margin-top: 0.75rem;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .strength-item {
+            font-size: 0.8rem;
+            color: #999;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: color 0.2s ease;
+        }
+
+        .strength-item.valid {
+            color: #28a745;
+        }
+
+        .strength-icon {
+            width: 6px;
+            height: 6px;
+            background: #ccc;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .strength-item.valid .strength-icon {
+            background: #28a745;
+        }
+
+        /* Email Warning */
+        .email-warning {
+            display: none;
+            background: #fdf2f2;
+            border: 1px solid #fbd5d5;
+            padding: 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #9b1c1c;
+            margin-top: 0.5rem;
+        }
+
+        .email-warning a {
+            color: #1a56db;
+            text-decoration: underline;
             font-weight: 600;
         }
 
-        /* Specific for intl-tel-input */
-        .iti+.floating-label {
-            left: 3.5rem;
+        /* Radio Group */
+        .radio-group {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
         }
 
-        .toggle-password {
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .radio-item input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #000;
+            cursor: pointer;
+        }
+
+        /* Date Grid */
+
+        .date-grid {
+            display: grid;
+            grid-template-columns: 80px 80px 120px;
+            gap: 1rem;
+        }
+
+        /* Button */
+        .btn-primary {
+            background-color: #004aad;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 3rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background-color: #003a8a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,74,173,0.15);
+        }
+
+        .error-msg {
+            color: #c53030;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .password-toggle {
             position: absolute;
             right: 1rem;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
             color: #666;
-            z-index: 11;
+            z-index: 5;
         }
 
-        .btn-primary-karnou {
-            width: 100%;
-            background: #004aad;
-            color: white;
-            border: none;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 700;
+        /* Email/Phone Toggle */
+        .icon-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
             cursor: pointer;
-            margin-top: 1.5rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            padding: 6px;
+            border-radius: 4px;
+            z-index: 10;
             transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(0, 74, 173, 0.2);
         }
 
-        .btn-primary-karnou:hover {
-            background: #003a8c;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 15px rgba(0, 74, 173, 0.3);
+        .icon-toggle:hover {
+            color: #004aad;
+            background: rgba(0,74,173,0.05);
         }
 
-        .btn-primary-karnou:active {
-            transform: translateY(0);
+        .input-toggle-wrapper {
+            position: relative;
         }
 
-        /* Social Login */
-        .social-divider {
+        .input-toggle-wrapper .floating-input {
+            padding-right: 2.5rem;
+        }
+
+        /* Phone input group */
+        .phone-input-group {
+            display: flex;
+            align-items: stretch;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        .phone-input-group:focus-within {
+            border-color: #000;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.04);
+        }
+
+        /* Custom Dial Code Dropdown */
+        .custom-dial {
+            position: relative;
+            flex-shrink: 0;
+            border-right: 1px solid #eee;
+        }
+
+        .custom-dial-btn {
+            display: flex;
+            align-items: center;
+            padding: 0 0.6rem;
+            height: 100%;
+            min-width: 90px;
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: #333;
+            user-select: none;
+            white-space: nowrap;
+            gap: 4px;
+        }
+
+        .custom-dial-list {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            list-style: none;
+            padding: 0.25rem 0;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            min-width: 110px;
+        }
+
+        .custom-dial-list li {
+            padding: 0.45rem 0.75rem;
+            cursor: pointer;
+            font-size: 0.88rem;
+            color: #333;
+            white-space: nowrap;
+        }
+
+        .custom-dial-list li:hover {
+            background: #f5f5f5;
+        }
+
+        .phone-number-input {
+            flex: 1;
+            border: none;
+            padding: 0.85rem 2.5rem 0.85rem 0.6rem;
+            font-size: 0.95rem;
+            outline: none;
+            background: transparent;
+        }
+
+        /* Footer */
+        .terms-text {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.5;
+            margin-top: 2rem;
+        }
+
+        .terms-text a {
+            color: #f68b1e;
+            text-decoration: none;
+        }
+
+        /* Social & Help Section */
+        .divider-container {
             display: flex;
             align-items: center;
             text-align: center;
             margin: 2rem 0;
-            color: #999;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: #666;
+            font-size: 0.95rem;
         }
 
-        .social-divider::before,
-        .social-divider::after {
+        .divider-container::before,
+        .divider-container::after {
             content: '';
             flex: 1;
             border-bottom: 1px solid #eee;
         }
 
-        .social-divider::before {
+        .divider-container:not(:empty)::before {
             margin-right: 1rem;
         }
 
-        .social-divider::after {
+        .divider-container:not(:empty)::after {
             margin-left: 1rem;
         }
 
-        .social-buttons {
+        .social-btns {
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
-        .btn-social {
-            width: 100%;
+        .social-btn {
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0.85rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background: white;
-            color: #333;
-            font-size: 0.95rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s;
-            gap: 0.75rem;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .btn-social:hover {
-            background: #fcfcfc;
-            border-color: #bbb;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
-        .btn-social svg {
-            width: 20px;
-            height: 20px;
+        .disclaimer-box {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #000;
+            margin-bottom: 2rem;
+            line-height: 1.6;
         }
 
-        .auth-footer {
-            margin-top: 2rem;
+        .disclaimer-box a {
+            color: #f68b1e;
+            text-decoration: underline;
+            display: block;
+        }
+
+        .help-box {
             text-align: center;
             font-size: 0.95rem;
-            color: #666;
+            color: #000;
+            margin-bottom: 2rem;
+            line-height: 1.5;
         }
 
-        .auth-footer a {
-            color: #004aad;
-            font-weight: 700;
-            text-decoration: none;
+        .help-box strong {
+            display: block;
+            margin-top: 5px;
+            font-size: 1.1rem;
         }
 
-        .auth-footer a:hover {
-            text-decoration: underline;
-        }
-
-        .alert-error {
-            background-color: #fff5f5;
-            color: #bf0000;
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
+        .footer-logo {
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            color: #333;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            border: 1px solid #ffcccc;
+            justify-content: center;
+            gap: 5px;
         }
 
-        .password-requirements {
-            margin-top: 0.5rem;
-            font-size: 0.8rem;
-            list-style: none;
-            padding-left: 0.5rem;
+        .footer-logo .star {
+            color: #f68b1e;
+            font-size: 1.2rem;
         }
 
-        .password-requirements li {
-            position: relative;
-            padding-left: 1.2rem;
-            color: #28a745;
-            margin-bottom: 0.2rem;
-        }
-
-        .password-requirements li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #28a745;
-        }
-
-        .password-requirements li.invalid {
-            color: #999;
-        }
-
-        .password-requirements li.invalid::before {
-            content: "•";
-            color: #ccc;
-        }
-
-        .terms-text {
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 1.5rem;
-            line-height: 1.4;
-        }
-
-        .terms-text a {
-            color: #004aad;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        @media (max-width: 480px) {
-            .form-row {
+        @media (max-width: 992px) {
+            .auth-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .date-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .strength-checklist {
                 grid-template-columns: 1fr;
             }
+        }
+
+        /* Select styling for float */
+        .floating-select {
+            appearance: none;
+            padding-top: 1.25rem;
         }
     </style>
 @endpush
 
 @section('content')
-    <main class="main-content">
-        <div class="auth-container">
-            <div class="auth-logo">
-                <a href="/">
-                    <img src="{{ asset('storage/logo-karnou.png') }}" alt="Karnou" onerror="this.src='/images/logo.png'">
-                </a>
-            </div>
+    <div class="auth-wrapper">
+        <nav class="breadcrumbs">
+            <a href="/">Accueil</a>
+            <span>&gt;</span>
+            <a href="/register">Inscription</a>
+        </nav>
 
+        <div class="auth-centered-container">
+            <!-- Registration Form -->
             <div class="auth-card">
-                <h1 class="auth-title">Créer un compte</h1>
-                <p class="auth-subtitle">Rejoignez la communauté Karnou</p>
+                <h1 class="page-title">Bienvenue chez Karnou</h1>
+                <p style="text-align: center; color: #666; font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.5;">
+                    Utilisez votre e-mail ou votre téléphone pour vous connecter ou créer un compte.
+                </p>
 
-                @if(session('error'))
-                    <div class="alert-error">
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span>{{ session('error') }}</span>
-                    </div>
-                @endif
-
-                <form method="POST" action="{{ route('register') }}">
+                <form method="POST" action="{{ route('register') }}" id="register-form">
                     @csrf
 
-                    <div class="social-buttons">
-                        <a href="{{ route('social.redirect', ['provider' => 'google', 'action' => 'register']) }}"
-                            class="btn-social">
-                            <svg viewBox="0 0 24 24">
-                                <path fill="#4285F4"
-                                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                                <path fill="#34A853"
-                                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                                <path fill="#FBBC05"
-                                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                                <path fill="#EA4335"
-                                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                    <!-- Section 1: Authentication -->
+                    <div class="auth-section">
+                        {{-- Titre de section masqué car redondant avec le nouveau header --}}
+
+                        <!-- Email Mode -->
+                        <div class="form-group" id="reg-email-group">
+                            <div class="input-toggle-wrapper">
+                                <input type="email" name="email" id="email" class="floating-input" placeholder=" " value="{{ old('email') }}">
+                                <label for="email" class="floating-label">E-mail</label>
+                                <button type="button" class="icon-toggle" onclick="toggleRegisterMode('phone')" title="Utiliser mon téléphone" style="border: none; background: none; cursor: pointer; z-index: 10; padding: 10px; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div id="email-exists-warning" class="email-warning">
+                                Un compte est déjà associé à cette adresse e-mail. <br>
+                                <a href="{{ route('login') }}">Je me connecte</a> ou <a href="{{ route('password.request') }}">Mot de passe oublié ?</a>
+                            </div>
+                            @error('email') <div class="error-msg">{{ $message }}</div> @enderror
+                        </div>
+
+                        <!-- Phone Mode (login via phone) -->
+                        <div class="form-group" id="reg-phone-group" style="display: none;">
+                            <input type="hidden" name="reg_login_phone" id="reg-phone-value">
+                            <div style="position: relative;">
+                                <div class="phone-input-group">
+                                    @php $defaultDial = $countries->firstWhere('code', 'CF') ?? $countries->first(); @endphp
+                                    <div class="custom-dial" id="reg-dial-code-wrapper">
+                                        <input type="hidden" id="reg-dial-code-select" value="{{ $defaultDial->phone_code }}">
+                                        <div class="custom-dial-btn" onclick="toggleDialDropdown('reg-dial-code-wrapper')">
+                                            <span id="reg-dial-code-display">{{ $defaultDial->flag }} {{ $defaultDial->phone_code }}</span>
+                                            <svg width="10" height="10" viewBox="0 0 10 6" fill="none" style="margin-left:4px;flex-shrink:0;"><path d="M1 1l4 4 4-4" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        </div>
+                                        <ul class="custom-dial-list" id="reg-dial-code-wrapper-list" style="display:none;">
+                                            @foreach($countries as $country)
+                                                <li onclick="selectRegDial('{{ $country->phone_code }}', '{{ $country->flag }} {{ $country->phone_code }}')">
+                                                    {{ $country->flag }} {{ $country->phone_code }}
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    <input type="tel" id="reg-phone-number" class="phone-number-input" placeholder="Numéro de téléphone">
+                                </div>
+                                <button type="button" class="icon-toggle" onclick="toggleRegisterMode('email')" title="Utiliser mon e-mail" style="border:none; background:none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; z-index: 10; padding: 10px;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                </button>
+                            </div>
+                            @error('reg_login_phone') <div class="error-msg">{{ $message }}</div> @enderror
+                        </div>
+
+
+                        {{-- TEMPORAIREMENT MASQUÉ --
+                        <div class="form-group">
+                            ... password, personal info, terms, submit ...
+                        </div>
+                        --}}
+                    </div>
+
+                    {{-- TEMPORAIREMENT MASQUÉ: Section 2 Informations personnelles + terms + submit
+                    <!-- Section 2: Personal Info -->
+                    <div class="auth-section">
+                        (civilité, prénom, nom, date de naissance, nationalité, téléphone, adresse)
+                    </div>
+                    <div class="terms-text">...</div>
+                    <div style="text-align: center;"><button type="submit">Créer mon compte</button></div>
+                    --}}
+
+                    <div style="text-align: center; margin-top: 1.5rem;">
+                        <button type="submit" class="btn-primary">Continuer</button>
+                    </div>
+
+                    <div class="divider-container">Ou inscrivez-vous avec</div>
+
+                    <div class="social-btns">
+                        <a href="#" class="social-btn" title="Facebook">
+                            <svg width="40" height="40" viewBox="0 0 24 24">
+                                <path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                             </svg>
-                            <span>S'inscrire avec Google</span>
+                        </a>
+                        <a href="#" class="social-btn" title="Google">
+                            <svg width="40" height="40" viewBox="0 0 48 48">
+                                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                                <path fill="none" d="M0 0h48v48H0z"/>
+                            </svg>
                         </a>
                     </div>
 
-                    <div class="social-divider">ou</div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <div class="input-container">
-                                <input type="text" name="prenom" placeholder=" " class="form-input-box"
-                                    value="{{ old('prenom') }}" style="text-transform: capitalize;" required>
-                                <label class="floating-label">Prénom</label>
-                            </div>
-                            @error('prenom') <div class="error-message">{{ $message }}</div> @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <div class="input-container">
-                                <input type="text" name="nom" placeholder=" " class="form-input-box"
-                                    value="{{ old('nom') }}" style="text-transform: capitalize;" required>
-                                <label class="floating-label">Nom</label>
-                            </div>
-                            @error('nom') <div class="error-message">{{ $message }}</div> @enderror
-                        </div>
+                    <div class="disclaimer-box">
+                        En continuant, vous acceptez les conditions d'utilisation de Karnou
+                        <a href="#">Termes et conditions</a>
                     </div>
 
-                    <div class="form-group">
-                        <div class="input-container">
-                            <input type="email" id="email" name="email" placeholder=" " class="form-input-box"
-                                value="{{ old('email') }}" required>
-                            <label class="floating-label">E-mail</label>
-                        </div>
-                        @error('email') <div class="error-message">{{ $message }}</div> @enderror
+                    <div class="help-box">
+                        Besoin d'aide ? Visitez notre Centre d'aide ou contactez-nous au
+                        <strong>221301022122</strong>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <div class="input-container">
-                                <select id="nationalite" name="nationalite" class="form-input-box" required
-                                    style="padding-top: 1.25rem;">
-                                    <option value="" disabled selected></option>
-                                    @foreach($countries as $country)
-                                        <option value="{{ $country->name }}" data-code="{{ strtolower($country->code) }}" {{ old('nationalite') == $country->name ? 'selected' : '' }}>
-                                            {{ $country->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <label class="floating-label">Nationalité</label>
-                            </div>
-                            @error('nationalite') <div class="error-message">{{ $message }}</div> @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <div class="input-container">
-                                <input type="tel" id="telephone" name="telephone" placeholder=" " class="form-input-box"
-                                    value="{{ old('telephone') }}" required>
-                                <label id="phone-floating-label" class="floating-label">Téléphone</label>
-                            </div>
-                            <input type="hidden" name="full_telephone" id="full_telephone">
-                            @error('telephone') <div class="error-message">{{ $message }}</div> @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-container">
-                            <input type="text" name="adresse" placeholder=" " class="form-input-box"
-                                value="{{ old('adresse') }}" required>
-                            <label class="floating-label">Adresse complète</label>
-                        </div>
-                        @error('adresse') <div class="error-message">{{ $message }}</div> @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-container">
-                            <input type="password" id="password" name="password" placeholder=" " class="form-input-box"
-                                required>
-                            <label class="floating-label">Mot de passe</label>
-                            <span class="toggle-password" onclick="togglePassword()">
-                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                    <path fill-rule="evenodd"
-                                        d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </span>
-                        </div>
-                        @error('password') <div class="error-message">{{ $message }}</div> @enderror
-                        <ul class="password-requirements">
-                            <li id="req-length" class="invalid">Entre 8 et 18 caractères</li>
-                            <li id="req-uppercase" class="invalid">Au moins une majuscule</li>
-                            <li id="req-number" class="invalid">Au moins un chiffre</li>
-                        </ul>
-                    </div>
-
-                    <div class="terms-text">
-                        <label style="display: flex; gap: 0.75rem; cursor: pointer;">
-                            <input type="checkbox" name="terms_accepted" required style="margin-top: 3px;">
-                            <span>J'accepte les <a href="#">Conditions d'utilisation</a> et la <a href="#">Politique de
-                                    confidentialité</a> de Karnou.</span>
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn-primary-karnou">
-                        Créer mon compte
-                    </button>
                 </form>
             </div>
-
-            <div class="auth-footer">
-                Déjà un compte ? <a href="{{ route('login') }}">Se connecter</a>
-            </div>
         </div>
-    </main>
-
+    </div>
 @endsection
 
 @push('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const input = document.querySelector("#telephone");
-            const fullPhoneInput = document.querySelector("#full_telephone");
-            const nationaliteSelect = document.querySelector("#nationalite");
-            const passwordInput = document.getElementById('password');
-            const reqLength = document.getElementById('req-length');
-            const reqUppercase = document.getElementById('req-uppercase');
-            const reqNumber = document.getElementById('req-number');
+            const emailInput = document.querySelector('#email');
+            const form = document.querySelector('#register-form');
 
-            // Initialize intlTelInput
-            const iti = window.intlTelInput(input, {
-                initialCountry: "cf",
-                onlyCountries: @json($countries->pluck('code')->map(fn($c) => strtolower($c))),
-                preferredCountries: ['cf', 'sn', 'cm', 'ci', 'tg', 'bj', 'ga'],
-                nationalMode: true,
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-            });
+            // Email existence check (debounced)
+            if (emailInput) {
+                let debounceTimer;
+                emailInput.addEventListener('input', function () {
+                    clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(function () {
+                        const email = emailInput.value.trim();
+                        if (!email) {
+                            document.getElementById('email-exists-warning').style.display = 'none';
+                            return;
+                        }
+                        fetch('/check-email?email=' + encodeURIComponent(email))
+                            .then(r => r.json())
+                            .then(data => {
+                                document.getElementById('email-exists-warning').style.display = data.exists ? 'block' : 'none';
+                            })
+                            .catch(() => {});
+                    }, 500);
+                });
+            }
 
-            // Update phone country when nationality changes
-            nationaliteSelect.addEventListener('change', function () {
-                const selectedOption = this.options[this.selectedIndex];
-                const countryCode = selectedOption.getAttribute('data-code');
-                if (countryCode) {
-                    iti.setCountry(countryCode);
+            // Set phone value from dial code + number on submit
+            if (form) {
+                form.addEventListener('submit', function () {
+                    const phoneGroup = document.getElementById('reg-phone-group');
+                    if (phoneGroup && phoneGroup.style.display !== 'none') {
+                        const dialCode = document.getElementById('reg-dial-code-select').value;
+                        const number = document.getElementById('reg-phone-number').value.trim();
+                        document.getElementById('reg-phone-value').value = dialCode + number;
+                    }
+                });
+            }
+        });
+
+        function toggleRegisterMode(mode) {
+            const emailGroup = document.getElementById('reg-email-group');
+            const phoneGroup = document.getElementById('reg-phone-group');
+            const emailInput = document.getElementById('email');
+
+            if (mode === 'phone') {
+                emailGroup.style.display = 'none';
+                phoneGroup.style.display = 'block';
+                if (emailInput) {
+                    emailInput.removeAttribute('required');
+                    emailInput.name = '_email_disabled';
                 }
-            });
-
-            // Floating label for phone field
-            const phoneLabel = document.getElementById('phone-floating-label');
-            function floatPhoneLabel() {
-                if (input.value.trim() || document.activeElement === input) {
-                    phoneLabel.style.top = '0.6rem';
-                    phoneLabel.style.fontSize = '0.75rem';
-                    phoneLabel.style.color = '#004aad';
-                    phoneLabel.style.fontWeight = '600';
-                    phoneLabel.style.transform = 'translateY(0)';
-                } else {
-                    phoneLabel.style.top = '50%';
-                    phoneLabel.style.fontSize = '1rem';
-                    phoneLabel.style.color = '#999';
-                    phoneLabel.style.fontWeight = '400';
-                    phoneLabel.style.transform = 'translateY(-50%)';
+                document.getElementById('reg-phone-number').focus();
+            } else {
+                emailGroup.style.display = 'block';
+                phoneGroup.style.display = 'none';
+                if (emailInput) {
+                    emailInput.required = true;
+                    emailInput.name = 'email';
+                    emailInput.focus();
                 }
             }
-            input.addEventListener('focus', floatPhoneLabel);
-            input.addEventListener('blur', floatPhoneLabel);
-            input.addEventListener('input', floatPhoneLabel);
-            floatPhoneLabel(); // Initial state
+        }
 
-            // Password validation
-            passwordInput.addEventListener('input', function () {
-                const password = passwordInput.value;
+        function toggleDialDropdown(wrapperId) {
+            const list = document.getElementById(wrapperId + '-list');
+            list.style.display = list.style.display === 'none' ? 'block' : 'none';
+        }
 
-                // Length
-                if (password.length >= 8 && password.length <= 18) reqLength.classList.remove('invalid');
-                else reqLength.classList.add('invalid');
+        function selectRegDial(value, label) {
+            document.getElementById('reg-dial-code-select').value = value;
+            document.getElementById('reg-dial-code-display').textContent = label;
+            document.getElementById('reg-dial-code-wrapper-list').style.display = 'none';
+        }
 
-                // Uppercase
-                if (/[A-Z]/.test(password)) reqUppercase.classList.remove('invalid');
-                else reqUppercase.classList.add('invalid');
-
-                // Number
-                if (/[0-9]/.test(password)) reqNumber.classList.remove('invalid');
-                else reqNumber.classList.add('invalid');
-            });
-
-            // Sync phone number to hidden input on form submit
-            const form = input.closest('form');
-            form.addEventListener('submit', function () {
-                fullPhoneInput.value = iti.getNumber();
-            });
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('reg-dial-code-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                const list = document.getElementById('reg-dial-code-wrapper-list');
+                if (list) list.style.display = 'none';
+            }
         });
 
         function togglePassword() {

@@ -17,9 +17,9 @@
         .otp-card {
             background: white;
             padding: 2.5rem;
-            border: 1px solid #e0e0e0;
+            border: 1px solid #f5f5f5;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
             max-width: 500px;
             margin: 0 auto;
             text-align: center;
@@ -59,8 +59,8 @@
         }
 
         .otp-digit:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+            border-color: #f68b1e;
+            box-shadow: none;
         }
 
         .btn-verify {
@@ -68,7 +68,7 @@
             background: #0066c0;
             color: white;
             border: none;
-            padding: 0.8rem;
+            padding: 0.7rem;
             border-radius: 6px;
             font-size: 1rem;
             font-weight: bold;
@@ -87,7 +87,7 @@
         }
 
         .resend-link {
-            color: #0066c0;
+            color: #f68b1e;
             text-decoration: none;
             font-weight: 500;
         }
@@ -121,9 +121,13 @@
 @section('content')
     <main class="main-content">
         <div class="otp-card">
-            <h1 class="otp-title">Vérifiez votre e-mail</h1>
+            <h1 class="otp-title">
+                Vérifiez votre {{ Auth::user()->email ? 'e-mail' : 'téléphone' }}
+            </h1>
             <p class="otp-subtitle">
-                Nous avons envoyé un code de vérification à 4 chiffres à l'adresse <strong>{{ Auth::user()->email }}</strong>. 
+                Nous avons envoyé un code de vérification à 4 chiffres 
+                {{ Auth::user()->email ? 'à l\'adresse' : 'au numéro' }} 
+                <strong>{{ Auth::user()->email ?? Auth::user()->telephone }}</strong>. 
                 Veuillez le saisir ci-dessous pour activer votre compte.
             </p>
 

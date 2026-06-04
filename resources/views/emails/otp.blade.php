@@ -47,7 +47,7 @@
             font-size: 36px;
             font-weight: 800;
             letter-spacing: 8px;
-            color: #004aad;
+            color: #000000;
             font-family: 'Courier New', Courier, monospace;
         }
         .footer {
@@ -70,7 +70,7 @@
         
         <h1>Vérifiez votre adresse e-mail</h1>
         
-        <p>Bonjour {{ $prenom }},</p>
+        <p>Bonjour,</p>
         
         <p>Merci de vous être inscrit sur <strong>Karnou Marketplace</strong>. Pour finaliser la configuration de votre compte, veuillez saisir le code de vérification à usage unique suivant :</p>
         
