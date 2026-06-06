@@ -352,21 +352,37 @@
     document.addEventListener('DOMContentLoaded', function () {
         const grid = document.getElementById('icon-grid');
         const iconeInput = document.getElementById('icone_input');
+        const currentValue = iconeInput.value;
 
-        icons.forEach(svg => {
+        icons.forEach(function(svg, index) {
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'icon-btn';
             btn.innerHTML = svg;
-            if (iconeInput.value === svg) btn.classList.add('active');
+            btn.dataset.index = index;
+
+            // Select if it matches current stored index or SVG value
+            if (currentValue == index || currentValue === svg) {
+                btn.classList.add('active');
+                iconeInput.value = index; // normalize to index
+            }
 
             btn.onclick = function () {
                 document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-                iconeInput.value = svg;
+                iconeInput.value = this.dataset.index;
             };
             grid.appendChild(btn);
         });
+
+        // Select first icon by default if none selected
+        if (iconeInput.value === '' || iconeInput.value === 'folder') {
+            const firstBtn = grid.querySelector('.icon-btn');
+            if (firstBtn) {
+                firstBtn.classList.add('active');
+                iconeInput.value = '0';
+            }
+        }
 
         const parentSelect = document.getElementById('parent_id');
         const orderInput = document.getElementById('ordre');
@@ -385,14 +401,16 @@
             if (nextOrders[key]) {
                 orderInput.value = nextOrders[key];
             } else {
-                orderInput.value = 1; // Par défaut si aucun enfant
+                orderInput.value = 1;
             }
 
             if (val === "") {
+                // Niveau 1 (racine) : montrer famille et image
                 configSection.style.display = 'block';
                 imageGroup.style.display = 'block';
                 familleSelect.setAttribute('required', 'required');
             } else {
+                // Sous-catégorie : cacher famille et image
                 configSection.style.display = 'none';
                 imageGroup.style.display = 'none';
                 familleSelect.removeAttribute('required');
@@ -401,7 +419,7 @@
         }
 
         parentSelect.addEventListener('change', toggleFamille);
-        toggleFamille();
+        toggleFamille(); // Initialize on page load
     });
 
     function previewImage(input) {
