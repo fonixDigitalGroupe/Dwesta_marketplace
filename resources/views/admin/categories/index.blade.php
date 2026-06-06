@@ -215,6 +215,13 @@
                             </td>
                             <td style="padding: 12px 15px; text-align: right;" class="actions-column">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                                    <a href="{{ route('admin.categories.show', $category->id) }}"
+                                        style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
+                                        onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
+                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
+                                        Détails
+                                    </a>
+                                    <span style="color: #ddd;">|</span>
                                     <a href="{{ route('admin.categories.edit', $category->id) }}"
                                         style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
                                         onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
@@ -222,16 +229,16 @@
                                         Modifier
                                     </a>
                                     <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST"
-                                        onsubmit="return confirm('Supprimer cette catégorie ?')" style="display: inline;">
+                                    <form id="delete-form-{{ $category->id }}" action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" style="display:none;">
                                         @csrf @method('DELETE')
-                                        <button type="submit"
-                                            style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                            onmouseover="this.style.textDecoration='underline'"
-                                            onmouseout="this.style.textDecoration='none'">
-                                            Supprimer
-                                        </button>
                                     </form>
+                                    <button type="button"
+                                        onclick="confirmDelete({{ $category->id }})"
+                                        style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                        onmouseover="this.style.textDecoration='underline'"
+                                        onmouseout="this.style.textDecoration='none'">
+                                        Supprimer
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -286,4 +293,26 @@
             @endif
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Cette action est irréversible !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#eb8206',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimer !',
+                cancelButtonText: 'Annuler',
+                borderRadius: '0'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+    @endpush
 @endsection
