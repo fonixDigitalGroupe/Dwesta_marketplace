@@ -17,12 +17,13 @@ class RoleSeeder extends Seeder
             'acheteur',
             'Vendeur Particulier',
             'Vendeur Professionnel',
+            'point relais',
         ];
 
         foreach ($roles as $roleName) {
-            Role::firstOrCreate(['name' => $roleName]);
+            Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'web']);
         }
         
-        $this->command->info('✓ Rôles créés : admin, vendeur, acheteur, Vendeur Particulier, Vendeur Professionnel');
+        $this->command->info('✓ Rôles créés : admin, vendeur, acheteur, Vendeur Particulier, Vendeur Professionnel, point relais');
     }
 }
