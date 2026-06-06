@@ -34,8 +34,8 @@ class ShippingRule extends Model
         'is_active' => 'boolean',
     ];
 
-    const TYPE_DOMICILE = 'domicile';
-    const TYPE_POINT_RELAIS = 'point_relais';
+    const TYPE_DOMICILE = 'livraison_domicile';
+    const TYPE_POINT_RELAIS = 'retrait_point_relais';
 
     public function scopeActive($query)
     {
