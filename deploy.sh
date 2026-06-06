@@ -8,7 +8,7 @@ echo "Starting deployment..."
 # cd /path/to/your/project
 
 # Pull the latest changes from the main branch
-git pull origin main
+git pull origin master
 
 # Install PHP dependencies
 composer install --no-interaction --prefer-dist --optimize-autoloader
