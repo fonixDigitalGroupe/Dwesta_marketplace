@@ -118,7 +118,11 @@
         <div class="header-row-1">
             <div class="header-container">
                 <a href="{{ route('home') }}" class="logo" title="Retour à l'accueil">
-                    <img src="{{ \App\Models\Setting::logoUrl() }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 22px; width: auto;">
+                    @if($logoUrl = \App\Models\Setting::logoUrl())
+                        <img src="{{ $logoUrl }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 22px; width: auto;">
+                    @else
+                        <span style="font-weight: 700;">{{ $siteSettings['site_name'] ?? 'Karnou' }}</span>
+                    @endif
                 </a>
 
                 <div class="search-container">

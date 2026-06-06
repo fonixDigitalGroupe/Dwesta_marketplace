@@ -1,7 +1,11 @@
 <aside class="sidebar">
     <div class="sidebar-brand">
         <a href="{{ route('admin.dashboard') }}">
-            <img src="{{ \App\Models\Setting::logoUrl() }}" alt="Logo">
+            @if($logoUrl = \App\Models\Setting::logoUrl())
+                <img src="{{ $logoUrl }}" alt="Logo">
+            @else
+                <span style="font-weight: 800; color: #1e40af; font-size: 1.2rem; display: block; padding: 10px;">{{ $siteSettings['site_name'] ?? 'Karnou' }}</span>
+            @endif
         </a>
     </div>
 

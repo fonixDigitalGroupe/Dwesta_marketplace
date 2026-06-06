@@ -25,7 +25,9 @@
         display: block;
         width: 140px;
         height: 40px;
-        background-image: url("{{ \App\Models\Setting::logoUrl() }}");
+        @if($logoUrl = \App\Models\Setting::logoUrl())
+            background-image: url("{{ $logoUrl }}");
+        @endif
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;

@@ -28,6 +28,6 @@ class Setting extends Model
         if ($logo) {
             return asset('storage/' . $logo);
         }
-        return asset('images/logo.png');
+        return null;
     }
 }
