@@ -423,11 +423,7 @@
         <div class="header-row-1">
             <div class="header-container">
                 <a href="{{ route('home') }}" class="logo" title="Retour à l'accueil">
-                    @if(isset($siteSettings['logo']))
-                        <img src="{{ asset('storage/' . $siteSettings['logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 22px; width: auto;">
-                    @else
-                        <img src="{{ asset('images/logo.png') }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 22px; width: auto;">
-                    @endif
+                    <img src="{{ \App\Models\Setting::logoUrl() }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 22px; width: auto;">
                 </a>
 
                 <div class="search-container">

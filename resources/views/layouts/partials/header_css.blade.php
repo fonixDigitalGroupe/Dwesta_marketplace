@@ -25,7 +25,7 @@
         display: block;
         width: 140px;
         height: 40px;
-        background-image: url("{{ asset('images/logo.png') }}");
+        background-image: url("{{ \App\Models\Setting::logoUrl() }}");
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;

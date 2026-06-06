@@ -1,11 +1,7 @@
 <aside class="sidebar">
     <div class="sidebar-brand">
         <a href="{{ route('admin.dashboard') }}">
-             @if(isset($siteSettings['logo']))
-                <img src="{{ asset('storage/' . $siteSettings['logo']) }}" alt="Logo">
-            @else
-                <img src="{{ asset('images/logo.png') }}" alt="Logo">
-            @endif
+            <img src="{{ \App\Models\Setting::logoUrl() }}" alt="Logo">
         </a>
     </div>
 

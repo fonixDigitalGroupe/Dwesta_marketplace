@@ -21,4 +21,13 @@ class Setting extends Model
             ['value' => $value, 'type' => $type]
         );
     }
+
+    public static function logoUrl()
+    {
+        $logo = self::get('logo');
+        if ($logo) {
+            return asset('storage/' . $logo);
+        }
+        return asset('images/logo.png');
+    }
 }

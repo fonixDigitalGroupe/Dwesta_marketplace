@@ -9,11 +9,7 @@
                 </button>
 
                 <a href="{{ route('home') }}" class="header-logo-text">
-                    @if(isset($siteSettings['logo']))
-                        <img src="{{ asset('storage/' . $siteSettings['logo']) }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 26px; width: auto;">
-                    @else
-                        <img src="{{ asset('images/logo.png') }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 26px; width: auto;">
-                    @endif
+                    <img src="{{ \App\Models\Setting::logoUrl() }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 26px; width: auto;">
                 </a>
 
                 <div class="search-container">
