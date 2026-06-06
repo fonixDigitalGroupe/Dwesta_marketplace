@@ -61,6 +61,10 @@ class AbonnementController extends Controller
 
         $validated['actif'] = $request->has('actif');
         $validated['ordre'] = Abonnement::max('ordre') + 1;
+        $validated['nom'] = ucfirst($validated['type']);
+        
+        // Harmonisation avec la méthode update
+        $validated['page_pro_personnalisable'] = ($validated['type'] === Abonnement::TYPE_EXPERT);
 
         Abonnement::create($validated);
 
