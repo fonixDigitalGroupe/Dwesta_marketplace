@@ -8,13 +8,20 @@
                     </svg>
                 </button>
 
-                <a href="{{ route('home') }}" class="header-logo-text">
-                    @if($logoUrl = \App\Models\Setting::logoUrl())
-                        <img src="{{ $logoUrl }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 26px; width: auto;">
-                    @else
-                        {{ $siteSettings['site_name'] ?? 'Logo' }}
-                    @endif
-                </a>
+                <div class="header-brand-group">
+                    <a href="{{ route('home') }}" class="header-logo-text">
+                        @if($logoUrl = \App\Models\Setting::logoUrl())
+                            <img src="{{ $logoUrl }}" alt="{{ $siteSettings['site_name'] ?? 'Logo' }}" style="height: 26px; width: auto;">
+                        @else
+                            {{ $siteSettings['site_name'] ?? 'Logo' }}
+                        @endif
+                    </a>
+
+                    <!-- Site Badge (Style ClubR) -->
+                    <div class="site-badge">
+                        <span>Karnou</span>
+                    </div>
+                </div>
 
                 <div class="search-container">
                     <form action="{{ route('search.index') }}" method="GET" style="width: 100%;"
