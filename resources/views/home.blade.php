@@ -1830,7 +1830,7 @@
             display: flex !important;
             flex-wrap: nowrap !important;
             overflow-x: auto !important;
-            gap: 1.5rem !important;
+            gap: 1.25rem !important;
             padding: 0 1rem 1.5rem 1rem !important;
             scrollbar-width: none;
             -ms-overflow-style: none;
@@ -1838,12 +1838,17 @@
         }
         .best-categories-grid::-webkit-scrollbar { display: none; }
         .best-category-col {
-            flex: 0 0 280px !important;
-            min-width: 280px !important;
-            background: #fff;
-            padding: 1.25rem;
-            border-radius: 12px;
-            border: 1px solid #eee;
+            flex: 0 0 210px !important;
+            min-width: 210px !important;
+            background: transparent !important;
+            padding: 0 !important;
+            border-radius: 0 !important;
+            border: none !important;
+        }
+        .best-category-title {
+            margin-bottom: 1rem !important;
+            font-size: 1.05rem !important;
+            min-height: auto !important;
         }
     }
 
