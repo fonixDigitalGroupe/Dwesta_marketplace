@@ -647,10 +647,7 @@
                     --}}
 
                     <div style="text-align: center; margin-top: 1.5rem;">
-                        <button type="submit" id="register-submit-btn" class="btn-primary">
-                            <span class="btn-label">Créer un compte Karnou</span>
-                            <span class="btn-loading" aria-hidden="true"></span>
-                        </button>
+                        <button type="submit" class="btn-primary">Créer un compte Karnou</button>
                     </div>
 
                     <div class="divider-container">Ou inscrivez-vous avec</div>
@@ -777,29 +774,5 @@
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
         }
-        // === REGISTER LOADER ===
-        const regForm = document.getElementById('register-form');
-        if (regForm) {
-            regForm.addEventListener('submit', function() {
-                const btn = document.getElementById('register-submit-btn');
-                const overlay = document.getElementById('register-loader');
-                if (btn) btn.classList.add('is-loading');
-                if (overlay) overlay.classList.add('is-visible');
-            });
-        }
     </script>
-
-    {{-- Loader overlay (outside form, fixed to viewport) --}}
-    <div id="register-loader">
-        <div class="loader-inner">
-            <div class="loader-spinner"></div>
-            <div class="loader-text">
-                <strong>Envoi du code de vérification&hellip;</strong>
-                <span>Veuillez patienter quelques secondes.</span>
-            </div>
-            <div class="loader-dots">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-    </div>
 @endpush
