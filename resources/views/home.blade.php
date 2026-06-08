@@ -426,7 +426,7 @@
                         <div class="univers-circle univers-circle-1">
                             <i class="fas fa-truck-fast" style="font-size: 2.2rem; color: #ff9900;"></i>
                         </div>
-                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; margin: 0 0 0.5rem 0; color: #222;">Karnou Logistique</h3>
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-weight: 700; margin: 0 0 0.5rem 0; color: #222;">Karnou Logistique</h3>
                         <p style="font-size: 0.95rem; color: #666; margin: 0; line-height: 1.4;">La solution d'expédition rapide et fiable pour toutes vos livraisons.</p>
                     </a>
 
@@ -435,7 +435,7 @@
                         <div class="univers-circle univers-circle-2">
                             <i class="fas fa-handshake" style="font-size: 2.2rem; color: #ff9900;"></i>
                         </div>
-                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; margin: 0 0 0.5rem 0; color: #222;">Karnou Agence</h3>
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-weight: 700; margin: 0 0 0.5rem 0; color: #222;">Karnou Agence</h3>
                         <p style="font-size: 0.95rem; color: #666; margin: 0; line-height: 1.4;">Notre réseau d'agences partenaires à votre service partout dans le pays.</p>
                     </a>
                     
@@ -470,7 +470,7 @@
     <!-- SEO Block Karnou -->
     <section style="background-color: #f7f7f7; padding: 0.4rem 0 2rem 0; margin-top: 2rem; width: 100%; display: flex; align-items: flex-start; justify-content: center;">
         <div style="width: 100%; padding: 0 2rem;">
-            <h3 style="font-size: 1.15rem; font-weight: 700; color: #111; margin: 0; text-align: center; line-height: 1.4;">
+            <h3 style="font-size: 1rem; font-weight: 600; color: #444; margin: 0; text-align: center; line-height: 1.5; font-family: 'Outfit', sans-serif;">
                 Karnou est la marketplace leader en République Centrafricaine pour l'achat de produits neufs, reconditionnés ou d'occasion au meilleur prix
             </h3>
         </div>
