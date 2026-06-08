@@ -1830,7 +1830,7 @@
             display: flex !important;
             flex-wrap: nowrap !important;
             overflow-x: auto !important;
-            gap: 1.25rem !important;
+            gap: 0.75rem !important;
             padding: 0 1rem 1.5rem 1rem !important;
             scrollbar-width: none;
             -ms-overflow-style: none;
@@ -1838,17 +1838,18 @@
         }
         .best-categories-grid::-webkit-scrollbar { display: none; }
         .best-category-col {
-            flex: 0 0 210px !important;
-            min-width: 210px !important;
+            flex: 0 0 180px !important;
+            min-width: 180px !important;
             background: transparent !important;
             padding: 0 !important;
             border-radius: 0 !important;
             border: none !important;
         }
         .best-category-title {
-            margin-bottom: 1rem !important;
-            font-size: 1.05rem !important;
+            margin-bottom: 0.75rem !important;
+            font-size: 0.95rem !important;
             min-height: auto !important;
+            line-height: 1.2 !important;
         }
     }
 
