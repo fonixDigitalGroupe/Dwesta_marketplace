@@ -46,9 +46,10 @@
     .search-field {
         flex: 1;
         display: flex;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
+        border: 1px solid #eeeeee;
+        border-radius: 8px;
         overflow: hidden;
+        background-color: #eeeeee;
     }
 
     .search-input {
@@ -57,10 +58,11 @@
         border: none;
         font-size: 1rem;
         outline: none;
+        background-color: #eeeeee;
     }
 
     .search-button {
-        background-color: #333;
+        background-color: #ff8c00; /* Dark orange */
         color: white;
         border: none;
         padding: 0 1.25rem;
@@ -68,10 +70,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        transition: background-color 0.2s;
     }
 
     .search-button:hover {
-        background-color: #000;
+        background-color: #e67e00;
     }
 
     /* Header Actions */
