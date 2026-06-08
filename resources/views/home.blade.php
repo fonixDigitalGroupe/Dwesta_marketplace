@@ -648,8 +648,8 @@
 
     @media (max-width: 992px) {
         .bento-grid-custom { grid-template-columns: 1fr; }
-        .bento-right-bottom .bento-item-custom { height: auto; min-height: 200px;}
-        .bento-item-custom.full-height { min-height: 280px; }
+        .bento-right-bottom .bento-item-custom { height: auto; min-height: 180px;}
+        .bento-item-custom.full-height { min-height: 220px; }
         .news-tabs { 
             gap: 1.5rem; 
             margin-bottom: 2rem; 
@@ -757,7 +757,7 @@
         }
 
         .slider-container {
-            height: 250px;
+            height: 220px;
             border-radius: 0;
         }
 
