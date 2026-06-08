@@ -637,8 +637,8 @@
 
     @media (max-width: 992px) {
         .bento-grid-custom { grid-template-columns: 1fr; }
-        .bento-right-bottom .bento-item-custom { height: auto; min-height: 250px;}
-        .bento-item-custom.full-height { min-height: 450px; }
+        .bento-right-bottom .bento-item-custom { height: auto; min-height: 200px;}
+        .bento-item-custom.full-height { min-height: 280px; }
         .news-tabs { gap: 1.5rem; margin-bottom: 2rem; }
     }
 
