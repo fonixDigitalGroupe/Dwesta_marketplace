@@ -466,12 +466,23 @@
         }
 
         @media (max-width: 992px) {
+            .auth-wrapper {
+                padding: 1rem 0.5rem;
+            }
+            .auth-card {
+                padding: 1.5rem 1rem !important;
+                max-width: none !important;
+            }
+            .auth-centered-container .auth-card {
+                max-width: none !important;
+            }
             .auth-grid {
                 grid-template-columns: 1fr;
                 gap: 2rem;
             }
             .date-grid {
-                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
             }
             .strength-checklist {
                 grid-template-columns: 1fr;
