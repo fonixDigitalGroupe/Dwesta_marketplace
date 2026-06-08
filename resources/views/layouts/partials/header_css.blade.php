@@ -346,7 +346,100 @@
             font-weight: 700;
             color: #bf0000;
         }
+
+        /* Tablet: hide sell button text */
+        .sell-button span:last-child {
+            display: none;
+        }
     }
+
+    /* ===== MOBILE SMALL SCREENS (max 768px) ===== */
+    @media (max-width: 768px) {
+        .header-row-1 {
+            padding: 0.4rem 0;
+        }
+
+        .header-container {
+            padding: 0.4rem 0.75rem;
+            gap: 0.4rem;
+            align-items: center;
+        }
+
+        /* Row 1: hamburger | logo | actions — all inline */
+        .mobile-menu-btn {
+            order: 1;
+            flex-shrink: 0;
+        }
+
+        .header-brand-group {
+            order: 2;
+            flex: 1;
+            justify-content: flex-start;
+            gap: 6px;
+        }
+
+        .header-actions {
+            order: 3;
+            gap: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        /* Row 2: search bar full width */
+        .search-container {
+            order: 4;
+            width: 100% !important;
+            display: flex !important;
+            margin: 0.3rem 0 0 0;
+            max-width: none;
+        }
+
+        .search-input {
+            padding: 0.6rem 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .search-button {
+            padding: 0 0.9rem;
+        }
+
+        /* Row 3: category badges */
+        .header-row-2 {
+            width: 100%;
+        }
+
+        .header-row-2 .header-container {
+            padding: 0 0.75rem 0.4rem 0.75rem;
+        }
+
+        /* Hide sell button entirely on very small screens */
+        .sell-button-container {
+            display: none;
+        }
+
+        /* Badges smaller on mobile */
+        .cat-nav-item.badge-style {
+            padding: 4px 10px;
+            font-size: 0.8rem;
+        }
+
+        /* Auth dropdown full width */
+        .auth-dropdown {
+            width: 95vw;
+            left: 2.5vw;
+            right: 2.5vw;
+        }
+
+        /* Hide site badge on very small screens to save space */
+        .site-badge {
+            display: none !important;
+        }
+
+        /* Show back office link icon only */
+        .header-link span {
+            display: none !important;
+        }
+    }
+
 
     /* Site Badge Configuration */
     .site-badge {
