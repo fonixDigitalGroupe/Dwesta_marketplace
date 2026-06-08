@@ -37,30 +37,22 @@ class RegisterController extends Controller
 
         $otp = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
 
-        // Création d'un utilisateur "Brouillon" pour l'étape 1
-        // Note: prenom et password sont obligatoires dans la DB
-        $user = User::create([
-            'prenom'       => 'Utilisateur',
-            'nom'          => 'Karnou',
-            'email'        => $phoneMode ? null : $request->email,
-            'telephone'    => $phoneMode ? $request->reg_login_phone : null,
-            'password'     => Hash::make(\Illuminate\Support\Str::random(12)),
-            'otp_code'     => $otp,
+        // Au lieu de créer le compte, on stocke les infos en session
+        session(['reg_info' => [
+            'email'     => $phoneMode ? null : $request->email,
+            'telephone' => $phoneMode ? $request->reg_login_phone : null,
+            'otp_code'  => $otp,
             'otp_expires_at' => now()->addMinutes(15),
-            'is_active'    => false, // Désactivé jusqu'à vérification OTP
-        ]);
+        ]]);
 
-        $user->assignRole('acheteur');
-
-        // Envoi de l'OTP
-        if (!$phoneMode && $user->email) {
-            $user->notify(new EmailOtpNotification($otp));
-        } elseif ($phoneMode && $user->telephone) {
-            // "Telescop" (Simulation via Laravel Telescope/Log)
-            $user->notify(new \App\Notifications\SmsOtpNotification($otp));
+        // Envoi de l'OTP sans créer d'utilisateur DB
+        if (!$phoneMode) {
+            \Illuminate\Support\Facades\Notification::route('mail', $request->email)
+                ->notify(new EmailOtpNotification($otp));
+        } else {
+            \Illuminate\Support\Facades\Notification::route('mail', 'sms-simulation@karnou.com') // Simulation dev
+                ->notify(new \App\Notifications\SmsOtpNotification($otp));
         }
-
-        Auth::login($user);
 
         return redirect()->route('otp.verify');
     }

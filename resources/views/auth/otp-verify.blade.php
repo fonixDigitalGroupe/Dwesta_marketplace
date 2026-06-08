@@ -144,12 +144,12 @@
     <main class="main-content">
         <div class="otp-card">
             <h1 class="otp-title">
-                Vérifiez votre {{ Auth::user()->email ? 'e-mail' : 'téléphone' }}
+                Vérifiez votre {{ $regInfo['email'] ? 'e-mail' : 'téléphone' }}
             </h1>
             <p class="otp-subtitle">
                 Nous avons envoyé un code de vérification à 4 chiffres 
-                {{ Auth::user()->email ? 'à l\'adresse' : 'au numéro' }} 
-                <strong>{{ Auth::user()->email ?? Auth::user()->telephone }}</strong>. 
+                {{ $regInfo['email'] ? 'à l\'adresse' : 'au numéro' }} 
+                <strong>{{ $regInfo['email'] ?? $regInfo['telephone'] }}</strong>. 
                 Veuillez le saisir ci-dessous pour activer votre compte.
             </p>
 

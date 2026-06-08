@@ -40,7 +40,7 @@ class EmailOtpNotification extends Notification
             ->subject('Votre code de vérification Karnou')
             ->view('emails.otp', [
                 'otp'    => $this->otp,
-                'prenom' => $notifiable->prenom,
+                'prenom' => $notifiable->prenom ?? 'Utilisateur',
             ]);
     }
 

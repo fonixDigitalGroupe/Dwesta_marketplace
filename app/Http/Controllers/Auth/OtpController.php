@@ -15,14 +15,13 @@ class OtpController extends Controller
      */
     public function showVerifyForm()
     {
-        $user = Auth::user();
+        $regInfo = session('reg_info');
 
-        // Si l'utilisateur est déjà vérifié, rediriger vers le profil
-        if ($user->hasVerifiedEmail()) {
-            return redirect()->route('profile.show');
+        if (!$regInfo) {
+            return redirect()->route('register');
         }
 
-        return view('auth.otp-verify');
+        return view('auth.otp-verify', compact('regInfo'));
     }
 
     /**
@@ -36,26 +35,40 @@ class OtpController extends Controller
         ]);
 
         $otpCode = implode('', $request->otp);
-        $user = Auth::user();
+        $regInfo = session('reg_info');
+
+        if (!$regInfo) {
+            return redirect()->route('register')->with('error', 'Session expirée. Veuillez recommencer.');
+        }
 
         // 1. Vérification si le code correspond
-        if ($user->otp_code !== $otpCode) {
+        if ($regInfo['otp_code'] !== $otpCode) {
             return back()->withErrors(['otp' => 'Le code de vérification est incorrect.']);
         }
 
-        // 2. Vérification de l'expiration (15 minutes)
-        if ($user->otp_expires_at < now()) {
+        // 2. Vérification de l'expiration
+        if ($regInfo['otp_expires_at'] < now()) {
             return back()->withErrors(['otp' => 'Le code a expiré. Veuillez en demander un nouveau.']);
         }
 
-        // 3. Marquer comme vérifié
-        $user->markEmailAsVerified();
-        
-        // Nettoyer l'OTP
-        $user->update([
-            'otp_code' => null,
-            'otp_expires_at' => null,
+        // 3. Création RÉELLE de l'utilisateur
+        $user = User::create([
+            'prenom'       => 'Utilisateur',
+            'nom'          => 'Karnou',
+            'email'        => $regInfo['email'],
+            'telephone'    => $regInfo['telephone'],
+            'password'     => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(12)),
+            'is_active'    => false, // Toujours false jusqu'à la fin du Step 2 (register-complete)
+            'email_verified_at' => now(), 
         ]);
+
+        $user->assignRole('acheteur');
+
+        // Nettoyer la session
+        session()->forget('reg_info');
+
+        // Connecter l'utilisateur
+        Auth::login($user);
 
         return redirect()->route('register.complete')->with('success', 'Votre compte a été vérifié avec succès ! Veuillez compléter votre profil.');
     }
@@ -65,21 +78,26 @@ class OtpController extends Controller
      */
     public function resend()
     {
-        $user = Auth::user();
+        $regInfo = session('reg_info');
 
-        if ($user->hasVerifiedEmail()) {
-            return redirect()->route('profile.show');
+        if (!$regInfo) {
+            return redirect()->route('register');
         }
 
         // Générer un nouveau code
         $otp = str_pad(rand(0, 9999), 4, '0', STR_PAD_LEFT);
         
-        $user->update([
-            'otp_code' => $otp,
-            'otp_expires_at' => now()->addMinutes(15),
-        ]);
+        $regInfo['otp_code'] = $otp;
+        $regInfo['otp_expires_at'] = now()->addMinutes(15);
+        session(['reg_info' => $regInfo]);
 
-        $user->notify(new EmailOtpNotification($otp));
+        if ($regInfo['email']) {
+            \Illuminate\Support\Facades\Notification::route('mail', $regInfo['email'])
+                ->notify(new EmailOtpNotification($otp));
+        } else {
+            \Illuminate\Support\Facades\Notification::route('mail', 'sms-simulation@karnou.com')
+                ->notify(new \App\Notifications\SmsOtpNotification($otp));
+        }
 
         return back()->with('success', 'Un nouveau code de vérification vous a été envoyé.');
     }
