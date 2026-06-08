@@ -4,7 +4,6 @@
         background-color: #ffffff;
         position: relative;
         z-index: 100;
-        /* border-bottom removal is handled in row-1 now */
     }
 
     .header-row-1 {
@@ -244,17 +243,44 @@
         margin-right: 1rem;
     }
 
-    /* Responsive Regrouped Styles */
+    /* Site Badge */
+    .site-badge {
+        display: none;
+    }
+
+    @media (min-width: 1025px) {
+        .site-badge {
+            display: flex;
+            align-items: center;
+            background: #f8f8f8;
+            border: 1px solid #eee;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #bf0000;
+            margin-left: 10px;
+        }
+
+        .header-brand-group {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    /* ===== TABLET (max 1024px) ===== */
     @media (max-width: 1024px) {
         .mobile-menu-btn {
             display: block;
             order: 1;
+            flex-shrink: 0;
             margin-right: 0;
         }
 
         .header-container {
             display: flex !important;
             flex-wrap: wrap;
+            align-items: center;
             gap: 0.5rem;
             padding: 0.5rem 1rem;
             max-width: none;
@@ -263,28 +289,30 @@
         .header-brand-group {
             order: 2;
             flex: 1;
-            display: flex;
+            display: flex !important;
             align-items: center;
             gap: 10px;
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         .header-actions {
             order: 3;
             gap: 1.25rem;
             margin-left: 0;
+            flex-shrink: 0;
         }
 
+        /* Search bar: full-width on its own line */
         .search-container {
+            order: 10;
+            flex: 0 0 100% !important;
+            width: 100% !important;
             display: flex !important;
-            order: 4;
-            width: 100%;
-            margin: 0.5rem 0 0.25rem 0;
-            max-width: none;
+            margin: 0.25rem 0 !important;
+            max-width: 100% !important;
         }
 
         .header-row-2 {
-            order: 5;
             width: 100%;
             border-bottom: none;
         }
@@ -320,6 +348,10 @@
             display: none;
         }
 
+        .sell-button span:last-child {
+            display: none;
+        }
+
         .auth-dropdown-container {
             position: static;
         }
@@ -346,26 +378,19 @@
             font-weight: 700;
             color: #bf0000;
         }
-
-        /* Tablet: hide sell button text */
-        .sell-button span:last-child {
-            display: none;
-        }
     }
 
-    /* ===== MOBILE SMALL SCREENS (max 768px) ===== */
+    /* ===== MOBILE (max 768px) ===== */
     @media (max-width: 768px) {
         .header-row-1 {
-            padding: 0.4rem 0;
+            padding: 0.3rem 0;
         }
 
         .header-container {
             padding: 0.4rem 0.75rem;
-            gap: 0.4rem;
-            align-items: center;
+            gap: 0.35rem;
         }
 
-        /* Row 1: hamburger | logo | actions — all inline */
         .mobile-menu-btn {
             order: 1;
             flex-shrink: 0;
@@ -380,17 +405,18 @@
 
         .header-actions {
             order: 3;
-            gap: 0.9rem;
+            gap: 0.75rem;
             flex-shrink: 0;
         }
 
-        /* Row 2: search bar full width */
+        /* Force search to its own full-width row */
         .search-container {
-            order: 4;
+            order: 10;
+            flex: 0 0 100% !important;
             width: 100% !important;
             display: flex !important;
-            margin: 0.3rem 0 0 0;
-            max-width: none;
+            margin: 0.25rem 0 0 0 !important;
+            max-width: 100% !important;
         }
 
         .search-input {
@@ -402,67 +428,32 @@
             padding: 0 0.9rem;
         }
 
-        /* Row 3: category badges */
-        .header-row-2 {
-            width: 100%;
-        }
-
         .header-row-2 .header-container {
             padding: 0 0.75rem 0.4rem 0.75rem;
         }
 
-        /* Hide sell button entirely on very small screens */
+        /* Hide sell button on small screens */
         .sell-button-container {
-            display: none;
+            display: none !important;
         }
 
-        /* Badges smaller on mobile */
         .cat-nav-item.badge-style {
             padding: 4px 10px;
             font-size: 0.8rem;
         }
 
-        /* Auth dropdown full width */
         .auth-dropdown {
             width: 95vw;
             left: 2.5vw;
             right: 2.5vw;
         }
 
-        /* Hide site badge on very small screens to save space */
         .site-badge {
             display: none !important;
         }
 
-        /* Show back office link icon only */
         .header-link span {
             display: none !important;
-        }
-    }
-
-
-    /* Site Badge Configuration */
-    .site-badge {
-        display: none;
-    }
-
-    @media (min-width: 1025px) {
-        .site-badge {
-            display: flex;
-            align-items: center;
-            background: #f8f8f8;
-            border: 1px solid #eee;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #bf0000;
-            margin-left: 10px;
-        }
-
-        .header-brand-group {
-            display: flex;
-            align-items: center;
         }
     }
 </style>
