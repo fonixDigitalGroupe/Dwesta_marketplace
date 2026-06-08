@@ -77,6 +77,20 @@
             margin: 1.5rem auto;
             padding: 0 1rem;
         }
+
+        .legal-warning-section {
+            max-width: 800px;
+            margin: 0 auto 1.5rem auto;
+            padding: 0 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .legal-warning-section {
+                width: 100%;
+                max-width: none;
+                padding: 0 10px;
+            }
+        }
     </style>
 @endpush
 
@@ -430,7 +444,7 @@
         </section>
 
         <!-- Avertissement Légal -->
-        <section style="max-width: 800px; margin: 0 auto 1.5rem auto; padding: 0 2rem;">
+        <section class="legal-warning-section">
             <div style="border: 4px solid #000; padding: 10px 20px; display: flex; align-items: center; gap: 15px; background: #fff;">
                 <div style="display: flex; flex-direction: column; align-items: center; border: 1px solid #ddd; padding: 6px 10px; flex-shrink: 0;">
                     <!-- Drapeau Centrafrique stylisé en CSS -->
@@ -447,9 +461,6 @@
                 <div style="flex: 1;">
                     <div style="font-weight: 900; font-size: 0.9rem; color: #111; line-height: 1.2;">Interdiction de vente de boissons alcooliques aux mineurs de moins de 18 ans</div>
                     <div style="font-size: 0.8rem; color: #333; margin-top: 2px;">La preuve de majorité de l'acheteur est exigée au moment de la vente en ligne.</div>
-                </div>
-                <div style="font-size: 0.5rem; color: #999; text-transform: uppercase; text-align: right; line-height: 1.2; flex-shrink: 0;">
-                    Lois à<br>préciser
                 </div>
             </div>
         </section>
