@@ -378,7 +378,7 @@
 
                 <div style="margin-top: 1rem;">
                     <a href="{{ route('register') }}" style="text-decoration: none;">
-                        <button type="button" class="btn-primary">Continuer</button>
+                        <button type="button" class="btn-primary">Créer un compte Karnou</button>
                     </a>
                 </div>
             </div>
