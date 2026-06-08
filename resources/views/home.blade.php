@@ -816,6 +816,10 @@
     }
 
     @media (max-width: 768px) {
+        .main-content {
+            padding: 0 !important;
+        }
+
         .hero-slider {
             width: 100% !important;
             margin-top: 0;

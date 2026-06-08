@@ -646,5 +646,15 @@
             width: 24px;
             height: 24px;
         }
+
+        .mobile-search-row .header-container {
+            padding-left: 0.25rem !important;
+            padding-right: 0.25rem !important;
+        }
+
+        .search-container.mobile-only {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
     }
 </style>
