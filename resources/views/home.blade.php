@@ -825,9 +825,8 @@
             border-radius: 0;
         }
 
-        .slider-slide img {
-            object-fit: cover !important;
-            object-position: right center !important;
+        .banner-bg-image {
+            background-position: right center !important;
         }
 
         .actualites-container {
