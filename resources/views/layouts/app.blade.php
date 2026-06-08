@@ -19,12 +19,18 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
         body {
             font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: #f8fafc; /* Premium Slate-50 */
             color: #1e293b; /* Slate-800 */
-            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            position: relative;
         }
 
         [x-cloak] {

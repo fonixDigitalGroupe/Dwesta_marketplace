@@ -818,6 +818,7 @@
     @media (max-width: 768px) {
         .main-content {
             padding: 0 0.5rem !important;
+            overflow-x: hidden !important;
         }
 
         .hero-slider {
