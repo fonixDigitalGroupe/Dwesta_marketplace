@@ -117,24 +117,36 @@
         }
 
         @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden !important;
+            }
             .main-content {
-                margin: 1rem auto;
-                padding: 0 0.5rem;
+                margin: 0.75rem 0;
+                padding: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
             .otp-card {
                 padding: 1.5rem 1rem;
-                max-width: none;
+                max-width: 100% !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                border-left: none;
+                border-right: none;
+                border-radius: 0;
             }
             .otp-title {
-                font-size: 1.25rem;
+                font-size: 1.2rem;
             }
             .otp-input-container {
-                gap: 0.5rem;
+                gap: 0.6rem;
+                justify-content: center;
             }
             .otp-digit {
-                width: 45px;
-                height: 55px;
-                font-size: 1.25rem;
+                width: clamp(40px, 18vw, 55px);
+                height: clamp(48px, 14vw, 60px);
+                font-size: 1.2rem;
             }
         }
     </style>
