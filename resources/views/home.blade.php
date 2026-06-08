@@ -84,11 +84,75 @@
             padding: 0 2rem;
         }
 
+        .legal-warning-inner {
+            border: 4px solid #000;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fff;
+        }
+        
+        .legal-flag-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ddd;
+            padding: 6px 10px;
+            flex-shrink: 0;
+        }
+        
+        .legal-flag-text {
+            font-size: 0.45rem;
+            text-transform: uppercase;
+            margin-top: 4px;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1.1;
+        }
+        
+        .legal-text-container {
+            flex: 1;
+        }
+        
+        .legal-text-main {
+            font-weight: 900;
+            font-size: 0.9rem;
+            color: #111;
+            line-height: 1.2;
+        }
+        
+        .legal-text-sub {
+            font-size: 0.8rem;
+            color: #333;
+            margin-top: 2px;
+        }
+
         @media (max-width: 768px) {
             .legal-warning-section {
                 width: 100%;
                 max-width: none;
                 padding: 0 10px;
+            }
+            
+            .legal-warning-inner {
+                border-width: 2px !important;
+                padding: 8px 10px !important;
+                gap: 10px !important;
+            }
+            
+            .legal-flag-container {
+                padding: 4px 6px !important;
+                transform: scale(0.85);
+                margin-left: -5px;
+            }
+            
+            .legal-text-main {
+                font-size: 0.72rem !important;
+            }
+            
+            .legal-text-sub {
+                font-size: 0.68rem !important;
             }
         }
     </style>
@@ -445,8 +509,8 @@
 
         <!-- Avertissement Légal -->
         <section class="legal-warning-section">
-            <div style="border: 4px solid #000; padding: 10px 20px; display: flex; align-items: center; gap: 15px; background: #fff;">
-                <div style="display: flex; flex-direction: column; align-items: center; border: 1px solid #ddd; padding: 6px 10px; flex-shrink: 0;">
+            <div class="legal-warning-inner">
+                <div class="legal-flag-container">
                     <!-- Drapeau Centrafrique stylisé en CSS -->
                     <div style="display: flex; width: 45px; height: 30px; flex-direction: column; position: relative;">
                         <div style="background: #003082; flex:1;"></div>
@@ -456,11 +520,11 @@
                         <div style="position: absolute; left: 50%; top: 0; bottom: 0; width: 8px; background: #d21034; transform: translateX(-50%);"></div>
                         <i class="fas fa-star" style="position: absolute; top: 1px; left: 2px; color: #ffce00; font-size: 6px;"></i>
                     </div>
-                    <div style="font-size: 0.45rem; text-transform: uppercase; margin-top: 4px; font-weight: 800; text-align: center; line-height: 1.1;">République<br>Centrafricaine</div>
+                    <div class="legal-flag-text">République<br>Centrafricaine</div>
                 </div>
-                <div style="flex: 1;">
-                    <div style="font-weight: 900; font-size: 0.9rem; color: #111; line-height: 1.2;">Interdiction de vente de boissons alcooliques aux mineurs de moins de 18 ans</div>
-                    <div style="font-size: 0.8rem; color: #333; margin-top: 2px;">La preuve de majorité de l'acheteur est exigée au moment de la vente en ligne.</div>
+                <div class="legal-text-container">
+                    <div class="legal-text-main">Interdiction de vente de boissons alcooliques aux mineurs de moins de 18 ans</div>
+                    <div class="legal-text-sub">La preuve de majorité de l'acheteur est exigée au moment de la vente en ligne.</div>
                 </div>
             </div>
         </section>
