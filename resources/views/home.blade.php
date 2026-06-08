@@ -1823,13 +1823,28 @@
     }
 
     @media (max-width: 1200px) {
-        .best-categories-grid { gap: 3rem; }
+        .best-categories-grid { gap: 2rem; padding: 0 2rem; }
     }
-    @media (max-width: 1024px) {
-        .best-categories-grid { grid-template-columns: repeat(2, 1fr); gap: 4rem; }
-    }
-    @media (max-width: 600px) {
-        .best-categories-grid { grid-template-columns: 1fr; }
+    @media (max-width: 768px) {
+        .best-categories-grid {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto !important;
+            gap: 1.5rem !important;
+            padding: 0 1rem 1.5rem 1rem !important;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            justify-content: flex-start !important;
+        }
+        .best-categories-grid::-webkit-scrollbar { display: none; }
+        .best-category-col {
+            flex: 0 0 280px !important;
+            min-width: 280px !important;
+            background: #fff;
+            padding: 1.25rem;
+            border-radius: 12px;
+            border: 1px solid #eee;
+        }
     }
 
     /* Marketing Footer */
