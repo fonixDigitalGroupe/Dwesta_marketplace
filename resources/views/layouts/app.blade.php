@@ -42,6 +42,19 @@
             height: 40px;
             width: 100%;
         }
+
+        /* Global mobile rules for non-header elements */
+        @media (max-width: 768px) {
+            .shop-container {
+                background-color: white;
+                max-width: none;
+                margin: 0;
+            }
+
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
