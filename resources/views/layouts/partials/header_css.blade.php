@@ -635,6 +635,10 @@
             display: none !important;
         }
 
+        .chevron {
+            display: none !important;
+        }
+
         .site-badge {
             display: none !important;
         }
