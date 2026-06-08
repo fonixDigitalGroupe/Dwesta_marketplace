@@ -596,16 +596,25 @@
         /* Main search in row-1 is hidden by .desktop-only */
         /* Mobile search in row-2 is visible by .mobile-search-row */
 
+        .search-field {
+            background-color: transparent !important;
+            border: none !important;
+            gap: 8px !important;
+            overflow: visible !important;
+        }
+
         .search-input {
             padding: 0.6rem 0.75rem;
             font-size: 0.9rem;
+            border-radius: 8px !important;
+            background-color: #eeeeee !important;
         }
 
         .search-button {
             padding: 0 1rem;
             background-color: #ff8c00 !important;
             color: white !important;
-            border-radius: 0 8px 8px 0 !important;
+            border-radius: 8px !important;
         }
 
         .header-row-2 .header-container {
