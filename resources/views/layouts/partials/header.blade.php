@@ -19,7 +19,7 @@
 
                 </div>
 
-                <div class="search-container">
+                <div class="search-container desktop-only">
                     <form action="{{ route('search.index') }}" method="GET" style="width: 100%;"
                         id="global-search-form">
                         <div class="search-field">
@@ -158,6 +158,28 @@
                             </span>
                         @endif
                     </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Search Row (Hidden on Desktop) -->
+        <div class="mobile-search-row">
+            <div class="header-container">
+                <div class="search-container mobile-only">
+                    <form action="{{ route('search.index') }}" method="GET" style="width: 100%;"
+                        id="mobile-search-form">
+                        <div class="search-field">
+                            <input type="text" name="q" class="search-input" id="mobile-search-input"
+                                placeholder="Rechercher un produit" value="{{ request('q') }}"
+                                autocomplete="off">
+                            <button type="submit" class="search-button">
+                                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

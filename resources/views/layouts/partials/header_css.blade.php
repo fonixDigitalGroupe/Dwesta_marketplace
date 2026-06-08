@@ -248,6 +248,22 @@
         display: none;
     }
 
+    /* Visibility Utils */
+    .desktop-only {
+        display: flex !important;
+    }
+
+    .mobile-only {
+        display: none !important;
+    }
+
+    .mobile-search-row {
+        display: none;
+        background: #fff;
+        border-bottom: 1px solid #eee;
+        padding: 0.25rem 0;
+    }
+
     @media (min-width: 1025px) {
         .site-badge {
             display: flex;
@@ -270,6 +286,17 @@
 
     /* ===== TABLET (max 1024px) ===== */
     @media (max-width: 1024px) {
+        .desktop-only {
+            display: none !important;
+        }
+
+        .mobile-only {
+            display: flex !important;
+        }
+
+        .mobile-search-row {
+            display: block;
+        }
         .mobile-menu-btn {
             display: block;
             order: 1;
@@ -302,15 +329,8 @@
             flex-shrink: 0;
         }
 
-        /* Search bar: full-width on its own line */
-        .search-container {
-            order: 10;
-            flex: 0 0 100% !important;
-            width: 100% !important;
-            display: flex !important;
-            margin: 0.25rem 0 !important;
-            max-width: 100% !important;
-        }
+        /* Main search in row-1 is hidden by .desktop-only */
+        /* Mobile search in row-2 is visible by .mobile-search-row */
 
         .header-row-2 {
             width: 100%;
@@ -409,15 +429,8 @@
             flex-shrink: 0;
         }
 
-        /* Force search to its own full-width row */
-        .search-container {
-            order: 10;
-            flex: 0 0 100% !important;
-            width: 100% !important;
-            display: flex !important;
-            margin: 0.25rem 0 0 0 !important;
-            max-width: 100% !important;
-        }
+        /* Main search in row-1 is hidden by .desktop-only */
+        /* Mobile search in row-2 is visible by .mobile-search-row */
 
         .search-input {
             padding: 0.6rem 0.75rem;
