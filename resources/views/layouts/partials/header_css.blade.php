@@ -98,9 +98,23 @@
         color: #bf0000;
     }
 
+    /* Global SVG constraints */
+    .header svg {
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+    }
+
     .header-link svg {
         width: 22px;
         height: 22px;
+        flex-shrink: 0;
+    }
+
+    .sell-button svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
     }
 
     /* Sell Button */
@@ -132,8 +146,113 @@
         transition: transform 0.2s;
     }
 
-    .sell-button.active .chevron {
-        transform: rotate(180deg);
+    /* Auth Dropdown */
+    .auth-dropdown-container {
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .auth-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 280px;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        padding: 1.25rem;
+        display: none;
+        z-index: 1000;
+        margin-top: 10px;
+    }
+
+    .auth-dropdown-container:hover .auth-dropdown {
+        display: block;
+    }
+
+    .auth-dropdown::after {
+        content: '';
+        position: absolute;
+        top: -20px;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        background: transparent;
+    }
+
+    .auth-dropdown::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        left: 50%;
+        margin-left: -8px;
+        width: 16px;
+        height: 16px;
+        background: #fff;
+        border-top: 1px solid #eee;
+        border-left: 1px solid #eee;
+        transform: rotate(45deg);
+        z-index: 1001;
+    }
+
+    .auth-btn-login {
+        background: #004aad;
+        color: #fff;
+        font-weight: 700;
+        text-align: center;
+        padding: 0.6rem;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 1rem;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .auth-link-create {
+        color: #333;
+        text-align: center;
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: block;
+        font-weight: 500;
+    }
+
+    .auth-separator {
+        height: 1px;
+        background: #f0f0f0;
+        margin: 1rem 0;
+    }
+
+    .auth-menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .auth-menu-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: #444;
+        text-decoration: none;
+        font-size: 0.95rem;
+        padding: 0.5rem;
+        border-radius: 4px;
+    }
+
+    .auth-menu-item:hover {
+        background-color: #f9f9f9;
+        color: #004aad;
+    }
+
+    .auth-icon-blue {
+        width: 20px !important;
+        height: 20px !important;
+        color: #004aad;
     }
 
     .sell-dropdown {
@@ -151,7 +270,7 @@
     }
 
     .sell-dropdown.show {
-        display: block;
+        display: block !important;
     }
 
     .sell-dropdown-item {
@@ -354,6 +473,7 @@
             overflow-x: auto;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            width: 100%;
         }
 
         .header-badges-container::-webkit-scrollbar {
@@ -465,8 +585,22 @@
             display: none !important;
         }
 
-        .header-link span {
+        .header-link span,
+        .sell-button span:not(.sell-icon) {
             display: none !important;
+        }
+
+        .header-actions {
+            order: 3;
+            gap: 1rem;
+            flex-shrink: 0;
+            display: flex !important;
+            align-items: center;
+        }
+
+        .header-link svg {
+            width: 24px;
+            height: 24px;
         }
     }
 </style>
