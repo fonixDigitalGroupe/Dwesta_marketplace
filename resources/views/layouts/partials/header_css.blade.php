@@ -606,7 +606,7 @@
         }
 
         .header-row-2 .header-container {
-            padding: 0 0.75rem 0.4rem 0.75rem;
+            padding: 0 0.2rem 0.4rem 0.2rem;
         }
 
         /* Hide sell button on small screens */
