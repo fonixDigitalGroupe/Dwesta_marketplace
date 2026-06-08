@@ -639,7 +639,18 @@
         .bento-grid-custom { grid-template-columns: 1fr; }
         .bento-right-bottom .bento-item-custom { height: auto; min-height: 200px;}
         .bento-item-custom.full-height { min-height: 280px; }
-        .news-tabs { gap: 1.5rem; margin-bottom: 2rem; }
+        .news-tabs { 
+            gap: 1.5rem; 
+            margin-bottom: 2rem; 
+            justify-content: flex-start !important;
+            overflow-x: auto !important;
+            white-space: nowrap;
+            padding: 0 5px 15px 5px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .news-tabs::-webkit-scrollbar { display: none; }
+        .news-tab-btn { flex-shrink: 0; padding-bottom: 8px; font-size: 0.95rem; }
     }
 
     .home-grid {
@@ -735,12 +746,13 @@
         }
 
         .slider-container {
-            height: 250px; /* Adjusted for better mobile proportions */
-            border-radius: 0; /* Full edge-to-edge feel on mobile */
+            height: 250px;
+            border-radius: 0;
         }
 
         .actualites-container {
-            padding: 0 10px;
+            padding: 0 15px;
+            overflow-x: hidden; /* Prevent horizontal movement from news section */
         }
 
         .sections-global-title {
@@ -750,6 +762,17 @@
         
         .banner-inner-container {
             padding: 0 1.5rem;
+        }
+
+        /* Prevent overflow from specific components */
+        .univers-karnous-grid {
+            padding: 1rem 1rem !important;
+            gap: 2rem !important;
+        }
+        
+        .univers-item {
+            width: 100% !important;
+            max-width: 320px;
         }
     }
     
