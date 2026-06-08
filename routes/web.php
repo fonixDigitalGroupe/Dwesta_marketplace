@@ -49,6 +49,11 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
     Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
     Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+    // OTP Verification Routes (Session based)
+    Route::get('/verify-otp', [OtpController::class, 'showVerifyForm'])->name('otp.verify');
+    Route::post('/verify-otp', [OtpController::class, 'verify'])->name('otp.verify.post');
+    Route::post('/verify-otp/resend', [OtpController::class, 'resend'])->name('otp.resend');
 });
 
 Route::middleware('auth')->group(function () {
@@ -59,10 +64,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, 'verify'])->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
     Route::post('/email/verification-notification', [VerifyEmailController::class, 'resend'])->middleware('throttle:6,1')->name('verification.resend');
 
-    // OTP Verification Routes
-    Route::get('/verify-otp', [OtpController::class, 'showVerifyForm'])->name('otp.verify');
-    Route::post('/verify-otp', [OtpController::class, 'verify'])->name('otp.verify.post');
-    Route::post('/verify-otp/resend', [OtpController::class, 'resend'])->name('otp.resend');
 
 
     // Routes nécessitant une vérification d'email
