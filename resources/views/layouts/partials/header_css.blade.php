@@ -602,11 +602,14 @@
         }
 
         .search-button {
-            padding: 0 0.9rem;
+            padding: 0 1rem;
+            background-color: #ff8c00 !important;
+            color: white !important;
+            border-radius: 0 8px 8px 0 !important;
         }
 
         .header-row-2 .header-container {
-            padding: 0 0.2rem 0.4rem 0.2rem;
+            padding: 0 0.6rem 0.4rem 0.6rem;
         }
 
         /* Hide sell button on small screens */
@@ -648,8 +651,8 @@
         }
 
         .mobile-search-row .header-container {
-            padding-left: 0.25rem !important;
-            padding-right: 0.25rem !important;
+            padding-left: 0.6rem !important;
+            padding-right: 0.6rem !important;
         }
 
         .search-container.mobile-only {

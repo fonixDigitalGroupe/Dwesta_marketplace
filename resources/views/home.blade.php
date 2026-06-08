@@ -817,7 +817,7 @@
 
     @media (max-width: 768px) {
         .main-content {
-            padding: 0 !important;
+            padding: 0 0.5rem !important;
         }
 
         .hero-slider {
