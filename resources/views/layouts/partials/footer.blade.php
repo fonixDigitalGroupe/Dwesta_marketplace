@@ -6,7 +6,7 @@
                 <!-- Choix -->
                 <div class="reinsurance-item">
                     <div class="reinsurance-icon-box">
-                        <i class="fa-solid fa-layer-group"></i>
+                        <i class="fa-solid fa-bag-shopping"></i>
                     </div>
                     <div class="reinsurance-text">
                         <span class="reinsurance-label">Le choix</span>
@@ -14,7 +14,16 @@
                     </div>
                 </div>
 
-
+                <!-- Club R -->
+                <div class="reinsurance-item">
+                    <div class="reinsurance-icon-box">
+                        <div class="club-r-mini-logo">Club <span class="r-letter">R</span></div>
+                    </div>
+                    <div class="reinsurance-text">
+                        <span class="reinsurance-label">Minimum</span>
+                        <span class="reinsurance-value">5% remboursés</span>
+                    </div>
+                </div>
 
                 <!-- Sécurité -->
                 <div class="reinsurance-item">
@@ -30,22 +39,11 @@
                 <!-- Service Client -->
                 <div class="reinsurance-item">
                     <div class="reinsurance-icon-box">
-                        <i class="fa-solid fa-headset"></i>
+                        <i class="fa-solid fa-comments"></i>
                     </div>
                     <div class="reinsurance-text">
                         <span class="reinsurance-label">Le service clients</span>
                         <span class="reinsurance-value">À votre écoute</span>
-                    </div>
-                </div>
-
-                <!-- Expédition -->
-                <div class="reinsurance-item">
-                    <div class="reinsurance-icon-box">
-                        <i class="fa-solid fa-truck-fast"></i>
-                    </div>
-                    <div class="reinsurance-text">
-                        <span class="reinsurance-label">L'expédition</span>
-                        <span class="reinsurance-value">Livraison rapide</span>
                     </div>
                 </div>
             </div>
@@ -304,6 +302,56 @@
     }
 
     @media (max-width: 768px) {
+        .footer-reinsurance {
+            padding: 0;
+            border-bottom: none;
+        }
+
+        .footer-reinsurance .footer-container {
+            padding: 0;
+        }
+
+        .reinsurance-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .reinsurance-item {
+            flex-direction: column;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            gap: 1rem;
+            border: 0.5px solid #f2f2f2;
+        }
+
+        .reinsurance-item:nth-child(1),
+        .reinsurance-item:nth-child(4) {
+            background-color: #f9f9f9;
+        }
+
+        .reinsurance-item:nth-child(2),
+        .reinsurance-item:nth-child(3) {
+            background-color: #fff;
+        }
+
+        .reinsurance-icon-box {
+            font-size: 2.8rem;
+            min-height: 60px;
+        }
+
+        .reinsurance-label {
+            font-size: 0.95rem;
+            color: #111;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .reinsurance-value {
+            font-size: 0.85rem;
+            color: #777;
+            font-weight: 500;
+        }
         .footer-links-grid {
             grid-template-columns: 1fr;
         }
