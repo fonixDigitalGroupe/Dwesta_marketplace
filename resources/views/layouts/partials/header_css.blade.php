@@ -1,4 +1,45 @@
 <style>
+    /* ==============================
+       HEADER CSS - Single Source of Truth
+       ============================== */
+
+    /* Autocomplete Search */
+    #autocomplete-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 2000;
+        display: none;
+    }
+
+    .autocomplete-item {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        border-bottom: 1px solid #f9f9f9;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: #333;
+    }
+
+    .autocomplete-item:hover {
+        background: #fff8f0;
+    }
+
+    .autocomplete-item .type-badge {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 10px;
+        background: #eee;
+        color: #666;
+    }
+
     /* Header Base */
     .header {
         background-color: #ffffff;
