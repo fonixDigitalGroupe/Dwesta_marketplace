@@ -123,8 +123,16 @@
         }
 
         @media (max-width: 768px) {
+            html, body {
+                overflow-x: hidden !important;
+                position: relative;
+                width: 100%;
+                -webkit-text-size-adjust: 100%;
+            }
             .auth-wrapper {
                 padding: 1rem 0.5rem;
+                width: 100%;
+                overflow-x: hidden;
             }
             .otp-card {
                 padding: 1.5rem 1rem !important;
@@ -133,17 +141,23 @@
                 border-left: none;
                 border-right: none;
                 box-shadow: none;
+                width: 100%;
+                box-sizing: border-box;
             }
             .otp-title {
                 font-size: 1.25rem;
             }
             .otp-input-container {
                 gap: 0.5rem;
+                margin-left: auto;
+                margin-right: auto;
+                width: fit-content;
             }
             .otp-digit {
-                width: clamp(40px, 18vw, 55px);
-                height: clamp(50px, 15vw, 60px);
+                width: clamp(42px, 15vw, 55px);
+                height: clamp(52px, 18vw, 65px);
                 font-size: 1.25rem;
+                /* Prevent zoom on focus for some browsers by keeping font-size >= 16px */
             }
         }
     </style>
