@@ -718,6 +718,15 @@
         border-radius: 8px;
     }
 
+    .slider-slide {
+        display: none;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
     @media (max-width: 768px) {
         .hero-slider {
             width: 100% !important;
