@@ -37,6 +37,17 @@
                         <span class="reinsurance-value">À votre écoute</span>
                     </div>
                 </div>
+
+                <!-- Expédition -->
+                <div class="reinsurance-item">
+                    <div class="reinsurance-icon-box">
+                        <i class="fa-solid fa-truck-fast"></i>
+                    </div>
+                    <div class="reinsurance-text">
+                        <span class="reinsurance-label">L'expédition</span>
+                        <span class="reinsurance-value">Livraison rapide</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
