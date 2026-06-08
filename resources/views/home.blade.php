@@ -711,7 +711,9 @@
     }
 
     @media (max-width: 992px) {
-        .bento-grid-custom { grid-template-columns: 1fr; }
+        .bento-grid-custom { grid-template-columns: 1fr; gap: 10px !important; }
+        .bento-right { gap: 10px !important; }
+        .bento-right-top { gap: 10px !important; }
         .bento-right-bottom .bento-item-custom { height: auto; min-height: 180px;}
         .bento-item-custom.full-height { min-height: 220px; }
         .news-tabs { 
@@ -830,7 +832,7 @@
         }
 
         .actualites-container {
-            padding: 0 15px;
+            padding: 0 5px;
             overflow-x: hidden; /* Prevent horizontal movement from news section */
         }
 
