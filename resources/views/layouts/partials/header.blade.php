@@ -17,10 +17,6 @@
                         @endif
                     </a>
 
-                    <!-- Site Badge (Style ClubR) -->
-                    <div class="site-badge">
-                        <span>Karnou</span>
-                    </div>
                 </div>
 
                 <div class="search-container">
