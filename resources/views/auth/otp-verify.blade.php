@@ -9,32 +9,37 @@
         }
 
         .main-content {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+            padding: 0;
+        }
+
+        .auth-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem 1rem 1rem;
         }
 
         .otp-card {
-            background: white;
+            background: #fff;
             padding: 2.5rem;
             border: 1px solid #f5f5f5;
             border-radius: 8px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-            max-width: 500px;
+            width: 100%;
+            max-width: 450px;
             margin: 0 auto;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
             text-align: center;
         }
 
         .otp-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            color: #111;
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: #000;
         }
 
         .otp-subtitle {
             font-size: 0.95rem;
-            color: #555;
+            color: #666;
             margin-bottom: 2rem;
             line-height: 1.5;
         }
@@ -50,7 +55,7 @@
             width: 50px;
             height: 60px;
             font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 700;
             text-align: center;
             border: 1px solid #ccc;
             border-radius: 6px;
@@ -59,26 +64,28 @@
         }
 
         .otp-digit:focus {
-            border-color: #f68b1e;
-            box-shadow: none;
+            border-color: #000;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.04);
         }
 
         .btn-verify {
             width: 100%;
-            background: #0066c0;
-            color: white;
+            background-color: #004aad;
+            color: #fff;
             border: none;
-            padding: 0.7rem;
-            border-radius: 6px;
+            padding: 0.75rem;
+            border-radius: 4px;
             font-size: 1rem;
-            font-weight: bold;
+            font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
             margin-bottom: 1.5rem;
         }
 
         .btn-verify:hover {
-            background: #004aad;
+            background-color: #003a8a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,74,173,0.15);
         }
 
         .resend-container {
@@ -89,12 +96,11 @@
         .resend-link {
             color: #f68b1e;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         .resend-link:hover {
             text-decoration: underline;
-            color: #c45500;
         }
 
         .alert {
@@ -117,36 +123,27 @@
         }
 
         @media (max-width: 768px) {
-            html, body {
-                overflow-x: hidden !important;
-            }
-            .main-content {
-                margin: 0.75rem 0;
-                padding: 0 !important;
-                max-width: 100% !important;
-                width: 100% !important;
-                box-sizing: border-box !important;
+            .auth-wrapper {
+                padding: 1rem 0.5rem;
             }
             .otp-card {
-                padding: 1.5rem 1rem;
-                max-width: 100% !important;
-                width: 100% !important;
-                box-sizing: border-box !important;
+                padding: 1.5rem 1rem !important;
+                max-width: none !important;
+                border-radius: 0;
                 border-left: none;
                 border-right: none;
-                border-radius: 0;
+                box-shadow: none;
             }
             .otp-title {
-                font-size: 1.2rem;
+                font-size: 1.25rem;
             }
             .otp-input-container {
-                gap: 0.6rem;
-                justify-content: center;
+                gap: 0.5rem;
             }
             .otp-digit {
                 width: clamp(40px, 18vw, 55px);
-                height: clamp(48px, 14vw, 60px);
-                font-size: 1.2rem;
+                height: clamp(50px, 15vw, 60px);
+                font-size: 1.25rem;
             }
         }
     </style>
@@ -154,7 +151,8 @@
 
 @section('content')
     <main class="main-content">
-        <div class="otp-card">
+        <div class="auth-wrapper">
+            <div class="otp-card">
             <h1 class="otp-title">
                 Vérifiez votre {{ $regInfo['email'] ? 'e-mail' : 'téléphone' }}
             </h1>
@@ -198,7 +196,8 @@
                     </button>
                 </form>
             </div>
-        </div>
+            </div> <!-- end otp-card -->
+        </div> <!-- end auth-wrapper -->
     </main>
 @endsection
 
