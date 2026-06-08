@@ -115,6 +115,28 @@
             color: #bf0000;
             border: 1px solid #f8d7da;
         }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+            }
+            .otp-card {
+                padding: 1.5rem 1rem;
+                max-width: none;
+            }
+            .otp-title {
+                font-size: 1.25rem;
+            }
+            .otp-input-container {
+                gap: 0.5rem;
+            }
+            .otp-digit {
+                width: 45px;
+                height: 55px;
+                font-size: 1.25rem;
+            }
+        }
     </style>
 @endpush
 

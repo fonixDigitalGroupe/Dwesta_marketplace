@@ -617,8 +617,13 @@
             border-radius: 8px !important;
         }
 
+        .header-row-1 .header-container {
+            padding: 0.5rem 0.6rem !important;
+            gap: 0.75rem !important;
+        }
+
         .header-row-2 .header-container {
-            padding: 0 0.6rem 0.4rem 0.6rem;
+            padding: 0 0.6rem 0.4rem 0.6rem !important;
         }
 
         /* Hide sell button on small screens */
