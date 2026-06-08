@@ -238,6 +238,65 @@
             box-shadow: 0 4px 12px rgba(0,74,173,0.15);
         }
 
+        /* Button loading state */
+        #register-submit-btn { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        #register-submit-btn .btn-loading {
+            display: none;
+            width: 18px; height: 18px;
+            border: 2.5px solid rgba(255,255,255,0.35);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: reg-spin 0.75s linear infinite;
+            flex-shrink: 0;
+        }
+        #register-submit-btn.is-loading { pointer-events: none; opacity: 0.85; }
+        #register-submit-btn.is-loading .btn-loading { display: inline-block; }
+
+        /* Loader overlay */
+        #register-loader {
+            display: none;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 99999;
+            align-items: center; justify-content: center;
+        }
+        #register-loader.is-visible { display: flex; }
+        .loader-inner {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 1.5rem;
+            padding: 2rem;
+        }
+        .loader-spinner {
+            width: 52px; height: 52px;
+            border: 4px solid #f0f0f0;
+            border-top-color: #f68b1e;
+            border-radius: 50%;
+            animation: reg-spin 0.9s ease-in-out infinite;
+        }
+        .loader-text {
+            text-align: center; font-family: 'Inter', sans-serif;
+            display: flex; flex-direction: column; gap: 0.35rem;
+        }
+        .loader-text strong { font-size: 1.05rem; color: #111; font-weight: 700; }
+        .loader-text span { font-size: 0.82rem; color: #999; }
+        .loader-dots { display: flex; gap: 7px; }
+        .loader-dots span {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #f68b1e;
+            animation: reg-bounce 1.1s ease-in-out infinite;
+        }
+        .loader-dots span:nth-child(2) { animation-delay: 0.18s; }
+        .loader-dots span:nth-child(3) { animation-delay: 0.36s; }
+
+        @keyframes reg-spin  { to { transform: rotate(360deg); } }
+        @keyframes reg-bounce {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50%       { transform: translateY(-7px); opacity: 0.4; }
+        }
+
         .error-msg {
             color: #c53030;
             font-size: 0.85rem;
@@ -589,34 +648,9 @@
 
                     <div style="text-align: center; margin-top: 1.5rem;">
                         <button type="submit" id="register-submit-btn" class="btn-primary">
-                            <span class="btn-text">Créer un compte Karnou</span>
-                            <span class="btn-spinner" style="display:none;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="animation:spin 1s linear infinite; vertical-align:middle;">
-                                    <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
-                                    <path d="M12 2a10 10 0 0 1 10 10" stroke="white" stroke-width="3" stroke-linecap="round"/>
-                                </svg>
-                                Envoi en cours…
-                            </span>
+                            <span class="btn-label">Créer un compte Karnou</span>
+                            <span class="btn-loading" aria-hidden="true"></span>
                         </button>
-                    </div>
-
-                    {{-- Loader overlay --}}
-                    <div id="register-loader" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px); z-index:9999; flex-direction:column; align-items:center; justify-content:center;">
-                        <div style="display:flex; flex-direction:column; align-items:center; gap:1.5rem;">
-                            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="28" cy="28" r="24" stroke="#f0f0f0" stroke-width="5"/>
-                                <path d="M28 4a24 24 0 0 1 24 24" stroke="#f68b1e" stroke-width="5" stroke-linecap="round" style="animation:spin 1s linear infinite; transform-origin:center;"/>
-                            </svg>
-                            <div style="font-family:'Inter',sans-serif; text-align:center;">
-                                <p style="font-size:1.1rem; font-weight:700; color:#111; margin:0 0 0.3rem;">Envoi du code de vérification…</p>
-                                <p style="font-size:0.85rem; color:#888; margin:0;">Veuillez patienter, cela prend quelques secondes.</p>
-                            </div>
-                            <div style="display:flex; gap:6px;">
-                                <span style="width:8px;height:8px;border-radius:50%;background:#f68b1e;animation:bounce 1.2s ease-in-out 0s infinite;"></span>
-                                <span style="width:8px;height:8px;border-radius:50%;background:#f68b1e;animation:bounce 1.2s ease-in-out 0.2s infinite;"></span>
-                                <span style="width:8px;height:8px;border-radius:50%;background:#f68b1e;animation:bounce 1.2s ease-in-out 0.4s infinite;"></span>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="divider-container">Ou inscrivez-vous avec</div>
@@ -744,26 +778,28 @@
             passwordInput.setAttribute('type', type);
         }
         // === REGISTER LOADER ===
-        const registerForm = document.querySelector('form#register-form, form[action*="register"], .auth-card form');
-        if (registerForm) {
-            registerForm.addEventListener('submit', function() {
+        const regForm = document.getElementById('register-form');
+        if (regForm) {
+            regForm.addEventListener('submit', function() {
                 const btn = document.getElementById('register-submit-btn');
-                const loader = document.getElementById('register-loader');
-                if (btn) {
-                    btn.querySelector('.btn-text').style.display = 'none';
-                    btn.querySelector('.btn-spinner').style.display = 'inline';
-                    btn.disabled = true;
-                }
-                if (loader) loader.style.display = 'flex';
+                const overlay = document.getElementById('register-loader');
+                if (btn) btn.classList.add('is-loading');
+                if (overlay) overlay.classList.add('is-visible');
             });
         }
     </script>
-    <style>
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); opacity:1; }
-            50% { transform: translateY(-8px); opacity:0.5; }
-        }
-        #register-submit-btn .btn-spinner svg { display:inline-block; }
-    </style>
+
+    {{-- Loader overlay (outside form, fixed to viewport) --}}
+    <div id="register-loader">
+        <div class="loader-inner">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">
+                <strong>Envoi du code de vérification&hellip;</strong>
+                <span>Veuillez patienter quelques secondes.</span>
+            </div>
+            <div class="loader-dots">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
 @endpush
