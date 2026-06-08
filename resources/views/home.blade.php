@@ -825,6 +825,11 @@
             border-radius: 0;
         }
 
+        .slider-slide img {
+            object-fit: cover !important;
+            object-position: right center !important;
+        }
+
         .actualites-container {
             padding: 0 15px;
             overflow-x: hidden; /* Prevent horizontal movement from news section */
