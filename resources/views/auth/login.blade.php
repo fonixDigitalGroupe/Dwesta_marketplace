@@ -41,8 +41,16 @@
         }
 
         @media (max-width: 768px) {
+            .auth-wrapper {
+                padding: 1rem 0.5rem;
+            }
             .auth-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .auth-card {
+                padding: 1.5rem 1rem !important;
+                max-width: none !important;
             }
         }
 
