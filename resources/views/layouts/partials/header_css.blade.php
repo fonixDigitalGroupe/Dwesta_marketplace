@@ -632,9 +632,7 @@
         }
 
         .auth-dropdown {
-            width: 95vw;
-            left: 2.5vw;
-            right: 2.5vw;
+            display: none !important;
         }
 
         .site-badge {
