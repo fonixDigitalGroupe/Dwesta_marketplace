@@ -102,7 +102,7 @@
         }
 
         .floating-input {
-            width: 75%;
+            width: 100%;
             padding: 1.15rem 0.85rem 0.45rem 0.85rem;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -344,6 +344,7 @@
 
         .input-toggle-wrapper {
             position: relative;
+            width: 75%;
         }
 
         .input-toggle-wrapper .floating-input {
@@ -358,6 +359,7 @@
             border-radius: 4px;
             position: relative;
             transition: border-color 0.2s;
+            width: 75%;
         }
 
         .phone-input-group:focus-within {
