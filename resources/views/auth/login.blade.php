@@ -52,6 +52,12 @@
                 padding: 1.5rem 1rem !important;
                 max-width: none !important;
             }
+            .btn-primary {
+                width: auto !important;
+                min-width: 160px;
+                margin-left: auto;
+                display: flex;
+            }
         }
 
         /* Card Styles */
