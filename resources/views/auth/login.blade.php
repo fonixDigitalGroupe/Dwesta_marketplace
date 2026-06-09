@@ -52,15 +52,11 @@
                 padding: 1.5rem 1rem !important;
                 max-width: none !important;
             }
-            .auth-card {
-                padding: 1.5rem 1rem !important;
-                max-width: none !important;
-            }
             .btn-primary {
-                width: fit-content !important;
-                padding: 0.75rem 2rem !important;
+                width: auto !important;
+                padding: 0.75rem 3.5rem !important;
                 margin-left: auto !important;
-                margin-right: 0 !important;
+                margin-right: auto !important;
                 display: flex !important;
             }
         }
