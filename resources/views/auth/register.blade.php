@@ -543,18 +543,34 @@
             }
             .form-group {
                 width: 100% !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
             }
             .page-title {
                 margin-left: 0 !important;
                 text-align: center !important;
+                padding: 0 1rem;
             }
             .btn-primary {
-                width: 90% !important;
-                margin: 1.5rem auto 0 auto !important;
+                width: 100% !important;
+                margin: 1.5rem 0 0 0 !important;
                 display: block !important;
+                border-radius: 4px !important;
             }
             .auth-card div[style*="text-align: left"] {
                 text-align: center !important;
+            }
+            .section-header {
+                text-align: center !important;
+            }
+            .disclaimer-box {
+                padding: 0 1rem;
+            }
+            .input-toggle-wrapper {
+                width: 100% !important;
+            }
+            .phone-input-group {
+                width: 100% !important;
             }
         }
 
