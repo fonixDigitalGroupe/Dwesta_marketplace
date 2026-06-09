@@ -349,7 +349,7 @@
 
     /* Category Navigation */
     .header-row-2 {
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: 2px solid #c0c0c0;
         background: #fff;
         position: relative;
         padding: 8px 0;
@@ -404,6 +404,38 @@
     .badge-style:hover {
         background: #e0e0e0;
         color: #222;
+    }
+
+    /* Sidebar category item — name + chevron on same row */
+    .cat-sidebar-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0.6rem 1rem;
+        cursor: pointer;
+        font-size: 0.88rem;
+        font-weight: 400;
+        color: #333;
+        gap: 8px;
+        border-bottom: 1px solid #f5f5f5;
+        transition: background 0.15s, color 0.15s;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .cat-sidebar-item:hover,
+    .cat-sidebar-item.active-cat-item {
+        background: #f5f7fa;
+        color: #004aad;
+        font-weight: 600;
+    }
+
+    .cat-sidebar-item svg {
+        flex-shrink: 0;
+        width: 12px !important;
+        height: 12px !important;
+        color: #999;
     }
 
     /* Inactive Buttons Style */

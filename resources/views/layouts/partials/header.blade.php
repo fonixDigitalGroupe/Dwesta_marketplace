@@ -236,14 +236,11 @@
                 @foreach($cats as $cat)
                     <div class="cat-sidebar-item" :class="{ 'active-cat-item': selectedCategory === {{ $cat->id }} }"
                         @mouseenter="selectedCategory = {{ $cat->id }}" @click="selectedCategory = {{ $cat->id }}">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <span style="font-size: 0.88rem; font-weight: 400;">{{ $cat->nom }}</span>
-                        </div>
-                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7">
-                            </path>
-                            </svg>
-                        </div>
+                        <span style="font-size: 0.88rem; font-weight: 400; overflow: hidden; text-overflow: ellipsis;">{{ $cat->nom }}</span>
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
                 @endforeach
                 </div>
 
