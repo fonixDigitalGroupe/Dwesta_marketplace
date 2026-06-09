@@ -14,7 +14,7 @@
         .auth-wrapper {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1rem 1.5rem 1rem 8rem;
+            padding: 1rem 1.5rem;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -34,6 +34,7 @@
             justify-content: flex-start;
             align-items: start;
             width: 100%;
+            padding-left: 7rem;
         }
 
         .auth-centered-container .auth-card {
@@ -76,7 +77,7 @@
             color: #000;
             text-align: left;
             margin-top: 0.25rem;
-            margin-left: 0.5rem;
+            margin-left: 7.5rem;
         }
 
         .section-header {
