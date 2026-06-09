@@ -352,6 +352,8 @@
         border-bottom: 1px solid #e0e0e0;
         background: #fff;
         position: relative;
+        padding: 8px 0;
+        transition: padding 0.2s;
     }
 
     .header-badges-container {
