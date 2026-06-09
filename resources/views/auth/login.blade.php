@@ -323,7 +323,7 @@
         /* Social buttons */
         .social-btns {
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
