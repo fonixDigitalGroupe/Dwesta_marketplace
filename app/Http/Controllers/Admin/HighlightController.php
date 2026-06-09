@@ -177,8 +177,14 @@ class HighlightController extends Controller
             $path = [$category->nom];
             $ancestors = [];
             $current = $category;
+            $visited = [$category->id];
             while ($current->parent_id && isset($indexedCategories[$current->parent_id])) {
-                $current = $indexedCategories[$current->parent_id];
+                $parentId = $current->parent_id;
+                if (in_array($parentId, $visited)) break; // Prevent infinite loop
+                
+                $current = $indexedCategories[$parentId];
+                $visited[] = $parentId;
+                
                 array_unshift($path, $current->nom);
                 array_unshift($ancestors, $current);
             }
