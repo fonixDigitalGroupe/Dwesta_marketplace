@@ -14,10 +14,10 @@
         .auth-wrapper {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2.5rem 1rem;
+            padding: 2.5rem 1.5rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
         }
 
         /* Auth Grid */
@@ -26,11 +26,12 @@
             grid-template-columns: 1.2fr 0.8fr;
             gap: 4rem;
             align-items: start;
+            width: 100%;
         }
 
         .auth-centered-container {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: start;
             width: 100%;
         }
