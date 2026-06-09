@@ -163,57 +163,65 @@ class HighlightController extends Controller
      */
     private function getOptimizedCategories()
     {
-        // 1. Fetch all active categories with minimal columns
-        $allCategories = Category::where('actif', true)
-            ->select('id', 'parent_id', 'nom', 'slug')
-            ->get();
+        try {
+            // 1. Fetch all active categories with minimal columns
+            $allCategories = Category::where('actif', true)
+                ->select('id', 'parent_id', 'nom', 'slug')
+                ->get();
 
-        // 2. Index by ID for fast lookup
-        $indexedCategories = $allCategories->keyBy('id');
+            // 2. Index by ID for fast lookup
+            $indexedCategories = $allCategories->keyBy('id');
 
-        // 3. Pre-calculate paths and URLs in memory
-        $processed = $allCategories->map(function ($category) use ($indexedCategories) {
-            // Build the path (chemin)
-            $path = [$category->nom];
-            $ancestors = [];
-            $current = $category;
-            $visited = [$category->id];
-            while ($current->parent_id && isset($indexedCategories[$current->parent_id])) {
-                $parentId = $current->parent_id;
-                if (in_array($parentId, $visited)) break; // Prevent infinite loop
+            // 3. Pre-calculate paths and URLs in memory
+            $processed = $allCategories->map(function ($category) use ($indexedCategories) {
+                // Build the path (chemin)
+                $path = [$category->nom];
+                $ancestors = [];
+                $current = $category;
+                $visited = [$category->id];
                 
-                $current = $indexedCategories[$parentId];
-                $visited[] = $parentId;
-                
-                array_unshift($path, $current->nom);
-                array_unshift($ancestors, $current);
-            }
-            $chemin = implode(' > ', $path);
-
-            // Build the URL (logic from the original view)
-            $catUrl = "";
-            if (count($ancestors) > 0) {
-                $racine = $ancestors[0];
-                $params = ['slug' => $racine->slug];
-                if (count($ancestors) === 1) {
-                    $params['active'] = $category->id;
-                } else {
-                    $params['active'] = $ancestors[1]->id;
-                    $params['n3'] = $category->id;
+                while ($current->parent_id && isset($indexedCategories[$current->parent_id])) {
+                    $parentId = $current->parent_id;
+                    if (in_array($parentId, $visited)) break; // Prevent infinite loop
+                    
+                    $current = $indexedCategories[$parentId];
+                    $visited[] = $parentId;
+                    
+                    array_unshift($path, $current->nom);
+                    array_unshift($ancestors, $current);
                 }
-                $catUrl = route('categories.show', $params, false);
-            } else {
-                $catUrl = route('categories.show', $category->slug, false);
-            }
+                $chemin = implode(' > ', $path);
 
-            return (object) [
-                'id' => $category->id,
-                'chemin' => $chemin,
-                'url' => $catUrl
-            ];
-        });
+                // Build the URL (logic from the original view)
+                // We use a simple concatenation if possible to avoid route() overhead in a large loop
+                $catUrl = "";
+                if (count($ancestors) > 0) {
+                    $racine = $ancestors[0];
+                    $slug = $racine->slug ?? 'unknown';
+                    
+                    if (count($ancestors) === 1) {
+                        $catUrl = "/categories/{$slug}?active=" . $category->id;
+                    } else {
+                        $activeId = $ancestors[1]->id;
+                        $catUrl = "/categories/{$slug}?active={$activeId}&n3=" . $category->id;
+                    }
+                } else {
+                    $slug = $category->slug ?? 'unknown';
+                    $catUrl = "/categories/{$slug}";
+                }
 
-        // 4. Sort by the calculated path
-        return $processed->sortBy('chemin');
+                return (object) [
+                    'id' => $category->id,
+                    'chemin' => $chemin,
+                    'url' => $catUrl
+                ];
+            });
+
+            // 4. Sort by the calculated path
+            return $processed->sortBy('chemin');
+        } catch (\Exception $e) {
+            \Log::error("Error in getOptimizedCategories: " . $e->getMessage());
+            return collect(); // Return empty collection on error to avoid blank page
+        }
     }
 }
