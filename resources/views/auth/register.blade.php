@@ -70,11 +70,12 @@
 
         /* Titles */
         .page-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             margin-bottom: 2rem;
             color: #000;
-            text-align: center;
+            text-align: left;
+            margin-top: 1rem;
         }
 
         .section-header {
@@ -556,13 +557,16 @@
         <div class="auth-centered-container">
             <!-- Registration Form -->
             <div class="auth-card">
-                <h1 class="page-title">Bienvenue chez Karnou</h1>
-                <p style="text-align: center; color: #666; font-size: 0.95rem; margin-bottom: 2rem; line-height: 1.5;">
-                    Utilisez votre e-mail ou votre téléphone pour vous connecter ou créer un compte.
-                </p>
-
+                <h1 class="page-title">Création de compte</h1>
+                
                 <form method="POST" action="{{ route('register') }}" id="register-form">
                     @csrf
+                    
+                    <h2 class="section-header" style="border-bottom: none; margin-bottom: 1.5rem;">Informations d'authentification</h2>
+
+                    <p style="text-align: left; color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">
+                        Utilisez votre e-mail ou votre téléphone pour vous connecter ou créer un compte.
+                    </p>
 
                     <!-- Section 1: Authentication -->
                     <div class="auth-section">
