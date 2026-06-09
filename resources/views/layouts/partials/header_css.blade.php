@@ -446,6 +446,125 @@
         pointer-events: none;
     }
 
+    /* ── Desktop mega-menu two-column ── */
+    .mega-menu-desktop {
+        display: flex;
+        height: 600px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .mega-sidebar {
+        width: 250px;
+        min-width: 250px;
+        background: #fff;
+        border-right: 1px solid #f0f0f0;
+        overflow-y: auto;
+    }
+
+    .mega-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0 40px;
+        background: #fff;
+        border-left: 1px solid #eee;
+    }
+
+    /* ── Mobile accordion ── */
+    .mega-menu-mobile {
+        display: none; /* hidden on desktop */
+    }
+
+    .acc-item {
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .acc-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.85rem 1rem;
+        cursor: pointer;
+        gap: 8px;
+        transition: background 0.15s;
+    }
+
+    .acc-header:hover {
+        background: #f9f9f9;
+    }
+
+    .acc-header-link {
+        flex: 1;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #111;
+        text-decoration: none;
+    }
+
+    .acc-header-link:hover {
+        color: #004aad;
+    }
+
+    .acc-chevron {
+        flex-shrink: 0;
+        color: #999;
+        transition: transform 0.2s ease;
+    }
+
+    .acc-chevron.rotated {
+        transform: rotate(180deg);
+    }
+
+    .acc-body {
+        background: #fafafa;
+        padding: 0 1rem 0.75rem 1rem;
+    }
+
+    .acc-subcat-group {
+        padding: 0.6rem 0 0.4rem 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .acc-subcat-group:last-child {
+        border-bottom: none;
+    }
+
+    .acc-subcat-title {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: #000;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none;
+        margin-bottom: 0.5rem;
+        padding: 0.2rem 0;
+    }
+
+    .acc-subcat-child {
+        display: block;
+        font-size: 0.88rem;
+        color: #555;
+        text-decoration: none;
+        padding: 0.3rem 0 0.3rem 0.75rem;
+        border-left: 2px solid #eee;
+        margin-bottom: 0.2rem;
+        transition: color 0.15s, border-color 0.15s;
+    }
+
+    .acc-subcat-child:hover {
+        color: #004aad;
+        border-left-color: #004aad;
+    }
+
+    /* ── Show/hide per breakpoint ── */
+    @media (max-width: 1024px) {
+        .mega-menu-desktop { display: none !important; }
+        .mega-menu-mobile  { display: block !important; }
+    }
+
+
+
     .disabled-action:hover {
         color: inherit !important;
         background: inherit !important;

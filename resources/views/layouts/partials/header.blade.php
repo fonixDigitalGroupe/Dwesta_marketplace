@@ -222,67 +222,106 @@
 
         <!-- Mega Menu Dropdown -->
         <div class="mobile-menu-drawer" x-show="mobileMenuOpen"
-            :class="{ 'open': mobileMenuOpen, 'expanded': selectedCategory }" x-data="{ selectedCategory: null }"
-            @click.away="mobileMenuOpen = false" x-cloak x-transition:enter="transition ease-out duration-200"
+            :class="{ 'open': mobileMenuOpen }" x-data="{ selectedCategory: null, openCat: null }"
+            @click.away="mobileMenuOpen = false" x-cloak
+            x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 transform -translate-y-2"
             x-transition:enter-end="opacity-100 transform translate-y-0">
 
-
-            <!-- Main Content Panel -->
-            <div style="display: flex; height: 600px; overflow: hidden; background: #fff;">
-                <!-- Left Sidebar: All Categories -->
-                <div
-                style="width: 250px; min-width: 250px; background: #fff; border-right: 1px solid #f0f0f0; overflow-y: auto;">
-                @foreach($cats as $cat)
-                    <div class="cat-sidebar-item" :class="{ 'active-cat-item': selectedCategory === {{ $cat->id }} }"
-                        @mouseenter="selectedCategory = {{ $cat->id }}" @click="selectedCategory = {{ $cat->id }}">
-                        <span style="font-size: 0.88rem; font-weight: 400; overflow: hidden; text-overflow: ellipsis;">{{ $cat->nom }}</span>
-                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </div>
-                @endforeach
+            <!-- ═══ DESKTOP: two-column layout ═══ -->
+            <div class="mega-menu-desktop">
+                <!-- Left Sidebar -->
+                <div class="mega-sidebar">
+                    @foreach($cats as $cat)
+                        <div class="cat-sidebar-item"
+                            :class="{ 'active-cat-item': selectedCategory === {{ $cat->id }} }"
+                            @mouseenter="selectedCategory = {{ $cat->id }}"
+                            @click="selectedCategory = {{ $cat->id }}">
+                            <span>{{ $cat->nom }}</span>
+                            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="flex-shrink:0;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </div>
+                    @endforeach
                 </div>
 
-                <!-- Right Pane: Hierarchical Content -->
-                <div x-show="selectedCategory" x-transition:enter="transition ease-out duration-300"
-                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                style="flex: 1; overflow-y: auto; padding: 0 40px; background: #fff; border-left: 1px solid #eee;">
+                <!-- Right Pane -->
+                <div class="mega-content" x-show="selectedCategory"
+                    x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100">
                     @foreach($cats as $cat)
                         <div x-show="selectedCategory === {{ $cat->id }}" style="display: flex; gap: 60px;">
-                            <!-- Hierarchical Groups -->
-                        <div style="flex: 1; display: flex; flex-direction: column; gap: 0;">
-                            @foreach($cat->enfantsActifs()->with('enfantsActifs')->get() as $sousCat)
-                                <div style="display: flex; border-bottom: 1px solid #eee; padding: 10px 0;">
-                                    <!-- Level 2 Header -->
-                                    <div style="width: 250px; padding-right: 30px;">
-                                        <h3
-                                            style="font-size: 0.75rem; font-weight: 800; color: #000; text-transform: uppercase; letter-spacing: 0.5px; margin: 4px 0 0 0; line-height: 1.2;">
-                                            <a href="{{ route('categories.show', $cat->slug) }}?active={{ $sousCat->id }}"
-                                                style="text-decoration: none; color: inherit;">{{ $sousCat->nom }}</a>
-                                                </h3>
-                                    </div>
-                                    <!-- Level 3 Links Grid -->
-                                    <div
-                                    style="flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 40px;">
-                                    @foreach($sousCat->enfantsActifs as $enfant)
-                                        <a href="{{ route('categories.show', $cat->slug) }}?active={{ $sousCat->id }}&n3={{ $enfant->id }}"
-                                            style="text-decoration: none; color: #666; font-size: 0.85rem; transition: color 0.1s; font-weight: 400;"
-                                            onmouseover="this.style.color='#000'; this.style.textDecoration='underline';"
-                                            onmouseout="this.style.color='#666'; this.style.textDecoration='none';">
-                                                {{ $enfant->nom }}
-                                            </a>
-                                    @endforeach
+                            <div style="flex: 1; display: flex; flex-direction: column; gap: 0;">
+                                @foreach($cat->enfantsActifs()->with('enfantsActifs')->get() as $sousCat)
+                                    <div style="display: flex; border-bottom: 1px solid #eee; padding: 10px 0;">
+                                        <div style="width: 250px; padding-right: 30px;">
+                                            <h3 style="font-size: 0.75rem; font-weight: 800; color: #000; text-transform: uppercase; letter-spacing: 0.5px; margin: 4px 0 0 0; line-height: 1.2;">
+                                                <a href="{{ route('categories.show', $cat->slug) }}?active={{ $sousCat->id }}"
+                                                    style="text-decoration: none; color: inherit;">{{ $sousCat->nom }}</a>
+                                            </h3>
+                                        </div>
+                                        <div style="flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 40px;">
+                                            @foreach($sousCat->enfantsActifs as $enfant)
+                                                <a href="{{ route('categories.show', $cat->slug) }}?active={{ $sousCat->id }}&n3={{ $enfant->id }}"
+                                                    style="text-decoration: none; color: #666; font-size: 0.85rem; transition: color 0.1s; font-weight: 400;"
+                                                    onmouseover="this.style.color='#000'; this.style.textDecoration='underline';"
+                                                    onmouseout="this.style.color='#666'; this.style.textDecoration='none';">
+                                                    {{ $enfant->nom }}
+                                                </a>
+                                            @endforeach
                                         </div>
                                     </div>
-                            @endforeach
+                                @endforeach
                             </div>
-
-                            </div>
+                        </div>
                     @endforeach
                 </div>
             </div>
+
+            <!-- ═══ MOBILE: vertical accordion ═══ -->
+            <div class="mega-menu-mobile">
+                @foreach($cats as $cat)
+                    <div class="acc-item">
+                        <!-- Category header row -->
+                        <div class="acc-header" @click="openCat = (openCat === {{ $cat->id }}) ? null : {{ $cat->id }}">
+                            <a href="{{ route('categories.show', $cat->slug) }}"
+                                class="acc-header-link"
+                                @click.stop>
+                                {{ $cat->nom }}
+                            </a>
+                            <svg class="acc-chevron" :class="{ 'rotated': openCat === {{ $cat->id }} }"
+                                width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+
+                        <!-- Subcategories (expand vertically) -->
+                        <div class="acc-body" x-show="openCat === {{ $cat->id }}"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 transform -translate-y-1"
+                            x-transition:enter-end="opacity-100 transform translate-y-0">
+                            @foreach($cat->enfantsActifs()->with('enfantsActifs')->get() as $sousCat)
+                                <div class="acc-subcat-group">
+                                    <a href="{{ route('categories.show', $cat->slug) }}?active={{ $sousCat->id }}"
+                                        class="acc-subcat-title">
+                                        {{ $sousCat->nom }}
+                                    </a>
+                                    @foreach($sousCat->enfantsActifs as $enfant)
+                                        <a href="{{ route('categories.show', $cat->slug) }}?active={{ $sousCat->id }}&n3={{ $enfant->id }}"
+                                            class="acc-subcat-child">
+                                            {{ $enfant->nom }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
         </div>
+
     </header>
 
     <script>
