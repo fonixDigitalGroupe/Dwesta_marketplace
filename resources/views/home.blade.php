@@ -833,13 +833,18 @@
 
         .hero-slider {
             width: 100% !important;
-            margin-top: -12px; /* Pull banner up closer to the header on mobile */
+            margin-top: -24px; /* Pull banner up further on mobile */
             margin-bottom: 1.5rem;
         }
 
         .slider-container {
             height: 220px;
             border-radius: 0;
+        }
+
+        /* Hide prev/next arrows on mobile - use dots only */
+        .slider-btn {
+            display: none !important;
         }
 
         .banner-bg-image {
