@@ -832,8 +832,8 @@
         }
 
         .hero-outer-wrapper {
+            margin-top: -2.5rem !important; /* Cancel header gap on mobile */
             padding-top: 0 !important;
-            margin-top: 0 !important;
         }
 
         .hero-slider {
