@@ -102,7 +102,7 @@
         }
 
         .floating-input {
-            width: 100%;
+            width: 75%;
             padding: 1.15rem 0.85rem 0.45rem 0.85rem;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -229,14 +229,15 @@
             background-color: #004aad;
             color: #fff;
             border: none;
-            padding: 0.75rem 3rem;
+            padding: 0.5rem 2.5rem;
             border-radius: 4px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
-            margin-top: 2rem;
-            width: 100%;
+            margin-top: 1.5rem;
+            width: auto;
+            min-width: 150px;
         }
 
         .btn-primary:hover {
@@ -644,8 +645,8 @@
                     <div style="text-align: center;"><button type="submit">Créer mon compte</button></div>
                     --}}
 
-                    <div style="text-align: center; margin-top: 1.5rem;">
-                        <button type="submit" class="btn-primary">Créer un compte Karnou</button>
+                    <div style="text-align: left; margin-top: 1.5rem;">
+                        <button type="submit" class="btn-primary">continuer</button>
                     </div>
 
                     <div class="divider-container">Ou inscrivez-vous avec</div>
