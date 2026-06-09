@@ -541,6 +541,21 @@
             .strength-checklist {
                 grid-template-columns: 1fr;
             }
+            .form-group {
+                width: 100% !important;
+            }
+            .page-title {
+                margin-left: 0 !important;
+                text-align: center !important;
+            }
+            .btn-primary {
+                width: 90% !important;
+                margin: 1.5rem auto 0 auto !important;
+                display: block !important;
+            }
+            .auth-card div[style*="text-align: left"] {
+                text-align: center !important;
+            }
         }
 
         /* Select styling for float */
