@@ -521,14 +521,17 @@
 
         @media (max-width: 992px) {
             .auth-wrapper {
-                padding: 1rem 0.5rem;
+                padding: 1rem 1rem;
             }
             .auth-card {
-                padding: 1.5rem 1rem !important;
-                max-width: none !important;
+                padding: 1.5rem 1.25rem !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                box-shadow: none !important;
+                text-align: center;
             }
             .auth-centered-container .auth-card {
-                max-width: none !important;
+                max-width: 100% !important;
             }
             .auth-grid {
                 grid-template-columns: 1fr;
@@ -541,46 +544,57 @@
             .strength-checklist {
                 grid-template-columns: 1fr;
             }
+            /* Titre principal */
+            .page-title {
+                margin-left: 0 !important;
+                text-align: center !important;
+                margin-top: 1rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+            /* Section header (Informations d'authentification) */
+            .section-header {
+                text-align: center !important;
+                margin-top: 0.5rem !important;
+                margin-bottom: 1rem !important;
+                font-size: 1rem !important;
+            }
+            /* Paragraphe de description */
+            .auth-card p {
+                text-align: center !important;
+            }
+            /* Champs de formulaire pleine largeur */
             .form-group {
                 width: 100% !important;
                 margin-left: 0 !important;
                 margin-right: 0 !important;
             }
-            .page-title {
-                margin-left: 0 !important;
-                text-align: left !important;
-                padding: 0;
-                margin-top: 1rem !important;
-                margin-bottom: 0.5rem !important;
-            }
-            .btn-primary {
-                width: auto !important;
-                min-width: 150px;
-                margin: 1rem 0 0 0 !important;
-                display: inline-block !important;
-                border-radius: 4px !important;
-            }
-            .auth-card div[style*="text-align: left"],
-            .auth-card div[style*="text-align: center"] {
-                text-align: left !important;
-            }
-            .section-header {
-                text-align: left !important;
-                margin-top: 1rem !important;
-            }
-            .disclaimer-box {
-                text-align: left !important;
-                padding: 0;
-            }
-            .input-toggle-wrapper, .phone-input-group {
+            .input-toggle-wrapper,
+            .phone-input-group {
                 width: 100% !important;
             }
-            .divider-container {
-                justify-content: flex-start !important;
+            /* Bouton continuer - centré, pleine largeur */
+            .btn-primary {
+                width: 100% !important;
+                margin: 1.25rem 0 0 0 !important;
+                display: block !important;
+                text-align: center !important;
+                border-radius: 6px !important;
             }
+            /* Diviseur "Ou inscrivez-vous avec" */
+            .divider-container {
+                justify-content: center !important;
+                margin: 1.25rem 0 !important;
+            }
+            /* Boutons sociaux centrés */
             .social-btns {
-                justify-content: flex-start !important;
-                margin-bottom: 1.5rem !important;
+                justify-content: center !important;
+                margin-bottom: 1.25rem !important;
+            }
+            /* Texte légal centré */
+            .disclaimer-box,
+            .auth-card div[style*="text-align"] {
+                text-align: center !important;
+                padding: 0 !important;
             }
         }
 
