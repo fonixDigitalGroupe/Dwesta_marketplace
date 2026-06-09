@@ -78,7 +78,7 @@
     .search-container {
         flex: 1;
         margin: 0 2rem;
-        max-width: 800px;
+        max-width: 950px;
         display: flex;
         align-items: center;
         position: relative;
@@ -106,7 +106,7 @@
         background-color: #ff8c00;
         color: white;
         border: none;
-        border-left: 3px solid #ffffff;
+        border-left: 6px solid #ffffff;
         padding: 0 1.25rem;
         cursor: pointer;
         display: flex;
