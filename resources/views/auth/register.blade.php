@@ -45,14 +45,11 @@
         .auth-card {
             background: #fff;
             padding: 1.25rem 2.5rem 2.5rem 2.5rem;
-            border: 1px solid #f5f5f5;
-            border-left: none !important;
-            border-top: none !important;
-            border-bottom: none !important;
+            border: none;
             border-radius: 0;
             width: 100%;
             max-width: 550px;
-            box-shadow: none;
+            box-shadow: 15px 0 30px -15px rgba(0,0,0,0.1);
         }
 
         /* Breadcrumbs */
