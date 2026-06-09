@@ -53,8 +53,8 @@
                 max-width: none !important;
             }
             .btn-primary {
-                width: auto !important;
-                padding: 0.75rem 3.5rem !important;
+                width: 90% !important;
+                padding: 0.75rem 1.5rem !important;
                 margin-left: auto !important;
                 margin-right: auto !important;
                 display: flex !important;
