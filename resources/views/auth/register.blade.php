@@ -47,7 +47,8 @@
             padding: 1.25rem 2.5rem 2.5rem 2.5rem;
             border: 1px solid #f5f5f5;
             border-left: none !important;
-            border-radius: 0 8px 8px 0;
+            border-top: none !important;
+            border-radius: 0 0 8px 0;
             width: 100%;
             max-width: 550px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
