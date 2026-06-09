@@ -49,9 +49,9 @@ class HighlightController extends Controller
     public function create()
     {
         $tabs = HighlightTab::where('active', true)->orderBy('position')->get();
-        // Load categories with parents to compute full paths
-        $categories = Category::where('actif', true)->with('parent.parent')->get()
-            ->sortBy('chemin');
+        
+        // Optimized category loading
+        $categories = $this->getOptimizedCategories();
 
         $positions = [
             1 => 'Position 1 (Grand - Haut Gauche)',
@@ -101,9 +101,9 @@ class HighlightController extends Controller
     public function edit(Highlight $highlight)
     {
         $tabs = HighlightTab::where('active', true)->orderBy('position')->get();
-        // Load categories with parents to compute full paths
-        $categories = Category::where('actif', true)->with('parent.parent')->get()
-            ->sortBy('chemin');
+        
+        // Optimized category loading
+        $categories = $this->getOptimizedCategories();
 
         $positions = [
             1 => 'Position 1 (Grand - Haut Gauche)',
@@ -155,5 +155,59 @@ class HighlightController extends Controller
     {
         $highlight->update(['active' => !$highlight->active]);
         return response()->json(['success' => true, 'active' => $highlight->active]);
+    }
+
+    /**
+     * Get all active categories with pre-calculated paths and redirection URLs.
+     * This avoids N+1 query issues and intensive recursive calculations in the view.
+     */
+    private function getOptimizedCategories()
+    {
+        // 1. Fetch all active categories with minimal columns
+        $allCategories = Category::where('actif', true)
+            ->select('id', 'parent_id', 'nom', 'slug')
+            ->get();
+
+        // 2. Index by ID for fast lookup
+        $indexedCategories = $allCategories->keyBy('id');
+
+        // 3. Pre-calculate paths and URLs in memory
+        $processed = $allCategories->map(function ($category) use ($indexedCategories) {
+            // Build the path (chemin)
+            $path = [$category->nom];
+            $ancestors = [];
+            $current = $category;
+            while ($current->parent_id && isset($indexedCategories[$current->parent_id])) {
+                $current = $indexedCategories[$current->parent_id];
+                array_unshift($path, $current->nom);
+                array_unshift($ancestors, $current);
+            }
+            $chemin = implode(' > ', $path);
+
+            // Build the URL (logic from the original view)
+            $catUrl = "";
+            if (count($ancestors) > 0) {
+                $racine = $ancestors[0];
+                $params = ['slug' => $racine->slug];
+                if (count($ancestors) === 1) {
+                    $params['active'] = $category->id;
+                } else {
+                    $params['active'] = $ancestors[1]->id;
+                    $params['n3'] = $category->id;
+                }
+                $catUrl = route('categories.show', $params, false);
+            } else {
+                $catUrl = route('categories.show', $category->slug, false);
+            }
+
+            return (object) [
+                'id' => $category->id,
+                'chemin' => $chemin,
+                'url' => $catUrl
+            ];
+        });
+
+        // 4. Sort by the calculated path
+        return $processed->sortBy('chemin');
     }
 }

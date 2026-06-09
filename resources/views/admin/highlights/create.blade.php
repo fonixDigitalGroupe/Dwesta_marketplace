@@ -229,23 +229,7 @@
                                 <select name="link_url" id="link_url" class="form-input" style="background: #fff; height: 40px; cursor: pointer;">
                                     <option value="">-- Sélectionner une catégorie --</option>
                                     @foreach($categories as $category)
-                                        @php
-                                            $ancetres = $category->ancetres;
-                                            if (count($ancetres) > 0) {
-                                                $racine = $ancetres[0];
-                                                $params = ['slug' => $racine->slug];
-                                                if (count($ancetres) === 1) {
-                                                    $params['active'] = $category->id;
-                                                } else {
-                                                    $params['active'] = $ancetres[1]->id;
-                                                    $params['n3'] = $category->id;
-                                                }
-                                                $catUrl = route('categories.show', $params, false);
-                                            } else {
-                                                $catUrl = route('categories.show', $category->slug, false);
-                                            }
-                                        @endphp
-                                        <option value="{{ $catUrl }}" {{ old('link_url') == $catUrl ? 'selected' : '' }}>
+                                        <option value="{{ $category->url }}" {{ old('link_url') == $category->url ? 'selected' : '' }}>
                                             {{ $category->chemin }}
                                         </option>
                                     @endforeach
