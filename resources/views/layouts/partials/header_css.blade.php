@@ -366,9 +366,27 @@
 
     .cat-nav-item.badge-style {
         background: #f0f0f0;
+        color: #555;
         padding: 5px 15px;
         border-radius: 50px;
         font-weight: 500;
+    }
+
+    /* All generic badge-style links in the header nav are grey */
+    .badge-style {
+        background: #f0f0f0;
+        color: #555;
+        padding: 5px 15px;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 0.85rem;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background 0.15s, color 0.15s;
+    }
+    .badge-style:hover {
+        background: #e0e0e0;
+        color: #222;
     }
 
     /* Inactive Buttons Style */
@@ -631,7 +649,8 @@
             display: none !important;
         }
 
-        .cat-nav-item.badge-style {
+        .cat-nav-item.badge-style,
+        .badge-style {
             padding: 4px 10px;
             font-size: 0.8rem;
         }
