@@ -44,7 +44,7 @@
 
         .auth-card {
             background: #fff;
-            padding: 2.5rem;
+            padding: 1.25rem 2.5rem 2.5rem 2.5rem;
             border: 1px solid #f5f5f5;
             border-left: none !important;
             border-radius: 0 8px 8px 0;
@@ -73,7 +73,7 @@
         .page-title {
             font-size: 1.25rem;
             font-weight: 700;
-            margin-bottom: 2rem;
+            margin-bottom: 0.75rem;
             color: #000;
             text-align: left;
             margin-top: 0.25rem;
