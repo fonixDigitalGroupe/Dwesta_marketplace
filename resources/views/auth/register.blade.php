@@ -492,19 +492,6 @@
             display: block;
         }
 
-        .help-box {
-            text-align: center;
-            font-size: 0.95rem;
-            color: #000;
-            margin-bottom: 2rem;
-            line-height: 1.5;
-        }
-
-        .help-box strong {
-            display: block;
-            margin-top: 5px;
-            font-size: 1.1rem;
-        }
 
         .footer-logo {
             text-align: center;
@@ -674,10 +661,6 @@
                         <a href="#">Termes et conditions</a>
                     </div>
 
-                    <div class="help-box">
-                        Besoin d'aide ? Visitez notre Centre d'aide ou contactez-nous au
-                        <strong>221301022122</strong>
-                    </div>
 
                 </form>
             </div>

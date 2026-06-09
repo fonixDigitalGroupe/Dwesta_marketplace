@@ -343,19 +343,6 @@
             display: block;
         }
 
-        .help-box {
-            text-align: center;
-            font-size: 0.95rem;
-            color: #000;
-            margin-bottom: 2rem;
-            line-height: 1.5;
-        }
-
-        .help-box strong {
-            display: block;
-            margin-top: 5px;
-            font-size: 1.1rem;
-        }
     </style>
 @endpush
 
