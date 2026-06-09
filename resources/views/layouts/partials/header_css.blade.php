@@ -215,6 +215,13 @@
         margin-top: 10px;
     }
 
+    /* Hide auth chevron on desktop (no dropdown) */
+    @media (min-width: 1025px) {
+        .auth-dropdown-container .chevron {
+            display: none !important;
+        }
+    }
+
     @media (max-width: 1024px) {
         .auth-dropdown-container:hover .auth-dropdown {
             display: block;
