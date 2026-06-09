@@ -710,11 +710,11 @@
     }
     
     .bento-item-custom.full-height {
-        min-height: 480px; /* Increased to reduce cropping */
+        min-height: 520px; /* Increased further to reduce vertical cropping */
     }
     
     .bento-right-bottom .bento-item-custom {
-        height: 230px; /* Increased to better match banner aspect ratios */
+        height: 250px; /* Increased further to better accommodate wide images */
     }
 
     @media (max-width: 992px) {
