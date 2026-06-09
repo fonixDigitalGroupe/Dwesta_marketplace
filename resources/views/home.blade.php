@@ -159,7 +159,7 @@
 @endpush
 
 @section('content')
-    <div style="background: white; margin-top: -1.5rem; padding: 1.5rem 0 2rem 0;">
+    <div class="hero-outer-wrapper" style="background: white; margin-top: -1.5rem; padding: 1.5rem 0 2rem 0;">
         <div class="main-content">
             <!-- Hero Section -->
             <div class="hero-slider">
@@ -831,9 +831,14 @@
             overflow-x: hidden !important;
         }
 
+        .hero-outer-wrapper {
+            padding-top: 0 !important;
+            margin-top: 0 !important;
+        }
+
         .hero-slider {
             width: 100% !important;
-            margin-top: -24px; /* Pull banner up further on mobile */
+            margin-top: 0;
             margin-bottom: 1.5rem;
         }
 
