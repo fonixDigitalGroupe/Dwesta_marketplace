@@ -49,7 +49,7 @@
             border-radius: 0;
             width: 100%;
             max-width: 550px;
-            box-shadow: 12px 0 25px -15px rgba(0,0,0,0.07);
+            box-shadow: 8px 0 15px -10px rgba(0,0,0,0.05);
         }
 
         /* Breadcrumbs */
