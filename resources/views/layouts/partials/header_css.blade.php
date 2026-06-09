@@ -349,7 +349,7 @@
 
     /* Category Navigation */
     .header-row-2 {
-        border-bottom: 2px solid #c0c0c0;
+        border-bottom: 1px solid #d0d0d0;
         background: #fff;
         position: relative;
         padding: 8px 0;
