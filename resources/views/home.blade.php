@@ -705,16 +705,19 @@
     .bento-item-custom img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain; /* Show full image without cropping */
         display: block;
+        background: #f5f5f5; /* Light background behind images */
     }
     
     .bento-item-custom.full-height {
-        min-height: 520px; /* Increased further to reduce vertical cropping */
+        min-height: 480px;
+        background: #f5f5f5;
     }
     
     .bento-right-bottom .bento-item-custom {
-        height: 250px; /* Increased further to better accommodate wide images */
+        height: 240px;
+        background: #f5f5f5;
     }
 
     @media (max-width: 992px) {
