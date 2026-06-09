@@ -75,7 +75,8 @@
             margin-bottom: 2rem;
             color: #000;
             text-align: left;
-            margin-top: 1rem;
+            margin-top: 0.25rem;
+            margin-left: 0.5rem;
         }
 
         .section-header {
