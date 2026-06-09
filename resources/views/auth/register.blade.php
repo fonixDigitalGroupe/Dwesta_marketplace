@@ -45,7 +45,8 @@
             background: #fff;
             padding: 2.5rem;
             border: 1px solid #f5f5f5;
-            border-radius: 8px;
+            border-left: none !important;
+            border-radius: 0 8px 8px 0;
             width: 100%;
             max-width: 450px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
