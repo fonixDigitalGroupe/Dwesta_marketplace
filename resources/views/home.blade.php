@@ -373,6 +373,13 @@
                                     </div>
                                 </div>
                             </div>
+                            @if($tab->highlights->count() === 0)
+                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; background: #fdfdfd; border: 1px dashed #ddd; border-radius: 12px; margin-top: 10px;">
+                                    <i class="fas fa-bullhorn" style="font-size: 2.5rem; color: #ddd; margin-bottom: 15px;"></i>
+                                    <p style="color: #888; font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 500;">Bientôt de nouvelles pépites dans cette catégorie !</p>
+                                    <p style="color: #aaa; font-size: 0.9rem;">Revenez très vite pour découvrir nos prochaines actualités.</p>
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 </div>
@@ -703,11 +710,11 @@
     }
     
     .bento-item-custom.full-height {
-        min-height: 400px;
+        min-height: 480px; /* Increased to reduce cropping */
     }
     
     .bento-right-bottom .bento-item-custom {
-        height: 190px; /* Adapte la hauteur du bloc horizontal bas */
+        height: 230px; /* Increased to better match banner aspect ratios */
     }
 
     @media (max-width: 992px) {
