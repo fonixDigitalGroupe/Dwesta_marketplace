@@ -199,7 +199,7 @@
                     $nav_cats = \App\Models\Category::racines()->actives()->parOrdre()->get(); 
                 @endphp
 
-                <div class="header-badges-container" style="display: flex; gap: 16px; overflow-x: auto; scrollbar-width: none; align-items: center;">
+                <div class="header-badges-container">
                     @foreach($nav_cats as $cat)
                         <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                             <a href="{{ route('categories.show', $cat->slug) }}" class="cat-nav-item badge-style">

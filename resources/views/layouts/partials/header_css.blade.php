@@ -351,6 +351,21 @@
     .header-row-2 {
         border-bottom: 1px solid #e0e0e0;
         background: #fff;
+        position: relative;
+    }
+
+    .header-badges-container {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        align-items: center;
+        flex: 1;
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+
+    .header-badges-container::-webkit-scrollbar {
+        display: none; /* Chrome, Safari and Opera */
     }
 
     .cat-nav-item {
@@ -365,18 +380,18 @@
     }
 
     .cat-nav-item.badge-style {
-        background: #f0f0f0;
-        color: #555;
-        padding: 5px 15px;
+        background: #f5f5f5;
+        color: #333;
+        padding: 5px 12px;
         border-radius: 50px;
-        font-weight: 500;
+        font-weight: 600;
     }
 
-    /* All generic badge-style links in the header nav are grey */
+    /* All generic badge-style links in the header nav */
     .badge-style {
-        background: #f0f0f0;
-        color: #555;
-        padding: 5px 15px;
+        background: #f5f5f5;
+        color: #333;
+        padding: 5px 12px;
         border-radius: 50px;
         font-weight: 500;
         font-size: 0.85rem;
