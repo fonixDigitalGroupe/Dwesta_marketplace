@@ -215,8 +215,10 @@
         margin-top: 10px;
     }
 
-    .auth-dropdown-container:hover .auth-dropdown {
-        display: block;
+    @media (max-width: 1024px) {
+        .auth-dropdown-container:hover .auth-dropdown {
+            display: block;
+        }
     }
 
     .auth-dropdown::after {
