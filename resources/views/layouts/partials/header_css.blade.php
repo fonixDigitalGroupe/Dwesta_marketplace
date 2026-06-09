@@ -103,9 +103,10 @@
     }
 
     .search-button {
-        background-color: #ff8c00; /* Dark orange */
+        background-color: #ff8c00;
         color: white;
         border: none;
+        border-left: 3px solid #ffffff;
         padding: 0 1.25rem;
         cursor: pointer;
         display: flex;
