@@ -520,8 +520,14 @@
         }
 
         @media (max-width: 992px) {
+            /* Supprimer le padding-left desktop du conteneur */
+            .auth-centered-container {
+                padding-left: 0 !important;
+                justify-content: center !important;
+                width: 100% !important;
+            }
             .auth-wrapper {
-                padding: 1rem 1rem;
+                padding: 0.75rem 1rem;
             }
             .auth-card {
                 padding: 1.5rem 1.25rem !important;
@@ -544,38 +550,42 @@
             .strength-checklist {
                 grid-template-columns: 1fr;
             }
-            /* Titre principal */
+            /* Titre principal - réduire espace */
             .page-title {
                 margin-left: 0 !important;
                 text-align: center !important;
-                margin-top: 1rem !important;
-                margin-bottom: 0.75rem !important;
+                margin-top: 0.5rem !important;
+                margin-bottom: 0.25rem !important;
+                font-size: 1.2rem !important;
             }
-            /* Section header (Informations d'authentification) */
+            /* Section header - tighter */
             .section-header {
                 text-align: center !important;
                 margin-top: 0.5rem !important;
-                margin-bottom: 1rem !important;
+                margin-bottom: 0.5rem !important;
                 font-size: 1rem !important;
             }
-            /* Paragraphe de description */
+            /* Paragraphe de description - tighter */
             .auth-card p {
                 text-align: center !important;
+                margin-bottom: 0.75rem !important;
+                font-size: 0.88rem !important;
             }
-            /* Champs de formulaire pleine largeur */
+            /* Champs de formulaire pleine largeur - tight spacing */
             .form-group {
                 width: 100% !important;
                 margin-left: 0 !important;
                 margin-right: 0 !important;
+                margin-bottom: 0.75rem !important;
             }
             .input-toggle-wrapper,
             .phone-input-group {
                 width: 100% !important;
             }
-            /* Bouton continuer - centré, pleine largeur */
+            /* Bouton continuer - pleine largeur */
             .btn-primary {
                 width: 100% !important;
-                margin: 1.25rem 0 0 0 !important;
+                margin: 0.75rem 0 0 0 !important;
                 display: block !important;
                 text-align: center !important;
                 border-radius: 6px !important;
@@ -583,12 +593,12 @@
             /* Diviseur "Ou inscrivez-vous avec" */
             .divider-container {
                 justify-content: center !important;
-                margin: 1.25rem 0 !important;
+                margin: 0.75rem 0 !important;
             }
             /* Boutons sociaux centrés */
             .social-btns {
                 justify-content: center !important;
-                margin-bottom: 1.25rem !important;
+                margin-bottom: 0.75rem !important;
             }
             /* Texte légal centré */
             .disclaimer-box,
