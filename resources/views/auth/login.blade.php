@@ -32,6 +32,15 @@
             margin: 0 0.5rem;
         }
 
+        /* Auth Layout */
+        .auth-layout {
+            display: flex;
+            justify-content: flex-start;
+            align-items: start;
+            width: 100%;
+            padding-left: 7rem;
+        }
+
         /* Auth Grid */
         .auth-grid {
             display: grid;
@@ -41,6 +50,9 @@
         }
 
         @media (max-width: 768px) {
+            .auth-layout {
+                padding-left: 0 !important;
+            }
             .auth-wrapper {
                 padding: 1rem 0.5rem;
             }
@@ -51,6 +63,7 @@
             .auth-card {
                 padding: 1.5rem 1rem !important;
                 max-width: none !important;
+                box-shadow: none !important;
             }
             .btn-primary {
                 width: 90% !important;
@@ -64,12 +77,12 @@
         /* Card Styles */
         .auth-card {
             background: #fff;
-            padding: 2.5rem;
-            border: 1px solid #f5f5f5;
-            border-radius: 8px;
+            padding: 1.25rem 2.5rem 2.5rem 2.5rem;
+            border: none;
+            border-radius: 0;
             width: 100%;
-            max-width: 450px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+            max-width: 550px;
+            box-shadow: 8px 0 15px -10px rgba(0,0,0,0.05);
         }
 
         .auth-section-title {
@@ -354,8 +367,8 @@
             <strong>Identification</strong>
         </nav>
 
-        <div class="auth-grid">
-            <!-- Left Column: Login -->
+        <div class="auth-layout">
+            <!-- Login Card -->
             <div class="auth-card">
                 <h2 class="auth-section-title">Déjà client Karnou ?</h2>
 
