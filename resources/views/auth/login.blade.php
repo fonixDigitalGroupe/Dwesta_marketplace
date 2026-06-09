@@ -52,11 +52,16 @@
                 padding: 1.5rem 1rem !important;
                 max-width: none !important;
             }
+            .auth-card {
+                padding: 1.5rem 1rem !important;
+                max-width: none !important;
+            }
             .btn-primary {
-                width: auto !important;
-                min-width: 160px;
-                margin-left: auto;
-                display: flex;
+                width: fit-content !important;
+                padding: 0.75rem 2rem !important;
+                margin-left: auto !important;
+                margin-right: 0 !important;
+                display: flex !important;
             }
         }
 
