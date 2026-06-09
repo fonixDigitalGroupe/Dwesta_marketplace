@@ -640,8 +640,8 @@
                         <!-- Phone Mode (login via phone) -->
                         <div class="form-group" id="reg-phone-group" style="display: none;">
                             <input type="hidden" name="reg_login_phone" id="reg-phone-value">
-                            <div style="position: relative;">
-                                <div class="phone-input-group">
+                            <div style="position: relative; overflow: hidden;">
+                                <div class="phone-input-group" style="padding-right: 48px;">
                                     @php $defaultDial = $countries->firstWhere('code', 'CF') ?? $countries->first(); @endphp
                                     <div class="custom-dial" id="reg-dial-code-wrapper">
                                         <input type="hidden" id="reg-dial-code-select" value="{{ $defaultDial->phone_code }}">
@@ -659,7 +659,7 @@
                                     </div>
                                     <input type="tel" id="reg-phone-number" class="phone-number-input" placeholder="Numéro de téléphone">
                                 </div>
-                                <button type="button" class="icon-toggle" onclick="toggleRegisterMode('email')" title="Utiliser mon e-mail" style="border:none; background:none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; z-index: 10; padding: 10px;">
+                                <button type="button" class="icon-toggle" onclick="toggleRegisterMode('email')" title="Utiliser mon e-mail" style="border:none; background:none; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); cursor: pointer; z-index: 10; padding: 8px;">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
                                         <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                                         <polyline points="22,6 12,13 2,6"></polyline>
