@@ -833,7 +833,7 @@
 
         .hero-slider {
             width: 100% !important;
-            margin-top: 0;
+            margin-top: -12px; /* Pull banner up closer to the header on mobile */
             margin-bottom: 1.5rem;
         }
 
