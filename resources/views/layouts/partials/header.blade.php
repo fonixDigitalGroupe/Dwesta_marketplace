@@ -154,7 +154,7 @@
                         </svg>
                         @if($cartService->getItemsCount() > 0)
                             <span
-                                style="position: absolute; top: -8px; right: -8px; background: #bf0000; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white;">
+                                style="position: absolute; top: -8px; right: -8px; background: #004aad; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white;">
                                 {{ $cartService->getItemsCount() }}
                             </span>
                         @endif

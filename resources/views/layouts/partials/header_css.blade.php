@@ -139,7 +139,7 @@
     }
 
     .header-link:hover {
-        color: #bf0000;
+        color: #000;
     }
 
     /* Global SVG constraints */
@@ -181,7 +181,7 @@
     }
 
     .sell-button:hover {
-        color: #bf0000;
+        color: #000;
     }
 
     .sell-button .chevron {
@@ -455,7 +455,7 @@
             border-radius: 20px;
             font-size: 0.8rem;
             font-weight: 700;
-            color: #bf0000;
+            color: #000;
             margin-left: 10px;
         }
 
@@ -578,7 +578,7 @@
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 700;
-            color: #bf0000;
+            color: #000;
         }
     }
 
