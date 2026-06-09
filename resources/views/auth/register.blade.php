@@ -48,7 +48,7 @@
             border-left: none !important;
             border-radius: 0 8px 8px 0;
             width: 100%;
-            max-width: 450px;
+            max-width: 550px;
             box-shadow: 0 1px 2px rgba(0,0,0,0.02);
         }
 
@@ -554,10 +554,11 @@
             <a href="/register">Inscription</a>
         </nav>
 
+        <h1 class="page-title">Création de compte</h1>
+
         <div class="auth-centered-container">
             <!-- Registration Form -->
             <div class="auth-card">
-                <h1 class="page-title">Création de compte</h1>
                 
                 <form method="POST" action="{{ route('register') }}" id="register-form">
                     @csrf
