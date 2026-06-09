@@ -23,6 +23,10 @@ class Highlight extends Model
 
     public function getImageUrlAttribute()
     {
+        if (!$this->image_path) {
+            return asset('images/placeholder.webp'); // Or some default
+        }
+        
         if (str_starts_with($this->image_path, 'http')) {
             return $this->image_path;
         }
