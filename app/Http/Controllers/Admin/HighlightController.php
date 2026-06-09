@@ -219,8 +219,9 @@ class HighlightController extends Controller
 
             // 4. Sort by the calculated path
             return $processed->sortBy('chemin');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error("Error in getOptimizedCategories: " . $e->getMessage());
+            \Log::error($e->getTraceAsString());
             return collect(); // Return empty collection on error to avoid blank page
         }
     }
