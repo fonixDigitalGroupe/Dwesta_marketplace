@@ -12,7 +12,7 @@
                     @if($logoUrl = \App\Models\Setting::logoUrl())
                         <img src="{{ $logoUrl }}" alt="Logo" style="height: 26px; width: auto;">
                     @else
-                        <span class="corp-brand">Karnou<span class="dot">.</span></span>
+                        <span class="corp-brand">Karnou</span>
                     @endif
                 </a>
                 <nav class="corp-nav">
@@ -38,6 +38,9 @@
                 <li><a href="#">Vie privée</a></li>
                 <li><a href="#">Gestion des cookies</a></li>
             </ul>
+            <div class="sub-nav-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
         </div>
     </nav>
 
@@ -277,7 +280,7 @@
     /* Corporate Header Style */
     .corporate-header {
         background: #fff;
-        padding: 0.5rem 0;
+        padding: 0;
         border-bottom: 1px solid #eee;
     }
 
@@ -285,42 +288,52 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        gap: 2rem;
+        gap: 2.5rem;
     }
 
     .corp-brand {
-        font-size: 1.5rem;
-        font-weight: 900;
+        font-size: 1.4rem;
+        font-weight: 800;
         color: #004aad;
-        letter-spacing: -2px;
+        letter-spacing: -1px;
         text-decoration: none;
-    }
-
-    .corp-brand .dot {
-        color: #004aad;
+        padding: 1rem 0;
     }
 
     .corp-nav ul {
         display: flex;
         list-style: none;
-        gap: 2rem;
+        gap: 2.5rem;
         margin: 0;
         padding: 0;
+        align-items: stretch;
+    }
+
+    .corp-nav ul li {
+        display: flex;
+        align-items: stretch;
     }
 
     .corp-nav ul li a {
         text-decoration: none;
-        color: #666;
-        font-size: 0.9rem;
+        color: #333;
+        font-size: 0.85rem;
         font-weight: 500;
-        transition: color 0.1s;
+        transition: all 0.2s;
+        padding: 1.2rem 0;
+        display: flex;
+        align-items: center;
     }
 
     .corp-nav ul li.active a {
         background: #004aad;
         color: #fff;
-        padding: 0.8rem 1.5rem;
-        border-radius: 4px;
+        padding: 1.2rem 1.5rem;
+        border-radius: 4px 4px 0 0;
+    }
+
+    .corp-nav ul li a:hover:not(.active a) {
+        color: #004aad;
     }
 
     .corp-nav ul li a:hover:not(.active a) {
@@ -340,36 +353,44 @@
 
     .about-sub-nav .about-container {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
+        gap: 3rem;
     }
 
     .sub-nav-list {
         display: flex;
         list-style: none;
-        gap: 3.5rem;
+        gap: 2.5rem;
         margin: 0;
         padding: 0;
     }
 
     .sub-nav-list li a {
         text-decoration: none;
-        color: #666;
-        font-size: 0.95rem;
+        color: #333;
+        font-size: 0.85rem;
         font-weight: 500;
-        transition: color 0.2s;
-        padding-bottom: 0.8rem;
-        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+        padding-bottom: 0.6rem;
+        border-bottom: 3px solid transparent;
     }
 
     .sub-nav-list li.active a,
     .sub-nav-list li a:hover {
-        color: #004aad;
+        color: #333;
     }
 
     .sub-nav-list li.active a {
         border-bottom-color: #004aad;
         font-weight: 700;
+    }
+
+    .sub-nav-search {
+        color: #004aad;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-left: -1rem;
     }
 
     /* Hero Section */
