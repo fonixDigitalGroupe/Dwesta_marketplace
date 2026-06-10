@@ -7,7 +7,7 @@
     <!-- Hero Section -->
     <section class="about-hero">
         <div class="about-container">
-            <h1 class="hero-title">Redéfinir le e-commerce local</h1>
+            <h1 class="hero-title">Votre marketplace locale</h1>
             <p class="hero-subtitle">Karnou est bien plus qu'une simple marketplace. C'est un écosystème de confiance conçu pour connecter les vendeurs passionnés et les acheteurs exigeants.</p>
         </div>
     </section>
