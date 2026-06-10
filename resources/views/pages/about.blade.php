@@ -283,12 +283,12 @@
     .node-agence { bottom: 15%; right: 10%; }
     .node-vente { top: 0%; left: 50%; transform: translateX(-50%); }
 
-    /* Colors Mixing - All Blue as requested */
-    .node-acheteurs .node-icon { color: #004aad; }
-    .node-vendeurs .node-icon { color: #004aad; } 
-    .node-express .node-icon { color: #004aad; }
-    .node-agence .node-icon { color: #004aad; }
-    .node-vente .node-icon { color: #004aad; }
+    /* Colors Mixing - Gray for satellites, Blue for core */
+    .node-acheteurs .node-icon { color: #888; }
+    .node-vendeurs .node-icon { color: #888; } 
+    .node-express .node-icon { color: #888; }
+    .node-agence .node-icon { color: #888; }
+    .node-vente .node-icon { color: #888; }
 
     .connections-svg {
         position: absolute;
@@ -1033,8 +1033,8 @@
         flex-direction: column;
         justify-content: center;
         position: relative;
-        border-top: 1px solid #bf0000;
-        border-bottom: 1px solid #bf0000;
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
         margin-left: -50px;
         z-index: 2;
     }
