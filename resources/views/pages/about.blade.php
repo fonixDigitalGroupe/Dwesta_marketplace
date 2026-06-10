@@ -353,7 +353,7 @@
 
     .about-sub-nav .about-container {
         display: flex;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         gap: 3rem;
     }
@@ -382,12 +382,12 @@
     }
 
     .sub-nav-list li.active a {
-        border-bottom-color: #004aad;
+        border-bottom-color: #ff8c00;
         font-weight: 700;
     }
 
     .sub-nav-search {
-        color: #004aad;
+        color: #ff8c00;
         font-size: 1rem;
         cursor: pointer;
         margin-left: -1rem;
