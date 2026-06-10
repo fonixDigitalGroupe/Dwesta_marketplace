@@ -55,6 +55,47 @@
         </div>
     </section>
 
+    <!-- Qui sommes-nous Section -->
+    <section class="about-qui">
+        <div class="about-container">
+            <div class="section-header center-header">
+                <h2 class="qui-title">Qui sommes-nous ?</h2>
+                <div class="qui-line"></div>
+            </div>
+
+            <p class="qui-description">
+                Karnou, fondé en République Centrafricaine, est né de la volonté de démocratiser le commerce numérique en Afrique. Acteur incontournable de l'innovation locale, Karnou rassemble des services digitaux complémentaires dans des domaines aussi variés que l'e-commerce, la logistique, les services financiers et le développement technologique. Karnou accompagne chaque jour des milliers d'acheteurs et de vendeurs dans un écosystème sécurisé et adapté aux réalités africaines.
+            </p>
+
+            <!-- Tabs Navigation -->
+            <div class="qui-tabs">
+                <button class="qui-tab active" onclick="switchQuiTab('philosophie', this)">Philosophie</button>
+                <button class="qui-tab" onclick="switchQuiTab('mission', this)">Mission</button>
+                <button class="qui-tab" onclick="switchQuiTab('vision', this)">Vision</button>
+                <button class="qui-tab" onclick="switchQuiTab('engagement', this)">Engagement</button>
+                <button class="qui-tab" onclick="switchQuiTab('valeurs', this)">Valeurs</button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="qui-tab-content active" id="qui-philosophie">
+                Karnou contribue au progrès de la société en valorisant l'innovation et l'entrepreneuriat.<br>
+                En fournissant des services de qualité à nos clients et partenaires pour les aider à se développer, nous permettons aux acteurs locaux de grandir et de s'approprier les nouvelles technologies de pointe mises à leur disposition.
+            </div>
+            <div class="qui-tab-content" id="qui-mission">
+                Notre mission est de démocratiser l'accès au commerce en ligne de qualité en Afrique Centrale. Chaque transaction sur Karnou doit être une expérience fluide, sécurisée et valorisante pour tous.
+            </div>
+            <div class="qui-tab-content" id="qui-vision">
+                Devenir la plateforme de référence en Afrique francophone, reconnue pour la qualité de son écosystème numérique et l'impact positif qu'elle génère pour les communautés locales.
+            </div>
+            <div class="qui-tab-content" id="qui-engagement">
+                Nous nous engageons à toujours placer l'humain au centre de nos décisions : transparence totale, zéro frais cachés, et un support client disponible à tout moment pour accompagner chaque utilisateur.
+            </div>
+            <div class="qui-tab-content" id="qui-valeurs">
+                Confiance, transparence, innovation et impact local. Ces quatre piliers guident chacune de nos décisions et définissent l'identité profonde de Karnou.
+            </div>
+        </div>
+    </section>
+
     <!-- Stats Section -->
 
     <!-- Mission Section -->
@@ -897,6 +938,88 @@
         .location-pin .pin-label { font-size: 0.65rem; padding: 0.2rem 0.5rem; }
     }
 
+    /* Qui sommes-nous Section */
+    .about-qui {
+        padding: 6rem 0 4rem;
+        background: #fff;
+    }
+
+    .center-header {
+        text-align: center;
+    }
+
+    .qui-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 1.2rem;
+    }
+
+    .qui-line {
+        width: 60px;
+        height: 3px;
+        background: #004aad;
+        margin: 0 auto 2.5rem;
+    }
+
+    .qui-description {
+        text-align: center;
+        max-width: 860px;
+        margin: 0 auto 3.5rem;
+        color: #555;
+        font-size: 1.05rem;
+        line-height: 1.8;
+    }
+
+    /* Tabs */
+    .qui-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 3rem;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 3rem;
+    }
+
+    .qui-tab {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #888;
+        padding: 0 0 1rem 0;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -1px;
+        transition: color 0.2s, border-color 0.2s;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .qui-tab:hover {
+        color: #333;
+    }
+
+    .qui-tab.active {
+        color: #004aad;
+        border-bottom-color: #004aad;
+        font-weight: 700;
+    }
+
+    /* Tab Content */
+    .qui-tab-content {
+        display: none;
+        text-align: center;
+        max-width: 860px;
+        margin: 0 auto;
+        color: #555;
+        font-size: 1rem;
+        line-height: 1.9;
+        padding: 0 1rem;
+    }
+
+    .qui-tab-content.active {
+        display: block;
+    }
+
     @media (max-width: 768px) {
         .about-hero { padding: 6rem 0; }
         .hero-title { font-size: 2.25rem; }
@@ -906,9 +1029,24 @@
         .cta-box { padding: 3rem 1.5rem; }
         .cta-btns { flex-direction: column; }
         
-        .map-wrapper { transform: scale(1.2); left: 10%; position: relative; } /* Zoom in on mobile to see more map */
+        .map-wrapper { transform: scale(1.2); left: 10%; position: relative; }
         .map-legend { gap: 1rem; }
         .about-ecosystem { padding: 4rem 0; }
+
+        .qui-tabs { gap: 1.5rem; overflow-x: auto; justify-content: flex-start; padding-bottom: 5px; }
+        .qui-tab { flex-shrink: 0; }
     }
 </style>
+
+<script>
+    function switchQuiTab(name, el) {
+        // Hide all tab contents
+        document.querySelectorAll('.qui-tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.qui-tab').forEach(t => t.classList.remove('active'));
+        // Show selected
+        document.getElementById('qui-' + name).classList.add('active');
+        el.classList.add('active');
+    }
+</script>
+
 @endsection
