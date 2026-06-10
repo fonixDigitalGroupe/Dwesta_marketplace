@@ -294,7 +294,7 @@
     .corp-brand {
         font-size: 1.4rem;
         font-weight: 800;
-        color: #004aad;
+        color: #bf141d; /* Rakuten Red */
         letter-spacing: -1px;
         text-decoration: none;
         padding: 1rem 0;
@@ -317,7 +317,7 @@
     .corp-nav ul li a {
         text-decoration: none;
         color: #333;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         font-weight: 500;
         transition: all 0.2s;
         padding: 1rem 0;
@@ -326,20 +326,15 @@
     }
 
     .corp-nav ul li.active a {
-        background: #004aad;
+        background: #bf141d; /* Rakuten Red */
         color: #fff;
-        padding: 1rem 1.2rem;
-        border-radius: 4px 4px 0 0;
+        padding: 1rem 1.4rem;
+        border-radius: 4px; /* Fully boxed look as per image */
     }
 
     .corp-nav ul li a:hover:not(.active a) {
-        color: #004aad;
+        color: #bf141d;
     }
-
-    .corp-nav ul li a:hover:not(.active a) {
-        color: #004aad;
-    }
-
 
     /* Sub-Header Navigation */
     .about-sub-nav {
@@ -369,7 +364,7 @@
     .sub-nav-list li a {
         text-decoration: none;
         color: #333;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         font-weight: 500;
         transition: all 0.2s;
         padding-bottom: 0.6rem;
@@ -382,14 +377,14 @@
     }
 
     .sub-nav-list li.active a {
-        border-bottom-color: #ff8c00;
-        font-weight: 700;
+        border-bottom-color: #bf141d; /* Rakuten Red */
+        font-weight: 500; /* Matching image weight */
     }
 
     .sub-nav-search {
         position: absolute;
         right: 2rem;
-        color: #ff8c00;
+        color: #bf141d; /* Rakuten Red */
         font-size: 1rem;
         cursor: pointer;
     }
