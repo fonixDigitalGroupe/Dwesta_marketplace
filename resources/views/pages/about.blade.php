@@ -195,32 +195,32 @@
                         <!-- Main Circle -->
                         <circle cx="200" cy="200" r="150" fill="none" stroke="#eee" stroke-width="1" />
                         <!-- Central Logo Area -->
-                        <circle cx="200" cy="200" r="50" fill="#bf0000" />
+                        <circle cx="200" cy="200" r="50" fill="#004aad" />
                         <text x="200" y="205" text-anchor="middle" fill="white" font-weight="900" font-size="14">KARNOU</text>
                         
                         <!-- Nodes -->
                         <g class="node commerce">
-                            <circle cx="200" cy="50" r="35" fill="white" stroke="#bf0000" stroke-width="2" />
+                            <circle cx="200" cy="50" r="35" fill="white" stroke="#004aad" stroke-width="2" />
                             <text x="200" y="55" text-anchor="middle" font-size="10" font-weight="700">COMMERCE</text>
                         </g>
                         <g class="node fintech">
-                            <circle cx="350" cy="200" r="35" fill="white" stroke="#bf0000" stroke-width="2" />
+                            <circle cx="350" cy="200" r="35" fill="white" stroke="#004aad" stroke-width="2" />
                             <text x="350" y="205" text-anchor="middle" font-size="10" font-weight="700">FINTECH</text>
                         </g>
                         <g class="node logistique">
-                            <circle cx="200" cy="350" r="35" fill="white" stroke="#bf0000" stroke-width="2" />
+                            <circle cx="200" cy="350" r="35" fill="white" stroke="#004aad" stroke-width="2" />
                             <text x="200" y="355" text-anchor="middle" font-size="10" font-weight="700">LOGISTIQUE</text>
                         </g>
                         <g class="node innovation">
-                            <circle cx="50" cy="200" r="35" fill="white" stroke="#bf0000" stroke-width="2" />
+                            <circle cx="50" cy="200" r="35" fill="white" stroke="#004aad" stroke-width="2" />
                             <text x="50" y="205" text-anchor="middle" font-size="10" font-weight="700">INNOVATION</text>
                         </g>
 
                         <!-- Connecting Lines -->
-                        <line x1="200" y1="85" x2="200" y2="150" stroke="#bf0000" stroke-dasharray="4" />
-                        <line x1="315" y1="200" x2="250" y2="200" stroke="#bf0000" stroke-dasharray="4" />
-                        <line x1="200" y1="315" x2="200" y2="250" stroke="#bf0000" stroke-dasharray="4" />
-                        <line x1="85" y1="200" x2="150" y2="200" stroke="#bf0000" stroke-dasharray="4" />
+                        <line x1="200" y1="85" x2="200" y2="150" stroke="#004aad" stroke-dasharray="4" />
+                        <line x1="315" y1="200" x2="250" y2="200" stroke="#004aad" stroke-dasharray="4" />
+                        <line x1="200" y1="315" x2="200" y2="250" stroke="#004aad" stroke-dasharray="4" />
+                        <line x1="85" y1="200" x2="150" y2="200" stroke="#004aad" stroke-dasharray="4" />
                     </svg>
                 </div>
                 <div class="diagram-right">
@@ -380,7 +380,7 @@
         content: '■';
         position: absolute;
         left: 0;
-        color: #bf0000;
+        color: #004aad;
         font-size: 0.8rem;
         top: 2px;
     }
@@ -395,7 +395,7 @@
         display: inline-block;
         padding: 0.5rem 1.2rem;
         background: rgba(191, 0, 0, 0.1);
-        color: #bf0000;
+        color: #004aad;
         border-radius: 50px;
         font-size: 0.85rem;
         font-weight: 700;
@@ -440,13 +440,13 @@
     .corp-brand {
         font-size: 2.2rem;
         font-weight: 900;
-        color: #bf0000;
+        color: #004aad;
         letter-spacing: -2px;
         text-decoration: none;
     }
 
     .corp-brand .dot {
-        color: #bf0000;
+        color: #004aad;
     }
 
     .corp-nav ul {
@@ -466,14 +466,14 @@
     }
 
     .corp-nav ul li.active a {
-        background: #bf0000;
+        background: #004aad;
         color: #fff;
         padding: 0.5rem 1.2rem;
         border-radius: 4px;
     }
 
     .corp-nav ul li a:hover:not(.active a) {
-        color: #bf0000;
+        color: #004aad;
     }
 
     /* Sub-Header Navigation */
@@ -512,16 +512,16 @@
 
     .sub-nav-list li.active a,
     .sub-nav-list li a:hover {
-        color: #bf0000;
+        color: #004aad;
     }
 
     .sub-nav-list li.active a {
-        border-bottom-color: #bf0000;
+        border-bottom-color: #004aad;
         font-weight: 700;
     }
 
     .sub-nav-search {
-        color: #bf0000;
+        color: #004aad;
         font-size: 1.1rem;
         cursor: pointer;
     }
@@ -581,7 +581,7 @@
         display: block;
         font-size: 2.8rem;
         font-weight: 800;
-        color: #bf0000;
+        color: #004aad;
         margin-bottom: 0.5rem;
         letter-spacing: -1px;
     }

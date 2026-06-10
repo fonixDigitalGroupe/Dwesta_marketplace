@@ -225,7 +225,7 @@
     }
 
     .footer-links-list li a:hover {
-        color: #bf0000;
+        color: #004aad;
     }
 
     /* Tier 3: Info & Social */
@@ -269,11 +269,11 @@
         transform: translateY(-3px);
     }
 
-    .social-link.facebook { background: #bf0000; } /* Corporate Red */
-    .social-link.x-twitter { background: #bf0000; }
-    .social-link.instagram { background: #bf0000; }
-    .social-link.linkedin { background: #bf0000; }
-    .social-link.youtube { background: #bf0000; }
+    .social-link.facebook { background: #004aad; } /* Corporate Red */
+    .social-link.x-twitter { background: #004aad; }
+    .social-link.instagram { background: #004aad; }
+    .social-link.linkedin { background: #004aad; }
+    .social-link.youtube { background: #004aad; }
 
     /* Tier 4: International */
     .footer-international {
@@ -303,7 +303,7 @@
     }
 
     .international-links a:hover {
-        color: #bf0000;
+        color: #004aad;
     }
 
     .international-links .sep {
@@ -314,7 +314,7 @@
     .karnou-brand {
         font-size: 1.5rem;
         font-weight: 900;
-        color: #bf0000;
+        color: #004aad;
         letter-spacing: -1px;
     }
 
