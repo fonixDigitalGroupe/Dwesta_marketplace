@@ -46,13 +46,10 @@
 
 
     <!-- Hero Section -->
-    <section class="about-hero" id="apropos" style="margin: 2rem 3rem 0 3rem; border-radius: 14px; overflow: hidden;">
+    <section class="about-hero" id="apropos">
         <div class="hero-overlay"></div>
-        <div class="about-container">
-            <div class="hero-content">
-                <h1 class="hero-title">Karnou, groupe d'innovation digitale au service de la société</h1>
-                <div class="header-line left"></div>
-            </div>
+        <div class="hero-container">
+            <h1>Karnou,<br>groupe d'innovation digitale<br>au service de la société</h1>
         </div>
     </section>
 
@@ -397,14 +394,30 @@
 
     /* Hero Section */
     .about-hero {
-        height: 550px; /* Increased from 450px */
-        background: url('/images/about_hero_drone.png') center/cover no-repeat;
+        height: 550px;
+        background: url('/images/apropos_banniere.jpg') center/cover no-repeat;
         display: flex;
         align-items: center;
         position: relative;
-        margin: 2rem 5rem; /* Added margins */
-        border-radius: 12px; /* Added for premium boxed look */
+        margin: 2rem 5rem;
+        border-radius: 12px;
         overflow: hidden;
+    }
+
+    .hero-container {
+        padding: 0 4rem; /* Aligned left with padding */
+        z-index: 2;
+        width: 100%;
+    }
+
+    .about-hero h1 {
+        color: #fff;
+        font-size: 3rem;
+        font-weight: 400; /* Removed bold */
+        line-height: 1.2;
+        max-width: 600px; /* Constrain width to force 3 lines */
+        margin: 0;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
     .hero-overlay {
