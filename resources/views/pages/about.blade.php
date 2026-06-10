@@ -154,7 +154,27 @@
             </div>
         </div>
     </section>
-
+    <!-- Founder Quote Section -->
+    <section class="about-founder-quote">
+        <div class="about-container">
+            <div class="quote-flex">
+                <div class="quote-image">
+                    <img src="/images/founder_karnou.png" alt="Jean-Pierre Karnou">
+                </div>
+                <div class="quote-box">
+                    <div class="quote-icon">
+                        <i class="fa-solid fa-quote-left"></i>
+                    </div>
+                    <blockquote class="quote-text">
+                        "Nous continuons de croire que le monde numérique a le potentiel d'améliorer la vie de nous tous. Oubliez la peur. Adoptez l'optimisme."
+                    </blockquote>
+                    <cite class="quote-author">
+                        Jean-Pierre Karnou – <span>Fondateur et CEO de Karnou Group</span>
+                    </cite>
+                </div>
+            </div>
+        </div>
+    </section>
 
 </div>
 
@@ -487,7 +507,7 @@
 
     /* Hero Section */
     .about-hero {
-        height: 550px;
+        height: 400px;
         background: url('/images/apropos%20bannier.jpg') center/cover no-repeat;
         display: flex;
         align-items: center;
@@ -975,6 +995,84 @@
 
         .qui-tabs { gap: 1.5rem; overflow-x: auto; justify-content: flex-start; padding-bottom: 5px; }
         .qui-tab { flex-shrink: 0; }
+    }
+
+    /* Founder Quote Section */
+    .about-founder-quote {
+        padding: 6rem 0 10rem;
+        background: #fff;
+    }
+
+    .quote-flex {
+        display: flex;
+        align-items: stretch;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .quote-image {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .quote-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transform: perspective(1000px) rotateY(-5deg);
+        box-shadow: 20px 0 40px rgba(0,0,0,0.1);
+    }
+
+    .quote-box {
+        flex: 1;
+        background: #fff;
+        padding: 4rem 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        border-top: 1px solid #bf0000;
+        border-bottom: 1px solid #bf0000;
+        margin-left: -50px;
+        z-index: 2;
+    }
+
+    .quote-icon {
+        font-size: 4rem;
+        color: #eee;
+        line-height: 1;
+        margin-bottom: 1.5rem;
+    }
+
+    .quote-text {
+        font-size: 1.5rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #333;
+        font-family: 'Outfit', sans-serif;
+        margin: 0 0 2rem;
+        font-style: normal;
+    }
+
+    .quote-author {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        font-style: normal;
+    }
+
+    .quote-author span {
+        font-weight: 400;
+        color: #666;
+    }
+
+    @media (max-width: 768px) {
+        .about-founder-quote { padding: 4rem 0; }
+        .quote-flex { flex-direction: column; }
+        .quote-box { margin-left: 0; margin-top: -30px; padding: 3rem 2rem; }
+        .quote-text { font-size: 1.25rem; }
     }
 </style>
 
