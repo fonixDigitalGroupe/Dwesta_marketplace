@@ -125,7 +125,10 @@
 
     /* Hero Section */
     .about-hero {
-        background: linear-gradient(135deg, #004aad 0%, #002d6a 100%);
+        background: linear-gradient(rgba(0, 74, 173, 0.7), rgba(0, 45, 106, 0.8)), 
+                    url('/images/apropos abnniere.jpg');
+        background-size: cover;
+        background-position: center;
         padding: 8rem 0;
         color: #fff;
         text-align: center;
