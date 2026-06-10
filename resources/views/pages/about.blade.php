@@ -45,7 +45,7 @@
     </nav>
 
     <!-- Hero Section -->
-    <section class="about-hero" id="apropos">
+    <section class="about-hero" id="apropos" style="margin: 2rem 3rem 0 3rem; border-radius: 14px; overflow: hidden;">
         <div class="hero-overlay"></div>
         <div class="about-container">
             <div class="hero-content">
@@ -56,36 +56,6 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="about-stats">
-        <div class="about-container">
-            <div class="section-header">
-                <h2>Quelques chiffres</h2>
-                <div class="header-line"></div>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <span class="stat-val">+15 Mrds</span>
-                    <span class="stat-desc">D'euros de Chiffre d'Affaires</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-val">+30,000</span>
-                    <span class="stat-desc">Employés</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-val">1,5 Mrds</span>
-                    <span class="stat-desc">Membres dans le monde</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-val">32</span>
-                    <span class="stat-desc">Pays</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-val">+90</span>
-                    <span class="stat-desc">Services</span>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Mission Section -->
     <section class="about-mission">
@@ -301,19 +271,6 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="about-cta">
-        <div class="about-container">
-            <div class="cta-box">
-                <h2>Prêt à commencer l'aventure ?</h2>
-                <p>Rejoignez des milliers d'utilisateurs qui font confiance à Karnou chaque jour.</p>
-                <div class="cta-btns">
-                    <a href="{{ route('register') }}" class="btn btn-primary">Créer un compte gratuitement</a>
-                    <a href="{{ route('home') }}" class="btn btn-secondary">Explorer la marketplace</a>
-                </div>
-            </div>
-        </div>
-    </section>
 </div>
 
 <style>
@@ -534,8 +491,9 @@
         align-items: center;
         position: relative;
         overflow: hidden;
-        margin: 1.5rem 2rem 0 2rem;
-        border-radius: 12px;
+        margin: 2rem 3rem 0 3rem !important;
+        border-radius: 14px !important;
+        max-width: calc(100% - 6rem) !important;
     }
 
     .hero-overlay {
