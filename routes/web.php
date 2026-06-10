@@ -32,7 +32,10 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/a-propos', [PageController::class, 'about'])->name('about');
+Route::get('/a-propos', function () {
+    return view('pages.about');
+})->name('about');
+
 
 
 // Authentification
