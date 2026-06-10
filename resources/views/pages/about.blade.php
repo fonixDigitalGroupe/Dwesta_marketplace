@@ -949,10 +949,12 @@
     }
 
     .qui-title {
-        font-size: 2.2rem;
-        font-weight: 700;
+        font-size: 3rem;
+        font-weight: 300;
         color: #1a1a1a;
         margin-bottom: 1.2rem;
+        letter-spacing: -0.5px;
+        font-family: 'Outfit', 'Inter', sans-serif;
     }
 
     .qui-line {
