@@ -534,6 +534,8 @@
         align-items: center;
         position: relative;
         overflow: hidden;
+        margin: 1.5rem 2rem 0 2rem;
+        border-radius: 12px;
     }
 
     .hero-overlay {
