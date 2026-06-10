@@ -212,7 +212,6 @@
         align-items: center;
         justify-content: center;
         z-index: 5;
-        box-shadow: 0 10px 30px rgba(0, 74, 173, 0.4);
     }
 
     .core-text {
@@ -247,7 +246,6 @@
         justify-content: center;
         font-size: 1.5rem;
         margin-bottom: 0.5rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         border: 1px solid #eee;
     }
 
@@ -265,12 +263,12 @@
     .node-agence { bottom: 15%; right: 10%; }
     .node-vente { top: 0%; left: 50%; transform: translateX(-50%); }
 
-    /* Colors Mixing */
-    .node-acheteurs .node-icon { color: #004aad; border-left: 4px solid #004aad; }
-    .node-vendeurs .node-icon { color: #ff6600; border-left: 4px solid #ff6600; } /* Orange accent */
-    .node-express .node-icon { color: #004aad; border-left: 4px solid #004aad; }
-    .node-agence .node-icon { color: #004aad; border-left: 4px solid #004aad; }
-    .node-vente .node-icon { color: #ff6600; border-left: 4px solid #ff6600; } /* Orange accent */
+    /* Colors Mixing - All Blue as requested */
+    .node-acheteurs .node-icon { color: #004aad; }
+    .node-vendeurs .node-icon { color: #004aad; } 
+    .node-express .node-icon { color: #004aad; }
+    .node-agence .node-icon { color: #004aad; }
+    .node-vente .node-icon { color: #004aad; }
 
     .connections-svg {
         position: absolute;
