@@ -355,7 +355,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 3rem;
+        position: relative;
     }
 
     .sub-nav-list {
@@ -387,10 +387,11 @@
     }
 
     .sub-nav-search {
+        position: absolute;
+        right: 2rem;
         color: #ff8c00;
         font-size: 1rem;
         cursor: pointer;
-        margin-left: -1rem;
     }
 
     /* Hero Section */
