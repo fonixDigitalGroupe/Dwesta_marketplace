@@ -442,7 +442,7 @@
 
     /* Hero Section */
     .about-hero {
-        height: 320px;
+        height: 450px;
         background: url('/images/about_hero_drone.png') center/cover no-repeat;
         display: flex;
         align-items: center;
@@ -469,13 +469,14 @@
     }
 
     .hero-title {
-        font-size: 3rem;
+        font-size: 2.5rem;
         font-weight: 700;
         color: #1a1a1a;
         line-height: 1.2;
         letter-spacing: -1px;
         margin-bottom: 2rem;
         font-family: 'Outfit', 'Inter', sans-serif;
+        text-align: left;
     }
 
     /* Stats Section */
