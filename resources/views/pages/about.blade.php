@@ -4,6 +4,27 @@
 
 @section('content')
 <div class="about-page">
+    <!-- Corporate Header (Hides Global Header via CSS) -->
+    <header class="corporate-header">
+        <div class="about-container">
+            <div class="corp-header-flex">
+                <a href="{{ route('home') }}" class="corp-logo">
+                    <span class="corp-brand">Karnou<span class="dot">.</span></span>
+                </a>
+                <nav class="corp-nav">
+                    <ul>
+                        <li><a href="#">Actualités</a></li>
+                        <li class="active"><a href="#">À propos</a></li>
+                        <li><a href="#">Carrières</a></li>
+                        <li><a href="#">Vendeurs pros</a></li>
+                        <li><a href="#">Presse</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
     <!-- Sub-Header Navigation -->
     <nav class="about-sub-nav">
         <div class="about-container">
@@ -392,6 +413,63 @@
         font-size: 2.5rem;
         color: #1e293b;
         font-weight: 800;
+    }
+
+    /* Hiding Global Marketplace Header on this page */
+    .header, .top-banner {
+        display: none !important;
+    }
+
+    /* Corporate Header Style */
+    .corporate-header {
+        background: #fff;
+        padding: 1.5rem 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .corp-header-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .corp-brand {
+        font-size: 2.2rem;
+        font-weight: 900;
+        color: #bf0000;
+        letter-spacing: -2px;
+        text-decoration: none;
+    }
+
+    .corp-brand .dot {
+        color: #bf0000;
+    }
+
+    .corp-nav ul {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+        margin: 0;
+        padding: 0;
+    }
+
+    .corp-nav ul li a {
+        text-decoration: none;
+        color: #666;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: color 0.1s;
+    }
+
+    .corp-nav ul li.active a {
+        background: #bf0000;
+        color: #fff;
+        padding: 0.5rem 1.2rem;
+        border-radius: 4px;
+    }
+
+    .corp-nav ul li a:hover:not(.active a) {
+        color: #bf0000;
     }
 
     /* Sub-Header Navigation */
