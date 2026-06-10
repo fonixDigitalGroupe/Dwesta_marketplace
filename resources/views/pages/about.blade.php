@@ -280,7 +280,7 @@
     /* Corporate Header Style */
     .corporate-header {
         background: #fff;
-        padding: 0.8rem 0;
+        padding: 1.2rem 0;
         border-bottom: 1px solid #eee;
     }
 
