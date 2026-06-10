@@ -9,7 +9,11 @@
         <div class="about-container">
             <div class="corp-header-flex">
                 <a href="{{ route('home') }}" class="corp-logo">
-                    <span class="corp-brand">Karnou<span class="dot">.</span></span>
+                    @if($logoUrl = \App\Models\Setting::logoUrl())
+                        <img src="{{ $logoUrl }}" alt="Logo" style="height: 32px; width: auto;">
+                    @else
+                        <span class="corp-brand">Karnou<span class="dot">.</span></span>
+                    @endif
                 </a>
                 <nav class="corp-nav">
                     <ul>
