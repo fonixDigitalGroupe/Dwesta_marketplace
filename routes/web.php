@@ -33,7 +33,8 @@ use App\Http\Controllers\PageController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/a-propos', function () {
-    return view('pages.about');
+    $countries = \App\Models\Country::where('is_active', true)->get();
+    return view('pages.about', compact('countries'));
 })->name('about');
 
 
