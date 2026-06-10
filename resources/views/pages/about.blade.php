@@ -298,7 +298,7 @@
         letter-spacing: -1px;
         text-decoration: none;
         padding: 1rem 0;
-        margin-left: 5rem;
+        margin-left: 2rem;
     }
 
     .corp-nav ul {
@@ -344,7 +344,8 @@
         position: sticky;
         top: 0;
         z-index: 100;
-        padding: 0.8rem 0;
+        padding: 1.2rem 0; /* Increased height */
+        box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05); /* Added subtle shadow effect */
     }
 
     .about-sub-nav .about-container {
@@ -378,7 +379,7 @@
     }
 
     .sub-nav-list li.active a {
-        border-bottom-color: #004aad; /* Brand Blue */
+        box-shadow: 0 4px 0 0 #004aad; /* Shadow effect instead of simple border */
         font-weight: 500;
     }
 
