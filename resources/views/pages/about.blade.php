@@ -352,7 +352,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        position: relative;
+        gap: 1.5rem; /* Reduced gap between list and search icon */
     }
 
     .sub-nav-list {
@@ -369,8 +369,8 @@
         font-size: 0.9rem;
         font-weight: 500;
         transition: all 0.2s;
-        padding-bottom: 0.6rem;
-        border-bottom: 3px solid transparent;
+        padding-bottom: 0.3rem; /* Moved closer to text */
+        border-bottom: 2px solid transparent;
     }
 
     .sub-nav-list li.active a,
@@ -379,16 +379,16 @@
     }
 
     .sub-nav-list li.active a {
-        box-shadow: 0 4px 0 0 #004aad; /* Shadow effect instead of simple border */
+        box-shadow: 0 2px 0 0 #004aad; /* Thinner shadow effect */
         font-weight: 500;
     }
 
     .sub-nav-search {
-        position: absolute;
-        right: 2rem;
         color: #004aad; /* Brand Blue */
         font-size: 1rem;
         cursor: pointer;
+        display: flex;
+        align-items: center;
     }
 
     /* Hero Section */
