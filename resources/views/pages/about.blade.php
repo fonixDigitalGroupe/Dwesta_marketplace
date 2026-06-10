@@ -320,7 +320,7 @@
         font-size: 0.85rem;
         font-weight: 500;
         transition: all 0.2s;
-        padding: 1.2rem 0;
+        padding: 1rem 0;
         display: flex;
         align-items: center;
     }
@@ -328,7 +328,7 @@
     .corp-nav ul li.active a {
         background: #004aad;
         color: #fff;
-        padding: 1.2rem 1.5rem;
+        padding: 1rem 1.2rem;
         border-radius: 4px 4px 0 0;
     }
 
