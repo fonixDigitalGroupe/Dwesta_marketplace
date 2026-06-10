@@ -508,7 +508,7 @@
     /* Hero Section */
     .about-hero {
         height: 400px;
-        background: url('/images/about_hero_new.png') center/cover no-repeat;
+        background: url('/images/about_hero_ecommerce.png') center/cover no-repeat;
         display: flex;
         align-items: center;
         position: relative;
