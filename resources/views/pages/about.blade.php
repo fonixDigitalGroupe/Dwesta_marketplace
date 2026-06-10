@@ -109,7 +109,6 @@
                     <div class="ecosystem-drawing">
                         <div class="core-node">
                             <span class="core-text">Karnou</span>
-                            <div class="pulse-ring"></div>
                         </div>
                         <div class="satellites">
                             <div class="satellite-node node-acheteurs">
@@ -223,20 +222,6 @@
         letter-spacing: 1px;
     }
 
-    .pulse-ring {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border: 2px solid #004aad;
-        border-radius: 50%;
-        animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-        0% { transform: scale(1); opacity: 0.8; }
-        100% { transform: scale(1.5); opacity: 0; }
-    }
-
     .satellite-node {
         position: absolute;
         width: 80px;
@@ -246,11 +231,10 @@
         align-items: center;
         justify-content: center;
         z-index: 4;
-        transition: transform 0.3s ease;
     }
 
     .satellite-node:hover {
-        transform: scale(1.1);
+        opacity: 0.9;
     }
 
     .node-icon {
@@ -301,11 +285,6 @@
         stroke: #e0e6ed;
         stroke-width: 2;
         stroke-dasharray: 5;
-        animation: dash 20s linear infinite;
-    }
-
-    @keyframes dash {
-        to { stroke-dashoffset: 200; }
     }
 
     .diagram-right {
@@ -841,7 +820,7 @@
     .header-line {
         width: 40px;
         height: 3px;
-        background: #bf0000;
+        background: #004aad; /* Changed from red to blue as requested */
         margin: 1.5rem auto 0;
     }
 
