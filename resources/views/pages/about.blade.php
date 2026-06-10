@@ -126,7 +126,7 @@
     /* Hero Section */
     .about-hero {
         background: linear-gradient(rgba(0, 74, 173, 0.7), rgba(0, 45, 106, 0.8)), 
-                    url('/images/apropos abnniere.jpg');
+                    url('/images/apropos_banniere.jpg');
         background-size: cover;
         background-position: center;
         padding: 8rem 0;
