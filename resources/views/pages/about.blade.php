@@ -192,7 +192,7 @@
 
     /* Diagram Section */
     .about-ecosystem-diagram {
-        padding: 8rem 0;
+        padding: 5rem 0 8rem;
         background: #fff; /* White background as requested */
     }
 
@@ -367,7 +367,7 @@
     }
 
     .section-header h2 {
-        font-size: 2.5rem;
+        font-size: 2rem;
         color: #1a1a1a;
         font-weight: 300;
         letter-spacing: 0;
