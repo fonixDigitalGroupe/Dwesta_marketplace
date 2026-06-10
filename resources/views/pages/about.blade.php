@@ -67,6 +67,69 @@
         </div>
     </section>
 
+    <!-- Ecosystem Section -->
+    <section class="about-ecosystem">
+        <div class="about-container">
+            <div class="section-header">
+                <span class="section-badge center">Notre Expansion</span>
+                <h2>Un écosystème global</h2>
+                <div class="header-line"></div>
+            </div>
+            
+            <div class="ecosystem-map-container">
+                <div class="map-wrapper">
+                    <img src="/images/world_map_dots.png" alt="World Map" class="world-map-bg">
+                    
+                    <!-- Location Pins/Capsules -->
+                    <div class="location-pin pin-paris" style="top: 32%; left: 47%;">
+                        <span class="pin-label">Paris</span>
+                        <div class="pin-dot commerce"></div>
+                    </div>
+                    <div class="location-pin pin-tokyo" style="top: 38%; left: 81%;">
+                        <span class="pin-label">Tokyo</span>
+                        <div class="pin-dot tech"></div>
+                    </div>
+                    <div class="location-pin pin-sf" style="top: 35%; left: 18%;">
+                        <span class="pin-label">San Francisco</span>
+                        <div class="pin-dot tech"></div>
+                    </div>
+                    <div class="location-pin pin-dubai" style="top: 45%; left: 58%;">
+                        <span class="pin-label">Dubaï</span>
+                        <div class="pin-dot fintech"></div>
+                    </div>
+                    <div class="location-pin pin-lux" style="top: 30%; left: 49%;">
+                        <span class="pin-label">Luxembourg</span>
+                        <div class="pin-dot fintech"></div>
+                    </div>
+                    <div class="location-pin pin-dakar" style="top: 55%; left: 43%;">
+                        <span class="pin-label">Dakar</span>
+                        <div class="pin-dot logistique"></div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <span class="legend-dot commerce"></span>
+                        <span class="legend-text">Commerce</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot fintech"></span>
+                        <span class="legend-text">FinTech</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot logistique"></span>
+                        <span class="legend-text">Logistique</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot tech"></span>
+                        <span class="legend-text">Innovation Tech</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Section -->
     <section class="about-cta">
         <div class="about-container">
@@ -322,10 +385,112 @@
         transform: translateY(-2px);
     }
 
+    /* Ecosystem Section */
+    .about-ecosystem {
+        padding: 8rem 0;
+        background: #fff;
+        overflow: hidden;
+    }
+
+    .header-line {
+        width: 40px;
+        height: 3px;
+        background: #bf0000;
+        margin: 1.5rem auto 0;
+    }
+
+    .ecosystem-map-container {
+        position: relative;
+        margin-top: 4rem;
+    }
+
+    .map-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .world-map-bg {
+        width: 100%;
+        height: auto;
+        opacity: 0.8;
+        display: block;
+    }
+
+    .location-pin {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        transform: translate(-50%, -50%);
+        transition: all 0.3s ease;
+        z-index: 10;
+    }
+
+    .location-pin:hover {
+        transform: translate(-50%, -60%) scale(1.1);
+    }
+
+    .pin-label {
+        background: #fff;
+        padding: 0.3rem 0.8rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #1e293b;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        white-space: nowrap;
+        border: 1px solid #e2e8f0;
+    }
+
+    .pin-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Legend */
+    .map-legend {
+        display: flex;
+        justify-content: center;
+        gap: 2.5rem;
+        margin-top: 3rem;
+        flex-wrap: wrap;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+    }
+
+    .legend-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+
+    .legend-text {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    /* Category Colors */
+    .commerce { background: #bf0000; }
+    .fintech { background: #ffc000; }
+    .logistique { background: #0070c0; }
+    .tech { background: #00a0a0; }
+
     /* Responsive */
     @media (max-width: 1024px) {
         .hero-title { font-size: 2.75rem; }
         .mission-grid { gap: 3rem; }
+        .location-pin .pin-label { font-size: 0.65rem; padding: 0.2rem 0.5rem; }
     }
 
     @media (max-width: 768px) {
@@ -336,6 +501,10 @@
         .values-grid { grid-template-columns: 1fr; }
         .cta-box { padding: 3rem 1.5rem; }
         .cta-btns { flex-direction: column; }
+        
+        .map-wrapper { transform: scale(1.2); left: 10%; position: relative; } /* Zoom in on mobile to see more map */
+        .map-legend { gap: 1rem; }
+        .about-ecosystem { padding: 4rem 0; }
     }
 </style>
 @endsection
