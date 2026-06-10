@@ -298,6 +298,7 @@
         letter-spacing: -1px;
         text-decoration: none;
         padding: 1rem 0;
+        margin-left: 1rem;
     }
 
     .corp-nav ul {
