@@ -288,7 +288,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        gap: 5rem;
+        gap: 10rem;
     }
 
     .corp-brand {
