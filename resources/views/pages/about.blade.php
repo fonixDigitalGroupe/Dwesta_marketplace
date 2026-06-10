@@ -528,7 +528,7 @@
 
     /* Hero Section */
     .about-hero {
-        height: 500px;
+        height: 320px;
         background: url('/images/about_hero_drone.png') center/cover no-repeat;
         display: flex;
         align-items: center;
