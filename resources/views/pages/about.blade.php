@@ -282,6 +282,7 @@
         background: #fff;
         padding: 1.2rem 0;
         border-bottom: 1px solid #eee;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
     .corp-header-flex {
@@ -294,7 +295,7 @@
     .corp-brand {
         font-size: 1.4rem;
         font-weight: 800;
-        color: #004aad; /* Brand Blue */
+        color: #bf141d; /* Rakuten Red */
         letter-spacing: -1px;
         text-decoration: none;
         padding: 1rem 0;
@@ -327,14 +328,14 @@
     }
 
     .corp-nav ul li.active a {
-        background: #004aad; /* Brand Blue */
+        background: #bf141d; /* Rakuten Red */
         color: #fff;
         padding: 1rem 1.4rem;
         border-radius: 4px;
     }
 
     .corp-nav ul li a:hover:not(.active a) {
-        color: #004aad;
+        color: #bf141d;
     }
 
     /* Sub-Header Navigation */
@@ -344,15 +345,16 @@
         position: sticky;
         top: 0;
         z-index: 100;
-        padding: 1.2rem 0; /* Increased height */
-        box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05); /* Added subtle shadow effect */
+        padding: 1.2rem 0;
+        box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05);
+        font-family: 'Inter', sans-serif;
     }
 
     .about-sub-nav .about-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 1.5rem; /* Reduced gap between list and search icon */
+        gap: 1.5rem;
     }
 
     .sub-nav-list {
@@ -369,7 +371,7 @@
         font-size: 0.9rem;
         font-weight: 500;
         transition: all 0.2s;
-        padding-bottom: 0.3rem; /* Moved closer to text */
+        padding-bottom: 0.3rem;
         border-bottom: 2px solid transparent;
     }
 
@@ -379,12 +381,13 @@
     }
 
     .sub-nav-list li.active a {
-        box-shadow: 0 2px 0 0 #004aad; /* Thinner shadow effect */
+        border-bottom: 2px solid #bf141d; /* Solid red line as in image */
+        box-shadow: none;
         font-weight: 500;
     }
 
     .sub-nav-search {
-        color: #004aad; /* Brand Blue */
+        color: #bf141d; /* Rakuten Red */
         font-size: 1rem;
         cursor: pointer;
         display: flex;
