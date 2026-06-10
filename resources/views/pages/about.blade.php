@@ -395,7 +395,7 @@
     /* Hero Section */
     .about-hero {
         height: 550px;
-        background: url('/images/apropos_banniere.jpg') center/cover no-repeat;
+        background: url('/images/apropos%20bannier.jpg') center/cover no-repeat;
         display: flex;
         align-items: center;
         position: relative;
