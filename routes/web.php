@@ -29,8 +29,11 @@ use App\Http\Controllers\VendeurWalletController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/a-propos', [PageController::class, 'about'])->name('about');
+
 
 // Authentification
 Route::middleware('guest')->group(function () {

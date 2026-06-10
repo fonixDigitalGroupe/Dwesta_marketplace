@@ -77,7 +77,7 @@
                         <li><a href="#">Conditions générales</a></li>
                         <li><a href="#">Politique Vie privée</a></li>
                         <li><a href="#">Gestion des cookies</a></li>
-                        <li><a href="#">A propos de Karnou</a></li>
+                        <li><a href="{{ route('about') }}">A propos de Karnou</a></li>
                         <li><a href="#">Agence</a></li>
                         <li><a href="#">Logistique</a></li>
                     </ul>
