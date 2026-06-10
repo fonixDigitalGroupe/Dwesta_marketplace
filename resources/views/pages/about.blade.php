@@ -413,8 +413,18 @@
 
     .section-header h2 {
         font-size: 2.5rem;
-        color: #1e293b;
-        font-weight: 800;
+        color: #1a1a1a;
+        font-weight: 300;
+        letter-spacing: 0;
+        font-family: 'Outfit', 'Inter', sans-serif;
+        margin-bottom: 1rem;
+    }
+
+    .header-line {
+        width: 50px;
+        height: 3px;
+        background: #004aad;
+        margin: 0 auto;
     }
 
     /* Hiding Global Marketplace Header on this page */
@@ -553,12 +563,13 @@
     }
 
     .hero-title {
-        font-size: 3.5rem;
-        font-weight: 900;
+        font-size: 3rem;
+        font-weight: 700;
         color: #1a1a1a;
-        line-height: 1.1;
-        letter-spacing: -2px;
+        line-height: 1.2;
+        letter-spacing: -1px;
         margin-bottom: 2rem;
+        font-family: 'Outfit', 'Inter', sans-serif;
     }
 
     /* Stats Section */
