@@ -155,68 +155,6 @@
         </div>
     </section>
 
-    <!-- Ecosystem Map Section -->
-    <section class="about-ecosystem">
-        <div class="about-container">
-            <div class="section-header">
-                <span class="section-badge center">Notre Expansion</span>
-                <h2>Un écosystème global</h2>
-                <div class="header-line"></div>
-            </div>
-            
-            <div class="ecosystem-map-container">
-                <div class="map-wrapper">
-                    <img src="/images/world_map_dots.png" alt="World Map" class="world-map-bg">
-                    
-                    <!-- Location Pins/Capsules -->
-                    <div class="location-pin pin-paris" style="top: 32%; left: 47%;">
-                        <span class="pin-label">Paris</span>
-                        <div class="pin-dot commerce"></div>
-                    </div>
-                    <div class="location-pin pin-tokyo" style="top: 38%; left: 81%;">
-                        <span class="pin-label">Tokyo</span>
-                        <div class="pin-dot tech"></div>
-                    </div>
-                    <div class="location-pin pin-sf" style="top: 35%; left: 18%;">
-                        <span class="pin-label">San Francisco</span>
-                        <div class="pin-dot tech"></div>
-                    </div>
-                    <div class="location-pin pin-dubai" style="top: 45%; left: 58%;">
-                        <span class="pin-label">Dubaï</span>
-                        <div class="pin-dot fintech"></div>
-                    </div>
-                    <div class="location-pin pin-lux" style="top: 30%; left: 49%;">
-                        <span class="pin-label">Luxembourg</span>
-                        <div class="pin-dot fintech"></div>
-                    </div>
-                    <div class="location-pin pin-dakar" style="top: 55%; left: 43%;">
-                        <span class="pin-label">Dakar</span>
-                        <div class="pin-dot logistique"></div>
-                    </div>
-                </div>
-
-                <!-- Legend -->
-                <div class="map-legend">
-                    <div class="legend-item">
-                        <span class="legend-dot commerce"></span>
-                        <span class="legend-text">Commerce</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-dot fintech"></span>
-                        <span class="legend-text">FinTech</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-dot logistique"></span>
-                        <span class="legend-text">Logistique</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-dot tech"></span>
-                        <span class="legend-text">Innovation Tech</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
 </div>
 
@@ -812,46 +750,6 @@
         border: 1px solid #e2e8f0;
     }
 
-    .pin-dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        border: 2px solid #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Legend */
-    .map-legend {
-        display: flex;
-        justify-content: center;
-        gap: 2.5rem;
-        margin-top: 3rem;
-        flex-wrap: wrap;
-    }
-
-    .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 0.7rem;
-    }
-
-    .legend-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-    }
-
-    .legend-text {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #64748b;
-    }
-
-    /* Category Colors */
-    .commerce { background: #bf0000; }
-    .fintech { background: #ffc000; }
-    .logistique { background: #0070c0; }
-    .tech { background: #00a0a0; }
 
     /* Responsive */
     @media (max-width: 1024px) {
@@ -955,7 +853,7 @@
         
         .map-wrapper { transform: scale(1.2); left: 10%; position: relative; }
         .map-legend { gap: 1rem; }
-        .about-ecosystem { padding: 4rem 0; }
+        .about-ecosystem { display: none; }
 
         .qui-tabs { gap: 1.5rem; overflow-x: auto; justify-content: flex-start; padding-bottom: 5px; }
         .qui-tab { flex-shrink: 0; }
