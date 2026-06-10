@@ -29,6 +29,18 @@
         </div>
     </header>
 
+    <!-- Sub-Header Navigation -->
+    <nav class="about-sub-nav">
+        <div class="about-container">
+            <ul class="sub-nav-list">
+                <li class="active"><a href="#">À propos de Karnou</a></li>
+                <li><a href="#">Conditions générales</a></li>
+                <li><a href="#">Vie privée</a></li>
+                <li><a href="#">Gestion des cookies</a></li>
+            </ul>
+        </div>
+    </nav>
+
 
     <!-- Hero Section -->
     <section class="about-hero" id="apropos" style="margin: 2rem 3rem 0 3rem; border-radius: 14px; overflow: hidden;">
@@ -265,7 +277,7 @@
     /* Corporate Header Style */
     .corporate-header {
         background: #fff;
-        padding: 1.5rem 0;
+        padding: 0.5rem 0;
         border-bottom: 1px solid #eee;
     }
 
@@ -273,11 +285,11 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        gap: 4rem;
+        gap: 2rem;
     }
 
     .corp-brand {
-        font-size: 2.2rem;
+        font-size: 1.5rem;
         font-weight: 900;
         color: #004aad;
         letter-spacing: -2px;
@@ -315,6 +327,50 @@
         color: #004aad;
     }
 
+
+    /* Sub-Header Navigation */
+    .about-sub-nav {
+        background: #fff;
+        border-bottom: 1px solid #eee;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        padding: 0.8rem 0;
+    }
+
+    .about-sub-nav .about-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .sub-nav-list {
+        display: flex;
+        list-style: none;
+        gap: 3.5rem;
+        margin: 0;
+        padding: 0;
+    }
+
+    .sub-nav-list li a {
+        text-decoration: none;
+        color: #666;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: color 0.2s;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid transparent;
+    }
+
+    .sub-nav-list li.active a,
+    .sub-nav-list li a:hover {
+        color: #004aad;
+    }
+
+    .sub-nav-list li.active a {
+        border-bottom-color: #004aad;
+        font-weight: 700;
+    }
 
     /* Hero Section */
     .about-hero {
