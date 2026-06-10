@@ -347,8 +347,9 @@
 
     .corp-header-flex {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
+        gap: 4rem;
     }
 
     .corp-brand {
@@ -382,7 +383,7 @@
     .corp-nav ul li.active a {
         background: #004aad;
         color: #fff;
-        padding: 0.5rem 1.2rem;
+        padding: 0.8rem 1.5rem;
         border-radius: 4px;
     }
 
@@ -392,7 +393,7 @@
 
     /* Sub-Header Navigation */
     .about-sub-nav {
-        background: #fdfdfd;
+        background: #fff;
         border-bottom: 1px solid #eee;
         position: sticky;
         top: 0;
@@ -402,14 +403,15 @@
 
     .about-sub-nav .about-container {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
+        position: relative;
     }
 
     .sub-nav-list {
         display: flex;
         list-style: none;
-        gap: 2.5rem;
+        gap: 3.5rem;
         margin: 0;
         padding: 0;
     }
@@ -438,6 +440,8 @@
         color: #004aad;
         font-size: 1.1rem;
         cursor: pointer;
+        position: absolute;
+        right: 2rem;
     }
 
     /* Hero Section */
