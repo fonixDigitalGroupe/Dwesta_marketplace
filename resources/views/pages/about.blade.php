@@ -289,7 +289,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        gap: 5rem; /* Reduced from 10rem */
+        gap: 3rem; /* Reduced from 5rem to shift menu left */
     }
 
     .corp-brand {
