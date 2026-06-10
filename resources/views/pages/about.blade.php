@@ -288,7 +288,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        gap: 2.5rem;
+        gap: 2rem;
     }
 
     .corp-brand {
@@ -303,7 +303,7 @@
     .corp-nav ul {
         display: flex;
         list-style: none;
-        gap: 2.5rem;
+        gap: 1.5rem;
         margin: 0;
         padding: 0;
         align-items: stretch;
