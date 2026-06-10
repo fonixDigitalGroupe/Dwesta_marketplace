@@ -294,7 +294,7 @@
 
     .corp-brand {
         font-size: 1.4rem;
-        font-weight: 800;
+        font-weight: 700; /* Reduced from 800 */
         color: #bf141d; /* Rakuten Red */
         letter-spacing: -1px;
         text-decoration: none;
@@ -320,7 +320,7 @@
         text-decoration: none;
         color: #333;
         font-size: 0.9rem;
-        font-weight: 500;
+        font-weight: 400; /* Reduced from 500 */
         transition: all 0.2s;
         padding: 1rem 0;
         display: flex;
@@ -332,6 +332,7 @@
         color: #fff;
         padding: 1rem 1.4rem;
         border-radius: 4px;
+        font-weight: 400; /* Also reduced here */
     }
 
     .corp-nav ul li a:hover:not(.active a) {
@@ -369,7 +370,7 @@
         text-decoration: none;
         color: #333;
         font-size: 0.9rem;
-        font-weight: 500;
+        font-weight: 400; /* Reduced from 500 */
         transition: all 0.2s;
         padding-bottom: 0.3rem;
         border-bottom: 2px solid transparent;
@@ -383,7 +384,7 @@
     .sub-nav-list li.active a {
         border-bottom: 2px solid #bf141d; /* Solid red line as in image */
         box-shadow: none;
-        font-weight: 500;
+        font-weight: 400; /* Reduced from 500 */
     }
 
     .sub-nav-search {
