@@ -106,46 +106,15 @@
             </div>
             <div class="diagram-wrapper">
                 <div class="diagram-left">
-                    <svg viewBox="0 0 400 400" class="circular-diagram">
-                        <!-- Main Circle -->
-                        <circle cx="200" cy="200" r="150" fill="none" stroke="#eee" stroke-width="1" />
-                        <!-- Central Logo Area -->
-                        <circle cx="200" cy="200" r="50" fill="#004aad" />
-                        <text x="200" y="205" text-anchor="middle" fill="white" font-weight="900" font-size="14">KARNOU</text>
-                        
-                        <!-- Nodes -->
-                        <g class="node commerce">
-                            <circle cx="200" cy="50" r="35" fill="white" stroke="#004aad" stroke-width="2" />
-                            <text x="200" y="55" text-anchor="middle" font-size="10" font-weight="700">COMMERCE</text>
-                        </g>
-                        <g class="node fintech">
-                            <circle cx="350" cy="200" r="35" fill="white" stroke="#004aad" stroke-width="2" />
-                            <text x="350" y="205" text-anchor="middle" font-size="10" font-weight="700">FINTECH</text>
-                        </g>
-                        <g class="node logistique">
-                            <circle cx="200" cy="350" r="35" fill="white" stroke="#004aad" stroke-width="2" />
-                            <text x="200" y="355" text-anchor="middle" font-size="10" font-weight="700">LOGISTIQUE</text>
-                        </g>
-                        <g class="node innovation">
-                            <circle cx="50" cy="200" r="35" fill="white" stroke="#004aad" stroke-width="2" />
-                            <text x="50" y="205" text-anchor="middle" font-size="10" font-weight="700">INNOVATION</text>
-                        </g>
-
-                        <!-- Connecting Lines -->
-                        <line x1="200" y1="85" x2="200" y2="150" stroke="#004aad" stroke-dasharray="4" />
-                        <line x1="315" y1="200" x2="250" y2="200" stroke="#004aad" stroke-dasharray="4" />
-                        <line x1="200" y1="315" x2="200" y2="250" stroke="#004aad" stroke-dasharray="4" />
-                        <line x1="85" y1="200" x2="150" y2="200" stroke="#004aad" stroke-dasharray="4" />
-                    </svg>
+                    <img src="/images/karnou_ecosystem.png" alt="Karnou Ecosystem" class="ecosystem-img">
                 </div>
                 <div class="diagram-right">
                     <div class="ecosystem-text">
-                        <p>Karnou se compose de multiples entités, soit autant d'expertises qui positionnent le groupe comme un acteur incontournable de la scène tech africaine. Le groupe intervient notamment dans les secteurs suivants :</p>
+                        <p>Karnou se compose de multiples entités, soit autant d'expertises qui positionnent le groupe comme un acteur incontournable de la scène tech africaine :</p>
                         <ul>
-                            <li><strong>E-commerce :</strong> Activité historique du groupe, une marketplace 100% confiance.</li>
-                            <li><strong>Services financiers :</strong> Des solutions FinTech pour sécuriser les échanges.</li>
-                            <li><strong>Logistique :</strong> Un réseau intégré pour une livraison sans faille.</li>
-                            <li><strong>Innovation :</strong> Recherche et développement au service de la société.</li>
+                            <li><strong>Karnou Agence :</strong> Notre réseau de points de retrait pour une proximité maximale avec nos utilisateurs.</li>
+                            <li><strong>Karnou Express :</strong> Société de livraison de colis innovante qui permet à chacun de devenir livreur et de gagner des commissions.</li>
+                            <li><strong>Vente sur Karnou :</strong> Une plateforme ouverte permettant de vendre des produits en tant que vendeur particulier ou professionnel en toute simplicité.</li>
                         </ul>
                     </div>
                 </div>
@@ -187,9 +156,16 @@
         justify-content: center;
     }
 
-    .circular-diagram {
+    .ecosystem-img {
         width: 100%;
-        max-width: 400px;
+        max-width: 500px;
+        height: auto;
+        display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .ecosystem-img:hover {
+        transform: scale(1.02);
     }
 
     .diagram-right {
