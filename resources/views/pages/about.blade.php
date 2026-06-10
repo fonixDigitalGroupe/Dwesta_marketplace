@@ -29,20 +29,6 @@
         </div>
     </header>
 
-    <!-- Sub-Header Navigation -->
-    <nav class="about-sub-nav">
-        <div class="about-container">
-            <ul class="sub-nav-list">
-                <li class="active"><a href="#apropos">À propos de Karnou</a></li>
-                <li><a href="#assistance">Besoin d'aide ?</a></li>
-                <li><a href="#vendre">Ouvrir un e-shop</a></li>
-                <li><a href="#presse">Presse & Contact</a></li>
-            </ul>
-            <div class="sub-nav-search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-        </div>
-    </nav>
 
     <!-- Hero Section -->
     <section class="about-hero" id="apropos" style="margin: 2rem 3rem 0 3rem; border-radius: 14px; overflow: hidden;">
@@ -329,58 +315,6 @@
         color: #004aad;
     }
 
-    /* Sub-Header Navigation */
-    .about-sub-nav {
-        background: #fff;
-        border-bottom: 1px solid #eee;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        padding: 0.8rem 0;
-    }
-
-    .about-sub-nav .about-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-    }
-
-    .sub-nav-list {
-        display: flex;
-        list-style: none;
-        gap: 3.5rem;
-        margin: 0;
-        padding: 0;
-    }
-
-    .sub-nav-list li a {
-        text-decoration: none;
-        color: #666;
-        font-size: 0.95rem;
-        font-weight: 500;
-        transition: color 0.2s;
-        padding-bottom: 0.8rem;
-        border-bottom: 2px solid transparent;
-    }
-
-    .sub-nav-list li.active a,
-    .sub-nav-list li a:hover {
-        color: #004aad;
-    }
-
-    .sub-nav-list li.active a {
-        border-bottom-color: #004aad;
-        font-weight: 700;
-    }
-
-    .sub-nav-search {
-        color: #004aad;
-        font-size: 1.1rem;
-        cursor: pointer;
-        position: absolute;
-        right: 2rem;
-    }
 
     /* Hero Section */
     .about-hero {
