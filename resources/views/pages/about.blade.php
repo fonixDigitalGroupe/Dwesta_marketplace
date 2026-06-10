@@ -106,7 +106,41 @@
             </div>
             <div class="diagram-wrapper">
                 <div class="diagram-left">
-                    <img src="/images/karnou_ecosystem.png" alt="Karnou Ecosystem" class="ecosystem-img">
+                    <div class="ecosystem-drawing">
+                        <div class="core-node">
+                            <span class="core-text">Karnou</span>
+                            <div class="pulse-ring"></div>
+                        </div>
+                        <div class="satellites">
+                            <div class="satellite-node node-acheteurs">
+                                <div class="node-icon"><i class="fa-solid fa-users"></i></div>
+                                <span class="node-label">Acheteurs</span>
+                            </div>
+                            <div class="satellite-node node-vendeurs">
+                                <div class="node-icon"><i class="fa-solid fa-store"></i></div>
+                                <span class="node-label">Vendeurs</span>
+                            </div>
+                            <div class="satellite-node node-express">
+                                <div class="node-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                                <span class="node-label">Express</span>
+                            </div>
+                            <div class="satellite-node node-agence">
+                                <div class="node-icon"><i class="fa-solid fa-building-user"></i></div>
+                                <span class="node-label">Agence</span>
+                            </div>
+                            <div class="satellite-node node-vente">
+                                <div class="node-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                                <span class="node-label">Vente</span>
+                            </div>
+                        </div>
+                        <svg class="connections-svg" viewBox="0 0 500 500">
+                            <line class="conn-line" x1="250" y1="250" x2="100" y2="150" />
+                            <line class="conn-line" x1="250" y1="250" x2="400" y2="150" />
+                            <line class="conn-line" x1="250" y1="250" x2="100" y2="350" />
+                            <line class="conn-line" x1="250" y1="250" x2="400" y2="350" />
+                            <line class="conn-line" x1="250" y1="250" x2="250" y2="80" />
+                        </svg>
+                    </div>
                 </div>
                 <div class="diagram-right">
                     <div class="ecosystem-text">
@@ -140,7 +174,7 @@
     /* Diagram Section */
     .about-ecosystem-diagram {
         padding: 8rem 0;
-        background: #fff;
+        background: #fff; /* White background as requested */
     }
 
     .diagram-wrapper {
@@ -151,21 +185,127 @@
     }
 
     .diagram-left {
-        flex: 1;
+        flex: 1.2;
         display: flex;
         justify-content: center;
+        min-height: 500px;
+        position: relative;
     }
 
-    .ecosystem-img {
+    .ecosystem-drawing {
+        position: relative;
         width: 100%;
         max-width: 500px;
-        height: auto;
-        display: block;
+        height: 500px;
+        background: #fff;
+    }
+
+    .core-node {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, #004aad 0%, #003a88 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 5;
+        box-shadow: 0 10px 30px rgba(0, 74, 173, 0.4);
+    }
+
+    .core-text {
+        color: #fff;
+        font-weight: 800;
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+
+    .pulse-ring {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 2px solid #004aad;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.8; }
+        100% { transform: scale(1.5); opacity: 0; }
+    }
+
+    .satellite-node {
+        position: absolute;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 4;
         transition: transform 0.3s ease;
     }
 
-    .ecosystem-img:hover {
-        transform: scale(1.02);
+    .satellite-node:hover {
+        transform: scale(1.1);
+    }
+
+    .node-icon {
+        width: 50px;
+        height: 50px;
+        background: #fff;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        border: 1px solid #eee;
+    }
+
+    .node-label {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #333;
+        white-space: nowrap;
+    }
+
+    /* Node Positions */
+    .node-acheteurs { top: 15%; left: 10%; }
+    .node-vendeurs { top: 15%; right: 10%; }
+    .node-express { bottom: 15%; left: 10%; }
+    .node-agence { bottom: 15%; right: 10%; }
+    .node-vente { top: 0%; left: 50%; transform: translateX(-50%); }
+
+    /* Colors Mixing */
+    .node-acheteurs .node-icon { color: #004aad; border-left: 4px solid #004aad; }
+    .node-vendeurs .node-icon { color: #ff6600; border-left: 4px solid #ff6600; } /* Orange accent */
+    .node-express .node-icon { color: #004aad; border-left: 4px solid #004aad; }
+    .node-agence .node-icon { color: #004aad; border-left: 4px solid #004aad; }
+    .node-vente .node-icon { color: #ff6600; border-left: 4px solid #ff6600; } /* Orange accent */
+
+    .connections-svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .conn-line {
+        stroke: #e0e6ed;
+        stroke-width: 2;
+        stroke-dasharray: 5;
+        animation: dash 20s linear infinite;
+    }
+
+    @keyframes dash {
+        to { stroke-dashoffset: 200; }
     }
 
     .diagram-right {
