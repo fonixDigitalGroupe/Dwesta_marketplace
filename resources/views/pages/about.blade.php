@@ -397,15 +397,14 @@
 
     /* Hero Section */
     .about-hero {
-        height: 450px;
+        height: 550px; /* Increased from 450px */
         background: url('/images/about_hero_drone.png') center/cover no-repeat;
         display: flex;
         align-items: center;
         position: relative;
+        margin: 2rem 5rem; /* Added margins */
+        border-radius: 12px; /* Added for premium boxed look */
         overflow: hidden;
-        margin: 2rem 3rem 0 3rem !important;
-        border-radius: 14px !important;
-        max-width: calc(100% - 6rem) !important;
     }
 
     .hero-overlay {
