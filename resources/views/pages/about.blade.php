@@ -298,7 +298,7 @@
         letter-spacing: -1px;
         text-decoration: none;
         padding: 1rem 0;
-        margin-left: 1rem;
+        margin-left: 5rem;
     }
 
     .corp-nav ul {
