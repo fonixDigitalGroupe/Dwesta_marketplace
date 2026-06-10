@@ -10,7 +10,7 @@
             <div class="corp-header-flex">
                 <a href="{{ route('home') }}" class="corp-logo">
                     @if($logoUrl = \App\Models\Setting::logoUrl())
-                        <img src="{{ $logoUrl }}" alt="Logo" style="height: 32px; width: auto;">
+                        <img src="{{ $logoUrl }}" alt="Logo" style="height: 26px; width: auto;">
                     @else
                         <span class="corp-brand">Karnou<span class="dot">.</span></span>
                     @endif
