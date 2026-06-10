@@ -4,11 +4,61 @@
 
 @section('content')
 <div class="about-page">
-    <!-- Hero Section -->
-    <section class="about-hero">
+    <!-- Sub-Header Navigation -->
+    <nav class="about-sub-nav">
         <div class="about-container">
-            <h1 class="hero-title">Votre marketplace locale</h1>
-            <p class="hero-subtitle">Karnou est bien plus qu'une simple marketplace. C'est un écosystème de confiance conçu pour connecter les vendeurs passionnés et les acheteurs exigeants.</p>
+            <ul class="sub-nav-list">
+                <li class="active"><a href="#apropos">À propos de Karnou</a></li>
+                <li><a href="#assistance">Besoin d'aide ?</a></li>
+                <li><a href="#vendre">Ouvrir un e-shop</a></li>
+                <li><a href="#presse">Presse & Contact</a></li>
+            </ul>
+            <div class="sub-nav-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero" id="apropos">
+        <div class="hero-overlay"></div>
+        <div class="about-container">
+            <div class="hero-content">
+                <h1 class="hero-title">Karnou, groupe d'innovation digitale au service de la société</h1>
+                <div class="header-line left"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="about-stats">
+        <div class="about-container">
+            <div class="section-header">
+                <h2>Quelques chiffres</h2>
+                <div class="header-line"></div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-val">+15 Mrds</span>
+                    <span class="stat-desc">D'euros de Chiffre d'Affaires</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-val">+30,000</span>
+                    <span class="stat-desc">Employés</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-val">1,5 Mrds</span>
+                    <span class="stat-desc">Membres dans le monde</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-val">32</span>
+                    <span class="stat-desc">Pays</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-val">+90</span>
+                    <span class="stat-desc">Services</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -67,7 +117,103 @@
         </div>
     </section>
 
-    <!-- Ecosystem Section -->
+    <!-- History Section -->
+    <section class="about-history">
+        <div class="about-container">
+            <div class="section-header">
+                <h2>Notre histoire</h2>
+                <div class="header-line"></div>
+            </div>
+            <div class="history-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">2018</div>
+                    <div class="timeline-content">
+                        <h3>Lancement de Karnou</h3>
+                        <p>Karnou lance sa première plateforme de commerce local en République Centrafricaine.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2020</div>
+                    <div class="timeline-content">
+                        <h3>Expansion Logistique</h3>
+                        <p>Lancement de Karnou Logistique pour garantir des livraisons rapides partout dans le pays.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2022</div>
+                    <div class="timeline-content">
+                        <h3>Karnou FinTech</h3>
+                        <p>Déploiement de solutions de paiement sécurisées intégrées à l'écosystème.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2024</div>
+                    <div class="timeline-content">
+                        <h3>Innovation & Global</h3>
+                        <p>Karnou devient un groupe multi-services présent internationalement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ecosystem Diagram Section -->
+    <section class="about-ecosystem-diagram">
+        <div class="about-container">
+            <div class="section-header">
+                <h2>Un écosystème unique</h2>
+                <div class="header-line"></div>
+            </div>
+            <div class="diagram-wrapper">
+                <div class="diagram-left">
+                    <svg viewBox="0 0 400 400" class="circular-diagram">
+                        <!-- Main Circle -->
+                        <circle cx="200" cy="200" r="150" fill="none" stroke="#eee" stroke-width="1" />
+                        <!-- Central Logo Area -->
+                        <circle cx="200" cy="200" r="50" fill="#bf0000" />
+                        <text x="200" y="205" text-anchor="middle" fill="white" font-weight="900" font-size="14">KARNOU</text>
+                        
+                        <!-- Nodes -->
+                        <g class="node commerce">
+                            <circle cx="200" cy="50" r="35" fill="white" stroke="#bf0000" stroke-width="2" />
+                            <text x="200" y="55" text-anchor="middle" font-size="10" font-weight="700">COMMERCE</text>
+                        </g>
+                        <g class="node fintech">
+                            <circle cx="350" cy="200" r="35" fill="white" stroke="#bf0000" stroke-width="2" />
+                            <text x="350" y="205" text-anchor="middle" font-size="10" font-weight="700">FINTECH</text>
+                        </g>
+                        <g class="node logistique">
+                            <circle cx="200" cy="350" r="35" fill="white" stroke="#bf0000" stroke-width="2" />
+                            <text x="200" y="355" text-anchor="middle" font-size="10" font-weight="700">LOGISTIQUE</text>
+                        </g>
+                        <g class="node innovation">
+                            <circle cx="50" cy="200" r="35" fill="white" stroke="#bf0000" stroke-width="2" />
+                            <text x="50" y="205" text-anchor="middle" font-size="10" font-weight="700">INNOVATION</text>
+                        </g>
+
+                        <!-- Connecting Lines -->
+                        <line x1="200" y1="85" x2="200" y2="150" stroke="#bf0000" stroke-dasharray="4" />
+                        <line x1="315" y1="200" x2="250" y2="200" stroke="#bf0000" stroke-dasharray="4" />
+                        <line x1="200" y1="315" x2="200" y2="250" stroke="#bf0000" stroke-dasharray="4" />
+                        <line x1="85" y1="200" x2="150" y2="200" stroke="#bf0000" stroke-dasharray="4" />
+                    </svg>
+                </div>
+                <div class="diagram-right">
+                    <div class="ecosystem-text">
+                        <p>Karnou se compose de multiples entités, soit autant d'expertises qui positionnent le groupe comme un acteur incontournable de la scène tech africaine. Le groupe intervient notamment dans les secteurs suivants :</p>
+                        <ul>
+                            <li><strong>E-commerce :</strong> Activité historique du groupe, une marketplace 100% confiance.</li>
+                            <li><strong>Services financiers :</strong> Des solutions FinTech pour sécuriser les échanges.</li>
+                            <li><strong>Logistique :</strong> Un réseau intégré pour une livraison sans faille.</li>
+                            <li><strong>Innovation :</strong> Recherche et développement au service de la société.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ecosystem Map Section -->
     <section class="about-ecosystem">
         <div class="about-container">
             <div class="section-header">
@@ -157,12 +303,74 @@
         padding: 0 2rem;
     }
 
-    /* Section Header & Badges */
+    /* Diagram Section */
+    .about-ecosystem-diagram {
+        padding: 8rem 0;
+        background: #fff;
+    }
+
+    .diagram-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 5rem;
+        margin-top: 4rem;
+    }
+
+    .diagram-left {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .circular-diagram {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .diagram-right {
+        flex: 1;
+    }
+
+    .ecosystem-text p {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        color: #444;
+        margin-bottom: 2rem;
+    }
+
+    .ecosystem-text ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .ecosystem-text li {
+        margin-bottom: 1.5rem;
+        font-size: 1.05rem;
+        color: #666;
+        padding-left: 1.5rem;
+        position: relative;
+    }
+
+    .ecosystem-text li::before {
+        content: '■';
+        position: absolute;
+        left: 0;
+        color: #bf0000;
+        font-size: 0.8rem;
+        top: 2px;
+    }
+
+    /* Mission & Values Refinements */
+    .about-mission {
+        padding: 8rem 0;
+        background: #fdfdfd;
+    }
+
     .section-badge {
         display: inline-block;
-        background: #eef2ff;
-        color: #004aad;
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 1.2rem;
+        background: rgba(191, 0, 0, 0.1);
+        color: #bf0000;
         border-radius: 50px;
         font-size: 0.85rem;
         font-weight: 700;
@@ -186,29 +394,183 @@
         font-weight: 800;
     }
 
+    /* Sub-Header Navigation */
+    .about-sub-nav {
+        background: #fdfdfd;
+        border-bottom: 1px solid #eee;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        padding: 0.8rem 0;
+    }
+
+    .about-sub-nav .about-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .sub-nav-list {
+        display: flex;
+        list-style: none;
+        gap: 2.5rem;
+        margin: 0;
+        padding: 0;
+    }
+
+    .sub-nav-list li a {
+        text-decoration: none;
+        color: #666;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: color 0.2s;
+        padding-bottom: 0.8rem;
+        border-bottom: 2px solid transparent;
+    }
+
+    .sub-nav-list li.active a,
+    .sub-nav-list li a:hover {
+        color: #bf0000;
+    }
+
+    .sub-nav-list li.active a {
+        border-bottom-color: #bf0000;
+        font-weight: 700;
+    }
+
+    .sub-nav-search {
+        color: #bf0000;
+        font-size: 1.1rem;
+        cursor: pointer;
+    }
+
     /* Hero Section */
     .about-hero {
-        background: linear-gradient(rgba(0, 74, 173, 0.7), rgba(0, 45, 106, 0.8)), 
-                    url('/images/apropos_banniere.jpg');
-        background-size: cover;
-        background-position: center;
-        padding: 8rem 0;
-        color: #fff;
-        text-align: center;
+        height: 500px;
+        background: url('/images/about_hero_drone.png') center/cover no-repeat;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 600px;
     }
 
     .hero-title {
         font-size: 3.5rem;
         font-weight: 900;
-        margin-bottom: 1.5rem;
+        color: #1a1a1a;
         line-height: 1.1;
+        letter-spacing: -2px;
+        margin-bottom: 2rem;
     }
 
-    .hero-subtitle {
-        font-size: 1.25rem;
-        opacity: 0.9;
-        max-width: 800px;
-        margin: 0 auto;
+    /* Stats Section */
+    .about-stats {
+        padding: 6rem 0;
+        background: #fff;
+    }
+
+    .stats-grid {
+        display: flex;
+        justify-content: space-between;
+        gap: 2rem;
+    }
+
+    .stat-box {
+        text-align: center;
+        flex: 1;
+    }
+
+    .stat-val {
+        display: block;
+        font-size: 2.8rem;
+        font-weight: 800;
+        color: #bf0000;
+        margin-bottom: 0.5rem;
+        letter-spacing: -1px;
+    }
+
+    .stat-desc {
+        font-size: 1rem;
+        color: #666;
+        font-weight: 500;
+    }
+
+    /* History Timeline */
+    .about-history {
+        padding: 6rem 0;
+        background: #fdfdfd;
+    }
+
+    .history-timeline {
+        max-width: 1000px;
+        margin: 4rem auto 0;
+        position: relative;
+    }
+
+    .history-timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: #eee;
+    }
+
+    .timeline-item {
+        margin-bottom: 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .timeline-item:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    .timeline-date {
+        width: 45%;
+        font-size: 2rem;
+        font-weight: 900;
+        color: #bf0000;
+        text-align: right;
+        padding: 0 3rem;
+    }
+
+    .timeline-item:nth-child(even) .timeline-date {
+        text-align: left;
+    }
+
+    .timeline-content {
+        width: 45%;
+        padding: 0 3rem;
+    }
+
+    .timeline-content h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+    }
+
+    .timeline-content p {
+        color: #666;
         line-height: 1.6;
     }
 
