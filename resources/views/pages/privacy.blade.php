@@ -221,7 +221,7 @@
     .corp-nav ul { display: flex; list-style: none; gap: 0.8rem; margin: 0; padding: 0; flex-wrap: wrap; justify-content: flex-end; }
     .corp-nav ul li a { text-decoration: none; color: #555; font-size: 0.82rem; font-weight: 500; font-family: 'Inter', sans-serif; transition: all 0.2s; border-bottom: 2px solid transparent; padding-bottom: 0.3rem; }
     .corp-nav ul li a:hover { color: #004aad; }
-    .corp-nav ul li.active a { color: #004aad; border-bottom: 2px solid #004aad; font-weight: 600; }
+    .corp-nav ul li.active a { color: #fff; background: #004aad; border-bottom: none; font-weight: 600; border-radius: 20px; padding: 0.3rem 0.85rem; }
 
     .legal-hero {
         background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 49, 130, 0.8) 100%), url('/images/vie_privee.jpg');
