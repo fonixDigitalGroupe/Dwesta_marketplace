@@ -118,7 +118,7 @@
 @push('styles')
 <style>
     /* Force hide marketplace elements */
-    .top-banner, .header, .footer { display: none !important; visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
+    .top-banner, .header { display: none !important; visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
     body { padding-top: 0 !important; margin-top: 0 !important; background: #ffffff !important; }
 
     /* --- Base --- */
