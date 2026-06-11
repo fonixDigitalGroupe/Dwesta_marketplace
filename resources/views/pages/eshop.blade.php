@@ -32,87 +32,116 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <div class="legal-hero" style="background-image: linear-gradient(rgba(0, 74, 173, 0.8), rgba(0, 74, 173, 0.8)), url('{{ asset('images/eshop_bannier.png') }}');">
+    <!-- Hero -->
+    <div class="legal-hero" style="background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 49, 130, 0.8) 100%), url('{{ asset('images/eshop_bannier.png') }}'); background-size: cover; background-position: center;">
         <div class="legal-hero-inner">
             <span class="legal-category-badge">Business & E-commerce</span>
             <h1>Développez votre activité avec Karnou</h1>
-            <p>Rejoignez la première marketplace de Centrafrique et touchez des milliers de clients chaque jour.</p>
-            <div style="margin-top: 2.5rem; display: flex; gap: 1rem; justify-content: center;">
-                <a href="{{ route('vendeur.create') }}" class="btn-cta-primary">Créer mon e-shop gratuitement</a>
-                <a href="#avantages" class="btn-cta-secondary">En savoir plus</a>
+            <p class="legal-hero-desc">Rejoignez la première marketplace de Centrafrique et donnez une dimension digitale à votre commerce dès aujourd'hui.</p>
+            <div class="legal-meta">
+                <span><i class="fa-solid fa-earth-africa"></i> Audience nationale</span>
+                <span class="meta-sep">·</span>
+                <span><i class="fa-solid fa-rocket"></i> Lancement rapide</span>
+                <span class="meta-sep">·</span>
+                <span><i class="fa-solid fa-wallet"></i> Paiements locaux</span>
             </div>
         </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="about-container">
-        <section id="avantages" class="benefits-section">
-            <div class="section-header">
-                <h2>Pourquoi choisir Karnou ?</h2>
-                <p>Nous mettons à votre disposition des outils puissants pour gérer vos ventes sans effort.</p>
-            </div>
+    <!-- Layout -->
+    <div class="legal-layout">
 
-            <div class="benefits-grid">
-                <div class="benefit-card">
-                    <i class="fa-solid fa-earth-africa"></i>
-                    <h3>Visibilité maximale</h3>
-                    <p>Vos produits sont visibles par une audience nationale en constante croissance.</p>
-                </div>
-                <div class="benefit-card">
-                    <i class="fa-solid fa-wallet"></i>
-                    <h3>Paiements sécurisés</h3>
-                    <p>Acceptez les paiements mobile (Orange Money, Wave) en toute simplicité.</p>
-                </div>
-                <div class="benefit-card">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <h3>Tableau de bord pro</h3>
-                    <p>Gérez vos stocks, vos commandes et suivez vos performances en temps réel.</p>
-                </div>
-                <div class="benefit-card">
-                    <i class="fa-solid fa-headset"></i>
-                    <h3>Support dédié</h3>
-                    <p>Une équipe à votre écoute pour vous accompagner dans votre succès digital.</p>
-                </div>
-            </div>
-        </section>
+        <!-- TOC Sidebar -->
+        <aside class="legal-toc">
+            <p class="toc-title">Table des matières</p>
+            <ul class="toc-list">
+                <li><a href="#esh1">1 — Pourquoi vendre sur Karnou ?</a></li>
+                <li><a href="#esh2">2 — Nos outils de gestion</a></li>
+                <li><a href="#esh3">3 — Vendeur Particulier</a></li>
+                <li><a href="#esh4">4 — Vendeur Professionnel</a></li>
+                <li><a href="#esh5">5 — Comment commencer ?</a></li>
+            </ul>
+        </aside>
 
-        <!-- Pricing / Types -->
-        <section class="seller-types">
-            <div class="type-box Particulier">
-                <h3>Vendeur Particulier</h3>
-                <p>Idéal pour vendre occasionnellement vos objets de seconde main.</p>
-                <ul class="type-features">
-                    <li><i class="fa-solid fa-check"></i> Inscription simplifiée</li>
-                    <li><i class="fa-solid fa-check"></i> Jusqu'à 10 annonces</li>
-                    <li><i class="fa-solid fa-check"></i> Commission standard</li>
-                </ul>
-                <a href="{{ route('vendeur.create', ['type' => 'particulier']) }}" class="btn-type">Commencer</a>
-            </div>
+        <!-- Main -->
+        <main class="legal-main">
+            <p class="legal-intro">Karnou met à votre disposition une infrastructure complète pour vendre vos produits en ligne, que vous soyez un commerçant établi ou un particulier souhaitant vendre occasionnellement.</p>
 
-            <div class="type-box Professionnel featured">
-                <div class="popular-badge">Recommandé</div>
-                <h3>Vendeur Professionnel</h3>
-                <p>Pour les entreprises et commerçants souhaitant une présence forte.</p>
-                <ul class="type-features">
-                    <li><i class="fa-solid fa-check"></i> Page Pro exclusive</li>
-                    <li><i class="fa-solid fa-check"></i> Annonces illimitées</li>
-                    <li><i class="fa-solid fa-check"></i> Statistiques avancées</li>
-                    <li><i class="fa-solid fa-check"></i> Support VIP</li>
-                </ul>
-                <a href="{{ route('vendeur.create', ['type' => 'professionnel']) }}" class="btn-type-pro">Devenir Pro</a>
+            <article id="esh1" class="legal-article">
+                <div class="article-num">01</div>
+                <div class="article-body">
+                    <h2>Pourquoi vendre sur Karnou ?</h2>
+                    <p>En tant que vendeur sur Karnou, vous bénéficiez d'une visibilité sans précédent auprès de milliers d'acheteurs potentiels à travers tout le pays. Notre plateforme est optimisée pour la conversion et le référencement de vos produits.</p>
+                </div>
+            </article>
+
+            <article id="esh2" class="legal-article">
+                <div class="article-num">02</div>
+                <div class="article-body">
+                    <h2>Nos outils de gestion avancés</h2>
+                    <p>Nous vous fournissons un tableau de bord complet (Seller Central) pour :</p>
+                    <ul>
+                        <li>Gérer vos stocks et vos variantes de produits.</li>
+                        <li>Suivre vos commandes et vos livraisons.</li>
+                        <li>Consulter vos statistiques de vente en temps réel.</li>
+                        <li>Interagir avec vos clients via notre messagerie intégrée.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <article id="esh3" class="legal-article">
+                <div class="article-num">03</div>
+                <div class="article-body">
+                    <h2>Vendeur Particulier</h2>
+                    <p>Ce type de compte est idéal pour vendre des objets d'occasion ou occasionnels.</p>
+                    <p><strong>Avantages :</strong> Inscription ultra-rapide avec CNI, jusqu'à 10 annonces actives simultanément, interface de gestion simplifiée.</p>
+                    <div style="margin-top: 1rem;">
+                        <a href="{{ route('vendeur.create', ['type' => 'particulier']) }}" class="btn-primary-corp-v2" style="display: inline-block; width: auto; padding: 0.6rem 2rem;">S'inscrire comme Particulier</a>
+                    </div>
+                </div>
+            </article>
+
+            <article id="esh4" class="legal-article">
+                <div class="article-num">04</div>
+                <div class="article-body">
+                    <div style="background: #f0f7ff; border: 1px solid #c7d8f8; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                        <h2 style="margin-top: 0;">Vendeur Professionnel (Recommandé)</h2>
+                        <p>Dédié aux entreprises, boutiques et artisans souhaitant une présence professionnelle forte.</p>
+                        <p><strong>Avantages :</strong> Page Pro exclusive (vitrine), annonces illimitées, commissions réduites, support prioritaire, accès aux abonnements premium.</p>
+                        <div style="margin-top: 1rem;">
+                            <a href="{{ route('vendeur.create', ['type' => 'professionnel']) }}" class="btn-primary-corp-v2" style="display: inline-block; width: auto; padding: 0.6rem 2rem;">Ouvrir un compte Pro</a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article id="esh5" class="legal-article">
+                <div class="article-num">05</div>
+                <div class="article-body">
+                    <h2>Comment commencer ?</h2>
+                    <p>C'est très simple : choisissez votre type de compte, remplissez le formulaire d'inscription et déposez vos justificatifs. Notre équipe validera votre compte sous 24h à 48h.</p>
+                </div>
+            </article>
+
+            <div class="legal-contact-strip">
+                <i class="fa-solid fa-lightbulb"></i>
+                <div>
+                    <strong>Besoin d'un conseil business ?</strong><br>
+                    Nos experts e-commerce vous accompagnent dans votre stratégie de vente. Contactez <a href="mailto:business@karnou.com">business@karnou.com</a>.
+                </div>
             </div>
-        </section>
+        </main>
     </div>
 </div>
 
 <style>
-    /* Consistent styles */
-    .legal-page { font-family: 'Outfit', sans-serif; color: #333; background-color: #fff; }
-    .about-container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-    
-    .corporate-header { background: #fff; padding: 1.25rem 0; border-bottom: 1px solid #efefef; position: sticky; top: 0; z-index: 1000; }
-    .corp-header-flex { display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
+    .legal-page { background: #f8f9fb; min-height: 100vh; }
+    .about-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .header, .top-banner { display: none !important; }
+
+    /* --- Corporate Header --- */
+    .corporate-header { background: #fff; padding: 1.2rem 0; border-bottom: 1px solid #eee; font-family: 'Inter', sans-serif; }
+    .corp-header-flex { display: flex; justify-content: space-between; align-items: center; }
     .corp-logo { display: block; text-decoration: none; }
     .corp-brand { font-size: 1.4rem; font-weight: 700; color: #004aad; letter-spacing: -1px; }
     .corp-nav ul { display: flex; list-style: none; gap: 0.8rem; margin: 0; padding: 0; flex-wrap: wrap; justify-content: flex-end; }
@@ -120,51 +149,77 @@
     .corp-nav ul li a:hover { color: #004aad; }
     .corp-nav ul li.active a { color: #004aad; border-bottom: 2px solid #004aad; font-weight: 600; }
 
-    .legal-hero { height: 500px; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; }
-    .legal-hero-inner { max-width: 900px; padding: 2rem; }
-    .legal-category-badge { display: inline-block; padding: 0.5rem 1.25rem; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; backdrop-filter: blur(5px); }
-    .legal-hero h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 1.5rem; line-height: 1.1; letter-spacing: -1px; }
-    .legal-hero p { font-size: 1.3rem; opacity: 0.9; margin-bottom: 0; }
+    .legal-hero { padding: 4rem 2rem; color: #fff; }
+    .legal-hero-inner { max-width: 800px; margin: 0 auto; }
+    .legal-category-badge { display: inline-block; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; padding: 0.35rem 0.9rem; border-radius: 50px; margin-bottom: 1.2rem; font-family: 'Inter', sans-serif; border: 1px solid rgba(255,255,255,0.2); }
+    .legal-hero h1 { font-size: 2.2rem; font-weight: 700; font-family: 'Outfit', 'Inter', sans-serif; color: #fff; margin: 0 0 0.8rem; letter-spacing: -0.5px; line-height: 1.2; }
+    .legal-hero-desc { font-size: 1rem; color: rgba(255,255,255,0.8); font-family: 'Inter', sans-serif; margin: 0 0 1.5rem; line-height: 1.6; }
+    .legal-meta { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); font-family: 'Inter', sans-serif; flex-wrap: wrap; }
+    .legal-meta i { margin-right: 0.3rem; font-size: 0.8rem; }
+    .meta-sep { opacity: 0.4; }
 
-    .btn-cta-primary { background: #f68b1e; color: #fff; text-decoration: none; padding: 1.2rem 2.5rem; border-radius: 50px; font-weight: 700; font-size: 1.1rem; transition: all 0.3s; }
-    .btn-cta-primary:hover { background: #e57a18; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(246, 139, 30, 0.3); }
-    .btn-cta-secondary { background: rgba(255,255,255,0.1); color: #fff; text-decoration: none; padding: 1.2rem 2.5rem; border-radius: 50px; font-weight: 600; border: 1px solid rgba(255,255,255,0.3); transition: all 0.3s; backdrop-filter: blur(5px); }
-    .btn-cta-secondary:hover { background: rgba(255,255,255,0.2); }
+    .legal-layout { display: flex; align-items: flex-start; max-width: 1200px; margin: 3rem auto; padding: 0 2rem; gap: 3rem; }
 
-    .benefits-section { padding: 6rem 0; text-align: center; }
-    .section-header h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; color: #111; }
-    .section-header p { color: #666; font-size: 1.2rem; margin-bottom: 4rem; }
+    .legal-toc { width: 240px; flex-shrink: 0; position: sticky; top: 80px; background: #fff; border: 1px solid #e8ecf0; border-radius: 12px; padding: 1.5rem; }
+    .toc-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #999; font-family: 'Inter', sans-serif; margin: 0 0 1rem; }
+    .toc-list { list-style: none; padding: 0; margin: 0; }
+    .toc-list li { margin-bottom: 0.1rem; }
+    .toc-list li a { display: block; font-size: 0.82rem; color: #555; text-decoration: none; font-family: 'Inter', sans-serif; padding: 0.4rem 0.6rem; border-radius: 6px; transition: all 0.15s; line-height: 1.4; }
+    .toc-list li a:hover { background: #f0f4ff; color: #004aad; }
 
-    .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2.5rem; }
-    .benefit-card { background: #fdfdfd; border: 1px solid #efefef; padding: 3rem 2rem; border-radius: 20px; transition: all 0.3s; }
-    .benefit-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); border-color: #004aad; }
-    .benefit-card i { font-size: 2.5rem; color: #004aad; margin-bottom: 1.5rem; }
-    .benefit-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; }
-    .benefit-card p { color: #666; font-size: 0.95rem; line-height: 1.6; }
+    .legal-main { flex: 1; min-width: 0; }
+    .legal-intro { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #555; line-height: 1.75; margin-bottom: 2rem; }
 
-    .seller-types { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 3rem; padding-bottom: 6rem; }
-    .type-box { background: #fff; border: 1px solid #efefef; padding: 3.5rem; border-radius: 25px; display: flex; flex-direction: column; position: relative; }
-    .type-box.featured { border: 2px solid #004aad; box-shadow: 0 20px 50px rgba(0, 74, 173, 0.1); }
-    .popular-badge { position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: #004aad; color: #fff; padding: 0.4rem 1.25rem; border-radius: 50px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
-    
-    .type-box h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1.5rem; }
-    .type-box p { color: #666; margin-bottom: 2.5rem; font-size: 1rem; }
-    
-    .type-features { list-style: none; padding: 0; margin: 0 0 3rem 0; flex-grow: 1; }
-    .type-features li { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; font-weight: 500; font-size: 0.95rem; }
-    .type-features li i { color: #2ecc71; font-size: 1rem; }
+    .legal-article { display: flex; gap: 1.5rem; align-items: flex-start; background: #fff; border: 1px solid #e8ecf0; border-radius: 12px; padding: 2rem 2rem 2rem 1.5rem; margin-bottom: 1.2rem; transition: border-color 0.2s, box-shadow 0.2s; }
+    .legal-article:hover { border-color: #c7d8f8; box-shadow: 0 4px 16px rgba(0,74,173,0.06); }
+    .article-num { font-size: 1.2rem; font-weight: 800; color: #d0ddf5; font-family: 'Outfit', sans-serif; letter-spacing: -1px; width: 36px; flex-shrink: 0; padding-top: 0.15rem; text-align: center; line-height: 1; }
+    .article-body { flex: 1; min-width: 0; }
+    .article-body h2 { font-size: 1.05rem; font-weight: 700; color: #1a1a1a; font-family: 'Outfit', 'Inter', sans-serif; margin: 0 0 1rem; }
+    .article-body p { font-family: 'Inter', sans-serif; font-size: 0.92rem; color: #4b5563; line-height: 1.75; margin-bottom: 0.8rem; }
+    .article-body a { color: #004aad; text-decoration: none; }
+    .article-body a:hover { text-decoration: underline; }
 
-    .btn-type { border: 2px solid #efefef; color: #333; text-decoration: none; padding: 1rem; border-radius: 12px; text-align: center; font-weight: 700; transition: all 0.2s; }
-    .btn-type:hover { border-color: #333; background: #333; color: #fff; }
-    .btn-type-pro { background: #004aad; color: #fff; text-decoration: none; padding: 1rem; border-radius: 12px; text-align: center; font-weight: 700; transition: all 0.2s; }
-    .btn-type-pro:hover { background: #003a8a; transform: scale(1.02); }
+    .btn-primary-corp-v2 { background: #004aad; color: #fff; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; text-decoration: none; text-align: center; }
+    .btn-primary-corp-v2:hover { background: #003a8a; }
 
-    @media (max-width: 968px) {
-        .legal-hero h1 { font-size: 2.5rem; }
-        .seller-types { grid-template-columns: 1fr; }
-        .type-box { padding: 2.5rem; }
+    .legal-contact-strip { display: flex; align-items: center; gap: 1.2rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%); border: 1px solid #c7d8f8; border-radius: 12px; padding: 1.5rem 2rem; margin-top: 2rem; font-family: 'Inter', sans-serif; font-size: 0.92rem; color: #1a1a1a; line-height: 1.6; }
+    .legal-contact-strip i { font-size: 1.8rem; color: #004aad; flex-shrink: 0; }
+    .legal-contact-strip a { color: #004aad; text-decoration: none; font-weight: 600; }
+    .legal-contact-strip a:hover { text-decoration: underline; }
+
+    @media (max-width: 900px) {
+        .legal-layout { flex-direction: column; }
+        .legal-toc { position: static; width: 100%; }
+        .toc-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.2rem; }
+        .legal-hero h1 { font-size: 1.6rem; }
+    }
+    @media (max-width: 600px) {
+        .legal-layout { padding: 0 1rem; margin: 1.5rem auto; }
+        .article-num { display: none; }
+        .legal-article { padding: 1.5rem; }
+        .toc-list { grid-template-columns: 1fr; }
     }
 </style>
 
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const articles = document.querySelectorAll('.legal-article');
+        const tocLinks = document.querySelectorAll('.toc-list a');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const link = document.querySelector(`.toc-list a[href="#${entry.target.id}"]`);
+                if (!link) return;
+                if (entry.isIntersecting) {
+                    tocLinks.forEach(l => { l.style.background=''; l.style.color=''; l.style.fontWeight=''; });
+                    link.style.background = '#eff6ff';
+                    link.style.color = '#004aad';
+                    link.style.fontWeight = '600';
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+        articles.forEach(a => observer.observe(a));
+    });
+</script>
 @endsection
