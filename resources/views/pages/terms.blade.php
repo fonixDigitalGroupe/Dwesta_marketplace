@@ -239,7 +239,7 @@
 
     /* --- Page Header --- */
     .legal-page-header { margin-bottom: 2.5rem; }
-    .legal-page-header h1 { font-family: 'Outfit', sans-serif; font-size: 2.22rem; font-weight: 800; color: #1a1a1a; margin-bottom: 0.4rem; letter-spacing: -1px; line-height: 1.1; }
+    .legal-page-header h1 { font-family: 'Outfit', sans-serif; font-size: 1.75rem; font-weight: 800; color: #1a1a1a; margin-bottom: 0.4rem; letter-spacing: -1px; line-height: 1.1; }
     .last-update { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #999; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
 
     .corp-logo img { height: 28px; width: auto; display: block; }
