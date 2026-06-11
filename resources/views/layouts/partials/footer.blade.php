@@ -72,32 +72,75 @@
         </div>
     </div>
 
-    <!-- Tier 3: Copyright & Social -->
-    <div class="footer-bottom-info">
+    <!-- Tier 3: Social & Payment -->
+    <div class="footer-connections">
         <div class="footer-container">
-            <div class="footer-bottom-flex">
-                <div class="copyright">
-                    © Karnou Group - Tous droits réservés 2024
+            <div class="connections-wrapper">
+                <div class="social-box">
+                    <a href="#" class="soc-link linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="soc-link facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="soc-link x-twitter"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" class="soc-link instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="soc-link youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="soc-link pinterest"><i class="fab fa-pinterest-p"></i></a>
+                    <a href="#" class="soc-link tiktok"><i class="fab fa-tiktok"></i></a>
                 </div>
-                <div class="social-icons">
-                    <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link x-twitter"><i class="fab fa-x-twitter"></i></a>
-                    <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link linkedin"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social-link youtube"><i class="fab fa-youtube"></i></a>
+                <div class="connections-sep"></div>
+                <div class="payment-box">
+                    <i class="fab fa-cc-visa" title="Visa"></i>
+                    <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                    <span class="pay-brand">Klarna.</span>
+                    <i class="fab fa-cc-paypal" title="PayPal"></i>
+                    <span class="pay-brand">FLOA</span>
+                    <i class="fab fa-cc-amex" title="American Express"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Tier 4: Legal & International -->
-    <div class="footer-international">
+    <!-- Tier 4: App Promo -->
+    <div class="footer-app-promo">
         <div class="footer-container">
-            <div class="international-links">
-                <a href="#">Mentions légales</a>
-                <span class="sep">|</span>
-                <a href="{{ route('privacy') }}">Politique de confidentialité</a>
+            <div class="app-promo-content">
+                <p class="app-promo-text">Avec l'appli Karnou, bénéficiez de 5% remboursés en Karnou Points sur tous vos achats !</p>
+                <div class="app-buttons">
+                    <a href="#" class="app-badge-btn">
+                        <i class="fab fa-apple"></i>
+                        <div class="btn-txt">
+                            <span>Télécharger dans</span>
+                            <strong>l'App Store</strong>
+                        </div>
+                    </a>
+                    <a href="#" class="app-badge-btn">
+                        <i class="fab fa-google-play"></i>
+                        <div class="btn-txt">
+                            <span>DISPONIBLE SUR</span>
+                            <strong>Google Play</strong>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Tier 5: Bottom Branding -->
+    <div class="footer-brand-section">
+        <div class="footer-container">
+            <div class="brand-flex">
+                <div class="brand-logo-final">Karnou</div>
+                <div class="brand-links-final">
+                    <a href="#">Karnou Kobo</a>
+                    <a href="#">Karnou TV</a>
+                    <a href="#">Karnou Viber</a>
+                    <a href="#">Plus de services</a>
+                    <a href="{{ route('about') }}">À propos de Karnou</a>
+                </div>
+                <div class="region-dropdown">
+                    <button class="region-btn">France <i class="fa-solid fa-chevron-down"></i></button>
+                </div>
+            </div>
+            <div class="footer-copyright-final">
+                © Karnou France 2024 - 2026
             </div>
         </div>
     </div>
@@ -221,94 +264,170 @@
         color: #004aad;
     }
 
-    /* Tier 3: Info & Social */
-    .footer-bottom-info {
+    /* New Redesigned Tiers */
+    .footer-connections {
+        border-top: 1px solid #eee;
+        padding: 1.5rem 0;
         background: #fff;
-        padding: 2.5rem 0;
-        border-bottom: 1px solid #eee;
     }
 
-    .footer-bottom-flex {
+    .connections-wrapper {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        gap: 3rem;
     }
 
-    .copyright {
-        font-size: 0.9rem;
-        color: #333;
-        font-weight: 500;
-    }
-
-    .social-icons {
+    .social-box {
         display: flex;
-        gap: 0.8rem;
+        gap: 1.5rem;
     }
 
-    .social-link {
-        width: 36px;
-        height: 36px;
+    .soc-link {
+        width: 38px;
+        height: 38px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #fff;
         text-decoration: none;
-        font-size: 1rem;
-        transition: transform 0.2s, background 0.2s;
+        font-size: 1.1rem;
+        transition: transform 0.2s;
     }
 
-    .social-link:hover {
-        transform: translateY(-3px);
+    .soc-link:hover { transform: scale(1.1); }
+    .soc-link.linkedin { background: #0077b5; }
+    .soc-link.facebook { background: #1877f2; }
+    .soc-link.x-twitter { background: #000; }
+    .soc-link.instagram { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
+    .soc-link.youtube { background: #ff0000; }
+    .soc-link.pinterest { background: #bd081c; }
+    .soc-link.tiktok { background: #000; }
+
+    .connections-sep {
+        width: 1px;
+        height: 40px;
+        background: #ddd;
     }
 
-    .social-link.facebook { background: #004aad; } /* Corporate Red */
-    .social-link.x-twitter { background: #004aad; }
-    .social-link.instagram { background: #004aad; }
-    .social-link.linkedin { background: #004aad; }
-    .social-link.youtube { background: #004aad; }
-
-    /* Tier 4: International */
-    .footer-international {
-        background: #fdfdfd;
-        padding: 2rem 0 4rem;
-    }
-
-    .footer-international .footer-container {
+    .payment-box {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-    }
-
-    .international-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        align-items: center;
-    }
-
-    .international-links a {
-        text-decoration: none;
+        gap: 1.5rem;
+        font-size: 1.8rem;
         color: #555;
-        font-size: 0.85rem;
+    }
+
+    .pay-brand {
+        font-weight: 800;
+        font-size: 1rem;
+        color: #000;
+    }
+
+    /* App Promo */
+    .footer-app-promo {
+        background: #f7f7f7;
+        padding: 3rem 0;
+        text-align: center;
+    }
+
+    .app-promo-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .app-promo-text {
+        color: #333;
+        font-size: 1rem;
         font-weight: 500;
-        transition: color 0.2s;
+        max-width: 600px;
     }
 
-    .international-links a:hover {
-        color: #004aad;
+    .app-buttons {
+        display: flex;
+        gap: 1.5rem;
     }
 
-    .international-links .sep {
-        color: #eee;
-        font-size: 0.8rem;
+    .app-badge-btn {
+        background: #000;
+        color: #fff;
+        padding: 0.6rem 1.4rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        text-decoration: none;
+        transition: opacity 0.2s;
     }
 
-    .karnou-brand {
-        font-size: 1.5rem;
+    .app-badge-btn:hover { opacity: 0.8; }
+    .app-badge-btn i { font-size: 1.8rem; }
+    .app-badge-btn .btn-txt {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 1.1;
+    }
+
+    .app-badge-btn .btn-txt span { font-size: 0.65rem; text-transform: uppercase; }
+    .app-badge-btn .btn-txt strong { font-size: 0.95rem; }
+
+    /* Brand Section */
+    .footer-brand-section {
+        padding: 3rem 0 1.5rem;
+        background: #fff;
+    }
+
+    .brand-flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+    }
+
+    .brand-logo-final {
+        font-size: 1.8rem;
         font-weight: 900;
-        color: #004aad;
+        color: #bf0000;
         letter-spacing: -1px;
+    }
+
+    .brand-links-final {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .brand-links-final a {
+        text-decoration: none;
+        color: #666;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .brand-links-final a:hover { color: #bf0000; }
+
+    .region-btn {
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        color: #555;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .footer-copyright-final {
+        text-align: center;
+        color: #888;
+        font-size: 0.85rem;
+        margin-top: 2rem;
     }
 
     /* Responsive */
