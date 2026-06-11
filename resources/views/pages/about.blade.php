@@ -17,25 +17,16 @@
                 </a>
                 <nav class="corp-nav">
                     <ul>
-                        <li class="active"><a href="{{ route('about') }}">À propos</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li class="{{ Route::is('about') ? 'active' : '' }}"><a href="{{ route('about') }}">À propos de Karnou</a></li>
+                        <li class="{{ Route::is('terms') ? 'active' : '' }}"><a href="{{ route('terms') }}">Conditions générales</a></li>
+                        <li class="{{ Route::is('privacy') ? 'active' : '' }}"><a href="{{ route('privacy') }}">Vie privée</a></li>
+                        <li class="{{ Route::is('cookies') ? 'active' : '' }}"><a href="{{ route('cookies') }}">Gestion des cookies</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- Sub-Header Navigation -->
-    <nav class="about-sub-nav">
-        <div class="about-container">
-            <ul class="sub-nav-list">
-                <li class="active"><a href="{{ route('about') }}">À propos de Karnou</a></li>
-                <li><a href="{{ route('terms') }}">Conditions générales</a></li>
-                <li><a href="{{ route('privacy') }}">Vie privée</a></li>
-                <li><a href="{{ route('cookies') }}">Gestion des cookies</a></li>
-            </ul>
-        </div>
-    </nav>
 
     <!-- Hero Section -->
     <div class="legal-hero">
@@ -197,11 +188,13 @@
 
     /* --- Corporate Header --- */
     .corporate-header { background: #fff; padding: 1.2rem 0; border-bottom: 1px solid #eee; font-family: 'Inter', sans-serif; }
-    .corp-header-flex { display: flex; justify-content: flex-start; align-items: center; gap: 3rem; }
-    .corp-brand { font-size: 1.4rem; font-weight: 700; color: #004aad; letter-spacing: -1px; text-decoration: none; padding: 1rem 0; margin-left: 2rem; }
-    .corp-nav ul { display: flex; list-style: none; gap: 1.5rem; margin: 0; padding: 0; }
-    .corp-nav ul li a { text-decoration: none; color: #333; font-size: 0.9rem; font-weight: 400; padding: 1rem 0; font-family: 'Inter', sans-serif; }
-    .corp-nav ul li.active a { background: #004aad; color: #fff; padding: 1rem 1.4rem; border-radius: 4px; }
+    .corp-header-flex { display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
+    .corp-logo { display: block; text-decoration: none; }
+    .corp-brand { font-size: 1.4rem; font-weight: 700; color: #004aad; letter-spacing: -1px; }
+    .corp-nav ul { display: flex; list-style: none; gap: 2rem; margin: 0; padding: 0; }
+    .corp-nav ul li a { text-decoration: none; color: #555; font-size: 0.9rem; font-weight: 500; font-family: 'Inter', sans-serif; transition: all 0.2s; border-bottom: 2px solid transparent; padding-bottom: 0.5rem; }
+    .corp-nav ul li a:hover { color: #004aad; }
+    .corp-nav ul li.active a { color: #004aad; border-bottom: 2px solid #004aad; font-weight: 600; }
 
     /* --- Sub Nav --- */
     .about-sub-nav { background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; padding: 1.2rem 0; box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05); }
