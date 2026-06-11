@@ -127,18 +127,16 @@
     <div class="footer-brand-section">
         <div class="footer-container">
             <div class="brand-flex">
-                <div class="brand-logo-final">Karnou</div>
+                <div class="brand-logo-final"></div>
                 <div class="brand-links-final">
                     <a href="#">Karnou Agence</a>
                     <a href="#">Karnou Express</a>
                     <a href="{{ route('about') }}">À propos de Karnou</a>
                 </div>
-                <div class="region-dropdown">
-                    <button class="region-btn">France <i class="fa-solid fa-chevron-down"></i></button>
-                </div>
+                <div class="region-dropdown"></div>
             </div>
             <div class="footer-copyright-final">
-                © Karnou 2024 - 2026
+                © 2024 - 2026
             </div>
         </div>
     </div>
