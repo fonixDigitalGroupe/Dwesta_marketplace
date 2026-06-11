@@ -41,7 +41,7 @@
     </header>
 
 
-    <!-- Sub Nav -->
+
 
     <!-- Layout 2 Colonnes -->
     <div class="legal-layout">
@@ -197,12 +197,7 @@
     .corp-logo img { height: 28px; width: auto; display: block; }
     .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
 
-    /* --- Sub Nav --- */
-    .about-sub-nav { background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 61px; z-index: 100; padding: 1.2rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .about-sub-nav .about-container { display: flex; justify-content: center; align-items: center; }
-    .sub-nav-list { display: flex; list-style: none; gap: 2.5rem; margin: 0; padding: 0; }
-    .sub-nav-list li a { text-decoration: none; color: #555; font-size: 0.9rem; border-bottom: 2px solid transparent; padding-bottom: 0.3rem; font-family: 'Inter', sans-serif; }
-    .sub-nav-list li.active a { border-bottom: 2px solid #004aad; color: #1a1a1a; font-weight: 600; }
+
 
     /* --- Legal Hero --- */
     .legal-hero {

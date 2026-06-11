@@ -41,20 +41,7 @@
     </header>
 
     <!-- Sub Nav -->
-    <div class="about-sub-nav">
-        <div class="about-container">
-            <ul>
-                <li class="{{ Route::is('about') ? 'active' : '' }}"><a href="{{ route('about') }}">À propos</a></li>
-                <li class="{{ Route::is('terms') ? 'active' : '' }}"><a href="{{ route('terms') }}">Conditions</a></li>
-                <li class="{{ Route::is('privacy') ? 'active' : '' }}"><a href="{{ route('privacy') }}">Vie privée</a></li>
-                <li class="{{ Route::is('cookies') ? 'active' : '' }}"><a href="{{ route('cookies') }}">Cookies</a></li>
-                <li class="{{ Route::is('help') ? 'active' : '' }}"><a href="{{ route('help') }}">Aide</a></li>
-                <li class="{{ Route::is('eshop.landing') ? 'active' : '' }}"><a href="{{ route('eshop.landing') }}">e-Shop</a></li>
-                <li class="{{ Route::is('report') ? 'active' : '' }}"><a href="{{ route('report') }}">Signaler</a></li>
-                <li class="{{ Route::is('contact') ? 'active' : '' }}"><a href="{{ route('contact') }}">Contact</a></li>
-            </ul>
-        </div>
-    </div>
+
 
 
     <!-- Layout -->
@@ -240,13 +227,7 @@
     .corp-logo img { height: 28px; width: auto; display: block; }
     .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
 
-    /* --- Sub Nav --- */
-    .about-sub-nav { background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 61px; z-index: 900; padding: 1.2rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .about-sub-nav .about-container { max-width: 1350px; }
-    .about-sub-nav ul { display: flex; list-style: none; gap: 1rem; margin: 0; padding: 0; justify-content: center; flex-wrap: wrap; }
-    .about-sub-nav ul li a { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; padding: 0.6rem 1rem; border-radius: 4px; }
-    .about-sub-nav ul li a:hover { color: #004aad; background: #f0f7ff; }
-    .about-sub-nav ul li.active a { background: #004aad; color: #fff; font-weight: 600; padding: 0.7rem 1.2rem; }
+
 
     .legal-hero {
         background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 49, 130, 0.8) 100%), url('/images/vie_privee.jpg');
