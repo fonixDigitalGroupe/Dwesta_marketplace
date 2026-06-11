@@ -46,6 +46,9 @@
 
     <!-- Layout 2 Colonnes -->
 
+    <!-- Page Hero Banner -->
+    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/apropos_bannier.jpg');"></div>
+
     <!-- Layout 2 Colonnes -->
     <div class="legal-layout">
 
