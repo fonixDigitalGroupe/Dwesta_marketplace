@@ -57,21 +57,7 @@
     </div>
 
 
-    <!-- Hero -->
-    <div class="legal-hero">
-        <div class="legal-hero-inner">
-            <span class="legal-category-badge">Document légal</span>
-            <h1>Politique de Gestion des Cookies</h1>
-            <p class="legal-hero-desc">Transparence totale sur les technologies de traçage utilisées par Karnou et vos moyens de contrôle.</p>
-            <div class="legal-meta">
-                <span><i class="fa-regular fa-calendar"></i> Mis à jour le 1er juin 2025</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-regular fa-file-lines"></i> 6 sections</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-solid fa-cookie-bite"></i> Contrôle total</span>
-            </div>
-        </div>
-    </div>
+    <!-- Layout -->
 
     <!-- Layout -->
     <div class="legal-layout">

@@ -56,21 +56,7 @@
         </div>
     </div>
 
-    <!-- Hero -->
-    <div class="legal-hero" style="background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 49, 130, 0.8) 100%), url('{{ asset('images/contact_bannier.png') }}'); background-size: cover; background-position: center;">
-        <div class="legal-hero-inner">
-            <span class="legal-category-badge">Contact</span>
-            <h1>Nous sommes à votre écoute</h1>
-            <p class="legal-hero-desc">Une question, un partenariat ou besoin d'assistance ? Notre équipe est prête à vous répondre.</p>
-            <div class="legal-meta">
-                <span><i class="fa-regular fa-calendar"></i> Disponibilité 24/7</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-solid fa-location-dot"></i> Bangui, RCA</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-solid fa-envelope"></i> contact@karnou.com</span>
-            </div>
-        </div>
-    </div>
+    <!-- Layout -->
 
     <!-- Layout -->
     <div class="legal-layout">

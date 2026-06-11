@@ -57,21 +57,7 @@
     </div>
 
 
-    <!-- Hero Banner -->
-    <div class="legal-hero">
-        <div class="legal-hero-inner">
-            <span class="legal-category-badge">Document légal</span>
-            <h1>Conditions Générales d'Utilisation</h1>
-            <p class="legal-hero-desc">Les présentes conditions régissent l'ensemble des relations entre Karnou Group et ses utilisateurs.</p>
-            <div class="legal-meta">
-                <span><i class="fa-regular fa-calendar"></i> Mis à jour le 1er juin 2025</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-regular fa-file-lines"></i> 12 articles</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-solid fa-globe"></i> Applicable en Afrique Centrale</span>
-            </div>
-        </div>
-    </div>
+    <!-- Layout 2 Colonnes -->
 
     <!-- Layout 2 Colonnes -->
     <div class="legal-layout">

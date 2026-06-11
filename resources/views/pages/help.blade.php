@@ -56,21 +56,7 @@
         </div>
     </div>
 
-    <!-- Hero -->
-    <div class="legal-hero" style="background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 49, 130, 0.8) 100%), url('{{ asset('images/help_bannier.png') }}'); background-size: cover; background-position: center;">
-        <div class="legal-hero-inner">
-            <span class="legal-category-badge">Centre de Support</span>
-            <h1>Comment pouvons-nous vous aider ?</h1>
-            <p class="legal-hero-desc">Trouvez toutes les réponses à vos questions sur l'utilisation de la plateforme Karnou et nos services.</p>
-            <div class="legal-meta">
-                <span><i class="fa-regular fa-calendar"></i> Mis à jour le 1er juin 2025</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-regular fa-file-lines"></i> 5 sections d'aide</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-solid fa-headset"></i> Support 24/7</span>
-            </div>
-        </div>
-    </div>
+    <!-- Layout -->
 
     <!-- Layout -->
     <div class="legal-layout">

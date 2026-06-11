@@ -56,21 +56,7 @@
         </div>
     </div>
 
-    <!-- Hero -->
-    <div class="legal-hero" style="background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 49, 130, 0.8) 100%), url('{{ asset('images/report_bannier.png') }}'); background-size: cover; background-position: center;">
-        <div class="legal-hero-inner">
-            <span class="legal-category-badge">Confiance & Sécurité</span>
-            <h1>Signaler un contenu inapproprié</h1>
-            <p class="legal-hero-desc">Aidez-nous à maintenir la plateforme Karnou sûre et respectueuse pour tous les utilisateurs.</p>
-            <div class="legal-meta">
-                <span><i class="fa-regular fa-calendar"></i> Mis à jour le 1er juin 2025</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-solid fa-shield-halved"></i> Modération active</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-regular fa-clock"></i> Réponse < 24h</span>
-            </div>
-        </div>
-    </div>
+    <!-- Layout -->
 
     <!-- Layout -->
     <div class="legal-layout">

@@ -57,21 +57,7 @@
     </div>
 
 
-    <!-- Hero -->
-    <div class="legal-hero">
-        <div class="legal-hero-inner">
-            <span class="legal-category-badge">Document légal</span>
-            <h1>Politique de Vie Privée</h1>
-            <p class="legal-hero-desc">Nous nous engageons à protéger vos données personnelles et à respecter scrupuleusement votre vie privée.</p>
-            <div class="legal-meta">
-                <span><i class="fa-regular fa-calendar"></i> Mis à jour le 1er juin 2025</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-regular fa-file-lines"></i> 10 sections</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-solid fa-shield-halved"></i> Données protégées</span>
-            </div>
-        </div>
-    </div>
+    <!-- Layout -->
 
     <!-- Layout -->
     <div class="legal-layout">

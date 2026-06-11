@@ -41,21 +41,7 @@
     </header>
 
 
-    <!-- Hero Section -->
-    <div class="legal-hero">
-        <div class="legal-hero-inner">
-            <span class="legal-category-badge">Notre Histoire</span>
-            <h1>Karnou, groupe d'innovation digitale au service de la société</h1>
-            <p class="legal-hero-desc">Découvrez comment nous démocratisons le commerce numérique en Afrique à travers un écosystème complet et sécurisé.</p>
-            <div class="legal-meta">
-                <span><i class="fa-regular fa-calendar"></i> Fondé en 2024</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-solid fa-location-dot"></i> Siège à Bangui</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-solid fa-earth-africa"></i> Impact local</span>
-            </div>
-        </div>
-    </div>
+    <!-- Sub Nav -->
 
     <!-- Layout 2 Colonnes -->
     <div class="legal-layout">

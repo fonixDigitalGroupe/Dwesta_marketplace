@@ -56,21 +56,7 @@
         </div>
     </div>
 
-    <!-- Hero -->
-    <div class="legal-hero" style="background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 49, 130, 0.8) 100%), url('{{ asset('images/eshop_bannier.png') }}'); background-size: cover; background-position: center;">
-        <div class="legal-hero-inner">
-            <span class="legal-category-badge">Business & E-commerce</span>
-            <h1>Développez votre activité avec Karnou</h1>
-            <p class="legal-hero-desc">Rejoignez la première marketplace de Centrafrique et donnez une dimension digitale à votre commerce dès aujourd'hui.</p>
-            <div class="legal-meta">
-                <span><i class="fa-solid fa-earth-africa"></i> Audience nationale</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-solid fa-rocket"></i> Lancement rapide</span>
-                <span class="meta-sep">·</span>
-                <span><i class="fa-solid fa-wallet"></i> Paiements locaux</span>
-            </div>
-        </div>
-    </div>
+    <!-- Layout -->
 
     <!-- Layout -->
     <div class="legal-layout">
