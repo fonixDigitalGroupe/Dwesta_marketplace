@@ -188,7 +188,7 @@
 
     /* --- Corporate Header --- */
     .corporate-header { background: #fff; padding: 1.2rem 0; border-bottom: 1px solid #eee; font-family: 'Inter', sans-serif; }
-    .corp-header-flex { display: flex; justify-content: space-between; align-items: center; padding: 0 2rem; }
+    .corp-header-flex { display: flex; justify-content: space-between; align-items: center; }
     .corp-logo { display: block; text-decoration: none; }
     .corp-brand { font-size: 1.4rem; font-weight: 700; color: #004aad; letter-spacing: -1px; }
     .corp-nav ul { display: flex; list-style: none; gap: 0.8rem; margin: 0; padding: 0; flex-wrap: wrap; justify-content: flex-end; }
