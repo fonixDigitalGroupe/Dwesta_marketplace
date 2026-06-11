@@ -107,7 +107,7 @@
     .rk-footer {
         background: #fff;
         font-family: 'Outfit', sans-serif;
-        color: #333;
+        color: #1a1a1a;
         border-top: 1px solid #eee;
     }
 
@@ -139,7 +139,7 @@
 
     .reinsurance-icon-box {
         font-size: 2rem;
-        color: #666;
+        color: #333;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -153,7 +153,7 @@
 
     .reinsurance-label {
         font-size: 0.75rem;
-        color: #999;
+        color: #555;
         margin-bottom: 2px;
         font-weight: 500;
         text-transform: uppercase;
@@ -211,7 +211,7 @@
 
     .footer-links-list li a {
         text-decoration: none;
-        color: #333;
+        color: #1a1a1a;
         font-size: 0.95rem;
         font-weight: 500;
         transition: color 0.2s;
@@ -236,7 +236,7 @@
 
     .copyright {
         font-size: 0.9rem;
-        color: #666;
+        color: #333;
         font-weight: 500;
     }
 
@@ -289,7 +289,7 @@
 
     .international-links a {
         text-decoration: none;
-        color: #999;
+        color: #555;
         font-size: 0.85rem;
         font-weight: 500;
         transition: color 0.2s;
