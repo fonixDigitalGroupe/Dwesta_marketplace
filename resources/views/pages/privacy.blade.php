@@ -242,7 +242,13 @@
     .sub-nav-list li a { text-decoration: none; color: #555; font-size: 0.9rem; border-bottom: 2px solid transparent; padding-bottom: 0.3rem; font-family: 'Inter', sans-serif; }
     .sub-nav-list li.active a { border-bottom: 2px solid #004aad; color: #1a1a1a; font-weight: 600; }
 
-    .legal-hero { background: linear-gradient(135deg, #004aad 0%, #003182 100%); padding: 4rem 2rem; color: #fff; }
+    .legal-hero {
+        background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 49, 130, 0.8) 100%), url('/images/vie_privee.jpg');
+        background-size: cover;
+        background-position: center;
+        padding: 4rem 2rem;
+        color: #fff;
+    }
     .legal-hero-inner { max-width: 800px; margin: 0 auto; }
     .legal-category-badge { display: inline-block; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; padding: 0.35rem 0.9rem; border-radius: 50px; margin-bottom: 1.2rem; font-family: 'Inter', sans-serif; border: 1px solid rgba(255,255,255,0.2); }
     .legal-hero h1 { font-size: 2.2rem; font-weight: 700; font-family: 'Outfit', 'Inter', sans-serif; color: #fff; margin: 0 0 0.8rem; letter-spacing: -0.5px; line-height: 1.2; }
