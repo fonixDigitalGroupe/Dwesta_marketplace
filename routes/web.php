@@ -40,6 +40,7 @@ Route::get('/besoin-aide', [PageController::class, 'help'])->name('help');
 Route::get('/signaler-contenu', [PageController::class, 'report'])->name('report');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/ouvrir-eshop', [PageController::class, 'eshop'])->name('eshop.landing');
+Route::get('/astuces-vendeurs', [PageController::class, 'sellerTips'])->name('vendeur.astuces');
 
 
 

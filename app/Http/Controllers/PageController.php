@@ -70,5 +70,13 @@ class PageController extends Controller
     {
         return view('pages.eshop');
     }
+
+    /**
+     * Affiche la page "Astuces pour Vendeurs Particuliers".
+     */
+    public function sellerTips()
+    {
+        return view('pages.vendeur-astuces');
+    }
 }
 
