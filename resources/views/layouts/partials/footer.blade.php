@@ -138,7 +138,7 @@
                 </div>
             </div>
             <div class="footer-copyright-final">
-                © Karnou France 2024 - 2026
+                © Karnou 2024 - 2026
             </div>
         </div>
     </div>
@@ -389,7 +389,7 @@
     .brand-logo-final {
         font-size: 1.8rem;
         font-weight: 900;
-        color: #bf0000;
+        color: #000;
         letter-spacing: -1px;
     }
 
@@ -405,7 +405,7 @@
         font-weight: 500;
     }
 
-    .brand-links-final a:hover { color: #bf0000; }
+    .brand-links-final a:hover { color: #000; }
 
     .region-btn {
         background: #fff;
