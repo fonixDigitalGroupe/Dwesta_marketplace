@@ -61,6 +61,10 @@
 
         <!-- Main -->
         <main class="legal-main">
+            <header class="legal-page-header">
+                <h1>Signaler un Contenu</h1>
+                <p class="last-update">Dernière mise à jour : 18 Juillet 2026</p>
+            </header>
             <p class="legal-intro">La sécurité et l'intégrité de notre marketplace sont nos priorités. Cette page vous explique comment signaler un contenu qui vous semble abusif ou non conforme à nos règles.</p>
 
             <article id="rep1" class="legal-article">
@@ -135,11 +139,12 @@
     .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }
     .back-to-site i, .header-auth i, .cart-link i { font-size: 1rem; }
 
-    .corp-logo img { height: 28px; width: auto; display: block; }
-    .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
+    /* --- Page Header --- */
+    .legal-page-header { margin-bottom: 2.5rem; }
+    .legal-page-header h1 { font-family: 'Outfit', sans-serif; font-size: 2.22rem; font-weight: 800; color: #1a1a1a; margin-bottom: 0.4rem; letter-spacing: -1px; line-height: 1.1; }
+    .last-update { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #999; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
 
-
-
+    /* --- Legal Hero --- */
     .legal-hero {
         padding: 4rem 2rem;
         color: #fff;

@@ -60,6 +60,10 @@
 
         <!-- Main -->
         <main class="legal-main">
+            <header class="legal-page-header">
+                <h1>Ouvrir un e-shop</h1>
+                <p class="last-update">Dernière mise à jour : 12 Janvier 2026</p>
+            </header>
             <p class="legal-intro">Karnou met à votre disposition une infrastructure complète pour vendre vos produits en ligne, que vous soyez un commerçant établi ou un particulier souhaitant vendre occasionnellement.</p>
 
             <article id="esh1" class="legal-article">
@@ -133,6 +137,11 @@
     .header-left, .header-right { flex: 1; display: flex; align-items: center; }
     .header-center { flex: 0; display: flex; justify-content: center; }
     .header-right { justify-content: flex-end; gap: 1.5rem; }
+
+    /* --- Page Header --- */
+    .legal-page-header { margin-bottom: 2.5rem; }
+    .legal-page-header h1 { font-family: 'Outfit', sans-serif; font-size: 2.22rem; font-weight: 800; color: #1a1a1a; margin-bottom: 0.4rem; letter-spacing: -1px; line-height: 1.1; }
+    .last-update { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #999; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
 
     .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; }
     .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }

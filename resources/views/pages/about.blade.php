@@ -59,6 +59,10 @@
 
         <!-- Main Content -->
         <main class="legal-main">
+            <header class="legal-page-header">
+                <h1>À propos de Karnou</h1>
+                <p class="last-update">Dernière mise à jour : 28 Février 2026</p>
+            </header>
 
             <!-- Section 01: Qui sommes-nous -->
             <article id="qui" class="legal-article">
@@ -198,10 +202,10 @@ verte pour particuliers et pros.</li>
     .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }
     .back-to-site i, .header-auth i, .cart-link i { font-size: 1rem; }
 
-    .corp-logo img { height: 28px; width: auto; display: block; }
-    .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
-
-
+    /* --- Page Header --- */
+    .legal-page-header { margin-bottom: 2.5rem; }
+    .legal-page-header h1 { font-family: 'Outfit', sans-serif; font-size: 2.22rem; font-weight: 800; color: #1a1a1a; margin-bottom: 0.4rem; letter-spacing: -1px; line-height: 1.1; }
+    .last-update { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #999; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
 
     /* --- Legal Hero --- */
     .legal-hero {

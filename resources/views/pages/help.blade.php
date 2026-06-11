@@ -60,6 +60,10 @@
 
         <!-- Main -->
         <main class="legal-main">
+            <header class="legal-page-header">
+                <h1>Centre d'Aide</h1>
+                <p class="last-update">Dernière mise à jour : 10 Juin 2026</p>
+            </header>
             <p class="legal-intro">Bienvenue sur le centre d'aide Karnou. Nous avons regroupé ici les questions les plus fréquentes pour vous aider à profiter pleinement de notre marketplace.</p>
 
             <article id="help1" class="legal-article">
@@ -139,8 +143,12 @@
     .corp-logo img { height: 28px; width: auto; display: block; }
     .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
 
+    /* --- Page Header --- */
+    .legal-page-header { margin-bottom: 2.5rem; }
+    .legal-page-header h1 { font-family: 'Outfit', sans-serif; font-size: 2.22rem; font-weight: 800; color: #1a1a1a; margin-bottom: 0.4rem; letter-spacing: -1px; line-height: 1.1; }
+    .last-update { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #999; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
 
-
+    /* --- Legal Hero --- */
     .legal-hero {
         padding: 4rem 2rem;
         color: #fff;
