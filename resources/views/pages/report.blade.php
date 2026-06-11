@@ -132,12 +132,12 @@
     .corp-nav ul { display: flex; list-style: none; gap: 0.8rem; margin: 0; padding: 0; flex-wrap: wrap; justify-content: flex-end; }
     .corp-nav ul li a { text-decoration: none; color: #555; font-size: 0.82rem; font-weight: 500; font-family: 'Inter', sans-serif; transition: all 0.2s; border-bottom: 2px solid transparent; padding-bottom: 0.3rem; }
     .corp-nav ul li a:hover { color: #004aad; }
-    .corp-nav ul li.active a { color: #fff; background: #004aad; border-bottom: none; font-weight: 600; padding: 0.3rem 0.85rem; }
+    .corp-nav ul li.active a { color: #fff; background: #004aad; border-bottom: none; font-weight: 600; padding: 0.5rem 1rem; }
 
     .legal-hero {
         padding: 4rem 2rem;
         color: #fff;
-        min-height: 400px;
+        min-height: 480px;
         display: flex;
         align-items: center;
     }
