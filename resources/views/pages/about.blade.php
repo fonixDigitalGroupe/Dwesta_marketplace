@@ -188,6 +188,7 @@
 
     /* --- Corporate Header --- */
     .corporate-header { background: #fff; padding: 1.2rem 0; border-bottom: 1px solid #eee; font-family: 'Inter', sans-serif; }
+    .corporate-header .about-container { max-width: 1350px; padding: 0 1.5rem; }
     .corp-header-flex { display: flex; justify-content: space-between; align-items: center; }
     .corp-logo { display: block; text-decoration: none; }
     .corp-brand { font-size: 1.4rem; font-weight: 700; color: #004aad; letter-spacing: -1px; }
