@@ -134,7 +134,7 @@
             </aside>
 
             <!-- Form Column -->
-            <div class="contact-form-col">
+            <div class="contact-form-col contact-form-card">
                 <h3>Envoyez-nous un message</h3>
                 <form class="contact-form">
                     <div class="form-row-2">
@@ -238,6 +238,7 @@
 
     /* Form */
     .contact-form-col h3 { font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 700; color: #111; margin-bottom: 1.5rem; }
+    .contact-form-card { background: #fff; border: 1px solid #f0f0f0; border-radius: 16px; padding: 2rem 2.5rem; }
     .contact-form { display: flex; flex-direction: column; gap: 1rem; }
     .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
