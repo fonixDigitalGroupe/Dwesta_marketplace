@@ -49,6 +49,7 @@
     <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/report_bannier.png');">
         <div class="about-container">
             <h1>Signaler un abus</h1>
+            <p class="page-hero-desc">La sécurité et l'intégrité de notre marketplace sont nos priorités. Cette page vous explique comment signaler un contenu qui vous semble abusif ou non conforme à nos règles.</p>
             <p class="last-update">Dernière mise à jour : 22 Mai 2026</p>
         </div>
     </div>
@@ -69,7 +70,6 @@
 
         <!-- Main -->
         <main class="legal-main">
-            <p class="legal-intro">La sécurité et l'intégrité de notre marketplace sont nos priorités. Cette page vous explique comment signaler un contenu qui vous semble abusif ou non conforme à nos règles.</p>
 
             <article id="rep1" class="legal-article">
                 <div class="article-num">01</div>
@@ -166,6 +166,14 @@
         font-weight: 500; 
         text-transform: uppercase; 
         letter-spacing: 0.5px; 
+    }
+    .page-hero-desc { 
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem; 
+        color: rgba(255,255,255,0.8); 
+        max-width: 680px; 
+        margin: 0 auto 1.2rem; 
+        line-height: 1.6; 
     }
 
     .legal-layout { display: flex; align-items: flex-start; max-width: 1200px; margin: 3rem auto; padding: 0 2rem; gap: 3rem; }

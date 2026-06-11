@@ -45,6 +45,7 @@
     <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/eshop_bannier.png');">
         <div class="contact-container">
             <h1>Ouvrir un e-shop</h1>
+            <p class="page-hero-desc">Karnou met à votre disposition une infrastructure complète pour vendre vos produits en ligne, que vous soyez un commerçant établi ou un particulier souhaitant vendre occasionnellement.</p>
             <p class="last-update">Dernière mise à jour : 12 Janvier 2026</p>
         </div>
     </div>
@@ -66,7 +67,6 @@
 
         <!-- Main -->
         <main class="legal-main">
-            <p class="legal-intro">Karnou met à votre disposition une infrastructure complète pour vendre vos produits en ligne, que vous soyez un commerçant établi ou un particulier souhaitant vendre occasionnellement.</p>
 
             <article id="esh1" class="legal-article">
                 <div class="article-num">01</div>
@@ -166,6 +166,14 @@
         font-weight: 500; 
         text-transform: uppercase; 
         letter-spacing: 0.5px; 
+    }
+    .page-hero-desc { 
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem; 
+        color: rgba(255,255,255,0.8); 
+        max-width: 680px; 
+        margin: 0 auto 1.2rem; 
+        line-height: 1.6; 
     }
 
     .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; }

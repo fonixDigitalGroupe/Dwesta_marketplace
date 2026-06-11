@@ -47,6 +47,7 @@
     <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/apropos_bannier.jpg');">
         <div class="about-container">
             <h1>À propos de Karnou</h1>
+            <p class="page-hero-desc">Karnou, fondé en République Centrafricaine, est né de la volonté de démocratiser le commerce numérique en Afrique en rassemblant des services digitaux innovants.</p>
             <p class="last-update">Dernière mise à jour : 28 Février 2026</p>
         </div>
     </div>
@@ -232,6 +233,14 @@ verte pour particuliers et pros.</li>
         font-weight: 500; 
         text-transform: uppercase; 
         letter-spacing: 0.5px; 
+    }
+    .page-hero-desc { 
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem; 
+        color: rgba(255,255,255,0.8); 
+        max-width: 680px; 
+        margin: 0 auto 1.2rem; 
+        line-height: 1.6; 
     }
 
     /* --- Legal Hero --- */

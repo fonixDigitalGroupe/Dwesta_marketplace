@@ -50,6 +50,7 @@
     <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/apropos_bannier.jpg');">
         <div class="about-container">
             <h1>Conditions Générales d'Utilisation</h1>
+            <p class="page-hero-desc">Consultez les règles et conditions régissant l'utilisation de la plateforme Karnou pour garantir une expérience sécurisée et transparente pour tous nos utilisateurs.</p>
             <p class="last-update">Dernière mise à jour : 15 Mars 2026</p>
         </div>
     </div>
@@ -265,6 +266,14 @@
         font-weight: 500; 
         text-transform: uppercase; 
         letter-spacing: 0.5px; 
+    }
+    .page-hero-desc { 
+        font-family: 'Inter', sans-serif;
+        font-size: 1rem; 
+        color: rgba(255,255,255,0.8); 
+        max-width: 680px; 
+        margin: 0 auto 1.2rem; 
+        line-height: 1.6; 
     }
 
     .corp-logo img { height: 28px; width: auto; display: block; }
