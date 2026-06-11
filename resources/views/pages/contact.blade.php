@@ -102,27 +102,46 @@
             <aside class="contact-infos">
                 <h3>Nos coordonnées</h3>
                 <ul class="infos-list">
+                    @php
+                        $contactAddress = \App\Models\Setting::get('contact_address');
+                        $contactEmails  = json_decode(\App\Models\Setting::get('contact_emails', '[]'), true) ?: [];
+                        $contactPhones  = json_decode(\App\Models\Setting::get('contact_phones', '[]'), true) ?: [];
+                    @endphp
+
+                    @if($contactAddress)
                     <li>
                         <span class="info-icon"><i class="fa-solid fa-location-dot"></i></span>
                         <div>
                             <strong>Siège social</strong><br>
-                            Bangui, République Centrafricaine
+                            {{ $contactAddress }}
                         </div>
                     </li>
+                    @endif
+
+                    @foreach($contactEmails as $email)
+                    @if($email)
                     <li>
                         <span class="info-icon"><i class="fa-solid fa-envelope"></i></span>
                         <div>
-                            <strong>Email général</strong><br>
-                            <a href="mailto:contact@karnou.com">contact@karnou.com</a>
+                            <strong>Email</strong><br>
+                            <a href="mailto:{{ $email }}">{{ $email }}</a>
                         </div>
                     </li>
+                    @endif
+                    @endforeach
+
+                    @foreach($contactPhones as $phone)
+                    @if($phone)
                     <li>
                         <span class="info-icon"><i class="fa-solid fa-phone"></i></span>
                         <div>
                             <strong>Téléphone</strong><br>
-                            +236 00 00 00 00
+                            {{ $phone }}
                         </div>
                     </li>
+                    @endif
+                    @endforeach
+
                     <li>
                         <span class="info-icon"><i class="fa-solid fa-clock"></i></span>
                         <div>
