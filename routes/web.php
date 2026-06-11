@@ -41,6 +41,10 @@ Route::get('/signaler-contenu', [PageController::class, 'report'])->name('report
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/ouvrir-eshop', [PageController::class, 'eshop'])->name('eshop.landing');
 Route::get('/astuces-vendeurs', [PageController::class, 'sellerTips'])->name('vendeur.astuces');
+Route::get('/le-choix', [PageController::class, 'leChoix'])->name('le-choix');
+Route::get('/la-securite', [PageController::class, 'laSecurite'])->name('la-securite');
+Route::get('/service-clients', [PageController::class, 'serviceClients'])->name('service-clients');
+Route::get('/expedition', [PageController::class, 'expedition'])->name('expedition');
 
 
 

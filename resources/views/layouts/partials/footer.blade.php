@@ -3,34 +3,34 @@
     <div class="footer-reinsurance">
         <div class="footer-container">
             <div class="reinsurance-grid">
-                <div class="reinsurance-item">
+                <a href="{{ route('le-choix') }}" class="reinsurance-item" style="text-decoration: none;">
                     <div class="reinsurance-icon-box"><i class="fa-solid fa-layer-group"></i></div>
                     <div class="reinsurance-text">
                         <span class="reinsurance-label">Le choix</span>
                         <span class="reinsurance-value">Neuf et occasion</span>
                     </div>
-                </div>
-                <div class="reinsurance-item">
+                </a>
+                <a href="{{ route('la-securite') }}" class="reinsurance-item" style="text-decoration: none;">
                     <div class="reinsurance-icon-box"><i class="fa-solid fa-shield-halved"></i></div>
                     <div class="reinsurance-text">
                         <span class="reinsurance-label">La sécurité</span>
                         <span class="reinsurance-value">Satisfait ou remboursé</span>
                     </div>
-                </div>
-                <div class="reinsurance-item">
+                </a>
+                <a href="{{ route('service-clients') }}" class="reinsurance-item" style="text-decoration: none;">
                     <div class="reinsurance-icon-box"><i class="fa-solid fa-headset"></i></div>
                     <div class="reinsurance-text">
                         <span class="reinsurance-label">Le service clients</span>
                         <span class="reinsurance-value">À votre écoute</span>
                     </div>
-                </div>
-                <div class="reinsurance-item">
+                </a>
+                <a href="{{ route('expedition') }}" class="reinsurance-item" style="text-decoration: none;">
                     <div class="reinsurance-icon-box"><i class="fa-solid fa-truck-fast"></i></div>
                     <div class="reinsurance-text">
                         <span class="reinsurance-label">L'expédition</span>
                         <span class="reinsurance-value">Livraison rapide</span>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>

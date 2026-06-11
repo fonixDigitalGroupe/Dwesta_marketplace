@@ -78,5 +78,25 @@ class PageController extends Controller
     {
         return view('pages.vendeur-astuces');
     }
+
+    public function leChoix()
+    {
+        return view('pages.le-choix');
+    }
+
+    public function laSecurite()
+    {
+        return view('pages.la-securite');
+    }
+
+    public function serviceClients()
+    {
+        return view('pages.service-clients');
+    }
+
+    public function expedition()
+    {
+        return view('pages.expedition');
+    }
 }
 
