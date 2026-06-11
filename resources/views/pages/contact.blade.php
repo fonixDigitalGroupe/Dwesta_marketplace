@@ -196,10 +196,10 @@
     .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
 
     /* --- Hero --- */
-    .contact-hero { background: #fff; padding: 4rem 0 3rem; border-bottom: 1px solid #f0f0f0; text-align: center; }
-    .contact-hero h1 { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: #1a1a1a; margin-bottom: 0.8rem; letter-spacing: -0.5px; }
-    .contact-hero-sub { font-size: 1rem; color: #6b7280; max-width: 560px; margin: 0 auto 0.8rem; line-height: 1.7; }
-    .last-update { font-size: 0.78rem; color: #bbb; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+    .contact-hero { background: linear-gradient(135deg, rgba(0, 74, 173, 0.88) 0%, rgba(0, 30, 90, 0.82) 100%), url('/images/contact_bannier.png') center/cover no-repeat; padding: 5rem 0 4rem; border-bottom: none; text-align: center; }
+    .contact-hero h1 { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 0.8rem; letter-spacing: -0.5px; }
+    .contact-hero-sub { font-size: 1rem; color: rgba(255,255,255,0.8); max-width: 560px; margin: 0 auto 0.8rem; line-height: 1.7; }
+    .last-update { font-size: 0.78rem; color: rgba(255,255,255,0.45); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
 
     /* --- Category Cards --- */
     .contact-categories { padding: 4rem 0; background: #fff; }
