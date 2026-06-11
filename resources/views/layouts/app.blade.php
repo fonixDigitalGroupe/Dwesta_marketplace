@@ -67,20 +67,25 @@
     @stack('styles')
 </head>
 
+@php
+    $corporateRoutes = ['about', 'terms', 'privacy', 'cookies', 'help', 'report', 'contact', 'eshop.landing'];
+    $isCorporatePage = Route::is(...$corporateRoutes);
+@endphp
+
 <body x-data="{ mobileMenuOpen: false }">
-    @if(request('layout') != 'mini')
+    @if(!$isCorporatePage)
         <div class="top-banner"></div>
     @endif
 
 
-    @if(request('layout') != 'mini')
+    @if(!$isCorporatePage)
         @include('layouts.partials.header')
     @endif
 
 
     @yield('content')
 
-    @if(request('layout') != 'mini')
+    @if(!$isCorporatePage)
         @include('layouts.partials.footer')
     @endif
 
