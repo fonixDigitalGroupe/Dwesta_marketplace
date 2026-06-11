@@ -33,11 +33,12 @@
     <nav class="about-sub-nav">
         <div class="about-container">
             <ul class="sub-nav-list">
-                <li class="active"><a href="#">À propos de Karnou</a></li>
-                <li><a href="#">Conditions générales</a></li>
-                <li><a href="#">Vie privée</a></li>
-                <li><a href="#">Gestion des cookies</a></li>
+                <li class="active"><a href="{{ route('about') }}">À propos de Karnou</a></li>
+                <li><a href="{{ route('terms') }}">Conditions générales</a></li>
+                <li><a href="{{ route('privacy') }}">Vie privée</a></li>
+                <li><a href="{{ route('cookies') }}">Gestion des cookies</a></li>
             </ul>
+
             <div class="sub-nav-search">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>

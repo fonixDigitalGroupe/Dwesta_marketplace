@@ -11,6 +11,32 @@ class PageController extends Controller
      */
     public function about()
     {
-        return view('pages.about');
+        $countries = \App\Models\Country::where('is_active', true)->get();
+        return view('pages.about', compact('countries'));
+    }
+
+    /**
+     * Affiche la page "Conditions Générales d'Utilisation".
+     */
+    public function terms()
+    {
+        return view('pages.terms');
+    }
+
+    /**
+     * Affiche la page "Vie Privée".
+     */
+    public function privacy()
+    {
+        return view('pages.privacy');
+    }
+
+    /**
+     * Affiche la page "Gestion des Cookies".
+     */
+    public function cookies()
+    {
+        return view('pages.cookies');
     }
 }
+

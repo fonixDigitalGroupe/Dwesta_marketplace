@@ -32,10 +32,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/a-propos', function () {
-    $countries = \App\Models\Country::where('is_active', true)->get();
-    return view('pages.about', compact('countries'));
-})->name('about');
+Route::get('/a-propos', [PageController::class, 'about'])->name('about');
+Route::get('/conditions-generales', [PageController::class, 'terms'])->name('terms');
+Route::get('/vie-privee', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/gestion-cookies', [PageController::class, 'cookies'])->name('cookies');
+
 
 
 

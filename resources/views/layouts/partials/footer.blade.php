@@ -62,9 +62,10 @@
                     <h4 class="footer-col-title">KARNOU</h4>
                     <ul class="footer-links-list">
                         <li><a href="{{ route('about') }}">À propos de Karnou</a></li>
-                        <li><a href="#">Conditions générales</a></li>
-                        <li><a href="#">Vie privée</a></li>
-                        <li><a href="#">Gestion des cookies</a></li>
+                        <li><a href="{{ route('terms') }}">Conditions générales</a></li>
+                        <li><a href="{{ route('privacy') }}">Vie privée</a></li>
+                        <li><a href="{{ route('cookies') }}">Gestion des cookies</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -95,7 +96,8 @@
             <div class="international-links">
                 <a href="#">Mentions légales</a>
                 <span class="sep">|</span>
-                <a href="#">Politique de confidentialité</a>
+                <a href="{{ route('privacy') }}">Politique de confidentialité</a>
+
                 <span class="sep">|</span>
                 <a href="#">Karnou France</a>
                 <span class="sep">|</span>
