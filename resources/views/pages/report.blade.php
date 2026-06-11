@@ -8,28 +8,53 @@
     <header class="corporate-header">
         <div class="about-container">
             <div class="corp-header-flex">
-                <a href="{{ route('home') }}" class="corp-logo">
-                    @if($logoUrl = \App\Models\Setting::logoUrl())
-                        <img src="{{ $logoUrl }}" alt="Logo" style="height: 26px; width: auto;">
+                <div class="header-left">
+                    <a href="{{ route('home') }}" class="back-to-site">
+                        <i class="fa-solid fa-chevron-left"></i> Retour sur le site
+                    </a>
+                </div>
+                <div class="header-center">
+                    <a href="{{ route('home') }}" class="corp-logo">
+                        @if($logoUrl = \App\Models\Setting::logoUrl())
+                            <img src="{{ $logoUrl }}" alt="Logo">
+                        @else
+                            <span class="corp-brand">Karnou</span>
+                        @endif
+                    </a>
+                </div>
+                <div class="header-right">
+                    @auth
+                        <a href="{{ route('account.index') }}" class="header-auth">
+                            <i class="fa-regular fa-user"></i> {{ auth()->user()->prenom ?? auth()->user()->name }}
+                        </a>
                     @else
-                        <span class="corp-brand">Karnou</span>
-                    @endif
-                </a>
-                <nav class="corp-nav">
-                    <ul>
-                        <li class="{{ Route::is('about') ? 'active' : '' }}"><a href="{{ route('about') }}">À propos de Karnou</a></li>
-                        <li class="{{ Route::is('terms') ? 'active' : '' }}"><a href="{{ route('terms') }}">Conditions générales</a></li>
-                        <li class="{{ Route::is('privacy') ? 'active' : '' }}"><a href="{{ route('privacy') }}">Vie privée</a></li>
-                        <li class="{{ Route::is('cookies') ? 'active' : '' }}"><a href="{{ route('cookies') }}">Gestion des cookies</a></li>
-                        <li class="{{ Route::is('help') ? 'active' : '' }}"><a href="{{ route('help') }}">Besoin d'aide ?</a></li>
-                        <li class="{{ Route::is('eshop.landing') ? 'active' : '' }}"><a href="{{ route('eshop.landing') }}">Ouvrir un e-shop</a></li>
-                        <li class="{{ Route::is('report') ? 'active' : '' }}"><a href="{{ route('report') }}">Signaler un contenu</a></li>
-                        <li class="{{ Route::is('contact') ? 'active' : '' }}"><a href="{{ route('contact') }}">Contact</a></li>
-                    </ul>
-                </nav>
+                        <a href="{{ route('login') }}" class="header-auth">
+                            <i class="fa-regular fa-user"></i> Se connecter
+                        </a>
+                    @endauth
+                    <a href="{{ route('cart.index') }}" class="header-link cart-link" title="Mon Panier">
+                        <i class="fa-solid fa-cart-shopping"></i> Panier
+                    </a>
+                </div>
             </div>
         </div>
     </header>
+
+    <!-- Sub Nav -->
+    <div class="about-sub-nav">
+        <div class="about-container">
+            <ul>
+                <li class="{{ Route::is('about') ? 'active' : '' }}"><a href="{{ route('about') }}">À propos</a></li>
+                <li class="{{ Route::is('terms') ? 'active' : '' }}"><a href="{{ route('terms') }}">Conditions</a></li>
+                <li class="{{ Route::is('privacy') ? 'active' : '' }}"><a href="{{ route('privacy') }}">Vie privée</a></li>
+                <li class="{{ Route::is('cookies') ? 'active' : '' }}"><a href="{{ route('cookies') }}">Cookies</a></li>
+                <li class="{{ Route::is('help') ? 'active' : '' }}"><a href="{{ route('help') }}">Aide</a></li>
+                <li class="{{ Route::is('eshop.landing') ? 'active' : '' }}"><a href="{{ route('eshop.landing') }}">e-Shop</a></li>
+                <li class="{{ Route::is('report') ? 'active' : '' }}"><a href="{{ route('report') }}">Signaler</a></li>
+                <li class="{{ Route::is('contact') ? 'active' : '' }}"><a href="{{ route('contact') }}">Contact</a></li>
+            </ul>
+        </div>
+    </div>
 
     <!-- Hero -->
     <div class="legal-hero" style="background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 49, 130, 0.8) 100%), url('{{ asset('images/report_bannier.png') }}'); background-size: cover; background-position: center;">
@@ -125,15 +150,28 @@
     .about-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 
     /* --- Corporate Header --- */
-    .corporate-header { background: #fff; padding: 1.2rem 0; border-bottom: 1px solid #eee; font-family: 'Inter', sans-serif; }
+    .corporate-header { background: #fff; padding: 1rem 0; border-bottom: 1px solid #eee; font-family: 'Inter', sans-serif; position: sticky; top: 0; z-index: 1000; }
     .corporate-header .about-container { max-width: 1350px; padding: 0 1.5rem; }
     .corp-header-flex { display: flex; justify-content: space-between; align-items: center; }
-    .corp-logo { display: block; text-decoration: none; }
-    .corp-brand { font-size: 1.4rem; font-weight: 700; color: #004aad; letter-spacing: -1px; }
-    .corp-nav ul { display: flex; list-style: none; gap: 0.8rem; margin: 0; padding: 0; flex-wrap: wrap; justify-content: flex-end; }
-    .corp-nav ul li a { text-decoration: none; color: #555; font-size: 0.82rem; font-weight: 500; font-family: 'Inter', sans-serif; transition: all 0.2s; border-bottom: 2px solid transparent; padding: 0.4rem 0.6rem; display: inline-block; }
-    .corp-nav ul li a:hover { color: #004aad; }
-    .corp-nav ul li.active a { color: #fff; background: #004aad; border-bottom: none; font-weight: 600; padding: 0.7rem 1.2rem; border-radius: 4px; }
+
+    .header-left, .header-right { flex: 1; display: flex; align-items: center; }
+    .header-center { flex: 0; display: flex; justify-content: center; }
+    .header-right { justify-content: flex-end; gap: 1.5rem; }
+
+    .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; transition: all 0.2s; }
+    .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }
+    .back-to-site i, .header-auth i, .cart-link i { font-size: 1rem; }
+
+    .corp-logo img { height: 28px; width: auto; display: block; }
+    .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
+
+    /* --- Sub Nav --- */
+    .about-sub-nav { background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 61px; z-index: 900; padding: 1.2rem 0; box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05); }
+    .about-sub-nav .about-container { max-width: 1350px; }
+    .about-sub-nav ul { display: flex; list-style: none; gap: 1rem; margin: 0; padding: 0; justify-content: center; flex-wrap: wrap; }
+    .about-sub-nav ul li a { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; padding: 0.6rem 1rem; border-radius: 4px; transition: all 0.2s; }
+    .about-sub-nav ul li a:hover { color: #004aad; background: #f0f7ff; }
+    .about-sub-nav ul li.active a { background: #004aad; color: #fff; font-weight: 600; padding: 0.7rem 1.2rem; }
 
     .legal-hero {
         padding: 4rem 2rem;
