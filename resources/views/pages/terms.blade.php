@@ -453,32 +453,7 @@
 <script>
     // Highlight active TOC item on scroll
     document.addEventListener('DOMContentLoaded', () => {
-        const articles = document.querySelectorAll('.legal-article');
-        const tocLinks = document.querySelectorAll('.toc-list a');
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    tocLinks.forEach(link => link.style.background = '');
-                    tocLinks.forEach(link => link.style.color = '');
-                    const active = document.querySelector(`.toc-list a[href="#${entry.target.id}"]`);
-                    if (active) {
-                        active.style.background = '#fff5eb';
-                        active.style.color = '#f68b1e';
-                        active.style.fontWeight = '600';
-                    }
-                } else {
-                    const link = document.querySelector(`.toc-list a[href="#${entry.target.id}"]`);
-                    if (link) {
-                        link.style.background = '';
-                        link.style.color = '';
-                        link.style.fontWeight = '';
-                    }
-                }
-            });
-        }, { rootMargin: '-20% 0px -70% 0px' });
-
-        articles.forEach(a => observer.observe(a));
+        // Observer removed for static experience
     });
 </script>
 @endsection

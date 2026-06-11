@@ -220,21 +220,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const articles = document.querySelectorAll('.legal-article');
-        const tocLinks = document.querySelectorAll('.toc-list a');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const link = document.querySelector(`.toc-list a[href="#${entry.target.id}"]`);
-                if (!link) return;
-                if (entry.isIntersecting) {
-                    tocLinks.forEach(l => { l.style.background=''; l.style.color=''; l.style.fontWeight=''; });
-                    link.style.background = '#fff5eb';
-                    link.style.color = '#f68b1e';
-                    link.style.fontWeight = '600';
-                }
-            });
-        }, { rootMargin: '-20% 0px -70% 0px' });
-        articles.forEach(a => observer.observe(a));
+        // Observer removed for static experience
     });
 </script>
 @endsection

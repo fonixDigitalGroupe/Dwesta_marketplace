@@ -244,7 +244,7 @@
 
     /* --- Tabs --- */
     .qui-tabs { display: flex; border-bottom: 1px solid #eee; margin-bottom: 1.5rem; gap: 1rem; }
-    .qui-tab { background: none; border: none; padding: 0.8rem 0; color: #888; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.3s; }
+    .qui-tab { background: none; border: none; padding: 0.8rem 0; color: #888; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500; border-bottom: 2px solid transparent; }
     .qui-tab.active { color: #004aad; border-bottom: 2px solid #004aad; }
     .qui-tab-content { display: none; font-size: 0.92rem; line-height: 1.7; color: #666; font-family: 'Inter', sans-serif; }
     .qui-tab-content.active { display: block; }
@@ -299,21 +299,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        const articles = document.querySelectorAll('.legal-article');
-        const tocLinks = document.querySelectorAll('.toc-list a');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const link = document.querySelector(`.toc-list a[href="#${entry.target.id}"]`);
-                if (!link) return;
-                if (entry.isIntersecting) {
-                    tocLinks.forEach(l => { l.style.background=''; l.style.color=''; l.style.fontWeight=''; });
-                    link.style.background = '#fff5eb';
-                    link.style.color = '#f68b1e';
-                    link.style.fontWeight = '600';
-                }
-            });
-        }, { rootMargin: '-20% 0px -70% 0px' });
-        articles.forEach(a => observer.observe(a));
+        // Observer removed for static experience
     });
 </script>
 @endsection
