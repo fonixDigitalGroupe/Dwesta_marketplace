@@ -17,7 +17,6 @@
                 </a>
                 <nav class="corp-nav">
                     <ul>
-                        <li><a href="#">Actualités</a></li>
                         <li class="active"><a href="{{ route('about') }}">À propos</a></li>
                         <li><a href="#">Contact</a></li>
                     </ul>
