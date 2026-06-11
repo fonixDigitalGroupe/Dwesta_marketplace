@@ -204,12 +204,15 @@
     .sub-nav-list li.active a { border-bottom: 2px solid #004aad; color: #1a1a1a; font-weight: 600; }
 
     /* --- Legal Hero --- */
-    .legal-hero { 
+    .legal-hero {
         background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 49, 130, 0.8) 100%), url('/images/apropos_bannier.jpg');
         background-size: cover;
         background-position: center;
-        padding: 4rem 2rem; 
-        color: #fff; 
+        padding: 4rem 2rem;
+        color: #fff;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
     }
     .legal-hero-inner { max-width: 800px; margin: 0 auto; }
     .legal-category-badge { display: inline-block; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; padding: 0.35rem 0.9rem; border-radius: 50px; margin-bottom: 1.2rem; font-family: 'Inter', sans-serif; border: 1px solid rgba(255,255,255,0.2); }

@@ -137,7 +137,13 @@
     .corp-nav ul li a:hover { color: #004aad; }
     .corp-nav ul li.active a { color: #004aad; border-bottom: 2px solid #004aad; font-weight: 600; }
 
-    .legal-hero { padding: 4rem 2rem; color: #fff; }
+    .legal-hero {
+        padding: 4rem 2rem;
+        color: #fff;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+    }
     .legal-hero-inner { max-width: 800px; margin: 0 auto; }
     .legal-category-badge { display: inline-block; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; padding: 0.35rem 0.9rem; border-radius: 50px; margin-bottom: 1.2rem; font-family: 'Inter', sans-serif; border: 1px solid rgba(255,255,255,0.2); }
     .legal-hero h1 { font-size: 2.2rem; font-weight: 700; font-family: 'Outfit', 'Inter', sans-serif; color: #fff; margin: 0 0 0.8rem; letter-spacing: -0.5px; line-height: 1.2; }

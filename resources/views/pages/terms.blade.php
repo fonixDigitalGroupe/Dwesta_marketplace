@@ -239,6 +239,9 @@
         background-position: center;
         padding: 4rem 2rem;
         color: #fff;
+        min-height: 400px;
+        display: flex;
+        align-items: center;
     }
     .legal-hero-inner {
         max-width: 800px;
