@@ -50,28 +50,48 @@
 
             <div class="legal-text">
                 <section>
-                    <h3>1. Objet</h3>
-                    <p>Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les modalités et conditions dans lesquelles Karnou met à la disposition de ses utilisateurs son site et ses services.</p>
+                    <h3>1. Objet et Champ d'Application</h3>
+                    <p>Les présentes Conditions Générales d'Utilisation (CGU) détaillent les règles régissant l'utilisation de la plateforme Karnou. En accédant à nos services, vous acceptez sans réserve l'intégralité de ces conditions. Karnou se réserve le droit de modifier ces termes à tout moment pour les adapter aux évolutions du site et de la législation.</p>
                 </section>
 
                 <section>
-                    <h3>2. Acceptation des CGU</h3>
-                    <p>L'accès et l'utilisation du site sont soumis à l'acceptation et au respect des présentes CGU. En naviguant sur le site, l'utilisateur est réputé en avoir pris connaissance et les avoir acceptées sans réserve.</p>
+                    <h3>2. Inscription et Sécurité du Compte</h3>
+                    <p>Pour bénéficier de l'intégralité de nos services, l'utilisateur doit créer un compte. Vous vous engagez à fournir des informations exactes et à les maintenir à jour. La confidentialité de vos identifiants de connexion relève de votre entière responsabilité. Toute activité effectuée depuis votre compte est réputée être de votre fait.</p>
                 </section>
 
                 <section>
-                    <h3>3. Accès au site</h3>
-                    <p>Le site est accessible gratuitement à tout utilisateur disposant d'un accès à internet. Tous les coûts afférents à l'accès au site, que ce soient les frais matériels, logiciels ou d'accès à internet sont exclusivement à la charge de l'utilisateur.</p>
+                    <h3>3. Obligations de l'Utilisateur</h3>
+                    <p>L'utilisateur s'engage à utiliser le site conformément aux lois en vigueur. Sont strictement interdits :</p>
+                    <ul>
+                        <li>La publication de contenus illicites, haineux ou diffamatoires.</li>
+                        <li>L'usurpation d'identité ou la création de comptes multiples à des fins frauduleuses.</li>
+                        <li>L'utilisation de scripts automatisés pour collecter des données sans autorisation préalable.</li>
+                    </ul>
                 </section>
 
                 <section>
-                    <h3>4. Responsabilité</h3>
-                    <p>Karnou s'efforce de fournir sur le site des informations aussi précises que possible. Toutefois, il ne pourra être tenu responsable des omissions, des inexactitudes et des carences dans la mise à jour, qu'elles soient de son fait ou du fait des tiers partenaires qui lui fournissent ces informations.</p>
+                    <h3>4. Transactions et Paiements</h3>
+                    <p>Karnou facilite les transactions entre acheteurs et vendeurs via des solutions de paiement sécurisées. Nous agissons en tant qu'intermédiaire et ne saurions être tenus responsables des litiges directs entre utilisateurs, bien que nous mettions à disposition un service de médiation pour résoudre les différends.</p>
                 </section>
 
                 <section>
-                    <h3>5. Propriété intellectuelle</h3>
-                    <p>Tous les éléments du site Karnou, qu'ils soient visuels ou sonores, y compris la technologie sous-jacente, sont protégés par le droit d'auteur, des marques ou des brevets. Ils sont la propriété exclusive de Karnou.</p>
+                    <h3>5. Propriété Intellectuelle</h3>
+                    <p>L'ensemble des textes, graphiques, logos et logiciels présents sur Karnou est la propriété exclusive du groupe ou de ses partenaires. Toute reproduction, même partielle, est interdite sans accord écrit préalable.</p>
+                </section>
+
+                <section>
+                    <h3>6. Limitation de Responsabilité</h3>
+                    <p>Bien que nous fassions tout notre possible pour assurer la disponibilité et l'exactitude des informations, Karnou ne garantit pas que le service sera exempt d'interruptions ou d'erreurs. Nous déclinons toute responsabilité en cas de perte de données ou de dommages indirects liés à l'usage de la plateforme.</p>
+                </section>
+
+                <section>
+                    <h3>7. Résiliation</h3>
+                    <p>En cas de non-respect de ces CGU, Karnou se réserve le droit de suspendre ou de supprimer votre compte de plein droit, sans préavis ni indemnité, sans préjudice des éventuelles actions judiciaires qui pourraient être engagées.</p>
+                </section>
+
+                <section>
+                    <h3>8. Loi Applicable et Juridiction</h3>
+                    <p>Les présentes conditions sont régies par les lois en vigueur dans le pays de siège du groupe Karnou. Tout litige relatif à leur interprétation ou leur exécution sera soumis à la compétence exclusive des tribunaux compétents.</p>
                 </section>
             </div>
         </div>
@@ -82,7 +102,7 @@
     .legal-page { background: #fff; padding-bottom: 6rem; }
     .about-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
     
-    /* Header & Nav (Duplicate from about for consistency) */
+    /* Header & Nav */
     .corporate-header { background: #fff; padding: 1.2rem 0; border-bottom: 1px solid #eee; font-family: 'Inter', sans-serif; }
     .corp-header-flex { display: flex; justify-content: flex-start; align-items: center; gap: 3rem; }
     .corp-brand { font-size: 1.4rem; font-weight: 700; color: #004aad; letter-spacing: -1px; text-decoration: none; padding: 1rem 0; margin-left: 2rem; }
@@ -99,12 +119,14 @@
     /* Legal Content */
     .legal-content { padding: 5rem 0; }
     .section-header { text-align: center; margin-bottom: 4rem; }
-    .qui-title { font-size: 2.5rem; font-weight: 300; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; }
+    .qui-title { font-size: 2.2rem; font-weight: 300; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px; }
     .qui-line { width: 60px; height: 3px; background: #004aad; margin: 0 auto; }
     
     .legal-text { max-width: 800px; margin: 0 auto; color: #444; line-height: 1.8; }
     .legal-text section { margin-bottom: 3rem; }
-    .legal-text h3 { font-size: 1.4rem; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; }
+    .legal-text h3 { font-size: 1.4rem; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+    .legal-text ul { padding-left: 1.5rem; margin-top: 1rem; }
+    .legal-text li { margin-bottom: 0.8rem; }
     
     .header, .top-banner { display: none !important; }
 </style>

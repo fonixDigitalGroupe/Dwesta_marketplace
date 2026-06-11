@@ -50,28 +50,54 @@
 
             <div class="legal-text">
                 <section>
-                    <h3>1. Collecte des données</h3>
-                    <p>Nous collectons les informations que vous nous fournissez directement, notamment lors de la création d'un compte, de la modification de votre profil, ou de la réalisation d'un achat.</p>
+                    <h3>1. Préambule et Engagement</h3>
+                    <p>La protection de votre vie privée est une priorité absolue pour le groupe Karnou. Cette politique détaille comment nous collectons, utilisons et protégeons vos données personnelles lorsque vous utilisez nos services numériques. Nous nous engageons à respecter scrupuleusement les réglementations en vigueur sur la protection des données.</p>
                 </section>
 
                 <section>
-                    <h3>2. Utilisation des données</h3>
-                    <p>Les données collectées sont utilisées pour fournir, maintenir et améliorer nos services, pour traiter vos transactions et pour vous envoyer des communications relatives à vos commandes.</p>
+                    <h3>2. Nature des Données Collectées</h3>
+                    <p>Nous collectons différentes catégories de données pour assurer le bon fonctionnement de notre écosystème :</p>
+                    <ul>
+                        <li><strong>Données d'identification :</strong> Nom, prénom, adresse e-mail, numéro de téléphone, adresse postale.</li>
+                        <li><strong>Données de transaction :</strong> Historique d'achats, méthodes de paiement (sécurisées et cryptées).</li>
+                        <li><strong>Données de navigation :</strong> Adresse IP, type de navigateur, pages consultées via nos cookies internes.</li>
+                    </ul>
                 </section>
 
                 <section>
-                    <h3>3. Partage des informations</h3>
-                    <p>Nous ne partageons pas vos informations personnelles avec des tiers, sauf dans les cas suivants : avec votre consentement, pour des besoins de traitement externe (logistique), ou pour des raisons juridiques.</p>
+                    <h3>3. Finalités du Traitement</h3>
+                    <p>Vos données sont traitées pour des objectifs précis :</p>
+                    <ul>
+                        <li>Gestion et exécution de vos commandes et livraisons.</li>
+                        <li>Amélioration de votre expérience utilisateur sur la plateforme.</li>
+                        <li>Prévention de la fraude et sécurisation des transactions.</li>
+                        <li>Envoi de communications marketing (uniquement avec votre consentement explicite).</li>
+                    </ul>
                 </section>
 
                 <section>
-                    <h3>4. Sécurité</h3>
-                    <p>Nous mettons en œuvre des mesures de sécurité appropriées pour protéger vos données contre tout accès, modification, divulgation ou destruction non autorisé.</p>
+                    <h3>4. Partage avec des Tiers</h3>
+                    <p>Vos données ne sont jamais vendues à des tiers. Elles peuvent toutefois être partagées avec nos partenaires logistiques (Karnou Express) et financiers uniquement pour la bonne exécution des services que vous avez sollicités.</p>
                 </section>
 
                 <section>
-                    <h3>5. Vos droits</h3>
-                    <p>Vous disposez d'un droit d'accès, de rectification et de suppression de vos données personnelles. Vous pouvez exercer ces droits en nous contactant via votre espace client ou par e-mail.</p>
+                    <h3>5. Conservation des Données</h3>
+                    <p>Karnou ne conserve vos données que le temps nécessaire aux finalités pour lesquelles elles ont été collectées, conformément aux durées de prescription légales. Par exemple, vos données de compte sont conservées tant que votre compte est actif.</p>
+                </section>
+
+                <section>
+                    <h3>6. Sécurité et Protection de l'Information</h3>
+                    <p>Nous utilisons des technologies de pointe, telles que le protocole SSL (Secure Socket Layer), pour crypter les informations sensibles. Nos serveurs font l'objet d'une surveillance constante pour prévenir toute intrusion ou perte de données.</p>
+                </section>
+
+                <section>
+                    <h3>7. Vos Droits (Accès, Rectification, Suppression)</h3>
+                    <p>Conformément à la loi, vous disposez d'un droit total sur vos données. Vous pouvez à tout moment demander l'accès, la rectification ou la suppression de vos informations personnelles. Pour exercer ces droits, contactez-nous via la section "Contact" ou directement depuis vos paramètres de profil.</p>
+                </section>
+
+                <section>
+                    <h3>8. Modification de la Politique</h3>
+                    <p>Karnou peut mettre à jour cette politique périodiquement. Nous vous en informerons par e-mail ou via une notification sur le site en cas de modification substantielle.</p>
                 </section>
             </div>
         </div>
@@ -99,12 +125,14 @@
     /* Legal Content */
     .legal-content { padding: 5rem 0; }
     .section-header { text-align: center; margin-bottom: 4rem; }
-    .qui-title { font-size: 2.5rem; font-weight: 300; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; }
+    .qui-title { font-size: 2.2rem; font-weight: 300; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px; }
     .qui-line { width: 60px; height: 3px; background: #004aad; margin: 0 auto; }
     
     .legal-text { max-width: 800px; margin: 0 auto; color: #444; line-height: 1.8; }
     .legal-text section { margin-bottom: 3rem; }
-    .legal-text h3 { font-size: 1.4rem; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; }
+    .legal-text h3 { font-size: 1.4rem; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+    .legal-text ul { padding-left: 1.5rem; margin-top: 1rem; }
+    .legal-text li { margin-bottom: 0.8rem; }
     
     .header, .top-banner { display: none !important; }
 </style>

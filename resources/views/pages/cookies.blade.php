@@ -50,29 +50,49 @@
 
             <div class="legal-text">
                 <section>
-                    <h3>Qu'est-ce qu'un cookie ?</h3>
-                    <p>Un cookie est un petit fichier texte déposé sur votre ordinateur lors de la visite d'un site ou de la consultation d'une publicité. Ils ont notamment pour but de collecter des informations relatives à votre navigation sur les sites et de vous adresser des services personnalisés.</p>
+                    <h3>1. Qu'est-ce qu'un Cookie ?</h3>
+                    <p>Un cookie est un petit fichier texte stocké sur votre appareil lors de la navigation sur Karnou. Il nous permet de reconnaître votre navigateur lors de vos prochaines visites afin d'optimiser votre expérience et d'assurer la sécurité de votre session.</p>
                 </section>
 
                 <section>
-                    <h3>Pourquoi utilisons-nous des cookies ?</h3>
-                    <p>Karnou utilise des cookies pour :</p>
+                    <h3>2. Catégories de Cookies utilisés</h3>
+                    <p>Pour assurer le bon fonctionnement de notre écosystème, nous utilisons trois types de cookies :</p>
                     <ul>
-                        <li>Assurer le bon fonctionnement du site et faciliter votre navigation.</li>
-                        <li>Mémoriser vos préférences d'affichage (langue, paramètres de recherche).</li>
-                        <li>Réaliser des statistiques de visite pour améliorer l'expérience utilisateur.</li>
-                        <li>Sécuriser votre connexion et prévenir les fraudes.</li>
+                        <li><strong>Cookies Essentiels (Techniques) :</strong> Indispensables à la navigation, ils permettent de rester connecté, de gérer votre panier et de sécuriser les formulaires.</li>
+                        <li><strong>Cookies Analytiques :</strong> Ils nous aident à comprendre comment les utilisateurs interagissent avec le site (pages les plus vues, temps passé) pour améliorer nos services.</li>
+                        <li><strong>Cookies de Préférence :</strong> Ils mémorisent vos réglages (langue, devise, pays de livraison) pour vous éviter de les ressaisir.</li>
                     </ul>
                 </section>
 
                 <section>
-                    <h3>Comment gérer les cookies ?</h3>
-                    <p>Vous pouvez à tout moment choisir de désactiver ces cookies. Votre navigateur peut également être paramétré pour vous signaler les cookies qui sont déposés dans votre ordinateur et vous demander de les accepter ou non.</p>
+                    <h3>3. Finalités de l'usage</h3>
+                    <p>Nous utilisons ces technologies pour :</p>
+                    <ul>
+                        <li>Personnaliser les contenus et les offres que nous vous proposons.</li>
+                        <li>Mesurer l'audience et la performance de nos différentes campagnes.</li>
+                        <li>Assurer la protection contre les tentatives d'usurpation de compte.</li>
+                    </ul>
                 </section>
 
                 <section>
-                    <h3>Plus d'informations</h3>
-                    <p>Pour en savoir plus sur les cookies et leur gestion, nous vous invitons à consulter le site de la CNIL ou les rubriques d'aide de votre navigateur.</p>
+                    <h3>4. Contrôle et Paramétrage du Navigateur</h3>
+                    <p>Vous pouvez refuser le dépôt de cookies à tout moment via les réglages de votre navigateur. Notez que la désactivation des cookies essentiels peut limiter certaines fonctionnalités (achat, connexion). Voici la marche à suivre selon votre logiciel :</p>
+                    <ul>
+                        <li><strong>Google Chrome :</strong> Paramètres > Confidentialité et sécurité > Cookies.</li>
+                        <li><strong>Mozilla Firefox :</strong> Paramètres > Vie privée et sécurité > Cookies.</li>
+                        <li><strong>Safari :</strong> Préférences > Confidentialité.</li>
+                        <li><strong>Microsoft Edge :</strong> Paramètres > Cookies et autorisations de site.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>5. Durée de Vie des Cookies</h3>
+                    <p>Les cookies déposés par Karnou ont une durée de vie limitée, ne dépassant généralement pas 13 mois, après quoi nous sollicitons à nouveau votre consentement lors de votre navigation.</p>
+                </section>
+
+                <section>
+                    <h3>6. Contact et Information Supplémentaire</h3>
+                    <p>Pour toute question relative à notre usage des cookies, vous pouvez consulter notre <a href="{{ route('privacy') }}">Politique de Confidentialité</a> ou nous contacter via notre support dédié.</p>
                 </section>
             </div>
         </div>
@@ -100,14 +120,14 @@
     /* Legal Content */
     .legal-content { padding: 5rem 0; }
     .section-header { text-align: center; margin-bottom: 4rem; }
-    .qui-title { font-size: 2.5rem; font-weight: 300; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; }
+    .qui-title { font-size: 2.2rem; font-weight: 300; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px; }
     .qui-line { width: 60px; height: 3px; background: #004aad; margin: 0 auto; }
     
     .legal-text { max-width: 800px; margin: 0 auto; color: #444; line-height: 1.8; }
     .legal-text section { margin-bottom: 3rem; }
-    .legal-text h3 { font-size: 1.4rem; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; }
-    .legal-text ul { padding-left: 1.5rem; margin-bottom: 1rem; }
-    .legal-text li { margin-bottom: 0.5rem; }
+    .legal-text h3 { font-size: 1.4rem; color: #1a1a1a; margin-bottom: 1rem; font-family: 'Outfit', sans-serif; font-weight: 700; }
+    .legal-text ul { padding-left: 1.5rem; margin-top: 1rem; }
+    .legal-text li { margin-bottom: 0.8rem; }
     
     .header, .top-banner { display: none !important; }
 </style>
