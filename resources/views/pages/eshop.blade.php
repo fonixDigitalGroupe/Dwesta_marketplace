@@ -90,23 +90,16 @@
                     <h2>Vendeur Particulier</h2>
                     <p>Ce type de compte est idéal pour vendre des objets d'occasion ou occasionnels.</p>
                     <p><strong>Avantages :</strong> Inscription ultra-rapide avec CNI, jusqu'à 10 annonces actives simultanément, interface de gestion simplifiée.</p>
-                    <div style="margin-top: 1rem;">
-                        <a href="{{ route('vendeur.create', ['type' => 'particulier']) }}" class="btn-primary-corp-v2" style="display: inline-block; width: auto; padding: 0.6rem 2rem;">S'inscrire comme Particulier</a>
-                    </div>
+
                 </div>
             </article>
 
             <article id="esh4" class="legal-article">
                 <div class="article-num">04</div>
                 <div class="article-body">
-                    <div style="background: #f0f7ff; border: 1px solid #c7d8f8; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem;">
                         <h2 style="margin-top: 0;">Vendeur Professionnel (Recommandé)</h2>
                         <p>Dédié aux entreprises, boutiques et artisans souhaitant une présence professionnelle forte.</p>
                         <p><strong>Avantages :</strong> Page Pro exclusive (vitrine), annonces illimitées, commissions réduites, support prioritaire, accès aux abonnements premium.</p>
-                        <div style="margin-top: 1rem;">
-                            <a href="{{ route('vendeur.create', ['type' => 'professionnel']) }}" class="btn-primary-corp-v2" style="display: inline-block; width: auto; padding: 0.6rem 2rem;">Ouvrir un compte Pro</a>
-                        </div>
-                    </div>
                 </div>
             </article>
 
