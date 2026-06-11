@@ -220,7 +220,7 @@
 
     .footer-links-list li a {
         text-decoration: none;
-        color: #555;
+        color: #333;
         font-size: 0.95rem;
         font-weight: 500;
         transition: color 0.2s;
