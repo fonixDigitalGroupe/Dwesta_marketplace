@@ -218,10 +218,10 @@
 <style>
     /* Force hide marketplace elements */
     .top-banner, .header, .footer { display: none !important; visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
-    body { padding-top: 0 !important; margin-top: 0 !important; background: #f8f9fb !important; }
+    body { padding-top: 0 !important; margin-top: 0 !important; background: #ffffff !important; }
 
     /* --- Base --- */
-    .legal-page { background: #f8f9fb; min-height: 100vh; position: relative; z-index: 1000; }
+    .legal-page { background: #ffffff; min-height: 100vh; position: relative; z-index: 1000; }
     .about-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 
     /* --- Corporate Header --- */
