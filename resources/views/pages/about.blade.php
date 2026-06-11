@@ -235,7 +235,6 @@
 
     /* --- Articles --- */
     .legal-article { display: flex; gap: 1.5rem; align-items: flex-start; background: #fff; border: 1px solid #f1f3f5; border-radius: 12px; padding: 2.5rem; margin-bottom: 1.5rem; }
-    .legal-article:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
     .article-num { font-size: 1.2rem; font-weight: 800; color: #ffe5cc; font-family: 'Outfit', sans-serif; width: 36px; flex-shrink: 0; text-align: center; }
     .article-body { flex: 1; min-width: 0; }
     .article-body h2 { font-size: 1.3rem; font-weight: 700; color: #1a1a1a; font-family: 'Outfit', 'Inter', sans-serif; margin: 0 0 1.2rem; }

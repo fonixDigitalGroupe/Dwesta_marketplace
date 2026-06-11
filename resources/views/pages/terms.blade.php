@@ -389,7 +389,6 @@
         padding: 2rem 2rem 2rem 1.5rem;
         margin-bottom: 1.2rem;
     }
-    .legal-article:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
     .article-num {
         font-size: 1.2rem;
         font-weight: 800;
