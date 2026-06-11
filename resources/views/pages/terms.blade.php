@@ -83,15 +83,10 @@
         <main class="legal-main">
 
             <!-- Disclaimer Box -->
-            <div class="legal-disclaimer">
-                <i class="fa-solid fa-circle-info"></i>
-                <div>
-                    <strong>Important :</strong> En accédant à la Plateforme Karnou, vous reconnaissez avoir pris connaissance des présentes Conditions Générales d'Utilisation (CGU) et les avoir acceptées sans réserve. Si vous n'acceptez pas ces conditions, nous vous invitons à ne pas utiliser nos services.
-                </div>
-            </div>
+
 
             <article id="art1" class="legal-article">
-                <div class="article-num">01</div>
+
                 <div class="article-body">
                     <h2>Définitions</h2>
                     <p>Dans les présentes CGU, les termes suivants ont la signification suivante :</p>
@@ -107,7 +102,7 @@
             </article>
 
             <article id="art2" class="legal-article">
-                <div class="article-num">02</div>
+                
                 <div class="article-body">
                     <h2>Objet et Acceptation des CGU</h2>
                     <p>Les présentes CGU ont pour objet de définir les conditions d'accès et d'utilisation de la Plateforme ainsi que les droits et obligations des Utilisateurs. Karnou se réserve le droit de modifier les présentes CGU à tout moment. Les modifications entreront en vigueur dès leur publication sur la Plateforme. Il appartient à l'Utilisateur de consulter régulièrement les CGU en vigueur.</p>
@@ -115,7 +110,7 @@
             </article>
 
             <article id="art3" class="legal-article">
-                <div class="article-num">03</div>
+                
                 <div class="article-body">
                     <h2>Accès à la Plateforme et Création de Compte</h2>
                     <p>L'accès à la Plateforme est gratuit pour tout Utilisateur disposant d'un accès à internet. Toutefois, certaines fonctionnalités (achat, vente, messagerie) nécessitent la création d'un compte personnel. L'Utilisateur s'engage à :</p>
@@ -130,7 +125,7 @@
             </article>
 
             <article id="art4" class="legal-article">
-                <div class="article-num">04</div>
+                
                 <div class="article-body">
                     <h2>Rôle de Karnou et Responsabilité</h2>
                     <p>Karnou agit en qualité d'intermédiaire entre les Acheteurs et les Vendeurs. À ce titre, Karnou n'est pas vendeur des produits listés sur la Plateforme et ne peut être tenu responsable des informations communiquées par les Vendeurs, de la qualité ou de la conformité des produits vendus, ni de l'exécution des Transactions. Cependant, Karnou met à disposition des Utilisateurs un service client et un système de médiation pour faciliter la résolution des litiges.</p>
@@ -138,7 +133,7 @@
             </article>
 
             <article id="art5" class="legal-article">
-                <div class="article-num">05</div>
+                
                 <div class="article-body">
                     <h2>Publication des Annonces</h2>
                     <p>Tout Vendeur est seul responsable du contenu de ses Annonces. Sont strictement interdites les annonces relatives à :</p>
@@ -153,7 +148,7 @@
             </article>
 
             <article id="art6" class="legal-article">
-                <div class="article-num">06</div>
+                
                 <div class="article-body">
                     <h2>Transactions et Paiements</h2>
                     <p>Les Transactions réalisées sur la Plateforme sont soumises aux conditions suivantes :</p>
@@ -166,7 +161,7 @@
             </article>
 
             <article id="art7" class="legal-article">
-                <div class="article-num">07</div>
+                
                 <div class="article-body">
                     <h2>Livraison et Karnou Express</h2>
                     <p>Les délais et frais de livraison sont indiqués dans chaque Annonce. Karnou met à disposition son service de livraison intégré, Karnou Express, permettant de suivre les colis en temps réel. En cas de retard ou de perte de colis, l'Acheteur doit contacter le service client dans un délai maximal de 30 jours suivant la date de livraison estimée.</p>
@@ -174,7 +169,7 @@
             </article>
 
             <article id="art8" class="legal-article">
-                <div class="article-num">08</div>
+                
                 <div class="article-body">
                     <h2>Droit de Rétractation et Retours</h2>
                     <p>Conformément aux dispositions légales en vigueur, tout Acheteur particulier bénéficie d'un droit de rétractation de <strong>14 jours</strong> à compter de la réception de son colis, sans avoir à justifier de motifs ni à payer de pénalités. Pour exercer ce droit, l'Acheteur doit notifier sa décision au Vendeur via la messagerie de la Plateforme. Les frais de retour sont à la charge de l'Acheteur, sauf accord contraire du Vendeur.</p>
@@ -182,7 +177,7 @@
             </article>
 
             <article id="art9" class="legal-article">
-                <div class="article-num">09</div>
+                
                 <div class="article-body">
                     <h2>Propriété Intellectuelle</h2>
                     <p>L'ensemble des contenus de la Plateforme (textes, images, logos, graphismes, logiciels) est protégé par la législation sur la propriété intellectuelle. Toute reproduction, représentation, modification ou exploitation, totale ou partielle, sans le consentement préalable et écrit de Karnou est strictement interdite.</p>
@@ -190,7 +185,7 @@
             </article>
 
             <article id="art10" class="legal-article">
-                <div class="article-num">10</div>
+                
                 <div class="article-body">
                     <h2>Comportements Interdits</h2>
                     <p>Sont strictement prohibés sur la Plateforme :</p>
@@ -205,7 +200,7 @@
             </article>
 
             <article id="art11" class="legal-article">
-                <div class="article-num">11</div>
+                
                 <div class="article-body">
                     <h2>Résiliation et Suspension</h2>
                     <p>Karnou se réserve le droit de suspendre ou résoudre, de plein droit et sans préavis, le compte d'un Utilisateur en cas de manquement grave aux présentes CGU. L'Utilisateur peut également demander la clôture de son compte à tout moment depuis les paramètres de son profil ou en contactant notre service client.</p>
@@ -213,7 +208,7 @@
             </article>
 
             <article id="art12" class="legal-article">
-                <div class="article-num">12</div>
+                
                 <div class="article-body">
                     <h2>Loi Applicable et Juridiction Compétente</h2>
                     <p>Les présentes CGU sont régies par le droit applicable dans le pays de siège social de Karnou Group. Tout litige relatif à leur interprétation ou à leur exécution, qui n'aurait pas pu être résolu à l'amiable, sera soumis à la juridiction compétente.</p>
