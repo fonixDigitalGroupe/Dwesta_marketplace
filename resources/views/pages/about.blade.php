@@ -190,7 +190,7 @@
     .header-center { flex: 0; display: flex; justify-content: center; }
     .header-right { justify-content: flex-end; gap: 1.5rem; }
 
-    .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; transition: all 0.2s; }
+    .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; }
     .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }
     .back-to-site i, .header-auth i, .cart-link i { font-size: 1rem; }
 
@@ -198,10 +198,10 @@
     .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
 
     /* --- Sub Nav --- */
-    .about-sub-nav { background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 61px; z-index: 100; padding: 1.2rem 0; box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05); }
+    .about-sub-nav { background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 61px; z-index: 100; padding: 1.2rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .about-sub-nav .about-container { display: flex; justify-content: center; align-items: center; }
     .sub-nav-list { display: flex; list-style: none; gap: 2.5rem; margin: 0; padding: 0; }
-    .sub-nav-list li a { text-decoration: none; color: #555; font-size: 0.9rem; border-bottom: 2px solid transparent; padding-bottom: 0.3rem; font-family: 'Inter', sans-serif; transition: color 0.2s; }
+    .sub-nav-list li a { text-decoration: none; color: #555; font-size: 0.9rem; border-bottom: 2px solid transparent; padding-bottom: 0.3rem; font-family: 'Inter', sans-serif; }
     .sub-nav-list li.active a { border-bottom: 2px solid #004aad; color: #1a1a1a; font-weight: 600; }
 
     /* --- Legal Hero --- */
@@ -225,17 +225,17 @@
 
     /* --- Layout --- */
     .legal-layout { display: flex; align-items: flex-start; max-width: 1200px; margin: 3rem auto; padding: 0 2rem; gap: 3rem; }
-    .legal-toc { width: 240px; flex-shrink: 0; position: sticky; top: 80px; background: #fff; border: 1px solid #e8ecf0; border-radius: 12px; padding: 1.5rem; }
+    .legal-toc { width: 240px; flex-shrink: 0; position: sticky; top: 80px; background: #fff; border: 1px solid #f1f3f5; border-radius: 12px; padding: 1.5rem; }
     .toc-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #999; font-family: 'Inter', sans-serif; margin: 0 0 1rem; }
     .toc-list { list-style: none; padding: 0; margin: 0; }
     .toc-list li { margin-bottom: 0.1rem; }
-    .toc-list li a { display: block; font-size: 0.82rem; color: #555; text-decoration: none; font-family: 'Inter', sans-serif; padding: 0.4rem 0.6rem; border-radius: 6px; transition: all 0.15s; }
+    .toc-list li a { display: block; font-size: 0.82rem; color: #555; text-decoration: none; font-family: 'Inter', sans-serif; padding: 0.4rem 0.6rem; border-radius: 6px; line-height: 1.4; }
     .toc-list li a:hover { background: #fff5eb; color: #f68b1e; }
     .legal-main { flex: 1; min-width: 0; }
 
     /* --- Articles --- */
-    .legal-article { display: flex; gap: 1.5rem; align-items: flex-start; background: #fff; border: 1px solid #e8ecf0; border-radius: 12px; padding: 2.5rem; margin-bottom: 1.5rem; transition: all 0.2s; }
-    .legal-article:hover { border-color: #f68b1e; box-shadow: 0 4px 16px rgba(246,139,30,0.1); }
+    .legal-article { display: flex; gap: 1.5rem; align-items: flex-start; background: #fff; border: 1px solid #f1f3f5; border-radius: 12px; padding: 2.5rem; margin-bottom: 1.5rem; }
+    .legal-article:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
     .article-num { font-size: 1.2rem; font-weight: 800; color: #ffe5cc; font-family: 'Outfit', sans-serif; width: 36px; flex-shrink: 0; text-align: center; }
     .article-body { flex: 1; min-width: 0; }
     .article-body h2 { font-size: 1.3rem; font-weight: 700; color: #1a1a1a; font-family: 'Outfit', 'Inter', sans-serif; margin: 0 0 1.2rem; }
@@ -247,7 +247,7 @@
     .qui-tab { background: none; border: none; padding: 0.8rem 0; color: #888; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500; border-bottom: 2px solid transparent; transition: all 0.3s; }
     .qui-tab.active { color: #004aad; border-bottom: 2px solid #004aad; }
     .qui-tab-content { display: none; font-size: 0.92rem; line-height: 1.7; color: #666; font-family: 'Inter', sans-serif; }
-    .qui-tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+    .qui-tab-content.active { display: block; }
 
     /* --- Ecosystem Diagram --- */
     .ecosystem-flex { display: flex; gap: 2rem; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; }
@@ -278,7 +278,7 @@
     .quote-author-refined span { font-weight: 400; color: #888; display: block; margin-top: 2px; }
 
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
 
     @media (max-width: 900px) {
         .legal-layout { flex-direction: column; }

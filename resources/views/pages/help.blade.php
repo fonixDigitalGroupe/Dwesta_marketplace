@@ -147,7 +147,7 @@
     .header-center { flex: 0; display: flex; justify-content: center; }
     .header-right { justify-content: flex-end; gap: 1.5rem; }
 
-    .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; transition: all 0.2s; }
+    .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; }
     .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }
     .back-to-site i, .header-auth i, .cart-link i { font-size: 1rem; }
 
@@ -155,10 +155,10 @@
     .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
 
     /* --- Sub Nav --- */
-    .about-sub-nav { background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 61px; z-index: 900; padding: 1.2rem 0; box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05); }
+    .about-sub-nav { background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 61px; z-index: 900; padding: 1.2rem 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .about-sub-nav .about-container { max-width: 1350px; }
     .about-sub-nav ul { display: flex; list-style: none; gap: 1rem; margin: 0; padding: 0; justify-content: center; flex-wrap: wrap; }
-    .about-sub-nav ul li a { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; padding: 0.6rem 1rem; border-radius: 4px; transition: all 0.2s; }
+    .about-sub-nav ul li a { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; padding: 0.6rem 1rem; border-radius: 4px; }
     .about-sub-nav ul li a:hover { color: #004aad; background: #f0f7ff; }
     .about-sub-nav ul li.active a { background: #004aad; color: #fff; font-weight: 600; padding: 0.7rem 1.2rem; }
 
@@ -179,18 +179,18 @@
 
     .legal-layout { display: flex; align-items: flex-start; max-width: 1200px; margin: 3rem auto; padding: 0 2rem; gap: 3rem; }
 
-    .legal-toc { width: 240px; flex-shrink: 0; position: sticky; top: 80px; background: #fff; border: 1px solid #e8ecf0; border-radius: 12px; padding: 1.5rem; }
+    .legal-toc { width: 240px; flex-shrink: 0; position: sticky; top: 80px; background: #fff; border: 1px solid #f1f3f5; border-radius: 12px; padding: 1.5rem; }
     .toc-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #999; font-family: 'Inter', sans-serif; margin: 0 0 1rem; }
     .toc-list { list-style: none; padding: 0; margin: 0; }
     .toc-list li { margin-bottom: 0.1rem; }
-    .toc-list li a { display: block; font-size: 0.82rem; color: #555; text-decoration: none; font-family: 'Inter', sans-serif; padding: 0.4rem 0.6rem; border-radius: 6px; transition: all 0.15s; line-height: 1.4; }
+    .toc-list li a { display: block; font-size: 0.82rem; color: #555; text-decoration: none; font-family: 'Inter', sans-serif; padding: 0.4rem 0.6rem; border-radius: 6px; line-height: 1.4; }
     .toc-list li a:hover { background: #fff5eb; color: #f68b1e; }
 
     .legal-main { flex: 1; min-width: 0; }
     .legal-intro { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #555; line-height: 1.75; margin-bottom: 2rem; }
 
-    .legal-article { display: flex; gap: 1.5rem; align-items: flex-start; background: #fff; border: 1px solid #e8ecf0; border-radius: 12px; padding: 2rem 2rem 2rem 1.5rem; margin-bottom: 1.2rem; transition: border-color 0.2s, box-shadow 0.2s; }
-    .legal-article:hover { border-color: #f68b1e; box-shadow: 0 4px 16px rgba(246,139,30,0.1); }
+    .legal-article { display: flex; gap: 1.5rem; align-items: flex-start; background: #fff; border: 1px solid #f8f9fa; border-radius: 12px; padding: 2rem 2rem 2rem 1.5rem; margin-bottom: 1.2rem; }
+    .legal-article:hover { border-color: #ffe5cc; box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
     .article-num { font-size: 1.2rem; font-weight: 800; color: #ffe5cc; font-family: 'Outfit', sans-serif; letter-spacing: -1px; width: 36px; flex-shrink: 0; padding-top: 0.15rem; text-align: center; line-height: 1; }
     .article-body { flex: 1; min-width: 0; }
     .article-body h2 { font-size: 1.05rem; font-weight: 700; color: #1a1a1a; font-family: 'Outfit', 'Inter', sans-serif; margin: 0 0 1rem; }
