@@ -76,12 +76,7 @@
         <!-- Main -->
         <main class="legal-main">
 
-            <div class="legal-disclaimer">
-                <i class="fa-solid fa-circle-info"></i>
-                <div>
-                    <strong>Vous gardez le contrôle.</strong> Vous pouvez à tout moment accepter, refuser ou personnaliser l'utilisation des cookies sur la Plateforme Karnou via les paramètres de votre navigateur ou le bandeau de consentement.
-                </div>
-            </div>
+
 
             <p class="legal-intro">La présente politique a pour objet de vous informer sur la manière dont Karnou utilise des traceurs (cookies) lors de votre navigation sur la Plateforme et de vous expliquer comment les gérer.</p>
 
