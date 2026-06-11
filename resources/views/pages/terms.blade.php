@@ -257,7 +257,9 @@
 
     /* --- Legal Hero --- */
     .legal-hero {
-        background: linear-gradient(135deg, #004aad 0%, #003182 100%);
+        background: linear-gradient(135deg, rgba(0, 74, 173, 0.9) 0%, rgba(0, 49, 130, 0.8) 100%), url('/images/condition.jpg');
+        background-size: cover;
+        background-position: center;
         padding: 4rem 2rem;
         color: #fff;
     }
