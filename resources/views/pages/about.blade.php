@@ -194,7 +194,7 @@
     .corp-nav ul { display: flex; list-style: none; gap: 0.8rem; margin: 0; padding: 0; flex-wrap: wrap; justify-content: flex-end; }
     .corp-nav ul li a { text-decoration: none; color: #555; font-size: 0.82rem; font-weight: 500; font-family: 'Inter', sans-serif; transition: all 0.2s; border-bottom: 2px solid transparent; padding-bottom: 0.3rem; }
     .corp-nav ul li a:hover { color: #004aad; }
-    .corp-nav ul li.active a { color: #fff; background: #004aad; border-bottom: none; font-weight: 600; border-radius: 20px; padding: 0.3rem 0.85rem; }
+    .corp-nav ul li.active a { color: #fff; background: #004aad; border-bottom: none; font-weight: 600; padding: 0.3rem 0.85rem; }
 
     /* --- Sub Nav --- */
     .about-sub-nav { background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; padding: 1.2rem 0; box-shadow: 0 4px 6px -2px rgba(0,0,0,0.05); }
