@@ -80,12 +80,7 @@
         <!-- Main -->
         <main class="legal-main">
 
-            <div class="legal-disclaimer">
-                <i class="fa-solid fa-shield-halved"></i>
-                <div>
-                    <strong>Votre vie privée compte.</strong> Karnou ne vend jamais vos données personnelles. Elles sont uniquement utilisées pour vous fournir nos services et améliorer votre expérience sur la Plateforme.
-                </div>
-            </div>
+
 
             <p class="legal-intro">Karnou Group (ci-après « Karnou » ou « Nous ») accorde une importance primordiale à la protection de votre vie privée. La présente Politique vous informe sur la façon dont nous collectons, utilisons, partageons et protégeons vos données à caractère personnel lorsque vous utilisez la Plateforme.</p>
 
