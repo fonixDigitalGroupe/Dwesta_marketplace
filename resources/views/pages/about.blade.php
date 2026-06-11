@@ -251,7 +251,7 @@
 
     /* --- Ecosystem Diagram --- */
     .ecosystem-flex { display: flex; gap: 2rem; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; }
-    .diagram-miniature { width: 300px; height: 300px; flex-shrink: 0; position: relative; background: #fbfcfe; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .diagram-miniature { width: 300px; height: 300px; flex-shrink: 0; position: relative; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
     .ecosystem-drawing { position: relative; width: 250px; height: 250px; }
     .core-node { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #004aad; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 0 20px rgba(0,74,173,0.3); }
     .core-text { color: #fff; font-weight: 700; font-size: 0.9rem; font-family: 'Outfit', sans-serif; }
@@ -268,7 +268,7 @@
     .ecosystem-list-refined li::before { content: "→"; position: absolute; left: 0; color: #004aad; font-weight: bold; }
 
     /* --- Founder Quote --- */
-    .founder-card-refined { display: flex; gap: 2rem; background: #fdfdfd; border: 1px solid #f0f0f0; border-radius: 12px; padding: 2rem; margin-top: 1rem; align-items: center; }
+    .founder-card-refined { display: flex; gap: 2rem; background: #ffffff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 2rem; margin-top: 1rem; align-items: center; }
     .founder-image-mini { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; flex-shrink: 0; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .founder-image-mini img { width: 100%; height: 100%; object-fit: cover; }
     .founder-quote-content { flex: 1; }
