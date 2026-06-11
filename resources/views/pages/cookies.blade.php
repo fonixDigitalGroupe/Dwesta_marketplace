@@ -148,13 +148,6 @@
                 </div>
             </article>
 
-            <div class="legal-contact-strip">
-                <i class="fa-regular fa-envelope"></i>
-                <div>
-                    <strong>Des questions sur nos cookies ?</strong><br>
-                    Contactez notre équipe à <a href="mailto:privacy@karnou.net">privacy@karnou.net</a> — réponse garantie sous 48h ouvrées.
-                </div>
-            </div>
         </main>
     </div>
 </div>
@@ -215,10 +208,6 @@
     .article-body a { color: #004aad; text-decoration: none; }
     .article-body a:hover { text-decoration: underline; }
 
-    .legal-contact-strip { display: flex; align-items: center; gap: 1.2rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%); border: 1px solid #c7d8f8; border-radius: 12px; padding: 1.5rem 2rem; margin-top: 2rem; font-family: 'Inter', sans-serif; font-size: 0.92rem; color: #1a1a1a; line-height: 1.6; }
-    .legal-contact-strip i { font-size: 1.8rem; color: #004aad; flex-shrink: 0; }
-    .legal-contact-strip a { color: #004aad; text-decoration: none; font-weight: 600; }
-    .legal-contact-strip a:hover { text-decoration: underline; }
 
     @media (max-width: 900px) {
         .legal-layout { flex-direction: column; }

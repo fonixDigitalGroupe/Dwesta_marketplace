@@ -123,13 +123,6 @@
                 </div>
             </article>
 
-            <div class="legal-contact-strip">
-                <i class="fa-solid fa-lightbulb"></i>
-                <div>
-                    <strong>Besoin d'un conseil business ?</strong><br>
-                    Nos experts e-commerce vous accompagnent dans votre stratégie de vente. Contactez <a href="mailto:business@karnou.com">business@karnou.com</a>.
-                </div>
-            </div>
         </main>
     </div>
 </div>
@@ -182,10 +175,6 @@
     .btn-primary-corp-v2 { background: #004aad; color: #fff; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; font-size: 0.9rem; text-decoration: none; text-align: center; }
     .btn-primary-corp-v2:hover { background: #003a8a; }
 
-    .legal-contact-strip { display: flex; align-items: center; gap: 1.2rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%); border: 1px solid #c7d8f8; border-radius: 12px; padding: 1.5rem 2rem; margin-top: 2rem; font-family: 'Inter', sans-serif; font-size: 0.92rem; color: #1a1a1a; line-height: 1.6; }
-    .legal-contact-strip i { font-size: 1.8rem; color: #004aad; flex-shrink: 0; }
-    .legal-contact-strip a { color: #004aad; text-decoration: none; font-weight: 600; }
-    .legal-contact-strip a:hover { text-decoration: underline; }
 
     @media (max-width: 900px) {
         .legal-layout { flex-direction: column; }

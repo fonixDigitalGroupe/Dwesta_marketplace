@@ -172,14 +172,6 @@
                 </div>
             </article>
 
-            <!-- Contact Strip -->
-            <div class="legal-contact-strip">
-                <i class="fa-regular fa-envelope"></i>
-                <div>
-                    <strong>Envie de nous rejoindre ou d'en savoir plus ?</strong><br>
-                    Contactez-nous à <a href="mailto:contact@karnou.net">contact@karnou.net</a> — nous sommes à votre écoute pour toute collaboration.
-                </div>
-            </div>
 
         </main>
     </div>
@@ -277,10 +269,6 @@
     .quote-author-refined { font-size: 0.9rem; font-weight: 700; color: #333; font-family: 'Inter', sans-serif; }
     .quote-author-refined span { font-weight: 400; color: #888; display: block; margin-top: 2px; }
 
-    /* --- Contact Strip --- */
-    .legal-contact-strip { display: flex; align-items: center; gap: 1.2rem; background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%); border: 1px solid #c7d8f8; border-radius: 12px; padding: 1.5rem 2rem; font-family: 'Inter', sans-serif; font-size: 0.92rem; color: #1a1a1a; margin-top: 2rem; }
-    .legal-contact-strip i { font-size: 1.8rem; color: #004aad; }
-    .legal-contact-strip a { color: #004aad; text-decoration: none; font-weight: 600; }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
