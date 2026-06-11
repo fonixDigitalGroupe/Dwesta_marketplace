@@ -46,7 +46,12 @@
     <!-- Layout -->
 
     <!-- Page Hero Banner -->
-    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/report_bannier.png');"></div>
+    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/report_bannier.png');">
+        <div class="about-container">
+            <h1>Signaler un abus</h1>
+            <p class="last-update">Dernière mise à jour : 22 Mai 2026</p>
+        </div>
+    </div>
 
     <!-- Layout -->
     <div class="legal-layout">
@@ -64,10 +69,6 @@
 
         <!-- Main -->
         <main class="legal-main">
-            <header class="legal-page-header">
-                <h1>Signaler un Contenu</h1>
-                <p class="last-update">Dernière mise à jour : 18 Juillet 2026</p>
-            </header>
             <p class="legal-intro">La sécurité et l'intégrité de notre marketplace sont nos priorités. Cette page vous explique comment signaler un contenu qui vous semble abusif ou non conforme à nos règles.</p>
 
             <article id="rep1" class="legal-article">
@@ -125,9 +126,6 @@
     .top-banner, .header { display: none !important; visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
     body { padding-top: 0 !important; margin-top: 0 !important; background: #ffffff !important; }
 
-    /* --- Page Hero --- */
-    .page-hero { background-size: cover; background-position: center; height: 200px; }
-
     /* --- Base --- */
     .legal-page { background: #ffffff; min-height: 100vh; position: relative; z-index: 1000; }
     .about-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
@@ -145,21 +143,13 @@
     .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }
     .back-to-site i, .header-auth i, .cart-link i { font-size: 1rem; }
 
-    /* --- Page Header --- */
-    .legal-page-header { margin-bottom: 2.5rem; }
-    .legal-page-header h1 { font-family: 'Outfit', sans-serif; font-size: 1.75rem; font-weight: 800; color: #1a1a1a; margin-bottom: 0.4rem; letter-spacing: -1px; line-height: 1.1; }
-    .last-update { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #999; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-
-    /* --- Legal Hero --- */
-    .legal-hero {
-        padding: 4rem 2rem;
+    /* --- Page Hero --- */
+    .page-hero { 
+        background-size: cover; 
+        background-position: center; 
+        padding: 5rem 0 4rem; 
+        text-align: center;
         color: #fff;
-        min-height: 480px;
-        display: flex;
-        align-items: center;
-    }
-    .legal-hero-inner { max-width: 800px; margin: 0 auto; }
-    .legal-category-badge { display: inline-block; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; padding: 0.35rem 0.9rem; border-radius: 50px; margin-bottom: 1.2rem; font-family: 'Inter', sans-serif; border: 1px solid rgba(255,255,255,0.2); }
     .legal-hero h1 { font-size: 2.2rem; font-weight: 700; font-family: 'Outfit', 'Inter', sans-serif; color: #fff; margin: 0 0 0.8rem; letter-spacing: -0.5px; line-height: 1.2; }
     .legal-hero-desc { font-size: 1rem; color: rgba(255,255,255,0.8); font-family: 'Inter', sans-serif; margin: 0 0 1.5rem; line-height: 1.6; }
     .legal-meta { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); font-family: 'Inter', sans-serif; flex-wrap: wrap; }

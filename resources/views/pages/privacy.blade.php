@@ -47,7 +47,12 @@
     <!-- Layout -->
 
     <!-- Page Hero Banner -->
-    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/apropos_bannier.jpg');"></div>
+    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/apropos_bannier.jpg');">
+        <div class="about-container">
+            <h1>Politique de Confidentialité</h1>
+            <p class="last-update">Dernière mise à jour : 10 Mars 2026</p>
+        </div>
+    </div>
 
     <!-- Layout -->
     <div class="legal-layout">
@@ -69,12 +74,8 @@
             </ul>
         </aside>
 
-        <!-- Main -->
+        <!-- Main Content -->
         <main class="legal-main">
-            <header class="legal-page-header">
-                <h1>Politique de Confidentialité</h1>
-                <p class="last-update">Dernière mise à jour : 05 Avril 2026</p>
-            </header>
 
 
 
@@ -232,12 +233,29 @@
     .back-to-site i, .header-auth i, .cart-link i { font-size: 1rem; }
 
     /* --- Page Hero --- */
-    .page-hero { background-size: cover; background-position: center; height: 200px; }
-
-    /* --- Page Header --- */
-    .legal-page-header { margin-bottom: 2.5rem; }
-    .legal-page-header h1 { font-family: 'Outfit', sans-serif; font-size: 1.75rem; font-weight: 800; color: #1a1a1a; margin-bottom: 0.4rem; letter-spacing: -1px; line-height: 1.1; }
-    .last-update { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #999; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+    .page-hero { 
+        background-size: cover; 
+        background-position: center; 
+        padding: 5rem 0 4rem; 
+        text-align: center;
+        color: #fff;
+    }
+    .page-hero h1 { 
+        font-family: 'Outfit', sans-serif; 
+        font-size: 2rem; 
+        font-weight: 800; 
+        color: #fff; 
+        margin-bottom: 0.8rem; 
+        letter-spacing: -0.5px; 
+    }
+    .page-hero .last-update { 
+        font-family: 'Inter', sans-serif; 
+        font-size: 0.78rem; 
+        color: rgba(255,255,255,0.45); 
+        font-weight: 500; 
+        text-transform: uppercase; 
+        letter-spacing: 0.5px; 
+    }
 
     /* --- Legal Hero --- */
     .legal-hero {
