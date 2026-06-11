@@ -80,7 +80,6 @@
 
 
 
-            <p class="legal-intro">Karnou Group (ci-après « Karnou » ou « Nous ») accorde une importance primordiale à la protection de votre vie privée. La présente Politique vous informe sur la façon dont nous collectons, utilisons, partageons et protégeons vos données à caractère personnel lorsque vous utilisez la Plateforme.</p>
 
             <article id="sec1" class="legal-article">
                 <div class="article-num">01</div>

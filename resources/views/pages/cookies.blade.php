@@ -75,7 +75,6 @@
 
 
 
-            <p class="legal-intro">La présente politique a pour objet de vous informer sur la manière dont Karnou utilise des traceurs (cookies) lors de votre navigation sur la Plateforme et de vous expliquer comment les gérer.</p>
 
             <article id="ck1" class="legal-article">
                 <div class="article-num">01</div>
