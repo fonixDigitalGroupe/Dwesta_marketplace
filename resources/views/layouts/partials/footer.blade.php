@@ -245,7 +245,7 @@
 
     .copyright {
         font-size: 0.9rem;
-        color: #888;
+        color: #666;
         font-weight: 500;
     }
 
