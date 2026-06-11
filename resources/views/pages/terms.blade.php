@@ -332,8 +332,8 @@
         line-height: 1.4;
     }
     .toc-list li a:hover {
-        background: #f0f4ff;
-        color: #004aad;
+        background: #fff5eb;
+        color: #f68b1e;
     }
 
     /* --- Main Content --- */
@@ -378,13 +378,13 @@
         transition: border-color 0.2s, box-shadow 0.2s;
     }
     .legal-article:hover {
-        border-color: #c7d8f8;
-        box-shadow: 0 4px 16px rgba(0,74,173,0.06);
+        border-color: #f68b1e;
+        box-shadow: 0 4px 16px rgba(246,139,30,0.1);
     }
     .article-num {
         font-size: 1.2rem;
         font-weight: 800;
-        color: #d0ddf5;
+        color: #ffe5cc;
         font-family: 'Outfit', sans-serif;
         letter-spacing: -1px;
         width: 36px;
@@ -453,8 +453,8 @@
                     tocLinks.forEach(link => link.style.color = '');
                     const active = document.querySelector(`.toc-list a[href="#${entry.target.id}"]`);
                     if (active) {
-                        active.style.background = '#eff6ff';
-                        active.style.color = '#004aad';
+                        active.style.background = '#fff5eb';
+                        active.style.color = '#f68b1e';
                         active.style.fontWeight = '600';
                     }
                 } else {

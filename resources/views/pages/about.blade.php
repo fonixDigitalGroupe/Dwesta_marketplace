@@ -222,16 +222,17 @@
     .toc-list { list-style: none; padding: 0; margin: 0; }
     .toc-list li { margin-bottom: 0.1rem; }
     .toc-list li a { display: block; font-size: 0.82rem; color: #555; text-decoration: none; font-family: 'Inter', sans-serif; padding: 0.4rem 0.6rem; border-radius: 6px; transition: all 0.15s; }
-    .toc-list li a:hover { background: #f0f4ff; color: #004aad; }
+    .toc-list li a:hover { background: #fff5eb; color: #f68b1e; }
     .legal-main { flex: 1; min-width: 0; }
 
     /* --- Articles --- */
     .legal-article { display: flex; gap: 1.5rem; align-items: flex-start; background: #fff; border: 1px solid #e8ecf0; border-radius: 12px; padding: 2.5rem; margin-bottom: 1.5rem; transition: all 0.2s; }
-    .legal-article:hover { border-color: #c7d8f8; box-shadow: 0 4px 16px rgba(0,74,173,0.06); }
-    .article-num { font-size: 1.2rem; font-weight: 800; color: #d0ddf5; font-family: 'Outfit', sans-serif; width: 36px; flex-shrink: 0; text-align: center; }
+    .legal-article:hover { border-color: #f68b1e; box-shadow: 0 4px 16px rgba(246,139,30,0.1); }
+    .article-num { font-size: 1.2rem; font-weight: 800; color: #ffe5cc; font-family: 'Outfit', sans-serif; width: 36px; flex-shrink: 0; text-align: center; }
     .article-body { flex: 1; min-width: 0; }
     .article-body h2 { font-size: 1.3rem; font-weight: 700; color: #1a1a1a; font-family: 'Outfit', 'Inter', sans-serif; margin: 0 0 1.2rem; }
     .article-body p { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #4b5563; line-height: 1.8; margin-bottom: 1rem; }
+    .article-body a { color: #f68b1e; text-decoration: none; font-weight: 600; }
 
     /* --- Tabs --- */
     .qui-tabs { display: flex; border-bottom: 1px solid #eee; margin-bottom: 1.5rem; gap: 1rem; }
@@ -297,8 +298,8 @@
                 if (!link) return;
                 if (entry.isIntersecting) {
                     tocLinks.forEach(l => { l.style.background=''; l.style.color=''; l.style.fontWeight=''; });
-                    link.style.background = '#eff6ff';
-                    link.style.color = '#004aad';
+                    link.style.background = '#fff5eb';
+                    link.style.color = '#f68b1e';
                     link.style.fontWeight = '600';
                 }
             });
