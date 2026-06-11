@@ -39,7 +39,7 @@
         </div>
     </header>
 
-    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/apropos_bannier.jpg');">
+    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/about_hero_ecommerce.png');">
         <div class="about-container">
             <h1>Le Choix : Neuf et Occasion</h1>
             <p class="page-hero-desc">Explorez un catalogue riche et varié. Chez Karnou, nous rassemblons des milliers d'articles neufs et de seconde main pour répondre à tous vos besoins.</p>

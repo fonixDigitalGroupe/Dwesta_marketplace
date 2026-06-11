@@ -39,7 +39,7 @@
         </div>
     </header>
 
-    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/apropos_bannier.jpg');">
+    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/about_hero_drone.png');">
         <div class="about-container">
             <h1>L'Expédition : Livraison Rapide</h1>
             <p class="page-hero-desc">Vos commandes livrées en un temps record. Grâce à notre réseau logistique, nous assurons une expédition rapide et sécurisée de tous vos produits.</p>

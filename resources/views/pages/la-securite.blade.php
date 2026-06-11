@@ -39,7 +39,7 @@
         </div>
     </header>
 
-    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/apropos_bannier.jpg');">
+    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/about_hero_final.png');">
         <div class="about-container">
             <h1>La Sécurité : Satisfait ou Remboursé</h1>
             <p class="page-hero-desc">Achetez en toute sérénité. Karnou garantit la protection de vos transactions et assure votre satisfaction pour chaque commande.</p>

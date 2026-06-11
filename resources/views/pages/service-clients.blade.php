@@ -39,7 +39,7 @@
         </div>
     </header>
 
-    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/apropos_bannier.jpg');">
+    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/about_hero_new.png');">
         <div class="about-container">
             <h1>Service Clients : À votre écoute</h1>
             <p class="page-hero-desc">Besoin d'aide ou d'un renseignement ? Notre service clients est disponible pour vous accompagner dans votre expérience Karnou.</p>
