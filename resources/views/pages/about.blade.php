@@ -43,6 +43,9 @@
 
 
 
+    <!-- Page Hero Banner -->
+    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/apropos_bannier.jpg');"></div>
+
     <!-- Layout 2 Colonnes -->
     <div class="legal-layout">
 
@@ -205,7 +208,8 @@ verte pour particuliers et pros.</li>
     /* --- Page Header --- */
     .legal-page-header { margin-bottom: 2.5rem; }
     .legal-page-header h1 { font-family: 'Outfit', sans-serif; font-size: 1.75rem; font-weight: 800; color: #1a1a1a; margin-bottom: 0.4rem; letter-spacing: -1px; line-height: 1.1; }
-    .last-update { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #999; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+    .last-update { font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #999; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }    /* --- Page Hero --- */
+    .page-hero { background-size: cover; background-position: center; height: 200px; }
 
     /* --- Legal Hero --- */
     .legal-hero {

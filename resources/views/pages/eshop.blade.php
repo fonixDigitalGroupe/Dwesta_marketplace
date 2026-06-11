@@ -41,7 +41,8 @@
     </header>
 
 
-    <!-- Layout -->
+    <!-- Page Hero Banner -->
+    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/eshop_bannier.png');"></div>
 
     <!-- Layout -->
     <div class="legal-layout">
@@ -124,6 +125,9 @@
     /* Force hide marketplace elements */
     .top-banner, .header { display: none !important; visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
     body { padding-top: 0 !important; margin-top: 0 !important; background: #ffffff !important; }
+
+    /* --- Page Hero --- */
+    .page-hero { background-size: cover; background-position: center; height: 200px; }
 
     /* --- Base --- */
     .legal-page { background: #ffffff; min-height: 100vh; position: relative; z-index: 1000; }

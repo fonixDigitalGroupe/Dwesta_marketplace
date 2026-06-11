@@ -46,6 +46,9 @@
 
     <!-- Layout -->
 
+    <!-- Page Hero Banner -->
+    <div class="page-hero" style="background-image: linear-gradient(135deg, rgba(0,74,173,0.88) 0%, rgba(0,30,90,0.82) 100%), url('/images/apropos_bannier.jpg');"></div>
+
     <!-- Layout -->
     <div class="legal-layout">
 
@@ -227,6 +230,9 @@
     .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; }
     .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }
     .back-to-site i, .header-auth i, .cart-link i { font-size: 1rem; }
+
+    /* --- Page Hero --- */
+    .page-hero { background-size: cover; background-position: center; height: 200px; }
 
     /* --- Page Header --- */
     .legal-page-header { margin-bottom: 2.5rem; }
