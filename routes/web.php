@@ -36,6 +36,10 @@ Route::get('/a-propos', [PageController::class, 'about'])->name('about');
 Route::get('/conditions-generales', [PageController::class, 'terms'])->name('terms');
 Route::get('/vie-privee', [PageController::class, 'privacy'])->name('privacy');
 Route::get('/gestion-cookies', [PageController::class, 'cookies'])->name('cookies');
+Route::get('/besoin-aide', [PageController::class, 'help'])->name('help');
+Route::get('/signaler-contenu', [PageController::class, 'report'])->name('report');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/ouvrir-eshop', [PageController::class, 'eshop'])->name('eshop.landing');
 
 
 

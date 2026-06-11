@@ -22,10 +22,10 @@
                         <li class="{{ Route::is('privacy') ? 'active' : '' }}"><a href="{{ route('privacy') }}">Vie privée</a></li>
                         <li class="{{ Route::is('cookies') ? 'active' : '' }}"><a href="{{ route('cookies') }}">Gestion des cookies</a></li>
                         <li><a href="#">Actualité</a></li>
-                        <li><a href="#">Besoin d'aide ?</a></li>
-                        <li><a href="{{ route('vendeur.create') }}">Ouvrir un e-shop</a></li>
-                        <li><a href="#">Signaler un contenu</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li class="{{ Route::is('help') ? 'active' : '' }}"><a href="{{ route('help') }}">Besoin d'aide ?</a></li>
+                        <li class="{{ Route::is('eshop.landing') ? 'active' : '' }}"><a href="{{ route('eshop.landing') }}">Ouvrir un e-shop</a></li>
+                        <li class="{{ Route::is('report') ? 'active' : '' }}"><a href="{{ route('report') }}">Signaler un contenu</a></li>
+                        <li class="{{ Route::is('contact') ? 'active' : '' }}"><a href="{{ route('contact') }}">Contact</a></li>
                     </ul>
                 </nav>
             </div>
