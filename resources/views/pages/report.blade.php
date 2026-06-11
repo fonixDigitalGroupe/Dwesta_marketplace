@@ -150,11 +150,23 @@
         padding: 5rem 0 4rem; 
         text-align: center;
         color: #fff;
-    .legal-hero h1 { font-size: 2.2rem; font-weight: 700; font-family: 'Outfit', 'Inter', sans-serif; color: #fff; margin: 0 0 0.8rem; letter-spacing: -0.5px; line-height: 1.2; }
-    .legal-hero-desc { font-size: 1rem; color: rgba(255,255,255,0.8); font-family: 'Inter', sans-serif; margin: 0 0 1.5rem; line-height: 1.6; }
-    .legal-meta { display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; color: rgba(255,255,255,0.7); font-family: 'Inter', sans-serif; flex-wrap: wrap; }
-    .legal-meta i { margin-right: 0.3rem; font-size: 0.8rem; }
-    .meta-sep { opacity: 0.4; }
+    }
+    .page-hero h1 { 
+        font-family: 'Outfit', sans-serif; 
+        font-size: 2rem; 
+        font-weight: 800; 
+        color: #fff; 
+        margin-bottom: 0.8rem; 
+        letter-spacing: -0.5px; 
+    }
+    .page-hero .last-update { 
+        font-family: 'Inter', sans-serif; 
+        font-size: 0.78rem; 
+        color: rgba(255,255,255,0.45); 
+        font-weight: 500; 
+        text-transform: uppercase; 
+        letter-spacing: 0.5px; 
+    }
 
     .legal-layout { display: flex; align-items: flex-start; max-width: 1200px; margin: 3rem auto; padding: 0 2rem; gap: 3rem; }
 
