@@ -154,19 +154,7 @@
             </div>
         </div>
     </section>
-    <!-- Global Footprint Section -->
-    <section class="about-footprint">
-        <div class="about-container">
-            <div class="section-header">
-                <h2>Une empreinte <strong>mondiale</strong></h2>
-                <div class="header-line"></div>
-            </div>
 
-            <div class="footprint-map-wrapper">
-                <div id="global-map" style="width: 100%; height: 500px; border-radius: 15px;"></div>
-            </div>
-        </div>
-    </section>
 
     <!-- Founder Quote Section -->
     <section class="about-founder-quote">
@@ -1011,21 +999,6 @@
         .qui-tab { flex-shrink: 0; }
     }
 
-    /* Footprint Section */
-    .about-footprint {
-        padding: 6rem 0;
-        background: #fdfdfd;
-        overflow: hidden;
-    }
-
-    .footprint-map-wrapper {
-        width: 100%;
-        max-width: 1000px;
-        margin: 4rem auto 0;
-        background: #fff;
-        border-radius: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    }
 
     /* Founder Quote Section */
     .about-founder-quote {
@@ -1117,70 +1090,6 @@
     }
 </script>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config('services.google.maps_api_key') }}&callback=initMap"></script>
-<script>
-    function initMap() {
-        const mapStyle = [
-            { "elementType": "geometry", "stylers": [{ "color": "#f5f5f5" }] },
-            { "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] },
-            { "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] },
-            { "elementType": "labels.text.stroke", "stylers": [{ "color": "#f5f5f5" }] },
-            { "featureType": "administrative.land_parcel", "elementType": "labels.text.fill", "stylers": [{ "color": "#bdbdbd" }] },
-            { "featureType": "poi", "elementType": "geometry", "stylers": [{ "color": "#eeeeee" }] },
-            { "featureType": "poi", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] },
-            { "featureType": "poi.park", "elementType": "geometry", "stylers": [{ "color": "#e5e5e5" }] },
-            { "featureType": "poi.park", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] },
-            { "featureType": "road", "elementType": "geometry", "stylers": [{ "color": "#ffffff" }] },
-            { "featureType": "road.arterial", "elementType": "labels.text.fill", "stylers": [{ "color": "#757575" }] },
-            { "featureType": "road.highway", "elementType": "geometry", "stylers": [{ "color": "#dadada" }] },
-            { "featureType": "road.highway", "elementType": "labels.text.fill", "stylers": [{ "color": "#616161" }] },
-            { "featureType": "road.local", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] },
-            { "featureType": "transit.line", "elementType": "geometry", "stylers": [{ "color": "#e5e5e5" }] },
-            { "featureType": "transit.station", "elementType": "geometry", "stylers": [{ "color": "#eeeeee" }] },
-            { "featureType": "water", "elementType": "geometry", "stylers": [{ "color": "#c9c9c9" }] },
-            { "featureType": "water", "elementType": "labels.text.fill", "stylers": [{ "color": "#9e9e9e" }] }
-        ];
 
-        const map = new google.maps.Map(document.getElementById("global-map"), {
-            zoom: 2.5,
-            center: { lat: 5.0, lng: 20.0 }, // Centered on Africa
-            styles: mapStyle,
-            disableDefaultUI: true,
-            zoomControl: true,
-        });
-
-        const countries = @json($countries ?? []);
-        
-        if (countries.length === 0) {
-            // Fallback marker for RCA
-            new google.maps.Marker({
-                position: { lat: 6.6, lng: 20.4 },
-                map: map,
-                title: "République Centrafricaine",
-            });
-        } else {
-            const geocoder = new google.maps.Geocoder();
-            countries.forEach(country => {
-                geocoder.geocode({ address: country.name }, (results, status) => {
-                    if (status === "OK") {
-                        new google.maps.Marker({
-                            position: results[0].geometry.location,
-                            map: map,
-                            title: country.name,
-                            icon: {
-                                path: google.maps.SymbolPath.CIRCLE,
-                                fillOpacity: 1,
-                                fillColor: '#004aad',
-                                strokeColor: '#fff',
-                                strokeWeight: 2,
-                                scale: 6
-                            }
-                        });
-                    }
-                });
-            });
-        }
-    }
-</script>
 
 @endsection
