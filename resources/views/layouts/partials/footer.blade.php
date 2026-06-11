@@ -98,15 +98,6 @@
                 <span class="sep">|</span>
                 <a href="{{ route('privacy') }}">Politique de confidentialité</a>
 
-                <span class="sep">|</span>
-                <a href="#">Karnou France</a>
-                <span class="sep">|</span>
-                <a href="#">Karnou Sénégal</a>
-                <span class="sep">|</span>
-                <a href="#">Karnou USA</a>
-            </div>
-            <div class="footer-logo-small">
-                <span class="karnou-brand">Karnou.</span>
             </div>
         </div>
     </div>
