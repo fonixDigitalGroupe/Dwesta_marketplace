@@ -50,11 +50,12 @@
                 </div>
                 <div class="footer-separator"></div>
                 <div class="footer-links-col">
-                    <h4 class="footer-col-title">AIDE</h4>
+                    <h4 class="footer-col-title">AIDE & CONTACT</h4>
                     <ul class="footer-links-list">
-                        <li><a href="#">Besoin d'aide ?</a></li>
-                        <li><a href="#">Ouvrir un e-shop</a></li>
-                        <li><a href="#">Signaler un contenu</a></li>
+                        <li><a href="{{ route('help') }}">Besoin d'aide ?</a></li>
+                        <li><a href="{{ route('contact') }}">Nous contacter</a></li>
+                        <li><a href="{{ route('report') }}">Signaler un contenu</a></li>
+                        <li><a href="{{ route('eshop.landing') }}">Ouvrir un e-shop</a></li>
                     </ul>
                 </div>
                 <div class="footer-separator"></div>
@@ -65,7 +66,6 @@
                         <li><a href="{{ route('terms') }}">Conditions générales</a></li>
                         <li><a href="{{ route('privacy') }}">Vie privée</a></li>
                         <li><a href="{{ route('cookies') }}">Gestion des cookies</a></li>
-
                     </ul>
                 </div>
             </div>
