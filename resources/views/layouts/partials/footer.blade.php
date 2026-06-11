@@ -129,10 +129,8 @@
             <div class="brand-flex">
                 <div class="brand-logo-final">Karnou</div>
                 <div class="brand-links-final">
-                    <a href="#">Karnou Kobo</a>
-                    <a href="#">Karnou TV</a>
-                    <a href="#">Karnou Viber</a>
-                    <a href="#">Plus de services</a>
+                    <a href="#">Karnou Agence</a>
+                    <a href="#">Karnou Express</a>
                     <a href="{{ route('about') }}">À propos de Karnou</a>
                 </div>
                 <div class="region-dropdown">
