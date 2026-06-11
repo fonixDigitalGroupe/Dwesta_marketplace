@@ -19,9 +19,6 @@
                     <ul>
                         <li><a href="#">Actualités</a></li>
                         <li class="active"><a href="{{ route('about') }}">À propos</a></li>
-                        <li><a href="#">Carrières</a></li>
-                        <li><a href="#">Vendeurs pros</a></li>
-                        <li><a href="#">Presse</a></li>
                         <li><a href="#">Contact</a></li>
                     </ul>
                 </nav>
