@@ -323,6 +323,10 @@ class CheckoutController extends Controller
                             'last_name' => Auth::user()->nom,
                             'email' => Auth::user()->email,
                             'phone' => str_starts_with(Auth::user()->telephone, '+') ? Auth::user()->telephone : '+221' . Auth::user()->telephone,
+                            'address' => Auth::user()->adresse,
+                            'city' => Auth::user()->ville,
+                            'state' => Auth::user()->region,
+                            'zip_code' => Auth::user()->code_postal,
                         ]
                     );
 

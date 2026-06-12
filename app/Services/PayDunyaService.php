@@ -56,6 +56,10 @@ class PayDunyaService
                 'last_name' => $customer['last_name'] ?? '',
                 'email' => $customer['email'] ?? '',
                 'phone' => $customer['phone'] ?? '',
+                'address' => $customer['address'] ?? '',
+                'city' => $customer['city'] ?? '',
+                'state' => $customer['state'] ?? '',
+                'zip_code' => $customer['zip_code'] ?? '',
             ];
         }
 
@@ -67,7 +71,6 @@ class PayDunyaService
             }
         }
 
-        Log::info('PayDunya Request Payload:', $payload);
 
         $response = Http::withHeaders([
             'PAYDUNYA-MASTER-KEY' => $this->masterKey,
