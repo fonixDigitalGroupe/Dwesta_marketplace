@@ -97,6 +97,21 @@
             box-shadow: 0 4px 12px rgba(0,74,173,0.15);
         }
 
+        .breadcrumbs {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumbs a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .breadcrumbs span {
+            margin: 0 0.4rem;
+        }
+
         .resend-container {
             font-size: 0.9rem;
             color: #666;
@@ -175,6 +190,13 @@
 @section('content')
     <main class="main-content">
         <div class="auth-wrapper">
+            <nav class="breadcrumbs">
+                <a href="/">Accueil</a>
+                <span>&gt;</span>
+                <a href="{{ route('register') }}">Inscription</a>
+                <span>&gt;</span>
+                <span>Vérification</span>
+            </nav>
             <div class="otp-card">
             <h1 class="otp-title">
                 Vérifiez votre {{ $regInfo['email'] ? 'e-mail' : 'téléphone' }}
