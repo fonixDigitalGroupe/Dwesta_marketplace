@@ -165,31 +165,178 @@
             }
 
             .sidebar {
-                display: none;
+                display: block;
+                background: transparent;
+                border: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .sidebar-standard {
+                display: none !important;
             }
 
             .main-content {
                 padding: 1rem;
                 border-radius: 4px;
-                border: none;
-                box-shadow: none;
+                background: #fff;
             }
 
-            .breadcrumb {
-                padding: 1rem 0.5rem 0;
-                margin-top: 0.5rem;
+            .rakuten-mobile-nav {
+                display: block !important;
+                margin-top: 0;
+                padding-bottom: 2rem;
             }
+
+            .rakuten-group-title {
+                font-size: 0.95rem;
+                font-weight: 700;
+                margin: 1.5rem 0 0.6rem;
+                color: #333;
+            }
+
+            .rakuten-card {
+                background: #fff;
+                border: 1px solid #e0e0e0;
+                border-radius: 4px;
+                overflow: hidden;
+                margin-bottom: 1rem;
+            }
+
+            .rakuten-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 1.1rem 1rem;
+                border-bottom: 1px solid #f5f5f5;
+                text-decoration: none;
+                color: #333;
+                font-size: 0.95rem;
+            }
+
+            .rakuten-item:last-child {
+                border-bottom: none;
+            }
+
+            .rakuten-item i {
+                font-size: 1.2rem;
+                color: #333;
+                width: 24px;
+                text-align: center;
+            }
+
+            .rakuten-item .chevron {
+                color: #ccc;
+                font-size: 0.8rem;
+            }
+        }
+        
+        .rakuten-mobile-nav {
+            display: none;
         }
     </style>
 @endpush
 
 <aside class="sidebar">
-    <!-- Votre compte -->
-    <a href="{{ route('account.index') }}"
-        class="sidebar-item {{ request()->routeIs('account.index') ? 'active' : '' }}">
-        <i class="fa-regular fa-user"></i>
-        <span>Votre compte Karnou</span>
-    </a>
+    <div class="rakuten-mobile-nav">
+        {{-- Mes achats --}}
+        <div class="rakuten-group-title">Mes achats</div>
+        <div class="rakuten-card">
+            <a href="{{ route('account.index') }}" class="rakuten-item" style="background: #fdfdfd;">
+                <span style="font-weight: 700;">Mon compte Karnou</span>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+            <a href="{{ route('account.orders') }}" class="rakuten-item">
+                <span>Tous mes achats</span>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+            <a href="{{ route('gift-cards.index') }}" class="rakuten-item">
+                <span>Mes cartes cadeaux</span>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+            <a href="{{ route('favorites.index') }}" class="rakuten-item">
+                <span>Ma liste de favoris</span>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+        </div>
+
+        {{-- Communauté --}}
+        <div class="rakuten-group-title">Communauté</div>
+        <div class="rakuten-card">
+            <a href="{{ route('conversations.index') }}" class="rakuten-item">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fa-regular fa-comments"></i>
+                    <span>Mes messages</span>
+                </div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+        </div>
+
+        {{-- Mes ventes --}}
+        <div class="rakuten-group-title">Mes ventes</div>
+        <div class="rakuten-card">
+            @if(!$user->vendeur)
+                <a href="{{ route('vendeur.create') }}" class="rakuten-item">
+                    <span>Devenir vendeur</span>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
+            @else
+                <a href="{{ route('vendeur.create') }}" class="rakuten-item">
+                    <span>Mettre en vente</span>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
+                <a href="{{ route('vendeur.mes-annonces') }}" class="rakuten-item" {{ $isRejected ? 'style=color:#ccc;pointer-events:none' : '' }}>
+                    <span>Mes annonces</span>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
+                <a href="{{ route('vendeur.orders') }}" class="rakuten-item" {{ $isRejected ? 'style=color:#ccc;pointer-events:none' : '' }}>
+                    <span>Mes ventes</span>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
+            @endif
+        </div>
+
+        {{-- Outils --}}
+        <div class="rakuten-group-title">Outils</div>
+        <div class="rakuten-card">
+            <a href="{{ route('vendeur.wallet.index') }}" class="rakuten-item">
+                <span>Mon porte-monnaie</span>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+            <a href="{{ route('account.credits.index') }}" class="rakuten-item">
+                <span>Mes crédits</span>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+            <a href="{{ route('abonnements.index') }}" class="rakuten-item">
+                <span>Mes abonnements</span>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+            <a href="{{ route('profile.show') }}" class="rakuten-item">
+                <span>Localisation & Préférences</span>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+        </div>
+
+        {{-- Déconnexion --}}
+        <div class="rakuten-card" style="margin-top: 2rem; border-color: #ffcdd2;">
+            <a href="#" class="rakuten-item" style="color: #c40000;" onclick="event.preventDefault(); document.getElementById('sidebar-logout-form').submit();">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <span style="font-weight: 700;">Déconnexion</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="sidebar-standard">
+        <!-- Votre compte -->
+        <a href="{{ route('account.index') }}"
+            class="sidebar-item {{ request()->routeIs('account.index') ? 'active' : '' }}">
+            <i class="fa-regular fa-user"></i>
+            <span>Votre compte Karnou</span>
+        </a>
+        
+        {{-- ... existing sidebar content ... --}}
 
     <!-- Mes achats -->
     <a href="{{ route('account.orders') }}"
