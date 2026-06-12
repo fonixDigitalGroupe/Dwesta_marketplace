@@ -239,104 +239,111 @@
 
 <aside class="sidebar">
     <div class="rakuten-mobile-nav">
-        {{-- Mon Compte (Top) --}}
-        <div class="rakuten-card" style="margin-top: 0.5rem;">
-            <a href="{{ route('account.index') }}" class="rakuten-item">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <i class="fa-regular fa-user"></i>
-                    <span style="font-weight: 700;">Mon compte Karnou</span>
-                </div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-        </div>
+        @if(request()->routeIs('account.index'))
+            {{-- Mon Compte (Top) --}}
+            <div class="rakuten-card" style="margin-top: 0.5rem;">
+                <a href="{{ route('account.index') }}" class="rakuten-item" style="background: #fdfdfd;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-regular fa-user" style="color: #f68b1e;"></i>
+                        <span style="font-weight: 700;">Mon compte Karnou</span>
+                    </div>
+                </a>
+            </div>
 
-        {{-- Mes achats --}}
-        <div class="rakuten-group-title">Mes achats</div>
-        <div class="rakuten-card">
-            <a href="{{ route('account.orders') }}" class="rakuten-item">
-                <span>Tous mes achats</span>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-            <a href="{{ route('gift-cards.index') }}" class="rakuten-item">
-                <span>Mes cartes cadeaux</span>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-            <a href="{{ route('favorites.index') }}" class="rakuten-item">
-                <span>Ma liste de favoris</span>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-        </div>
-
-        {{-- Communauté --}}
-        <div class="rakuten-group-title">Communauté</div>
-        <div class="rakuten-card">
-            <a href="{{ route('conversations.index') }}" class="rakuten-item">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <i class="fa-regular fa-comments"></i>
-                    <span>Mes messages</span>
-                </div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-            <a href="{{ route('account.avis') }}" class="rakuten-item">
-                <span>Mes avis</span>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-        </div>
-
-        {{-- Mes ventes --}}
-        <div class="rakuten-group-title">Mes ventes</div>
-        <div class="rakuten-card">
-            @if(!$user->vendeur)
-                <a href="{{ route('vendeur.create') }}" class="rakuten-item">
-                    <span style="color: #f68b1e; font-weight: 600;">Devenir vendeur</span>
+            {{-- Mes achats --}}
+            <div class="rakuten-group-title">Mes achats</div>
+            <div class="rakuten-card">
+                <a href="{{ route('account.orders') }}" class="rakuten-item">
+                    <span>Tous mes achats</span>
                     <i class="fa-solid fa-chevron-right chevron"></i>
                 </a>
-            @else
-                <a href="{{ route('vendeur.create') }}" class="rakuten-item">
-                    <span>Mettre en vente</span>
+                <a href="{{ route('gift-cards.index') }}" class="rakuten-item">
+                    <span>Mes cartes cadeaux</span>
                     <i class="fa-solid fa-chevron-right chevron"></i>
                 </a>
-                <a href="{{ route('vendeur.mes-annonces') }}" class="rakuten-item" {{ $isRejected ? 'style=color:#ccc;pointer-events:none' : '' }}>
-                    <span>Mes annonces</span>
+                <a href="{{ route('favorites.index') }}" class="rakuten-item">
+                    <span>Ma liste de favoris</span>
                     <i class="fa-solid fa-chevron-right chevron"></i>
                 </a>
-                <a href="{{ route('vendeur.orders') }}" class="rakuten-item" {{ $isRejected ? 'style=color:#ccc;pointer-events:none' : '' }}>
-                    <span>Mes ventes</span>
-                    <i class="fa-solid fa-chevron-right chevron"></i>
-                </a>
-            @endif
-        </div>
+            </div>
 
-        {{-- Outils --}}
-        <div class="rakuten-group-title">Outils</div>
-        <div class="rakuten-card">
-            <a href="{{ route('vendeur.wallet.index') }}" class="rakuten-item">
-                <span>Mon porte-monnaie</span>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-            <a href="{{ route('account.credits.index') }}" class="rakuten-item">
-                <span>Mes crédits</span>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-            <a href="{{ route('abonnements.index') }}" class="rakuten-item">
-                <span>Mes abonnements</span>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-            <a href="{{ route('profile.show') }}" class="rakuten-item">
-                <span>Localisation & Préférences</span>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-        </div>
+            {{-- Communauté --}}
+            <div class="rakuten-group-title">Communauté</div>
+            <div class="rakuten-card">
+                <a href="{{ route('conversations.index') }}" class="rakuten-item">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-regular fa-comments"></i>
+                        <span>Mes messages</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
+                <a href="{{ route('account.avis') }}" class="rakuten-item">
+                    <span>Mes avis</span>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
+            </div>
 
-        {{-- Déconnexion --}}
-        <div class="rakuten-card" style="margin-top: 2rem; border-color: #ffcdd2;">
-            <a href="#" class="rakuten-item" style="color: #c40000;" onclick="event.preventDefault(); document.getElementById('sidebar-logout-form').submit();">
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                    <span style="font-weight: 700;">Déconnexion</span>
-                </div>
+            {{-- Mes ventes --}}
+            <div class="rakuten-group-title">Mes ventes</div>
+            <div class="rakuten-card">
+                @if(!$user->vendeur)
+                    <a href="{{ route('vendeur.create') }}" class="rakuten-item">
+                        <span style="color: #f68b1e; font-weight: 600;">Devenir vendeur</span>
+                        <i class="fa-solid fa-chevron-right chevron"></i>
+                    </a>
+                @else
+                    <a href="{{ route('vendeur.create') }}" class="rakuten-item">
+                        <span>Mettre en vente</span>
+                        <i class="fa-solid fa-chevron-right chevron"></i>
+                    </a>
+                    <a href="{{ route('vendeur.mes-annonces') }}" class="rakuten-item" {{ $isRejected ? 'style=color:#ccc;pointer-events:none' : '' }}>
+                        <span>Mes annonces</span>
+                        <i class="fa-solid fa-chevron-right chevron"></i>
+                    </a>
+                    <a href="{{ route('vendeur.orders') }}" class="rakuten-item" {{ $isRejected ? 'style=color:#ccc;pointer-events:none' : '' }}>
+                        <span>Mes ventes</span>
+                        <i class="fa-solid fa-chevron-right chevron"></i>
+                    </a>
+                @endif
+            </div>
+
+            {{-- Outils --}}
+            <div class="rakuten-group-title">Outils</div>
+            <div class="rakuten-card">
+                <a href="{{ route('vendeur.wallet.index') }}" class="rakuten-item">
+                    <span>Mon porte-monnaie</span>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
+                <a href="{{ route('account.credits.index') }}" class="rakuten-item">
+                    <span>Mes crédits</span>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
+                <a href="{{ route('abonnements.index') }}" class="rakuten-item">
+                    <span>Mes abonnements</span>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
+                <a href="{{ route('profile.show') }}" class="rakuten-item">
+                    <span>Localisation & Préférences</span>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
+            </div>
+
+            {{-- Déconnexion --}}
+            <div class="rakuten-card" style="margin-top: 2rem; border-color: #ffcdd2;">
+                <a href="#" class="rakuten-item" style="color: #c40000;" onclick="event.preventDefault(); document.getElementById('sidebar-logout-form').submit();">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        <span style="font-weight: 700;">Déconnexion</span>
+                    </div>
+                </a>
+            </div>
+        @else
+            {{-- Back to Menu Link --}}
+            <a href="{{ route('account.index') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #f8f9fa; border-radius: 4px; border: 1px solid #eee; text-decoration: none; color: #333; font-weight: 600; margin-bottom: 1rem;">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Retour au menu Mon compte</span>
             </a>
-        </div>
+        @endif
     </div>
 
     <div class="sidebar-standard">
