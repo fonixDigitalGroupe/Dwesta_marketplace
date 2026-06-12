@@ -211,8 +211,8 @@
     .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; }
     .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }
     .back-to-site i, .header-auth i, .cart-link i { font-size: 1rem; }
-    .corp-logo img { height: 28px; width: auto; display: block; }
-    .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
+    .corp-logo img { height: 26px; width: auto; display: block; }
+    .corp-brand { font-size: 1.25rem; font-weight: 800; color: #004aad; letter-spacing: -1px; }
 
     /* --- Hero --- */
     .contact-hero { background: linear-gradient(135deg, rgba(0, 74, 173, 0.88) 0%, rgba(0, 30, 90, 0.82) 100%), url('/images/contact_bannier.png') center/cover no-repeat; padding: 5rem 0 4rem; border-bottom: none; text-align: center; }

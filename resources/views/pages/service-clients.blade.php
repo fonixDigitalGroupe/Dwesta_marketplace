@@ -99,8 +99,8 @@
     .header-right { justify-content: flex-end; gap: 1.5rem; }
     .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; }
     .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }
-    .corp-logo img { height: 28px; width: auto; display: block; }
-    .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
+    .corp-logo img { height: 26px; width: auto; display: block; }
+    .corp-brand { font-size: 1.25rem; font-weight: 800; color: #004aad; letter-spacing: -1px; }
     .page-hero { background-size: cover; background-position: center; padding: 5rem 0 4rem; text-align: center; color: #fff; }
     .page-hero h1 { font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 0.8rem; letter-spacing: -0.5px; }
     .page-hero .last-update { font-family: 'Inter', sans-serif; font-size: 0.78rem; color: rgba(255,255,255,0.45); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }

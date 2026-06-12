@@ -139,8 +139,8 @@
     .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }
     .back-to-site i, .header-auth i, .cart-link i { font-size: 1rem; }
 
-    .corp-logo img { height: 28px; width: auto; display: block; }
-    .corp-brand { font-size: 1.5rem; font-weight: 800; color: #004aad; letter-spacing: -1.5px; }
+    .corp-logo img { height: 26px; width: auto; display: block; }
+    .corp-brand { font-size: 1.25rem; font-weight: 800; color: #004aad; letter-spacing: -1px; }
 
     /* --- Page Hero --- */
     .page-hero { 
