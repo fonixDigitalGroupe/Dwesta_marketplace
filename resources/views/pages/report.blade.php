@@ -190,9 +190,9 @@
     .legal-main { flex: 1; min-width: 0; }
     .legal-intro { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #555; line-height: 1.75; margin-bottom: 2rem; }
 
-    .legal-article { display: flex; gap: 1.5rem; align-items: flex-start; padding: 0.5rem 0; margin-bottom: 2.5rem; border: none; background: transparent; border-radius: 0; box-shadow: none; }
-    .article-num { font-size: 1.2rem; font-weight: 800; color: #f68b1e; font-family: 'Outfit', sans-serif; letter-spacing: -1px; width: 36px; flex-shrink: 0; padding-top: 0.15rem; text-align: center; line-height: 1; opacity: 0.8; }
-    .article-body { flex: 1; min-width: 0; }
+    .legal-article { display: block; padding: 0.5rem 0; margin-bottom: 2.5rem; border: none; background: transparent; border-radius: 0; box-shadow: none; }
+    .article-num { display: none; }
+    .article-body { width: 100%; }
     .article-body h2 { font-size: 1.4rem; font-weight: 700; color: #1a1a1a; font-family: 'Outfit', 'Inter', sans-serif; margin: 0 0 1rem; }
     .article-body p { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #4b5563; line-height: 1.8; margin-bottom: 1.2rem; }
     .article-body ul { padding-left: 1.3rem; margin-bottom: 1.2rem; }

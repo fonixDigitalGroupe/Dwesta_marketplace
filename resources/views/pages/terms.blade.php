@@ -404,9 +404,7 @@
 
     /* --- Article Blocks --- */
     .legal-article {
-        display: flex;
-        gap: 1.5rem;
-        align-items: flex-start;
+        display: block;
         padding: 0.5rem 0;
         margin-bottom: 2.5rem;
         border: none;
@@ -415,21 +413,10 @@
         box-shadow: none;
     }
     .article-num {
-        font-size: 1.2rem;
-        font-weight: 800;
-        color: #f68b1e;
-        font-family: 'Outfit', sans-serif;
-        letter-spacing: -1px;
-        width: 36px;
-        flex-shrink: 0;
-        padding-top: 0.15rem;
-        text-align: center;
-        line-height: 1;
-        opacity: 0.8;
+        display: none;
     }
     .article-body {
-        flex: 1;
-        min-width: 0;
+        width: 100%;
     }
     .article-body h2 {
         font-size: 1.05rem;

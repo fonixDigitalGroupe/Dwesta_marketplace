@@ -275,9 +275,9 @@ verte pour particuliers et pros.</li>
     .legal-main { flex: 1; min-width: 0; }
 
     /* --- Articles --- */
-    .legal-article { display: flex; gap: 1.5rem; align-items: flex-start; padding: 0.5rem 0; margin-bottom: 2rem; border: none; background: transparent; border-radius: 0; box-shadow: none; }
-    .article-num { font-size: 1.2rem; font-weight: 800; color: #f68b1e; font-family: 'Outfit', sans-serif; width: 36px; flex-shrink: 0; text-align: center; opacity: 0.8; }
-    .article-body { flex: 1; min-width: 0; }
+    .legal-article { display: block; padding: 0.5rem 0; margin-bottom: 2rem; border: none; background: transparent; border-radius: 0; box-shadow: none; }
+    .article-num { display: none; }
+    .article-body { width: 100%; }
     .article-body h2 { font-size: 1.4rem; font-weight: 700; color: #1a1a1a; font-family: 'Outfit', 'Inter', sans-serif; margin: 0 0 1rem; }
     .article-body p { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #4b5563; line-height: 1.8; margin-bottom: 1.2rem; }
     .article-body a { color: #f68b1e; text-decoration: none; font-weight: 600; }
@@ -308,8 +308,8 @@ verte pour particuliers et pros.</li>
     .ecosystem-list-refined li::before { content: "→"; position: absolute; left: 0; color: #004aad; font-weight: bold; }
 
     /* --- Founder Quote --- */
-    .founder-card-refined { display: flex; gap: 2rem; background: transparent; border: none; border-radius: 0; padding: 1rem 0; margin-top: 2rem; align-items: center; }
-    .founder-image-mini { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; flex-shrink: 0; border: none; box-shadow: 0 10px 25px rgba(0,74,173,0.1); }
+    .founder-card-refined { display: flex; gap: 2rem; background: #fff5eb; border: 1px solid #ffe5cc; border-radius: 16px; padding: 2.5rem; margin-top: 2rem; align-items: center; }
+    .founder-image-mini { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; flex-shrink: 0; border: 4px solid #fff; box-shadow: 0 8px 20px rgba(246,139,30,0.15); }
     .founder-image-mini img { width: 100%; height: 100%; object-fit: cover; }
     .founder-quote-content { flex: 1; }
     .founder-quote-content i { font-size: 1.5rem; color: #004aad; opacity: 0.2; margin-bottom: 0.5rem; display: block; }
