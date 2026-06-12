@@ -210,7 +210,7 @@
         line-height: 1.6; 
     }
 
-    .corp-logo img { height: 26px; width: auto; display: block; }
+    .corp-logo img { height: 22px; width: auto; display: block; }
     .corp-brand { font-size: 1.25rem; font-weight: 800; color: #004aad; letter-spacing: -1px; }
 
 

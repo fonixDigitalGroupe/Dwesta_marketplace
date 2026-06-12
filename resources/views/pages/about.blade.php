@@ -146,11 +146,7 @@
                             <ul>
                                 <li><strong>Karnou Agence :</strong> Notre réseau de points de retrait pour une proximité maximale.</li>
                                 <li><strong>Karnou Express :</strong> Société de livraison de colis innovante.</li>
-                                <li><strong>Vente sur Karnou :</strong>### 6. Navigation Simplified
-- **Sub-Menu Removal**: Removed the secondary navigation bar (sub-menus like À propos, Conditions, etc.) from all head sections of the institutional pages. Each page is now standalone and focused on its specific content.
-
-### 7. Performance & Layout
-verte pour particuliers et pros.</li>
+                                <li><strong>Vente sur Karnou :</strong> Marketplace ouverte pour particuliers et pros.</li>
                             </ul>
                         </div>
                     </div>
@@ -206,7 +202,7 @@ verte pour particuliers et pros.</li>
     .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; }
     .back-to-site:hover, .header-auth:hover, .cart-link:hover { color: #004aad; }
     .back-to-site i, .header-auth i, .cart-link i { font-size: 1rem; }
-    .corp-logo img { height: 26px; width: auto; display: block; }
+    .corp-logo img { height: 22px; width: auto; display: block; }
     .corp-brand { font-size: 1.25rem; font-weight: 800; color: #004aad; letter-spacing: -1px; }
 
     /* --- Page Header --- */
