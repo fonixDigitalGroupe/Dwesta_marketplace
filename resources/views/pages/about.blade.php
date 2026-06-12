@@ -199,8 +199,8 @@ verte pour particuliers et pros.</li>
     .corporate-header .about-container { max-width: 1350px; padding: 0 1.5rem; }
     .corp-header-flex { display: flex; justify-content: space-between; align-items: center; }
 
-    .header-left, .header-right { flex: 1; display: flex; align-items: center; }
-    .header-center { flex: 0; display: flex; justify-content: center; }
+    .header-left, .header-right { flex: 1 1 0px; display: flex; align-items: center; }
+    .header-center { flex: 0 0 auto; display: flex; justify-content: center; }
     .header-right { justify-content: flex-end; gap: 1.5rem; }
 
     .back-to-site, .header-auth, .cart-link { text-decoration: none; color: #555; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 0.6rem; }
