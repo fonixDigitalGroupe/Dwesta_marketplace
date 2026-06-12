@@ -58,7 +58,7 @@ class OtpController extends Controller
             'email'        => $regInfo['email'],
             'telephone'    => $regInfo['telephone'],
             'password'     => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(12)),
-            'is_active'    => false, // Toujours false jusqu'à la fin du Step 2 (register-complete)
+            'is_active'    => true, // Activé par défaut comme demandé par le client
             'email_verified_at' => now(), 
         ]);
 

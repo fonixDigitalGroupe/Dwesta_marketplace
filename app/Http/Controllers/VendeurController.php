@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewVendorNotification;
 use App\Mail\VendorApplicationConfirmation;
+use App\Models\Abonnement;
+use App\Models\VendeurAbonnement;
+use Carbon\Carbon;
 
 class VendeurController extends Controller
 {
@@ -89,9 +92,11 @@ class VendeurController extends Controller
                 $vendeur = Vendeur::create([
                     'user_id' => $user->id,
                     'type' => 'particulier',
-                    'statut_verification' => 'en_attente',
+                    'statut_verification' => 'verifie', // Auto-activé comme demandé
+                    'verifie_le' => now(),
                     'actif' => true,
                 ]);
+                $this->assignDefaultSubscription($vendeur);
             }
 
             // Upload du document
@@ -183,9 +188,11 @@ class VendeurController extends Controller
                 $vendeur = Vendeur::create([
                     'user_id' => $user->id,
                     'type' => 'professionnel',
-                    'statut_verification' => 'en_attente',
+                    'statut_verification' => 'verifie', // Auto-activé comme demandé
+                    'verifie_le' => now(),
                     'actif' => true,
                 ]);
+                $this->assignDefaultSubscription($vendeur);
             }
 
             // Upload du registre de commerce
@@ -534,5 +541,26 @@ class VendeurController extends Controller
             ->get();
 
         return view('vendeur.stats', compact('vendeur', 'stats', 'recentOrders'));
+    }
+
+    /**
+     * Attribue automatiquement l'abonnement gratuit par défaut
+     */
+    private function assignDefaultSubscription(Vendeur $vendeur)
+    {
+        if (!$vendeur->abonnements()->where('actif', true)->exists()) {
+            $abonnementGratuit = Abonnement::where('type', Abonnement::TYPE_GRATUIT)->first();
+            if ($abonnementGratuit) {
+                VendeurAbonnement::create([
+                    'vendeur_id' => $vendeur->id,
+                    'abonnement_id' => $abonnementGratuit->id,
+                    'date_debut' => Carbon::today(),
+                    'date_fin' => Carbon::today()->addYears(10),
+                    'actif' => true,
+                    'renouvellement_automatique' => false,
+                    'nombre_annonces_utilisees' => 0,
+                ]);
+            }
+        }
     }
 }
