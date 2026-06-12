@@ -246,7 +246,7 @@
         }
 
         .btn-submit {
-            background: #f68b1e;
+            background: #004aad;
             color: white;
             border: none;
             padding: 0.85rem 2rem;
@@ -261,7 +261,7 @@
         }
 
         .btn-submit:hover {
-            background: #e57a18;
+            background: #003a8a;
         }
 
         .btn-back {
