@@ -48,6 +48,9 @@ class PayDunyaService
             'custom_data' => $customData
         ];
 
+        // Nettoyer le numéro de téléphone (enlever le +)
+        $cleanPhone = !empty($customer['phone']) ? str_replace('+', '', $customer['phone']) : '';
+
         // Ajouter les infos client si présentes
         if (!empty($customer)) {
             $payload['customer'] = [
@@ -55,12 +58,17 @@ class PayDunyaService
                 'first_name' => $customer['first_name'] ?? '',
                 'last_name' => $customer['last_name'] ?? '',
                 'email' => $customer['email'] ?? '',
-                'phone' => $customer['phone'] ?? '',
+                'phone' => $cleanPhone,
                 'address' => $customer['address'] ?? '',
                 'city' => $customer['city'] ?? '',
                 'state' => $customer['state'] ?? '',
                 'zip_code' => $customer['zip_code'] ?? '',
             ];
+            
+            // Format legacy/alternatif pour maximiser les chances de pré-remplissage
+            $payload['customer_name'] = $customer['name'] ?? '';
+            $payload['customer_email'] = $customer['email'] ?? '';
+            $payload['customer_phone'] = $cleanPhone;
         }
 
         // Ajouter des canaux spécifiques si demandés
@@ -123,7 +131,7 @@ class PayDunyaService
 
         $payload = [
             'invoice_token' => $invoiceToken,
-            'phone_number' => $phoneNumber,
+            'phone_number' => str_replace('+', '', $phoneNumber),
             'channel' => $channels[0],
         ];
 
