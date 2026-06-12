@@ -68,8 +68,8 @@
         }
 
         .otp-digit:focus {
-            border-color: #004aad;
-            box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.05);
+            border-color: #f68b1e;
+            box-shadow: none;
             background-color: #fff;
             transform: translateY(-2px);
         }
