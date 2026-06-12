@@ -168,7 +168,7 @@
                                 "Nous continuons de croire que le monde numérique a le potentiel d'améliorer la vie de nous tous. Oubliez la peur. Adoptez l'optimisme."
                             </blockquote>
                             <cite class="quote-author-refined">
-                                Jean-Pierre Karnou – <span>Fondateur & CEO</span>
+                                Jean-Pierre Karnou
                             </cite>
                         </div>
                     </div>
@@ -304,7 +304,7 @@
     .ecosystem-list-refined li::before { content: "→"; position: absolute; left: 0; color: #94a3b8; font-weight: bold; }
 
     /* --- Founder Quote --- */
-    .founder-card-refined { display: flex; gap: 2rem; background: #fff5eb; border: 1px solid #ffe5cc; border-radius: 16px; padding: 2.5rem; margin-top: 2rem; align-items: center; }
+    .founder-card-refined { display: flex; gap: 2rem; background: #fff; border: 1px solid #f1f3f5; border-radius: 16px; padding: 2.5rem; margin-top: 2rem; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
     .founder-image-mini { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; flex-shrink: 0; border: 4px solid #fff; box-shadow: 0 8px 20px rgba(246,139,30,0.15); }
     .founder-image-mini img { width: 100%; height: 100%; object-fit: cover; }
     .founder-quote-content { flex: 1; }
