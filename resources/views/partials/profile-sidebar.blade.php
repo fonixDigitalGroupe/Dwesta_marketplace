@@ -248,6 +248,13 @@
                         <span style="font-weight: 700;">Mon compte Karnou</span>
                     </div>
                 </a>
+                <a href="{{ route('profile.show') }}" class="rakuten-item">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>Votre compte</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
             </div>
 
             {{-- Mes achats --}}
@@ -320,10 +327,6 @@
                 </a>
                 <a href="{{ route('abonnements.index') }}" class="rakuten-item">
                     <span>Mes abonnements</span>
-                    <i class="fa-solid fa-chevron-right chevron"></i>
-                </a>
-                <a href="{{ route('profile.show') }}" class="rakuten-item">
-                    <span>Localisation & Préférences</span>
                     <i class="fa-solid fa-chevron-right chevron"></i>
                 </a>
             </div>
