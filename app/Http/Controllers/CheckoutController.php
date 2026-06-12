@@ -319,8 +319,10 @@ class CheckoutController extends Controller
                         $paymentMethod,
                         [
                             'name' => Auth::user()->name,
+                            'first_name' => Auth::user()->prenom,
+                            'last_name' => Auth::user()->nom,
                             'email' => Auth::user()->email,
-                            'phone' => Auth::user()->telephone,
+                            'phone' => str_starts_with(Auth::user()->telephone, '+') ? Auth::user()->telephone : '+221' . Auth::user()->telephone,
                         ]
                     );
 

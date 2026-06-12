@@ -52,6 +52,8 @@ class PayDunyaService
         if (!empty($customer)) {
             $payload['customer'] = [
                 'name' => $customer['name'] ?? '',
+                'first_name' => $customer['first_name'] ?? '',
+                'last_name' => $customer['last_name'] ?? '',
                 'email' => $customer['email'] ?? '',
                 'phone' => $customer['phone'] ?? '',
             ];
