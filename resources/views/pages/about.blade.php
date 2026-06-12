@@ -289,19 +289,19 @@
     .ecosystem-flex { display: flex; gap: 2rem; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; }
     .diagram-miniature { width: 300px; height: 300px; flex-shrink: 0; position: relative; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
     .ecosystem-drawing { position: relative; width: 250px; height: 250px; }
-    .core-node { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #004aad; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 0 20px rgba(0,74,173,0.3); }
+    .core-node { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #94a3b8; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: none; }
     .core-text { color: #fff; font-weight: 700; font-size: 0.9rem; font-family: 'Outfit', sans-serif; }
-    .satellite-node { position: absolute; width: 40px; height: 40px; background: #fff; border: 1px solid #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #004aad; z-index: 5; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .satellite-node { position: absolute; width: 40px; height: 40px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #64748b; z-index: 5; box-shadow: none; }
     .node-acheteurs { top: 0; left: 20%; }
     .node-vendeurs { top: 0; right: 20%; }
     .node-express { bottom: 0; left: 20%; }
     .node-agence { bottom: 0; right: 20%; }
     .node-vente { top: 50%; left: -10%; transform: translateY(-50%); }
     .connections-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-    .conn-line { stroke: #004aad; stroke-width: 1; stroke-dasharray: 4; opacity: 0.2; }
+    .conn-line { stroke: #cbd5e1; stroke-width: 1; stroke-dasharray: 4; opacity: 0.5; }
     .ecosystem-list-refined ul { list-style: none; padding: 0; }
-    .ecosystem-list-refined li { margin-bottom: 0.8rem; font-size: 0.9rem; color: #444; position: relative; padding-left: 1.2rem; }
-    .ecosystem-list-refined li::before { content: "→"; position: absolute; left: 0; color: #004aad; font-weight: bold; }
+    .ecosystem-list-refined li { margin-bottom: 0.8rem; font-size: 0.95rem; color: #4b5563; line-height: 1.8; position: relative; padding-left: 1.5rem; }
+    .ecosystem-list-refined li::before { content: "→"; position: absolute; left: 0; color: #94a3b8; font-weight: bold; }
 
     /* --- Founder Quote --- */
     .founder-card-refined { display: flex; gap: 2rem; background: #fff5eb; border: 1px solid #ffe5cc; border-radius: 16px; padding: 2.5rem; margin-top: 2rem; align-items: center; }
