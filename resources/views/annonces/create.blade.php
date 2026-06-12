@@ -855,35 +855,158 @@
         }
 
         /* Responsive */
+        /* Responsive */
         @media (max-width: 968px) {
             .create-annonce-container {
                 grid-template-columns: 1fr;
-                gap: 2rem;
-                margin: 2rem auto;
+                gap: 1rem;
+                margin: 0;
+                padding: 0;
             }
 
             .progress-sidebar {
-                position: relative;
+                position: sticky;
                 top: 0;
-                display: flex;
-                gap: 1rem;
-                overflow-x: auto;
+                z-index: 100;
+                background: white;
+                padding: 1rem;
+                border-bottom: 1px solid #eee;
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 0.5rem;
+                overflow: hidden;
             }
 
             .progress-step {
-                margin-bottom: 0;
-                flex-direction: column;
-                align-items: center;
+                flex: 1;
+                flex-direction: row;
+                gap: 0.5rem;
+                padding: 0;
+            }
+
+            .progress-step .step-content {
+                display: none; /* Hide text on mobile nodes */
+            }
+
+            .progress-step.active .step-content {
+                display: block;
+                position: absolute;
+                left: 50%;
+                top: 3.5rem;
+                transform: translateX(-50%);
+                white-space: nowrap;
                 text-align: center;
+                background: white;
+                padding: 0.25rem 0.75rem;
+                border-radius: 20px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                border: 1px solid #eee;
             }
 
             .step-circle {
-                margin-right: 0;
-                margin-bottom: 0.5rem;
+                width: 10px;
+                height: 10px;
+                margin: 0 auto;
+                border-width: 1px;
+            }
+
+            .progress-step.active .step-circle {
+                width: 14px;
+                height: 14px;
+                background: #00A400;
+            }
+
+            .progress-step:not(:last-child)::after {
+                display: none;
             }
 
             .form-content {
-                padding: 2rem 1.5rem;
+                padding: 1.5rem 1rem;
+                border-radius: 0;
+                border: none;
+                box-shadow: none;
+                margin-top: 1rem;
+            }
+
+            .form-title {
+                font-size: 1.25rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .advisory-container {
+                display: none !important;
+            }
+
+            .form-actions {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: white;
+                padding: 1rem;
+                margin: 0;
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+                border-top: 1px solid #eee;
+                z-index: 1000;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .btn {
+                flex: 1;
+                padding: 0.8rem;
+                font-size: 1rem;
+            }
+
+            .status-cards-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .status-card {
+                padding: 1.25rem;
+            }
+
+            .category-badge-item {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .photo-grid-system {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .photo-upload-box, .image-preview-item {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1;
+            }
+            
+            #createAnnonceForm {
+                padding-bottom: 7rem; /* Space for fixed buttons */
+            }
+
+            .service-card {
+                padding: 1rem !important;
+                gap: 0.75rem !important;
+            }
+
+            .service-card input[type="checkbox"] {
+                width: 24px !important;
+                height: 24px !important;
+            }
+
+            .service-card div[style*="font-size: 1.25rem"] {
+                font-size: 1.1rem !important;
+            }
+
+            .status-card span[style*="font-weight: 600"] {
+                font-size: 0.95rem;
+            }
+
+            .status-card small {
+                font-size: 0.7rem !important;
             }
         }
     </style>
