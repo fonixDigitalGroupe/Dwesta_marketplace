@@ -335,7 +335,7 @@
                     <div class="form-group" style="margin-top: 2rem;">
                         <label class="radio-item" style="font-size: 0.9rem; align-items: start;">
                             <input type="checkbox" name="terms" value="1" style="margin-top: 3px;" required>
-                            <span>J'accepte les <a href="#" style="color: #f68b1e;">Conditions d'utilisation</a> et la <a href="#" style="color: #f68b1e;">Politique de confidentialité</a> de Karnou.</span>
+                            <span>J'accepte les <a href="{{ route('terms') }}" target="_blank" style="color: #f68b1e;">Conditions d'utilisation</a> et la <a href="{{ route('privacy') }}" target="_blank" style="color: #f68b1e;">Politique de confidentialité</a> de Karnou.</span>
                         </label>
                         @error('terms') <div class="error-msg">{{ $message }}</div> @enderror
                     </div>
