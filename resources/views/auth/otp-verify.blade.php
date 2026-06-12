@@ -28,7 +28,7 @@
             width: 100%;
             max-width: 480px;
             margin: 4rem auto;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
             text-align: center;
         }
 
@@ -69,7 +69,7 @@
 
         .otp-digit:focus {
             border-color: #004aad;
-            box-shadow: 0 0 0 4px rgba(0, 74, 173, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.05);
             background-color: #fff;
             transform: translateY(-2px);
         }
