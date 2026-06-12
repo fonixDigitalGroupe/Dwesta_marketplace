@@ -11,38 +11,42 @@
         }
 
         .auth-wrapper {
-            max-width: 1200px;
+            max-width: 600px;
             margin: 0 auto;
             padding: 2.5rem 1rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        .auth-grid {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            gap: 2rem;
-            align-items: start;
+        .breadcrumbs {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumbs a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .breadcrumbs span {
+            margin: 0 0.4rem;
         }
 
         .auth-card {
             background: #fff;
             padding: 2.5rem;
-            border: 1px solid #f5f5f5;
-            border-radius: 8px;
+            border: none;
+            border-radius: 0;
             width: 100%;
             max-width: 500px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            box-shadow: 8px 0 15px -10px rgba(0,0,0,0.05);
         }
 
         .page-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             margin-bottom: 2rem;
             color: #000;
-            text-align: center;
+            text-align: left;
         }
 
         .section-header {
@@ -206,9 +210,15 @@
 
 @section('content')
     <div class="auth-wrapper">
-        <div class="auth-grid">
-            <div class="auth-card">
-                <h1 class="page-title">Finalisez votre inscription</h1>
+        <nav class="breadcrumbs">
+            <a href="/">Accueil</a>
+            <span>&gt;</span>
+            <a href="{{ route('register') }}">Inscription</a>
+            <span>&gt;</span>
+            <span>Vérification</span>
+        </nav>
+        <div class="auth-card">
+            <h1 class="page-title">Finalisez votre inscription</h1>
                 
                 <form method="POST" action="{{ route('register.complete.post') }}">
                     @csrf
@@ -332,9 +342,8 @@
 
                     <button type="submit" class="btn-primary">Créer mon compte</button>
                 </form>
-            </div>
-        </div>
-    </div>
+        </div> {{-- end auth-card --}}
+    </div> {{-- end auth-wrapper --}}
 @endsection
 
 @push('scripts')
