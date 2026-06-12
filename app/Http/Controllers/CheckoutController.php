@@ -303,6 +303,8 @@ class CheckoutController extends Controller
                 if ($remainingTotal > 0 && $moyenPaiement !== 'gift_card') {
                     // Partial or full mobile payment
                     $paymentMethod = in_array($moyenPaiement, ['gift_card', 'cb']) ? null : $moyenPaiement;
+                    $phone = $request->phone_number;
+
                     $session = $this->payDunyaService->createCheckoutSession(
                         $remainingTotal,
                         $deduction > 0 ? "Commande Dwesta (Carte Cadeau: -{$deduction} FCFA)" : "Commande Dwesta",
@@ -319,6 +321,32 @@ class CheckoutController extends Controller
 
                     foreach ($orders as $o) {
                         $o->update(['paydunya_token' => $session->token]);
+                    }
+
+                    // TENTATIVE DE PAIEMENT DIRECT (Style 1xbet)
+                    if ($phone && in_array($moyenPaiement, ['om', 'wave', 'free'])) {
+                        try {
+                            $directResponse = $this->payDunyaService->initiateDirectPayment($session->token, $phone, $moyenPaiement);
+                            
+                            if (isset($directResponse['response_code']) && $directResponse['response_code'] === '00') {
+                                DB::commit();
+                                
+                                // Si c'est Wave, on redirige vers le lien direct Wave
+                                if ($moyenPaiement === 'wave' && !empty($directResponse['response_text'])) {
+                                    return redirect($directResponse['response_text']);
+                                }
+
+                                // Pour Orange Money / Free, le push est envoyé
+                                return redirect()->route('checkout.success')->with('info', 'Demande de paiement envoyée sur votre téléphone. Veuillez confirmer avec votre code secret.');
+                            } else {
+                                \Illuminate\Support\Facades\Log::warning('PayDunya Direct Payment Failed, falling back to hosted:', [
+                                    'response' => $directResponse,
+                                    'method' => $moyenPaiement
+                                ]);
+                            }
+                        } catch (\Exception $e) {
+                            \Illuminate\Support\Facades\Log::error('PayDunya Direct Payment Exception: ' . $e->getMessage());
+                        }
                     }
 
                     DB::commit();

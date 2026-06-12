@@ -139,6 +139,20 @@
                     </div>
                 </label>
 
+                <!-- PHONE NUMBER INPUT (CONDITIONAL) -->
+                <div id="phone_input_container" style="display: none; padding: 1.5rem; background: #fffcf5; border-bottom: 1px solid #f9f9f9; border-top: 1px solid #f9f9f9;">
+                    <label for="phone_number" style="display: block; font-weight: 700; font-size: 0.9rem; color: #222; margin-bottom: 8px;">Numéro de téléphone pour le paiement</label>
+                    <div style="position: relative;">
+                        <input type="tel" name="phone_number" id="phone_number" 
+                               value="{{ Auth::user()->telephone }}" 
+                               placeholder="Ex: 771234567" 
+                               style="width: 100%; padding: 0.85rem 1rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; font-family: inherit; outline: none; transition: border-color 0.2s;">
+                    </div>
+                    <p style="font-size: 0.8rem; color: #666; margin-top: 8px;">
+                        <i class="fas fa-info-circle"></i> S'il s'agit d'Orange Money, vous recevrez une demande de confirmation (push) sur ce numéro.
+                    </p>
+                </div>
+
 
                 <div class="section-title">Paiement à la livraison</div>
 
@@ -214,9 +228,22 @@
         if (val.startsWith('commande_')) {
             gp.value = 'commande';
             mp.value = val.replace('commande_', '');
+
+            // Show/Hide phone input
+            const directMethods = ['om', 'wave', 'free'];
+            const phoneContainer = document.getElementById('phone_input_container');
+            if (directMethods.includes(mp.value)) {
+                phoneContainer.style.display = 'block';
+                document.getElementById('phone_number').required = true;
+            } else {
+                phoneContainer.style.display = 'none';
+                document.getElementById('phone_number').required = false;
+            }
         } else {
             gp.value = val;
             mp.value = 'cod';
+            document.getElementById('phone_input_container').style.display = 'none';
+            document.getElementById('phone_number').required = false;
         }
     }
 

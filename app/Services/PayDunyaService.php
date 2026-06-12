@@ -93,6 +93,37 @@ class PayDunyaService
 
         return null;
     }
+
+    /**
+     * Initier un paiement direct via PSR (Partner Settlement Request)
+     * Utile pour Orange Money (STK Push) et Wave (Lien direct)
+     */
+    public function initiateDirectPayment($invoiceToken, $phoneNumber, $method)
+    {
+        $channels = $this->getChannelsForMethod($method);
+        if (!$channels) {
+            throw new \Exception("Méthode de paiement non supportée pour le paiement direct : " . $method);
+        }
+
+        $payload = [
+            'invoice_token' => $invoiceToken,
+            'phone_number' => $phoneNumber,
+            'channel' => $channels[0],
+        ];
+
+        $response = Http::withHeaders([
+            'PAYDUNYA-MASTER-KEY' => $this->masterKey,
+            'PAYDUNYA-PRIVATE-KEY' => $this->privateKey,
+            'PAYDUNYA-TOKEN' => $this->token,
+        ])->post($this->baseUrl . '/psr/create', $payload);
+
+        if ($response->successful()) {
+            return $response->json();
+        }
+
+        Log::error('PayDunya PSR Error: ' . $response->body());
+        return $response->json();
+    }
     /**
      * Effectuer un virement (Disbursement) vers un compte Mobile Money
      */
