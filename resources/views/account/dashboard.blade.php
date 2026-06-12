@@ -287,6 +287,53 @@
             background: #e07b10;
         }
 
+        @media (max-width: 768px) {
+            .account-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .profile-completion-alert {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+                padding: 1.25rem;
+            }
+
+            .profile-completion-alert i {
+                font-size: 2rem;
+            }
+
+            .profile-completion-alert .btn-complete {
+                width: 100%;
+                text-align: center;
+            }
+
+            .club-r-section {
+                flex-direction: column;
+                padding: 1.5rem 0;
+                gap: 1.5rem;
+            }
+
+            .club-r-left, .club-r-right {
+                width: 100%;
+            }
+
+            .survey-section {
+                padding: 1.5rem 1rem;
+            }
+
+            .score-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .dashboard-columns-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .survey-section {
             background: #fcfcfc;
             padding: 2rem;

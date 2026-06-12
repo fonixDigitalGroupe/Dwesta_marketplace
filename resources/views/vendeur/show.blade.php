@@ -140,8 +140,30 @@
         }
 
         @media (max-width: 768px) {
+            .account-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
             .jumia-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .alert-box {
+                flex-direction: column;
+                gap: 0.75rem;
+                padding: 1rem;
+            }
+
+            .alert-box i {
+                font-size: 1.5rem;
+            }
+
+            .alert-box a {
+                display: block;
+                width: 100%;
+                text-align: center;
             }
         }
     </style>

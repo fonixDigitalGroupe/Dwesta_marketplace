@@ -160,16 +160,76 @@
         @media (max-width: 1024px) {
             .dashboard-container {
                 grid-template-columns: 1fr;
+                padding: 1rem 0.75rem;
+                gap: 1rem;
             }
 
             .sidebar {
+                margin: 0;
+                display: flex;
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+                scroll-behavior: smooth;
+                background: #fff;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                padding: 5px 0;
+            }
+
+            .sidebar::-webkit-scrollbar {
                 display: none;
             }
 
-            .breadcrumb,
-            .dashboard-container {
-                padding-left: 1rem;
-                padding-right: 1rem;
+            .sidebar-header, .sidebar-group-title, .sidebar-divider {
+                display: none;
+            }
+
+            .sidebar-item {
+                display: inline-flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 10px 15px;
+                min-width: 80px;
+                font-size: 0.75rem;
+                text-align: center;
+                gap: 5px;
+                border-bottom: 2px solid transparent;
+            }
+
+            .sidebar-item i {
+                margin-right: 0;
+                font-size: 1.25rem;
+            }
+
+            .sidebar-item.active {
+                border-bottom: 2px solid #f68b1e;
+                background-color: transparent;
+            }
+
+            .sidebar-item span {
+                white-space: normal;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .main-content {
+                padding: 1rem;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            .breadcrumb {
+                padding: 1rem 0.75rem 0;
+                margin-top: 0.5rem;
             }
         }
     </style>

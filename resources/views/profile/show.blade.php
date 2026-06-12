@@ -223,6 +223,23 @@
             color: #333;
             margin: 0;
         }
+
+        @media (max-width: 768px) {
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .rakuten-form-container {
+                padding: 0.5rem 0;
+            }
+            
+            .btn-rakuten {
+                width: 100%;
+                text-align: center;
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 @endpush
