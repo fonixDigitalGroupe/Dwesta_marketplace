@@ -257,6 +257,44 @@
                 </a>
             </div>
 
+            {{-- Adresses --}}
+            <div class="rakuten-card">
+                <div style="padding: 1rem 1rem 0.5rem; border-bottom: 1px solid #f5f5f5; display: flex; justify-content: space-between; align-items: center;">
+                    <h2 style="font-size: 0.8rem; font-weight: 700; color: #666; text-transform: uppercase; margin: 0;">Adresses</h2>
+                    <a href="{{ route('profile.show') }}" style="color: #f68b1e; font-size: 0.9rem;"><i class="fa-solid fa-pen"></i></a>
+                </div>
+                <div style="padding: 1rem;">
+                    <p style="font-weight: 700; font-size: 0.9rem; color: #333; margin-bottom: 0.4rem;">Adresse par défaut :</p>
+                    @if($user->adresse)
+                        <div style="font-size: 0.9rem; color: #555; line-height: 1.4;">
+                            {{ $user->prenom }} {{ $user->nom }}<br>
+                            {{ $user->adresse }}<br>
+                            {{ $user->ville }} {{ $user->code_postal }}<br>
+                            {{ $user->telephone }}
+                        </div>
+                    @else
+                        <div style="font-size: 0.9rem; color: #888;">Aucune adresse enregistrée.</div>
+                    @endif
+                </div>
+            </div>
+
+            {{-- Localisation & Préférences --}}
+            <div class="rakuten-card">
+                <div style="padding: 1rem 1rem 0.5rem; border-bottom: 1px solid #f5f5f5;">
+                    <h2 style="font-size: 0.8rem; font-weight: 700; color: #666; text-transform: uppercase; margin: 0;">Localisation & Préférences</h2>
+                </div>
+                <div style="padding: 1rem;">
+                    <p style="font-weight: 700; font-size: 0.9rem; color: #333; margin-bottom: 0.4rem;">Votre localisation :</p>
+                    <div style="font-size: 0.9rem; color: #555; line-height: 1.4;">
+                        {{ $user->nationalite ?? 'Non définie' }}<br>
+                        {{ $user->adresse ?? 'Aucune adresse enregistrée' }}
+                    </div>
+                    <a href="{{ route('profile.show') }}#profile-geolocation-section" style="display: block; color: #f68b1e; font-size: 0.85rem; font-weight: 700; margin-top: 1rem; text-decoration: none;">
+                        Gérer ma localisation et mes préférences
+                    </a>
+                </div>
+            </div>
+
             {{-- Mes achats --}}
             <div class="rakuten-group-title">Mes achats</div>
             <div class="rakuten-card">
