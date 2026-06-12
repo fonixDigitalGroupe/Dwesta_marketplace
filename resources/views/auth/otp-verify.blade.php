@@ -22,28 +22,30 @@
 
         .otp-card {
             background: #fff;
-            padding: 3rem 2.5rem;
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 16px;
+            padding: 2.5rem;
+            border: none;
+            border-radius: 0;
             width: 100%;
-            max-width: 480px;
-            margin: 4rem auto;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            max-width: 450px;
+            margin: 3rem auto;
+            box-shadow: 8px 0 15px -10px rgba(0,0,0,0.05);
             text-align: center;
         }
 
         .otp-title {
-            font-size: 1.35rem;
+            font-size: 1.1rem;
             font-weight: 700;
             margin-bottom: 1.25rem;
             color: #000;
+            text-align: center;
         }
 
         .otp-subtitle {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #666;
             margin-bottom: 2rem;
             line-height: 1.5;
+            text-align: center;
         }
 
         .otp-input-container {
