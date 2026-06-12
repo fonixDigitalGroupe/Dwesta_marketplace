@@ -240,14 +240,20 @@
 <aside class="sidebar">
     <div class="rakuten-mobile-nav">
         @if(request()->routeIs('account.index'))
-            {{-- Votre Compte (Top) --}}
-            <div class="rakuten-card" style="margin-top: 0.5rem;">
-                <a href="{{ route('profile.show') }}" class="rakuten-item">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="fa-regular fa-user" style="color: #f68b1e;"></i>
-                        <span style="font-weight: 700;">Votre compte</span>
-                    </div>
-                    <i class="fa-solid fa-chevron-right chevron"></i>
+            <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0.5rem 0 1.5rem; color: #333;">Votre compte</h1>
+
+            {{-- Informations Personnelles (Top) --}}
+            <div class="rakuten-card">
+                <div style="padding: 1rem 1rem 0.5rem; border-bottom: 1px solid #f5f5f5;">
+                    <h2 style="font-size: 0.8rem; font-weight: 700; color: #666; text-transform: uppercase; margin: 0;">Informations personnelles</h2>
+                </div>
+                <div style="padding: 1rem;">
+                    <div style="font-weight: 700; font-size: 1rem; color: #000; margin-bottom: 0.25rem;">{{ $user->prenom }} {{ $user->nom }}</div>
+                    <div style="font-size: 0.9rem; color: #666;">{{ $user->email }}</div>
+                </div>
+                <a href="{{ route('profile.show') }}" class="rakuten-item" style="border-top: 1px solid #f5f5f5; border-bottom: none; background: #fffaf5;">
+                    <span style="color: #f68b1e; font-weight: 700; font-size: 0.85rem;">Gérer mon profil</span>
+                    <i class="fa-solid fa-chevron-right chevron" style="color: #f68b1e;"></i>
                 </a>
             </div>
 
