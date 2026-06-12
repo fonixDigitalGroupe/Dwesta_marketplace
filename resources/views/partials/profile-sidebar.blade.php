@@ -160,75 +160,70 @@
         @media (max-width: 1024px) {
             .dashboard-container {
                 grid-template-columns: 1fr;
-                padding: 1rem 0.75rem;
+                padding: 1rem 0.5rem;
                 gap: 1rem;
             }
 
             .sidebar {
                 margin: 0;
                 display: flex;
-                overflow-x: auto;
-                white-space: nowrap;
-                -webkit-overflow-scrolling: touch;
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-                scroll-behavior: smooth;
+                flex-direction: column;
                 background: #fff;
-                position: sticky;
-                top: 0;
-                z-index: 10;
-                padding: 5px 0;
-            }
-
-            .sidebar::-webkit-scrollbar {
-                display: none;
+                border-radius: 4px;
+                border: 1px solid #eeeeee;
+                padding: 0;
             }
 
             .sidebar-header, .sidebar-group-title, .sidebar-divider {
-                display: none;
+                display: block;
+            }
+
+            .sidebar-group-title {
+                font-size: 0.85rem;
+                padding: 12px 16px 5px;
             }
 
             .sidebar-item {
-                display: inline-flex;
-                flex-direction: column;
+                display: flex;
+                flex-direction: row;
                 align-items: center;
-                justify-content: center;
-                padding: 10px 15px;
-                min-width: 80px;
-                font-size: 0.75rem;
-                text-align: center;
-                gap: 5px;
-                border-bottom: 2px solid transparent;
+                justify-content: flex-start;
+                padding: 12px 16px;
+                font-size: 0.95rem;
+                text-align: left;
+                gap: 12px;
+                border-bottom: 1px solid #f9f9f9;
+            }
+
+            .sidebar-item:last-child {
+                border-bottom: none;
             }
 
             .sidebar-item i {
                 margin-right: 0;
-                font-size: 1.25rem;
+                font-size: 1.1rem;
+                width: 24px;
+                text-align: center;
             }
 
             .sidebar-item.active {
-                border-bottom: 2px solid #f68b1e;
-                background-color: transparent;
+                border-bottom-color: #f68b1e;
+                background-color: #fcfcfc;
             }
 
             .sidebar-item span {
-                white-space: normal;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
+                display: block;
             }
 
             .main-content {
-                padding: 1rem;
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
+                padding: 1.25rem 1rem;
+                border-radius: 4px;
+                border-left: 1px solid #eeeeee;
+                border-right: 1px solid #eeeeee;
             }
 
             .breadcrumb {
-                padding: 1rem 0.75rem 0;
+                padding: 1rem 0.5rem 0;
                 margin-top: 0.5rem;
             }
         }
