@@ -240,18 +240,12 @@
 <aside class="sidebar">
     <div class="rakuten-mobile-nav">
         @if(request()->routeIs('account.index'))
-            {{-- Mon Compte (Top) --}}
+            {{-- Votre Compte (Top) --}}
             <div class="rakuten-card" style="margin-top: 0.5rem;">
-                <a href="{{ route('account.index') }}" class="rakuten-item" style="background: #fdfdfd;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="fa-regular fa-user" style="color: #f68b1e;"></i>
-                        <span style="font-weight: 700;">Mon compte Karnou</span>
-                    </div>
-                </a>
                 <a href="{{ route('profile.show') }}" class="rakuten-item">
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="fa-solid fa-gear"></i>
-                        <span>Votre compte</span>
+                        <i class="fa-regular fa-user" style="color: #f68b1e;"></i>
+                        <span style="font-weight: 700;">Votre compte</span>
                     </div>
                     <i class="fa-solid fa-chevron-right chevron"></i>
                 </a>
