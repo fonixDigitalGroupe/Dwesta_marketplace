@@ -120,10 +120,10 @@ class VendeurController extends Controller
             }
 
             // Notification Admin
-            Mail::to(config('mail.from.address'))->queue(new NewVendorNotification($vendeur));
+            Mail::to(config('mail.from.address'))->send(new NewVendorNotification($vendeur));
             
             // Notification Utilisateur
-            Mail::to($user->email)->queue(new VendorApplicationConfirmation($vendeur));
+            Mail::to($user->email)->send(new VendorApplicationConfirmation($vendeur));
 
             DB::commit();
 
@@ -216,10 +216,10 @@ class VendeurController extends Controller
             $user->assignRole('Vendeur Professionnel');
 
             // Notification Admin
-            Mail::to(config('mail.from.address'))->queue(new NewVendorNotification($vendeur));
+            Mail::to(config('mail.from.address'))->send(new NewVendorNotification($vendeur));
 
             // Notification Utilisateur
-            Mail::to($user->email)->queue(new VendorApplicationConfirmation($vendeur));
+            Mail::to($user->email)->send(new VendorApplicationConfirmation($vendeur));
 
             DB::commit();
 
