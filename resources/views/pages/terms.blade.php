@@ -407,16 +407,17 @@
         display: flex;
         gap: 1.5rem;
         align-items: flex-start;
-        background: #fff;
-        border: 1px solid #f1f3f5;
-        border-radius: 12px;
-        padding: 2rem 2rem 2rem 1.5rem;
-        margin-bottom: 1.2rem;
+        padding: 0.5rem 0;
+        margin-bottom: 2.5rem;
+        border: none;
+        background: transparent;
+        border-radius: 0;
+        box-shadow: none;
     }
     .article-num {
         font-size: 1.2rem;
         font-weight: 800;
-        color: #ffe5cc;
+        color: #f68b1e;
         font-family: 'Outfit', sans-serif;
         letter-spacing: -1px;
         width: 36px;
@@ -424,6 +425,7 @@
         padding-top: 0.15rem;
         text-align: center;
         line-height: 1;
+        opacity: 0.8;
     }
     .article-body {
         flex: 1;

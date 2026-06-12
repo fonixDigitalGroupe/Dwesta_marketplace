@@ -275,11 +275,11 @@ verte pour particuliers et pros.</li>
     .legal-main { flex: 1; min-width: 0; }
 
     /* --- Articles --- */
-    .legal-article { display: flex; gap: 1.5rem; align-items: flex-start; background: #fff; border: 1px solid #f1f3f5; border-radius: 12px; padding: 2.5rem; margin-bottom: 1.5rem; }
-    .article-num { font-size: 1.2rem; font-weight: 800; color: #ffe5cc; font-family: 'Outfit', sans-serif; width: 36px; flex-shrink: 0; text-align: center; }
+    .legal-article { display: flex; gap: 1.5rem; align-items: flex-start; padding: 0.5rem 0; margin-bottom: 2rem; border: none; background: transparent; border-radius: 0; box-shadow: none; }
+    .article-num { font-size: 1.2rem; font-weight: 800; color: #f68b1e; font-family: 'Outfit', sans-serif; width: 36px; flex-shrink: 0; text-align: center; opacity: 0.8; }
     .article-body { flex: 1; min-width: 0; }
-    .article-body h2 { font-size: 1.3rem; font-weight: 700; color: #1a1a1a; font-family: 'Outfit', 'Inter', sans-serif; margin: 0 0 1.2rem; }
-    .article-body p { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #4b5563; line-height: 1.8; margin-bottom: 1rem; }
+    .article-body h2 { font-size: 1.4rem; font-weight: 700; color: #1a1a1a; font-family: 'Outfit', 'Inter', sans-serif; margin: 0 0 1rem; }
+    .article-body p { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #4b5563; line-height: 1.8; margin-bottom: 1.2rem; }
     .article-body a { color: #f68b1e; text-decoration: none; font-weight: 600; }
 
     /* --- Tabs --- */
@@ -308,8 +308,8 @@ verte pour particuliers et pros.</li>
     .ecosystem-list-refined li::before { content: "→"; position: absolute; left: 0; color: #004aad; font-weight: bold; }
 
     /* --- Founder Quote --- */
-    .founder-card-refined { display: flex; gap: 2rem; background: #ffffff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 2rem; margin-top: 1rem; align-items: center; }
-    .founder-image-mini { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; flex-shrink: 0; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .founder-card-refined { display: flex; gap: 2rem; background: transparent; border: none; border-radius: 0; padding: 1rem 0; margin-top: 2rem; align-items: center; }
+    .founder-image-mini { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; flex-shrink: 0; border: none; box-shadow: 0 10px 25px rgba(0,74,173,0.1); }
     .founder-image-mini img { width: 100%; height: 100%; object-fit: cover; }
     .founder-quote-content { flex: 1; }
     .founder-quote-content i { font-size: 1.5rem; color: #004aad; opacity: 0.2; margin-bottom: 0.5rem; display: block; }
