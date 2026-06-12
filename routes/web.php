@@ -377,6 +377,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/etape-1', [CheckoutController::class, 'step1'])->name('step1');
             Route::post('/etape-1', [CheckoutController::class, 'postStep1'])->name('postStep1');
             Route::get('/etape-2', [CheckoutController::class, 'step2'])->name('step2');
+            Route::get('/paydunya-token', [CheckoutController::class, 'paydunyaToken'])->name('paydunya.token');
             Route::post('/process', [CheckoutController::class, 'process'])->name('process');
             Route::get('/succes', [CheckoutController::class, 'success'])->name('success');
         });

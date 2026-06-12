@@ -153,6 +153,71 @@ class CheckoutController extends Controller
     }
 
     /**
+     * Endpoint pour le PSR Popup PayDunya
+     * Crée une invoice et retourne le token + infos client en JSON
+     */
+    public function paydunyaToken(Request $request)
+    {
+        try {
+            $cartGrouped = $this->cartService->getContentGroupedBySeller();
+            if ($cartGrouped->isEmpty()) {
+                return response()->json(['success' => false, 'error' => 'Panier vide'], 400);
+            }
+
+            $subtotal = $this->cartService->getSubtotal();
+            $shippingFee = session('checkout_shipping_fee', 0);
+            $total = $subtotal + $shippingFee;
+
+            $moyenPaiement = $request->get('payment_method', 'card');
+            $method = in_array($moyenPaiement, ['om', 'wave', 'free']) ? $moyenPaiement : null;
+
+            $user = Auth::user();
+            $phone = str_replace('+', '', $user->telephone ?? '');
+
+            $session = $this->payDunyaService->createCheckoutSession(
+                $total,
+                'Commande Karnou',
+                route('paydunya.success'),
+                route('paydunya.cancel'),
+                ['type' => 'marketplace_order'],
+                $method,
+                [
+                    'name' => $user->name,
+                    'first_name' => $user->prenom,
+                    'last_name' => $user->nom,
+                    'email' => $user->email,
+                    'phone' => $phone,
+                    'address' => $user->adresse,
+                    'city' => $user->ville,
+                    'state' => $user->region,
+                    'zip_code' => $user->code_postal,
+                ]
+            );
+
+            // Stocker le token en session pour onTerminate callback
+            session(['paydunya_pending_token' => $session->token]);
+
+            // Mode PSR: retourner le token et l'url pour le popup
+            if (config('app.env') === 'production' || config('services.paydunya.mode') === 'live') {
+                return response()->json([
+                    'success' => true,
+                    'token' => $session->token,
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'mode' => config('services.paydunya.mode', 'test'),
+                'token' => $session->token,
+            ]);
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('PayDunya Token Error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
      * Étape 3 : Traitement du paiement et création des commandes
      */
     public function process(Request $request)
