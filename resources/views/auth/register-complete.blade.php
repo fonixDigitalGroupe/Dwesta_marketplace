@@ -205,6 +205,24 @@
         #nom {
             text-transform: uppercase;
         }
+
+        @media (max-width: 768px) {
+            .auth-wrapper {
+                padding: 1.5rem 0.5rem;
+            }
+
+            .auth-card {
+                padding: 1.5rem;
+            }
+            
+            .floating-input {
+                padding: 1.15rem 0.6rem 0.45rem 0.6rem;
+            }
+
+            .strength-checklist {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 @endpush
 
