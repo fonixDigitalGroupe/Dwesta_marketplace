@@ -3,9 +3,11 @@
 @section('title', 'Vérification du compte - Karnou')
 
 @push('styles')
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body, .page-wrapper, main {
-            background-color: #ffffff !important;
+            background-color: #f8f9fa !important;
+            font-family: 'Inter', -apple-system, sans-serif !important;
         }
 
         .main-content {
@@ -20,13 +22,13 @@
 
         .otp-card {
             background: #fff;
-            padding: 2.5rem;
-            border: 1px solid #f5f5f5;
-            border-radius: 8px;
+            padding: 3rem 2.5rem;
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 16px;
             width: 100%;
-            max-width: 450px;
-            margin: 0 auto;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+            max-width: 480px;
+            margin: 4rem auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             text-align: center;
         }
 
@@ -52,20 +54,24 @@
         }
 
         .otp-digit {
-            width: 50px;
-            height: 60px;
-            font-size: 1.5rem;
+            width: 56px;
+            height: 68px;
+            font-size: 1.75rem;
             font-weight: 700;
             text-align: center;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            border: 2px solid #e1e4e8;
+            border-radius: 12px;
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: #1a1a1a;
+            background-color: #ffffff;
         }
 
         .otp-digit:focus {
-            border-color: #000;
-            box-shadow: 0 0 0 2px rgba(0,0,0,0.04);
+            border-color: #004aad;
+            box-shadow: 0 0 0 4px rgba(0, 74, 173, 0.1);
+            background-color: #fff;
+            transform: translateY(-2px);
         }
 
         .btn-verify {
@@ -73,13 +79,14 @@
             background-color: #004aad;
             color: #fff;
             border: none;
-            padding: 0.75rem;
-            border-radius: 4px;
+            padding: 1rem;
+            border-radius: 10px;
             font-size: 1rem;
-            font-weight: 700;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             margin-bottom: 1.5rem;
+            letter-spacing: 0.3px;
         }
 
         .btn-verify:hover {
