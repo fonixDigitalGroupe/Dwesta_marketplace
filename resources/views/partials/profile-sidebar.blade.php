@@ -21,7 +21,7 @@
         }
 
         body {
-            background-color: #f5f5f5 !important;
+            background-color: #ffffff !important;
         }
 
         .sidebar {
