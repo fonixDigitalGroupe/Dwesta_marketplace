@@ -4,7 +4,8 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Notifications\Messages\MailMessage;
+use NotificationChannels\Twilio\TwilioChannel;
+use NotificationChannels\Twilio\TwilioSmsMessage;
 
 class SmsOtpNotification extends Notification
 {
@@ -19,17 +20,12 @@ class SmsOtpNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        // On utilise 'mail' pour que ça apparaisse dans Telescope (onglet Mail) pendant le dev
-        return ['mail'];
+        return [TwilioChannel::class];
     }
 
-    public function toMail(object $notifiable): MailMessage
+    public function toTwilio($notifiable)
     {
-        return (new MailMessage)
-            ->subject('Vérification SMS (Telescope) - Code: ' . $this->otp)
-            ->greeting('Bonjour,')
-            ->line('Ceci est une simulation de SMS via Telescope.')
-            ->line('Votre code de vérification Karnou est : ' . $this->otp)
-            ->line('Veuillez le saisir sur le site pour continuer votre inscription.');
+        return (new TwilioSmsMessage())
+            ->content("Votre code de vérification Karnou est : " . $this->otp . ". Ce code expire dans 15 minutes.");
     }
 }
