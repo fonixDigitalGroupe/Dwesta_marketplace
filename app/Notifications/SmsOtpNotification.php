@@ -1,11 +1,5 @@
-<?php
-
-namespace App\Notifications;
-
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
-use NotificationChannels\Twilio\TwilioChannel;
-use NotificationChannels\Twilio\TwilioSmsMessage;
+use App\Channels\OrangeSmsChannel;
 
 class SmsOtpNotification extends Notification
 {
@@ -20,12 +14,11 @@ class SmsOtpNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return [TwilioChannel::class];
+        return [OrangeSmsChannel::class];
     }
 
-    public function toTwilio($notifiable)
+    public function toOrangeSms($notifiable)
     {
-        return (new TwilioSmsMessage())
-            ->content("Votre code de vérification Karnou est : " . $this->otp . ". Ce code expire dans 15 minutes.");
+        return "Votre code de vérification Karnou est : " . $this->otp . ". Ce code expire dans 15 minutes.";
     }
 }
