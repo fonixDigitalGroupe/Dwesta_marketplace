@@ -10,7 +10,7 @@
             <div class="corp-header-flex">
                 <div class="header-left">
                     <a href="{{ route('home') }}" class="back-to-site">
-                        <i class="fa-solid fa-chevron-left"></i> Retour sur le site
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour sur le site</span>
                     </a>
                 </div>
                 <div class="header-center">
@@ -33,7 +33,7 @@
                         </a>
                     @endauth
                     <a href="{{ route('cart.index') }}" class="header-link cart-link" title="Mon Panier">
-                        <i class="fa-solid fa-cart-shopping"></i> Panier
+                        <i class="fa-solid fa-cart-shopping"></i> <span>Panier</span>
                     </a>
                 </div>
             </div>
@@ -319,11 +319,48 @@ verte pour particuliers et pros.</li>
 
 
     @media (max-width: 900px) {
-        .legal-layout { flex-direction: column; }
-        .legal-toc { position: static; width: 100%; }
-        .toc-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.2rem; }
+        .legal-layout { flex-direction: column; gap: 2rem; margin: 2rem auto; }
+        .legal-toc { position: static; width: 100%; top: 0; padding: 1.2rem; }
+        .toc-list { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
         .ecosystem-flex { justify-content: center; }
         .founder-card-refined { flex-direction: column; text-align: center; }
+        .page-hero { padding: 3.5rem 0 3rem; }
+        .page-hero h1 { font-size: 1.75rem; }
+    }
+
+    @media (max-width: 600px) {
+        .about-container { padding: 0 1.2rem; }
+        .corp-header-flex { display: flex; align-items: center; justify-content: space-between; position: relative; }
+        .header-left, .header-right { flex: 0 1 auto; }
+        .header-center { flex: 1; }
+        .back-to-site span, .header-auth span, .cart-link span { display: none; }
+        .back-to-site { font-size: 1.1rem; }
+        /* Just hide the text "Retour sur le site" but keep the icon and a bit of spacing if needed, or better, just condense */
+        .back-to-site { width: 32px; height: 32px; justify-content: center; }
+        .back-to-site i { margin: 0; }
+        
+        .header-right { gap: 1rem; }
+        .header-auth, .cart-link { font-size: 1.1rem; }
+        
+        .page-hero { padding: 2.5rem 0 2rem; }
+        .page-hero h1 { font-size: 1.5rem; line-height: 1.2; }
+        .page-hero-desc { font-size: 0.9rem; padding: 0 0.5rem; }
+        
+        .toc-list { grid-template-columns: 1fr; }
+        
+        .legal-article { padding: 1.5rem; flex-direction: column; gap: 1rem; }
+        .article-num { display: none; }
+        .article-body h2 { font-size: 1.15rem; margin-bottom: 0.8rem; }
+        .article-body p { font-size: 0.9rem; line-height: 1.6; }
+        
+        .qui-tabs { overflow-x: auto; white-space: nowrap; padding-bottom: 0.5rem; -webkit-overflow-scrolling: touch; }
+        .qui-tab { padding: 0.6rem 0.5rem; flex-shrink: 0; }
+
+        .diagram-miniature { width: 260px; height: 260px; }
+        .ecosystem-drawing { width: 220px; height: 220px; }
+
+        .founder-image-mini { width: 100px; height: 100px; }
+        .quote-text-refined { font-size: 1rem; }
     }
 </style>
 @endpush

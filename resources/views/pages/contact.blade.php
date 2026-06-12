@@ -10,7 +10,7 @@
             <div class="corp-header-flex">
                 <div class="header-left">
                     <a href="{{ route('home') }}" class="back-to-site">
-                        <i class="fa-solid fa-chevron-left"></i> Retour sur le site
+                        <i class="fa-solid fa-chevron-left"></i> <span>Retour sur le site</span>
                     </a>
                 </div>
                 <div class="header-center">
@@ -33,7 +33,7 @@
                         </a>
                     @endauth
                     <a href="{{ route('cart.index') }}" class="header-link cart-link" title="Mon Panier">
-                        <i class="fa-solid fa-cart-shopping"></i> Panier
+                        <i class="fa-solid fa-cart-shopping"></i> <span>Panier</span>
                     </a>
                 </div>
             </div>
@@ -275,10 +275,32 @@
         .category-grid { grid-template-columns: repeat(2, 1fr); }
         .contact-form-inner { grid-template-columns: 1fr; gap: 2.5rem; }
     }
+    @media (max-width: 768px) {
+        .contact-hero { padding: 3.5rem 0 3rem; }
+        .contact-hero h1 { font-size: 1.75rem; }
+    }
     @media (max-width: 600px) {
-        .category-grid { grid-template-columns: 1fr; }
+        .contact-container { padding: 0 1.2rem; }
+        .corp-header-flex { display: flex; align-items: center; justify-content: space-between; position: relative; }
+        .header-left, .header-right { flex: 0 1 auto; }
+        .header-center { flex: 1; }
+        .back-to-site span, .header-auth span, .cart-link span { display: none; }
+        
+        .header-right { gap: 1rem; }
+        .back-to-site, .header-auth, .cart-link { font-size: 1.1rem; }
+        .back-to-site { width: 32px; height: 32px; justify-content: center; }
+        .back-to-site i { margin: 0; }
+
+        .contact-hero { padding: 2.5rem 0 2rem; }
+        .contact-hero h1 { font-size: 1.5rem; line-height: 1.2; }
+        .contact-hero-sub { font-size: 0.9rem; padding: 0 0.5rem; }
+
+        .category-grid { grid-template-columns: 1fr; gap: 1rem; }
+        .category-card { padding: 1.5rem; }
+
+        .contact-form-inner { gap: 2rem; }
+        .contact-form-card { padding: 1.5rem; }
         .form-row-2 { grid-template-columns: 1fr; }
-        .contact-hero h1 { font-size: 1.5rem; }
         .btn-send { width: 100%; justify-content: center; }
     }
 </style>
