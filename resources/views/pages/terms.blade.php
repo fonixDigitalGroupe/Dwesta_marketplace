@@ -25,11 +25,11 @@
                 <div class="header-right">
                     @auth
                         <a href="{{ route('account.index') }}" class="header-auth">
-                            <i class="fa-regular fa-user"></i> {{ auth()->user()->prenom ?? auth()->user()->name }}
+                            <i class="fa-regular fa-user"></i> <span>{{ auth()->user()->prenom ?? auth()->user()->name }}</span>
                         </a>
                     @else
                         <a href="{{ route('login') }}" class="header-auth">
-                            <i class="fa-regular fa-user"></i> Se connecter
+                            <i class="fa-regular fa-user"></i> <span>Se connecter</span>
                         </a>
                     @endauth
                     <a href="{{ route('cart.index') }}" class="header-link cart-link" title="Mon Panier">
