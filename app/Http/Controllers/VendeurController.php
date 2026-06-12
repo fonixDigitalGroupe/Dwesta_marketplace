@@ -120,10 +120,13 @@ class VendeurController extends Controller
             }
 
             // Notification Admin
-            Mail::to(config('mail.from.address'))->send(new NewVendorNotification($vendeur));
+            $adminEmail = config('mail.from.address');
+            Log::info('Tentative d\'envoi NewVendorNotification à l\'admin: ' . $adminEmail);
+            Mail::mailer('smtp')->to($adminEmail)->send(new NewVendorNotification($vendeur));
             
             // Notification Utilisateur
-            Mail::to($user->email)->send(new VendorApplicationConfirmation($vendeur));
+            Log::info('Tentative d\'envoi VendorApplicationConfirmation à l\'utilisateur: ' . $user->email);
+            Mail::mailer('smtp')->to($user->email)->send(new VendorApplicationConfirmation($vendeur));
 
             DB::commit();
 
@@ -216,10 +219,13 @@ class VendeurController extends Controller
             $user->assignRole('Vendeur Professionnel');
 
             // Notification Admin
-            Mail::to(config('mail.from.address'))->send(new NewVendorNotification($vendeur));
+            $adminEmail = config('mail.from.address');
+            Log::info('Tentative d\'envoi NewVendorNotification (Pro) à l\'admin: ' . $adminEmail);
+            Mail::mailer('smtp')->to($adminEmail)->send(new NewVendorNotification($vendeur));
 
             // Notification Utilisateur
-            Mail::to($user->email)->send(new VendorApplicationConfirmation($vendeur));
+            Log::info('Tentative d\'envoi VendorApplicationConfirmation (Pro) à l\'utilisateur: ' . $user->email);
+            Mail::mailer('smtp')->to($user->email)->send(new VendorApplicationConfirmation($vendeur));
 
             DB::commit();
 
