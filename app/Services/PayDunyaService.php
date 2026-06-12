@@ -67,6 +67,8 @@ class PayDunyaService
             }
         }
 
+        Log::info('PayDunya Request Payload:', $payload);
+
         $response = Http::withHeaders([
             'PAYDUNYA-MASTER-KEY' => $this->masterKey,
             'PAYDUNYA-PRIVATE-KEY' => $this->privateKey,
