@@ -316,7 +316,12 @@ class CheckoutController extends Controller
                             'gift_card_id' => $resolvedGiftCard?->id,
                             'gift_card_amount' => $deduction
                         ],
-                        $paymentMethod
+                        $paymentMethod,
+                        [
+                            'name' => Auth::user()->name,
+                            'email' => Auth::user()->email,
+                            'phone' => Auth::user()->telephone,
+                        ]
                     );
 
                     foreach ($orders as $o) {

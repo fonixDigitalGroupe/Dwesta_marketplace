@@ -30,7 +30,7 @@ class PayDunyaService
     /**
      * Initialiser une session de paiement (Checkout Pre-built)
      */
-    public function createCheckoutSession($total, $description, $successUrl, $cancelUrl, $customData = [], $method = null)
+    public function createCheckoutSession($total, $description, $successUrl, $cancelUrl, $customData = [], $method = null, $customer = [])
     {
         $payload = [
             'invoice' => [
@@ -38,7 +38,7 @@ class PayDunyaService
                 'description' => $description,
             ],
             'store' => [
-                'name' => "Dwesta Marketplace",
+                'name' => "Karnou",
             ],
             'actions' => [
                 'cancel_url' => $cancelUrl,
@@ -47,6 +47,15 @@ class PayDunyaService
             ],
             'custom_data' => $customData
         ];
+
+        // Ajouter les infos client si présentes
+        if (!empty($customer)) {
+            $payload['customer'] = [
+                'name' => $customer['name'] ?? '',
+                'email' => $customer['email'] ?? '',
+                'phone' => $customer['phone'] ?? '',
+            ];
+        }
 
         // Ajouter des canaux spécifiques si demandés
         if ($method) {
