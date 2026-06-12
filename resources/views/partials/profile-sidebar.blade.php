@@ -165,61 +165,14 @@
             }
 
             .sidebar {
-                margin: 0;
-                display: flex;
-                flex-direction: column;
-                background: #fff;
-                border-radius: 4px;
-                border: 1px solid #eeeeee;
-                padding: 0;
-            }
-
-            .sidebar-header, .sidebar-group-title, .sidebar-divider {
-                display: block;
-            }
-
-            .sidebar-group-title {
-                font-size: 0.85rem;
-                padding: 12px 16px 5px;
-            }
-
-            .sidebar-item {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: flex-start;
-                padding: 12px 16px;
-                font-size: 0.95rem;
-                text-align: left;
-                gap: 12px;
-                border-bottom: 1px solid #f9f9f9;
-            }
-
-            .sidebar-item:last-child {
-                border-bottom: none;
-            }
-
-            .sidebar-item i {
-                margin-right: 0;
-                font-size: 1.1rem;
-                width: 24px;
-                text-align: center;
-            }
-
-            .sidebar-item.active {
-                border-bottom-color: #f68b1e;
-                background-color: #fcfcfc;
-            }
-
-            .sidebar-item span {
-                display: block;
+                display: none;
             }
 
             .main-content {
-                padding: 1.25rem 1rem;
+                padding: 1rem;
                 border-radius: 4px;
-                border-left: 1px solid #eeeeee;
-                border-right: 1px solid #eeeeee;
+                border: none;
+                box-shadow: none;
             }
 
             .breadcrumb {
