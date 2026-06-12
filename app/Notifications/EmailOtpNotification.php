@@ -37,7 +37,7 @@ class EmailOtpNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Votre code de vérification Karnou')
+            ->subject('Votre code de vérification')
             ->view('emails.otp', [
                 'otp'    => $this->otp,
                 'prenom' => $notifiable->prenom ?? 'Utilisateur',

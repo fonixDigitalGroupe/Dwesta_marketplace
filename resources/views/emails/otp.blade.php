@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code de vérification Karnou</title>
+    <title>Code de vérification</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -72,7 +72,7 @@
         
         <p>Bonjour,</p>
         
-        <p>Merci de vous être inscrit sur <strong>Karnou Marketplace</strong>. Pour finaliser la configuration de votre compte, veuillez saisir le code de vérification à usage unique suivant :</p>
+        <p>Merci de vous être inscrit sur notre plateforme. Pour finaliser la configuration de votre compte, veuillez saisir le code de vérification à usage unique suivant :</p>
         
         <div class="otp-container">
             <div class="otp-code">{{ $otp }}</div>
@@ -83,8 +83,8 @@
         
         <div class="footer">
             Cordialement,<br>
-            L'équipe Karnou Marketplace<br><br>
-            &copy; {{ date('Y') }} Karnou. Tous droits réservés.
+            L'équipe de la plateforme<br><br>
+            &copy; {{ date('Y') }}. Tous droits réservés.
         </div>
     </div>
 </body>
