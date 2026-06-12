@@ -291,8 +291,6 @@
 <script src="https://code.jquery.com/jquery.min.js"></script>
 <script src="https://paydunya.com/assets/psr/js/psr.paydunya.min.js"></script>
 
-<script src="https://code.jquery.com/jquery.min.js"></script>
-<script src="https://paydunya.com/assets/psr/js/psr.paydunya.min.js"></script>
 <script>
     const TOKEN_URL = "{{ route('checkout.paydunya.token') }}";
     let selectedMethod = null;
@@ -315,14 +313,15 @@
         }
     }
 
-    function triggerPaydunya() {
+    function triggerPaydunya(e) {
+        if (e) e.preventDefault();
+        
         if (!selectedMethod) {
             alert('Veuillez sélectionner un mode de paiement.');
             return;
         }
 
         const btn = document.getElementById('btn-pay-psr');
-        const trigger = document.getElementById('paydunya-trigger');
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion sécurisée...';
 
@@ -331,14 +330,22 @@
             btn.innerHTML = '<i class="fas fa-lock"></i> Payer {{ number_format($subtotal, 0, ',', ' ') }} FCFA';
         };
 
+        // Configuration du PSR PayDunya
         PayDunya.setup({
-            selector: $('#paydunya-trigger'),
+            selector: '#paydunya-trigger', // Utiliser l'ID en texte brut pour le SDK
             url: TOKEN_URL + '?payment_method=' + encodeURIComponent(selectedMethod),
             method: 'GET',
             displayMode: PayDunya.DISPLAY_IN_POPUP,
-            beforeRequest: function() {},
-            onSuccess: function(token) { resetBtn(); },
+            beforeRequest: function() {
+                console.log('Requesting token for:', selectedMethod);
+            },
+            onSuccess: function(token) { 
+                console.log('Token received:', token);
+                // Le SDK lancera le popup automatiquement après requestToken()
+                resetBtn(); 
+            },
             onTerminate: function(ref, token, status) {
+                console.log('Payment status:', status);
                 if (status === 'completed') {
                     window.location.href = "{{ route('paydunya.success') }}?token=" + token;
                 } else {
@@ -349,9 +356,13 @@
             onError: function(error) {
                 resetBtn();
                 console.error('PayDunya error:', error);
-                alert('Erreur de connexion. Veuillez réessayer.');
+                alert('Erreur de connexion. Veuillez vérifier votre connexion et réessayer.');
             },
-            onUnsuccessfulResponse: function(r) { resetBtn(); console.log(r); },
+            onUnsuccessfulResponse: function(r) { 
+                resetBtn(); 
+                console.error('PayDunya Unsuccessful Response:', r);
+                alert('Erreur lors de l’initialisation du paiement. Veuillez réessayer.');
+            },
             onClose: function() { resetBtn(); }
         }).requestToken();
     }
