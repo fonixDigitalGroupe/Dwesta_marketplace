@@ -20,11 +20,18 @@ class PayDunyaService
         $this->publicKey = config('services.paydunya.public_key');
         $this->privateKey = config('services.paydunya.private_key');
         $this->token = config('services.paydunya.token');
-        $this->mode = config('services.paydunya.mode', 'test');
+        // FORCE LIVE MODE FOR DEBUGGING
+        $this->mode = 'live'; 
         
         $this->baseUrl = $this->mode === 'live' 
             ? 'https://app.paydunya.com/api/v1' 
             : 'https://app.paydunya.com/sandbox-api/v1';
+
+        Log::info('PayDunyaService Initialized', [
+            'mode' => $this->mode,
+            'baseUrl' => $this->baseUrl,
+            'publicKey_prefix' => substr($this->publicKey, 0, 12),
+        ]);
     }
 
     /**
