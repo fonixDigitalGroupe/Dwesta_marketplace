@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Suivi de Commande #' . $order->reference . ' - Mady Market')
+@section('title', 'Suivi de Commande #' . $order->reference . ' - Karnou')
 
 @push('styles')
 <style>
@@ -52,7 +52,7 @@
                     'paye' => ['title' => 'Commande payée', 'desc' => 'Votre paiement a été validé. Le vendeur prépare votre colis.'],
                     'en_attente_depot' => ['title' => 'En attente de dépôt', 'desc' => 'Le colis est prêt et attend d\'être déposé en point relais.'],
                     'en_point_relais' => ['title' => 'Arrivé au point relais', 'desc' => 'Votre colis est disponible ! Présentez votre QR Code pour le retirer.'],
-                    'receptionne' => ['title' => 'Commande réceptionnée', 'desc' => 'Merci d\'avoir fait confiance à Mady Market !'],
+                    'receptionne' => ['title' => 'Commande réceptionnée', 'desc' => 'Merci d\'avoir fait confiance à Karnou !'],
                 ];
                 
                 $currentStatus = $order->statut;

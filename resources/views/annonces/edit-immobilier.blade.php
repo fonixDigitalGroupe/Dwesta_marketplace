@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Modifier mon bien immobilier - Mady Market')
+@section('title', 'Modifier mon bien immobilier - Karnou')
 
 @push('styles')
     <style>

@@ -239,20 +239,20 @@
         }
 
         .profile-completion-alert {
-            background-color: #f0fbf0;
-            border: 1px solid #ccebcc;
+            background-color: #fff9f0;
+            border: 1px solid #ffcc80;
             padding: 1rem;
             display: flex;
             gap: 15px;
             align-items: center;
             margin-bottom: 1.5rem;
             border-radius: 8px;
-            color: #1b5e20;
+            color: #333;
         }
 
         .profile-completion-alert i {
             font-size: 1.5rem;
-            color: #4caf50;
+            color: #f68b1e;
         }
 
         .profile-completion-alert .alert-content {
@@ -272,7 +272,7 @@
         }
 
         .profile-completion-alert .btn-complete {
-            background: #4caf50;
+            background: #f68b1e;
             color: #fff;
             padding: 0.5rem 1rem;
             border-radius: 6px;
@@ -284,7 +284,7 @@
         }
 
         .profile-completion-alert .btn-complete:hover {
-            background: #43a047;
+            background: #e07b10;
         }
 
         .survey-section {
@@ -572,7 +572,7 @@
                     <i class="fa-solid fa-circle-user"></i>
                     <div class="alert-content">
                         <h4>Complétez votre profil !</h4>
-                        <p>Afin de profiter pleinement de Mady Market, veuillez renseigner votre adresse et votre position géographique.</p>
+                        <p>Afin de profiter pleinement de Karnou, veuillez renseigner votre adresse et votre position géographique.</p>
                     </div>
                     <a href="{{ route('profile.show') }}#profile-geolocation-section" class="btn-complete">
                         Compléter mon profil

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mes Crédits - Mady Market')
+@section('title', 'Mes Crédits - Karnou')
 
 @section('content')
 <div style="max-width: 900px; margin: 3rem auto; padding: 2rem;">

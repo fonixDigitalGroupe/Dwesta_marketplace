@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Mes annonces - Mady Market')
+@section('title', 'Mes annonces - Karnou')
 
 @push('styles')
 <style>

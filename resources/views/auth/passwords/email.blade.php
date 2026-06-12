@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Réinitialisation du mot de passe - Mady Market')
+@section('title', 'Réinitialisation du mot de passe - Karnou')
 
 @push('styles')
     <style>

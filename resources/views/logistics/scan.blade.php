@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Scan Point Relais - Mady Market Logistics')
+@section('title', 'Scan Point Relais - Karnou Logistics')
 
 @push('styles')
 <style>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cartes Cadeaux - Mady Market')
+@section('title', 'Cartes Cadeaux - Karnou')
 
 @push('styles')
 <style>
