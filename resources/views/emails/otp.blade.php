@@ -66,7 +66,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="logo">KARNOU</div>
+        
         
         <h1>Vérifiez votre adresse e-mail</h1>
         
