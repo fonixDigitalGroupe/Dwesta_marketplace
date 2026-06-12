@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body, .page-wrapper, main {
-            background-color: #f8f9fa !important;
+            background-color: #ffffff !important;
             font-family: 'Inter', -apple-system, sans-serif !important;
         }
 
