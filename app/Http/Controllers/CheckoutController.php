@@ -338,9 +338,12 @@ class CheckoutController extends Controller
                             if (isset($directResponse['response_code']) && $directResponse['response_code'] === '00') {
                                 DB::commit();
                                 
-                                // Si c'est Wave, on redirige vers le lien direct Wave
-                                if ($moyenPaiement === 'wave' && !empty($directResponse['response_text'])) {
-                                    return redirect($directResponse['response_text']);
+                                // Si c'est Wave, on laisse le flux standard (fallback) qui utilise $session->url 
+                                // car le lien PSR de Wave ne semble pas pré-remplir les champs client.
+                                if ($moyenPaiement === 'wave') {
+                                    // On force le commit ici car on ne va pas faire le redirect directResponse
+                                    DB::commit();
+                                    return redirect($session->url);
                                 }
 
                                 // Pour Orange Money / Free, le push est envoyé
