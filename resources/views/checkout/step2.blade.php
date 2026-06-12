@@ -246,18 +246,23 @@
                 <span>{{ number_format($subtotal, 0, ',', ' ') }} FCFA</span>
             </div>
 
-            {{-- PSR POPUP BUTTON - uses data attributes for pre-fill --}}
-            <button class="btn-pay pay"
+            {{-- PSR POPUP BUTTON --}}
+            <button class="btn-pay"
                 id="btn-pay-psr"
-                onclick="payWithPaydunyaPSR(this)"
-                data-ref="{{ uniqid('karnou_') }}"
-                data-fullname="{{ Auth::user()->name }}"
-                data-email="{{ Auth::user()->email }}"
-                data-phone="{{ str_replace('+', '', Auth::user()->telephone ?? '') }}"
+                type="button"
+                onclick="triggerPaydunya()"
                 style="display: none;">
                 <i class="fas fa-lock"></i>
                 Payer {{ number_format($subtotal, 0, ',', ' ') }} FCFA
             </button>
+            {{-- Hidden PSR trigger button required by PayDunya SDK --}}
+            <button class="pay" id="paydunya-trigger"
+                data-ref="karnou_{{ Auth::user()->id }}_{{ time() }}"
+                data-fullname="{{ Auth::user()->name }}"
+                data-email="{{ Auth::user()->email }}"
+                data-phone="{{ str_replace('+', '', Auth::user()->telephone ?? '') }}"
+                style="display:none;position:absolute;visibility:hidden;"
+                onclick="payWithPaydunya(this)">pay</button>
 
             {{-- COD BUTTON (for cash on delivery) --}}
             <form action="{{ route('checkout.process') }}" method="POST" id="codForm" style="display:none;">
@@ -286,9 +291,10 @@
 <script src="https://code.jquery.com/jquery.min.js"></script>
 <script src="https://paydunya.com/assets/psr/js/psr.paydunya.min.js"></script>
 
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<script src="https://paydunya.com/assets/psr/js/psr.paydunya.min.js"></script>
 <script>
     const TOKEN_URL = "{{ route('checkout.paydunya.token') }}";
-    const SUCCESS_URL = "{{ route('checkout.success') }}";
     let selectedMethod = null;
 
     function selectOption(el) {
@@ -298,7 +304,6 @@
         input.checked = true;
         selectedMethod = input.value;
 
-        // Show/hide buttons based on selection
         document.getElementById('btn-select-first').style.display = 'none';
         document.getElementById('codForm').style.display = 'none';
         document.getElementById('btn-pay-psr').style.display = 'none';
@@ -306,60 +311,52 @@
         if (selectedMethod === 'cod') {
             document.getElementById('codForm').style.display = 'block';
         } else {
-            // All other methods (om, wave, free, card) use PSR popup
             document.getElementById('btn-pay-psr').style.display = 'flex';
-            // Update data-ref with method
-            document.getElementById('btn-pay-psr').setAttribute('data-ref', selectedMethod + '_' + Date.now());
         }
     }
 
-    function payWithPaydunyaPSR(btn) {
+    function triggerPaydunya() {
         if (!selectedMethod) {
             alert('Veuillez sélectionner un mode de paiement.');
             return;
         }
 
+        const btn = document.getElementById('btn-pay-psr');
+        const trigger = document.getElementById('paydunya-trigger');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion sécurisée...';
+
+        const resetBtn = () => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-lock"></i> Payer {{ number_format($subtotal, 0, ',', ' ') }} FCFA';
+        };
+
         PayDunya.setup({
-            selector: $(btn),
-            url: TOKEN_URL + '?payment_method=' + selectedMethod,
+            selector: $('#paydunya-trigger'),
+            url: TOKEN_URL + '?payment_method=' + encodeURIComponent(selectedMethod),
             method: 'GET',
             displayMode: PayDunya.DISPLAY_IN_POPUP,
-            beforeRequest: function() {
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion sécurisée...';
-            },
-            onSuccess: function(token) {
-                btn.innerHTML = '<i class="fas fa-lock"></i> Payer {{ number_format($subtotal, 0, ',', ' ') }} FCFA';
-                btn.disabled = false;
-            },
+            beforeRequest: function() {},
+            onSuccess: function(token) { resetBtn(); },
             onTerminate: function(ref, token, status) {
                 if (status === 'completed') {
-                    // Redirect to success with token
                     window.location.href = "{{ route('paydunya.success') }}?token=" + token;
-                } else if (status === 'cancelled') {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-lock"></i> Payer {{ number_format($subtotal, 0, ',', ' ') }} FCFA';
-                } else if (status === 'failed') {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-lock"></i> Réessayer le paiement';
-                    alert('Le paiement a échoué. Veuillez réessayer.');
+                } else {
+                    resetBtn();
+                    if (status === 'failed') alert('Le paiement a échoué. Veuillez réessayer.');
                 }
             },
             onError: function(error) {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-lock"></i> Payer {{ number_format($subtotal, 0, ',', ' ') }} FCFA';
-                alert('Erreur lors de la connexion au service de paiement. Veuillez réessayer.');
+                resetBtn();
+                console.error('PayDunya error:', error);
+                alert('Erreur de connexion. Veuillez réessayer.');
             },
-            onUnsuccessfulResponse: function(jsonResponse) {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-lock"></i> Payer {{ number_format($subtotal, 0, ',', ' ') }} FCFA';
-                console.log('Unsuccessful response:', jsonResponse);
-            },
-            onClose: function() {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-lock"></i> Payer {{ number_format($subtotal, 0, ',', ' ') }} FCFA';
-            }
+            onUnsuccessfulResponse: function(r) { resetBtn(); console.log(r); },
+            onClose: function() { resetBtn(); }
         }).requestToken();
     }
+
+    // Global payWithPaydunya function required by PayDunya SDK for class="pay" buttons
+    function payWithPaydunya(btn) { triggerPaydunya(); }
 </script>
 @endsection
