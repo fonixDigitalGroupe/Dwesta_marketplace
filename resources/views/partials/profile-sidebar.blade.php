@@ -239,13 +239,20 @@
 
 <aside class="sidebar">
     <div class="rakuten-mobile-nav">
+        {{-- Mon Compte (Top) --}}
+        <div class="rakuten-card" style="margin-top: 0.5rem;">
+            <a href="{{ route('account.index') }}" class="rakuten-item">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fa-regular fa-user"></i>
+                    <span style="font-weight: 700;">Mon compte Karnou</span>
+                </div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+        </div>
+
         {{-- Mes achats --}}
         <div class="rakuten-group-title">Mes achats</div>
         <div class="rakuten-card">
-            <a href="{{ route('account.index') }}" class="rakuten-item" style="background: #fdfdfd;">
-                <span style="font-weight: 700;">Mon compte Karnou</span>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
             <a href="{{ route('account.orders') }}" class="rakuten-item">
                 <span>Tous mes achats</span>
                 <i class="fa-solid fa-chevron-right chevron"></i>
@@ -270,6 +277,10 @@
                 </div>
                 <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
+            <a href="{{ route('account.avis') }}" class="rakuten-item">
+                <span>Mes avis</span>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
         </div>
 
         {{-- Mes ventes --}}
@@ -277,7 +288,7 @@
         <div class="rakuten-card">
             @if(!$user->vendeur)
                 <a href="{{ route('vendeur.create') }}" class="rakuten-item">
-                    <span>Devenir vendeur</span>
+                    <span style="color: #f68b1e; font-weight: 600;">Devenir vendeur</span>
                     <i class="fa-solid fa-chevron-right chevron"></i>
                 </a>
             @else
