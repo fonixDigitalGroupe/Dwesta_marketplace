@@ -1063,10 +1063,11 @@
                     Vous pourrez ajouter un bon d'achat lors de la sélection de votre mode de paiement.
                 </p>
 
-                <button type="button" class="btn-confirm" id="btn-submit" onclick="submitFinal()"
+                <button type="submit" class="btn-confirm" id="btn-submit"
                     style="opacity: 0.5; pointer-events: none;">
                     Confirmer la commande
                 </button>
+                </form> {{-- Form ends here now --}}
                 <div style="text-align: center; color: #999; font-size: 11px; margin-top: 8px;">
                     (Complétez les étapes pour continuer)
                 </div>
@@ -1490,55 +1491,7 @@
             if (!silent) saveCheckoutState();
         }
 
-        function submitFinal() {
-            const selected = document.querySelector('input[name="ui_payment"]:checked');
-            const finalTotal = parseInt(document.getElementById('final-total').innerText.replace(/[^0-9]/g, ''));
-            const gestion = document.getElementById('gestion_paiement').value;
-            const moyen = document.getElementById('moyen_paiement').value;
-
-            // If final total is 0 (fully paid by gift card), submit directly
-            if (finalTotal === 0) {
-                localStorage.removeItem(CHECKOUT_STATE_KEY);
-                document.getElementById('deliveryForm').action = "{{ route('checkout.process') }}";
-                document.getElementById('deliveryForm').submit();
-                return;
-            }
-
-            if (finalTotal > 0 && !selected) {
-                alert('Veuillez sélectionner un mode de paiement pour le reliquat.');
-                return;
-            }
-
-            // For COD (livraison_buyer), submit the form directly to process
-            if (gestion !== 'commande') {
-                localStorage.removeItem(CHECKOUT_STATE_KEY);
-                document.getElementById('deliveryForm').action = "{{ route('checkout.process') }}";
-                document.getElementById('deliveryForm').submit();
-                return;
-            }
-
-            // AJAX token retrieval and redirection (Standard Mode)
-            console.log('Redirecting to PayDunya for:', pdMethod);
-            
-            fetch(PAYDUNYA_TOKEN_URL + '?payment_method=' + encodeURIComponent(pdMethod))
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success && data.url) {
-                        console.log('Redirecting to:', data.url);
-                        window.location.href = data.url;
-                    } else {
-                        alert('Erreur lors de l\'initialisation du paiement: ' + (data.message || 'URL de redirection manquante'));
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = 'Confirmer la commande';
-                    }
-                })
-                .catch(error => {
-                    console.error('AJAX Error:', error);
-                    alert('Erreur de connexion lors de l\'initialisation du paiement.');
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = 'Confirmer la commande';
-                });
-        }
+        // submitFinal() removed for standard HTML form submission (Fail-safe)
 
         let appliedDeduction = 0;
 
