@@ -197,13 +197,16 @@ class CheckoutController extends Controller
             // Stocker le token en session pour onTerminate callback
             session(['paydunya_pending_token' => $session->token]);
 
-            // Mode PSR: retourner UNIQUEMENT le token en texte brut
-            // Le SDK PSR PayDunya s'attend à recevoir le token directement
-            return response($session->token, 200)->header('Content-Type', 'text/plain');
-
+            return response()->json([
+                'success' => true,
+                'token' => $session->token,
+                'mode' => config('paydunya.mode') // 'live' or 'test'
+            ]);
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('PayDunya Token Error: ' . $e->getMessage());
-            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 400);
         }
     }
 

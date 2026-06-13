@@ -1559,22 +1559,23 @@
 
             console.log('Requesting PayDunya PSR for:', pdMethod);
 
-            // Update setup URL dynamically for the chosen method
             if (typeof PayDunya !== 'undefined') {
+                // Update setup dynamically for the chosen method
+                // The SDK will handle the fetch and expect the JSON response
                 PayDunya.setup({
                     url: PAYDUNYA_TOKEN_URL + '?payment_method=' + encodeURIComponent(pdMethod)
                 });
                 
-                // Trigger the SDK flow
+                // This triggers the fetch(url) internally and calls display() upon success
                 PayDunya.requestToken();
                 
-                // Safety reset after 10s if nothing happens
+                // Security reset if popup takes too long or is blocked
                 setTimeout(() => {
-                    if (submitBtn.disabled) {
+                    if (submitBtn.innerText.includes('Connexion')) {
                         submitBtn.disabled = false;
                         submitBtn.innerText = 'Confirmer la commande';
                     }
-                }, 10000);
+                }, 8000);
             } else {
                 alert('Erreur: SDK PayDunya non chargé.');
                 submitBtn.disabled = false;
@@ -1651,6 +1652,38 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadCheckoutState();
             toggleDeliveryOptions();
+
+            // PayDunya Global Init
+            if (typeof PayDunya !== 'undefined') {
+                PayDunya.setup({
+                    selector: '#paydunya-trigger',
+                    method: 'GET',
+                    displayMode: PayDunya.DISPLAY_IN_POPUP,
+                    onSuccess: function(token) {
+                        console.log('PayDunya: Token received via SDK:', token);
+                    },
+                    onTerminate: function(ref, token, status) {
+                        console.log('PayDunya: Payment status:', status);
+                        if (status === 'completed') {
+                            localStorage.removeItem(CHECKOUT_STATE_KEY);
+                            window.location.href = "{{ route('paydunya.success') }}?token=" + token;
+                        } else if (status === 'failed') {
+                            alert('Le paiement a échoué. Veuillez réessayer.');
+                        }
+                    },
+                    onClose: function() {
+                        const submitBtn = document.getElementById('btn-submit');
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = 'Confirmer la commande';
+                    },
+                    onError: function(err) {
+                        console.error('PayDunya SDK Error:', err);
+                        const submitBtn = document.getElementById('btn-submit');
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = 'Confirmer la commande';
+                    }
+                });
+            }
         });
     </script>
 @endsection
