@@ -1113,15 +1113,42 @@
     <script src="https://paydunya.com/assets/psr/js/psr.paydunya.min.js"></script>
 
     {{-- Hidden PSR trigger button required by PayDunya SDK (with customer pre-fill data) --}}
+    {{-- Using style instead of display:none to ensure browser/SDK visibility --}}
     <button class="pay" id="paydunya-trigger"
         data-ref="karnou_{{ $user->id }}_{{ time() }}"
         data-fullname="{{ $user->prenom }} {{ $user->nom }}"
         data-email="{{ $user->email }}"
         data-phone="{{ str_replace('+', '', $user->telephone ?? '') }}"
-        style="display:none;position:absolute;visibility:hidden;">pay</button>
+        style="width:1px;height:1px;opacity:0;position:absolute;left:-9999px;top:-9999px;">pay</button>
 
     <script>
     const PAYDUNYA_TOKEN_URL = "{{ route('checkout.paydunya.token') }}";
+
+    // Global PayDunya PSR initialization
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof PayDunya !== 'undefined') {
+            PayDunya.setup({
+                selector: '#paydunya-trigger',
+                method: 'GET',
+                displayMode: PayDunya.DISPLAY_IN_POPUP,
+                onSuccess: function(token) {
+                    console.log('PayDunya: Token received via SDK:', token);
+                },
+                onTerminate: function(ref, token, status) {
+                    console.log('PayDunya: Payment status:', status);
+                    if (status === 'completed') {
+                        localStorage.removeItem('dwesta_checkout_state');
+                        window.location.href = "{{ route('paydunya.success') }}?token=" + token;
+                    } else if (status === 'failed') {
+                        alert('Le paiement a échoué. Veuillez réessayer.');
+                    }
+                },
+                onError: function(err) {
+                    console.error('PayDunya SDK Error:', err);
+                }
+            });
+        }
+    });
         const subtotal = {{ $subtotal }};
         const sellerOrigins = @json($sellerOrigins);
         const userCountryId = {{ $userCountryId ?? 'null' }};
@@ -1526,73 +1553,33 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion sécurisée...';
 
-            const resetBtn = () => {
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Confirmer la commande';
-                submitBtn.style.opacity = '1';
-                submitBtn.style.pointerEvents = 'auto';
-            };
-
             // Map moyen_paiement to PayDunya channel
             const methodMap = { 'om': 'om', 'wave': 'wave', 'free': 'free', 'cb': 'card' };
             const pdMethod = methodMap[moyen] || moyen;
 
-            console.log('Fetching token for:', pdMethod);
+            console.log('Requesting PayDunya PSR for:', pdMethod);
 
-            // Manual token retrieval for better reliability
-            fetch(PAYDUNYA_TOKEN_URL + '?payment_method=' + encodeURIComponent(pdMethod))
-                .then(response => {
-                    if (!response.ok) throw new Error('Token request failed: ' + response.statusText);
-                    return response.text();
-                })
-                .then(token => {
-                    console.log('Token received:', token);
-                    
-                    // Initialize PayDunya with the received token
-                    PayDunya.setup({
-                        selector: '#paydunya-trigger',
-                        url: PAYDUNYA_TOKEN_URL + '?payment_method=' + encodeURIComponent(pdMethod),
-                        method: 'GET',
-                        displayMode: PayDunya.DISPLAY_IN_POPUP,
-                        onSuccess: function(t) { 
-                            console.log('PSR Success callback');
-                            resetBtn(); 
-                        },
-                        onTerminate: function(ref, t, status) {
-                            console.log('Payment status:', status);
-                            if (status === 'completed') {
-                                localStorage.removeItem(CHECKOUT_STATE_KEY);
-                                window.location.href = "{{ route('paydunya.success') }}?token=" + t;
-                            } else {
-                                resetBtn();
-                                if (status === 'failed') alert('Le paiement a échoué. Veuillez réessayer.');
-                            }
-                        },
-                        onError: function(error) {
-                            resetBtn();
-                            console.error('PayDunya error:', error);
-                            alert('Erreur de connexion PayDunya. Veuillez réessayer.');
-                        },
-                        onClose: function() { resetBtn(); }
-                    });
-
-                    // Launch the popup
-                    const triggerBtn = document.getElementById('paydunya-trigger');
-                    if (typeof triggerBtn.click === 'function') {
-                        triggerBtn.click();
-                    } else {
-                        // Fallback to automatic request if click fails
-                        PayDunya.requestToken();
-                    }
-                    
-                    // We can reset button slightly after launch
-                    setTimeout(resetBtn, 5000);
-                })
-                .catch(error => {
-                    resetBtn();
-                    console.error('Checkout error:', error);
-                    alert('Erreur lors de l\'initialisation du paiement: ' + error.message);
+            // Update setup URL dynamically for the chosen method
+            if (typeof PayDunya !== 'undefined') {
+                PayDunya.setup({
+                    url: PAYDUNYA_TOKEN_URL + '?payment_method=' + encodeURIComponent(pdMethod)
                 });
+                
+                // Trigger the SDK flow
+                PayDunya.requestToken();
+                
+                // Safety reset after 10s if nothing happens
+                setTimeout(() => {
+                    if (submitBtn.disabled) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = 'Confirmer la commande';
+                    }
+                }, 10000);
+            } else {
+                alert('Erreur: SDK PayDunya non chargé.');
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Confirmer la commande';
+            }
         }
 
         let appliedDeduction = 0;
