@@ -1112,8 +1112,12 @@
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <script src="https://paydunya.com/assets/psr/js/psr.paydunya.min.js"></script>
 
-    {{-- Hidden PSR trigger button required by PayDunya SDK --}}
+    {{-- Hidden PSR trigger button required by PayDunya SDK (with customer pre-fill data) --}}
     <button class="pay" id="paydunya-trigger"
+        data-ref="karnou_{{ Auth::user()->id }}_{{ time() }}"
+        data-fullname="{{ Auth::user()->name }}"
+        data-email="{{ Auth::user()->email }}"
+        data-phone="{{ str_replace('+', '', Auth::user()->telephone ?? '') }}"
         style="display:none;position:absolute;visibility:hidden;">pay</button>
 
     <script>
@@ -1534,7 +1538,7 @@
             const pdMethod = methodMap[moyen] || moyen;
 
             PayDunya.setup({
-                selector: '#paydunya-trigger',
+                selector: $('#paydunya-trigger'),
                 url: PAYDUNYA_TOKEN_URL + '?payment_method=' + encodeURIComponent(pdMethod),
                 method: 'GET',
                 displayMode: PayDunya.DISPLAY_IN_POPUP,
