@@ -855,7 +855,7 @@
                                 Confirmer le mode de livraison
                             </button>
                         </div>
-                    </form>
+                        {{-- Form stays OPEN - closes after the final Confirm button in sidebar --}}
 
                     <!-- Résumé livraison (caché par défaut, visible après confirmation) -->
                     <div id="delivery-summary" style="display: none;">
@@ -1067,7 +1067,7 @@
                     style="opacity: 1; pointer-events: auto;">
                     Confirmer la commande
                 </button>
-                </form> {{-- Form ends here now --}}
+                </form> {{-- Entire form ends here, includes all hidden fields --}}
                 <div style="text-align: center; color: #999; font-size: 11px; margin-top: 8px;">
                     (Complétez les étapes pour continuer)
                 </div>
