@@ -69,6 +69,12 @@ class PayDunyaService
             $payload['customer_name'] = $customer['name'] ?? '';
             $payload['customer_email'] = $customer['email'] ?? '';
             $payload['customer_phone'] = $cleanPhone;
+            $payload['customer_phonenumber'] = $cleanPhone;
+            
+            // Root level fields sometimes used by older versions or specific SDKs
+            $payload['name'] = $customer['name'] ?? '';
+            $payload['email'] = $customer['email'] ?? '';
+            $payload['phone'] = $cleanPhone;
         }
 
         // Ajouter des canaux spécifiques si demandés

@@ -384,11 +384,13 @@ class CheckoutController extends Controller
                         ],
                         $payDunyaMethod,
                         [
-                            'name' => Auth::user()->name,
+                            'name' => trim(Auth::user()->name ?: (Auth::user()->prenom . ' ' . Auth::user()->nom)),
                             'first_name' => Auth::user()->prenom,
                             'last_name' => Auth::user()->nom,
                             'email' => Auth::user()->email,
-                            'phone' => str_starts_with(Auth::user()->telephone, '+') ? Auth::user()->telephone : '+221' . Auth::user()->telephone,
+                            'phone' => preg_match('/^\+?221/', Auth::user()->telephone) 
+                                ? (str_starts_with(Auth::user()->telephone, '+') ? Auth::user()->telephone : '+' . Auth::user()->telephone) 
+                                : '+221' . ltrim(Auth::user()->telephone, '0'),
                             'address' => Auth::user()->adresse,
                             'city' => Auth::user()->ville,
                             'state' => Auth::user()->region,
