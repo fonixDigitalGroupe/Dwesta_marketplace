@@ -36,6 +36,9 @@ class PayDunyaService
             'invoice' => [
                 'total_amount' => $total,
                 'description' => $description,
+                'customer_name' => $customer['name'] ?? '',
+                'customer_email' => $customer['email'] ?? '',
+                'customer_phone' => $cleanPhone,
             ],
             'store' => [
                 'name' => "Karnou",
@@ -75,6 +78,12 @@ class PayDunyaService
             $payload['name'] = $customer['name'] ?? '';
             $payload['email'] = $customer['email'] ?? '';
             $payload['phone'] = $cleanPhone;
+
+            // Extra common fields
+            $payload['first_name'] = $customer['first_name'] ?? '';
+            $payload['last_name'] = $customer['last_name'] ?? '';
+            $payload['phone_number'] = $cleanPhone;
+            $payload['email_address'] = $customer['email'] ?? '';
         }
 
         // Ajouter des canaux spécifiques si demandés
