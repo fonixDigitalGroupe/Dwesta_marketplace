@@ -1124,31 +1124,10 @@
     <script>
     const PAYDUNYA_TOKEN_URL = "{{ route('checkout.paydunya.token') }}";
 
-    // Global PayDunya PSR initialization
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof PayDunya !== 'undefined') {
-            PayDunya.setup({
-                selector: '#paydunya-trigger',
-                method: 'GET',
-                displayMode: PayDunya.DISPLAY_IN_POPUP,
-                onSuccess: function(token) {
-                    console.log('PayDunya: Token received via SDK:', token);
-                },
-                onTerminate: function(ref, token, status) {
-                    console.log('PayDunya: Payment status:', status);
-                    if (status === 'completed') {
-                        localStorage.removeItem('dwesta_checkout_state');
-                        window.location.href = "{{ route('paydunya.success') }}?token=" + token;
-                    } else if (status === 'failed') {
-                        alert('Le paiement a échoué. Veuillez réessayer.');
-                    }
-                },
-                onError: function(err) {
-                    console.error('PayDunya SDK Error:', err);
-                }
-            });
-        }
-    });
+    /* 
+       REMOVED REDUNDANT SETUP AT START (Line 1128-1152) 
+       Logic moved to a single DOMContentLoaded block at the end of the file.
+    */
         const subtotal = {{ $subtotal }};
         const sellerOrigins = @json($sellerOrigins);
         const userCountryId = {{ $userCountryId ?? 'null' }};
@@ -1548,7 +1527,7 @@
                 return;
             }
 
-            // For online payments (commande: om, wave, free, card), trigger PSR popup directly
+            // For online payments (commande: om, wave, free, card), trigger PSR popup
             const submitBtn = document.getElementById('btn-submit');
             submitBtn.disabled = true;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion sécurisée...';
@@ -1557,46 +1536,34 @@
             const methodMap = { 'om': 'om', 'wave': 'wave', 'free': 'free', 'cb': 'card' };
             const pdMethod = methodMap[moyen] || moyen;
 
-            console.log('Requesting PayDunya PSR for:', pdMethod);
+            console.log('Professional approach: Requesting token via AJAX for:', pdMethod);
 
-            if (typeof PayDunya !== 'undefined') {
-                const selector = (typeof pQuery !== 'undefined') ? pQuery('#paydunya-trigger') : '#paydunya-trigger';
-                
-                // Full PSR setup to avoid overwriting global callbacks
-                PayDunya.setup({
-                    selector: selector,
-                    url: PAYDUNYA_TOKEN_URL + '?payment_method=' + encodeURIComponent(pdMethod),
-                    method: 'GET',
-                    displayMode: PayDunya.DISPLAY_IN_POPUP,
-                    onSuccess: function(token) {
-                        console.log('PayDunya: Token received successfully:', token);
-                    },
-                    onTerminate: function(ref, token, status) {
-                        console.log('PayDunya: Payment terminated with status:', status);
-                        if (status === 'completed') {
-                            localStorage.removeItem(CHECKOUT_STATE_KEY);
-                            window.location.href = "{{ route('paydunya.success') }}?token=" + token;
-                        } else if (status === 'failed') {
-                            alert('Le paiement a échoué. Veuillez réessayer.');
+            // AJAX token retrieval
+            fetch(PAYDUNYA_TOKEN_URL + '?payment_method=' + encodeURIComponent(pdMethod))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.token) {
+                        console.log('Token received via AJAX:', data.token);
+                        if (typeof PayDunya !== 'undefined') {
+                            // Launch popup with the explicit token
+                            PayDunya.requestToken(data.token);
+                        } else {
+                            alert('Erreur: SDK PayDunya non chargé.');
+                            submitBtn.disabled = false;
+                            submitBtn.innerText = 'Confirmer la commande';
                         }
-                    },
-                    onClose: function() {
-                        const submitBtn = document.getElementById('btn-submit');
-                        submitBtn.disabled = false;
-                        submitBtn.innerText = 'Confirmer la commande';
-                    },
-                    onError: function(err) {
-                        console.error('PayDunya SDK Error:', err);
-                        const submitBtn = document.getElementById('btn-submit');
+                    } else {
+                        alert('Erreur lors de l\'initialisation du paiement: ' + (data.message || 'Token manquant'));
                         submitBtn.disabled = false;
                         submitBtn.innerText = 'Confirmer la commande';
                     }
-                }).requestToken();
-            } else {
-                alert('Erreur: SDK PayDunya non chargé.');
-                submitBtn.disabled = false;
-                submitBtn.innerText = 'Confirmer la commande';
-            }
+                })
+                .catch(error => {
+                    console.error('AJAX Error:', error);
+                    alert('Erreur de connexion lors de l\'initialisation du paiement.');
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = 'Confirmer la commande';
+                });
         }
 
         let appliedDeduction = 0;
