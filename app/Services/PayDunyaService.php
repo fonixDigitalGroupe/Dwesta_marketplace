@@ -48,8 +48,11 @@ class PayDunyaService
                 'return_url' => $successUrl,
                 'callback_url' => route('paydunya.callback'), 
             ],
-            'custom_data' => $customData
-        ];
+        $payload['custom_data'] = array_merge($customData, [
+            'customer_name' => $customer['name'] ?? '',
+            'customer_email' => $customer['email'] ?? '',
+            'customer_phone' => !empty($customer['phone']) ? str_replace('+', '', $customer['phone']) : '',
+        ]);
 
         // Nettoyer le numéro de téléphone (enlever le +)
         $cleanPhone = !empty($customer['phone']) ? str_replace('+', '', $customer['phone']) : '';
