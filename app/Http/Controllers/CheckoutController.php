@@ -402,37 +402,55 @@ class CheckoutController extends Controller
                         $o->update(['paydunya_token' => $session->token]);
                     }
 
-                    // TENTATIVE DE PAIEMENT DIRECT (Style 1xbet)
+                    // PERSONNALISATION DE LA PAGE DE PAIEMENT (SoftPay)
                     if ($phone && in_array($moyenPaiement, ['om', 'wave', 'free'])) {
                         try {
-                            $directResponse = $this->payDunyaService->initiateDirectPayment($session->token, $phone, $moyenPaiement);
+                            $customerData = [
+                                'name' => trim(Auth::user()->name ?: (Auth::user()->prenom . ' ' . Auth::user()->nom)),
+                                'email' => Auth::user()->email,
+                                'phone' => $phone
+                            ];
+
+                            $softPayResponse = $this->payDunyaService->softPay($session->token, $moyenPaiement, $customerData);
                             
-                            if (isset($directResponse['response_code']) && $directResponse['response_code'] === '00') {
+                            if (isset($softPayResponse['success']) && $softPayResponse['success'] === true) {
                                 DB::commit();
                                 
-                                // Si c'est Wave, on laisse le flux standard (fallback) qui utilise $session->url 
-                                // car le lien PSR de Wave ne semble pas pré-remplir les champs client.
-                                if ($moyenPaiement === 'wave') {
-                                    // On force le commit ici car on ne va pas faire le redirect directResponse
-                                    DB::commit();
-                                    return redirect($session->url);
+                                // Pour Wave et Orange Money, on redirige vers l'URL spécifique
+                                if (isset($softPayResponse['url'])) {
+                                    return redirect($softPayResponse['url']);
                                 }
 
-                                // Pour Orange Money / Free, le push est envoyé
-                                return redirect()->route('checkout.success')->with('info', 'Demande de paiement envoyée sur votre téléphone. Veuillez confirmer avec votre code secret.');
+                                // Pour Free Money ou autres avec message de confirmation USSD
+                                return redirect()->route('checkout.success')->with('info', $softPayResponse['message'] ?? 'Demande de paiement envoyée sur votre téléphone. Veuillez confirmer avec votre code secret.');
                             } else {
-                                \Illuminate\Support\Facades\Log::warning('PayDunya Direct Payment Failed, falling back to hosted:', [
-                                    'response' => $directResponse,
+                                \Illuminate\Support\Facades\Log::warning('PayDunya SoftPay Failed, falling back to hosted:', [
+                                    'response' => $softPayResponse,
                                     'method' => $moyenPaiement
                                 ]);
                             }
                         } catch (\Exception $e) {
-                            \Illuminate\Support\Facades\Log::error('PayDunya Direct Payment Exception: ' . $e->getMessage());
+                            \Illuminate\Support\Facades\Log::error('PayDunya SoftPay Exception: ' . $e->getMessage());
                         }
                     }
 
                     DB::commit();
-                    return redirect($session->url);
+
+                    $redirectUrl = $session->url;
+                    if ($phone && in_array($moyenPaiement, ['om', 'wave', 'free'])) {
+                        if (isset($softPayResponse) && isset($softPayResponse['success']) && $softPayResponse['success'] === true) {
+                            $redirectUrl = $softPayResponse['url'] ?? route('checkout.success', ['info' => $softPayResponse['message'] ?? 'Demande de paiement envoyée sur votre téléphone.']);
+                        }
+                    }
+
+                    if ($request->expectsJson()) {
+                        return response()->json([
+                            'success' => true,
+                            'redirect_url' => $redirectUrl,
+                        ]);
+                    }
+
+                    return redirect($redirectUrl);
                 } else {
                     // Fully paid by Gift Card!
                     foreach ($orders as $o) {

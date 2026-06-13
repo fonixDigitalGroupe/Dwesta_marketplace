@@ -171,6 +171,63 @@ class PayDunyaService
         return $response->json();
     }
     /**
+     * Initier un paiement SoftPay (Paiement sans redirection personnalisé)
+     * Permet de rediriger directement vers le portefeuille choisi ou de lancer un push.
+     */
+    public function softPay($invoiceToken, $method, $customer = [])
+    {
+        $cleanPhone = !empty($customer['phone']) ? str_replace('+', '', $customer['phone']) : '';
+        $name = $customer['name'] ?? '';
+        $email = $customer['email'] ?? '';
+
+        $endpoint = match($method) {
+            'om' => '/softpay/new-orange-money-senegal',
+            'wave' => '/softpay/wave-senegal',
+            'free' => '/softpay/free-money-senegal',
+            default => null
+        };
+
+        if (!$endpoint) {
+            throw new \Exception("Méthode SoftPay non supportée : " . $method);
+        }
+
+        // Adapter le payload selon les exigences spécifiques de chaque endpoint PayDunya
+        $payload = match($method) {
+            'om' => [
+                'customer_name' => $name,
+                'customer_email' => $email,
+                'phone_number' => $cleanPhone,
+                'invoice_token' => $invoiceToken,
+            ],
+            'wave' => [
+                'wave_senegal_fullName' => $name,
+                'wave_senegal_email' => $email,
+                'wave_senegal_phone' => $cleanPhone,
+                'wave_senegal_payment_token' => $invoiceToken,
+            ],
+            'free' => [
+                'customer_name' => $name,
+                'customer_email' => $email,
+                'phone_number' => $cleanPhone,
+                'payment_token' => $invoiceToken,
+            ],
+        };
+
+        $response = Http::withHeaders([
+            'PAYDUNYA-MASTER-KEY' => $this->masterKey,
+            'PAYDUNYA-PRIVATE-KEY' => $this->privateKey,
+            'PAYDUNYA-TOKEN' => $this->token,
+        ])->post($this->baseUrl . $endpoint, $payload);
+
+        if ($response->successful()) {
+            return $response->json();
+        }
+
+        Log::error("PayDunya SoftPay Error ($method): " . $response->body());
+        return $response->json();
+    }
+
+    /**
      * Effectuer un virement (Disbursement) vers un compte Mobile Money
      */
     public function disburse($amount, $phone, $method, $customData = [])

@@ -362,6 +362,19 @@
         <!-- Status Hero -->
         <div class="hero-success">
             <div class="hero-text">
+                @if(request('info') || session('info'))
+                    <div class="success-alert-amazon" style="border-color: var(--jumia-orange); background: #fff3e0; margin-bottom: 24px;">
+                        <div class="hero-icon" style="color: var(--jumia-orange); background: #fff;">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div>
+                            <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 8px 0; color: var(--jumia-orange);">Action requise sur votre téléphone</h2>
+                            <p style="color: #333; font-size: 15px; line-height: 1.5;">
+                                {{ request('info') ?? session('info') }}
+                            </p>
+                        </div>
+                    </div>
+                @endif
                 <h1>Merci {{ Auth::user()->prenom ?? 'Client' }} ! Votre commande est confirmée.</h1>
                 <p>
                     @if(count($orders) > 1)
