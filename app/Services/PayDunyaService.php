@@ -86,6 +86,9 @@ class PayDunyaService
         }
 
 
+        file_put_contents('/tmp/paydunya_debug.log', date('Y-m-d H:i:s') . " - Payload: " . json_encode($payload, JSON_PRETTY_PRINT) . "\n", FILE_APPEND);
+        Log::info('PayDunya Checkout Payload:', ['payload' => $payload]);
+
         $response = Http::withHeaders([
             'PAYDUNYA-MASTER-KEY' => $this->masterKey,
             'PAYDUNYA-PRIVATE-KEY' => $this->privateKey,
