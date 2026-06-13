@@ -12,7 +12,7 @@
         --rk-bg: #fdfdfd;
     }
 
-    body { background-color: #f5f5f5; font-family: 'Inter', sans-serif; }
+    body { background-color: #ffffff; font-family: 'Inter', sans-serif; }
 
     .checkout-container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; display: grid; grid-template-columns: 1fr 380px; gap: 2rem; }
     
