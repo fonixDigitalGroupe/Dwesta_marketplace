@@ -200,7 +200,7 @@ class CheckoutController extends Controller
             return response()->json([
                 'success' => true,
                 'token' => $session->token,
-                'mode' => config('paydunya.mode') // 'live' or 'test'
+                'mode' => config('services.paydunya.mode') // 'live' or 'test'
             ]);
         } catch (\Exception $e) {
             return response()->json([

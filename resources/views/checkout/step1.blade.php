@@ -1655,15 +1655,20 @@
 
             // PayDunya Global Init
             if (typeof PayDunya !== 'undefined') {
+                console.log('Initializing PayDunya PSR SDK...');
+                
+                // Use pQuery which is what PayDunya uses internally
+                const selector = (typeof pQuery !== 'undefined') ? pQuery('#paydunya-trigger') : '#paydunya-trigger';
+                
                 PayDunya.setup({
-                    selector: '#paydunya-trigger',
+                    selector: selector,
                     method: 'GET',
                     displayMode: PayDunya.DISPLAY_IN_POPUP,
                     onSuccess: function(token) {
-                        console.log('PayDunya: Token received via SDK:', token);
+                        console.log('PayDunya: Token received successfully:', token);
                     },
                     onTerminate: function(ref, token, status) {
-                        console.log('PayDunya: Payment status:', status);
+                        console.log('PayDunya: Payment terminated with status:', status);
                         if (status === 'completed') {
                             localStorage.removeItem(CHECKOUT_STATE_KEY);
                             window.location.href = "{{ route('paydunya.success') }}?token=" + token;
@@ -1672,6 +1677,7 @@
                         }
                     },
                     onClose: function() {
+                        console.log('PayDunya: Popup closed.');
                         const submitBtn = document.getElementById('btn-submit');
                         submitBtn.disabled = false;
                         submitBtn.innerText = 'Confirmer la commande';
@@ -1683,6 +1689,8 @@
                         submitBtn.innerText = 'Confirmer la commande';
                     }
                 });
+            } else {
+                console.error('PayDunya SDK not found!');
             }
         });
     </script>
