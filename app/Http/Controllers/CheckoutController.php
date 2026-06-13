@@ -243,7 +243,8 @@ class CheckoutController extends Controller
 
         $request->validate([
             'gestion_paiement' => 'required|in:commande,livraison_buyer,livraison_receiver',
-            'moyen_paiement' => 'nullable|in:om,momo,cb,paypal,wave,wallet,gift_card'
+            'moyen_paiement' => 'nullable|in:om,momo,cb,card,paypal,wave,free,wallet,gift_card,cod',
+            'phone_number' => 'required_if:moyen_paiement,om,wave,free|nullable|string'
         ]);
 
         $cartGrouped = $this->cartService->getContentGroupedBySeller();
@@ -253,6 +254,9 @@ class CheckoutController extends Controller
 
         $gestionPaiement = $request->gestion_paiement;
         $moyenPaiement = $request->moyen_paiement;
+        if ($moyenPaiement === 'card') {
+            $moyenPaiement = 'cb';
+        }
         $giftCardCode = strtoupper(trim($request->applied_gift_card_code ?? ''));
 
         // Resolve applied gift card directly from POST data (more reliable than session)
@@ -359,8 +363,12 @@ class CheckoutController extends Controller
                 ]);
 
                 if ($remainingTotal > 0 && $moyenPaiement !== 'gift_card') {
-                    // Partial or full mobile payment
-                    $paymentMethod = in_array($moyenPaiement, ['gift_card', 'cb']) ? null : $moyenPaiement;
+                    // Normalize payment method for PayDunya (card -> cb)
+                    $paymentMethod = in_array($moyenPaiement, ['gift_card', 'cb', 'card']) ? 'cb' : $moyenPaiement;
+                    // If it's cb (hosted card), we pass null to allow all methods on hosted page, 
+                    // unless we specifically want to restrict to card.
+                    $payDunyaMethod = ($paymentMethod === 'cb') ? null : $paymentMethod;
+                    
                     $phone = $request->phone_number;
 
                     $session = $this->payDunyaService->createCheckoutSession(
@@ -374,7 +382,7 @@ class CheckoutController extends Controller
                             'gift_card_id' => $resolvedGiftCard?->id,
                             'gift_card_amount' => $deduction
                         ],
-                        $paymentMethod,
+                        $payDunyaMethod,
                         [
                             'name' => Auth::user()->name,
                             'first_name' => Auth::user()->prenom,

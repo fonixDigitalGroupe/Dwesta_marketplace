@@ -981,16 +981,56 @@
                                         <img src="{{ asset('images/logowave.png') }}" alt="Wave" class="method-logo">
                                     </div>
                                 </div>
-                                <!-- Description en dessous du titre -->
                                 <div style="font-size: 13px; color: #666; margin-top: 4px;">Payez instantanément avec
                                     l'application Wave mobile.</div>
                             </div>
                         </label>
 
+                        <!-- Free Money -->
+                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'commande', 'free')">
+                            <input type="radio" name="ui_payment" value="free">
+                            <span class="radio-custom"></span>
+                            <div class="payment-info-wrapper">
+                                <div class="payment-title-row">
+                                    <span class="payment-name">Free Money <span
+                                            style="background: #fff0e0; color: #f68b1e; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 3px; margin-left: 5px;">soit
+                                            un montant total de <span class="payment-total-value">0</span>
+                                            FCFA</span></span>
+                                    <div style="margin-left: auto;">
+                                        <img src="https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png" alt="Free Money" class="method-logo">
+                                    </div>
+                                </div>
+                                <div style="font-size: 13px; color: #666; margin-top: 4px;">Utilisez votre compte Free Money.</div>
+                            </div>
+                        </label>
+
+                        <div class="payment-section-title">Carte Bancaire / International</div>
+
+                        <!-- Card -->
+                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'commande', 'cb')">
+                            <input type="radio" name="ui_payment" value="cb">
+                            <span class="radio-custom"></span>
+                            <div class="payment-info-wrapper">
+                                <div class="payment-title-row">
+                                    <span class="payment-name">Visa, Mastercard, etc.</span>
+                                    <div style="margin-left: auto; display: flex; gap: 4px;">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" class="method-logo" style="height: 12px;">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" class="method-logo" style="height: 18px;">
+                                    </div>
+                                </div>
+                                <div style="font-size: 13px; color: #666; margin-top: 4px;">Paiement sécurisé par carte bancaire.</div>
+                            </div>
+                        </label>
+
+                        <div id="phone-field-modern" style="display: none; margin-top: 20px; padding: 15px; background: #fffcf5; border: 1px solid #ffe8cc; border-radius: 4px;">
+                            <label for="step1_phone_number" style="font-weight: 700; font-size: 13px; display: block; margin-bottom: 8px;">Numéro de téléphone PayDunya</label>
+                            <input type="text" name="phone_number" id="step1_phone_number" class="form-control" placeholder="7x xxx xx xx" value="{{ $user->telephone }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+
                         <div class="payment-section-title">Paiement à la livraison</div>
 
                         <!-- COD -->
-                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'livraison_buyer', '')">
+                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'livraison_buyer', 'cod')">
                             <input type="radio" name="ui_payment" value="cod">
                             <span class="radio-custom"></span>
                             <div class="payment-info-wrapper">
@@ -1481,6 +1521,14 @@
             // Update hidden inputs
             document.getElementById('gestion_paiement').value = gestion;
             document.getElementById('moyen_paiement').value = moyen;
+
+            // Show/Hide phone field for mobile money
+            const phoneField = document.getElementById('phone-field-modern');
+            if (['om', 'wave', 'free'].includes(moyen)) {
+                phoneField.style.display = 'block';
+            } else {
+                phoneField.style.display = 'none';
+            }
 
             // Show Voucher Input
             document.getElementById('voucher-container').style.display = 'block';

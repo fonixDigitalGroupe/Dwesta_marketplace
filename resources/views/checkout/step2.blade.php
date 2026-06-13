@@ -148,83 +148,107 @@
                 </div>
             </div>
 
-            {{-- MOBILE MONEY SECTION --}}
-            <div class="section-group">
-                <div class="section-title">Mobile Money</div>
+            {{-- UNIFIED PAYMENT FORM --}}
+            <form action="{{ route('checkout.process') }}" method="POST" id="paymentForm">
+                @csrf
+                
+                {{-- MOBILE MONEY SECTION --}}
+                <div class="section-group">
+                    <div class="section-title">Mobile Money @if(config('services.paydunya.mode') === 'test')<span class="badge bg-warning text-dark" style="font-size: 0.6rem; vertical-align: middle;">SANDBOX</span>@endif</div>
 
-                {{-- ORANGE MONEY --}}
-                <label class="payment-option" onclick="selectOption(this)">
-                    <input type="radio" name="payment_choice" value="om">
-                    <div class="option-content">
-                        <div class="option-title">
-                            Avec Orange Money
-                            <span class="option-amount">{{ number_format($subtotal, 0, ',', ' ') }} FCFA</span>
+                    {{-- ORANGE MONEY --}}
+                    <label class="payment-option" onclick="selectOption(this)">
+                        <input type="radio" name="moyen_paiement" value="om" required>
+                        <div class="option-content">
+                            <div class="option-title">
+                                Avec Orange Money
+                                <span class="option-amount">{{ number_format($subtotal, 0, ',', ' ') }} FCFA</span>
+                            </div>
+                            <div class="option-desc">Paiement via STK Push (Style 1xbet). Confirmez sur votre mobile.</div>
                         </div>
-                        <div class="option-desc">Paiement rapide et sécurisé. Vos informations sont pré-remplies.</div>
-                    </div>
-                    <div class="option-icon">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Orange_Money_logo.svg/1024px-Orange_Money_logo.svg.png" alt="OM">
-                    </div>
-                </label>
-
-                {{-- WAVE --}}
-                <label class="payment-option" onclick="selectOption(this)">
-                    <input type="radio" name="payment_choice" value="wave">
-                    <div class="option-content">
-                        <div class="option-title">
-                            Avec Wave
-                            <span class="option-amount">{{ number_format($subtotal, 0, ',', ' ') }} FCFA</span>
+                        <div class="option-icon">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Orange_Money_logo.svg/1024px-Orange_Money_logo.svg.png" alt="OM">
                         </div>
-                        <div class="option-desc">Payez instantanément. Vos informations sont pré-remplies.</div>
-                    </div>
-                    <div class="option-icon">
-                        <img src="{{ asset('images/logowave.png') }}" alt="Wave">
-                    </div>
-                </label>
+                    </label>
 
-                {{-- FREE MONEY --}}
-                <label class="payment-option" onclick="selectOption(this)">
-                    <input type="radio" name="payment_choice" value="free">
-                    <div class="option-content">
-                        <div class="option-title">Free Money</div>
-                        <div class="option-desc">Utilisez votre compte Free Money pour payer.</div>
-                    </div>
-                    <div class="option-icon">
-                        <img src="https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png" alt="Free Money">
-                    </div>
-                </label>
-            </div>
+                    {{-- WAVE --}}
+                    <label class="payment-option" onclick="selectOption(this)">
+                        <input type="radio" name="moyen_paiement" value="wave">
+                        <div class="option-content">
+                            <div class="option-title">
+                                Avec Wave
+                                <span class="option-amount">{{ number_format($subtotal, 0, ',', ' ') }} FCFA</span>
+                            </div>
+                            <div class="option-desc">Payez instantanément via votre application Wave.</div>
+                        </div>
+                        <div class="option-icon">
+                            <img src="{{ asset('images/logowave.png') }}" alt="Wave">
+                        </div>
+                    </label>
 
-            {{-- CARD SECTION --}}
-            <div class="section-group">
-                <div class="section-title">Carte Bancaire / International</div>
-                <label class="payment-option" onclick="selectOption(this)">
-                    <input type="radio" name="payment_choice" value="card">
-                    <div class="option-content">
-                        <div class="option-title">VISA, Mastercard</div>
-                        <div class="option-desc">Paiement par carte bancaire internationale via PayDunya sécurisé.</div>
-                    </div>
-                    <div class="option-icon" style="gap: 5px; flex-direction: column;">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" style="height: 12px;">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" style="height: 18px;">
-                    </div>
-                </label>
-            </div>
+                    {{-- FREE MONEY --}}
+                    <label class="payment-option" onclick="selectOption(this)">
+                        <input type="radio" name="moyen_paiement" value="free">
+                        <div class="option-content">
+                            <div class="option-title">Free Money</div>
+                            <div class="option-desc">Utilisez votre compte Free Money pour payer.</div>
+                        </div>
+                        <div class="option-icon">
+                            <img src="https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png" alt="Free Money">
+                        </div>
+                    </label>
 
-            {{-- COD SECTION --}}
-            <div class="section-group">
-                <div class="section-title">Paiement à la livraison</div>
-                <label class="payment-option" onclick="selectOption(this)">
-                    <input type="radio" name="payment_choice" value="cod">
-                    <div class="option-content">
-                        <div class="option-title">Paiement à la livraison</div>
-                        <div class="option-desc">Payez dès réception de votre commande à domicile.</div>
+                    {{-- PHONE NUMBER FIELD (Visible only for mobile money) --}}
+                    <div id="phone-field-container" style="display: none; padding: 1.5rem; background: #fffcf5; border-top: 1px solid #ffe8cc; border-bottom: 1px solid #ffe8cc;">
+                        <label for="phone_number" style="font-weight: 700; display: block; margin-bottom: 8px; font-size: 0.9rem;">
+                            Numéro de téléphone PayDunya / Mobile Money
+                        </label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" name="phone_number" id="phone_number" 
+                                class="form-control" 
+                                placeholder="7x xxx xx xx"
+                                value="{{ Auth::user()->telephone }}"
+                                style="border: 2px solid var(--rk-orange); border-radius: 6px; padding: 12px; font-size: 1.1rem; font-weight: 700; width: 100%;">
+                        </div>
+                        <p style="font-size: 0.75rem; color: #666; margin-top: 8px; margin-bottom: 0;">
+                            <i class="fas fa-info-circle"></i> Indispensable pour recevoir la demande de paiement sur votre téléphone.
+                        </p>
                     </div>
-                    <div class="option-icon">
-                        <i class="fas fa-handshake" style="color: var(--rk-orange);"></i>
-                    </div>
-                </label>
-            </div>
+                </div>
+
+                {{-- CARD SECTION --}}
+                <div class="section-group">
+                    <div class="section-title">Carte Bancaire / International</div>
+                    <label class="payment-option" onclick="selectOption(this)">
+                        <input type="radio" name="moyen_paiement" value="cb">
+                        <div class="option-content">
+                            <div class="option-title">VISA, Mastercard</div>
+                            <div class="option-desc">Paiement par carte bancaire internationale via PayDunya sécurisé.</div>
+                        </div>
+                        <div class="option-icon" style="gap: 5px; flex-direction: column;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" style="height: 12px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" style="height: 18px;">
+                        </div>
+                    </label>
+                </div>
+
+                {{-- COD SECTION --}}
+                <div class="section-group">
+                    <div class="section-title">Paiement à la livraison</div>
+                    <label class="payment-option" onclick="selectOption(this)">
+                        <input type="radio" name="moyen_paiement" value="cod">
+                        <div class="option-content">
+                            <div class="option-title">Paiement à la livraison</div>
+                            <div class="option-desc">Payez dès réception de votre commande à domicile.</div>
+                        </div>
+                        <div class="option-icon">
+                            <i class="fas fa-handshake" style="color: var(--rk-orange);"></i>
+                        </div>
+                    </label>
+                </div>
+
+                <input type="hidden" name="gestion_paiement" value="commande">
+            </form>
         </div>
     </div>
 
@@ -238,46 +262,22 @@
             </div>
             <div class="summary-row">
                 <span>Frais de Livraison</span>
-                <span>0 FCFA</span>
+                <span>{{ number_format(session('checkout_shipping_fee', 0), 0, ',', ' ') }} FCFA</span>
             </div>
 
             <div class="summary-total">
                 <span>Total</span>
-                <span>{{ number_format($subtotal, 0, ',', ' ') }} FCFA</span>
+                <span>{{ number_format($subtotal + session('checkout_shipping_fee', 0), 0, ',', ' ') }} FCFA</span>
             </div>
 
-            {{-- PSR POPUP BUTTON --}}
+            {{-- SUBMIT BUTTON --}}
             <button class="btn-pay"
-                id="btn-pay-psr"
+                id="btn-submit-payment"
                 type="button"
-                onclick="triggerPaydunya()"
-                style="display: none;">
+                onclick="submitPayment();"
+                disabled>
                 <i class="fas fa-lock"></i>
-                Payer {{ number_format($subtotal, 0, ',', ' ') }} FCFA
-            </button>
-            {{-- Hidden PSR trigger button required by PayDunya SDK --}}
-            <button class="pay" id="paydunya-trigger"
-                data-ref="karnou_{{ Auth::user()->id }}_{{ time() }}"
-                data-fullname="{{ Auth::user()->name }}"
-                data-email="{{ Auth::user()->email }}"
-                data-phone="{{ str_replace('+', '', Auth::user()->telephone ?? '') }}"
-                style="display:none;position:absolute;visibility:hidden;"
-                onclick="payWithPaydunya(this)">pay</button>
-
-            {{-- COD BUTTON (for cash on delivery) --}}
-            <form action="{{ route('checkout.process') }}" method="POST" id="codForm" style="display:none;">
-                @csrf
-                <input type="hidden" name="gestion_paiement" value="livraison_buyer">
-                <input type="hidden" name="moyen_paiement" value="cod">
-                <button type="submit" class="btn-pay">
-                    <i class="fas fa-handshake"></i>
-                    Confirmer (Paiement à la livraison)
-                </button>
-            </form>
-
-            {{-- DEFAULT BUTTON (visible before selection) --}}
-            <button class="btn-pay" id="btn-select-first" onclick="alert('Veuillez sélectionner un mode de paiement.')">
-                Sélectionner un mode de paiement
+                Valider et Payer
             </button>
 
             <a href="{{ route('checkout.step1') }}" style="display: block; text-align: center; margin-top: 1.25rem; color: #777; font-size: 0.85rem; text-decoration: none; font-weight: 500;">
@@ -287,12 +287,9 @@
     </div>
 </div>
 
-{{-- PayDunya PSR JavaScript --}}
 <script src="https://code.jquery.com/jquery.min.js"></script>
-<script src="https://paydunya.com/assets/psr/js/psr.paydunya.min.js"></script>
 
 <script>
-    const TOKEN_URL = "{{ route('checkout.paydunya.token') }}";
     let selectedMethod = null;
 
     function selectOption(el) {
@@ -302,72 +299,46 @@
         input.checked = true;
         selectedMethod = input.value;
 
-        document.getElementById('btn-select-first').style.display = 'none';
-        document.getElementById('codForm').style.display = 'none';
-        document.getElementById('btn-pay-psr').style.display = 'none';
-
-        if (selectedMethod === 'cod') {
-            document.getElementById('codForm').style.display = 'block';
+        // Show/Hide phone field for mobile money
+        const phoneField = document.getElementById('phone-field-container');
+        if (['om', 'wave', 'free'].includes(selectedMethod)) {
+            phoneField.style.display = 'block';
         } else {
-            document.getElementById('btn-pay-psr').style.display = 'flex';
+            phoneField.style.display = 'none';
+        }
+
+        // Enable button
+        document.getElementById('btn-submit-payment').disabled = false;
+        
+        const btn = document.getElementById('btn-submit-payment');
+        if (selectedMethod === 'cod') {
+            btn.innerHTML = '<i class="fas fa-handshake"></i> Confirmer la commande';
+            document.querySelector('input[name="gestion_paiement"]').value = 'livraison_buyer';
+        } else {
+            btn.innerHTML = '<i class="fas fa-lock"></i> Valider et Payer';
+            document.querySelector('input[name="gestion_paiement"]').value = 'commande';
         }
     }
 
-    function triggerPaydunya(e) {
-        if (e) e.preventDefault();
-        
+    function submitPayment() {
         if (!selectedMethod) {
             alert('Veuillez sélectionner un mode de paiement.');
             return;
         }
 
-        const btn = document.getElementById('btn-pay-psr');
+        if (['om', 'wave', 'free'].includes(selectedMethod)) {
+            const phone = document.getElementById('phone_number').value.trim();
+            if (phone.length < 9) {
+                alert('Veuillez saisir un numéro de téléphone valide pour le paiement mobile.');
+                return;
+            }
+        }
+
+        const btn = document.getElementById('btn-submit-payment');
         btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion sécurisée...';
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Traitement en cours...';
 
-        const resetBtn = () => {
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-lock"></i> Payer {{ number_format($subtotal, 0, ',', ' ') }} FCFA';
-        };
-
-        // Configuration du PSR PayDunya
-        PayDunya.setup({
-            selector: '#paydunya-trigger', // Utiliser l'ID en texte brut pour le SDK
-            url: TOKEN_URL + '?payment_method=' + encodeURIComponent(selectedMethod),
-            method: 'GET',
-            displayMode: PayDunya.DISPLAY_IN_POPUP,
-            beforeRequest: function() {
-                console.log('Requesting token for:', selectedMethod);
-            },
-            onSuccess: function(token) { 
-                console.log('Token received:', token);
-                // Le SDK lancera le popup automatiquement après requestToken()
-                resetBtn(); 
-            },
-            onTerminate: function(ref, token, status) {
-                console.log('Payment status:', status);
-                if (status === 'completed') {
-                    window.location.href = "{{ route('paydunya.success') }}?token=" + token;
-                } else {
-                    resetBtn();
-                    if (status === 'failed') alert('Le paiement a échoué. Veuillez réessayer.');
-                }
-            },
-            onError: function(error) {
-                resetBtn();
-                console.error('PayDunya error:', error);
-                alert('Erreur de connexion. Veuillez vérifier votre connexion et réessayer.');
-            },
-            onUnsuccessfulResponse: function(r) { 
-                resetBtn(); 
-                console.error('PayDunya Unsuccessful Response:', r);
-                alert('Erreur lors de l’initialisation du paiement. Veuillez réessayer.');
-            },
-            onClose: function() { resetBtn(); }
-        }).requestToken();
+        document.getElementById('paymentForm').submit();
     }
-
-    // Global payWithPaydunya function required by PayDunya SDK for class="pay" buttons
-    function payWithPaydunya(btn) { triggerPaydunya(); }
 </script>
 @endsection
