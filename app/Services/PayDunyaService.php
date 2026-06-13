@@ -32,6 +32,9 @@ class PayDunyaService
      */
     public function createCheckoutSession($total, $description, $successUrl, $cancelUrl, $customData = [], $method = null, $customer = [])
     {
+        // Nettoyer le numéro de téléphone (enlever le +)
+        $cleanPhone = !empty($customer['phone']) ? str_replace('+', '', $customer['phone']) : '';
+
         $payload = [
             'invoice' => [
                 'total_amount' => $total,
@@ -48,14 +51,12 @@ class PayDunyaService
                 'return_url' => $successUrl,
                 'callback_url' => route('paydunya.callback'), 
             ],
-        $payload['custom_data'] = array_merge($customData, [
-            'customer_name' => $customer['name'] ?? '',
-            'customer_email' => $customer['email'] ?? '',
-            'customer_phone' => !empty($customer['phone']) ? str_replace('+', '', $customer['phone']) : '',
-        ]);
-
-        // Nettoyer le numéro de téléphone (enlever le +)
-        $cleanPhone = !empty($customer['phone']) ? str_replace('+', '', $customer['phone']) : '';
+            'custom_data' => array_merge($customData, [
+                'customer_name' => $customer['name'] ?? '',
+                'customer_email' => $customer['email'] ?? '',
+                'customer_phone' => $cleanPhone,
+            ])
+        ];
 
         // Ajouter les infos client si présentes
         if (!empty($customer)) {
