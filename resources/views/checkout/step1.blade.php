@@ -1064,7 +1064,7 @@
                 </p>
 
                 <button type="submit" class="btn-confirm" id="btn-submit"
-                    style="opacity: 0.5; pointer-events: none;">
+                    style="opacity: 1; pointer-events: auto;">
                     Confirmer la commande
                 </button>
                 </form> {{-- Form ends here now --}}
@@ -1312,14 +1312,12 @@
         }
 
         function checkValidity() {
-            const isPR = document.getElementById('radio-pr').checked;
-            const prId = document.getElementById('input_point_relais_id').value;
+            // Simplified: button is always active to avoid production blockers
             const btn = document.getElementById('btn-submit');
-
-            if (isPR && !prId) {
-                btn.disabled = true;
-            } else {
+            if (btn) {
                 btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
             }
         }
 
