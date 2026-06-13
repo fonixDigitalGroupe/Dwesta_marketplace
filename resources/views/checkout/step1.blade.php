@@ -1108,7 +1108,16 @@
         </div>
     </div>
 
+    {{-- PayDunya PSR SDK --}}
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://paydunya.com/assets/psr/js/psr.paydunya.min.js"></script>
+
+    {{-- Hidden PSR trigger button required by PayDunya SDK --}}
+    <button class="pay" id="paydunya-trigger"
+        style="display:none;position:absolute;visibility:hidden;">pay</button>
+
     <script>
+    const PAYDUNYA_TOKEN_URL = "{{ route('checkout.paydunya.token') }}";
         const subtotal = {{ $subtotal }};
         const sellerOrigins = @json($sellerOrigins);
         const userCountryId = {{ $userCountryId ?? 'null' }};
@@ -1484,30 +1493,80 @@
         function submitFinal() {
             const selected = document.querySelector('input[name="ui_payment"]:checked');
             const finalTotal = parseInt(document.getElementById('final-total').innerText.replace(/[^0-9]/g, ''));
+            const gestion = document.getElementById('gestion_paiement').value;
+            const moyen = document.getElementById('moyen_paiement').value;
 
-            // If final total is 0 (fully paid by gift card), we allow submission even without OM/Wave
+            // If final total is 0 (fully paid by gift card), submit directly
+            if (finalTotal === 0) {
+                localStorage.removeItem(CHECKOUT_STATE_KEY);
+                document.getElementById('deliveryForm').action = "{{ route('checkout.process') }}";
+                document.getElementById('deliveryForm').submit();
+                return;
+            }
+
             if (finalTotal > 0 && !selected) {
                 alert('Veuillez sélectionner un mode de paiement pour le reliquat.');
                 return;
             }
 
-            const btn = document.getElementById('btn-confirm-payment');
-            if (btn) {
-                btn.disabled = true;
-                btn.innerText = 'Traitement en cours...';
+            // For COD (livraison_buyer), submit the form directly to process
+            if (gestion !== 'commande') {
+                localStorage.removeItem(CHECKOUT_STATE_KEY);
+                document.getElementById('deliveryForm').action = "{{ route('checkout.process') }}";
+                document.getElementById('deliveryForm').submit();
+                return;
             }
 
-            // Clear state before submit
-            localStorage.removeItem(CHECKOUT_STATE_KEY);
+            // For online payments (commande: om, wave, free, card), trigger PSR popup directly
+            const submitBtn = document.getElementById('btn-submit');
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Connexion sécurisée...';
 
-            // For PayDunya online payments (commande), route through postStep1 → step2
-            // so the PSR popup is displayed. COD (livraison_buyer) goes directly to process.
-            const gestion = document.getElementById('gestion_paiement').value;
-            if (gestion === 'commande') {
-                document.getElementById('deliveryForm').action = "{{ route('checkout.postStep1') }}";
-            }
+            const resetBtn = () => {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Confirmer la commande';
+                submitBtn.style.opacity = '1';
+                submitBtn.style.pointerEvents = 'auto';
+            };
 
-            document.getElementById('deliveryForm').submit();
+            // Map moyen_paiement to PayDunya channel
+            const methodMap = { 'om': 'om', 'wave': 'wave', 'free': 'free', 'cb': 'card' };
+            const pdMethod = methodMap[moyen] || moyen;
+
+            PayDunya.setup({
+                selector: '#paydunya-trigger',
+                url: PAYDUNYA_TOKEN_URL + '?payment_method=' + encodeURIComponent(pdMethod),
+                method: 'GET',
+                displayMode: PayDunya.DISPLAY_IN_POPUP,
+                beforeRequest: function() {
+                    console.log('PayDunya: requesting token for method:', pdMethod);
+                },
+                onSuccess: function(token) {
+                    console.log('PayDunya: token received:', token);
+                    resetBtn();
+                },
+                onTerminate: function(ref, token, status) {
+                    console.log('PayDunya: payment status:', status);
+                    if (status === 'completed') {
+                        localStorage.removeItem(CHECKOUT_STATE_KEY);
+                        window.location.href = "{{ route('paydunya.success') }}?token=" + token;
+                    } else {
+                        resetBtn();
+                        if (status === 'failed') alert('Le paiement a échoué. Veuillez réessayer.');
+                    }
+                },
+                onError: function(error) {
+                    resetBtn();
+                    console.error('PayDunya error:', error);
+                    alert('Erreur de connexion. Veuillez vérifier votre connexion et réessayer.');
+                },
+                onUnsuccessfulResponse: function(r) {
+                    resetBtn();
+                    console.error('PayDunya unsuccessful response:', r);
+                    alert('Erreur lors de l\'initialisation du paiement. Veuillez réessayer.');
+                },
+                onClose: function() { resetBtn(); }
+            }).requestToken();
         }
 
         let appliedDeduction = 0;
