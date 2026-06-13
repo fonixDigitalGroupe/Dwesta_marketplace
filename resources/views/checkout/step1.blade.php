@@ -1543,10 +1543,39 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success && data.token) {
-                        console.log('Token received via AJAX:', data.token);
+                        console.log('Professional approach: Token received via AJAX:', data.token);
                         if (typeof PayDunya !== 'undefined') {
-                            // Launch popup with the explicit token
-                            PayDunya.requestToken(data.token);
+                            const selector = (typeof pQuery !== 'undefined') ? pQuery('#paydunya-trigger') : '#paydunya-trigger';
+                            
+                            // Use the instance returned by setup() and call requestToken(token) on it
+                            PayDunya.setup({
+                                selector: selector,
+                                method: 'GET',
+                                displayMode: PayDunya.DISPLAY_IN_POPUP,
+                                onSuccess: function(token) {
+                                    console.log('PayDunya: Token received successfully:', token);
+                                },
+                                onTerminate: function(ref, token, status) {
+                                    console.log('PayDunya: Payment terminated with status:', status);
+                                    if (status === 'completed') {
+                                        localStorage.removeItem(CHECKOUT_STATE_KEY);
+                                        window.location.href = "{{ route('paydunya.success') }}?token=" + token;
+                                    } else {
+                                        submitBtn.disabled = false;
+                                        submitBtn.innerText = 'Confirmer la commande';
+                                        if (status === 'failed') alert('Le paiement a échoué. Veuillez réessayer.');
+                                    }
+                                },
+                                onClose: function() {
+                                    submitBtn.disabled = false;
+                                    submitBtn.innerText = 'Confirmer la commande';
+                                },
+                                onError: function(err) {
+                                    console.error('PayDunya SDK Error:', err);
+                                    submitBtn.disabled = false;
+                                    submitBtn.innerText = 'Confirmer la commande';
+                                }
+                            }).requestToken(data.token);
                         } else {
                             alert('Erreur: SDK PayDunya non chargé.');
                             submitBtn.disabled = false;
