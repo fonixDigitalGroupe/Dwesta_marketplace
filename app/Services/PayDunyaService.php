@@ -272,9 +272,9 @@ class PayDunyaService
     protected function getChannelsForMethod($method)
     {
         return match($method) {
-            'om' => ['orange-money-sn'],
-            'wave' => ['wave-sn'],
-            'free' => ['free-money-sn'],
+            'om' => ['orange-money-senegal'],
+            'wave' => ['wave-senegal'],
+            'free' => ['free-money-senegal'],
             'cb' => ['card'],
             default => null
         };
