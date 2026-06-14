@@ -176,7 +176,11 @@ class PayDunyaService
      */
     public function softPay($invoiceToken, $method, $customer = [])
     {
+        // Nettoyer le numéro : enlever + et le préfixe 221 pour n'envoyer que les 9 chiffres
         $cleanPhone = !empty($customer['phone']) ? str_replace('+', '', $customer['phone']) : '';
+        if (str_starts_with($cleanPhone, '221')) {
+            $cleanPhone = substr($cleanPhone, 3);
+        }
         $name = $customer['name'] ?? '';
         $email = $customer['email'] ?? '';
 
