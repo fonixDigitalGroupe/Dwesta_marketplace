@@ -107,22 +107,30 @@ class GiftCardController extends Controller
     {
         $request->validate([
             'amount' => 'required|numeric|min:1000',
+            'moyen_paiement' => 'required|string|in:om,wave,free,cb',
         ]);
 
         $user = Auth::user();
+        $moyenPaiement = $request->moyen_paiement;
         
         try {
             $session = $this->payDunyaService->createCheckoutSession(
                 $request->amount,
-                "Achat de Carte Cadeau Dwesta",
+                "Achat de Carte Cadeau Dwesta (" . number_format($request->amount, 0, ',', ' ') . " FCFA)",
                 route('paydunya.success'), 
                 route('gift-cards.index'),
                 [
                     'user_id' => $user->id,
                     'amount' => $request->amount,
                     'type' => 'gift_card_purchase'
-                ]
+                ],
+                $moyenPaiement
             );
+
+            // Redirection vers notre page de paiement personnalisée si Mobile Money
+            if ($moyenPaiement !== 'cb') {
+                return redirect()->route('checkout.pay', ['token' => $session->token]);
+            }
 
             return redirect($session->url);
         } catch (\Exception $e) {

@@ -466,15 +466,38 @@ class CheckoutController extends Controller
     public function showPaymentPage($token)
     {
         $orders = Order::where('paydunya_token', $token)->get();
-        if ($orders->isEmpty()) {
-            return redirect()->route('home')->with('error', 'Session de paiement invalide.');
+        
+        if ($orders->isNotEmpty()) {
+            $order = $orders->first();
+            $total = $orders->sum('total_final');
+            $moyenPaiement = $order->moyen_paiement;
+            $description = "Commande Karnou #" . $order->reference;
+        } else {
+            // Tentative de récupération via PayDunya (ex: Carte cadeau)
+            $paymentData = $this->payDunyaService->verifyPayment($token);
+            if (!$paymentData) {
+                return redirect()->route('home')->with('error', 'Session de paiement invalide.');
+            }
+            
+            $total = $paymentData['invoice']['total_amount'];
+            $customData = $paymentData['custom_data'] ?? [];
+            $type = $customData['type'] ?? 'marketplace_order';
+            
+            // On essaie de retrouver le moyen de paiement via la session PayDunya
+            // Note: En mode session standard, on ne le connaît pas forcément encore 
+            // précisément sauf si on l'a forcé via channels
+            $moyenPaiement = 'unknown';
+            if (isset($paymentData['invoice']['channels'])) {
+                $channels = $paymentData['invoice']['channels'];
+                if (in_array('wave-senegal', $channels)) $moyenPaiement = 'wave';
+                elseif (in_array('orange-money-senegal', $channels)) $moyenPaiement = 'om';
+                elseif (in_array('free-money-senegal', $channels)) $moyenPaiement = 'free';
+            }
+            
+            $description = $paymentData['invoice']['description'] ?? "Achat Karnou";
         }
 
-        $order = $orders->first();
-        $total = $orders->sum('total_final');
-        $moyenPaiement = $order->moyen_paiement;
-
-        return view('checkout.pay', compact('orders', 'order', 'total', 'moyenPaiement', 'token'));
+        return view('checkout.pay', compact('total', 'moyenPaiement', 'token', 'description'));
     }
 
     /**
@@ -483,21 +506,38 @@ class CheckoutController extends Controller
     public function processSoftPay(Request $request, $token)
     {
         $orders = Order::where('paydunya_token', $token)->get();
-        if ($orders->isEmpty()) {
-             return response()->json(['success' => false, 'message' => 'Session invalide']);
+        
+        if ($orders->isNotEmpty()) {
+            $order = $orders->first();
+            $moyenPaiement = $order->moyen_paiement;
+            $buyer = $order->buyer;
+        } else {
+            $paymentData = $this->payDunyaService->verifyPayment($token);
+            if (!$paymentData) {
+                return response()->json(['success' => false, 'message' => 'Session invalide']);
+            }
+            
+            $moyenPaiement = 'unknown';
+            if (isset($paymentData['invoice']['channels'])) {
+                $channels = $paymentData['invoice']['channels'];
+                if (in_array('wave-senegal', $channels)) $moyenPaiement = 'wave';
+                elseif (in_array('orange-money-senegal', $channels)) $moyenPaiement = 'om';
+                elseif (in_array('free-money-senegal', $channels)) $moyenPaiement = 'free';
+            }
+            
+            $buyer = Auth::user();
         }
 
-        $order = $orders->first();
-        $phone = $request->phone_number ?: $order->buyer?->telephone;
+        $phone = $request->phone_number ?: ($buyer?->telephone ?? '');
         
         $customerData = [
-            'name' => trim($order->buyer?->name ?: ($order->buyer?->prenom . ' ' . $order->buyer?->nom)),
-            'email' => $order->buyer?->email,
+            'name' => trim($buyer?->name ?: ($buyer?->prenom . ' ' . $buyer?->nom)),
+            'email' => $buyer?->email,
             'phone' => $phone
         ];
 
         try {
-            $softPayResponse = $this->payDunyaService->softPay($token, $order->moyen_paiement, $customerData);
+            $softPayResponse = $this->payDunyaService->softPay($token, $moyenPaiement, $customerData);
             
             if (isset($softPayResponse['success']) && $softPayResponse['success'] === true) {
                 // Pour Wave et Orange Money, on donne l'URL de redirection
@@ -509,9 +549,17 @@ class CheckoutController extends Controller
                 }
 
                 // Pour Free Money (Push USSD)
+                $successUrl = route('checkout.success', ['info' => $softPayResponse['message'] ?? 'Demande envoyée']);
+                
+                // Si c'est une carte cadeau, on redirige vers gift-cards.index avec succès
+                $paymentData = $paymentData ?? $this->payDunyaService->verifyPayment($token);
+                if ($paymentData && ($paymentData['custom_data']['type'] ?? '') === 'gift_card_purchase') {
+                    $successUrl = route('gift-cards.index', ['success' => 'Paiement initié. Votre carte sera générée après confirmation.']);
+                }
+
                 return response()->json([
                     'success' => true,
-                    'redirect_url' => route('checkout.success', ['info' => $softPayResponse['message'] ?? 'Demande envoyée'])
+                    'redirect_url' => $successUrl
                 ]);
             }
 

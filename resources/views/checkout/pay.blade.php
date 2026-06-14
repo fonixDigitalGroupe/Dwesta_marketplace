@@ -216,7 +216,7 @@
                 <a href="#" style="color: var(--karnou-blue); text-decoration: none;">VOIR DÉTAILS ></a>
             </div>
             <div class="amount-display">
-                <span class="amount-label">MONTANT TOTAL À PAYER</span>
+                <span class="amount-label">{{ $description ?? 'MONTANT TOTAL À PAYER' }}</span>
                 <span class="amount-value">FCFA {{ number_format($total, 0, ',', ' ') }}</span>
             </div>
         </div>
