@@ -90,11 +90,11 @@ class PayDunyaService
             $payload['email_address'] = $customer['email'] ?? '';
         }
 
-        // Ajouter des canaux spécifiques si demandés
+        // Ajouter des canaux spécifiques si demandés (dans l'objet invoice selon la doc v1)
         if ($method) {
             $channels = $this->getChannelsForMethod($method);
             if ($channels) {
-                $payload['actions']['channels'] = $channels;
+                $payload['invoice']['channels'] = $channels;
             }
         }
 
@@ -218,6 +218,8 @@ class PayDunyaService
             'PAYDUNYA-PRIVATE-KEY' => $this->privateKey,
             'PAYDUNYA-TOKEN' => $this->token,
         ])->post($this->baseUrl . $endpoint, $payload);
+
+        file_put_contents('/tmp/paydunya_debug.log', date('Y-m-d H:i:s') . " - SoftPay Response ($method): " . $response->body() . "\n", FILE_APPEND);
 
         if ($response->successful()) {
             return $response->json();
