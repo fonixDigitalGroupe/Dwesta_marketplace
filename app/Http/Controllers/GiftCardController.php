@@ -101,27 +101,59 @@ class GiftCardController extends Controller
     }
 
     /**
-     * Acheter une carte cadeau via PayDunya
+     * Initier l'achat d'une carte cadeau (Étape 1 : Choix du montant)
      */
     public function buy(Request $request)
     {
         $request->validate([
             'amount' => 'required|numeric|min:1000',
+        ]);
+
+        session(['gift_card_amount' => $request->amount]);
+
+        return redirect()->route('gift-cards.checkout');
+    }
+
+    /**
+     * Page de checkout de carte cadeau (Étape 2 : Choix du wallet)
+     * Similaire à l'étape 1 du checkout marketplace
+     */
+    public function checkout()
+    {
+        $amount = session('gift_card_amount');
+        if (!$amount) {
+            return redirect()->route('gift-cards.index')->with('error', 'Veuillez choisir un montant d\'abord.');
+        }
+
+        return view('gift_cards.checkout', compact('amount'));
+    }
+
+    /**
+     * Confirmer l'achat et initier PayDunya (Étape 3 : Vers PayDunya/SoftPay)
+     */
+    public function confirm(Request $request)
+    {
+        $request->validate([
             'moyen_paiement' => 'required|string|in:om,wave,free,cb',
         ]);
+
+        $amount = session('gift_card_amount');
+        if (!$amount) {
+            return redirect()->route('gift-cards.index')->with('error', 'Session expirée.');
+        }
 
         $user = Auth::user();
         $moyenPaiement = $request->moyen_paiement;
         
         try {
             $session = $this->payDunyaService->createCheckoutSession(
-                $request->amount,
-                "Achat de Carte Cadeau Dwesta (" . number_format($request->amount, 0, ',', ' ') . " FCFA)",
+                $amount,
+                "Achat de Carte Cadeau Dwesta (" . number_format($amount, 0, ',', ' ') . " FCFA)",
                 route('paydunya.success'), 
                 route('gift-cards.index'),
                 [
                     'user_id' => $user->id,
-                    'amount' => $request->amount,
+                    'amount' => $amount,
                     'type' => 'gift_card_purchase'
                 ],
                 $moyenPaiement

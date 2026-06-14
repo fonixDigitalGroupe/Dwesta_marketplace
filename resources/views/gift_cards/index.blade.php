@@ -318,46 +318,7 @@
 
             <div class="gift-card-box">
                 <h2 class="section-title">
-                    <i class="fas fa-wallet" style="color: #004aad;"></i> Choisissez votre mode de paiement
-                </h2>
-                <div style="background: white; border-radius: 12px; padding: 20px; border: 1px solid #eee; margin-bottom: 2rem;">
-                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                        <label style="flex: 1; min-width: 150px; cursor: pointer;">
-                            <input type="radio" name="global_moyen_paiement" value="wave" checked style="display: none;" onchange="updatePaymentMethod(this)">
-                            <div class="payment-selector-item" data-value="wave" style="border: 2px solid #004aad; border-radius: 8px; padding: 15px; text-align: center; background: #f0f7ff;">
-                                <img src="{{ asset('images/logowave.png') }}" alt="Wave" style="height: 30px; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto;">
-                                <span style="font-size: 0.8rem; font-weight: 700;">Wave</span>
-                            </div>
-                        </label>
-                        <label style="flex: 1; min-width: 150px; cursor: pointer;">
-                            <input type="radio" name="global_moyen_paiement" value="om" style="display: none;" onchange="updatePaymentMethod(this)">
-                            <div class="payment-selector-item" data-value="om" style="border: 2px solid #eee; border-radius: 8px; padding: 15px; text-align: center;">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Orange_Money_logo.svg/1024px-Orange_Money_logo.svg.png" alt="OM" style="height: 30px; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto;">
-                                <span style="font-size: 0.8rem; font-weight: 700;">Orange Money</span>
-                            </div>
-                        </label>
-                        <label style="flex: 1; min-width: 150px; cursor: pointer;">
-                            <input type="radio" name="global_moyen_paiement" value="free" style="display: none;" onchange="updatePaymentMethod(this)">
-                            <div class="payment-selector-item" data-value="free" style="border: 2px solid #eee; border-radius: 8px; padding: 15px; text-align: center;">
-                                <img src="https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png" alt="Free" style="height: 30px; margin-bottom: 5px; display: block; margin-left: auto; margin-right: auto;">
-                                <span style="font-size: 0.8rem; font-weight: 700;">Free Money</span>
-                            </div>
-                        </label>
-                        <label style="flex: 1; min-width: 150px; cursor: pointer;">
-                            <input type="radio" name="global_moyen_paiement" value="cb" style="display: none;" onchange="updatePaymentMethod(this)">
-                            <div class="payment-selector-item" data-value="cb" style="border: 2px solid #eee; border-radius: 8px; padding: 15px; text-align: center;">
-                                <div style="height: 30px; display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 5px;">
-                                    <i class="fab fa-cc-visa" style="color: #1a1f71; font-size: 20px;"></i>
-                                    <i class="fab fa-cc-mastercard" style="color: #eb001b; font-size: 20px;"></i>
-                                </div>
-                                <span style="font-size: 0.8rem; font-weight: 700;">Carte Bancaire</span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-
-                <h2 class="section-title">
-                    Choisissez le montant de votre carte
+                    Acheter une carte cadeau
                 </h2>
                 <div class="gift-cards-grid">
                     @forelse($giftCardOptions as $option)
@@ -371,8 +332,7 @@
                             <form action="{{ route('gift-cards.buy') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="amount" value="{{ $option->amount }}">
-                                <input type="hidden" name="moyen_paiement" class="form-moyen-paiement" value="wave">
-                                <button type="submit" class="btn-buy-now">Acheter avec <span class="selected-method-label">Wave</span></button>
+                                <button type="submit" class="btn-buy-now">Acheter maintenant</button>
                             </form>
                         </div>
                     @empty
@@ -507,30 +467,5 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('balance-code-input');
     if (input) input.addEventListener('keydown', e => { if (e.key === 'Enter') checkGiftCardBalance(); });
 });
-
-function updatePaymentMethod(radio) {
-    const value = radio.value;
-    const label = radio.closest('label').querySelector('span').innerText;
-    
-    // Update all hidden inputs
-    document.querySelectorAll('.form-moyen-paiement').forEach(input => {
-        input.value = value;
-    });
-    
-    // Update all button labels
-    document.querySelectorAll('.selected-method-label').forEach(span => {
-        span.innerText = label;
-    });
-    
-    // Update visual styles
-    document.querySelectorAll('.payment-selector-item').forEach(item => {
-        item.style.borderColor = '#eee';
-        item.style.background = 'white';
-    });
-    
-    const selectedItem = radio.closest('label').querySelector('.payment-selector-item');
-    selectedItem.style.borderColor = '#004aad';
-    selectedItem.style.background = '#f0f7ff';
-}
 </script>
 @endpush

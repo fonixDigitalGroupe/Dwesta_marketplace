@@ -443,6 +443,9 @@ Route::middleware('auth')->group(function () {
         Route::prefix('credits')->name('credits.')->group(function () {
             Route::get('/', [CreditController::class, 'index'])->name('index');
             Route::post('/buy', [CreditController::class, 'buyPack'])->name('buy');
+            Route::post('/gift-cards/buy', [GiftCardController::class, 'buy'])->name('gift-cards.buy');
+            Route::get('/gift-cards/checkout', [GiftCardController::class, 'checkout'])->name('gift-cards.checkout');
+            Route::post('/gift-cards/confirm', [GiftCardController::class, 'confirm'])->name('gift-cards.confirm');
         });
 
         // Abonnements group removed (duplicate)

@@ -278,7 +278,7 @@ class PayDunyaService
         return match($method) {
             'om' => ['orange-money-senegal'],
             'wave' => ['wave-senegal'],
-            'free' => ['free-money-senegal'],
+            'free' => ['freemoney-senegal'],
             'cb' => ['card'],
             default => null
         };
