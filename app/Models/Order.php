@@ -20,6 +20,7 @@ class Order extends Model
         'gestion_paiement',
         'moyen_paiement',
         'destination_point_relais_id',
+        'paydunya_token',
         'tracking_token',
         'qr_code_token',
         'qr_code_path',
