@@ -402,45 +402,14 @@ class CheckoutController extends Controller
                         $o->update(['paydunya_token' => $session->token]);
                     }
 
-                    // PERSONNALISATION DE LA PAGE DE PAIEMENT (SoftPay)
-                    if ($phone && in_array($moyenPaiement, ['om', 'wave', 'free'])) {
-                        try {
-                            $customerData = [
-                                'name' => trim(Auth::user()->name ?: (Auth::user()->prenom . ' ' . Auth::user()->nom)),
-                                'email' => Auth::user()->email,
-                                'phone' => $phone
-                            ];
-
-                            $softPayResponse = $this->payDunyaService->softPay($session->token, $moyenPaiement, $customerData);
-                            
-                            if (isset($softPayResponse['success']) && $softPayResponse['success'] === true) {
-                                DB::commit();
-                                
-                                // Pour Wave et Orange Money, on redirige vers l'URL spécifique
-                                if (isset($softPayResponse['url'])) {
-                                    return redirect($softPayResponse['url']);
-                                }
-
-                                // Pour Free Money ou autres avec message de confirmation USSD
-                                return redirect()->route('checkout.success')->with('info', $softPayResponse['message'] ?? 'Demande de paiement envoyée sur votre téléphone. Veuillez confirmer avec votre code secret.');
-                            } else {
-                                \Illuminate\Support\Facades\Log::warning('PayDunya SoftPay Failed, falling back to hosted:', [
-                                    'response' => $softPayResponse,
-                                    'method' => $moyenPaiement
-                                ]);
-                            }
-                        } catch (\Exception $e) {
-                            \Illuminate\Support\Facades\Log::error('PayDunya SoftPay Exception: ' . $e->getMessage());
-                        }
-                    }
-
+                    // On redirige vers la page de paiement personnalisée
                     DB::commit();
 
                     $redirectUrl = $session->url;
+                    
+                    // Si c'est du Mobile Money, on redirige vers notre page de paiement personnalisée
                     if ($phone && in_array($moyenPaiement, ['om', 'wave', 'free'])) {
-                        if (isset($softPayResponse) && isset($softPayResponse['success']) && $softPayResponse['success'] === true) {
-                            $redirectUrl = $softPayResponse['url'] ?? route('checkout.success', ['info' => $softPayResponse['message'] ?? 'Demande de paiement envoyée sur votre téléphone.']);
-                        }
+                        $redirectUrl = route('checkout.pay', ['token' => $session->token]);
                     }
 
                     if ($request->expectsJson()) {
@@ -488,6 +457,73 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Une erreur est survenue lors de la validation de la commande : ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Page de paiement personnalisée (Style Jumia/Amazon)
+     */
+    public function showPaymentPage($token)
+    {
+        $orders = Order::where('paydunya_token', $token)->get();
+        if ($orders->isEmpty()) {
+            return redirect()->route('home')->with('error', 'Session de paiement invalide.');
+        }
+
+        $order = $orders->first();
+        $total = $orders->sum('total_final');
+        $moyenPaiement = $order->moyen_paiement;
+
+        return view('checkout.pay', compact('orders', 'order', 'total', 'moyenPaiement', 'token'));
+    }
+
+    /**
+     * Traitement final du paiement SoftPay
+     */
+    public function processSoftPay(Request $request, $token)
+    {
+        $orders = Order::where('paydunya_token', $token)->get();
+        if ($orders->isEmpty()) {
+             return response()->json(['success' => false, 'message' => 'Session invalide']);
+        }
+
+        $order = $orders->first();
+        $phone = $request->phone_number ?: $order->buyer?->telephone;
+        
+        $customerData = [
+            'name' => trim($order->buyer?->name ?: ($order->buyer?->prenom . ' ' . $order->buyer?->nom)),
+            'email' => $order->buyer?->email,
+            'phone' => $phone
+        ];
+
+        try {
+            $softPayResponse = $this->payDunyaService->softPay($token, $order->moyen_paiement, $customerData);
+            
+            if (isset($softPayResponse['success']) && $softPayResponse['success'] === true) {
+                // Pour Wave et Orange Money, on donne l'URL de redirection
+                if (isset($softPayResponse['url'])) {
+                    return response()->json([
+                        'success' => true,
+                        'redirect_url' => $softPayResponse['url']
+                    ]);
+                }
+
+                // Pour Free Money (Push USSD)
+                return response()->json([
+                    'success' => true,
+                    'redirect_url' => route('checkout.success', ['info' => $softPayResponse['message'] ?? 'Demande envoyée'])
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => $softPayResponse['message'] ?? 'Échec de l\'initiation du paiement'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur technique : ' . $e->getMessage()
+            ]);
         }
     }
 

@@ -379,6 +379,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/etape-2', [CheckoutController::class, 'step2'])->name('step2');
             Route::get('/paydunya-token', [CheckoutController::class, 'paydunyaToken'])->name('paydunya.token');
             Route::post('/process', [CheckoutController::class, 'process'])->name('process');
+            Route::get('/payer/{token}', [CheckoutController::class, 'showPaymentPage'])->name('pay');
+            Route::post('/process-softpay/{token}', [CheckoutController::class, 'processSoftPay'])->name('process-softpay');
             Route::get('/succes', [CheckoutController::class, 'success'])->name('success');
         });
 
