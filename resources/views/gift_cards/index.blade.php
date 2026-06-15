@@ -125,6 +125,20 @@
         border-radius: 12px;
         padding: 2rem;
         color: #fff;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .balance-checker-card::after {
+        content: '\f06b';
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        bottom: -20px;
+        right: -10px;
+        font-size: 8rem;
+        color: rgba(255, 255, 255, 0.05);
+        pointer-events: none;
     }
 
     .balance-checker-title {
