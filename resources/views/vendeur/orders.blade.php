@@ -83,7 +83,7 @@
     }
 
     .btn-detail {
-        color: #f68b1e;
+        color: #004aad;
         font-weight: 400;
         text-decoration: none;
         font-size: 0.85rem;
