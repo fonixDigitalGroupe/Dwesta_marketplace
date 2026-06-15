@@ -54,7 +54,7 @@
     }
 
     .gift-preview {
-        background: linear-gradient(135deg, #004aad 0%, #003070 100%);
+        background: linear-gradient(135deg, #004aad 0%, #002d6a 100%);
         aspect-ratio: 1.58 / 1;
         border-radius: 12px;
         padding: 24px;
@@ -62,7 +62,30 @@
         position: relative;
         overflow: hidden;
         margin-bottom: 24px;
-        box-shadow: 0 10px 20px rgba(0,74,173,0.15);
+        box-shadow: 0 15px 35px rgba(0,74,173,0.2);
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .gift-preview::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+        opacity: 0.1;
+        pointer-events: none;
+    }
+
+    .gift-preview .chip {
+        width: 40px;
+        height: 30px;
+        background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+        border-radius: 4px;
+        margin-bottom: 20px;
+        position: relative;
+        box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
     }
 
     .gift-preview::after {
@@ -214,10 +237,11 @@
             <span class="summary-title">Récapitulatif</span>
             
             <div class="gift-preview">
-                <img src="{{ asset('images/logo.png') }}" class="logo" style="filter: brightness(0) invert(1);" alt="Karnou">
+                <div class="chip"></div>
+                <img src="{{ asset('images/logo.png') }}" class="logo" style="filter: brightness(0) invert(1); height: 20px;" alt="Karnou">
                 <i class="fas fa-gift gift-icon-main"></i>
                 <div class="value">{{ number_format($amount, 0, ',', ' ') }} <small style="font-size: 1rem;">FCFA</small></div>
-                <div class="label">Carte Cadeau Dwesta</div>
+                <div class="label">Carte Cadeau Karnou</div>
                 <i class="fas fa-medal medal-badge"></i>
             </div>
 

@@ -70,21 +70,42 @@
     }
 
     .card-visual {
-        height: 80px;
+        height: 100px;
         background: linear-gradient(135deg, #eee 0%, #ddd 100%);
         border-radius: 8px;
         margin-bottom: 1.25rem;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         position: relative;
         overflow: hidden;
+        border: 1px solid rgba(0,0,0,0.05);
     }
 
-    .card-visual i {
-        font-size: 2.5rem;
-        color: rgba(0,0,0,0.1);
+    .card-visual::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+        opacity: 0.1;
+    }
+
+    .card-visual .mini-chip {
+        width: 20px;
+        height: 15px;
+        background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+        border-radius: 2px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+
+    .card-visual i.fas.fa-gift {
+        font-size: 2rem;
+        color: rgba(255,255,255,0.9);
         z-index: 1;
+        margin-top: 10px;
     }
 
     .purchase-card:nth-child(1) .card-visual { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
@@ -327,13 +348,14 @@
                             @endif
                             
                             <div class="card-visual">
+                                <div class="mini-chip"></div>
                                 <i class="fas fa-gift"></i>
-                                <span class="gift-badge"><i class="fas fa-medal"></i></span>
+                                <div style="font-size: 0.5rem; color: white; opacity: 0.8; margin-top: 5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Karnou Gift Card</div>
                             </div>
 
                             <div>
                                 <div class="amount">{{ number_format($option->amount, 0, ',', ' ') }} <small style="font-size: 0.8rem; opacity: 0.7;">FCFA</small></div>
-                                <div class="desc">{{ $option->description ?: 'Créditez votre compte instantanément.' }}</div>
+                                <div class="desc">{{ $option->description ?: 'Créditez votre compte Karnou instantanément.' }}</div>
                             </div>
 
                             <form action="{{ route('gift-cards.buy') }}" method="POST">
