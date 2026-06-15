@@ -22,7 +22,7 @@
     }
 
     .section-title i {
-        color: #f68b1e;
+        display: none;
     }
 
     /* Purchase Cards Grid */
@@ -36,14 +36,14 @@
     .purchase-card {
         border: 1px solid #efefef;
         border-radius: 10px;
-        padding: 1.5rem 1rem;
+        padding: 1rem;
         text-align: center;
         background: #fff;
         position: relative;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        box-shadow: none;
+        height: 100%;
     }
 
     .purchase-card.popular {
@@ -66,10 +66,10 @@
     }
 
     .purchase-card .amount {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
         font-weight: 800;
         color: #000;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0;
     }
 
     .purchase-card .desc {
