@@ -165,6 +165,9 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         box-shadow: 0 4px 10px rgba(0, 74, 173, 0.15);
     }
 
