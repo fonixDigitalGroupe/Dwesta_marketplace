@@ -674,7 +674,7 @@
                         
 
                         <div style="margin-top: 1rem;" id="manage-location-link-container">
-                            <a href="{{ route('profile.show') }}#profile-geolocation-section" class="jumia-link" style="margin-top: 0;">Gérer ma localisation et mes préférences</a>
+                            <a href="{{ route('profile.show') }}#profile-geolocation-section" class="jumia-link" style="margin-top: 0; color: #004aad;">Gérer ma localisation et mes préférences</a>
                         </div>
                     </div>
                 </div>

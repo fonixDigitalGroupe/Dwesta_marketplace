@@ -289,7 +289,7 @@
                         {{ $user->nationalite ?? 'Non définie' }}<br>
                         {{ $user->adresse ?? 'Aucune adresse enregistrée' }}
                     </div>
-                    <a href="{{ route('profile.show') }}#profile-geolocation-section" style="display: block; color: #f68b1e; font-size: 0.85rem; font-weight: 700; margin-top: 1rem; text-decoration: none;">
+                    <a href="{{ route('profile.show') }}#profile-geolocation-section" style="display: block; color: #004aad; font-size: 0.85rem; font-weight: 700; margin-top: 1rem; text-decoration: none;">
                         Gérer ma localisation et mes préférences
                     </a>
                 </div>
