@@ -23,7 +23,8 @@
     .checkout-card {
         background: white;
         border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        box-shadow: none;
+        border: 1px solid #efefef;
         overflow: hidden;
         display: flex;
         flex-wrap: wrap;
@@ -62,7 +63,7 @@
         position: relative;
         overflow: hidden;
         margin-bottom: 24px;
-        box-shadow: 0 15px 35px rgba(0,74,173,0.2);
+        box-shadow: none;
         border: 1px solid rgba(255,255,255,0.1);
     }
 
@@ -185,7 +186,7 @@
     .total-amount {
         font-weight: 800;
         font-size: 1.2rem;
-        color: var(--karnou-blue);
+        color: var(--karnou-orange);
     }
 
     .gift-preview .medal-badge {
