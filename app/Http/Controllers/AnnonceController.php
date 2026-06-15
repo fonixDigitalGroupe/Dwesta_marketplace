@@ -226,12 +226,12 @@ class AnnonceController extends Controller
                 // Incrémenter le compteur d'annonces utilisées
                 $this->subscriptionService->incrementAnnonceCount($vendeur);
                 
-                return redirect()->route('annonces.create')
-                    ->with('success', 'ok');
+                return redirect()->route('vendeur.mes-annonces')
+                    ->with('success', 'Votre annonce a été publiée avec succès.');
             }
 
-            return redirect()->route('annonces.create')
-                ->with('success', 'ok');
+            return redirect()->route('vendeur.mes-annonces')
+                ->with('success', 'Votre annonce a été enregistrée avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur création annonce: ' . $e->getMessage());
             return back()->withInput()->with('error', $e->getMessage());
