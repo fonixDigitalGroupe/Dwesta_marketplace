@@ -428,7 +428,7 @@
                             @endif
                             
                             <div class="card-visual">
-                                KARNOU
+                                <i class="fas fa-gift"></i>
                             </div>
                             
                             <div>
