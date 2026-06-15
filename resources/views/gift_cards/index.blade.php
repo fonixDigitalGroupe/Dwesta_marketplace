@@ -175,6 +175,16 @@
         color: #fff;
     }
 
+    .purchase-card:first-child .btn-buy-now,
+    .purchase-card:last-child .btn-buy-now {
+        background: var(--primary-blue);
+    }
+
+    .purchase-card:first-child .btn-buy-now:hover,
+    .purchase-card:last-child .btn-buy-now:hover {
+        background: #003685;
+    }
+
     /* Balance Checker Tool */
     .balance-checker-container {
         background: #fff;
