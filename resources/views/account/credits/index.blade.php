@@ -5,7 +5,7 @@
 @push('styles')
     <style>
         .gift-card-page {
-            max-width: 900px;
+            width: 100%;
         }
 
         .gift-card-box {
@@ -25,7 +25,7 @@
         }
 
         .section-title i {
-            color: #f68b1e;
+            display: none;
         }
 
         /* Purchase Cards Grid */
@@ -111,6 +111,16 @@
             gap: 0.5rem;
             text-decoration: none;
             margin-top: auto;
+        }
+
+        .purchase-card:first-child .btn-buy-now,
+        .purchase-card:last-child .btn-buy-now {
+            background: #004aad;
+        }
+
+        .purchase-card:first-child .btn-buy-now:hover,
+        .purchase-card:last-child .btn-buy-now:hover {
+            background: #003685;
         }
 
         .btn-buy-now:hover {
