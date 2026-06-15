@@ -153,8 +153,8 @@
     .btn-confirm {
         display: block;
         width: 100%;
-        background: var(--karnou-blue);
-        color: white;
+        background: #004aad !important;
+        color: white !important;
         padding: 16px;
         border: none;
         border-radius: 8px;
@@ -167,7 +167,7 @@
     }
 
     .btn-confirm:hover {
-        background: #003685;
+        background: #003685 !important;
     }
 
     .total-row {
