@@ -37,9 +37,9 @@
                 </td>
                 <td width="40%" class="qrcode">
                     @php
-                        $qrCode = base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(100)->generate($order->reference));
+                        $qrCode = base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->size(100)->errorCorrection('H')->generate($order->reference));
                     @endphp
-                    <img src="data:image/svg+xml;base64,{{ $qrCode }}" alt="QR Code">
+                    <img src="data:image/png;base64,{{ $qrCode }}" alt="QR Code">
                 </td>
             </tr>
         </table>
