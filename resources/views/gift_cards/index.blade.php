@@ -13,6 +13,7 @@
     .mobile-menu-btn,
     .search-container,
     .header-actions,
+    .mobile-search-row,
     .header-row-2 {
         display: none !important;
     }
