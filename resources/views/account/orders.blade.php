@@ -4,6 +4,12 @@
 
 @push('styles')
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+    .dashboard-container {
+        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
     .jumia-tabs {
         display: flex;
         gap: 24px;
@@ -12,8 +18,8 @@
         margin-bottom: 1.5rem;
     }
     .jumia-tab {
-        color: #777;
-        font-weight: 600;
+        color: #75757a;
+        font-weight: 500;
         font-size: 0.85rem;
         text-decoration: none;
         text-transform: uppercase;
@@ -28,99 +34,102 @@
         color: #f68b1e;
         border-bottom-color: #f68b1e;
     }
+
+    .orders-list { display: flex; flex-direction: column; gap: 1rem; }
     
-    .jumia-card {
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-        padding: 1rem;
-        display: flex;
-        gap: 1.5rem;
-        margin-bottom: 1rem;
+    .order-card {
         background: #fff;
+        border: 1px solid #f0f0f2;
+        border-radius: 4px;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
     }
     
-    .jumia-card-img {
-        width: 80px;
-        height: 80px;
-        border-radius: 4px;
-        object-fit: contain;
-        background: #fcfcfc;
-        border: 1px solid #eee;
-        flex-shrink: 0;
+    .order-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        color: #75757a;
+        margin-bottom: 0.25rem;
     }
-    .jumia-card-img-placeholder {
-        width: 80px;
-        height: 80px;
+
+    .order-card-status-title {
+        font-size: 1.15rem;
+        font-weight: 500;
+        color: #313133;
+        margin-bottom: 0.25rem;
+    }
+
+    .order-card-description {
+        font-size: 0.88rem;
+        color: #535357;
+        line-height: 1.4;
+        margin-bottom: 0.75rem;
+        max-width: 900px;
+    }
+
+    .product-info-box {
+        border: 1px solid #ececee;
         border-radius: 4px;
-        background: #e0e0e0;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-self: flex-start;
+        align-items: center;
+        gap: 1.5rem;
+        min-width: 60%;
+    }
+    
+    .order-image-box {
+        width: 60px;
+        height: 60px;
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #fff;
-        font-size: 1.5rem;
-        flex-shrink: 0;
     }
     
-    .jumia-card-info {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
-    
-    .jumia-card-title {
-        font-size: 1rem;
-        font-weight: 500;
-        color: #333;
-        margin: 0 0 4px 0;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    
-    .jumia-card-ref {
-        font-size: 0.85rem;
-        color: #777;
-        margin-bottom: 12px;
-    }
-    
-    .jumia-status-badge {
-        display: inline-block;
-        background: #00a046;
-        color: #fff;
-        padding: 2px 6px;
-        font-size: 0.65rem;
-        font-weight: 700;
-        border-radius: 2px;
-        text-transform: uppercase;
-        margin-bottom: 6px;
-        align-self: flex-start;
-    }
-    .jumia-status-badge.attente { background: #f68b1e; }
-    .jumia-status-badge.annule { background: #d32f2f; }
-    
-    .jumia-card-date {
-        font-size: 0.9rem;
-        font-weight: 700;
-        color: #333;
+    .order-image-box img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
     }
 
-    .jumia-card-actions {
-        display: flex;
-        align-items: flex-start;
-        min-width: 80px;
-        justify-content: flex-end;
+    .product-details {
+        flex: 1;
     }
-    
-    .jumia-btn-details {
-        color: #f68b1e;
-        font-weight: 600;
-        font-size: 0.9rem;
+
+    .product-name {
+        font-size: 0.95rem;
+        font-weight: 400;
+        color: #313133;
+    }
+
+    .btn-detail {
+        color: #004aad;
+        font-weight: 400;
         text-decoration: none;
+        font-size: 0.85rem;
     }
-    .jumia-btn-details:hover {
+    .btn-detail:hover {
         text-decoration: underline;
+    }
+
+    .order-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.75rem;
+        border-top: 1px solid #f1f1f1;
+        padding-top: 0.75rem;
+    }
+
+    .order-price {
+        font-weight: 500;
+        color: #313133;
+        font-size: 0.95rem;
     }
 </style>
 @endpush
@@ -131,8 +140,8 @@
     @include('partials.profile-sidebar')
 
     <main class="main-content">
-        <div style="padding-bottom: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid #eee; margin-left: -1.5rem; margin-right: -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem;">
-            <h1 style="font-size: 1.25rem; font-weight: 600; color: #333; margin: 0;">Vos commandes</h1>
+        <div style="padding-bottom: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee;">
+            <h1 style="font-size: 1.15rem; font-weight: 600; color: #333; margin: 0;">Vos commandes</h1>
         </div>
 
         <div class="jumia-tabs">
@@ -140,51 +149,85 @@
                 EN COURS/LIVRÉES ({{ $activeCount ?? 0 }})
             </a>
             <a href="?tab=returned" class="jumia-tab {{ $tab === 'returned' ? 'active' : '' }}">
-                ANNULÉES/RETOURNÉES ({{ $returnedCount ?? 0 }})
+                ANNULÉES ({{ $returnedCount ?? 0 }})
             </a>
         </div>
 
         @if($orders->isEmpty())
-            <div style="padding: 3rem; text-align: center;">
-                <div style="font-size: 4rem; color: #ddd; margin-bottom: 1.5rem;"><i class="fa-solid fa-bag-shopping"></i></div>
-                <h3 style="margin-bottom: 0.5rem; color: #444;">Vous n'avez pas encore effectué d'achats.</h3>
-                <p style="color: #666; font-size: 0.95rem;">Découvrez des milliers de produits et trouvez votre bonheur dès maintenant.</p>
+            <div style="padding: 4rem; text-align: center; background: white; border: 1px solid #f0f0f2; border-radius: 4px;">
+                <div style="font-size: 3rem; color: #ddd; margin-bottom: 1.5rem;"><i class="fa-solid fa-bag-shopping"></i></div>
+                <h3 style="margin-bottom: 0.5rem; color: #444; font-size: 1.1rem; font-weight: 600;">Vous n'avez pas encore effectué d'achats.</h3>
+                <p style="color: #666; font-size: 0.9rem;">Découvrez des milliers de produits et trouvez votre bonheur dès maintenant.</p>
             </div>
         @else
-            <div class="orders-list" style="border: none; background: transparent;">
+            <div class="orders-list">
                 @foreach($orders as $order)
-                    @php 
-                        $firstItem = $order->items->first();
-                        $statusClass = '';
-                        if(in_array($order->statut, ['en_attente', 'paye', 'pret_expedition'])) $statusClass = 'attente';
-                        if(in_array($order->statut, ['annule', 'litige'])) $statusClass = 'annule';
-                        
-                        $titre = $firstItem && $firstItem->annonce ? $firstItem->annonce->titre : 'Produit retiré';
-                        if($order->items->count() > 1) {
-                            $titre .= ' (+ ' . ($order->items->count() - 1) . ' autres produits)';
-                        }
-                    @endphp
-                    <div class="jumia-card">
-                        @php $photo = $firstItem && $firstItem->annonce ? $firstItem->annonce->photoPrincipale() : null; @endphp
-                        @if($photo)
-                            <img src="{{ Storage::url($photo->chemin) }}" class="jumia-card-img" alt="">
-                        @else
-                            <div class="jumia-card-img-placeholder">
-                                <i class="fa-solid fa-star"></i>
-                            </div>
-                        @endif
-                        
-                        <div class="jumia-card-info">
-                            <h3 class="jumia-card-title">{{ $titre }}</h3>
-                            <div class="jumia-card-ref">Commande {{ $order->reference }}</div>
-                            <span class="jumia-status-badge {{ $statusClass }}">
-                                {{ $order->statut_label }}
-                            </span>
-                            <div class="jumia-card-date">Le {{ $order->created_at->format('d-m-Y') }}</div>
+                    <div class="order-card">
+                        <div class="order-card-header">
+                            <span>{{ $order->created_at->translatedFormat('d F') }}</span>
+                            <a href="{{ route('account.orders.show', $order) }}" class="btn-detail">Détails</a>
                         </div>
 
-                        <div class="jumia-card-actions">
-                            <a href="{{ route('account.orders.show', $order) }}" class="jumia-btn-details">Détails</a>
+                        <div class="order-card-status-title">
+                            @if($order->statut === 'paye')
+                                Confirmé!
+                            @elseif($order->statut === 'pret_expedition')
+                                Prêt pour expédition!
+                            @elseif($order->statut === 'en_route')
+                                En cours de livraison!
+                            @elseif($order->statut === 'livre')
+                                Livré!
+                            @elseif($order->statut === 'en_attente')
+                                En attente de paiement
+                            @elseif($order->statut === 'annule')
+                                Annulé
+                            @else
+                                {{ $order->statut_label }}
+                            @endif
+                        </div>
+
+                        <div class="order-card-description">
+                            Votre commande {{ $order->reference }} a été {{ $order->statut === 'paye' ? 'confirmée' : ($order->statut === 'livre' ? 'livrée' : 'mise à jour') }}. 
+                            @if($order->statut === 'paye')
+                                Le vendeur prépare actuellement votre colis.
+                            @elseif($order->statut === 'en_route')
+                                Votre colis est en cours d'acheminement vers vous.
+                            @endif
+                            Merci pour votre achat sur Karnou!
+                        </div>
+
+                        <div class="product-info-box">
+                            <div class="order-image-box">
+                                @php 
+                                    $firstItem = $order->items->first();
+                                    $photo = $firstItem && $firstItem->annonce ? $firstItem->annonce->photoPrincipale() : null; 
+                                @endphp
+                                @if($photo)
+                                    <img src="{{ Storage::url($photo->chemin) }}" alt="">
+                                @else
+                                    <i class="fa-solid fa-image" style="color: #ddd; font-size: 1.5rem;"></i>
+                                @endif
+                            </div>
+                            <div class="product-details">
+                                <div class="product-name">
+                                    @php 
+                                        $titre = $firstItem && $firstItem->annonce ? $firstItem->annonce->titre : 'Produit retiré';
+                                        if($order->items->count() > 1) {
+                                            $titre .= ' (+ ' . ($order->items->count() - 1) . ' autres produits)';
+                                        }
+                                    @endphp
+                                    {{ $titre }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-footer">
+                            <div class="order-price">
+                                Total : {{ number_format($order->total_final ?? $order->total_produits, 0, ',', ' ') }} FCFA
+                            </div>
+                            @if($order->statut === 'en_route')
+                                <a href="{{ route('account.orders.tracking', $order) }}" class="btn-detail">Suivre mon colis</a>
+                            @endif
                         </div>
                     </div>
                 @endforeach
