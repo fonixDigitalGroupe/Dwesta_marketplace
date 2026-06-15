@@ -144,6 +144,8 @@
                     <div class="order-card-status-title">
                         @if($order->statut === 'paye')
                             Confirmé!
+                        @elseif($order->statut === 'pret_expedition')
+                            Prêt pour expédition!
                         @elseif($order->statut === 'en_attente')
                             En attente de paiement
                         @elseif($order->statut === 'livre')
@@ -156,9 +158,11 @@
                     </div>
 
                     <div class="order-card-description">
-                        Votre commande {{ $order->reference }} a été {{ $order->statut === 'paye' ? 'confirmée' : ($order->statut === 'livre' ? 'livrée' : 'mise à jour') }}. 
+                        Votre commande {{ $order->reference }} a été {{ $order->statut === 'paye' ? 'confirmée' : ($order->statut === 'pret_expedition' ? 'marquée comme prête' : ($order->statut === 'livre' ? 'livrée' : 'mise à jour')) }}. 
                         @if($order->statut === 'paye')
                             Elle est prête à être préparée pour l'expédition.
+                        @elseif($order->statut === 'pret_expedition')
+                            Elle est en attente de ramassage par le transporteur.
                         @endif
                         Nous vous remercions pour votre activité sur Karnou!
                     </div>
