@@ -392,8 +392,8 @@
     }
 
     .cat-nav-item.badge-style {
-        background: #f8f9fa;
-        color: #666;
+        background: #dbdbdb;
+        color: #444;
         padding: 5px 12px;
         border-radius: 50px;
         font-weight: 500;
@@ -401,8 +401,8 @@
 
     /* All generic badge-style links in the header nav */
     .badge-style {
-        background: #f8f9fa;
-        color: #666;
+        background: #dbdbdb;
+        color: #444;
         padding: 5px 12px;
         border-radius: 50px;
         font-weight: 500;
@@ -412,8 +412,8 @@
         transition: background 0.15s, color 0.15s;
     }
     .badge-style:hover {
-        background: #e0e0e0;
-        color: #222;
+        background: #cccccc;
+        color: #000;
     }
 
     /* Sidebar category item — name + chevron on same row */
