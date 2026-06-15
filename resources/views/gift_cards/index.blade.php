@@ -427,9 +427,6 @@
                                 <span class="popular-badge">Top Vente</span>
                             @endif
                             
-                            <div class="card-visual">
-                                <i class="fas fa-gift"></i>
-                            </div>
                             
                             <div>
                                 <div class="amount">{{ number_format($option->amount, 0, ',', ' ') }} <small class="currency">FCFA</small></div>
