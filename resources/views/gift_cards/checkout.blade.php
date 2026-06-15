@@ -180,7 +180,7 @@
     }
 
     .header-logo-text img {
-        height: 35px !important;
+        height: 26px !important;
     }
 </style>
 @endpush

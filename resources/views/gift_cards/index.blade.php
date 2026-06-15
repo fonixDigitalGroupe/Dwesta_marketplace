@@ -23,7 +23,7 @@
     }
 
     .header-logo-text img {
-        height: 35px !important; /* Slightly larger for emphasis */
+        height: 26px !important;
     }
 
     .section-title {
