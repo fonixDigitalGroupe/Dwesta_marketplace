@@ -179,7 +179,7 @@
                 </div>
             </div>
 
-            <a href="{{ route('vendeur.orders.invoice', $order) }}" class="btn-download-invoice" title="Télécharger Bordereau PDF" style="display: inline-flex; align-items: center; justify-content: center; background-color: #f68b1e; color: white; width: 42px; height: 42px; border-radius: 4px; text-decoration: none; font-size: 1.1rem; transition: background-color 0.2s;">
+            <a href="{{ route('vendeur.orders.invoice', $order) }}" class="btn-download-invoice" title="Télécharger Bordereau PDF" style="display: inline-flex; align-items: center; justify-content: center; background-color: #e53935; color: white; width: 42px; height: 42px; border-radius: 4px; text-decoration: none; font-size: 1.1rem; transition: background-color 0.2s;">
                 <i class="fa-solid fa-file-pdf"></i>
             </a>
         </div>
