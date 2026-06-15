@@ -12,8 +12,8 @@
         --border-color: #e9ecef;
         --text-main: #333;
         --text-muted: #6c757d;
-        --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        --card-shadow-hover: 0 8px 24px rgba(0, 74, 173, 0.12);
+        --card-shadow: none;
+        --card-shadow-hover: none;
     }
 
     .gift-card-page {
@@ -150,11 +150,13 @@
 
     .btn-buy-now {
         width: 100%;
-        padding: 0.85rem;
+        padding: 0.6rem;
         border: none;
-        background: var(--primary-blue);
+        background: var(--primary-orange);
         color: #fff;
-        border-radius: 12px;
+        border-radius: 6px;
+        font-weight: 800;
+        font-size: 0.85rem;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -163,17 +165,13 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        box-shadow: 0 4px 10px rgba(0, 74, 173, 0.15);
-    }
-
-    .purchase-card.popular .btn-buy-now {
-        background: var(--primary-orange);
-        box-shadow: 0 4px 10px rgba(246, 162, 0, 0.15);
+        box-shadow: none;
+        text-decoration: none;
+        margin-top: auto;
     }
 
     .btn-buy-now:hover {
-        transform: scale(1.02);
-        opacity: 0.95;
+        background: #e67e00;
         color: #fff;
     }
 
