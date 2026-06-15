@@ -154,7 +154,7 @@
                             <!-- Keep seller info intact -->
                             <div class="order-extra-data">
                                 <div>Acheteur : <strong>{{ $order->buyer->prenom }} {{ $order->buyer->nom }}</strong></div>
-                                <div>Total : <strong>{{ number_format($order->total_produits, 0, ',', ' ') }} DA</strong></div>
+                                <div>Total : <strong>{{ number_format($order->total_produits, 0, ',', ' ') }} FCFA</strong></div>
                             </div>
                         </div>
                     </div>
