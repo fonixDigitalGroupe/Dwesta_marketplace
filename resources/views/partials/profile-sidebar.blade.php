@@ -56,7 +56,7 @@
         }
 
         .sidebar-item.active {
-            background-color: #ededed;
+            background-color: #d1d1d1;
             font-weight: 600;
         }
 
