@@ -199,8 +199,10 @@
             
             <div class="gift-preview">
                 <img src="{{ asset('images/logo.png') }}" class="logo" style="filter: brightness(0) invert(1);" alt="Karnou">
-                <div class="value">{{ number_format($amount, 0, ',', ' ') }} FCFA</div>
+                <i class="fas fa-gift gift-icon-main"></i>
+                <div class="value">{{ number_format($amount, 0, ',', ' ') }} <small style="font-size: 1rem;">FCFA</small></div>
                 <div class="label">Carte Cadeau Dwesta</div>
+                <i class="fas fa-medal medal-badge"></i>
             </div>
 
             <div style="font-size: 0.85rem; color: #555; line-height: 1.6;">
