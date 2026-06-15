@@ -238,7 +238,6 @@
             
             <div class="gift-preview">
                 <div class="chip"></div>
-                <img src="{{ asset('images/logo.png') }}" class="logo" style="filter: brightness(0) invert(1); height: 20px;" alt="Karnou">
                 <i class="fas fa-gift gift-icon-main"></i>
                 <div class="value">{{ number_format($amount, 0, ',', ' ') }} <small style="font-size: 1rem;">FCFA</small></div>
                 <div class="label">Carte Cadeau Karnou</div>
