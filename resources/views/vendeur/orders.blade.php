@@ -82,6 +82,14 @@
         color: #313133;
     }
 
+    .jumia-tab:hover {
+        color: #004aad;
+    }
+    .jumia-tab.active {
+        color: #004aad;
+        border-bottom-color: #004aad;
+    }
+
     .btn-detail {
         color: #004aad;
         font-weight: 400;
