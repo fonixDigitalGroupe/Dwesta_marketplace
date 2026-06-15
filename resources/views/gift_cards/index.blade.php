@@ -21,43 +21,32 @@
         margin: 0 auto;
     }
 
-    /* Page Header */
     .gift-card-header {
-        background: #fff;
-        padding: 1.5rem 2rem;
-        border-radius: 16px;
-        margin-bottom: 2rem;
-        box-shadow: var(--card-shadow);
-        border: 1px solid var(--border-color);
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
     }
 
     .gift-card-header h1 {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: var(--primary-blue);
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
         margin: 0;
-        letter-spacing: -0.5px;
-    }
-
-    .gift-card-header p {
-        margin: 0;
-        font-size: 0.9rem;
-        color: var(--text-muted);
     }
 
     .section-title {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         font-weight: 800;
-        color: var(--text-main);
+        color: #000;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 1.5rem;
+        letter-spacing: 0.5px;
+        margin-bottom: 1.25rem;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
     }
 
     .section-title i {
@@ -423,13 +412,7 @@
             
             <!-- Page Header -->
             <div class="gift-card-header">
-                <div>
-                    <h1>Mes Cartes Cadeaux</h1>
-                    <p>Gérez vos crédits et achetez de nouvelles cartes</p>
-                </div>
-                <div class="header-icon">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3596/3596001.png" alt="Gift" width="50" style="opacity: 0.8;">
-                </div>
+                <h1>Cartes cadeaux</h1>
             </div>
 
             <!-- Notifications -->
