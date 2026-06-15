@@ -192,7 +192,7 @@
         padding: 2.5rem;
         margin-bottom: 3rem;
         border: 1px solid var(--border-color);
-        box-shadow: var(--card-shadow);
+        box-shadow: none;
     }
 
     .balance-checker-card {
@@ -202,7 +202,7 @@
         color: #fff;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 20px 40px rgba(16, 24, 40, 0.15);
+        box-shadow: none;
     }
 
     .balance-checker-card::before {
@@ -460,7 +460,7 @@
             <div class="balance-checker-container">
                 <h2 class="section-title"><i class="fas fa-shield-alt"></i> Vérification de sécurité</h2>
                 <div class="balance-checker-card">
-                    <div class="balance-checker-title">Wallet Tools</div>
+                    <div class="balance-checker-title">Ma Carte</div>
                     <div class="balance-checker-subtitle">Consulter le solde d'une<br>carte cadeau Dwesta</div>
                     
                     <div class="balance-input-wrapper">
