@@ -114,11 +114,11 @@
     }
 
     .listing-title {
-        font-size: 1rem;
-        font-weight: 700;
+        font-size: 0.88rem;
+        font-weight: 500;
         color: #111827;
-        margin: 0 0 0.5rem 0;
-        line-height: 1.4;
+        margin: 0 0 0.4rem 0;
+        line-height: 1.3;
     }
 
     .listing-title a {
@@ -132,20 +132,20 @@
     }
 
     .listing-price {
-        font-size: 1.05rem;
+        font-size: 0.95rem;
         font-weight: 700;
         color: #f68b1e;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.5rem;
     }
 
     .listing-stats {
         display: flex;
         gap: 0.75rem;
         margin-top: auto;
-        padding-top: 0.75rem;
+        padding-top: 0.6rem;
         border-top: 1px solid #f3f4f6;
-        color: #6b7280;
-        font-size: 0.8rem;
+        color: #75757a;
+        font-size: 0.75rem;
     }
 
     .stat-item {
