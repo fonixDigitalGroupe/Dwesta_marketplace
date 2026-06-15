@@ -92,9 +92,9 @@
 
     .btn-detail {
         color: #004aad;
-        font-weight: 700;
+        font-weight: 500;
         text-decoration: none;
-        font-size: 0.95rem;
+        font-size: 0.85rem;
     }
     .btn-detail:hover {
         text-decoration: underline;
