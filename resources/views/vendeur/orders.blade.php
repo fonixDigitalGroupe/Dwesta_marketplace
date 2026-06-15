@@ -4,105 +4,120 @@
 
 @push('styles')
 <style>
-    .orders-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .orders-list { display: flex; flex-direction: column; gap: 1.5rem; }
     
     .order-card {
         background: #fff;
         border: 1px solid #e0e0e0;
         border-radius: 4px;
-        padding: 0.9rem 1.25rem;
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        transition: box-shadow 0.2s;
+    }
+    
+    .order-card:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .order-card-header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+        color: #75757a;
+    }
+
+    .order-card-status-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #282828;
+        margin-top: 0.25rem;
+    }
+
+    .order-card-description {
+        font-size: 0.9rem;
+        color: #282828;
+        line-height: 1.5;
+        margin-bottom: 0.5rem;
+    }
+
+    .product-info-box {
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        padding: 0.75rem;
+        display: flex;
         align-items: center;
         gap: 1rem;
     }
     
     .order-image-box {
-        width: 70px;
-        height: 70px;
+        width: 80px;
+        height: 80px;
         flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f9f9f9;
+        border-radius: 4px;
     }
+    
     .order-image-box img {
-        width: 100%;
-        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
         object-fit: contain;
     }
 
-    .order-main-info {
+    .product-details {
         flex: 1;
-        display: flex;
-        flex-direction: column;
     }
 
-    .order-title {
+    .product-name {
         font-size: 0.95rem;
-        font-weight: 400;
+        font-weight: 600;
         color: #282828;
-        margin-bottom: 2px;
-        line-height: 1.3;
-    }
-
-    .order-ref {
-        font-size: 0.82rem;
-        color: #75757a;
-        margin-bottom: 6px;
-    }
-
-    .status-badge {
-        display: inline-block;
-        padding: 4px 8px;
-        font-size: 0.7rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        border-radius: 2px;
-        margin-bottom: 8px;
-        width: fit-content;
-    }
-    
-    .status-paye { background: #009966; color: #fff; }
-    .status-en_attente { background: #f68b1e; color: #fff; }
-    .status-livre { background: #009966; color: #fff; }
-    .status-annule { background: #e0e0e0; color: #333; }
-
-    .order-date {
-        font-weight: 700;
-        color: #333;
-        font-size: 0.9rem;
-    }
-
-    .order-extra-data {
-        margin-top: 6px;
-        font-size: 0.8rem;
-        color: #666;
-        display: flex;
-        gap: 1.5rem;
+        line-height: 1.4;
     }
 
     .btn-detail {
         color: #f68b1e;
         font-weight: 700;
         text-decoration: none;
-        font-size: 0.95rem;
-        margin-top: 2px;
-        white-space: nowrap;
+        font-size: 0.9rem;
+        transition: color 0.2s;
     }
     .btn-detail:hover {
-        text-decoration: underline;
+        color: #e07a16;
+        text-decoration: none;
     }
 
-    .action-required-badge {
-        display: inline-flex;
+    .order-footer {
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 5px;
-        background: #fff4e5;
-        color: #f68b1e;
-        border: 1px solid #f68b1e;
-        border-radius: 3px;
-        padding: 3px 8px;
-        font-size: 0.72rem;
+        margin-top: 0.5rem;
+    }
+
+    .order-price {
         font-weight: 700;
-        text-transform: uppercase;
-        margin-bottom: 6px;
+        color: #f68b1e;
+        font-size: 1.05rem;
+    }
+
+    .btn-validate {
+        background: #f68b1e;
+        color: #fff;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .btn-validate:hover {
+        background: #e07a16;
     }
 </style>
 @endpush
@@ -122,8 +137,34 @@
         <div class="orders-list">
             @forelse($orders as $order)
                 <div class="order-card">
-                    
-                    <div style="display: flex; gap: 1.5rem; flex: 1;">
+                    <div class="order-card-header">
+                        <span>{{ $order->created_at->translatedFormat('d F') }}</span>
+                        <a href="{{ route('vendeur.orders.show', $order->id) }}" class="btn-detail">Détails</a>
+                    </div>
+
+                    <div class="order-card-status-title">
+                        @if($order->statut === 'paye')
+                            Confirmé!
+                        @elseif($order->statut === 'en_attente')
+                            En attente de paiement
+                        @elseif($order->statut === 'livre')
+                            Livré!
+                        @elseif($order->statut === 'annule')
+                            Annulé
+                        @else
+                            {{ ucfirst(str_replace('_', ' ', $order->statut)) }}
+                        @endif
+                    </div>
+
+                    <div class="order-card-description">
+                        Votre commande {{ $order->reference }} a été {{ $order->statut === 'paye' ? 'confirmée' : ($order->statut === 'livre' ? 'livrée' : 'mise à jour') }}. 
+                        @if($order->statut === 'paye')
+                            Elle est prête à être préparée pour l'expédition.
+                        @endif
+                        Nous vous remercions pour votre activité sur Karnou!
+                    </div>
+
+                    <div class="product-info-box">
                         <div class="order-image-box">
                             @php 
                                 $firstItem = $order->items->first();
@@ -131,40 +172,25 @@
                             @endphp
                             <img src="{{ $photo ? Storage::url($photo->chemin) : 'https://via.placeholder.com/100' }}">
                         </div>
-
-                        <div class="order-main-info">
-
-                            <div class="order-title">
-                                @foreach($order->items as $item)
-                                    {{ $item->annonce->titre }}@if(!$loop->last), @endif
-                                @endforeach
-                            </div>
-                            <div class="order-ref">
-                                Commande {{ $order->reference }}
-                            </div>
-                            
-                            <div class="status-badge status-{{ $order->statut }}">
-                                {{ Str::upper(str_replace('_', ' ', $order->statut)) }}
-                            </div>
-
-                            <div class="order-date">
-                                Le {{ $order->created_at->format('d-m-Y') }}
-                            </div>
-
-                            <!-- Keep seller info intact -->
-                            <div class="order-extra-data">
-                                <div>Acheteur : <strong>{{ $order->buyer->prenom }} {{ $order->buyer->nom }}</strong></div>
-                                <div>Total : <strong>{{ number_format($order->total_produits, 0, ',', ' ') }} FCFA</strong></div>
+                        <div class="product-details">
+                            <div class="product-name">
+                                @if($order->items->count() > 1)
+                                    {{ $order->items->first()->annonce->titre }} et {{ $order->items->count() - 1 }} autre(s) article(s)
+                                @else
+                                    {{ $order->items->first()->annonce->titre ?? 'Produit sans titre' }}
+                                @endif
                             </div>
                         </div>
                     </div>
 
-                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
-                        <a href="{{ route('vendeur.orders.show', $order->id) }}" class="btn-detail">Détails</a>
+                    <div class="order-footer">
+                        <div class="order-price">
+                            Total : {{ number_format($order->total_produits, 0, ',', ' ') }} FCFA
+                        </div>
                         @if($order->statut === 'paye')
                             <form method="POST" action="{{ route('logistics.markAsReady', $order) }}">
                                 @csrf
-                                <button type="submit" style="background:#f68b1e; color:#fff; border:none; padding:5px 12px; border-radius:3px; font-size:0.75rem; font-weight:700; cursor:pointer; white-space:nowrap;">
+                                <button type="submit" class="btn-validate">
                                     ✓ Valider
                                 </button>
                             </form>
@@ -172,7 +198,7 @@
                     </div>
                 </div>
             @empty
-                <div style="text-align: center; padding: 4rem; background: white; color: #888;">
+                <div style="text-align: center; padding: 4rem; background: white; color: #888; border: 1px solid #e0e0e0; border-radius: 4px;">
                     <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
                     <p style="font-size: 1.1rem; font-weight: 600;">Aucune vente pour le moment</p>
                 </div>
