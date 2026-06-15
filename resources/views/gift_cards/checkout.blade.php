@@ -164,6 +164,24 @@
         font-size: 1.2rem;
         color: var(--karnou-blue);
     }
+
+    /* Simplified Header Override */
+    .top-banner,
+    .mobile-menu-btn,
+    .search-container,
+    .header-actions,
+    .mobile-search-row,
+    .header-row-2 {
+        display: none !important;
+    }
+
+    .header-row-1 .header-container {
+        justify-content: center !important;
+    }
+
+    .header-logo-text img {
+        height: 35px !important;
+    }
 </style>
 @endpush
 
