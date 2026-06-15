@@ -308,12 +308,11 @@
                 </div>
             </div>
 
-            @if($boughtCards->isNotEmpty())
-                <div class="history-card">
-                    <h2 class="section-title">
-                        <i class="fas fa-history"></i>
-                        Mes achats
-                    </h2>
+            <div class="history-card">
+                <h2 class="section-title">
+                    Mes achats
+                </h2>
+                <div style="overflow-x: auto; border: 1px solid #eee; border-radius: 8px;">
                     <table class="table-cards">
                         <thead>
                             <tr>
@@ -325,7 +324,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($boughtCards as $card)
+                            @forelse($boughtCards as $card)
                                 <tr>
                                     <td><span class="code-badge">{{ $card->code }}</span></td>
                                     <td>{{ number_format($card->amount, 0, ',', ' ') }} FCFA</td>
@@ -343,11 +342,18 @@
                                         </form>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 2.5rem; color: #999;">
+                                        <i class="fas fa-shopping-cart" style="display:block; font-size: 1.5rem; margin-bottom: 0.5rem; opacity: 0.3;"></i>
+                                        Aucun achat de carte cadeau pour le moment.
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
-            @endif
+            </div>
 
         </main>
     </div>
