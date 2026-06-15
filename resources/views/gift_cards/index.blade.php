@@ -53,7 +53,7 @@
     .purchase-card {
         border: 1px solid #efefef;
         border-radius: 10px;
-        padding: 1rem;
+        padding: 1.5rem 1rem;
         text-align: center;
         background: #fff;
         position: relative;
@@ -61,10 +61,42 @@
         flex-direction: column;
         justify-content: space-between;
         height: 100%;
+        transition: transform 0.2s;
     }
 
     .purchase-card.popular {
         border-color: #f68b1e;
+        background: #fffaf5;
+    }
+
+    .card-visual {
+        height: 80px;
+        background: linear-gradient(135deg, #eee 0%, #ddd 100%);
+        border-radius: 8px;
+        margin-bottom: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-visual i {
+        font-size: 2.5rem;
+        color: rgba(0,0,0,0.1);
+        z-index: 1;
+    }
+
+    .purchase-card:nth-child(1) .card-visual { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
+    .purchase-card:nth-child(2) .card-visual { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+    .purchase-card:nth-child(3) .card-visual { background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%); color: white; }
+
+    .card-visual .gift-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 1rem;
+        opacity: 0.8;
     }
 
     .popular-badge {
@@ -294,6 +326,11 @@
                                 <span class="popular-badge">Populaire</span>
                             @endif
                             
+                            <div class="card-visual">
+                                <i class="fas fa-gift"></i>
+                                <span class="gift-badge"><i class="fas fa-medal"></i></span>
+                            </div>
+
                             <div>
                                 <div class="amount">{{ number_format($option->amount, 0, ',', ' ') }} <small style="font-size: 0.8rem; opacity: 0.7;">FCFA</small></div>
                                 <div class="desc">{{ $option->description ?: 'Créditez votre compte instantanément.' }}</div>
