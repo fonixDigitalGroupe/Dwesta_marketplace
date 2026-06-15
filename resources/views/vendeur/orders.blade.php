@@ -32,8 +32,8 @@
     }
 
     .order-card-status-title {
-        font-size: 1.2rem;
-        font-weight: 700;
+        font-size: 1.15rem;
+        font-weight: 500;
         color: #313133;
         margin-bottom: 0.25rem;
     }
@@ -84,9 +84,9 @@
 
     .btn-detail {
         color: #f68b1e;
-        font-weight: 500;
+        font-weight: 400;
         text-decoration: none;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
     .btn-detail:hover {
         text-decoration: underline;
@@ -102,7 +102,7 @@
     }
 
     .order-price {
-        font-weight: 700;
+        font-weight: 500;
         color: #313133;
         font-size: 0.95rem;
     }
@@ -114,7 +114,7 @@
         padding: 8px 16px;
         border-radius: 4px;
         font-size: 0.8rem;
-        font-weight: 700;
+        font-weight: 500;
         text-transform: uppercase;
         cursor: pointer;
     }
