@@ -21,21 +21,6 @@
         margin: 0 auto;
     }
 
-    .gift-card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 0.5rem;
-        margin-bottom: 1.5rem;
-        border-bottom: 1px solid #eee;
-    }
-
-    .gift-card-header h1 {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #333;
-        margin: 0;
-    }
 
     .section-title {
         font-size: 0.8rem;
@@ -410,9 +395,8 @@
 
         <main class="main-content gift-card-page">
             
-            <!-- Page Header -->
-            <div class="gift-card-header">
-                <h1>Cartes cadeaux</h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+                <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Cartes cadeaux</h1>
             </div>
 
             <!-- Notifications -->
