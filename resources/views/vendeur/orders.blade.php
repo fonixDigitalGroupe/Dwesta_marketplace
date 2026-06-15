@@ -14,7 +14,7 @@
     
     .order-card {
         background: #fff;
-        border: 1px solid #e0e0e0;
+        border: 1px solid #f0f0f2;
         border-radius: 4px;
         padding: 1.25rem;
         display: flex;
@@ -47,7 +47,7 @@
     }
 
     .product-info-box {
-        border: 1px solid #d1d1d1;
+        border: 1px solid #ececee;
         border-radius: 4px;
         padding: 0.5rem 1rem;
         display: flex;
