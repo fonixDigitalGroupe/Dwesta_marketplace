@@ -165,6 +165,22 @@
         color: var(--karnou-blue);
     }
 
+    .gift-preview .medal-badge {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-size: 2.5rem;
+        opacity: 0.15;
+    }
+
+    .gift-preview .gift-icon-main {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 1.5rem;
+        opacity: 0.6;
+    }
+
     /* Simplified Header Override */
     .top-banner,
     .mobile-menu-btn,
