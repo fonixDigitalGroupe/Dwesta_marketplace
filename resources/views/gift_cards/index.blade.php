@@ -8,6 +8,23 @@
         width: 100%;
     }
 
+    /* Hide everything in header except logo */
+    .top-banner,
+    .mobile-menu-btn,
+    .search-container,
+    .header-actions,
+    .header-row-2 {
+        display: none !important;
+    }
+
+    .header-row-1 .header-container {
+        justify-content: center !important;
+    }
+
+    .header-logo-text img {
+        height: 35px !important; /* Slightly larger for emphasis */
+    }
+
     .section-title {
         font-size: 0.8rem;
         font-weight: 800;
