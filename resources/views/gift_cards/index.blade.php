@@ -126,18 +126,80 @@
         box-shadow: 0 6px 12px rgba(246, 162, 0, 0.2);
     }
 
-    .purchase-card .amount {
-        font-size: 1.75rem;
-        font-weight: 900;
-        color: var(--text-main);
-        margin-bottom: 0.25rem;
-        letter-spacing: -0.5px;
+    .purchase-card .card-visual {
+        width: 100%;
+        max-width: 240px;
+        aspect-ratio: 1.58 / 1;
+        margin: 0 auto 1.5rem;
+        border-radius: 14px;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+        color: #fff;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: linear-gradient(135deg, #f6a200 0%, #e67e00 100%);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
 
-    .purchase-card .currency {
+    .purchase-card.variant-blue .card-visual {
+        background: linear-gradient(135deg, #004aad 0%, #1a5ccc 100%);
+    }
+
+    .card-chip {
+        width: 35px;
+        height: 25px;
+        background: linear-gradient(135deg, #ffd700 0%, #e6be00 100%);
+        border-radius: 4px;
+        position: relative;
+        border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .card-chip::after {
+        content: '';
+        position: absolute;
+        width: 70%;
+        height: 1px;
+        background: rgba(0,0,0,0.1);
+        top: 50%;
+        left: 15%;
+    }
+
+    .card-logo {
+        font-family: 'Inter', sans-serif;
+        font-weight: 900;
         font-size: 0.9rem;
-        font-weight: 600;
-        color: var(--text-muted);
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .card-logo i {
+        font-size: 0.8rem;
+    }
+
+    .card-number {
+        font-family: 'DM Mono', monospace;
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+        opacity: 0.8;
+    }
+
+    .card-type {
+        font-size: 0.6rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        opacity: 0.6;
+    }
+
+    .card-visual .amount-label {
+        font-size: 1.2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
     }
 
     .purchase-card .desc {
@@ -428,14 +490,28 @@
                 </h2>
                 <div class="gift-cards-grid">
                     @forelse($giftCardOptions as $option)
-                        <div class="purchase-card {{ $option->is_popular ? 'popular' : '' }}">
+                        <div class="purchase-card {{ $loop->first || $loop->last ? 'variant-blue' : '' }} {{ $option->is_popular ? 'popular' : '' }}">
                             @if($option->is_popular)
                                 <span class="popular-badge">Top Vente</span>
                             @endif
                             
+                            <div class="card-visual">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div class="card-chip"></div>
+                                    <div class="card-logo">
+                                        KARNOU <i class="fas fa-gift"></i>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 15px;">
+                                    <div class="card-number">•••• •••• •••• ••••</div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                                    <div class="amount-label">{{ number_format($option->amount, 0, ',', ' ') }} <small style="font-size: 0.6rem;">FCFA</small></div>
+                                    <div class="card-type">Gift Card</div>
+                                </div>
+                            </div>
                             
                             <div>
-                                <div class="amount">{{ number_format($option->amount, 0, ',', ' ') }} <small class="currency">FCFA</small></div>
                                 <div class="desc">{{ $option->description ?: 'Créditez votre compte Dwesta instantanément avec cette carte.' }}</div>
                             </div>
 
