@@ -51,6 +51,9 @@
         background: #fff;
         border: 1px solid var(--border-color);
         border-radius: 20px;
+        padding: 2rem;
+        text-align: center;
+        position: relative;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
