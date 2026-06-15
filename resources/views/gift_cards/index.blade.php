@@ -5,8 +5,7 @@
 @push('styles')
 <style>
     .gift-card-page {
-        max-width: 1100px;
-        margin: 0 auto;
+        width: 100%;
     }
 
     .section-title {
