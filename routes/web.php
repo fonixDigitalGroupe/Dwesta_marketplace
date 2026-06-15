@@ -26,6 +26,7 @@ use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\VendeurWalletController;
+use App\Http\Controllers\GiftCardController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -139,13 +140,15 @@ Route::middleware('auth')->group(function () {
 
         // Cartes Cadeaux
         Route::prefix('cartes-cadeaux')->name('gift-cards.')->group(function () {
-            Route::get('/', [\App\Http\Controllers\GiftCardController::class, 'index'])->name('index');
-            Route::get('/succes', [\App\Http\Controllers\GiftCardController::class, 'success'])->name('success');
-            Route::post('/redeem', [\App\Http\Controllers\GiftCardController::class, 'redeem'])->name('redeem');
-            Route::post('/buy', [\App\Http\Controllers\GiftCardController::class, 'buy'])->name('buy');
-            Route::delete('/{giftCard}', [\App\Http\Controllers\GiftCardController::class, 'destroy'])->name('destroy');
-            Route::post('/apply-checkout', [\App\Http\Controllers\GiftCardController::class, 'applyToCheckout'])->name('apply-checkout');
-            Route::post('/check-balance', [\App\Http\Controllers\GiftCardController::class, 'checkBalance'])->name('check-balance');
+            Route::get('/', [GiftCardController::class, 'index'])->name('index');
+            Route::get('/succes', [GiftCardController::class, 'success'])->name('success');
+            Route::post('/redeem', [GiftCardController::class, 'redeem'])->name('redeem');
+            Route::post('/buy', [GiftCardController::class, 'buy'])->name('buy');
+            Route::get('/checkout', [GiftCardController::class, 'checkout'])->name('checkout');
+            Route::post('/confirm', [GiftCardController::class, 'confirm'])->name('confirm');
+            Route::delete('/{giftCard}', [GiftCardController::class, 'destroy'])->name('destroy');
+            Route::post('/apply-checkout', [GiftCardController::class, 'applyToCheckout'])->name('apply-checkout');
+            Route::post('/check-balance', [GiftCardController::class, 'checkBalance'])->name('check-balance');
         });
 
         // Page Pro (routes spécifiques AVANT la route avec paramètre)
@@ -443,9 +446,6 @@ Route::middleware('auth')->group(function () {
         Route::prefix('credits')->name('credits.')->group(function () {
             Route::get('/', [CreditController::class, 'index'])->name('index');
             Route::post('/buy', [CreditController::class, 'buyPack'])->name('buy');
-            Route::post('/gift-cards/buy', [GiftCardController::class, 'buy'])->name('gift-cards.buy');
-            Route::get('/gift-cards/checkout', [GiftCardController::class, 'checkout'])->name('gift-cards.checkout');
-            Route::post('/gift-cards/confirm', [GiftCardController::class, 'confirm'])->name('gift-cards.confirm');
         });
 
         // Abonnements group removed (duplicate)

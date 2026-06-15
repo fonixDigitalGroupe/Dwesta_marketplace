@@ -105,12 +105,12 @@
     }
 
     .listing-meta {
-        font-size: 0.75rem;
-        color: #6b7280;
+        font-size: 0.7rem;
+        color: #75757a;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
     }
 
     .listing-title {
@@ -132,20 +132,20 @@
     }
 
     .listing-price {
-        font-size: 0.95rem;
+        font-size: 0.85rem;
         font-weight: 700;
         color: #f68b1e;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.4rem;
     }
 
     .listing-stats {
         display: flex;
         gap: 0.75rem;
         margin-top: auto;
-        padding-top: 0.6rem;
+        padding-top: 0.5rem;
         border-top: 1px solid #f3f4f6;
         color: #75757a;
-        font-size: 0.75rem;
+        font-size: 0.68rem;
     }
 
     .stat-item {
@@ -164,14 +164,14 @@
     }
 
     .card-review-count {
-        color: #007185;
-        font-size: 0.75rem;
+        color: #75757a;
+        font-size: 0.7rem;
         margin-left: 4px;
         font-weight: 400;
     }
 
     .card-etat-badge {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         font-weight: 600;
         margin-right: 6px;
     }
@@ -385,7 +385,7 @@
 
                                 <!-- Actions -->
                                 <div class="card-actions">
-                                    <a href="{{ route('annonces.show', $annonce) }}" class="btn-action-sm" style="color: #6b7280; font-size: 0.85rem; font-weight: 500; text-decoration: none;">
+                                    <a href="{{ route('annonces.show', $annonce) }}" class="btn-action-sm" style="color: #6b7280; font-size: 0.75rem; font-weight: 500; text-decoration: none;">
                                         Voir
                                     </a>
                                     
