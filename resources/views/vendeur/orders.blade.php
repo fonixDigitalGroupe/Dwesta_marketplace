@@ -133,11 +133,7 @@
                         </div>
 
                         <div class="order-main-info">
-                            @if($order->statut === 'paye')
-                                <div class="action-required-badge">
-                                    <i class="fa-solid fa-circle-exclamation"></i> Action requise — à valider
-                                </div>
-                            @endif
+
                             <div class="order-title">
                                 @foreach($order->items as $item)
                                     {{ $item->annonce->titre }}@if(!$loop->last), @endif

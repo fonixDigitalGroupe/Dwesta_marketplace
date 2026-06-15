@@ -332,13 +332,6 @@
 
                 @if($order->statut === 'paye')
                     <div style="margin-top: 1.25rem; border-top: 1px solid #eee; padding-top: 1rem; background: #fffbf5; border: 1px solid #f68b1e; border-radius: 4px; padding: 1rem;">
-                        <div style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 1rem;">
-                            <i class="fa-solid fa-circle-exclamation" style="color: #f68b1e; font-size: 1.2rem; margin-top: 2px;"></i>
-                            <div>
-                                <div style="font-weight: 700; color: #333; margin-bottom: 4px;">Action requise</div>
-                                <p style="font-size:0.85rem; color:#555; margin:0;">Ce client a payé sa commande. Il attend que vous commenciez la préparation pour qu'elle soit acheminée au point relais.</p>
-                            </div>
-                        </div>
                         <form method="POST" action="{{ route('logistics.markAsReady', $order) }}">
                             @csrf
                             <button type="submit" style="width: 100%; background: #f68b1e; color: #fff; border: none; padding: 0.75rem 1rem; border-radius: 4px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
