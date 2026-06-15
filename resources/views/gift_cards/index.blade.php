@@ -51,10 +51,6 @@
         background: #fff;
         border: 1px solid var(--border-color);
         border-radius: 20px;
-        padding: 2rem;
-        text-align: center;
-        position: relative;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -75,7 +71,6 @@
     }
 
     .purchase-card:hover {
-        transform: translateY(-8px);
         box-shadow: var(--card-shadow-hover);
         border-color: var(--primary-blue);
     }
@@ -157,10 +152,7 @@
         background: var(--primary-blue);
         color: #fff;
         border-radius: 12px;
-        font-weight: 800;
-        font-size: 0.9rem;
         cursor: pointer;
-        transition: all 0.2s;
         display: flex;
         align-items: center;
         justify-content: center;
