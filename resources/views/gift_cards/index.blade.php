@@ -67,8 +67,8 @@
             </div>
 
             {{-- Section : Vérification de solde --}}
-            <div style="background: #e3f2fd; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; border-left: 4px solid #1976d2;">
-                <h2 style="color: #1976d2; margin-top: 0; margin-bottom: 1rem; font-size: 1rem; font-weight: 700;">Vérifier le solde d'une carte</h2>
+            <div style="background: #f8f9fa; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #dee2e6;">
+                <h2 style="color: #333; margin-top: 0; margin-bottom: 1rem; font-size: 1rem; font-weight: 700;">Vérifier le solde d'une carte</h2>
 
                 <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
                     <input type="text" id="balance-code-input"
