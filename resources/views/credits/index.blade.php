@@ -4,29 +4,7 @@
 
 @section('content')
 
-    <style>
-        @keyframes lightSweep {
-            0% { transform: translateX(-200%) skewX(-25deg); }
-            100% { transform: translateX(200%) skewX(-25deg); }
-        }
-        .card-shimmer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(105deg, 
-                transparent 0%, 
-                rgba(255,255,255,0.05) 45%, 
-                rgba(255,255,255,0.15) 50%, 
-                rgba(255,255,255,0.05) 55%, 
-                transparent 100%
-            );
-            animation: lightSweep 4s infinite linear;
-            pointer-events: none;
-            z-index: 1;
-        }
-    </style>
+
 
     <div class="dashboard-container">
         @include('partials.profile-sidebar')
@@ -55,8 +33,7 @@
             <div
                 style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 1.4rem 1.75rem; border-radius: 16px; margin-bottom: 1.75rem; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 15px 30px -8px rgba(0, 74, 173, 0.25); position: relative; overflow: hidden; color: white; max-width: 1000px; display: flex; align-items: stretch; gap: 0; isolation: isolate;">
 
-                {{-- Shimmer Effect --}}
-                <div class="card-shimmer"></div>
+                {{-- No shimmer --}}
 
                 {{-- Left Side: The Card --}}
                 <div
@@ -107,7 +84,7 @@
                 {{-- Right Side: Benefits --}}
                 <div style="flex: 0.8; padding-left: 0.5rem; display: flex; flex-direction: column; justify-content: center; z-index: 2;">
                     <h3
-                        style="color: white; margin-top: 0; margin-bottom: 1.5rem; font-size: 0.85rem; font-weight: 800; opacity: 0.95; letter-spacing: 1.5px; border-left: 3px solid #ffd700; padding-left: 10px;">
+                        style="color: white; margin-top: 0; margin-bottom: 1.5rem; font-size: 0.85rem; font-weight: 800; opacity: 0.95; letter-spacing: 1.5px;">
                         PRIVILÈGES
                     </h3>
                     <div style="display: flex; flex-direction: column; gap: 1.25rem;">
