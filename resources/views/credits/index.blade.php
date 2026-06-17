@@ -64,35 +64,23 @@
                         </div>
                     </div>
 
-                    {{-- Features Card (Subtle/Soft version) --}}
-                    <div
-                        style="flex: 1.5; min-width: 300px; padding: 1.5rem 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03);">
-                        <h3
-                            style="color: white; margin-top: 0; margin-bottom: 1.25rem; font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; opacity: 0.9;">
-                            <i class="fas fa-info-circle" style="opacity: 0.6;"></i>
+                    {{-- Features List (Minimalist version - no box) --}}
+                    <div style="flex: 1.2; min-width: 280px; padding-left: 2rem; border-left: 1px solid rgba(255, 255, 255, 0.1);">
+                        <h3 style="color: white; margin-top: 0; margin-bottom: 1.25rem; font-size: 0.95rem; font-weight: 700; opacity: 0.9;">
                             Comment utiliser vos crédits ?
                         </h3>
-                        <div style="display: flex; flex-direction: column; gap: 1rem;">
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="color: #60a5fa; font-size: 1rem; width: 24px; text-align: center;">
-                                    <i class="fas fa-rocket"></i>
-                                </div>
-                                <span style="font-size: 0.85rem; font-weight: 500; opacity: 0.85;">Mise en avant sur la page
-                                    d'accueil</span>
+                        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="fas fa-rocket" style="color: #60a5fa; font-size: 0.8rem; opacity: 0.8;"></i>
+                                <span style="font-size: 0.82rem; font-weight: 500; opacity: 0.8;">Mise en avant sur la page d'accueil</span>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="color: #fca5a5; font-size: 1rem; width: 24px; text-align: center;">
-                                    <i class="fas fa-bolt"></i>
-                                </div>
-                                <span style="font-size: 0.85rem; font-weight: 500; opacity: 0.85;">Badge "Urgent" pour plus
-                                    de vues</span>
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="fas fa-bolt" style="color: #fca5a5; font-size: 0.8rem; opacity: 0.8;"></i>
+                                <span style="font-size: 0.82rem; font-weight: 500; opacity: 0.8;">Badge "Urgent" pour plus de vues</span>
                             </div>
-                            <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="color: #fcd34d; font-size: 1rem; width: 24px; text-align: center;">
-                                    <i class="fas fa-video"></i>
-                                </div>
-                                <span style="font-size: 0.85rem; font-weight: 500; opacity: 0.85;">Ajout de vidéo à votre
-                                    annonce</span>
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <i class="fas fa-video" style="color: #fcd34d; font-size: 0.8rem; opacity: 0.8;"></i>
+                                <span style="font-size: 0.82rem; font-weight: 500; opacity: 0.8;">Ajout de vidéo à votre annonce</span>
                             </div>
                         </div>
                     </div>
