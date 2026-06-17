@@ -25,7 +25,7 @@
             @endif
 
             {{-- Solde actuel - Carte Finance --}}
-            <div style="background: linear-gradient(135deg, #004aad 0%, #003685 100%); padding: 2.5rem; border-radius: 20px; margin-bottom: 2.5rem; border: none; box-shadow: 0 15px 35px rgba(0,74,173,0.25); position: relative; overflow: hidden; color: white;">
+            <div style="background: linear-gradient(135deg, #004aad 0%, #003685 100%); padding: 1.5rem 2rem; border-radius: 16px; margin-bottom: 2rem; border: none; box-shadow: 0 10px 25px rgba(0,74,173,0.15); position: relative; overflow: hidden; color: white; max-width: 1000px;">
                 {{-- Effet de carte (cercle décoratif) --}}
                 <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
                 <div style="position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.03); border-radius: 50%;"></div>
