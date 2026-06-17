@@ -63,31 +63,6 @@
                     style="flex: 1.2; position: relative; padding-right: 2rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; z-index: 2;">
                     {{-- Card Header: Chip and Brand --}}
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        {{-- Realistic Gold EMV Chip --}}
-                        <div
-                            style="width: 50px; height: 38px; background: linear-gradient(135deg, #ffd700 0%, #e6b800 50%, #b8860b 100%); border-radius: 7px; position: relative; box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 3px 6px rgba(0,0,0,0.3); overflow: hidden; border: 0.5px solid rgba(0,0,0,0.1);">
-                            <div
-                                style="position: absolute; top: 20%; left: 0; right: 0; height: 1px; background: rgba(0,0,0,0.15);">
-                            </div>
-                            <div
-                                style="position: absolute; top: 40%; left: 0; right: 0; height: 1px; background: rgba(0,0,0,0.15);">
-                            </div>
-                            <div
-                                style="position: absolute; top: 60%; left: 0; right: 0; height: 1px; background: rgba(0,0,0,0.15);">
-                            </div>
-                            <div
-                                style="position: absolute; top: 80%; left: 0; right: 0; height: 1px; background: rgba(0,0,0,0.15);">
-                            </div>
-                            <div
-                                style="position: absolute; top: 0; bottom: 0; left: 30%; width: 1px; background: rgba(0,0,0,0.15);">
-                            </div>
-                            <div
-                                style="position: absolute; top: 0; bottom: 0; left: 70%; width: 1px; background: rgba(0,0,0,0.15);">
-                            </div>
-                            <div
-                                style="position: absolute; top: 25%; left: 25%; right: 25%; bottom: 25%; border: 1px solid rgba(0,0,0,0.1); border-radius: 3px; background: rgba(255,215,0,0.1);">
-                            </div>
-                        </div>
                         <div
                             style="font-weight: 800; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.95; display: flex; align-items: center; gap: 8px;">
                             <span style="background: white; color: #004aad; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 900;">KARNOU</span>
