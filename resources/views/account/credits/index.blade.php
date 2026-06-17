@@ -60,7 +60,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div style="font-weight: 800; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.95; display: flex; align-items: center; gap: 8px;">
                             <span style="background: white; color: #004aad; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 900;">KARNOU</span>
-                            <span style="font-weight: 200; font-size: 0.9rem; letter-spacing: 4px;">PREMIUM</span>
+                            <span style="font-weight: 200; font-size: 0.9rem; letter-spacing: 2px; text-transform: none;">credits</span>
                         </div>
                     </div>
 
