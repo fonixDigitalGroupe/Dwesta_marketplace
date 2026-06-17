@@ -25,22 +25,37 @@
             @endif
 
             {{-- Solde actuel --}}
-            <div style="background: #f8f9fa; padding: 2rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #dee2e6;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
-                    <div>
-                        <h2 style="color: #333; margin-top: 0; margin-bottom: 1rem; font-size: 1rem; font-weight: 700;">Solde actuel</h2>
-                        <div>
-                            <strong style="color: #666; display: block; margin-bottom: 0.25rem; font-size: 0.85rem;">Vos crédits disponibles :</strong>
-                            <span style="font-size: 2rem; font-weight: 800; color: #333;">{{ number_format($balance, 0, ',', ' ') }} <span style="font-size: 1.4rem; color: #ffbe00;">⭐</span></span>
+            <div style="background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <h2 style="color: #64748b; margin-top: 0; margin-bottom: 0.75rem; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Solde actuel</h2>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="background: #fffbeb; padding: 1rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 4px rgba(251, 191, 36, 0.1);">
+                                <i class="fas fa-star" style="font-size: 2rem; color: #f68b1e; filter: drop-shadow(0 0 8px rgba(246, 139, 30, 0.2));"></i>
+                            </div>
+                            <div>
+                                <span style="font-size: 2.5rem; font-weight: 900; color: #1e293b; line-height: 1;">{{ number_format($balance, 0, ',', ' ') }}</span>
+                                <span style="display: block; color: #64748b; font-size: 0.85rem; font-weight: 600; margin-top: 0.25rem;">CRÉDITS DISPONIBLES</span>
+                            </div>
                         </div>
                     </div>
-                    <div style="max-width: 400px;">
-                        <strong style="color: #333; display: block; margin-bottom: 0.5rem; font-size: 0.85rem;">Comment utiliser vos crédits ?</strong>
-                        <ul style="list-style: none; padding: 0; margin: 0;">
-                            <li style="padding: 0.3rem 0; color: #555; font-size: 0.85rem;"><span style="color: #28a745; margin-right: 0.5rem;">✓</span> Mise en avant de votre annonce sur la page d'accueil</li>
-                            <li style="padding: 0.3rem 0; color: #555; font-size: 0.85rem;"><span style="color: #28a745; margin-right: 0.5rem;">✓</span> Badge "Urgent" pour attirer l'attention</li>
-                            <li style="padding: 0.3rem 0; color: #555; font-size: 0.85rem;"><span style="color: #28a745; margin-right: 0.5rem;">✓</span> Ajout de vidéo à votre annonce</li>
-                        </ul>
+                    
+                    <div style="flex: 1.5; min-width: 300px; background: rgba(255, 255, 255, 0.6); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(226, 232, 240, 0.5);">
+                        <h3 style="color: #1e293b; margin-top: 0; margin-bottom: 1rem; font-size: 0.95rem; font-weight: 700;">Comment utiliser vos crédits ?</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <div style="color: #004aad; margin-top: 2px;"><i class="fas fa-rocket"></i></div>
+                                <span style="color: #475569; font-size: 0.85rem; font-weight: 500; line-height: 1.4;">Mise en avant sur la page d'accueil</span>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <div style="color: #EF3B2D; margin-top: 2px;"><i class="fas fa-bolt"></i></div>
+                                <span style="color: #475569; font-size: 0.85rem; font-weight: 500; line-height: 1.4;">Badge "Urgent" pour plus de vues</span>
+                            </div>
+                            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <div style="color: #f68b1e; margin-top: 2px;"><i class="fas fa-video"></i></div>
+                                <span style="color: #475569; font-size: 0.85rem; font-weight: 500; line-height: 1.4;">Ajout de vidéo à votre annonce</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
