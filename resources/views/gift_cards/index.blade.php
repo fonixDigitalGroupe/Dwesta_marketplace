@@ -53,21 +53,7 @@
                             <form action="{{ route('gift-cards.buy') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="amount" value="{{ $option->amount }}">
-                                <input type="hidden" name="payment_method" value="om" class="payment-method-input">
-
-                                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
-                                    <button type="button" class="payment-btn-opt selected-opt" data-method="om"
-                                        onclick="selectOpt(this)"
-                                        style="flex: 1; padding: 0.5rem 0.25rem; border: 2px solid #EF3B2D; background: #fdf2f2; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600;">
-                                        Orange Money
-                                    </button>
-                                    <button type="button" class="payment-btn-opt" data-method="wave"
-                                        onclick="selectOpt(this)"
-                                        style="flex: 1; padding: 0.5rem 0.25rem; border: 2px solid #dee2e6; background: white; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600;">
-                                        Wave
-                                    </button>
-                                </div>
-
+                
                                 <button type="submit"
                                     style="display: block; width: 100%; text-align: center; background: #EF3B2D; color: white; padding: 0.6rem; border-radius: 4px; border: none; cursor: pointer; font-size: 0.9rem; font-weight: 600;">
                                     Acheter
@@ -151,17 +137,6 @@
 
 @push('scripts')
 <script>
-function selectOpt(btn) {
-    const form = btn.closest('form');
-    form.querySelectorAll('.payment-btn-opt').forEach(b => {
-        b.style.borderColor = '#dee2e6';
-        b.style.background = 'white';
-    });
-    btn.style.borderColor = '#EF3B2D';
-    btn.style.background = '#fdf2f2';
-    form.querySelector('.payment-method-input').value = btn.getAttribute('data-method');
-}
-
 async function checkGiftCardBalance() {
     const code = document.getElementById('balance-code-input').value.trim();
     const resultBox = document.getElementById('balance-result');
