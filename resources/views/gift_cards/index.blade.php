@@ -74,14 +74,14 @@
                     <input type="text" id="balance-code-input"
                         placeholder="XXXX-XXXX-XXXX-XXXX"
                         oninput="this.value = this.value.toUpperCase()"
-                        style="flex: 1; min-width: 200px; padding: 0.6rem 1rem; border: 1px solid #90caf9; border-radius: 4px; font-size: 0.9rem; outline: none; background: white; color: #333;">
+                        style="flex: 1; min-width: 200px; padding: 0.6rem 1rem; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.9rem; outline: none; background: white; color: #333;">
                     <button type="button" onclick="checkGiftCardBalance()"
                         style="background: #1976d2; color: white; border: none; border-radius: 4px; padding: 0.6rem 1.5rem; font-weight: 700; cursor: pointer; font-size: 0.9rem; white-space: nowrap;">
                         Vérifier
                     </button>
                 </div>
 
-                <div id="balance-result" style="display: none; margin-top: 1rem; padding: 1rem; background: white; border-radius: 4px; border: 1px solid #90caf9;"></div>
+                <div id="balance-result" style="display: none; margin-top: 1rem; padding: 1rem; background: white; border-radius: 4px; border: 1px solid #dee2e6;"></div>
             </div>
 
             {{-- Section : Mes achats --}}
