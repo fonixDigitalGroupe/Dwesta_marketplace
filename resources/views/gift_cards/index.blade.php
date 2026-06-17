@@ -55,7 +55,7 @@
                                 <input type="hidden" name="amount" value="{{ $option->amount }}">
                 
                                 <button type="submit"
-                                    style="display: block; width: 100%; text-align: center; background: #EF3B2D; color: white; padding: 0.6rem; border-radius: 4px; border: none; cursor: pointer; font-size: 0.9rem; font-weight: 600;">
+                                    style="display: block; width: 100%; text-align: center; background: {{ ($loop->first || $loop->last) ? '#004aad' : '#f68b1e' }}; color: white; padding: 0.6rem; border-radius: 4px; border: none; cursor: pointer; font-size: 0.9rem; font-weight: 600;">
                                     Acheter
                                 </button>
                             </form>
