@@ -4,6 +4,30 @@
 
 @section('content')
 
+    <style>
+        @keyframes lightSweep {
+            0% { transform: translateX(-200%) skewX(-25deg); }
+            100% { transform: translateX(200%) skewX(-25deg); }
+        }
+        .card-shimmer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(105deg, 
+                transparent 0%, 
+                rgba(255,255,255,0.05) 45%, 
+                rgba(255,255,255,0.15) 50%, 
+                rgba(255,255,255,0.05) 55%, 
+                transparent 100%
+            );
+            animation: lightSweep 4s infinite linear;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+
     <div class="dashboard-container">
         @include('partials.profile-sidebar')
 
@@ -25,68 +49,85 @@
             @endif
 
             {{-- Solde actuel - Carte de Crédit Professionnelle --}}
-            <div style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 2rem; border-radius: 20px; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.2); position: relative; overflow: hidden; color: white; max-width: 1000px; display: flex; align-items: stretch; gap: 0;">
+            <div style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 2.2rem; border-radius: 24px; margin-bottom: 2.5rem; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 25px 50px -12px rgba(0, 74, 173, 0.25); position: relative; overflow: hidden; color: white; max-width: 1000px; display: flex; align-items: stretch; gap: 0; isolation: isolate;">
                 
-                {{-- Glossy Shimmer Effect --}}
-                <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent); transform: rotate(-15deg); pointer-events: none;"></div>
+                {{-- Shimmer Effect --}}
+                <div class="card-shimmer"></div>
 
                 {{-- Left Side: The Card --}}
-                <div style="flex: 1.2; position: relative; padding-right: 2rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 200px;">
+                <div style="flex: 1.2; position: relative; padding-right: 2rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; z-index: 2;">
                     {{-- Card Header: Chip and Brand --}}
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        {{-- Gold Chip --}}
-                        <div style="width: 45px; height: 32px; background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%); border-radius: 6px; position: relative; box-shadow: inset 0 1px 3px rgba(255,255,255,0.5);">
-                           <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(0,0,0,0.1);"></div>
-                           <div style="position: absolute; top: 0; left: 50%; width: 1px; height: 100%; background: rgba(0,0,0,0.1);"></div>
+                        {{-- Realistic Gold EMV Chip --}}
+                        <div style="width: 50px; height: 38px; background: linear-gradient(135deg, #ffd700 0%, #e6b800 50%, #b8860b 100%); border-radius: 7px; position: relative; box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 3px 6px rgba(0,0,0,0.3); overflow: hidden; border: 0.5px solid rgba(0,0,0,0.1);">
+                            <div style="position: absolute; top: 20%; left: 0; right: 0; height: 1px; background: rgba(0,0,0,0.15);"></div>
+                            <div style="position: absolute; top: 40%; left: 0; right: 0; height: 1px; background: rgba(0,0,0,0.15);"></div>
+                            <div style="position: absolute; top: 60%; left: 0; right: 0; height: 1px; background: rgba(0,0,0,0.15);"></div>
+                            <div style="position: absolute; top: 80%; left: 0; right: 0; height: 1px; background: rgba(0,0,0,0.15);"></div>
+                            <div style="position: absolute; top: 0; bottom: 0; left: 30%; width: 1px; background: rgba(0,0,0,0.15);"></div>
+                            <div style="position: absolute; top: 0; bottom: 0; left: 70%; width: 1px; background: rgba(0,0,0,0.15);"></div>
+                            <div style="position: absolute; top: 25%; left: 25%; right: 25%; bottom: 25%; border: 1px solid rgba(0,0,0,0.1); border-radius: 3px; background: rgba(255,215,0,0.1);"></div>
                         </div>
-                        <div style="font-weight: 800; font-size: 1.1rem; letter-spacing: 1px; text-transform: uppercase; opacity: 0.9;">KARNOU <span style="font-weight: 300;">PREMIUM</span></div>
+                        <div style="font-weight: 800; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.95; display: flex; align-items: center; gap: 8px;">
+                            <span style="background: white; color: #004aad; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 900;">KARNOU</span>
+                            <span style="font-weight: 200; font-size: 0.9rem; letter-spacing: 4px;">PREMIUM</span>
+                        </div>
                     </div>
 
                     {{-- Card Center: Balance --}}
-                    <div style="margin: 1rem 0;">
-                        <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.7; margin-bottom: 0.25rem;">Solde Disponible</div>
-                        <div style="display: flex; align-items: baseline; gap: 10px;">
-                            <span style="font-size: 3rem; font-weight: 900; line-height: 1;">{{ number_format($balance, 0, ',', ' ') }}</span>
-                            <i class="fas fa-star" style="color: #ffd700; font-size: 1.5rem; filter: drop-shadow(0 0 8px rgba(255,215,0,0.4));"></i>
+                    <div style="margin: 1.5rem 0;">
+                        <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.7; margin-bottom: 0.5rem; font-weight: 600;">SOLDE DISPONIBLE</div>
+                        <div style="display: flex; align-items: baseline; gap: 12px;">
+                            <span style="font-size: 3.5rem; font-weight: 900; line-height: 1; letter-spacing: -1px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); text-shadow: 0 2px 10px rgba(0,0,0,0.1);">{{ number_format($balance, 0, ',', ' ') }}</span>
+                            <i class="fas fa-star" style="color: #ffd700; font-size: 1.8rem; filter: drop-shadow(0 0 12px rgba(255,215,0,0.5));"></i>
                         </div>
                     </div>
 
                     {{-- Card Footer: Number and Name --}}
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
-                            <div style="font-family: 'Courier New', monospace; font-size: 1.25rem; letter-spacing: 2px; margin-bottom: 0.5rem; opacity: 0.9;">
+                            <div style="font-family: 'Courier New', Courier, monospace; font-size: 1.35rem; letter-spacing: 3px; margin-bottom: 0.6rem; opacity: 0.95; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
                                 **** **** **** {{ sprintf('%04d', Auth::user()->id ?? 0) }}
                             </div>
-                            <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.85; font-weight: 600;">
+                            <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.9; font-weight: 700;">
                                 {{ Auth::user()->name ?? 'MEMBRE KARNOU' }}
                             </div>
                         </div>
-                        <div style="opacity: 0.6;">
-                            <i class="fab fa-cc-visa" style="font-size: 2.5rem;"></i>
+                        <div style="opacity: 0.8; transform: translateY(5px);">
+                            <svg width="60" height="40" viewBox="0 0 400 248" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="150" cy="124" r="100" fill="#EB001B" fill-opacity="0.8"/>
+                                <circle cx="250" cy="124" r="100" fill="#F79E1B" fill-opacity="0.8"/>
+                            </svg>
                         </div>
                     </div>
                 </div>
 
                 {{-- Vertical Divider --}}
-                <div style="width: 1px; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent);"></div>
+                <div style="width: 1px; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent); margin: 0 1.5rem;"></div>
 
-                {{-- Right Side: Tips --}}
-                <div style="flex: 0.8; padding-left: 2rem; display: flex; flex-direction: column; justify-content: center;">
-                    <h3 style="color: white; margin-top: 0; margin-bottom: 1.25rem; font-size: 0.9rem; font-weight: 700; opacity: 0.9;">
-                        AVANTAGES CRÉDITS
+                {{-- Right Side: Benefits --}}
+                <div style="flex: 0.8; padding-left: 0.5rem; display: flex; flex-direction: column; justify-content: center; z-index: 2;">
+                    <h3 style="color: white; margin-top: 0; margin-bottom: 1.5rem; font-size: 0.85rem; font-weight: 800; opacity: 0.95; letter-spacing: 1.5px; border-left: 3px solid #ffd700; padding-left: 10px;">
+                        PRIVILÈGES
                     </h3>
-                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                        <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.8rem; opacity: 0.85;">
-                            <i class="fas fa-check-circle" style="color: #10b981;"></i>
-                            <span>Mise en avant Accueil</span>
+                    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+                        <div style="display: flex; align-items: center; gap: 0.85rem; font-size: 0.85rem; color: rgba(255,255,255,0.9);">
+                            <div style="width: 24px; height: 24px; background: rgba(16, 185, 129, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-rocket" style="color: #10b981; font-size: 0.75rem;"></i>
+                            </div>
+                            <span style="font-weight: 500;">Boost Boosters Illimité</span>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.8rem; opacity: 0.85;">
-                            <i class="fas fa-check-circle" style="color: #10b981;"></i>
-                            <span>Badge "Urgent" Booster</span>
+                        <div style="display: flex; align-items: center; gap: 0.85rem; font-size: 0.85rem; color: rgba(255,255,255,0.9);">
+                            <div style="width: 24px; height: 24px; background: rgba(59, 130, 246, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-crown" style="color: #3b82f6; font-size: 0.75rem;"></i>
+                            </div>
+                            <span style="font-weight: 500;">Badge Premium Vérifié</span>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.8rem; opacity: 0.85;">
-                            <i class="fas fa-check-circle" style="color: #10b981;"></i>
-                            <span>Vidéos illimitées</span>
+                        <div style="display: flex; align-items: center; gap: 0.85rem; font-size: 0.85rem; color: rgba(255,255,255,0.9);">
+                            <div style="width: 24px; height: 24px; background: rgba(245, 158, 11, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-bolt" style="color: #f59e0b; font-size: 0.75rem;"></i>
+                            </div>
+                            <span style="font-weight: 500;">Support Client Prioritaire</span>
                         </div>
                     </div>
                 </div>
