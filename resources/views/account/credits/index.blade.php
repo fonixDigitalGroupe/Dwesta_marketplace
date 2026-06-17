@@ -83,12 +83,7 @@
                                 {{ Auth::user()->name ?? 'MEMBRE KARNOU' }}
                             </div>
                         </div>
-                        <div style="opacity: 0.8; transform: translateY(5px);">
-                            <svg width="60" height="40" viewBox="0 0 400 248" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="150" cy="124" r="100" fill="#EB001B" fill-opacity="0.8"/>
-                                <circle cx="250" cy="124" r="100" fill="#F79E1B" fill-opacity="0.8"/>
-                            </svg>
-                        </div>
+
                     </div>
                 </div>
 
