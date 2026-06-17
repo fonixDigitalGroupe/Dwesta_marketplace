@@ -141,6 +141,16 @@
                                     <div style="font-size: 1rem; font-weight: 700; color: #333; margin-bottom: 0.5rem;">
                                         {{ number_format($pack->prix ?? $pack->price ?? $pack['price'] ?? 0, 0, ',', ' ') }} FCFA
                                     </div>
+
+                                    @if (($pack->bonus_credits ?? 0) > 0)
+                                        @php
+                                            $isPremium = ($pack->credits ?? $pack['credits'] ?? 0) == 100 && ($pack->prix ?? $pack->price ?? $pack['price'] ?? 0) == 9000;
+                                        @endphp
+                                        <div
+                                            style="display: inline-block; background: #dcfce7; color: #166534; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.75rem; font-weight: 800; margin-top: 5px; {{ $isPremium ? 'border: 2px solid #f68b1e;' : '' }}">
+                                            + {{ number_format($pack->bonus_credits ?? $pack['bonus_credits'] ?? 0, 0, ',', ' ') }} CRÉDITS OFFERTS
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <form action="{{ route('account.credits.checkout') }}" method="POST">
