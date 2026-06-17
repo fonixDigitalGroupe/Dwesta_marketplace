@@ -83,7 +83,7 @@
                                 @endif
                             </div>
 
-                            <form action="{{ route('account.credits.checkout') }}" method="POST" onsubmit="return confirm('Confirmer l\'achat de ce forfait pour {{ number_format($pack->prix, 0, \',\', \' \') }} FCFA ?')">
+                            <form action="{{ route('account.credits.checkout') }}" method="POST" onsubmit="return confirm('Confirmer l\'achat de ce forfait pour {{ number_format($pack->prix, 0, ',', ' ') }} FCFA ?')">
                                 @csrf
                                 <input type="hidden" name="pack_id" value="{{ $pack->id }}">
 
