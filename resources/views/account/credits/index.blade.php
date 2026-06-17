@@ -24,36 +24,57 @@
                 </div>
             @endif
 
-            {{-- Solde actuel --}}
-            <div style="background: linear-gradient(135deg, #ffffff 0%, #f8faff 100%); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
+            {{-- Solde actuel - Carte Finance --}}
+            <div style="background: linear-gradient(135deg, #004aad 0%, #003685 100%); padding: 2.5rem; border-radius: 20px; margin-bottom: 2.5rem; border: none; box-shadow: 0 15px 35px rgba(0,74,173,0.25); position: relative; overflow: hidden; color: white;">
+                {{-- Effet de carte (cercle décoratif) --}}
+                <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.05); border-radius: 50%;"></div>
+                <div style="position: absolute; bottom: -30px; left: -30px; width: 120px; height: 120px; background: rgba(255,255,255,0.03); border-radius: 50%;"></div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2.5rem; position: relative; z-index: 1;">
+                    {{-- Balance Card --}}
                     <div style="flex: 1; min-width: 250px;">
-                        <h2 style="color: #64748b; margin-top: 0; margin-bottom: 0.75rem; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Solde actuel</h2>
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <div style="background: #fffbeb; padding: 1rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 4px rgba(251, 191, 36, 0.1);">
-                                <i class="fas fa-star" style="font-size: 2rem; color: #f68b1e; filter: drop-shadow(0 0 8px rgba(246, 139, 30, 0.2));"></i>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 1.5rem; opacity: 0.8; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px;">
+                            <i class="fas fa-wallet"></i> Solde actuel
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <div style="font-size: 3.5rem; font-weight: 900; line-height: 1; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 15px;">
+                                {{ number_format($balance, 0, ',', ' ') }}
+                                <i class="fas fa-star" style="font-size: 2rem; color: #ffbe00; filter: drop-shadow(0 0 10px rgba(255, 190, 0, 0.5));"></i>
                             </div>
-                            <div>
-                                <span style="font-size: 2.5rem; font-weight: 900; color: #1e293b; line-height: 1;">{{ number_format($balance, 0, ',', ' ') }}</span>
-                                <span style="display: block; color: #64748b; font-size: 0.85rem; font-weight: 600; margin-top: 0.25rem;">CRÉDITS DISPONIBLES</span>
-                            </div>
+                            <div style="font-size: 0.9rem; font-weight: 500; opacity: 0.9; letter-spacing: 0.5px;">VOS CRÉDITS DISPONIBLES</div>
+                        </div>
+                        
+                        {{-- Simulant un numéro de carte pour le look finance --}}
+                        <div style="font-family: 'Courier New', monospace; font-size: 1.1rem; letter-spacing: 3px; opacity: 0.6; margin-top: 2rem;">
+                            **** **** **** {{ sprintf('%04d', Auth::user()->id ?? 0) }}
                         </div>
                     </div>
                     
-                    <div style="flex: 1.5; min-width: 300px; background: rgba(255, 255, 255, 0.6); padding: 1.5rem; border-radius: 10px; border: 1px solid rgba(226, 232, 240, 0.5);">
-                        <h3 style="color: #1e293b; margin-top: 0; margin-bottom: 1rem; font-size: 0.95rem; font-weight: 700;">Comment utiliser vos crédits ?</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
-                                <div style="color: #004aad; margin-top: 2px;"><i class="fas fa-rocket"></i></div>
-                                <span style="color: #475569; font-size: 0.85rem; font-weight: 500; line-height: 1.4;">Mise en avant sur la page d'accueil</span>
+                    {{-- Features Card (Glassmorphism effect) --}}
+                    <div style="flex: 1.5; min-width: 300px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">
+                        <h3 style="color: white; margin-top: 0; margin-bottom: 1.5rem; font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-info-circle" style="opacity: 0.8;"></i>
+                            Comment utiliser vos crédits ?
+                        </h3>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 1.2rem;">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 32px; height: 32px; background: rgba(255, 255, 255, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #ffffff;">
+                                    <i class="fas fa-rocket"></i>
+                                </div>
+                                <span style="font-size: 0.9rem; font-weight: 500; opacity: 0.95;">Mise en avant sur la page d'accueil</span>
                             </div>
-                            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
-                                <div style="color: #EF3B2D; margin-top: 2px;"><i class="fas fa-bolt"></i></div>
-                                <span style="color: #475569; font-size: 0.85rem; font-weight: 500; line-height: 1.4;">Badge "Urgent" pour plus de vues</span>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 32px; height: 32px; background: rgba(239, 59, 45, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #ffffff;">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <span style="font-size: 0.9rem; font-weight: 500; opacity: 0.95;">Badge "Urgent" pour plus de vues</span>
                             </div>
-                            <div style="display: flex; align-items: flex-start; gap: 0.75rem;">
-                                <div style="color: #f68b1e; margin-top: 2px;"><i class="fas fa-video"></i></div>
-                                <span style="color: #475569; font-size: 0.85rem; font-weight: 500; line-height: 1.4;">Ajout de vidéo à votre annonce</span>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 32px; height: 32px; background: rgba(246, 139, 30, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #ffffff;">
+                                    <i class="fas fa-video"></i>
+                                </div>
+                                <span style="font-size: 0.9rem; font-weight: 500; opacity: 0.95;">Ajout de vidéo à votre annonce</span>
                             </div>
                         </div>
                     </div>
