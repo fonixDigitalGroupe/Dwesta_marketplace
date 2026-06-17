@@ -33,7 +33,7 @@
                         <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 4px; border: 1px solid {{ $option->is_popular ? '#EF3B2D' : '#dee2e6' }}; position: relative;">
 
                             @if($option->is_popular)
-                                <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #EF3B2D; color: white; padding: 0.2rem 0.9rem; border-radius: 20px; font-size: 0.72rem; font-weight: bold; white-space: nowrap;">
+                                <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #f68b1e; color: white; padding: 0.2rem 0.9rem; border-radius: 20px; font-size: 0.72rem; font-weight: bold; white-space: nowrap;">
                                     POPULAIRE
                                 </div>
                             @endif
