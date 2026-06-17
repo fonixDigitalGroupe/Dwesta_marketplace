@@ -42,7 +42,7 @@
                                 Carte {{ number_format($option->amount, 0, ',', ' ') }} FCFA
                             </h3>
 
-                            <div style="font-size: 1.75rem; font-weight: 700; color: #EF3B2D; margin-bottom: 0.25rem;">
+                            <div style="font-size: 1.75rem; font-weight: 700; color: #333; margin-bottom: 0.25rem;">
                                 {{ number_format($option->amount, 0, ',', ' ') }} FCFA
                             </div>
 
