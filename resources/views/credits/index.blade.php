@@ -63,10 +63,7 @@
                     {{-- Card Footer: Number and Name --}}
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
-                            <div
-                                style="font-family: 'Courier New', Courier, monospace; font-size: 1.35rem; letter-spacing: 3px; margin-bottom: 0.6rem; opacity: 0.95; text-shadow: 0 1px 2px rgba(0,0,0,0.3);">
-                                **** **** **** {{ sprintf('%04d', Auth::user()->id ?? 0) }}
-                            </div>
+
                             <div
                                 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.9; font-weight: 700;">
                                 {{ Auth::user()->name ?? 'MEMBRE KARNOU' }}
