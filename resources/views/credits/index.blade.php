@@ -53,14 +53,14 @@
 
             {{-- Solde actuel - Carte de Crédit Professionnelle --}}
             <div
-                style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 2.2rem; border-radius: 24px; margin-bottom: 2.5rem; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 25px 50px -12px rgba(0, 74, 173, 0.25); position: relative; overflow: hidden; color: white; max-width: 1000px; display: flex; align-items: stretch; gap: 0; isolation: isolate;">
+                style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 1.4rem 1.75rem; border-radius: 16px; margin-bottom: 1.75rem; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 15px 30px -8px rgba(0, 74, 173, 0.25); position: relative; overflow: hidden; color: white; max-width: 1000px; display: flex; align-items: stretch; gap: 0; isolation: isolate;">
 
                 {{-- Shimmer Effect --}}
                 <div class="card-shimmer"></div>
 
                 {{-- Left Side: The Card --}}
                 <div
-                    style="flex: 1.2; position: relative; padding-right: 2rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 220px; z-index: 2;">
+                    style="flex: 1.2; position: relative; padding-right: 2rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 155px; z-index: 2;">
                     {{-- Card Header: Chip and Brand --}}
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div
@@ -71,15 +71,15 @@
                     </div>
 
                     {{-- Card Center: Balance --}}
-                    <div style="margin: 1.5rem 0;">
+                    <div style="margin: 0.75rem 0;">
                         <div
-                            style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.7; margin-bottom: 0.5rem; font-weight: 600;">
+                            style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.7; margin-bottom: 0.3rem; font-weight: 600;">
                             SOLDE DISPONIBLE</div>
                         <div style="display: flex; align-items: baseline; gap: 12px;">
                             <span
-                                style="font-size: 3.5rem; font-weight: 900; line-height: 1; letter-spacing: -1px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); text-shadow: 0 2px 10px rgba(0,0,0,0.1);">{{ number_format($balance, 0, ',', ' ') }}</span>
+                                style="font-size: 2.5rem; font-weight: 900; line-height: 1; letter-spacing: -1px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); text-shadow: 0 2px 10px rgba(0,0,0,0.1);">{{ number_format($balance, 0, ',', ' ') }}</span>
                             <i class="fas fa-star"
-                                style="color: #ffd700; font-size: 1.8rem; filter: drop-shadow(0 0 12px rgba(255,215,0,0.5));"></i>
+                                style="color: #ffd700; font-size: 1.3rem; filter: drop-shadow(0 0 12px rgba(255,215,0,0.5));"></i>
                         </div>
                     </div>
 
