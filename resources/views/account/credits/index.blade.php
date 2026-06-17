@@ -51,30 +51,30 @@
                         </div>
                     </div>
                     
-                    {{-- Features Card (Glassmorphism effect) --}}
-                    <div style="flex: 1.5; min-width: 300px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">
-                        <h3 style="color: white; margin-top: 0; margin-bottom: 1.5rem; font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px;">
-                            <i class="fas fa-info-circle" style="opacity: 0.8;"></i>
+                    {{-- Features Card (Subtle/Soft version) --}}
+                    <div style="flex: 1.5; min-width: 300px; padding: 1.5rem 2rem; border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.03);">
+                        <h3 style="color: white; margin-top: 0; margin-bottom: 1.25rem; font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; opacity: 0.9;">
+                            <i class="fas fa-info-circle" style="opacity: 0.6;"></i>
                             Comment utiliser vos crédits ?
                         </h3>
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 1.2rem;">
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
                             <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="width: 32px; height: 32px; background: rgba(255, 255, 255, 0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #ffffff;">
+                                <div style="color: #60a5fa; font-size: 1rem; width: 24px; text-align: center;">
                                     <i class="fas fa-rocket"></i>
                                 </div>
-                                <span style="font-size: 0.9rem; font-weight: 500; opacity: 0.95;">Mise en avant sur la page d'accueil</span>
+                                <span style="font-size: 0.85rem; font-weight: 500; opacity: 0.85;">Mise en avant sur la page d'accueil</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="width: 32px; height: 32px; background: rgba(239, 59, 45, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #ffffff;">
+                                <div style="color: #fca5a5; font-size: 1rem; width: 24px; text-align: center;">
                                     <i class="fas fa-bolt"></i>
                                 </div>
-                                <span style="font-size: 0.9rem; font-weight: 500; opacity: 0.95;">Badge "Urgent" pour plus de vues</span>
+                                <span style="font-size: 0.85rem; font-weight: 500; opacity: 0.85;">Badge "Urgent" pour plus de vues</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 1rem;">
-                                <div style="width: 32px; height: 32px; background: rgba(246, 139, 30, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #ffffff;">
+                                <div style="color: #fcd34d; font-size: 1rem; width: 24px; text-align: center;">
                                     <i class="fas fa-video"></i>
                                 </div>
-                                <span style="font-size: 0.9rem; font-weight: 500; opacity: 0.95;">Ajout de vidéo à votre annonce</span>
+                                <span style="font-size: 0.85rem; font-weight: 500; opacity: 0.85;">Ajout de vidéo à votre annonce</span>
                             </div>
                         </div>
                     </div>
