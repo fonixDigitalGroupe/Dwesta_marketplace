@@ -107,7 +107,7 @@
 
                             @if($isPopular)
                                 <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #f68b1e; color: white; padding: 0.2rem 0.9rem; border-radius: 20px; font-size: 0.72rem; font-weight: bold; white-space: nowrap; z-index: 1;">
-                                    POPULAIRE
+                                    {{ $isPremium ? 'PREMIUM' : 'POPULAIRE' }}
                                 </div>
                             @endif
 
@@ -128,7 +128,7 @@
                                     @php
                                         $isPremium = ($pack->credits == 100 && $pack->prix == 9000);
                                     @endphp
-                                    <div style="display: inline-block; background: #dcfce7; color: #166534; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.75rem; font-weight: 800; margin-top: 5px; {{ $isPremium ? 'border: 2px solid #f68b1e;' : '' }}">
+                                    <div style="display: inline-block; background: #dcfce7; color: #166534; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.75rem; font-weight: 800; margin-top: 5px;">
                                         + {{ number_format($pack->bonus_credits, 0, ',', ' ') }} CRÉDITS OFFERTS
                                     </div>
                                 @endif
