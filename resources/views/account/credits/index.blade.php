@@ -75,7 +75,7 @@
                             $isPremium = ($pack->credits == 100 && $pack->prix == 9000);
                             $isPopular = ($pack->nom ?? $pack->label ?? '') === 'Pack 25 000' || ($pack->popular ?? false) || $isPremium;
                         @endphp
-                        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 1px solid {{ $isPopular ? '#EF3B2D' : '#dee2e6' }}; position: relative; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; border: 1px solid {{ $isPopular ? '#EF3B2D' : '#dee2e6' }}; position: relative; display: flex; flex-direction: column; justify-content: space-between;">
 
                             @if($isPopular)
                                 <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: #f68b1e; color: white; padding: 0.2rem 0.9rem; border-radius: 20px; font-size: 0.72rem; font-weight: bold; white-space: nowrap; z-index: 1;">
@@ -83,12 +83,12 @@
                                 </div>
                             @endif
 
-                            <div style="text-align: center; margin-bottom: 1rem;">
+                            <div style="text-align: center; margin-bottom: 0.75rem;">
                                 <h3 style="color: #666; margin-top: 0; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
                                     {{ $pack->nom ?? 'Forfait Crédits' }}
                                 </h3>
 
-                                <div style="font-size: 1.75rem; font-weight: 800; color: #333; margin-bottom: 0.25rem;">
+                                <div style="font-size: 1.5rem; font-weight: 800; color: #333; margin-bottom: 0.15rem;">
                                     {{ number_format($pack->credits, 0, ',', ' ') }} <small style="font-size: 0.8rem; font-weight: 600; opacity: 0.7;">CRÉDITS</small>
                                 </div>
 
@@ -100,7 +100,7 @@
                                     @php
                                         $isPremium = ($pack->credits == 100 && $pack->prix == 9000);
                                     @endphp
-                                    <div style="display: inline-block; background: #dcfce7; color: #166534; padding: 0.2rem 0.7rem; border-radius: 4px; font-size: 0.75rem; font-weight: 800; margin-top: 5px;">
+                                    <div style="display: inline-block; background: #fff3e0; color: #e65100; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-top: 4px; border: 1px solid #ffe0b2;">
                                         + {{ number_format($pack->bonus_credits, 0, ',', ' ') }} CRÉDITS OFFERTS
                                     </div>
                                 @endif
@@ -111,7 +111,7 @@
                                 <input type="hidden" name="pack_id" value="{{ $pack->id }}">
 
                                 <button type="submit"
-                                    style="display: block; width: 100%; text-align: center; background: {{ ($loop->first || $loop->last) ? '#004aad' : '#f68b1e' }}; color: white; padding: 0.7rem; border-radius: 6px; border: none; cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: background 0.2s;">
+                                    style="display: block; width: 100%; text-align: center; background: {{ ($loop->first || $loop->last) ? '#004aad' : '#f68b1e' }}; color: white; padding: 0.6rem; border-radius: 6px; border: none; cursor: pointer; font-size: 0.85rem; font-weight: 700; transition: background 0.2s;">
                                     Acheter
                                 </button>
                             </form>
