@@ -121,8 +121,8 @@
     }
 
     .btn-amazon-primary {
-        background: #004aad;
-        border-color: #003a8c;
+        background: #f68b1e;
+        border-color: #e67e17;
         color: #fff;
         border-radius: 8px;
         box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
@@ -135,8 +135,8 @@
     }
 
     .btn-amazon-primary:hover {
-        background: #0056cc;
-        border-color: #004aad;
+        background: #ff9d3a;
+        border-color: #f68b1e;
         color: #fff;
     }
 
