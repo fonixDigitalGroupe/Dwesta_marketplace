@@ -168,7 +168,7 @@
 
     .security-note {
         text-align: center;
-        font-size: 12px;
+        font-size: 14px;
         color: #75757a;
         margin-top: 24px;
         line-height: 1.6;
