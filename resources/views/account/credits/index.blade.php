@@ -27,7 +27,7 @@
             @endif
 
             {{-- Solde actuel - Carte de Crédit Professionnelle --}}
-            <div style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 1.4rem 1.75rem; border-radius: 16px; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 15px 30px -8px rgba(0, 74, 173, 0.25); position: relative; overflow: hidden; color: white; max-width: 420px; isolation: isolate;">
+            <div style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 1.4rem 1.75rem; border-radius: 16px; margin-bottom: 2rem; margin-left: auto; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2); position: relative; overflow: hidden; color: white; max-width: 420px; isolation: isolate;">
                 
                 {{-- No shimmer --}}
 
