@@ -239,7 +239,7 @@
                         <div style="display: flex; flex-direction: column; gap: 12px;">
                             <button class="btn-amazon-primary" onclick="document.getElementById('withdraw-section').scrollIntoView({behavior: 'smooth'})">Effectuer un retrait</button>
                             <button class="btn-amazon-outline" style="color: #b12704; border-color: #d5d9d9;" onclick="window.print()">
-                                <i class="fas fa-file-pdf" style="margin-right: 5px;"></i> Télécharger le relevé
+                                <i class="fas fa-file-pdf" style="margin-right: 5px;"></i> Relevé (PDF)
                             </button>
                         </div>
                     </div>
