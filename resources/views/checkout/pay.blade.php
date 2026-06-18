@@ -228,7 +228,6 @@
         <div class="card-section">
             <div class="section-title">
                 <span>RÉCAPITULATIF DE PAIEMENT</span>
-                <a href="#" style="color: var(--karnou-blue); text-decoration: none;">VOIR DÉTAILS ></a>
             </div>
             <div class="amount-display">
                 <span class="amount-label">{{ $description ?? 'MONTANT TOTAL À PAYER' }}</span>
