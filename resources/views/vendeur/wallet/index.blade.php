@@ -212,7 +212,7 @@
         <div class="amazon-card">
             <div class="amazon-card-header">
                 <h2>Récapitulatif du solde</h2>
-                <span style="font-size: 0.8rem; color: #f68b1e; font-weight: 500;">Mis à jour à l'instant</span>
+                <span style="font-size: 0.8rem; color: #004aad; font-weight: 500;">Mis à jour à l'instant</span>
             </div>
             <div class="amazon-card-content">
                 <div class="wallet-summary-grid">
@@ -304,7 +304,7 @@
         <div class="amazon-card">
             <div class="amazon-card-header">
                 <h2>Historique des transactions</h2>
-                <div style="font-size: 0.85rem; color: #f68b1e; cursor: pointer; font-weight: 500;">Filtrer par date <i class="fas fa-chevron-down"></i></div>
+                <div style="font-size: 0.85rem; color: #004aad; cursor: pointer; font-weight: 500;">Filtrer par date <i class="fas fa-chevron-down"></i></div>
             </div>
             <div style="overflow-x: auto;">
                 <table class="amazon-table">
