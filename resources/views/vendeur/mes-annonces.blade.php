@@ -74,9 +74,9 @@
     }
 
     .status-published {
-        background-color: rgba(33, 150, 243, 0.12);
-        color: #1565C0;
-        border: 1px solid rgba(33, 150, 243, 0.4);
+        background-color: rgba(22, 163, 74, 0.12);
+        color: #15803d;
+        border: 1px solid rgba(22, 163, 74, 0.35);
     }
 
     .status-pending {
@@ -86,9 +86,9 @@
     }
 
     .status-draft {
-        background-color: rgba(246, 139, 30, 0.12);
-        color: #d97706;
-        border: 1px solid rgba(246, 139, 30, 0.4);
+        background-color: rgba(124, 58, 237, 0.10);
+        color: #6d28d9;
+        border: 1px solid rgba(124, 58, 237, 0.3);
     }
     
     .status-rejected {
