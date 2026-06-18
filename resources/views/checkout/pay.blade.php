@@ -218,6 +218,10 @@
     .header-logo-text img {
         height: 26px !important;
     }
+
+    footer {
+        display: none !important;
+    }
 </style>
 @endpush
 
@@ -289,10 +293,6 @@
         En cliquant sur "PAYER MAINTENANT", j'accepte les <a href="#">Conditions générales d'utilisation</a> et les <a href="#">Politiques de confidentialité</a>.<br><br>
         <strong>Note:</strong> Karnou ne vous demandera jamais votre mot de passe, votre code PIN, votre code CVV ou les détails complets de votre carte par téléphone ou par e-mail.
     </p>
-
-    <div class="footer-links">
-        <a href="{{ route('home') }}">Retour vers KARNOU MARKETPLACE</a>
-    </div>
 </div>
 
 @push('scripts')
