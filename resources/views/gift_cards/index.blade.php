@@ -136,11 +136,54 @@
 @endsection
 
 @push('scripts')
+<style>
+    .gift-card-visual {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        border-radius: 16px;
+        padding: 28px 30px;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        margin-top: 1rem;
+        box-shadow: 0 8px 32px rgba(15, 52, 96, 0.4);
+    }
+    .gift-card-visual::before {
+        content: '';
+        position: absolute;
+        top: -40px; right: -40px;
+        width: 150px; height: 150px;
+        background: rgba(255,255,255,0.04);
+        border-radius: 50%;
+    }
+    .gift-card-visual::after {
+        content: '';
+        position: absolute;
+        bottom: -50px; left: -20px;
+        width: 180px; height: 180px;
+        background: rgba(255,255,255,0.03);
+        border-radius: 50%;
+    }
+    .gc-brand { position: absolute; top: 20px; right: 24px; font-size: 16px; font-weight: 900; color: rgba(255,255,255,0.25); letter-spacing: -1px; }
+    .gc-label { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+    .gc-code { font-size: 22px; font-weight: 800; letter-spacing: 5px; color: #fff; font-family: 'Courier New', monospace; margin: 6px 0 18px 0; }
+    .gc-row { display: flex; gap: 40px; align-items: flex-end; }
+    .gc-amount { font-size: 28px; font-weight: 800; color: #FFD700; }
+    .gc-expiry { font-size: 12px; color: rgba(255,255,255,0.6); }
+    .gc-status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-top: 14px; }
+    .gc-status-active { background: rgba(76,175,80,0.25); color: #81C784; border: 1px solid rgba(76,175,80,0.4); }
+    .gc-status-used { background: rgba(244,67,54,0.2); color: #EF9A9A; border: 1px solid rgba(244,67,54,0.3); }
+    .gc-status-expired { background: rgba(158,158,158,0.2); color: #BDBDBD; border: 1px solid rgba(158,158,158,0.3); }
+    .gc-balance-bar-wrap { margin-top: 16px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; height: 6px; }
+    .gc-balance-bar { height: 6px; background: linear-gradient(90deg, #FFD700, #FFA000); border-radius: 20px; transition: width 0.6s ease; }
+</style>
 <script>
 async function checkGiftCardBalance() {
     const code = document.getElementById('balance-code-input').value.trim();
     const resultBox = document.getElementById('balance-result');
     if (!code) return;
+
+    resultBox.style.display = 'block';
+    resultBox.innerHTML = '<div style="text-align:center; padding:1rem; color:#666;"><i class="fas fa-spinner fa-spin"></i> Vérification...</div>';
 
     try {
         const resp = await fetch("{{ route('gift-cards.check-balance') }}", {
@@ -149,15 +192,41 @@ async function checkGiftCardBalance() {
             body: JSON.stringify({ code })
         });
         const data = await resp.json();
-        resultBox.style.display = 'block';
+
         if (data.success) {
-            resultBox.innerHTML = `<div style="font-weight: 700; color: #155724;">Solde : ${data.balance.toLocaleString()} FCFA</div>
-                                  <div style="font-size: 0.8rem; color: #666; margin-top: 0.25rem;">État : ${data.status}</div>`;
+            const pct = data.amount > 0 ? Math.round((data.balance / data.amount) * 100) : 0;
+            const statusClass = data.status === 'active' ? 'gc-status-active' : (data.status === 'used' ? 'gc-status-used' : 'gc-status-expired');
+            const statusLabel = data.status === 'active' ? '✓ Active' : (data.status === 'used' ? '✗ Utilisée' : '⚠ Expirée');
+            const expiryText = data.expiry ? `Exp. ${data.expiry}` : '';
+
+            resultBox.innerHTML = `
+                <div class="gift-card-visual">
+                    <div class="gc-brand">KARNOU</div>
+                    <div class="gc-label">Code de la carte</div>
+                    <div class="gc-code">${data.code}</div>
+                    <div class="gc-row">
+                        <div>
+                            <div class="gc-label">Solde disponible</div>
+                            <div class="gc-amount">${data.balance.toLocaleString('fr-FR')} FCFA</div>
+                        </div>
+                        ${data.amount !== data.balance ? `<div>
+                            <div class="gc-label">Valeur initiale</div>
+                            <div style="font-size:16px; color:rgba(255,255,255,0.6); font-weight:600;">${data.amount.toLocaleString('fr-FR')} FCFA</div>
+                        </div>` : ''}
+                    </div>
+                    ${data.amount > 0 ? `<div class="gc-balance-bar-wrap" style="margin-top:14px;"><div class="gc-balance-bar" style="width:${pct}%;"></div></div>` : ''}
+                    <div>
+                        <span class="gc-status-badge ${statusClass}">${statusLabel}</span>
+                        ${expiryText ? `<span style="font-size:11px; color:rgba(255,255,255,0.5); margin-left:10px;">${expiryText}</span>` : ''}
+                    </div>
+                </div>`;
         } else {
-            resultBox.innerHTML = `<div style="color: #721c24;">${data.message}</div>`;
+            resultBox.innerHTML = `<div style="background:#fff3f3; border:1px solid #ffcdd2; border-radius:8px; padding:1rem; color:#c62828; font-size:0.9rem;">
+                <i class="fas fa-times-circle"></i> ${data.message}
+            </div>`;
         }
     } catch (e) {
-        resultBox.innerHTML = '<div style="color: #721c24;">Erreur de connexion.</div>';
+        resultBox.innerHTML = '<div style="color:#721c24;">Erreur de connexion.</div>';
     }
 }
 </script>
