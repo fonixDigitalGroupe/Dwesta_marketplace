@@ -290,7 +290,7 @@
     </div>
 
     <p class="security-note">
-        En cliquant sur "PAYER MAINTENANT", j'accepte les <a href="{{ route('terms') }}" style="color: var(--karnou-blue); font-weight: 600;">Conditions générales d'utilisation</a> et les <a href="{{ route('privacy') }}" style="color: var(--karnou-blue); font-weight: 600;">Politiques de confidentialité</a>.<br><br>
+        En cliquant sur "PAYER MAINTENANT", j'accepte les <a href="{{ route('terms') }}" style="color: #2196F3; font-weight: 600;">Conditions générales d'utilisation</a> et les <a href="{{ route('privacy') }}" style="color: #2196F3; font-weight: 600;">Politiques de confidentialité</a>.<br><br>
         <strong>Note:</strong> Karnou ne vous demandera jamais votre mot de passe, votre code PIN, votre code CVV ou les détails complets de votre carte par téléphone ou par e-mail.
     </p>
 </div>
