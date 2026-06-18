@@ -125,7 +125,7 @@
         border-color: #003a8c;
         color: #fff;
         border-radius: 8px;
-        box-shadow: 0 2px 5px 0 rgba(0,74,173,.2);
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
         padding: 0.6rem 1.5rem;
         font-size: 0.85rem;
         font-weight: 500;
@@ -149,7 +149,7 @@
         font-size: 0.85rem;
         font-weight: 500;
         cursor: pointer;
-        box-shadow: 0 2px 5px 0 rgba(213,217,217,.5);
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
     }
 
     .btn-amazon-outline:hover {
