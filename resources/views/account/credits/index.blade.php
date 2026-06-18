@@ -27,7 +27,7 @@
             @endif
 
             {{-- Solde actuel - Carte de Crédit Professionnelle --}}
-            <div style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 1.4rem 1.75rem; border-radius: 16px; margin-bottom: 2rem; margin-left: auto; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2); position: relative; overflow: hidden; color: white; max-width: 420px; isolation: isolate;">
+            <div style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 1.4rem 1.75rem; border-radius: 16px; margin-bottom: 2rem; margin-left: auto; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2); position: relative; overflow: hidden; color: white; max-width: 550px; isolation: isolate;">
                 
                 {{-- Background Watermark Icon --}}
                 <i class="fas fa-globe-africa" style="position: absolute; right: -20px; bottom: -40px; font-size: 15rem; color: white; opacity: 0.05; transform: rotate(-20deg); pointer-events: none; z-index: 1;"></i>
@@ -58,11 +58,6 @@
                             <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.9; font-weight: 700;">
                                 {{ Auth::user()->name ?? 'MEMBRE KARNOU' }}
                             </div>
-                        </div>
-                        <div style="display: flex; gap: 15px; opacity: 0.7;">
-                            <i class="fas fa-rocket"></i>
-                            <i class="fas fa-crown"></i>
-                            <i class="fas fa-bolt"></i>
                         </div>
 
                     </div>
