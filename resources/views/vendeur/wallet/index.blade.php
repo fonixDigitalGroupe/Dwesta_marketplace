@@ -1,200 +1,433 @@
 @extends('layouts.app')
 
+@section('title', 'Mon Portefeuille - Karnou')
+
 @push('styles')
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+    body { background-color: #f4f6f9 !important; }
 
     .wallet-page {
-        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        max-width: 1000px;
-        background-color: #f7f8f8;
-        padding: 2rem;
-        border-radius: 8px;
+        font-family: 'Roboto', -apple-system, sans-serif;
+        max-width: 980px;
+        padding: 2rem 1.5rem 4rem;
     }
 
-    .amazon-card {
-        background: #fff;
-        border: 1px solid #d5d9d9;
+    /* ── Page header ── */
+    .wallet-page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 1.75rem;
+        padding-bottom: 0.85rem;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    .wallet-page-header h1 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #0f1111;
+        margin: 0;
+    }
+    .wallet-page-header p {
+        color: #6b7280;
+        font-size: 0.83rem;
+        margin-top: 4px;
+    }
+
+    /* ── Alerts ── */
+    .wallet-alert {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0.85rem 1.1rem;
         border-radius: 8px;
-        margin-bottom: 2rem;
+        font-size: 0.88rem;
+        margin-bottom: 1.25rem;
+    }
+    .wallet-alert.success { background: #e6f4ea; color: #155724; border: 1px solid #a8d5b1; }
+    .wallet-alert.error   { background: #fff5f5; color: #7f1d1d; border: 1px solid #fca5a5; }
+
+    /* ══════════════════════════════
+       FINANCE CARD
+    ══════════════════════════════ */
+    .finance-card {
+        background: linear-gradient(135deg, #004aad 0%, #0066ee 60%, #0a84ff 100%);
+        border-radius: 18px;
+        padding: 2rem 2.25rem;
+        color: #fff;
+        position: relative;
         overflow: hidden;
-        transition: box-shadow 0.3s ease;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 32px rgba(0, 74, 173, 0.35);
+    }
+    .finance-card::before {
+        content: '';
+        position: absolute;
+        width: 320px; height: 320px;
+        background: rgba(255,255,255,0.06);
+        border-radius: 50%;
+        top: -120px; right: -80px;
+    }
+    .finance-card::after {
+        content: '';
+        position: absolute;
+        width: 200px; height: 200px;
+        background: rgba(255,255,255,0.04);
+        border-radius: 50%;
+        bottom: -60px; left: 40px;
+    }
+    .finance-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.75rem;
+        position: relative; z-index: 1;
+    }
+    .finance-card-label {
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.8;
+        margin-bottom: 0.4rem;
+    }
+    .finance-card-balance {
+        font-size: 2.6rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        line-height: 1;
+    }
+    .finance-card-balance sup {
+        font-size: 1rem;
+        font-weight: 500;
+        opacity: 0.75;
+        vertical-align: super;
+        margin-right: 4px;
+    }
+    .finance-card-currency {
+        font-size: 0.9rem;
+        opacity: 0.7;
+        margin-left: 6px;
+        font-weight: 400;
+    }
+    .finance-card-badge {
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        backdrop-filter: blur(4px);
+    }
+    .finance-card-stats {
+        display: flex;
+        gap: 2rem;
+        position: relative; z-index: 1;
+        flex-wrap: wrap;
+    }
+    .finance-stat {
+        flex: 1;
+        min-width: 120px;
+    }
+    .finance-stat-label {
+        font-size: 0.73rem;
+        opacity: 0.65;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 3px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .finance-stat-value {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+    .finance-stat-value.muted { opacity: 0.6; font-size: 0.95rem; font-weight: 400; }
+    .finance-divider {
+        width: 1px;
+        background: rgba(255,255,255,0.2);
+        align-self: stretch;
     }
 
-    .amazon-card:hover {
-        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    /* ── Action Buttons Row ── */
+    .wallet-actions {
+        display: flex;
+        gap: 0.85rem;
+        margin-bottom: 1.75rem;
+        flex-wrap: wrap;
     }
+    .btn-w-primary {
+        background: #004aad;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 0.65rem 1.35rem;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+    .btn-w-primary:hover { background: #003a8c; transform: translateY(-1px); }
+    .btn-w-outline {
+        background: #fff;
+        color: #374151;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 0.65rem 1.35rem;
+        font-size: 0.88rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+    .btn-w-outline:hover { background: #f9fafb; }
 
-    .amazon-card-header {
-        padding: 1rem 1.5rem;
-        background-color: #f0f2f2;
-        border-bottom: 1px solid #d5d9d9;
+    /* ── Section card ── */
+    .w-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .w-card-header {
+        padding: 0.9rem 1.5rem;
+        background: #f9fafb;
+        border-bottom: 1px solid #e5e7eb;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-
-    .amazon-card-header h2 {
-        margin: 0;
-        font-size: 0.9rem;
+    .w-card-header h2 {
+        font-size: 0.92rem;
         font-weight: 700;
-        color: #0f1111;
-        text-transform: none;
-    }
-
-    .amazon-card-content {
-        padding: 1.5rem;
-    }
-
-    /* Summary Section Layout */
-    .wallet-summary-grid {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 2rem;
-        align-items: start;
-    }
-
-    .balance-box {
-        padding: 1.5rem;
-        border-right: 1px solid #eee;
-    }
-
-    .balance-value {
-        font-size: 2.2rem;
-        font-weight: 600;
-        color: #0f1111;
-        margin-bottom: 0.25rem;
-    }
-
-    .balance-currency {
-        font-size: 1rem;
-        font-weight: 500;
-        color: #565959;
-    }
-
-    .pending-status-box {
-        background-color: #fffaf0;
-        border: 1px solid #fbd8b4;
-        border-radius: 8px;
-        padding: 1rem;
+        color: #111827;
+        margin: 0;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 8px;
+    }
+    .w-card-header h2 i { color: #004aad; }
+    .w-card-body { padding: 1.5rem; }
+
+    /* ── Pending funds box ── */
+    .pending-box {
+        background: #fffbeb;
+        border: 1px solid #fcd34d;
+        border-radius: 8px;
+        padding: 0.85rem 1.1rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 0.85rem;
+        color: #92400e;
         margin-top: 1rem;
     }
+    .pending-box i { color: #d97706; margin-top: 2px; flex-shrink: 0; }
 
-    /* Transaction Table */
-    .amazon-table {
-        width: 100%;
-        border-collapse: collapse;
+    /* ── Withdrawal Form ── */
+    .withdraw-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.75rem;
+        margin-bottom: 1.25rem;
     }
-
-    .amazon-table th {
-        background-color: #f0f2f2;
-        color: #565959;
-        font-size: 0.75rem;
+    @media (max-width: 640px) {
+        .withdraw-grid { grid-template-columns: 1fr; }
+        .finance-card-balance { font-size: 2rem; }
+    }
+    .form-field label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 6px;
         text-transform: uppercase;
-        padding: 0.75rem 1rem;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
+        letter-spacing: 0.05em;
     }
-
-    .amazon-table td {
-        padding: 1rem;
-        border-bottom: 1px solid #eee;
-        font-size: 0.9rem;
-        color: #0f1111;
-    }
-
-    .amazon-table tr:hover {
-        background-color: #f7f8f8;
-    }
-
-    /* Form Styling */
-    .amazon-input {
+    .form-input {
         width: 100%;
-        padding: 0.6rem 0.75rem;
-        border: 1px solid #888c8c;
-        border-radius: 4px;
-        font-size: 0.9rem;
-        box-shadow: 0 1px 2px rgba(15,17,17,.15) inset;
+        padding: 0.65rem 0.9rem;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 0.92rem;
+        color: #111827;
         outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-sizing: border-box;
     }
-
-    .amazon-input:focus {
-        border-color: #e77600;
-        box-shadow: 0 0 3px 2px rgba(228,121,17,.5);
+    .form-input:focus {
+        border-color: #004aad;
+        box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.12);
     }
+    .amount-wrapper {
+        position: relative;
+    }
+    .amount-wrapper input {
+        font-size: 1.3rem;
+        font-weight: 700;
+        padding-right: 65px;
+        color: #111827;
+    }
+    .amount-suffix {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: #6b7280;
+    }
+    .available-hint {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.78rem;
+        color: #6b7280;
+        margin-top: 6px;
+    }
+    .available-hint strong { color: #007600; }
 
-    .btn-amazon-primary {
-        background: linear-gradient(to bottom, #0056cc, #004aad);
-        border: 1px solid #003a8c;
-        border-bottom-color: #002d6d;
-        color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 1px 0 rgba(255,255,255,.2) inset, 0 1px 0 rgba(0,0,0,.08);
-        padding: 0.6rem 1.75rem;
-        font-size: 0.85rem;
-        font-weight: 500;
+    /* payment method chips */
+    .pay-chips { display: flex; gap: 10px; }
+    .pay-chip {
+        flex: 1;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 0.65rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
         cursor: pointer;
-        transition: all 0.1s;
-    }
-
-    .btn-amazon-primary:hover {
-        background: linear-gradient(to bottom, #0066ee, #0056cc);
-        border-color: #003a8c;
-    }
-
-    .btn-amazon-primary:active {
-        background: #004aad;
-        box-shadow: 0 1px 3px rgba(0,0,0,.2) inset;
-    }
-
-    .btn-amazon-outline {
-        background: #fff;
-        border: 1px solid #D5D9D9;
-        color: #0F1111;
-        border-radius: 8px;
-        padding: 0.6rem 1.5rem;
-        font-size: 0.85rem;
+        transition: all 0.18s;
+        background: #fafafa;
+        font-size: 0.82rem;
         font-weight: 500;
-        cursor: pointer;
-        box-shadow: 0 2px 5px 0 rgba(213,217,217,.5);
-        transition: background 0.2s;
+        color: #374151;
     }
-
-    .btn-amazon-outline:hover {
-        background-color: #f7fafa;
-        border-color: #D5D9D9;
-    }
-
-    .status-pill {
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 0.75rem;
+    .pay-chip:hover { border-color: #004aad; background: #f0f5ff; }
+    .pay-chip.active {
+        border-color: #004aad;
+        background: #eef3ff;
+        box-shadow: 0 0 0 2px rgba(0,74,173,0.15);
+        color: #004aad;
         font-weight: 600;
     }
 
-    .status-available { background: #e7f4e4; color: #007600; }
-    .status-pending { background: #fff4e5; color: #854d0e; }
-    .status-withdrawn { background: #f3f3f3; color: #565959; }
+    .withdraw-notice {
+        background: #eff6ff;
+        border-left: 4px solid #004aad;
+        border-radius: 0 8px 8px 0;
+        padding: 0.75rem 1rem;
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        font-size: 0.81rem;
+        color: #1e40af;
+        margin-top: 1.25rem;
+    }
+    .withdraw-notice i { margin-top: 2px; flex-shrink: 0; }
 
-    /* Payment icons */
-    .pay-method-chip {
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        padding: 10px;
+    .btn-submit-withdraw {
+        background: linear-gradient(135deg, #004aad, #0066ee);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 0.8rem 2.5rem;
+        font-size: 0.92rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: opacity 0.2s, transform 0.15s;
         display: flex;
         align-items: center;
-        gap: 10px;
-        cursor: pointer;
-        transition: all 0.2s;
+        gap: 8px;
+        margin-left: auto;
+        margin-top: 1.5rem;
+        box-shadow: 0 4px 14px rgba(0, 74, 173, 0.3);
     }
-    .pay-method-chip.active {
-        border-color: #007185;
-        background-color: #f0f7f8;
-        box-shadow: 0 0 0 1px #007185;
+    .btn-submit-withdraw:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* locked state */
+    .locked-state {
+        text-align: center;
+        padding: 2.5rem 1rem;
+        color: #6b7280;
     }
+    .locked-state i { font-size: 2.5rem; color: #d1d5db; margin-bottom: 1rem; }
+    .locked-state p { font-size: 0.92rem; margin: 0; line-height: 1.6; }
+
+    /* ── Transaction Table ── */
+    .tx-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.88rem;
+    }
+    .tx-table th {
+        background: #f9fafb;
+        color: #6b7280;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        padding: 0.7rem 1.1rem;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+        font-weight: 600;
+    }
+    .tx-table td {
+        padding: 0.95rem 1.1rem;
+        border-bottom: 1px solid #f3f4f6;
+        color: #111827;
+        vertical-align: middle;
+    }
+    .tx-table tr:last-child td { border-bottom: none; }
+    .tx-table tr:hover td { background: #fafafa; }
+
+    .tx-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+    }
+    .tx-icon.income  { background: #dcfce7; color: #15803d; }
+    .tx-icon.expense { background: #fee2e2; color: #dc2626; }
+    .tx-icon.pending { background: #fef9c3; color: #a16207; }
+
+    .tx-ref { font-size: 0.72rem; color: #9ca3af; margin-top: 2px; font-family: monospace; }
+
+    .badge-pill {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.73rem;
+        font-weight: 600;
+    }
+    .badge-available { background: #dcfce7; color: #15803d; }
+    .badge-pending   { background: #fef9c3; color: #a16207; }
+    .badge-withdrawn { background: #f3f4f6; color: #6b7280; }
+    .badge-failed    { background: #fee2e2; color: #dc2626; }
+
+    .tx-empty {
+        text-align: center;
+        padding: 3rem;
+        color: #9ca3af;
+    }
+    .tx-empty i { font-size: 2rem; margin-bottom: 0.75rem; color: #e5e7eb; }
 </style>
 @endpush
 
@@ -203,213 +436,274 @@
     @include('partials.profile-sidebar')
 
     <main class="main-content wallet-page">
-        <div style="padding-bottom: 0.8rem; margin-bottom: 2rem; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: flex-end;">
+
+        {{-- Header --}}
+        <div class="wallet-page-header">
             <div>
-                <h1 style="font-size: 1.3rem; font-weight: 700; color: #333; margin: 0;">Mon Portefeuille</h1>
-                <p style="color: #565959; font-size: 0.85rem; margin-top: 4px;">Surveillez votre activité financière et gérez vos virements.</p>
+                <h1><i class="fas fa-wallet" style="color: #004aad; margin-right: 8px;"></i>Mon Portefeuille</h1>
+                <p>Gérez vos revenus et effectuez vos virements en toute sécurité.</p>
             </div>
-            <div style="font-size: 0.8rem; color: #007185; cursor: pointer; font-weight: 500;">
+            <div style="font-size: 0.78rem; color: #007185; font-weight: 500; display: flex; align-items: center; gap: 5px; cursor: pointer;">
                 <i class="far fa-question-circle"></i> Comment ça marche ?
             </div>
         </div>
 
+        {{-- Alerts --}}
         @if(session('success'))
-            <div style="background: #e7f4e4; color: #007600; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #007600; font-size: 0.9rem;">
+            <div class="wallet-alert success">
                 <i class="fas fa-check-circle"></i> {{ session('success') }}
             </div>
         @endif
-
         @if(session('error'))
-            <div style="background: #fffafa; color: #ba000d; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #ba000d; font-size: 0.9rem;">
+            <div class="wallet-alert error">
                 <i class="fas fa-exclamation-triangle"></i> {{ session('error') }}
             </div>
         @endif
 
-        <!-- Amazon Style Summary Card -->
-        <div class="amazon-card">
-            <div class="amazon-card-header">
-                <h2>Récapitulatif du solde</h2>
-                <span style="font-size: 0.8rem; color: #004aad; font-weight: 500;">Mis à jour à l'instant</span>
+        {{-- ══ FINANCE CARD ══ --}}
+        <div class="finance-card">
+            <div class="finance-card-top">
+                <div>
+                    <div class="finance-card-label">Solde disponible</div>
+                    <div class="finance-card-balance">
+                        <sup>FCFA</sup>{{ number_format($availableBalance, 0, ',', ' ') }}
+                    </div>
+                </div>
+                <div>
+                    <div class="finance-card-badge">
+                        <i class="fas fa-shield-alt"></i> Sécurisé
+                    </div>
+                    <div style="font-size: 0.7rem; opacity: 0.6; text-align: right; margin-top: 8px;">
+                        {{ now()->format('d/m/Y') }}
+                    </div>
+                </div>
             </div>
-            <div class="amazon-card-content">
-                <div class="wallet-summary-grid">
-                    <div class="balance-box">
-                        <div style="font-size: 0.9rem; color: #565959; margin-bottom: 0.5rem;">Solde disponible pour retrait</div>
-                        <div class="balance-value">
-                            {{ number_format($availableBalance, 0, ',', ' ') }}
-                            <span class="balance-currency">FCFA</span>
-                        </div>
-                        
-                        @if($pendingBalance > 0)
-                        <div class="pending-status-box">
-                            <i class="fas fa-info-circle" style="color: #007185;"></i>
-                            <div>
-                                <div style="font-size: 0.85rem; font-weight: 700; color: #0f1111;">{{ number_format($pendingBalance, 0, ',', ' ') }} FCFA en attente</div>
-                                <div style="font-size: 0.75rem; color: #565959;">Ces fonds seront libérés automatiquement après livraison des commandes.</div>
-                            </div>
-                        </div>
-                        @endif
-                    </div>
 
-                    <div style="padding: 1.5rem;">
-                        <h3 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; color: #0f1111;">Actions rapides</h3>
-                        <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <button class="btn-amazon-primary" onclick="document.getElementById('withdraw-section').scrollIntoView({behavior: 'smooth'})">Effectuer un retrait</button>
-                            <button class="btn-amazon-outline" style="color: #b12704; border-color: #d5d9d9;" onclick="window.print()">
-                                <i class="fas fa-file-pdf" style="margin-right: 5px;"></i> Relevé (PDF)
-                            </button>
-                        </div>
-                    </div>
+            <div class="finance-card-stats">
+                <div class="finance-stat">
+                    <div class="finance-stat-label"><i class="fas fa-hourglass-half"></i> En séquestre</div>
+                    @if($pendingBalance > 0)
+                        <div class="finance-stat-value">{{ number_format($pendingBalance, 0, ',', ' ') }} <span style="font-size:0.75rem;font-weight:400;opacity:0.75;">FCFA</span></div>
+                    @else
+                        <div class="finance-stat-value muted">— FCFA</div>
+                    @endif
+                </div>
+                <div class="finance-divider"></div>
+                <div class="finance-stat">
+                    <div class="finance-stat-label"><i class="fas fa-arrow-down"></i> Total disponible</div>
+                    <div class="finance-stat-value" style="color: #86efac;">{{ number_format($availableBalance, 0, ',', ' ') }} <span style="font-size:0.75rem;font-weight:400;opacity:0.75;">FCFA</span></div>
+                </div>
+                <div class="finance-divider"></div>
+                <div class="finance-stat">
+                    <div class="finance-stat-label"><i class="fas fa-exchange-alt"></i> Transactions</div>
+                    <div class="finance-stat-value">{{ $recentTransactions->total() }}</div>
                 </div>
             </div>
         </div>
 
-        <!-- Withdrawal Section (Refined for Financial Seriousness) -->
-        <div class="amazon-card" id="withdraw-section" style="border-top: 3px solid #004aad;">
-            <div class="amazon-card-header" style="background: #fff; padding-top: 1.25rem;">
-                <h2 style="color: #004aad; font-weight: 700;">Service de retrait</h2>
-                <div style="display: flex; align-items: center; gap: 8px; color: #007600; font-size: 0.75rem; font-weight: 600;">
-                    <i class="fas fa-shield-alt"></i> Transaction sécurisée
+        {{-- Action buttons --}}
+        <div class="wallet-actions">
+            <button class="btn-w-primary" onclick="document.getElementById('withdraw-section').scrollIntoView({behavior:'smooth'})">
+                <i class="fas fa-paper-plane"></i> Effectuer un retrait
+            </button>
+            <button class="btn-w-outline" onclick="window.print()">
+                <i class="fas fa-file-pdf" style="color: #ef4444;"></i> Relevé PDF
+            </button>
+            <button class="btn-w-outline" onclick="document.getElementById('tx-section').scrollIntoView({behavior:'smooth'})">
+                <i class="fas fa-list-ul" style="color: #6b7280;"></i> Voir l'historique
+            </button>
+        </div>
+
+        {{-- Pending funds info --}}
+        @if($pendingBalance > 0)
+            <div class="pending-box" style="margin-bottom: 1.5rem;">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>{{ number_format($pendingBalance, 0, ',', ' ') }} FCFA en attente de libération</strong><br>
+                    Ces fonds sont sécurisés en séquestre et seront libérés automatiquement après confirmation des livraisons.
+                    @if($pendingTransactions->count() > 0)
+                        (Prochaine libération : {{ $pendingTransactions->first()->release_at?->format('d/m/Y') ?? '—' }})
+                    @endif
                 </div>
             </div>
-            <div class="amazon-card-content" style="padding-top: 0.5rem;">
+        @endif
+
+        {{-- ══ WITHDRAWAL SECTION ══ --}}
+        <div class="w-card" id="withdraw-section">
+            <div class="w-card-header">
+                <h2><i class="fas fa-paper-plane"></i> Service de retrait</h2>
+                <span style="font-size: 0.75rem; color: #007600; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+                    <i class="fas fa-lock"></i> Transaction sécurisée
+                </span>
+            </div>
+            <div class="w-card-body">
                 @if($availableBalance >= 1000)
                     <form action="{{ route('vendeur.wallet.withdraw') }}" method="POST">
                         @csrf
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem;">
-                            
-                            <!-- Left Side: Amount -->
-                            <div style="background: #fcfcfc; padding: 1.5rem; border-radius: 8px; border: 1px solid #f0f0f0;">
-                                <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #565959; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Montant à virer</label>
+                        <div class="withdraw-grid">
+                            {{-- Montant --}}
+                            <div class="form-field">
+                                <label>Montant à virer</label>
+                                <div class="amount-wrapper">
+                                    <input type="number" name="montant" class="form-input"
+                                        min="1000" max="{{ $availableBalance }}"
+                                        required placeholder="0"
+                                        value="{{ old('montant') }}">
+                                    <span class="amount-suffix">FCFA</span>
+                                </div>
+                                <div class="available-hint">
+                                    <span>Minimum : 1 000 FCFA</span>
+                                    <span>Disponible : <strong>{{ number_format($availableBalance, 0, ',', ' ') }} FCFA</strong></span>
+                                </div>
+                            </div>
+
+                            {{-- Destination --}}
+                            <div class="form-field">
+                                <label>Numéro Mobile Money</label>
                                 <div style="position: relative;">
-                                    <input type="number" name="montant" class="amazon-input" max="{{ $availableBalance }}" min="1000" required placeholder="0" style="font-size: 1.2rem; padding: 0.75rem 1rem; padding-right: 60px;">
-                                    <span style="position: absolute; right: 15px; top: 12px; font-weight: 700; color: #0f1111;">FCFA</span>
+                                    <i class="fas fa-phone-alt" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:0.85rem;"></i>
+                                    <input type="text" name="telephone" class="form-input"
+                                        style="padding-left: 36px;"
+                                        required
+                                        value="{{ old('telephone', $user->telephone) }}"
+                                        placeholder="Ex : 77 000 00 00">
                                 </div>
-                                <div style="margin-top: 1rem; display: flex; justify-content: space-between; font-size: 0.8rem;">
-                                    <span style="color: #565959;">Disponible</span>
-                                    <span style="font-weight: 700; color: #007600;">{{ number_format($availableBalance, 0, ',', ' ') }} FCFA</span>
-                                </div>
-                                <div style="margin-top: 0.5rem; height: 4px; background: #eee; border-radius: 2px; overflow: hidden;">
-                                    <div style="width: 100%; height: 100%; background: #007600;"></div>
-                                </div>
-                            </div>
+                                <p style="font-size: 0.73rem; color: #9ca3af; margin:5px 0 1rem;">Vérifiez votre numéro avant de valider.</p>
 
-                            <!-- Right Side: Destination -->
-                            <div>
-                                <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #565959; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Destination du virement</label>
-                                
-                                <div style="margin-bottom: 1.25rem;">
-                                    <div style="position: relative;">
-                                        <i class="fas fa-phone-alt" style="position: absolute; left: 12px; top: 12px; color: #888; font-size: 0.9rem;"></i>
-                                        <input type="text" name="telephone" class="amazon-input" required value="{{ $user->telephone }}" placeholder="Numéro Mobile Money" style="padding-left: 35px;">
+                                <label>Réseau</label>
+                                <div class="pay-chips">
+                                    <div class="pay-chip active" onclick="selectPay('om', this)" id="chip-om">
+                                        <img src="{{ asset('images/logoOM.png') }}" alt="Orange Money" height="18">
+                                        Orange Money
                                     </div>
-                                    <p style="font-size: 0.7rem; color: #888; margin-top: 6px;">Vérifiez bien votre numéro avant de valider.</p>
-                                </div>
-
-                                <div style="display: flex; gap: 12px;">
-                                    <div class="pay-method-chip active" onclick="selectPayAmazon('om', this)" style="flex: 1; justify-content: center; background: #fff;">
-                                        <img src="{{ asset('images/logoOM.png') }}" alt="OM" height="18">
-                                        <span style="font-size: 0.8rem;">Orange</span>
-                                    </div>
-                                    <div class="pay-method-chip" onclick="selectPayAmazon('wave', this)" style="flex: 1; justify-content: center; background: #fff;">
+                                    <div class="pay-chip" onclick="selectPay('wave', this)" id="chip-wave">
                                         <img src="{{ asset('images/logowave.png') }}" alt="Wave" height="18">
-                                        <span style="font-size: 0.8rem;">Wave</span>
+                                        Wave
                                     </div>
                                 </div>
-                                <input type="hidden" name="moyen" id="amazon_pay_method" value="om">
+                                <input type="hidden" name="moyen" id="pay_method" value="om">
                             </div>
                         </div>
 
-                        <div style="margin-top: 2rem; padding: 1rem; background: #f0f7ff; border-radius: 8px; display: flex; align-items: center; gap: 12px; border-left: 4px solid #004aad;">
-                            <i class="fas fa-info-circle" style="color: #004aad;"></i>
-                            <p style="font-size: 0.8rem; color: #333; margin: 0;">Les fonds seront transférés sur votre compte mobile sous un délai moyen de 24h ouvrées.</p>
+                        <div class="withdraw-notice">
+                            <i class="fas fa-clock"></i>
+                            <span>Les fonds seront transférés sur votre compte mobile dans un délai moyen de <strong>24h ouvrées</strong> via PayDunya.</span>
                         </div>
 
-                        <div style="margin-top: 2rem; text-align: right;">
-                            <button type="submit" class="btn-amazon-primary" style="padding: 0.8rem 4rem; font-weight: 700; letter-spacing: 0.5px;">Valider le virement</button>
-                        </div>
+                        <button type="submit" class="btn-submit-withdraw">
+                            <i class="fas fa-paper-plane"></i> Valider le virement
+                        </button>
                     </form>
                 @else
-                    <div style="background-color: #f7f8f8; padding: 2rem; border-radius: 8px; text-align: center;">
-                        <i class="fas fa-lock" style="color: #ddd; font-size: 2rem; margin-bottom: 1rem;"></i>
-                        <p style="color: #565959; font-size: 0.95rem; margin: 0;">
-                            Vous n'avez pas encore atteint le seuil de retrait de <strong>1 000 FCFA</strong>.<br>
-                            Continuez vos ventes pour débloquer votre solde.
+                    <div class="locked-state">
+                        <div><i class="fas fa-lock"></i></div>
+                        <p>
+                            Solde insuffisant.<br>
+                            Le montant minimum pour effectuer un retrait est de <strong>1 000 FCFA</strong>.<br>
+                            <span style="font-size: 0.82rem; color: #9ca3af;">Votre solde actuel : {{ number_format($availableBalance, 0, ',', ' ') }} FCFA</span>
                         </p>
                     </div>
                 @endif
             </div>
         </div>
 
-        <!-- Transactions History -->
-        <div class="amazon-card">
-            <div class="amazon-card-header">
-                <h2>Historique des transactions</h2>
-                <div style="font-size: 0.85rem; color: #004aad; cursor: pointer; font-weight: 500;">Filtrer par date <i class="fas fa-chevron-down"></i></div>
+        {{-- ══ TRANSACTIONS TABLE ══ --}}
+        <div class="w-card" id="tx-section">
+            <div class="w-card-header">
+                <h2><i class="fas fa-list-ul"></i> Historique des transactions</h2>
+                <span style="font-size: 0.78rem; color: #6b7280;">
+                    {{ $recentTransactions->total() }} transaction(s)
+                </span>
             </div>
             <div style="overflow-x: auto;">
-                <table class="amazon-table">
+                <table class="tx-table">
                     <thead>
                         <tr>
+                            <th style="width: 50px;"></th>
                             <th>Date</th>
                             <th>Description</th>
                             <th>Montant</th>
-                            <th>État</th>
+                            <th>Statut</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($recentTransactions as $tx)
+                            @php
+                                $isWithdrawal = ($tx->metadata['type'] ?? '') === 'withdrawal';
+                                $iconClass    = $tx->montant < 0 ? 'expense' : ($tx->wallet_status === 'pending' ? 'pending' : 'income');
+                                $icon         = $isWithdrawal ? 'fa-paper-plane' : ($tx->montant > 0 ? 'fa-arrow-down' : 'fa-arrow-up');
+                                $statusLabel  = match($tx->wallet_status) {
+                                    'available'  => 'Confirmé',
+                                    'pending'    => 'En attente',
+                                    'withdrawn'  => 'Retiré',
+                                    default      => ucfirst($tx->wallet_status ?? '—'),
+                                };
+                                $badgeClass   = match($tx->wallet_status) {
+                                    'available' => 'available',
+                                    'pending'   => 'pending',
+                                    'withdrawn' => 'withdrawn',
+                                    default     => 'failed',
+                                };
+                            @endphp
                             <tr>
-                                <td style="color: #565959;">{{ $tx->created_at->format('d M Y') }}</td>
                                 <td>
-                                    <div style="font-weight: 600;">
+                                    <div class="tx-icon {{ $iconClass }}">
+                                        <i class="fas {{ $icon }}"></i>
+                                    </div>
+                                </td>
+                                <td style="color: #6b7280; white-space: nowrap;">
+                                    {{ $tx->created_at->format('d M Y') }}<br>
+                                    <span style="font-size: 0.72rem;">{{ $tx->created_at->format('H:i') }}</span>
+                                </td>
+                                <td>
+                                    <div style="font-weight: 600; color: #111827;">
                                         @if($tx->order_id)
-                                            Vente Marketplace #{{ $tx->order->reference }}
+                                            Vente #{{ $tx->order->reference ?? $tx->order_id }}
+                                        @elseif($isWithdrawal)
+                                            Retrait Mobile Money
                                         @else
-                                            {{ ($tx->metadata['type'] ?? '') == 'withdrawal' ? 'Demande de retrait' : 'Transaction système' }}
+                                            Transaction système
                                         @endif
                                     </div>
-                                    <div style="font-size: 0.75rem; color: #888;">ID: {{ $tx->reference_externe }}</div>
+                                    <div class="tx-ref">{{ Str::limit($tx->reference_externe, 28) }}</div>
                                 </td>
-                                <td style="font-weight: 700; color: {{ $tx->montant > 0 ? '#007600' : '#b12704' }}; white-space: nowrap;">
-                                    {{ $tx->montant > 0 ? '+' : '' }}{{ number_format($tx->montant, 0, ',', ' ') }} FCFA
+                                <td style="font-weight: 700; white-space: nowrap; color: {{ $tx->montant >= 0 ? '#15803d' : '#dc2626' }};">
+                                    {{ $tx->montant >= 0 ? '+' : '' }}{{ number_format($tx->montant, 0, ',', ' ') }} FCFA
                                 </td>
                                 <td>
-                                    @php
-                                        $s = $tx->wallet_status;
-                                        $label = $s == 'available' ? 'Confirmé' : ($s == 'pending' ? 'En attente' : 'Retiré');
-                                        $badgeClass = $s == 'available' ? 'available' : ($s == 'pending' ? 'pending' : 'withdrawn');
-                                    @endphp
-                                    <span class="status-pill status-{{ $badgeClass }}">{{ $label }}</span>
+                                    <span class="badge-pill badge-{{ $badgeClass }}">{{ $statusLabel }}</span>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" style="text-align: center; padding: 4rem; color: #565959;">
-                                    Aucune transaction enregistrée.
+                                <td colspan="5">
+                                    <div class="tx-empty">
+                                        <div><i class="fas fa-receipt"></i></div>
+                                        <p>Aucune transaction pour le moment.</p>
+                                    </div>
                                 </td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
+
+            @if($recentTransactions->hasPages())
+                <div style="padding: 1rem 1.5rem; border-top: 1px solid #f3f4f6;">
+                    {{ $recentTransactions->links() }}
+                </div>
+            @endif
         </div>
 
-        @if($recentTransactions->hasPages())
-            <div style="margin-top: 1rem; display: flex; justify-content: center;">
-                {{ $recentTransactions->links() }}
-            </div>
-        @endif
     </main>
 </div>
 
-
 @push('scripts')
 <script>
-    function selectPayAmazon(m, el) {
-        document.querySelectorAll('.pay-method-chip').forEach(o => o.classList.remove('active'));
+    function selectPay(m, el) {
+        document.querySelectorAll('.pay-chip').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
-        document.getElementById('amazon_pay_method').value = m;
+        document.getElementById('pay_method').value = m;
     }
 </script>
 @endpush
