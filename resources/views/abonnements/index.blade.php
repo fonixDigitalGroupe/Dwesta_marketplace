@@ -34,16 +34,21 @@
         margin: 0 auto;
     }
 
-    /* Redesigned Card Layout */
+    /* Redesigned Card Layout (Forced Horizontal on Desktop) */
     .plans-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        display: flex;
+        flex-direction: row;
         gap: 1.5rem;
         margin-bottom: 4rem;
+        justify-content: center;
         align-items: stretch;
+        flex-wrap: wrap; /* Fallback for small screens */
     }
 
     .plan-card {
+        flex: 1;
+        min-width: 250px;
+        max-width: 350px;
         background: #fff;
         border: 1px solid #d5d9d9;
         border-radius: 12px;
