@@ -267,11 +267,64 @@
                 </div>
             </div>
             
-            <button class="btn-withdraw-payout" onclick="openPayout()">
-                <i class="fas fa-paper-plane" style="font-size: 0.9rem;"></i>
-                Retirer des fonds
-            </button>
+            <div style="position: relative; z-index: 2; opacity: 0.15; transform: rotate(-15deg);">
+                <i class="fas fa-wallet" style="font-size: 5rem; color: #fff;"></i>
+            </div>
         </div>
+
+        @if($availableBalance >= 1000)
+        <!-- Integrated Withdrawal Form (Matches Gift Card Purchase UI) -->
+        <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 2rem; margin-bottom: 2.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+            <h2 style="color: #333; margin-top: 0; margin-bottom: 1.5rem; font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-paper-plane" style="color: #f68b1e;"></i>
+                Retirer mes revenus
+            </h2>
+
+            <form action="{{ route('vendeur.wallet.withdraw') }}" method="POST" id="payoutForm">
+                @csrf
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Montant (min. 1000 FCFA)</label>
+                        <div style="position: relative;">
+                            <input type="number" name="montant" max="{{ $availableBalance }}" min="1000" required placeholder="1 000" style="padding-right: 50px;">
+                            <span style="position: absolute; right: 14px; top: 12px; font-weight: 800; color: #bbb; font-size: 0.8rem;">FCFA</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Numéro de téléphone</label>
+                        <input type="text" name="telephone" required value="{{ $user->telephone }}" placeholder="7x xxx xx xx">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Mode de retrait</label>
+                        <div class="payment-grid" style="grid-template-columns: 1fr 1fr; margin-top: 0; gap: 10px;">
+                            <div class="payment-option active" onclick="selectPay('om', this)" style="padding: 10px 5px;">
+                                <img src="{{ asset('images/logoOM.png') }}" alt="OM" style="height: 25px;">
+                                <span style="font-size: 0.65rem;">Orange Money</span>
+                            </div>
+                            <div class="payment-option" onclick="selectPay('wave', this)" style="padding: 10px 5px;">
+                                <img src="{{ asset('images/logowave.png') }}" alt="Wave" style="height: 25px;">
+                                <span style="font-size: 0.65rem;">Wave Cash</span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="moyen" id="pay_method" value="om">
+                    </div>
+
+                </div>
+
+                <button type="submit" style="background: #004aad; color: #fff; border: none; border-radius: 8px; padding: 1rem 2rem; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 300px; margin: 0 auto; transition: all 0.2s;">
+                    Transférer maintenant
+                </button>
+            </form>
+        </div>
+        @else
+        <div style="background: #fafafa; border: 1px dashed #ddd; border-radius: 12px; padding: 2rem; text-align: center; margin-bottom: 2.5rem; color: #888;">
+            <i class="fas fa-lock" style="font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5;"></i>
+            <p style="margin: 0; font-size: 0.9rem; font-weight: 600;">Minimum de 1 000 FCFA requis pour effectuer un retrait.</p>
+        </div>
+        @endif
 
         @if($pendingBalance > 0)
         <div style="background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 1.25rem 1.5rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
@@ -346,57 +399,6 @@
     </main>
 </div>
 
-<!-- Modal Payout -->
-<div id="payoutModal" class="modal-overlay" style="display: {{ request()->has('withdraw') ? 'flex' : 'none' }};">
-    <div class="modal-container">
-        <form action="{{ route('vendeur.wallet.withdraw') }}" method="POST">
-            @csrf
-            <div class="modal-header">
-                <h3>Demande de retrait</h3>
-                <button type="button" onclick="closePayout()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #bbb;">&times;</button>
-            </div>
-            
-            <div style="padding: 1.5rem;">
-                <div style="background: #f8fafc; border: 1px solid #eee; padding: 1.25rem; border-radius: 10px; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #888;">Disponible</span>
-                    <b style="font-size: 1.25rem; font-weight: 800; color: #004aad;">{{ number_format($availableBalance, 0, ',', ' ') }} FCFA</b>
-                </div>
-
-                <div class="form-group">
-                    <label>Montant à retirer</label>
-                    <div style="position: relative;">
-                        <input type="number" name="montant" max="{{ $availableBalance }}" min="1" required placeholder="0">
-                        <span style="position: absolute; right: 14px; top: 10px; font-weight: 800; color: #bbb; font-size: 0.8rem;">FCFA</span>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Numéro de téléphone</label>
-                    <input type="text" name="telephone" required value="{{ $user->telephone }}" placeholder="7x xxx xx xx">
-                </div>
-
-                <div class="form-group">
-                    <label>Mode de paiement</label>
-                    <div class="payment-grid">
-                        <div class="payment-option active" onclick="selectPay('om', this)">
-                            <img src="{{ asset('images/logoOM.png') }}" alt="OM">
-                            <span>Orange Money</span>
-                        </div>
-                        <div class="payment-option" onclick="selectPay('wave', this)">
-                            <img src="{{ asset('images/logowave.png') }}" alt="Wave">
-                            <span>Wave Cash</span>
-                        </div>
-                    </div>
-                    <input type="hidden" name="moyen" id="pay_method" value="om">
-                </div>
-
-                <button type="submit" style="width: 100%; padding: 14px; background: #f68b1e; color: #fff; border: none; border-radius: 8px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; cursor: pointer; margin-top: 1rem;" {{ $availableBalance <= 0 ? 'disabled' : '' }}>
-                    Confirmer le transfert
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
 
 @push('scripts')
 <script>

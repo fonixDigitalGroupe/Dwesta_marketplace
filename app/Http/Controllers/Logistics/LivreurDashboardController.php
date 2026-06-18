@@ -124,9 +124,24 @@ class LivreurDashboardController extends Controller
             'statut' => Order::STATUT_LIVRE,
         ]);
 
-        // Mise à jour du solde du livreur (créditer la commission)
-        // TODO: Implémenter logique financière réelle avec Transaction
+        // Libération des fonds pour le vendeur
+        $transactions = \App\Models\Transaction::where('order_id', $order->id)
+            ->where('wallet_status', \App\Models\Transaction::STATUS_PENDING)
+            ->get();
 
-        return redirect()->route('livreur.dashboard')->with('success', 'Commande livrée avec succès. Bon travail !');
+        foreach ($transactions as $tx) {
+            $tx->update([
+                'wallet_status' => \App\Models\Transaction::STATUS_AVAILABLE,
+                'release_at' => now()
+            ]);
+
+            // Incrémentation du solde réel de l'utilisateur concerné (le vendeur)
+            $user = $tx->user;
+            if ($user) {
+                $user->increment('credit_balance', $tx->montant);
+            }
+        }
+
+        return redirect()->route('livreur.dashboard')->with('success', 'Commande livrée avec succès. Les fonds ont été libérés pour le vendeur.');
     }
 }

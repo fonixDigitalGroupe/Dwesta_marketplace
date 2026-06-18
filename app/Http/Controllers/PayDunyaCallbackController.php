@@ -161,13 +161,31 @@ class PayDunyaCallbackController extends Controller
                             'order_id' => $order->id,
                             'user_id' => $order->user_id, // L'acheteur pour ses achats
                             'reference_externe' => $token,
-                            'montant' => $order->total_final, // Le montant total de CETTE commande
+                            'montant' => $order->total_final, 
                             'moyen_paiement' => 'paydunya',
                             'statut' => 'succes',
-                            'wallet_status' => 'pending',
-                            'release_at' => now()->addDays(14),
+                            'wallet_status' => 'none', // Pas de wallet pour l'acheteur, juste historique
                             'metadata' => ['paydunya_token' => $token]
                         ]);
+
+                        // Création de la transaction en attente pour le Vendeur (Revenus)
+                        if ($order->seller && $order->seller->user_id) {
+                            $revenuVendeur = $order->total_produits - ($order->commission_plateforme ?? 0);
+                            Transaction::create([
+                                'order_id' => $order->id,
+                                'user_id' => $order->seller->user_id, // Le vendeur reçoit l'argent
+                                'reference_externe' => 'REV-' . $order->reference,
+                                'montant' => $revenuVendeur,
+                                'moyen_paiement' => 'wallet',
+                                'statut' => 'succes',
+                                'wallet_status' => 'pending', // En séquestre jusqu'à livraison
+                                'release_at' => now()->addDays(30), // Sécurité par défaut
+                                'metadata' => [
+                                    'type' => 'seller_revenue',
+                                    'order_ref' => $order->reference
+                                ]
+                            ]);
+                        }
                     }
                 }
 
