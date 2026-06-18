@@ -394,68 +394,15 @@
                         @endforeach
                     </div>
 
-                    {{-- Renouvellement automatique (si abonnement actif) --}}
+                    {{-- Abonnement actif info (si abonnement actif) --}}
                     @if($abonnementActif)
-                        <div class="abn-section">
-                            <div class="abn-section-heading">Renouvellement automatique</div>
-                            <div style="padding: 0.9rem 1.1rem;">
-                                <form method="POST" action="{{ route('abonnements.toggle-renouvellement') }}" id="renew-form" style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap;">
-                                    @csrf
-                                    <div>
-                                        <div style="font-size: 0.9rem; font-weight: 600; color: #0f1111; margin-bottom: 3px;">
-                                            Renouvellement automatique de mon abonnement
-                                        </div>
-                                        <div style="font-size: 0.82rem; color: #565959;">
-                                            Votre abonnement sera renouvelé automatiquement à la fin de la période en cours.
-                                        </div>
-                                    </div>
-
-                                    {{-- Toggle Switch --}}
-                                    <label style="position: relative; display: inline-block; width: 52px; height: 28px; cursor: pointer; flex-shrink: 0;">
-                                        <input
-                                            type="checkbox"
-                                            name="activer"
-                                            value="1"
-                                            {{ $abonnementActif->renouvellement_automatique ? 'checked' : '' }}
-                                            onchange="document.getElementById('renew-form').submit()"
-                                            style="opacity: 0; width: 0; height: 0;"
-                                        >
-                                        <span style="
-                                            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-                                            background-color: {{ $abonnementActif->renouvellement_automatique ? '#004aad' : '#ccc' }};
-                                            border-radius: 28px; transition: 0.3s;">
-                                            <span style="
-                                                position: absolute; height: 20px; width: 20px;
-                                                left: 4px; bottom: 4px; background-color: white;
-                                                border-radius: 50%; transition: 0.3s;
-                                                transform: translateX({{ $abonnementActif->renouvellement_automatique ? '24px' : '0' }});">
-                                            </span>
-                                        </span>
-                                    </label>
-                                </form>
-                            </div>
-                        </div>
-
-                        {{-- Cancel subscription --}}
-                        @if($abonnementActif->renouvellement_automatique)
-                            <div style="text-align: right; margin-top: -0.5rem; margin-bottom: 1.25rem;">
-                                <form action="{{ route('abonnements.cancel') }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit"
-                                        style="background: none; border: none; color: #c0392b; font-size: 0.8rem; cursor: pointer; text-decoration: underline; padding: 0;"
-                                        onclick="return confirm('Êtes-vous sûr de vouloir désactiver le renouvellement automatique ?')">
-                                        Désactiver le renouvellement automatique
-                                    </button>
-                                </form>
-                            </div>
-                        @endif
 
                         {{-- Expiry warning --}}
                         @if($abonnementActif->date_fin->isPast())
                             <div class="alert-error">
                                 <i class="fa-solid fa-triangle-exclamation"></i>
                                 <strong>Votre abonnement a expiré.</strong>&nbsp;
-                                <a href="#" onclick="document.querySelector('.abn-plan-row:not(.is-active-plan)').click()" style="color:#721c24;">Choisir un nouveau forfait</a>
+                                Sélectionnez un nouveau forfait ci-dessus.
                             </div>
                         @elseif($abonnementActif->date_fin->diffInDays(now()) <= 7)
                             <div class="alert-error">
