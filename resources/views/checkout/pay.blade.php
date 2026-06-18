@@ -228,7 +228,7 @@
 @section('content')
 <div class="pay-container">
 
-    <div class="card-section" style="padding: 10px 0; border-bottom: none; margin-bottom: 10px;">
+    <div style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #efefef; padding: 20px 24px; margin-bottom: 16px;">
         <div class="section-title" style="margin-bottom: 10px;">
             <span>RÉCAPITULATIF DE PAIEMENT</span>
         </div>
