@@ -238,10 +238,13 @@
         </div>
     </div>
 
+    <div class="section-title" style="margin-bottom: 10px; margin-top: 16px;">
+        <span>MODE DE PAIEMENT SÉLECTIONNÉ</span>
+    </div>
+
     <div class="card-jumia">
 
         <div class="card-section">
-            <div class="section-title">MODE DE PAIEMENT SÉLECTIONNÉ</div>
             
             <div class="phone-input-wrapper" style="margin-top: 0;">
                 <label class="phone-label">Choisir un opérateur</label>
