@@ -255,8 +255,6 @@
     /* ── Active plan highlight ── */
     .abn-plan-row.is-active-plan {
         background: #f0f7ec;
-        border-left: 3px solid #007600;
-        padding-left: calc(1.1rem - 3px);
     }
 
     @media (max-width: 600px) {
