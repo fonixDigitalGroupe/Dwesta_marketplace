@@ -321,6 +321,11 @@
         icon.src = logos[value] || '';
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        const select = document.getElementById('moyen_paiement');
+        if (select) updateOperatorIcon(select.value);
+    });
+
     async function initiatePayment() {
         const btn = document.getElementById('btn-pay');
         const btnText = document.getElementById('btn-text');
