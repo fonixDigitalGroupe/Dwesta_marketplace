@@ -9,7 +9,7 @@
     }
     
     .subscription-container { 
-        max-width: 1100px; 
+        max-width: 1200px; 
         margin: 2rem auto; 
         padding: 0 1.5rem; 
         font-family: 'Roboto', -apple-system, sans-serif;
@@ -47,7 +47,7 @@
 
     .plan-card {
         flex: 1;
-        min-width: 250px;
+        min-width: 220px;
         max-width: 350px;
         background: #fff;
         border: 1px solid #d5d9d9;
