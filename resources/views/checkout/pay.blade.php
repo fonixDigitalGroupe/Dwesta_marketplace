@@ -72,7 +72,7 @@
     .amount-value {
         font-weight: 700;
         font-size: 18px;
-        color: var(--karnou-blue);
+        color: #2196F3;
     }
 
     .method-box {
