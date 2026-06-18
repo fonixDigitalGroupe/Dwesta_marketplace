@@ -228,10 +228,10 @@
 @section('content')
 <div class="pay-container">
 
+    <div class="section-title" style="margin-bottom: 10px;">
+        <span>RÉCAPITULATIF DE PAIEMENT</span>
+    </div>
     <div style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #efefef; padding: 20px 24px; margin-bottom: 16px;">
-        <div class="section-title" style="margin-bottom: 10px;">
-            <span>RÉCAPITULATIF DE PAIEMENT</span>
-        </div>
         <div class="amount-display">
             <span class="amount-label" style="font-size: 13px;">{{ $description ?? 'MONTANT TOTAL À PAYER' }}</span>
             <span class="amount-value" style="font-size: 20px;">FCFA {{ number_format($total, 0, ',', ' ') }}</span>
