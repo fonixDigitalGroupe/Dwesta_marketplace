@@ -34,20 +34,25 @@
         margin: 0 auto;
     }
 
-    /* Redesigned Card Layout (Forced Horizontal on Desktop) */
+    /* Redesigned Card Layout (Forced Single Row on Desktop) */
     .plans-grid {
         display: flex;
         flex-direction: row;
-        gap: 1.5rem;
+        gap: 1rem;
         margin-bottom: 4rem;
         justify-content: center;
         align-items: stretch;
-        flex-wrap: wrap; /* Fallback for small screens */
+    }
+
+    @media (max-width: 991px) {
+        .plans-grid {
+            flex-wrap: wrap;
+        }
     }
 
     .plan-card {
         flex: 1;
-        min-width: 220px;
+        min-width: 0; /* Allow cards to shrink to fit */
         max-width: 350px;
         background: #fff;
         border: 1px solid #d5d9d9;
