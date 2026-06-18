@@ -395,6 +395,7 @@
 
                     {{-- Abonnement actif info (si abonnement actif) --}}
                     @if($abonnementActif)
+                        @php $daysLeft = (int) now()->diffInDays($abonnementActif->date_fin, false); @endphp
 
                         {{-- Expiry warning --}}
                         @if($abonnementActif->date_fin->isPast())
@@ -403,10 +404,10 @@
                                 <strong>Votre abonnement a expiré.</strong>&nbsp;
                                 Sélectionnez un nouveau forfait ci-dessus.
                             </div>
-                        @elseif($abonnementActif->date_fin->diffInDays(now()) <= 7)
+                        @elseif($daysLeft >= 0 && $daysLeft <= 7)
                             <div class="alert-error">
                                 <i class="fa-solid fa-triangle-exclamation"></i>
-                                Votre abonnement expire dans <strong>{{ $abonnementActif->date_fin->diffInDays(now()) }} jour(s)</strong>.
+                                Votre abonnement expire dans <strong>{{ $daysLeft }} jour(s)</strong>.
                             </div>
                         @endif
                     @endif
