@@ -31,8 +31,8 @@
 
     .amazon-card-header h2 {
         margin: 0;
-        font-size: 1.1rem;
-        font-weight: 700;
+        font-size: 0.95rem;
+        font-weight: 600;
         color: #0f1111;
     }
 
@@ -250,6 +250,7 @@
         <!-- Withdrawal Section -->
         <div class="amazon-card" id="withdraw-section">
             <div class="amazon-card-header">
+                <h2>Demander un virement</h2>
                 <i class="fas fa-university" style="color: #565959;"></i>
             </div>
             <div class="amazon-card-content">
