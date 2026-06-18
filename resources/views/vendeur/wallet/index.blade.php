@@ -250,7 +250,6 @@
         <!-- Withdrawal Section -->
         <div class="amazon-card" id="withdraw-section">
             <div class="amazon-card-header">
-                <h2>Demander un virement</h2>
                 <i class="fas fa-university" style="color: #565959;"></i>
             </div>
             <div class="amazon-card-content">
