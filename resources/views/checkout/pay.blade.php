@@ -242,10 +242,8 @@
         <span>MODE DE PAIEMENT SÉLECTIONNÉ</span>
     </div>
 
-    <div class="card-jumia">
-
+    <div class="card-jumia" style="margin-bottom: 0;">
         <div class="card-section">
-            
             <div class="phone-input-wrapper" style="margin-top: 0;">
                 <label class="phone-label">Choisir un opérateur</label>
                 <div class="input-group-jumia" style="margin-bottom: 16px; background: white;">
@@ -264,29 +262,33 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="phone-input-wrapper">
-                <label class="phone-label">Numéro de téléphone</label>
-                <div class="input-group-jumia">
-                    <span class="input-prefix" style="display: flex; align-items: center; gap: 8px;">
-                        <img src="https://flagcdn.com/w20/sn.png" srcset="https://flagcdn.com/w40/sn.png 2x" width="20" alt="Senegal">
-                        +221
-                    </span>
-                    <input type="text" id="phone_pay" class="jumia-input" value="{{ $buyer->telephone ?? Auth::user()->telephone ? ltrim(Auth::user()->telephone, '+221') : '' }}" placeholder="7x xxx xx xx">
-                </div>
-            </div>
+    <div class="phone-input-wrapper" style="margin-top: 16px;">
+        <label class="phone-label">Numéro de téléphone</label>
+        <div class="input-group-jumia" style="background: white; border-radius: 4px;">
+            <span class="input-prefix" style="display: flex; align-items: center; gap: 8px;">
+                <img src="https://flagcdn.com/w20/sn.png" srcset="https://flagcdn.com/w40/sn.png 2x" width="20" alt="Senegal">
+                +221
+            </span>
+            <input type="text" id="phone_pay" class="jumia-input" value="{{ $buyer->telephone ?? Auth::user()->telephone ? ltrim(Auth::user()->telephone, '+221') : '' }}" placeholder="7x xxx xx xx">
+        </div>
+    </div>
 
-            <div class="phone-input-wrapper">
-                <label class="phone-label">Adresse E-mail</label>
-                <div class="input-group-jumia">
-                    <span class="input-prefix" style="background: white; border-right: none;">
-                        <i class="fas fa-envelope" style="color: #666;"></i>
-                    </span>
-                    <input type="email" id="email_pay" class="jumia-input" value="{{ $buyer->email ?? Auth::user()->email ?? '' }}" placeholder="exemple@mail.com">
-                </div>
-            </div>
+    <div class="phone-input-wrapper" style="margin-top: 12px;">
+        <label class="phone-label">Adresse E-mail</label>
+        <div class="input-group-jumia" style="background: white; border-radius: 4px;">
+            <span class="input-prefix" style="background: white; border-right: none;">
+                <i class="fas fa-envelope" style="color: #666;"></i>
+            </span>
+            <input type="email" id="email_pay" class="jumia-input" value="{{ $buyer->email ?? Auth::user()->email ?? '' }}" placeholder="exemple@mail.com">
+        </div>
+    </div>
 
-            <button id="btn-pay" class="btn-pay-now" onclick="initiatePayment()">
+    <div class="card-jumia" style="margin-top: 16px;">
+        <div class="card-section" style="border-bottom: none;">
+            <button id="btn-pay" class="btn-pay-now" onclick="initiatePayment()" style="margin-top: 0;">
                 <span id="btn-text">PAYER MAINTENANT : FCFA {{ number_format($total, 0, ',', ' ') }}</span>
                 <div id="btn-spinner" class="btn-loader"></div>
             </button>
