@@ -5,183 +5,215 @@
 @push('styles')
 <style>
     body {
-        background-color: #fff !important;
+        background-color: #f7f8f8 !important;
     }
-    .subscription-container { max-width: 800px; margin: 1.5rem auto; padding: 0 1rem; }
+    
+    .subscription-container { 
+        max-width: 1100px; 
+        margin: 2rem auto; 
+        padding: 0 1.5rem; 
+        font-family: 'Roboto', -apple-system, sans-serif;
+    }
     
     .subscription-header {
-        text-align: left;
-        margin-bottom: 2rem;
-        border-bottom: 1px solid #e0e0e0;
-        padding-bottom: 1rem;
-    }
-
-    .subscription-header h1 {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #333;
-        margin-bottom: 0.5rem;
-    }
-
-    .subscription-header p {
-        color: #666;
-        font-size: 0.9rem;
-    }
-
-    /* Checkbox List Layout */
-    .plans-list {
-        background: white;
-        border-top: 1px solid #e0e0e0;
+        text-align: center;
         margin-bottom: 3rem;
     }
 
-    .plan-row {
+    .subscription-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #0f1111;
+        margin-bottom: 0.75rem;
+    }
+
+    .subscription-header p {
+        color: #565959;
+        font-size: 1rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* Redesigned Card Layout */
+    .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 4rem;
+        align-items: stretch;
+    }
+
+    .plan-card {
+        background: #fff;
+        border: 1px solid #d5d9d9;
+        border-radius: 12px;
+        padding: 0;
         display: flex;
-        align-items: flex-start;
-        padding: 1.25rem 0.5rem;
-        border-bottom: 1px solid #e0e0e0;
-        gap: 1.25rem;
-        cursor: pointer;
-        transition: background-color 0.2s;
+        flex-direction: column;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
         position: relative;
+        overflow: hidden;
+        cursor: pointer;
     }
 
-    .plan-row:hover {
-        background-color: #fcfcfc;
-    }
-
-    .plan-row.selected {
-        background-color: #f0f7ff;
-    }
-
-    .plan-row.is-subscribed {
-        background-color: #f8fcf8;
-    }
-
-    /* Checkbox Styles */
-    .plan-checkbox {
-        width: 20px;
-        height: 20px;
-        border-radius: 4px;
-        border: 2px solid #004aad;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: white;
-        flex-shrink: 0;
-        margin-top: 2px;
-        transition: all 0.2s;
-    }
-
-    /* Blue Checkbox when selected or active */
-    .plan-row.selected .plan-checkbox,
-    .plan-row.is-subscribed .plan-checkbox {
-        background-color: #004aad;
+    .plan-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.1);
         border-color: #004aad;
     }
 
-    .plan-checkbox svg {
-        width: 14px;
-        height: 14px;
-        color: white;
-        display: none;
+    .plan-card.selected {
+        border: 2px solid #004aad;
+        box-shadow: 0 8px 16px rgba(0,74,173,0.1);
     }
 
-    .plan-row.selected .plan-checkbox svg,
-    .plan-row.is-subscribed .plan-checkbox svg {
-        display: block;
+    .plan-card.is-subscribed {
+        border-color: #007600;
     }
 
-    /* Content Layout */
-    .plan-info {
+    .plan-card-header {
+        padding: 2rem 1.5rem;
+        text-align: center;
+        background: #fcfcfc;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .plan-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+    }
+
+    .badge-pro { background: #004aad; color: white; }
+    .badge-free { background: #565959; color: white; }
+    .badge-active { background: #007600; color: white; }
+
+    .plan-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0f1111;
+        margin-bottom: 0.5rem;
+    }
+
+    .plan-price {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #0f1111;
+    }
+
+    .plan-price small {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: #565959;
+    }
+
+    .plan-features {
+        padding: 2rem 1.5rem;
         flex: 1;
     }
 
-    .plan-title {
-        font-size: 1.05rem;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin-bottom: 2px;
-        display: block;
-    }
-
-    .plan-subtitle {
-        font-size: 0.85rem;
-        color: #666;
+    .feature-item {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+        color: #333;
         line-height: 1.4;
     }
 
-    .plan-price-tag {
-        font-weight: 800;
-        color: #f68b1e;
+    .feature-item i {
+        color: #007600;
+        margin-top: 3px;
+        font-size: 0.8rem;
     }
 
-    .plan-status-badge {
-        display: inline-block;
-        font-size: 0.7rem;
-        font-weight: 800;
-        color: #2e7d32;
-        margin-top: 4px;
-        text-transform: uppercase;
+    .feature-item.disabled {
+        color: #999;
+        text-decoration: line-through;
     }
 
-    .plan-row.is-restricted {
-        opacity: 0.5;
+    .feature-item.disabled i {
+        color: #ddd;
+    }
+
+    .plan-footer {
+        padding: 1.5rem;
+        border-top: 1px solid #f0f0f0;
+        text-align: center;
+    }
+
+    .plan-card.is-restricted {
+        opacity: 0.7;
+        filter: grayscale(0.5);
         cursor: not-allowed;
     }
 
-    /* Alerts */
-    .restricted-alert, .current-plan-alert {
-        padding: 1rem;
-        border-radius: 4px;
-        margin-bottom: 1.5rem;
-        display: flex;
-        gap: 1rem;
-        align-items: center;
+    /* Rakuten inspired highlighting */
+    .plan-card.popular {
+        border-color: #f68b1e;
+    }
+    .popular-tag {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #f68b1e;
+        color: white;
+        text-align: center;
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 4px 0;
+        text-transform: uppercase;
+    }
+
+    .btn-select {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        font-weight: 700;
         font-size: 0.9rem;
-        border: 1px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s;
+        border: 1px solid #004aad;
+        background: transparent;
+        color: #004aad;
     }
 
-    .restricted-alert { background: #fff8e1; border-color: #ffe082; }
-    .current-plan-alert { background: #e8f5e9; border-color: #c8e6c9; color: #2e7d32; }
-
-    /* Sticky Footer */
-    .btn-submit-container {
-        position: sticky;
-        bottom: 0;
-        background: white;
-        padding: 1.25rem 2rem;
-        border-top: 1px solid #e0e0e0;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 2rem;
-        z-index: 10;
-        margin: 0 -1rem;
-        box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
-    }
-
-    .btn-checkout {
+    .plan-card.selected .btn-select {
         background: #004aad;
         color: white;
-        border: none;
-        padding: 0.75rem 2.5rem;
-        border-radius: 4px;
-        font-size: 0.95rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: background-color 0.2s;
     }
 
-    .btn-checkout:hover:not(:disabled) {
-        background-color: #003680;
+    .btn-select:hover:not(:disabled) {
+        background: #f0f7ff;
     }
 
-    .btn-checkout:disabled {
-        background: #e0e0e0;
-        color: #999;
+    .btn-select:disabled {
+        background: #f0f2f2;
+        border-color: #d5d9d9;
+        color: #565959;
         cursor: not-allowed;
+    }
+
+    /* Fixed Bar */
+    .checkout-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 1rem 2rem;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        z-index: 1000;
+        border-top: 1px solid #d5d9d9;
     }
 </style>
 @endpush
@@ -248,63 +280,87 @@
                 <form action="{{ route('abonnements.subscribe') }}" method="POST" id="subscription-form">
                     @csrf
                     <input type="hidden" name="payment_method" value="cb">
+                    <input type="hidden" name="abonnement_id" id="selected-abonnement-id" value="">
                     
-                    <div class="plans-list">
+                    <div class="plans-grid">
                         @foreach($abonnements as $abonnement)
                             @php 
                                 $isSubscribed = $abonnementActif && $abonnementActif->abonnement_id === $abonnement->id;
-                                
-                                // Restriction Particulier -> Forfaits Payants
                                 $isRestrictedParticular = auth()->user()->vendeur->estParticulier() && $abonnement->prix_mensuel > 0;
-                                
-                                // Restriction Professionnel -> Forfait Gratuit
                                 $isRestrictedPro = auth()->user()->vendeur->estProfessionnel() && $abonnement->prix_mensuel == 0;
-                                
                                 $isRestricted = $isRestrictedParticular || $isRestrictedPro;
+                                $isPopular = $abonnement->nom === 'Pack Business' || $abonnement->nom === 'Vendeur Pro'; // Exemple de mise en avant
                             @endphp
 
-                            <div class="plan-row {{ $isSubscribed ? 'is-subscribed' : '' }} {{ $isRestricted ? 'is-restricted' : '' }}" 
+                            <div class="plan-card {{ $isSubscribed ? 'is-subscribed' : '' }} {{ $isRestricted ? 'is-restricted' : '' }} {{ $isPopular ? 'popular' : '' }}" 
                                  onclick="{{ ($isSubscribed || $isRestricted) ? '' : 'selectPlan(this, ' . $abonnement->id . ')' }}">
                                 
-                                <div class="plan-checkbox">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
+                                @if($isPopular)
+                                    <div class="popular-tag">Plus Populaire</div>
+                                @endif
+
+                                <div class="plan-card-header">
+                                    @if($isSubscribed)
+                                        <span class="plan-badge badge-active">Actif</span>
+                                    @elseif($abonnement->prix_mensuel == 0)
+                                        <span class="plan-badge badge-free">Standard</span>
+                                    @else
+                                        <span class="plan-badge badge-pro">Professionnel</span>
+                                    @endif
+
+                                    <div class="plan-name">{{ $abonnement->nom }}</div>
+                                    <div class="plan-price">
+                                        @if($abonnement->prix_mensuel > 0)
+                                            {{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} <small>FCFA/mois</small>
+                                        @else
+                                            Gratuit
+                                        @endif
+                                    </div>
                                 </div>
 
-                                <div class="plan-info">
-                                    <span class="plan-title">
-                                        {{ $abonnement->nom }} 
-                                        @if($abonnement->prix_mensuel > 0)
-                                            — <span class="plan-price-tag">{{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} FCFA/mois</span>
-                                        @else
-                                            — <span class="plan-price-tag">Gratuit</span>
-                                        @endif
-                                    </span>
-                                    <div class="plan-subtitle">
-                                        {{ $abonnement->description }}.
-                                        {{ $abonnement->nombre_annonces == 0 ? 'Annonces illimitées' : $abonnement->nombre_annonces . ' annonces' }},
-                                        {{ number_format($abonnement->commission, 0) }}% commission.
-                                        @if($abonnement->page_pro) Inclut votre Page Boutique Pro. @endif
+                                <div class="plan-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>{{ $abonnement->nombre_annonces == 0 ? 'Annonces illimitées' : $abonnement->nombre_annonces . ' annonces incluses' }}</span>
                                     </div>
-                                    @if($isSubscribed)
-                                        <span class="plan-status-badge">Votre forfait actuel</span>
-                                    @elseif($isRestrictedParticular)
-                                        <span class="plan-status-badge" style="color: #666;">Réservé aux comptes Pro</span>
-                                    @elseif($isRestrictedPro)
-                                        <span class="plan-status-badge" style="color: #c53030;">Indisponible pour les Professionnels</span>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Commission réduite ({{ number_format($abonnement->commission, 0) }}%)</span>
+                                    </div>
+                                    <div class="feature-item {{ $abonnement->page_pro ? '' : 'disabled' }}">
+                                        <i class="fas {{ $abonnement->page_pro ? 'fa-check-circle' : 'fa-times-circle' }}"></i>
+                                        <span>Page Boutique Pro personnalisée</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Visibilité accrue sur la marketplace</span>
+                                    </div>
+                                    @if($abonnement->description)
+                                        <div class="feature-item" style="border-top: 1px solid #f9f9f9; padding-top: 10px; margin-top: 10px; font-style: italic; font-size: 0.8rem; color: #666;">
+                                            <span>{{ $abonnement->description }}</span>
+                                        </div>
                                     @endif
                                 </div>
 
-                                <input type="radio" name="abonnement_id" value="{{ $abonnement->id }}" {{ ($isSubscribed || $isRestricted) ? 'disabled' : '' }} style="display: none;">
+                                <div class="plan-footer">
+                                    @if($isSubscribed)
+                                        <button type="button" class="btn-select" disabled>Abonnement actuel</button>
+                                    @elseif($isRestricted)
+                                        <button type="button" class="btn-select" disabled>Indisponible</button>
+                                    @else
+                                        <button type="button" class="btn-select">Sélectionner</button>
+                                    @endif
+                                </div>
                             </div>
                         @endforeach
                     </div>
 
-                    <div class="btn-submit-container">
-                        <div id="selection-summary" style="display: none; font-size: 0.9rem; color: #666;">
-                            Sélection : <strong id="selected-plan-name">...</strong>
+                    <div class="checkout-bar" id="checkout-bar" style="display: none;">
+                        <div style="font-size: 1rem; color: #333;">
+                            Pack sélectionné : <strong id="selected-plan-name" style="color: #004aad;">...</strong>
                         </div>
-                        <button type="submit" class="btn-checkout" id="submit-button" disabled>
-                            Confirmer mon choix
+                        <button type="submit" class="btn-amazon-primary" id="submit-button" style="min-width: 200px;">
+                            Continuer vers le paiement
                         </button>
                     </div>
                 </form>
@@ -314,17 +370,13 @@
 
     <script>
         function selectPlan(card, id) {
-            document.querySelectorAll('.plan-row').forEach(c => c.classList.remove('selected'));
+            document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
             card.classList.add('selected');
             
-            const radio = card.querySelector('input[type="radio"]');
-            if (radio) {
-                radio.checked = true;
-                const name = card.querySelector('.plan-title').innerText.split('—')[0].trim();
-                document.getElementById('selected-plan-name').innerText = name;
-                document.getElementById('selection-summary').style.display = 'block';
-                document.getElementById('submit-button').disabled = false;
-            }
+            document.getElementById('selected-abonnement-id').value = id;
+            const name = card.querySelector('.plan-name').innerText;
+            document.getElementById('selected-plan-name').innerText = name;
+            document.getElementById('checkout-bar').style.display = 'flex';
         }
     </script>
 @endsection
