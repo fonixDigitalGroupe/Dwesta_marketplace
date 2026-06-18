@@ -219,7 +219,7 @@
         height: 26px !important;
     }
 
-    footer {
+    footer, .rk-footer {
         display: none !important;
     }
 </style>
