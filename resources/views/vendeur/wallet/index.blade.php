@@ -121,21 +121,23 @@
     }
 
     .btn-amazon-primary {
-        background: #FFD814;
-        border-color: #FCD200;
-        color: #0F1111;
+        background: #004aad;
+        border-color: #003a8c;
+        color: #fff;
         border-radius: 8px;
-        box-shadow: 0 2px 5px 0 rgba(213,217,217,.5);
+        box-shadow: 0 2px 5px 0 rgba(0,74,173,.2);
         padding: 0.6rem 1.5rem;
         font-size: 0.85rem;
         font-weight: 500;
         cursor: pointer;
         border: 1px solid;
+        transition: all 0.2s;
     }
 
     .btn-amazon-primary:hover {
-        background: #F7CA00;
-        border-color: #F2C200;
+        background: #0056cc;
+        border-color: #004aad;
+        color: #fff;
     }
 
     .btn-amazon-outline {
