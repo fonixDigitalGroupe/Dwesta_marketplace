@@ -476,16 +476,19 @@ class CheckoutController extends Controller
             // Tentative de récupération via PayDunya (ex: Carte cadeau)
             $paymentData = $this->payDunyaService->verifyPayment($token);
             if (!$paymentData) {
-                return redirect()->route('home')->with('error', 'Session de paiement invalide.');
+                return redirect()->route('home')->with('error', 'Session de paiement invalide ou expirée.');
             }
             
-            $total = $paymentData['invoice']['total_amount'];
+            // On essaie de trouver le montant dans différents champs possibles
+            $total = $paymentData['invoice']['total_amount'] 
+                  ?? $paymentData['invoice']['total'] 
+                  ?? $paymentData['total_amount'] 
+                  ?? session('gift_card_amount') 
+                  ?? 0;
+
             $customData = $paymentData['custom_data'] ?? [];
-            $type = $customData['type'] ?? 'marketplace_order';
             
             // On essaie de retrouver le moyen de paiement via la session PayDunya
-            // Note: En mode session standard, on ne le connaît pas forcément encore 
-            // précisément sauf si on l'a forcé via channels
             $moyenPaiement = 'unknown';
             if (isset($paymentData['invoice']['channels'])) {
                 $channels = $paymentData['invoice']['channels'];
@@ -494,7 +497,14 @@ class CheckoutController extends Controller
                 elseif (in_array('free-money-senegal', $channels)) $moyenPaiement = 'free';
             }
             
-            $description = $paymentData['invoice']['description'] ?? "Achat Karnou";
+            // Fallback pour le moyen si session cadeau
+            if ($moyenPaiement === 'unknown') {
+                $moyenPaiement = 'wave';
+            }
+            
+            $description = $paymentData['invoice']['description'] 
+                        ?? $paymentData['description'] 
+                        ?? "Achat Karnou";
         }
 
         return view('checkout.pay', compact('total', 'moyenPaiement', 'token', 'description'));
