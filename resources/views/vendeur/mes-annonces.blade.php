@@ -250,7 +250,7 @@
 
     .btn-create-ad-outline {
         background-color: transparent;
-        color: #f68b1e;
+        color: #2196F3;
         padding: 0.7rem 0;
         font-weight: 700;
         font-size: 0.95rem;
@@ -263,7 +263,7 @@
     }
     
     .btn-create-ad-outline:hover {
-        color: #e07a16;
+        color: #1976D2;
         text-decoration: underline;
     }
 </style>
