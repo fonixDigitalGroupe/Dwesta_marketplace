@@ -237,23 +237,12 @@
         <div class="checkout-summary">
             <span class="summary-title">Récapitulatif</span>
             
-            <div class="gift-preview">
-                <div class="chip"></div>
-                <i class="fas fa-gift gift-icon-main"></i>
-                <div class="value">{{ number_format($amount, 0, ',', ' ') }} <small style="font-size: 1rem;">FCFA</small></div>
-                <div class="label">Carte Cadeau Karnou</div>
-                <i class="fas fa-medal medal-badge"></i>
-            </div>
 
             <div style="font-size: 0.85rem; color: #555; line-height: 1.6;">
                 Cette carte cadeau est valable 1 an sur toute la marketplace Karnou. 
                 Elle permettra de créditer un compte du montant indiqué instantanément.
             </div>
 
-            <div class="total-row">
-                <span class="total-label">À PAYER</span>
-                <span class="total-amount">{{ number_format($amount, 0, ',', ' ') }} FCFA</span>
-            </div>
         </div>
 
         <div class="checkout-payment">
