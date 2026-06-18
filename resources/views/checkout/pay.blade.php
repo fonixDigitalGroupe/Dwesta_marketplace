@@ -228,16 +228,17 @@
 @section('content')
 <div class="pay-container">
 
-    <div class="card-jumia">
-        <div class="card-section">
-            <div class="section-title">
-                <span>RÉCAPITULATIF DE PAIEMENT</span>
-            </div>
-            <div class="amount-display">
-                <span class="amount-label">{{ $description ?? 'MONTANT TOTAL À PAYER' }}</span>
-                <span class="amount-value">FCFA {{ number_format($total, 0, ',', ' ') }}</span>
-            </div>
+    <div class="card-section" style="padding: 10px 0; border-bottom: none; margin-bottom: 10px;">
+        <div class="section-title" style="margin-bottom: 10px;">
+            <span>RÉCAPITULATIF DE PAIEMENT</span>
         </div>
+        <div class="amount-display">
+            <span class="amount-label" style="font-size: 13px;">{{ $description ?? 'MONTANT TOTAL À PAYER' }}</span>
+            <span class="amount-value" style="font-size: 20px;">FCFA {{ number_format($total, 0, ',', ' ') }}</span>
+        </div>
+    </div>
+
+    <div class="card-jumia">
 
         <div class="card-section">
             <div class="section-title">MODE DE PAIEMENT SÉLECTIONNÉ</div>
