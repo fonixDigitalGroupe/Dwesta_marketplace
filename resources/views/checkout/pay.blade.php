@@ -224,30 +224,28 @@
         <div class="card-section">
             <div class="section-title">MODE DE PAIEMENT SÉLECTIONNÉ</div>
             
-            <div class="method-box">
-                @php
-                    $methodName = match($moyenPaiement) {
-                        'om' => 'Orange Money',
-                        'wave' => 'Wave Senegal',
-                        'free' => 'Free Money',
-                        default => 'Mobile Money'
-                    };
-                    $methodIcon = match($moyenPaiement) {
-                        'om' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Orange_Money_logo.svg/1024px-Orange_Money_logo.svg.png',
-                        'wave' => asset('images/logowave.png'),
-                        'free' => 'https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png',
-                        default => ''
-                    };
-                @endphp
-                <img src="{{ $methodIcon }}" alt="{{ $methodName }}" class="method-icon">
-                <span class="method-name">{{ $methodName }}</span>
+            <div class="phone-input-wrapper" style="margin-top: 0;">
+                <label class="phone-label">Choisir un opérateur</label>
+                <div class="input-group-jumia" style="margin-bottom: 16px; background: white;">
+                    <div class="input-prefix" style="background: white; border-right: none;">
+                        <i class="fas fa-wallet" style="color: var(--karnou-blue);"></i>
+                    </div>
+                    <select id="moyen_paiement" class="jumia-input" style="border: none; background: transparent; appearance: none; cursor: pointer;">
+                        <option value="wave" {{ $moyenPaiement == 'wave' ? 'selected' : '' }}>Wave Senegal</option>
+                        <option value="om" {{ $moyenPaiement == 'om' ? 'selected' : '' }}>Orange Money</option>
+                        <option value="free" {{ $moyenPaiement == 'free' ? 'selected' : '' }}>Free Money</option>
+                    </select>
+                    <div style="padding-right: 12px; color: #777;">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
             </div>
 
             <div class="phone-input-wrapper">
-                <label class="phone-label">Numéro de téléphone PayDunya</label>
+                <label class="phone-label">Numéro de téléphone</label>
                 <div class="input-group-jumia">
                     <span class="input-prefix">+221</span>
-                    <input type="text" id="phone_pay" class="jumia-input" value="{{ ltrim(Auth::user()->telephone, '+221') }}" placeholder="7x xxx xx xx">
+                    <input type="text" id="phone_pay" class="jumia-input" value="{{ $buyer->telephone ?? Auth::user()->telephone ? ltrim(Auth::user()->telephone, '+221') : '' }}" placeholder="7x xxx xx xx">
                 </div>
             </div>
 
@@ -296,7 +294,8 @@
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({
-                    phone_number: '+221' + phone.replace(/^(\+221|00221)/, '').replace(/\s/g, '')
+                    phone_number: '+221' + phone.replace(/^(\+221|00221)/, '').replace(/\s/g, ''),
+                    moyen_paiement: document.getElementById('moyen_paiement').value
                 })
             });
 

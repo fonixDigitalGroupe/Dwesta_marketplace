@@ -529,6 +529,7 @@ class CheckoutController extends Controller
         }
 
         $phone = $request->phone_number ?: ($buyer?->telephone ?? '');
+        $moyenPaiement = $request->moyen_paiement ?: $moyenPaiement;
         
         $customerData = [
             'name' => trim($buyer?->name ?: ($buyer?->prenom . ' ' . $buyer?->nom)),
