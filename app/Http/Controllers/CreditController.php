@@ -44,17 +44,18 @@ class CreditController extends Controller
         try {
             $session = $this->payDunyaService->createCheckoutSession(
                 $pack->prix,
-                "Achat de Pack Crédits " . $pack->nom . " sur Dwesta",
-                route('paydunya.success'), 
+                "Achat de Pack Crédits " . $pack->nom . " sur Karnou",
+                route('paydunya.success'),
                 route('account.credits.index'),
                 [
                     'user_id' => $user->id,
                     'pack_id' => $pack->id,
-                    'type' => 'credit_pack_purchase'
-                ]
+                    'type'    => 'credit_pack_purchase'
+                ],
+                'wave' // opérateur par défaut, changeable sur la pay page
             );
 
-            return redirect($session->url);
+            return redirect()->route('checkout.pay', ['token' => $session->token]);
         } catch (\Exception $e) {
             return back()->with('error', 'Erreur lors de la redirection vers le paiement : ' . $e->getMessage());
         }
