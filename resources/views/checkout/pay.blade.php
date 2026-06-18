@@ -200,14 +200,29 @@
     @keyframes spin {
         to { transform: rotate(360deg); }
     }
+
+    /* Simplified Header Override */
+    .top-banner,
+    .mobile-menu-btn,
+    .search-container,
+    .header-actions,
+    .mobile-search-row,
+    .header-row-2 {
+        display: none !important;
+    }
+
+    .header-row-1 .header-container {
+        justify-content: center !important;
+    }
+
+    .header-logo-text img {
+        height: 26px !important;
+    }
 </style>
 @endpush
 
 @section('content')
 <div class="pay-container">
-    <div class="brand-header">
-       <img src="{{ asset('images/logo.png') }}" alt="Karnou" class="brand-logo">
-    </div>
 
     <div class="card-jumia">
         <div class="card-section">
