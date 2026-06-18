@@ -81,7 +81,7 @@
                     </button>
                 </div>
 
-                <div id="balance-result" style="display: none; margin-top: 1rem; padding: 1rem; background: white; border-radius: 4px; border: 1px solid #dee2e6;"></div>
+                <div id="balance-result" style="display: none; margin-top: 1rem;"></div>
             </div>
 
             {{-- Section : Mes achats --}}
