@@ -22,29 +22,47 @@
         color: #f68b1e;
     }
 
-    /* Balance Dashboard Card (Matches Gift Card) */
+    /* Balance Dashboard Card (Matches Gift Card Premium Style) */
     .wallet-balance-card {
-        background: linear-gradient(135deg, #004aad 0%, #1a5ccc 100%);
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
         border-radius: 16px;
-        padding: 2.5rem;
+        padding: 30px;
         color: #fff;
         position: relative;
         overflow: hidden;
         margin-bottom: 2.5rem;
+        box-shadow: 0 8px 32px rgba(15, 52, 96, 0.2);
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
+        min-height: 180px;
     }
     
     .wallet-balance-card::before {
         content: '';
         position: absolute;
-        width: 300px;
-        height: 300px;
+        top: -40px; right: -40px;
+        width: 150px; height: 150px;
+        background: rgba(255,255,255,0.04);
         border-radius: 50%;
-        background: rgba(255,255,255,0.06);
-        top: -100px;
-        right: -100px;
+    }
+    .wallet-balance-card::after {
+        content: '';
+        position: absolute;
+        bottom: -50px; left: -20px;
+        width: 180px; height: 180px;
+        background: rgba(255,255,255,0.03);
+        border-radius: 50%;
+    }
+
+    .card-brand-label {
+        position: absolute;
+        top: 24px;
+        right: 30px;
+        font-size: 14px;
+        font-weight: 900;
+        color: rgba(255,255,255,0.2);
+        letter-spacing: 1px;
     }
 
     .balance-details {
@@ -53,51 +71,53 @@
     }
 
     .balance-label {
-        font-size: 0.75rem;
+        font-size: 10px;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        opacity: 0.75;
-        margin-bottom: 0.5rem;
+        letter-spacing: 1.5px;
+        color: rgba(255,255,255,0.55);
+        margin-bottom: 8px;
     }
 
     .balance-amount {
-        font-size: 3rem;
+        font-size: 2.8rem;
         font-weight: 900;
         line-height: 1;
+        color: #fff;
         display: flex;
         align-items: baseline;
-        gap: 12px;
+        gap: 8px;
     }
 
     .balance-amount small {
-        font-size: 1.25rem;
-        font-weight: 600;
-        opacity: 0.7;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: rgba(255,255,255,0.6);
     }
 
     .btn-withdraw-payout {
         background: #f68b1e;
         color: #fff;
         border: none;
-        border-radius: 8px;
-        padding: 0.75rem 2.5rem;
-        font-size: 0.9rem;
+        border-radius: 10px;
+        padding: 0.85rem 1.75rem;
+        font-size: 0.85rem;
         font-weight: 800;
         cursor: pointer;
         text-transform: uppercase;
-        transition: all 0.2s;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         z-index: 2;
         display: flex;
         align-items: center;
         gap: 10px;
+        box-shadow: 0 4px 14px rgba(246, 139, 30, 0.4);
     }
 
     .btn-withdraw-payout:hover {
-        background: #e07a10;
+        background: #fa9d3e;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(246, 139, 30, 0.3);
+        box-shadow: 0 6px 20px rgba(246, 139, 30, 0.5);
     }
 
     /* History Table (Matches Gift Cards Mes cartes achetées) */
@@ -236,8 +256,9 @@
             </div>
         @endif
 
-        <!-- Card Balance (Design aligned with Gift Card Checker) -->
+        <!-- Card Balance (Design aligned with Gift Card Premium Style) -->
         <div class="wallet-balance-card">
+            <div class="card-brand-label">WALLETPASS</div>
             <div class="balance-details">
                 <div class="balance-label">Solde disponible</div>
                 <div class="balance-amount">
@@ -247,7 +268,7 @@
             </div>
             
             <button class="btn-withdraw-payout" onclick="openPayout()">
-                <i class="fas fa-arrow-right-to-bracket" style="transform: rotate(-90deg);"></i>
+                <i class="fas fa-paper-plane" style="font-size: 0.9rem;"></i>
                 Retirer des fonds
             </button>
         </div>
