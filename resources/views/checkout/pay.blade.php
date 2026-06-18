@@ -248,7 +248,7 @@
                 <label class="phone-label">Choisir un opérateur</label>
                 <div class="input-group-jumia" style="margin-bottom: 16px; background: white;">
                     <div class="input-prefix" style="background: white; border-right: none; padding: 10px; display: flex; align-items: center; justify-content: center; min-width: 50px;">
-                        <img id="operator-icon" src="{{ $moyenPaiement == 'om' ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Orange_Money_logo.svg/1024px-Orange_Money_logo.svg.png' : ($moyenPaiement == 'wave' ? asset('images/logowave.png') : 'https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png') }}" 
+                        <img id="operator-icon" src="{{ $moyenPaiement == 'om' ? asset('images/logoOM.png') : ($moyenPaiement == 'wave' ? asset('images/logowave.png') : 'https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png') }}" 
                              style="width: 32px; height: 32px; object-fit: contain;">
                     </div>
                     <select id="moyen_paiement" class="jumia-input" style="border: none; background: transparent; appearance: none; cursor: pointer;" onchange="updateOperatorIcon(this.value)">
@@ -314,7 +314,7 @@
         const icon = document.getElementById('operator-icon');
         const logos = {
             'wave': '{{ asset("images/logowave.png") }}',
-            'om': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Orange_Money_logo.svg/1024px-Orange_Money_logo.svg.png',
+            'om': '{{ asset("images/logoOM.png") }}',
             'free': 'https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png',
             'cb': 'https://cdn-icons-png.flaticon.com/512/633/633611.png'
         };
