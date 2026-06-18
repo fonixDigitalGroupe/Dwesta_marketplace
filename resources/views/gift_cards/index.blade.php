@@ -145,7 +145,7 @@
         position: relative;
         overflow: hidden;
         margin-top: 1rem;
-        box-shadow: 0 8px 32px rgba(15, 52, 96, 0.4);
+        box-shadow: 0 4px 16px rgba(15, 52, 96, 0.15);
     }
     .gift-card-visual::before {
         content: '';
