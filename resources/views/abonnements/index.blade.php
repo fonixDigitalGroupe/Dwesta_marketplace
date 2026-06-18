@@ -16,22 +16,24 @@
     }
     
     .subscription-header {
-        text-align: center;
-        margin-bottom: 3rem;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+        text-align: left;
     }
 
     .subscription-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #0f1111;
-        margin-bottom: 0.75rem;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
     }
 
     .subscription-header p {
         color: #565959;
-        font-size: 1rem;
-        max-width: 600px;
-        margin: 0 auto;
+        font-size: 0.88rem;
+        margin-top: 4px;
+        max-width: none;
     }
 
     /* Redesigned Card Layout (Forced Single Row on Desktop) */
@@ -234,9 +236,14 @@
 
         <main class="main-content">
             <div class="subscription-container">
-                <div class="subscription-header">
-                    <h1>Abonnements Vendeur</h1>
-                    <p>Sélectionnez un pack pour booster la visibilité de vos annonces et accéder à nos outils professionnels.</p>
+                <div class="subscription-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
+                    <div>
+                        <h1>Abonnements Vendeur</h1>
+                        <p>Sélectionnez un pack pour booster la visibilité de vos annonces et accéder à nos outils professionnels.</p>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #007185; cursor: pointer; font-weight: 500; margin-bottom: 5px;">
+                        <i class="far fa-question-circle"></i> Comment ça marche ?
+                    </div>
                 </div>
 
                 @if(session('error_banner'))
