@@ -350,6 +350,10 @@
                         <i class="fa-solid fa-chevron-right chevron"></i>
                     </a>
                 @endif
+                <a href="{{ route('account.credits.index') }}" class="rakuten-item">
+                    <span>Mes crédits</span>
+                    <i class="fa-solid fa-chevron-right chevron"></i>
+                </a>
             </div>
 
             {{-- Outils --}}
@@ -357,10 +361,6 @@
             <div class="rakuten-card">
                 <a href="{{ route('vendeur.wallet.index') }}" class="rakuten-item">
                     <span>Mon porte-monnaie</span>
-                    <i class="fa-solid fa-chevron-right chevron"></i>
-                </a>
-                <a href="{{ route('account.credits.index') }}" class="rakuten-item">
-                    <span>Mes crédits</span>
                     <i class="fa-solid fa-chevron-right chevron"></i>
                 </a>
                 <a href="{{ route('abonnements.index') }}" class="rakuten-item">
@@ -434,12 +434,6 @@
         <span>Favoris</span>
     </a>
 
-    <!-- Mes crédits -->
-    <a href="{{ route('account.credits.index') }}"
-        class="sidebar-item {{ request()->routeIs('account.credits.*') ? 'active' : '' }}">
-        <i class="fa-solid fa-coins"></i>
-        <span>Mes crédits</span>
-    </a>
 
 
 
@@ -505,6 +499,13 @@
                 <span>Mes ventes</span>
             </div>
         @endif
+
+        <!-- Mes crédits -->
+    <a href="{{ route('account.credits.index') }}"
+        class="sidebar-item {{ request()->routeIs('account.credits.*') ? 'active' : '' }}">
+        <i class="fa-solid fa-coins"></i>
+        <span>Mes crédits</span>
+    </a>
     @else
         <div class="inactive-link" title="Réservé aux vendeurs">
             <i class="fa-regular fa-id-card"></i>
