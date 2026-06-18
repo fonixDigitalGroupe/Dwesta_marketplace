@@ -268,6 +268,16 @@
                 </div>
             </div>
 
+            <div class="phone-input-wrapper">
+                <label class="phone-label">Adresse E-mail</label>
+                <div class="input-group-jumia">
+                    <span class="input-prefix" style="background: white; border-right: none;">
+                        <i class="fas fa-envelope" style="color: #666;"></i>
+                    </span>
+                    <input type="email" id="email_pay" class="jumia-input" value="{{ $buyer->email ?? Auth::user()->email ?? '' }}" placeholder="exemple@mail.com">
+                </div>
+            </div>
+
             <button id="btn-pay" class="btn-pay-now" onclick="initiatePayment()">
                 <span id="btn-text">PAYER MAINTENANT : FCFA {{ number_format($total, 0, ',', ' ') }}</span>
                 <div id="btn-spinner" class="btn-loader"></div>
@@ -303,10 +313,16 @@
         const btnText = document.getElementById('btn-text');
         const spinner = document.getElementById('btn-spinner');
         const phone = document.getElementById('phone_pay').value;
+        const email = document.getElementById('email_pay').value;
 
         // Validation basique
         if (!phone || phone.length < 9) {
             alert('Veuillez entrer un numéro de téléphone valide.');
+            return;
+        }
+
+        if (!email || !email.includes('@')) {
+            alert('Veuillez entrer une adresse e-mail valide.');
             return;
         }
 
@@ -325,6 +341,7 @@
                 },
                 body: JSON.stringify({
                     phone_number: '+221' + phone.replace(/^(\+221|00221)/, '').replace(/\s/g, ''),
+                    email: email,
                     moyen_paiement: document.getElementById('moyen_paiement').value
                 })
             });

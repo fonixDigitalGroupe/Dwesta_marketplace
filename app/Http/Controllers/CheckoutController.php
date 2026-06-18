@@ -541,7 +541,7 @@ class CheckoutController extends Controller
         
         $customerData = [
             'name' => trim($buyer?->name ?: ($buyer?->prenom . ' ' . $buyer?->nom)),
-            'email' => $buyer?->email,
+            'email' => $request->email ?: $buyer?->email,
             'phone' => $phone
         ];
 
