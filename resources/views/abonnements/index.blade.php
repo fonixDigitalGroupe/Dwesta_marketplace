@@ -370,6 +370,7 @@
                                         @if($abonnement->page_pro)
                                             , Page Boutique Pro incluse
                                         @endif
+                                        · <span style="color: #007185;">Durée : 1 mois</span>
 
                                         @if($isSubscribed && $abonnementActif)
                                             <span style="color: #007600; font-weight: 500; display: block; margin-top: 3px;">
