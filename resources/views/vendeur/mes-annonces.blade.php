@@ -13,8 +13,8 @@
     /* Grid Layout */
     .listings-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+        gap: 1.5rem;
         margin-bottom: 3rem;
     }
 
@@ -31,7 +31,7 @@
 
     .card-image-wrapper {
         position: relative;
-        padding-top: 50%; /* Compact ratio */
+        padding-top: 60%; /* Same as favorites */
         background-color: #f8f9fa;
         overflow: hidden;
     }
@@ -98,7 +98,7 @@
     }
     
     .card-content {
-        padding: 0.55rem;
+        padding: 0.75rem;
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -114,7 +114,7 @@
     }
 
     .listing-title {
-        font-size: 0.78rem;
+        font-size: 0.88rem;
         font-weight: 500;
         color: #111827;
         margin: 0 0 0.4rem 0;
@@ -132,7 +132,7 @@
     }
 
     .listing-price {
-        font-size: 0.75rem;
+        font-size: 0.85rem;
         font-weight: 700;
         color: #f68b1e;
         margin-bottom: 0.4rem;
@@ -178,7 +178,7 @@
 
     /* Card Actions */
     .card-actions {
-        padding: 0.55rem 0.75rem;
+        padding: 0.75rem 1rem;
         background-color: #f9fafb;
         border-top: 1px solid #f3f4f6;
         display: flex;
