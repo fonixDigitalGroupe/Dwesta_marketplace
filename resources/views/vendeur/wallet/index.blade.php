@@ -247,45 +247,69 @@
             </div>
         </div>
 
-        <!-- Withdrawal Section -->
-        <div class="amazon-card" id="withdraw-section">
-            <div class="amazon-card-header">
-                <h2>Demander un virement</h2>
-                <i class="fas fa-university" style="color: #565959;"></i>
+        <!-- Withdrawal Section (Refined for Financial Seriousness) -->
+        <div class="amazon-card" id="withdraw-section" style="border-top: 3px solid #004aad;">
+            <div class="amazon-card-header" style="background: #fff; padding-top: 1.25rem;">
+                <h2 style="color: #004aad; font-weight: 700;">Service de retrait</h2>
+                <div style="display: flex; align-items: center; gap: 8px; color: #007600; font-size: 0.75rem; font-weight: 600;">
+                    <i class="fas fa-shield-alt"></i> Transaction sécurisée
+                </div>
             </div>
-            <div class="amazon-card-content">
+            <div class="amazon-card-content" style="padding-top: 0.5rem;">
                 @if($availableBalance >= 1000)
                     <form action="{{ route('vendeur.wallet.withdraw') }}" method="POST">
                         @csrf
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-                            <div>
-                                <label style="display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem;">Montant du retrait</label>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem;">
+                            
+                            <!-- Left Side: Amount -->
+                            <div style="background: #fcfcfc; padding: 1.5rem; border-radius: 8px; border: 1px solid #f0f0f0;">
+                                <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #565959; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Montant à virer</label>
                                 <div style="position: relative;">
-                                    <input type="number" name="montant" class="amazon-input" max="{{ $availableBalance }}" min="1000" required placeholder="Min. 1000 FCFA">
-                                    <span style="position: absolute; right: 10px; top: 8px; color: #888; font-size: 0.85rem;">FCFA</span>
+                                    <input type="number" name="montant" class="amazon-input" max="{{ $availableBalance }}" min="1000" required placeholder="0" style="font-size: 1.2rem; padding: 0.75rem 1rem; padding-right: 60px;">
+                                    <span style="position: absolute; right: 15px; top: 12px; font-weight: 700; color: #0f1111;">FCFA</span>
                                 </div>
-                                <p style="font-size: 0.75rem; color: #565959; margin-top: 6px;">Votre solde actuel est de {{ number_format($availableBalance, 0, ',', ' ') }} FCFA.</p>
+                                <div style="margin-top: 1rem; display: flex; justify-content: space-between; font-size: 0.8rem;">
+                                    <span style="color: #565959;">Disponible</span>
+                                    <span style="font-weight: 700; color: #007600;">{{ number_format($availableBalance, 0, ',', ' ') }} FCFA</span>
+                                </div>
+                                <div style="margin-top: 0.5rem; height: 4px; background: #eee; border-radius: 2px; overflow: hidden;">
+                                    <div style="width: 100%; height: 100%; background: #007600;"></div>
+                                </div>
                             </div>
 
+                            <!-- Right Side: Destination -->
                             <div>
-                                <label style="display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 0.5rem;">Coordonnées Mobile Money</label>
-                                <input type="text" name="telephone" class="amazon-input" required value="{{ $user->telephone }}" placeholder="Numéro de téléphone">
-                                <div style="display: flex; gap: 10px; margin-top: 1rem;">
-                                    <div class="pay-method-chip active" onclick="selectPayAmazon('om', this)">
-                                        <img src="{{ asset('images/logoOM.png') }}" alt="OM" height="20">
-                                        <span style="font-size: 0.8rem; font-weight: 600;">Orange Money</span>
+                                <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #565959; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 1rem;">Destination du virement</label>
+                                
+                                <div style="margin-bottom: 1.25rem;">
+                                    <div style="position: relative;">
+                                        <i class="fas fa-phone-alt" style="position: absolute; left: 12px; top: 12px; color: #888; font-size: 0.9rem;"></i>
+                                        <input type="text" name="telephone" class="amazon-input" required value="{{ $user->telephone }}" placeholder="Numéro Mobile Money" style="padding-left: 35px;">
                                     </div>
-                                    <div class="pay-method-chip" onclick="selectPayAmazon('wave', this)">
-                                        <img src="{{ asset('images/logowave.png') }}" alt="Wave" height="20">
-                                        <span style="font-size: 0.8rem; font-weight: 600;">Wave</span>
+                                    <p style="font-size: 0.7rem; color: #888; margin-top: 6px;">Vérifiez bien votre numéro avant de valider.</p>
+                                </div>
+
+                                <div style="display: flex; gap: 12px;">
+                                    <div class="pay-method-chip active" onclick="selectPayAmazon('om', this)" style="flex: 1; justify-content: center; background: #fff;">
+                                        <img src="{{ asset('images/logoOM.png') }}" alt="OM" height="18">
+                                        <span style="font-size: 0.8rem;">Orange</span>
+                                    </div>
+                                    <div class="pay-method-chip" onclick="selectPayAmazon('wave', this)" style="flex: 1; justify-content: center; background: #fff;">
+                                        <img src="{{ asset('images/logowave.png') }}" alt="Wave" height="18">
+                                        <span style="font-size: 0.8rem;">Wave</span>
                                     </div>
                                 </div>
                                 <input type="hidden" name="moyen" id="amazon_pay_method" value="om">
                             </div>
                         </div>
 
-                        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee; text-align: right;">
-                            <button type="submit" class="btn-amazon-primary" style="padding: 0.75rem 3rem;">Confirmer le retrait</button>
+                        <div style="margin-top: 2rem; padding: 1rem; background: #f0f7ff; border-radius: 8px; display: flex; align-items: center; gap: 12px; border-left: 4px solid #004aad;">
+                            <i class="fas fa-info-circle" style="color: #004aad;"></i>
+                            <p style="font-size: 0.8rem; color: #333; margin: 0;">Les fonds seront transférés sur votre compte mobile sous un délai moyen de 24h ouvrées.</p>
+                        </div>
+
+                        <div style="margin-top: 2rem; text-align: right;">
+                            <button type="submit" class="btn-amazon-primary" style="padding: 0.8rem 4rem; font-weight: 700; letter-spacing: 0.5px;">Valider le virement</button>
                         </div>
                     </form>
                 @else
