@@ -127,12 +127,12 @@
     }
 
     .btn-amazon-primary {
-        background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
-        border: 1px solid #a88734;
-        border-bottom-color: #9c7e31;
-        color: #111;
+        background: linear-gradient(to bottom, #0056cc, #004aad);
+        border: 1px solid #003a8c;
+        border-bottom-color: #002d6d;
+        color: #fff;
         border-radius: 8px;
-        box-shadow: 0 1px 0 rgba(255,255,255,.4) inset, 0 1px 0 rgba(0,0,0,.08);
+        box-shadow: 0 1px 0 rgba(255,255,255,.2) inset, 0 1px 0 rgba(0,0,0,.08);
         padding: 0.6rem 1.75rem;
         font-size: 0.85rem;
         font-weight: 500;
@@ -141,12 +141,12 @@
     }
 
     .btn-amazon-primary:hover {
-        background: linear-gradient(to bottom, #f5d78e, #eeb933);
-        border-color: #a88734;
+        background: linear-gradient(to bottom, #0066ee, #0056cc);
+        border-color: #003a8c;
     }
 
     .btn-amazon-primary:active {
-        background: #f0c14b;
+        background: #004aad;
         box-shadow: 0 1px 3px rgba(0,0,0,.2) inset;
     }
 
