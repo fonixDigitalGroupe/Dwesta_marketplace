@@ -31,8 +31,8 @@
     }
 
     .listing-card:hover {
-        border-color: #2196F3;
-        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.1);
+        border-color: #004aad;
+        box-shadow: 0 4px 12px rgba(0, 74, 173, 0.12);
         transform: translateY(-2px);
     }
 
@@ -257,7 +257,7 @@
 
     .btn-create-ad-outline {
         background-color: transparent;
-        color: #2196F3;
+        color: #004aad;
         padding: 0.7rem 0;
         font-weight: 700;
         font-size: 0.95rem;
@@ -270,7 +270,7 @@
     }
     
     .btn-create-ad-outline:hover {
-        color: #1976D2;
+        color: #003a8a;
         text-decoration: underline;
     }
 </style>
