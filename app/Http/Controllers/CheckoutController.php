@@ -530,6 +530,14 @@ class CheckoutController extends Controller
 
         $phone = $request->phone_number ?: ($buyer?->telephone ?? '');
         $moyenPaiement = $request->moyen_paiement ?: $moyenPaiement;
+
+        // Si c'est un paiement par carte, on redirige vers le checkout standard PayDunya
+        if ($moyenPaiement === 'cb') {
+            return response()->json([
+                'success' => true,
+                'redirect_url' => "https://paydunya.com/checkout/invoice/{$token}"
+            ]);
+        }
         
         $customerData = [
             'name' => trim($buyer?->name ?: ($buyer?->prenom . ' ' . $buyer?->nom)),

@@ -249,6 +249,7 @@
                         <option value="wave" {{ $moyenPaiement == 'wave' ? 'selected' : '' }}>Wave Senegal</option>
                         <option value="om" {{ $moyenPaiement == 'om' ? 'selected' : '' }}>Orange Money</option>
                         <option value="free" {{ $moyenPaiement == 'free' ? 'selected' : '' }}>Free Money</option>
+                        <option value="cb" {{ $moyenPaiement == 'cb' ? 'selected' : '' }}>Carte Bancaire (Visa/Mastercard)</option>
                     </select>
                     <div style="padding-right: 12px; color: #777;">
                         <i class="fas fa-chevron-down"></i>
@@ -288,7 +289,8 @@
         const logos = {
             'wave': '{{ asset("images/logowave.png") }}',
             'om': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Orange_Money_logo.svg/1024px-Orange_Money_logo.svg.png',
-            'free': 'https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png'
+            'free': 'https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png',
+            'cb': 'https://cdn-icons-png.flaticon.com/512/633/633611.png'
         };
         icon.src = logos[value] || '';
     }
