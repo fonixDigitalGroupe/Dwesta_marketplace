@@ -106,7 +106,7 @@ class GiftCardController extends Controller
     public function buy(Request $request)
     {
         $request->validate([
-            'amount' => 'required|numeric|min:1000',
+            'amount' => 'required|numeric|min:100',
         ]);
 
         $amount = $request->amount;
