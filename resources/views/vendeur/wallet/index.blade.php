@@ -187,7 +187,7 @@
 
     <main class="main-content wallet-page">
         <div style="margin-bottom: 1.5rem;">
-            <h1 style="font-size: 1.7rem; font-weight: 400; color: #0f1111; margin: 0;">Votre solde de paiement</h1>
+            <h1 style="font-size: 1.7rem; font-weight: 400; color: #0f1111; margin: 0;">Mon Portefeuille</h1>
             <p style="color: #565959; font-size: 0.9rem; margin-top: 4px;">Gérez vos revenus et demandez des virements vers votre compte mobile money.</p>
         </div>
 
