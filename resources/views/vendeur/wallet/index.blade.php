@@ -2,7 +2,10 @@
 
 @push('styles')
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
     .wallet-page {
+        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         max-width: 1000px;
         background-color: #f7f8f8;
         padding: 2rem;
@@ -186,10 +189,10 @@
     @include('partials.profile-sidebar')
 
     <main class="main-content wallet-page">
-        <div style="margin-bottom: 1.5rem;">
-            <h1 style="font-size: 1.7rem; font-weight: 400; color: #0f1111; margin: 0;">Mon Portefeuille</h1>
-            <p style="color: #565959; font-size: 0.9rem; margin-top: 4px;">Gérez vos revenus et demandez des virements vers votre compte mobile money.</p>
+        <div style="padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+            <h1 style="font-size: 1.15rem; font-weight: 600; color: #333; margin: 0;">Mon Portefeuille</h1>
         </div>
+        <p style="color: #565959; font-size: 0.88rem; margin-top: -0.75rem; margin-bottom: 1.5rem;">Gérez vos revenus et demandez des virements vers votre compte mobile money.</p>
 
         @if(session('success'))
             <div style="background: #e7f4e4; color: #007600; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #007600; font-size: 0.9rem;">
