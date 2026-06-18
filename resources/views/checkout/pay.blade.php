@@ -333,14 +333,25 @@
         const phone = document.getElementById('phone_pay').value;
         const email = document.getElementById('email_pay').value;
 
-        // Validation basique
-        if (!phone || phone.length < 9) {
+        const operator = document.getElementById('moyen_paiement').value;
+
+        // Validation basique (pas besoin de tel pour carte bancaire)
+        if (operator !== 'cb' && (!phone || phone.length < 9)) {
             alert('Veuillez entrer un numéro de téléphone valide.');
             return;
         }
 
         if (!email || !email.includes('@')) {
             alert('Veuillez entrer une adresse e-mail valide.');
+            return;
+        }
+
+        // Pour la carte bancaire, redirection directe vers PayDunya
+        if (operator === 'cb') {
+            btn.disabled = true;
+            btnText.textContent = 'Redirection sécurisée en cours...';
+            spinner.style.display = 'block';
+            window.location.href = 'https://paydunya.com/checkout/invoice/{{ $token }}';
             return;
         }
 
