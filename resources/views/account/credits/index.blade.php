@@ -96,14 +96,9 @@
                                     {{ number_format($pack->prix, 0, ',', ' ') }} FCFA
                                 </div>
 
-                                @if(($pack->bonus_credits ?? 0) > 0)
-                                    @php
-                                        $isPremium = ($pack->credits == 100 && $pack->prix == 9000);
-                                    @endphp
                                     <div style="display: inline-block; color: #000; padding: 0.2rem 0; font-size: 0.7rem; font-weight: 800; margin-top: 4px;">
-                                        + {{ number_format($pack->bonus_credits, 0, ',', ' ') }} CRÉDITS OFFERTS
+                                        + {{ number_format($pack->bonus_credits ?? 0, 0, ',', ' ') }} CRÉDITS OFFERTS
                                     </div>
-                                @endif
                             </div>
 
                             <form action="{{ route('account.credits.checkout') }}" method="POST" onsubmit="return confirm('Confirmer l\'achat de ce forfait pour {{ number_format($pack->prix, 0, ',', ' ') }} FCFA ?')">

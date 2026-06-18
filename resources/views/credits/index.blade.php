@@ -108,15 +108,10 @@
                                         {{ number_format($pack->prix ?? $pack->price ?? $pack['price'] ?? 0, 0, ',', ' ') }} FCFA
                                     </div>
 
-                                    @if (($pack->bonus_credits ?? 0) > 0)
-                                        @php
-                                            $isPremium = ($pack->credits ?? $pack['credits'] ?? 0) == 100 && ($pack->prix ?? $pack->price ?? $pack['price'] ?? 0) == 9000;
-                                        @endphp
                                         <div
                                             style="display: inline-block; color: #000; padding: 0.2rem 0; font-size: 0.7rem; font-weight: 800; margin-top: 4px;">
                                             + {{ number_format($pack->bonus_credits ?? $pack['bonus_credits'] ?? 0, 0, ',', ' ') }} CRÉDITS OFFERTS
                                         </div>
-                                    @endif
                                 </div>
 
                                 <form action="{{ route('account.credits.checkout') }}" method="POST">
