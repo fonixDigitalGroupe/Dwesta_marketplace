@@ -26,41 +26,92 @@
                 </div>
             @endif
 
-            {{-- Solde actuel - Carte de Crédit Professionnelle --}}
-            <div style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 1.4rem 1.75rem; border-radius: 16px; margin-bottom: 2rem; margin-left: auto; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2); position: relative; overflow: hidden; color: white; max-width: 800px; isolation: isolate;">
+            {{-- Premium Credits Card --}}
+            <style>
+                .premium-credits-card {
+                    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+                    border-radius: 16px;
+                    padding: 30px;
+                    color: #fff;
+                    position: relative;
+                    overflow: hidden;
+                    margin-bottom: 2.5rem;
+                    box-shadow: 0 8px 32px rgba(15, 52, 96, 0.2);
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    min-height: 180px;
+                    max-width: 800px;
+                }
+                .premium-credits-card::before {
+                    content: '';
+                    position: absolute;
+                    top: -40px; right: -40px;
+                    width: 150px; height: 150px;
+                    background: rgba(255,255,255,0.04);
+                    border-radius: 50%;
+                }
+                .premium-credits-card::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -50px; left: -20px;
+                    width: 180px; height: 180px;
+                    background: rgba(255,255,255,0.03);
+                    border-radius: 50%;
+                }
+                .card-tag {
+                    position: absolute;
+                    top: 24px;
+                    right: 30px;
+                    font-size: 14px;
+                    font-weight: 900;
+                    color: rgba(255,255,255,0.2);
+                    letter-spacing: 1px;
+                }
+                .credits-label {
+                    font-size: 10px;
+                    font-weight: 800;
+                    text-transform: uppercase;
+                    letter-spacing: 1.5px;
+                    color: rgba(255,255,255,0.55);
+                    margin-bottom: 8px;
+                }
+                .credits-amount {
+                    font-size: 2.8rem;
+                    font-weight: 900;
+                    line-height: 1;
+                    display: flex;
+                    align-items: baseline;
+                    gap: 8px;
+                }
+                .credits-amount small {
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    color: rgba(255,255,255,0.6);
+                }
+                .card-holder {
+                    font-size: 12px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    color: rgba(255,255,255,0.8);
+                    margin-top: 15px;
+                }
+            </style>
+
+            <div class="premium-credits-card">
+                <div class="card-tag">CREDITPASS</div>
+                <div style="position: relative; z-index: 2;">
+                    <div class="credits-label">Crédits disponibles</div>
+                    <div class="credits-amount">
+                        {{ number_format($balance, 0, ',', ' ') }}
+                        <small>CRÉDITS</small>
+                    </div>
+                    <div class="card-holder">{{ Auth::user()->name ?? 'MEMBRE KARNOU' }}</div>
+                </div>
                 
-                {{-- Background Watermark Icon --}}
-                <i class="fas fa-globe-africa" style="position: absolute; right: -20px; bottom: -40px; font-size: 15rem; color: white; opacity: 0.05; transform: rotate(-20deg); pointer-events: none; z-index: 1;"></i>
-
-                {{-- No shimmer --}}
-
-                {{-- Left Side: The Card --}}
-                <div style="position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 145px; z-index: 2;">
-                    {{-- Card Header: Chip and Brand --}}
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div style="font-weight: 800; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.95; display: flex; align-items: center; gap: 8px;">
-                            <span style="background: white; color: #004aad; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 900;">KARNOU</span>
-                            <span style="font-weight: 200; font-size: 0.9rem; letter-spacing: 2px; text-transform: none;">credits</span>
-                        </div>
-                    </div>
-
-                    {{-- Card Center: Balance --}}
-                    <div style="margin: 0.75rem 0;">
-                        <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.7; margin-bottom: 0.3rem; font-weight: 600;">SOLDE DISPONIBLE</div>
-                        <div style="display: flex; align-items: baseline; gap: 12px;">
-                            <span style="font-size: 2.5rem; font-weight: 900; line-height: 1; letter-spacing: -1px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); text-shadow: 0 2px 10px rgba(0,0,0,0.1);">{{ number_format($balance, 0, ',', ' ') }}</span>
-                        </div>
-                    </div>
-
-                    {{-- Card Footer: Number and Name --}}
-                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                        <div>
-                            <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.9; font-weight: 700;">
-                                {{ Auth::user()->name ?? 'MEMBRE KARNOU' }}
-                            </div>
-                        </div>
-
-                    </div>
+                <div style="position: relative; z-index: 2; margin-bottom: 10px;">
+                    <i class="fas fa-coins" style="font-size: 2.5rem; color: rgba(255,215,0,0.4);"></i>
                 </div>
             </div>
 
