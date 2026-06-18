@@ -36,7 +36,7 @@
                     position: relative;
                     overflow: hidden;
                     margin-bottom: 2.5rem;
-                    box-shadow: 0 8px 32px rgba(15, 52, 96, 0.2);
+                    box-shadow: none;
                     display: flex;
                     justify-content: space-between;
                     align-items: flex-end;
