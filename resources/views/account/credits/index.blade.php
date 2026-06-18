@@ -88,7 +88,7 @@
                                     {{ $pack->nom ?? 'Forfait Crédits' }}
                                 </h3>
 
-                                <div style="font-size: 1.5rem; font-weight: 800; color: #333; margin-bottom: 0.15rem;">
+                                <div style="font-size: 1.85rem; font-weight: 800; color: #333; margin-bottom: 0.15rem;">
                                     {{ number_format($pack->credits, 0, ',', ' ') }} <small style="font-size: 0.8rem; font-weight: 600; opacity: 0.7;">CRÉDITS</small>
                                 </div>
 
