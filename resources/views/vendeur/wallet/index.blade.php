@@ -14,16 +14,21 @@
 
     .amazon-card {
         background: #fff;
-        border: 1px solid #ddd;
+        border: 1px solid #d5d9d9;
         border-radius: 8px;
         margin-bottom: 2rem;
         overflow: hidden;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .amazon-card:hover {
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     }
 
     .amazon-card-header {
         padding: 1rem 1.5rem;
         background-color: #f0f2f2;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #d5d9d9;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -31,9 +36,10 @@
 
     .amazon-card-header h2 {
         margin: 0;
-        font-size: 0.95rem;
-        font-weight: 600;
+        font-size: 0.9rem;
+        font-weight: 700;
         color: #0f1111;
+        text-transform: none;
     }
 
     .amazon-card-content {
@@ -121,23 +127,27 @@
     }
 
     .btn-amazon-primary {
-        background: #f68b1e;
-        border-color: #e67e17;
-        color: #fff;
+        background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
+        border: 1px solid #a88734;
+        border-bottom-color: #9c7e31;
+        color: #111;
         border-radius: 8px;
-        box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
-        padding: 0.6rem 1.5rem;
+        box-shadow: 0 1px 0 rgba(255,255,255,.4) inset, 0 1px 0 rgba(0,0,0,.08);
+        padding: 0.6rem 1.75rem;
         font-size: 0.85rem;
         font-weight: 500;
         cursor: pointer;
-        border: 1px solid;
-        transition: all 0.2s;
+        transition: all 0.1s;
     }
 
     .btn-amazon-primary:hover {
-        background: #ff9d3a;
-        border-color: #f68b1e;
-        color: #fff;
+        background: linear-gradient(to bottom, #f5d78e, #eeb933);
+        border-color: #a88734;
+    }
+
+    .btn-amazon-primary:active {
+        background: #f0c14b;
+        box-shadow: 0 1px 3px rgba(0,0,0,.2) inset;
     }
 
     .btn-amazon-outline {
@@ -149,11 +159,13 @@
         font-size: 0.85rem;
         font-weight: 500;
         cursor: pointer;
-        box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+        box-shadow: 0 2px 5px 0 rgba(213,217,217,.5);
+        transition: background 0.2s;
     }
 
     .btn-amazon-outline:hover {
         background-color: #f7fafa;
+        border-color: #D5D9D9;
     }
 
     .status-pill {
@@ -191,10 +203,15 @@
     @include('partials.profile-sidebar')
 
     <main class="main-content wallet-page">
-        <div style="padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
-            <h1 style="font-size: 1.15rem; font-weight: 600; color: #333; margin: 0;">Mon Portefeuille</h1>
+        <div style="padding-bottom: 0.8rem; margin-bottom: 2rem; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <h1 style="font-size: 1.3rem; font-weight: 700; color: #333; margin: 0;">Mon Portefeuille</h1>
+                <p style="color: #565959; font-size: 0.85rem; margin-top: 4px;">Surveillez votre activité financière et gérez vos virements.</p>
+            </div>
+            <div style="font-size: 0.8rem; color: #007185; cursor: pointer; font-weight: 500;">
+                <i class="far fa-question-circle"></i> Comment ça marche ?
+            </div>
         </div>
-        <p style="color: #565959; font-size: 0.88rem; margin-top: -0.75rem; margin-bottom: 1.5rem;">Gérez vos revenus et demandez des virements vers votre compte mobile money.</p>
 
         @if(session('success'))
             <div style="background: #e7f4e4; color: #007600; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #007600; font-size: 0.9rem;">
