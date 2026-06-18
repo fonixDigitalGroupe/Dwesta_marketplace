@@ -113,7 +113,7 @@
                                             $isPremium = ($pack->credits ?? $pack['credits'] ?? 0) == 100 && ($pack->prix ?? $pack->price ?? $pack['price'] ?? 0) == 9000;
                                         @endphp
                                         <div
-                                            style="display: inline-block; background: #fff3e0; color: #e65100; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-top: 4px; border: 1px solid #ffe0b2;">
+                                            style="display: inline-block; background: #ef3b2d; color: white; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 800; margin-top: 4px;">
                                             + {{ number_format($pack->bonus_credits ?? $pack['bonus_credits'] ?? 0, 0, ',', ' ') }} CRÉDITS OFFERTS
                                         </div>
                                     @endif
