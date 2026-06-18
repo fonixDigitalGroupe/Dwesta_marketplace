@@ -31,13 +31,13 @@
 
             {{-- Solde actuel - Carte de Crédit Professionnelle --}}
             <div
-                style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 1.4rem 1.75rem; border-radius: 16px; margin-bottom: 1.75rem; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 15px 30px -8px rgba(0, 74, 173, 0.25); position: relative; overflow: hidden; color: white; max-width: 500px; display: flex; align-items: stretch; gap: 0; isolation: isolate;">
+                style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 1.4rem 1.75rem; border-radius: 16px; margin-bottom: 1.75rem; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 15px 30px -8px rgba(0, 74, 173, 0.25); position: relative; overflow: hidden; color: white; max-width: 420px; isolation: isolate;">
 
                 {{-- No shimmer --}}
 
                 {{-- Left Side: The Card --}}
                 <div
-                    style="flex: 1.2; position: relative; padding-right: 2rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 155px; z-index: 2;">
+                    style="position: relative; display: flex; flex-direction: column; justify-content: space-between; min-height: 145px; z-index: 2;">
                     {{-- Card Header: Chip and Brand --}}
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div
@@ -70,39 +70,6 @@
                             </div>
                         </div>
 
-                    </div>
-                </div>
-
-                {{-- Vertical Divider --}}
-                <div
-                    style="width: 1px; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent); margin: 0 1.5rem;">
-                </div>
-
-                {{-- Right Side: Benefits --}}
-                <div style="flex: 0.8; padding-left: 0.5rem; display: flex; flex-direction: column; justify-content: center; z-index: 2;">
-                    <h3
-                        style="color: white; margin-top: 0; margin-bottom: 1.5rem; font-size: 0.85rem; font-weight: 800; opacity: 0.95; letter-spacing: 1.5px;">
-                        PRIVILÈGES
-                    </h3>
-                    <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-                        <div style="display: flex; align-items: center; gap: 0.85rem; font-size: 0.85rem; color: rgba(255,255,255,0.9);">
-                            <div style="width: 24px; height: 24px; background: rgba(16, 185, 129, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-rocket" style="color: #10b981; font-size: 0.75rem;"></i>
-                            </div>
-                            <span style="font-weight: 500;">Boost Boosters Illimité</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.85rem; font-size: 0.85rem; color: rgba(255,255,255,0.9);">
-                            <div style="width: 24px; height: 24px; background: rgba(59, 130, 246, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-crown" style="color: #3b82f6; font-size: 0.75rem;"></i>
-                            </div>
-                            <span style="font-weight: 500;">Badge Premium Vérifié</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 0.85rem; font-size: 0.85rem; color: rgba(255,255,255,0.9);">
-                            <div style="width: 24px; height: 24px; background: rgba(245, 158, 11, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                                <i class="fas fa-bolt" style="color: #f59e0b; font-size: 0.75rem;"></i>
-                            </div>
-                            <span style="font-weight: 500;">Support Client Prioritaire</span>
-                        </div>
                     </div>
                 </div>
             </div>
