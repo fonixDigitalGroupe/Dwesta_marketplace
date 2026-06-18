@@ -27,7 +27,7 @@
             @endif
 
             {{-- Solde actuel - Carte de Crédit Professionnelle --}}
-            <div style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 1.4rem 1.75rem; border-radius: 16px; margin-bottom: 2rem; margin-left: auto; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2); position: relative; overflow: hidden; color: white; max-width: 420px; isolation: isolate;">
+            <div style="background: linear-gradient(135deg, #004aad 0%, #002a6b 100%); padding: 1.4rem 1.75rem; border-radius: 16px; margin: 0 auto 2rem; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.2); position: relative; overflow: hidden; color: white; max-width: 420px; isolation: isolate;">
                 
                 {{-- No shimmer --}}
 
@@ -46,7 +46,6 @@
                         <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.7; margin-bottom: 0.3rem; font-weight: 600;">SOLDE DISPONIBLE</div>
                         <div style="display: flex; align-items: baseline; gap: 12px;">
                             <span style="font-size: 2.5rem; font-weight: 900; line-height: 1; letter-spacing: -1px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); text-shadow: 0 2px 10px rgba(0,0,0,0.1);">{{ number_format($balance, 0, ',', ' ') }}</span>
-                            <i class="fas fa-star" style="color: #ffd700; font-size: 1.3rem; filter: drop-shadow(0 0 12px rgba(255,215,0,0.5));"></i>
                         </div>
                     </div>
 
