@@ -6,9 +6,11 @@ use App\Models\Order;
 use App\Models\Transaction;
 use App\Services\PayDunyaService;
 use App\Services\LogisticsService;
+use App\Mail\GiftCardPurchased;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class PayDunyaCallbackController extends Controller
 {
@@ -253,6 +255,13 @@ class PayDunyaCallbackController extends Controller
                         'related_type' => \App\Models\GiftCard::class,
                         'related_id' => $giftCard->id,
                     ]);
+
+                    // Envoyer l'email de confirmation avec le code de la carte
+                    try {
+                        Mail::to($user->email)->send(new GiftCardPurchased($user, $giftCard));
+                    } catch (\Exception $mailException) {
+                        Log::error('Gift card email failed: ' . $mailException->getMessage());
+                    }
                 }
             }
 
