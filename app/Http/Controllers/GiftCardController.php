@@ -101,7 +101,7 @@ class GiftCardController extends Controller
     }
 
     /**
-     * Initier l'achat d'une carte cadeau (Étape 1 : Choix du montant)
+     * Initier l'achat d'une carte cadeau (Étape unique : directement vers la page de paiement)
      */
     public function buy(Request $request)
     {
@@ -109,9 +109,29 @@ class GiftCardController extends Controller
             'amount' => 'required|numeric|min:1000',
         ]);
 
-        session(['gift_card_amount' => $request->amount]);
+        $amount = $request->amount;
+        $user = Auth::user();
 
-        return redirect()->route('gift-cards.checkout');
+        try {
+            $session = $this->payDunyaService->createCheckoutSession(
+                $amount,
+                "Achat de Carte Cadeau Karnou (" . number_format($amount, 0, ',', ' ') . " FCFA)",
+                route('paydunya.success'),
+                route('gift-cards.index'),
+                [
+                    'user_id' => $user->id,
+                    'amount'  => $amount,
+                    'type'    => 'gift_card_purchase'
+                ],
+                'wave' // opérateur par défaut, changeable sur la pay page
+            );
+
+            session(['gift_card_amount' => $amount]);
+
+            return redirect()->route('checkout.pay', ['token' => $session->token]);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Erreur PayDunya : ' . $e->getMessage());
+        }
     }
 
     /**
