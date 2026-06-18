@@ -84,7 +84,7 @@
                                 $isPopular = ($pack->nom ?? $pack->label ?? '') === 'Pack 25 000' || ($pack->popular ?? false) || ($pack->credits ?? $pack['credits'] ?? 0) == 100;
                             @endphp
                             <div
-                                style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; border: 1px solid {{ $isPopular ? '#EF3B2D' : '#dee2e6' }}; position: relative; display: flex; flex-direction: column; justify-content: space-between;">
+                                style="background: #f8f9fa; padding: 1rem; border-radius: 8px; border: 1px solid {{ $isPopular ? '#EF3B2D' : '#dee2e6' }}; position: relative; display: flex; flex-direction: column; justify-content: space-between;">
 
                                 @if($isPopular)
                                     <div
