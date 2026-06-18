@@ -59,7 +59,7 @@
         position: relative;
         overflow: hidden;
         margin-bottom: 1.5rem;
-        box-shadow: 0 8px 32px rgba(0, 74, 173, 0.35);
+        box-shadow: 0 4px 12px rgba(0, 74, 173, 0.12);
     }
     .finance-card::before {
         content: '';
