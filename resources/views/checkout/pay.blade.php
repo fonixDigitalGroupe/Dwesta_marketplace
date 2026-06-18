@@ -260,7 +260,10 @@
             <div class="phone-input-wrapper">
                 <label class="phone-label">Numéro de téléphone</label>
                 <div class="input-group-jumia">
-                    <span class="input-prefix">+221</span>
+                    <span class="input-prefix" style="display: flex; align-items: center; gap: 8px;">
+                        <img src="https://flagcdn.com/w20/sn.png" srcset="https://flagcdn.com/w40/sn.png 2x" width="20" alt="Senegal">
+                        +221
+                    </span>
                     <input type="text" id="phone_pay" class="jumia-input" value="{{ $buyer->telephone ?? Auth::user()->telephone ? ltrim(Auth::user()->telephone, '+221') : '' }}" placeholder="7x xxx xx xx">
                 </div>
             </div>
