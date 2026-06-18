@@ -132,7 +132,7 @@
     }
 
     .listing-price {
-        font-size: 0.85rem;
+        font-size: 1rem;
         font-weight: 700;
         color: #f68b1e;
         margin-bottom: 0.4rem;
