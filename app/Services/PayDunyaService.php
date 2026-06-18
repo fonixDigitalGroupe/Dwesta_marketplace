@@ -37,6 +37,7 @@ class PayDunyaService
 
         $payload = [
             'invoice' => [
+                'invoice_number'  => 'KRN-' . strtoupper(uniqid()) . '-' . time(),
                 'total_amount' => $total,
                 'description' => $description,
                 'customer_name' => $customer['name'] ?? '',
