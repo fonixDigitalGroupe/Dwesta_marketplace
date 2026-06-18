@@ -61,13 +61,16 @@
                     {{-- Card Footer: Number and Name --}}
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
-
                             <div
                                 style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.9; font-weight: 700;">
                                 {{ Auth::user()->name ?? 'MEMBRE KARNOU' }}
                             </div>
                         </div>
-
+                        <div style="display: flex; gap: 15px; opacity: 0.7;">
+                            <i class="fas fa-rocket"></i>
+                            <i class="fas fa-crown"></i>
+                            <i class="fas fa-bolt"></i>
+                        </div>
                     </div>
                 </div>
             </div>
