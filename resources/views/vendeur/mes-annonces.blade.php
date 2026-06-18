@@ -27,6 +27,13 @@
         display: flex;
         flex-direction: column;
         position: relative;
+        transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .listing-card:hover {
+        border-color: #2196F3;
+        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.1);
+        transform: translateY(-2px);
     }
 
     .card-image-wrapper {
@@ -42,7 +49,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: cover; /* Edge to edge */
     }
 
     .no-image-placeholder {
