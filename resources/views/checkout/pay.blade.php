@@ -241,9 +241,9 @@
             <div class="phone-input-wrapper" style="margin-top: 0;">
                 <label class="phone-label">Choisir un opérateur</label>
                 <div class="input-group-jumia" style="margin-bottom: 16px; background: white;">
-                    <div class="input-prefix" style="background: white; border-right: none; padding: 8px;">
+                    <div class="input-prefix" style="background: white; border-right: none; padding: 10px; display: flex; align-items: center; justify-content: center; min-width: 50px;">
                         <img id="operator-icon" src="{{ $moyenPaiement == 'om' ? 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Orange_Money_logo.svg/1024px-Orange_Money_logo.svg.png' : ($moyenPaiement == 'wave' ? asset('images/logowave.png') : 'https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png') }}" 
-                             style="width: 24px; height: 24px; object-fit: contain;">
+                             style="width: 32px; height: 32px; object-fit: contain;">
                     </div>
                     <select id="moyen_paiement" class="jumia-input" style="border: none; background: transparent; appearance: none; cursor: pointer;" onchange="updateOperatorIcon(this.value)">
                         <option value="wave" {{ $moyenPaiement == 'wave' ? 'selected' : '' }}>Wave Senegal</option>
