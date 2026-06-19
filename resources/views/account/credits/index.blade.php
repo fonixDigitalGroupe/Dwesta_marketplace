@@ -137,10 +137,10 @@
                     margin-bottom: 4rem;
                 }
                 .pack-card {
-                    background: #fff;
-                    border: 1px solid #e5e7eb;
+                    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+                    border: 1px solid rgba(255,255,255,0.1);
                     border-radius: 20px;
-                    padding: 2rem;
+                    padding: 2.2rem 2rem;
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                     position: relative;
                     overflow: hidden;
@@ -148,89 +148,102 @@
                     flex-direction: column;
                     align-items: center;
                     text-align: center;
+                    color: #fff;
+                }
+                .pack-card::before {
+                    content: '';
+                    position: absolute;
+                    top: -30px; right: -30px;
+                    width: 100px; height: 100px;
+                    background: rgba(255,255,255,0.03);
+                    border-radius: 50%;
                 }
                 .pack-card:hover {
                     transform: translateY(-10px);
-                    box-shadow: 0 20px 30px rgba(0,0,0,0.05);
-                    border-color: #004aad;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                    border-color: rgba(255,215,0,0.3);
                 }
                 .pack-card.popular {
-                    border: 2px solid #004aad;
+                    border: 2px solid #f68b1e;
                 }
                 .popular-badge {
                     position: absolute;
                     top: 0;
                     right: 0;
-                    background: #004aad;
+                    background: #f68b1e;
                     color: #fff;
-                    padding: 4px 20px;
-                    font-size: 0.7rem;
+                    padding: 5px 20px;
+                    font-size: 0.75rem;
                     font-weight: 800;
                     border-bottom-left-radius: 12px;
+                    z-index: 2;
                 }
                 .pack-icon {
-                    width: 60px;
-                    height: 60px;
-                    background: #f3f4f6;
-                    border-radius: 16px;
+                    width: 55px;
+                    height: 55px;
+                    background: rgba(255,255,255,0.05);
+                    border-radius: 14px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     margin-bottom: 1.5rem;
-                    color: #004aad;
-                    font-size: 1.5rem;
+                    color: #FFD700;
+                    font-size: 1.4rem;
                     transition: all 0.3s;
+                    border: 1px solid rgba(255,255,255,0.1);
                 }
                 .pack-card:hover .pack-icon {
-                    background: #004aad;
-                    color: #fff;
+                    background: #FFD700;
+                    color: #000;
                     transform: scale(1.1) rotate(5deg);
                 }
                 .pack-name {
-                    font-size: 0.9rem;
+                    font-size: 0.8rem;
                     font-weight: 700;
-                    color: #6b7280;
+                    color: rgba(255,255,255,0.5);
                     text-transform: uppercase;
-                    letter-spacing: 0.05em;
+                    letter-spacing: 0.1em;
                     margin-bottom: 0.5rem;
                 }
                 .pack-credits {
-                    font-size: 2.5rem;
+                    font-size: 2.8rem;
                     font-weight: 900;
-                    color: #111827;
+                    color: #fff;
                     margin-bottom: 0.25rem;
                     line-height: 1;
+                    letter-spacing: -0.02em;
                 }
                 .pack-price {
-                    font-size: 1.25rem;
-                    font-weight: 700;
-                    color: #004aad;
+                    font-size: 1.35rem;
+                    font-weight: 800;
+                    color: #FFD700;
                     margin-bottom: 1.5rem;
                 }
                 .pack-bonus {
-                    background: #eff6ff;
-                    color: #1e40af;
+                    background: rgba(255, 215, 0, 0.15);
+                    color: #FFD700;
                     font-size: 0.75rem;
-                    font-weight: 700;
-                    padding: 6px 12px;
+                    font-weight: 800;
+                    padding: 6px 14px;
                     border-radius: 100px;
-                    margin-bottom: 2rem;
+                    margin-bottom: 2.2rem;
+                    border: 1px solid rgba(255, 215, 0, 0.2);
                 }
                 .btn-buy {
                     width: 100%;
-                    padding: 1rem;
+                    padding: 0.9rem;
                     border-radius: 12px;
                     border: none;
-                    background: #111827;
-                    color: #fff;
-                    font-weight: 700;
-                    font-size: 0.95rem;
+                    background: #fff;
+                    color: #111827;
+                    font-weight: 800;
+                    font-size: 0.9rem;
                     cursor: pointer;
                     transition: all 0.2s;
                 }
                 .btn-buy:hover {
-                    background: #004aad;
-                    transform: scale(1.02);
+                    background: #FFD700;
+                    transform: scale(1.03);
                 }
 
                 /* 📝 Transactions List */
