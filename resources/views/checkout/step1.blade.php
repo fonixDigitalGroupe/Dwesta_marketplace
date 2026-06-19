@@ -7,7 +7,7 @@
         :root {
             --jumia-orange: #f68b1e;
             --jumia-blue: #004aad;
-            --jumia-bg: #ffffff;
+            --jumia-bg: #f5f5f5;
             --jumia-border: #ededed;
             --jumia-text: #313133;
             --jumia-success: #4caf50;
