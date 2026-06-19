@@ -773,10 +773,8 @@
                     <div class="fin-stat-label">En séquestre</div>
                     @if($pendingBalance > 0)
                         <div class="fin-stat-value amber" data-count="{{ $pendingBalance }}">{{ number_format($pendingBalance, 0, ',', ' ') }}<span class="fin-unit">FCFA</span></div>
-                        <div class="fin-stat-sub amber"><span class="pulse-dot"></span> Fonds en attente</div>
                     @else
                         <div class="fin-stat-value muted">—<span class="fin-unit">FCFA</span></div>
-                        <div class="fin-stat-sub muted">Aucun fond bloqué</div>
                     @endif
                 </div>
 
@@ -785,7 +783,6 @@
                     <div class="fin-stat-icon green"><i class="fas fa-wallet"></i></div>
                     <div class="fin-stat-label">Solde disponible</div>
                     <div class="fin-stat-value green" data-count="{{ $availableBalance }}">{{ number_format($availableBalance, 0, ',', ' ') }}<span class="fin-unit">FCFA</span></div>
-                    <div class="fin-stat-sub green"><i class="fas fa-check" style="font-size:0.55rem;"></i> Disponible au retrait</div>
                 </div>
 
                 {{-- Transactions --}}
@@ -793,7 +790,6 @@
                     <div class="fin-stat-icon blue"><i class="fas fa-layer-group"></i></div>
                     <div class="fin-stat-label">Transactions</div>
                     <div class="fin-stat-value blue" data-count="{{ $recentTransactions->total() }}">{{ $recentTransactions->total() }}</div>
-                    <div class="fin-stat-sub blue"><span class="pulse-dot"></span> Activité du compte</div>
                 </div>
 
             </div>
