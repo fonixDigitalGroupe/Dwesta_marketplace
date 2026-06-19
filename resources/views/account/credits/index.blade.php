@@ -52,7 +52,7 @@
                 /* 💳 Balance Card - Premium Dark Glossy */
                 .balance-card {
                     background: linear-gradient(135deg, #001f3f 0%, #004aad 100%);
-                    border-radius: 18px;
+                    border-radius: 12px;
                     padding: 24px 32px;
                     color: #fff;
                     position: relative;
