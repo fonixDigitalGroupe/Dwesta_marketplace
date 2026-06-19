@@ -197,7 +197,7 @@
                 .pack-price-gold {
                     font-size: 20px;
                     font-weight: 800;
-                    color: #f68b1e;
+                    color: #00d4ff;
                     margin-top: auto;
                 }
                 .pack-bonus-badge {
