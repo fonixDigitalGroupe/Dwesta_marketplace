@@ -347,9 +347,9 @@
 
                             <div class="pack-price-gold">{{ number_format($pack->prix, 0, ',', ' ') }} FCFA</div>
 
-                            @if($pack->bonus_credits > 0)
+                            @if($pack->bonus_credits > 0 || (isset($pack->nom) && strtolower($pack->nom) == 'starter'))
                                 <div>
-                                    <span class="pack-bonus-badge">+ {{ number_format($pack->bonus_credits, 0, ',', ' ') }} CR OFFERTS</span>
+                                    <span class="pack-bonus-badge">+ {{ number_format($pack->bonus_credits ?? 0, 0, ',', ' ') }} CR OFFERTS</span>
                                 </div>
                             @endif
 
