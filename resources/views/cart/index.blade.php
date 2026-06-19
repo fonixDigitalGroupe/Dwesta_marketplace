@@ -210,8 +210,8 @@
         background: #9e9e9e;
     }
     .btn-qty.minus:hover:not(:disabled) { background: #757575; }
-    .btn-qty.plus { background: #004aad; box-shadow: 0 2px 4px rgba(0, 74, 173, 0.2); }
-    .btn-qty.plus:hover:not(:disabled) { background: #003a8f; }
+    .btn-qty.plus { background: #f68b1e; box-shadow: 0 2px 4px rgba(246, 139, 30, 0.2); }
+    .btn-qty.plus:hover:not(:disabled) { background: #e07b0e; }
 
     .qty-num {
         font-size: 16px;
