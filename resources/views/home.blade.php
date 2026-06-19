@@ -1251,7 +1251,7 @@
         font-weight: 500;
     }
     .n1-top-price-val {
-        color: #004aad;
+        color: #f68b1e;
         font-weight: 700;
         font-size: 1.05rem;
         text-shadow: none !important;
@@ -1699,7 +1699,7 @@
         font-weight: 700;
     }
     .price-value-flat {
-        color: #004aad;
+        color: #f68b1e;
         font-weight: 800;
         font-size: 1.25rem;
         text-shadow: none !important;

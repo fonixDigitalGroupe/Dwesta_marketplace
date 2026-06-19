@@ -167,7 +167,7 @@
     .price-main {
         font-size: 1.3rem;
         font-weight: 900;
-        color: #004aad;
+        color: #f68b1e;
         text-shadow: none !important;
     }
 
