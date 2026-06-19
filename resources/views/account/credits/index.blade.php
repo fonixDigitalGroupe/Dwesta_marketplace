@@ -10,6 +10,9 @@
         @include('partials.profile-sidebar')
 
         <main class="main-content">
+            <div class="account-header">
+                <h1>Mes Crédits</h1>
+            </div>
 
 
 
@@ -31,13 +34,15 @@
                     min-height: 100vh;
                     padding: 2rem !important;
                 }
-                .page-header {
+                .account-header {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    margin-bottom: 2rem;
+                    padding-bottom: 0.5rem;
+                    margin-bottom: 1.5rem;
+                    border-bottom: 1px solid #eee;
                 }
-                .page-title {
+                .account-header h1 {
                     font-size: 1.1rem;
                     font-weight: 600;
                     color: #333;
