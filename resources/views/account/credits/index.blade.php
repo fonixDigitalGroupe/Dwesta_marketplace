@@ -121,16 +121,16 @@
                 }
                 .balance-card-holder {
                     font-family: 'Courier New', Courier, monospace;
-                    font-size: 1.1rem;
-                    letter-spacing: 0.2em;
+                    font-size: 0.85rem;
+                    letter-spacing: 0.1em;
                     text-transform: uppercase;
                     opacity: 0.9;
                 }
                 .balance-card-brand {
-                    font-size: 1.2rem;
+                    font-size: 0.95rem;
                     font-weight: 900;
                     font-style: italic;
-                    opacity: 0.5;
+                    opacity: 0.7;
                 }
 
                 /* 📦 Pack Cards */
