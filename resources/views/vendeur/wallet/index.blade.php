@@ -673,21 +673,7 @@
                         </div>
                     </div>
 
-                    {{-- Row 3: Card number --}}
-                    <div class="card-row-number">
-                        <div class="card-number">
-                            <span class="card-number-group">●●●●</span>
-                            <span class="card-number-group">●●●●</span>
-                            <span class="card-number-group">●●●●</span>
-                            <span class="card-number-group" style="letter-spacing:0.15em; opacity:1;">{{ str_pad(substr(md5($user->id), 0, 4), 4, '0', STR_PAD_LEFT) }}</span>
-                        </div>
-                        <div class="card-expiry-block">
-                            <div class="card-expiry-label">Expire</div>
-                            <div class="card-expiry-value">{{ now()->addYear()->format('m/y') }}</div>
-                        </div>
-                    </div>
-
-                    {{-- Row 4: Holder + Secure --}}
+                    {{-- Row 3: Holder + Secure --}}
                     <div class="card-row-holder">
                         <div>
                             <div class="card-holder-label">Titulaire</div>
