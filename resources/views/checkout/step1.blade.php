@@ -987,20 +987,6 @@
                         </label>
 
                         <!-- Free Money -->
-                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'commande', 'free')">
-                            <input type="radio" name="ui_payment" value="free">
-                            <span class="radio-custom"></span>
-                            <div class="payment-info-wrapper">
-                                <div class="payment-title-row">
-                                    <span class="payment-name">Free Money</span>
-                                    <div style="margin-left: auto;">
-                                        <img src="https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png" alt="Free Money" class="method-logo">
-                                    </div>
-                                </div>
-                                <div style="font-size: 13px; color: #666; margin-top: 4px;">Utilisez votre compte Free Money.</div>
-                            </div>
-                        </label>
-
                         <div class="payment-section-title">Carte Bancaire / International</div>
 
                         <!-- Card -->
