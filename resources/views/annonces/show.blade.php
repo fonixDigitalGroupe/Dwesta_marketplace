@@ -170,7 +170,7 @@
     
     .rk-btn-cart {
         width: auto;
-        background: #ff8c00;
+        background: #004aad;
         color: white;
         border: none;
         padding: 0.6rem 1.2rem;
@@ -182,7 +182,7 @@
         box-shadow: none;
         margin-left: 1rem;
     }
-    .rk-btn-cart:hover { background: #e67e00; transform: translateY(-1px); }
+    .rk-btn-cart:hover { background: #003d8f; transform: translateY(-1px); }
     .rk-btn-cart:active { transform: translateY(1px); }
 
     /* Seller Info Card */
@@ -687,7 +687,7 @@
                         @csrf
                         <input type="hidden" name="annonce_id" value="{{ $annonce->id }}">
                         <input type="hidden" name="quantite" value="1">
-                        <button type="submit" class="rk-btn-cart" style="padding: 0.75rem 1.5rem; border-radius: 0; background: #000; font-size: 0.9rem;">
+                        <button type="submit" class="rk-btn-cart" style="padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem;">
                             <i class="fas fa-shopping-cart" style="margin-right: 0.75rem;"></i> Ajouter au panier
                         </button>
                     </form>
