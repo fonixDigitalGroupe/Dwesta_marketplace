@@ -193,12 +193,14 @@
         }
 
         .btn-primary {
-            background: var(--primary-black);
+            background: #008400;
             color: white;
+            box-shadow: 0 2px 4px rgba(0, 132, 0, 0.15);
         }
 
         .btn-primary:hover {
-            background: #333;
+            background: #007300;
+            box-shadow: 0 4px 8px rgba(0, 115, 0, 0.2);
             transform: translateY(-1px);
         }
 
