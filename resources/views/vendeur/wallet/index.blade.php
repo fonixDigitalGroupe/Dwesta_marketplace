@@ -67,12 +67,7 @@
         max-width: 420px;
         width: 100%;
         font-family: 'Courier New', 'Lucida Console', monospace;
-        transition: transform 0.4s ease;
-        cursor: default;
         user-select: none;
-    }
-    .finance-card:hover {
-        transform: translateY(-4px) rotateX(2deg);
     }
     /* ── Shimmer overlay ── */
     .finance-card::before {
@@ -377,12 +372,7 @@
         width: 6px; height: 6px;
         border-radius: 50%;
         background: currentColor;
-        animation: pulse-anim 2s infinite;
         flex-shrink: 0;
-    }
-    @keyframes pulse-anim {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50%       { opacity: 0.4; transform: scale(0.7); }
     }
     @media (max-width: 640px) {
         .fin-summary-inner { grid-template-columns: 1fr; }
