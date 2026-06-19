@@ -137,68 +137,6 @@
                             @error('title') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                         </div>
 
-                        <div>
-                            <label for="link_url" class="form-label">Redirection lors du clic</label>
-                            <select name="link_url" id="link_url" class="form-select">
-                                <option value="">-- Sélectionner une destination --</option>
-                                @php $currentUrl = old('link_url', $banner->link_url); @endphp
-                                @foreach($categories as $category)
-                                    @php
-                                        $ancetres = $category->ancetres ?? [];
-                                        $catUrl = '';
-                                        if (count($ancetres) > 0) {
-                                            $racine = $ancetres[0];
-                                            $params = ['slug' => $racine->slug];
-                                            if (count($ancetres) === 1) {
-                                                $params['active'] = $category->id;
-                                            } else {
-                                                $params['active'] = $ancetres[1]->id;
-                                                $params['n3'] = $category->id;
-                                            }
-                                            $catUrl = route('categories.show', $params, false);
-                                        } else {
-                                            $catUrl = route('categories.show', $category->slug, false);
-                                        }
-                                    @endphp
-                                    <option value="{{ $catUrl }}" {{ $currentUrl == $catUrl ? 'selected' : '' }}>
-                                        {{ $category->chemin ?? $category->nom }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('link_url') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
-                        </div>
-
-                        <div style="border-top: 1px solid #eee; padding-top: 20px;">
-                            <div id="promo-categories-section" style="background: #fcfcfc; border: 1px solid #eee; padding: 15px; border-radius: 4px;">
-                                <label class="form-label">Associer à une ou plusieurs catégories (Menu de la page)</label>
-                                <div style="max-height: 200px; overflow-y: auto; border: 1px solid #adb1b8; border-radius: 3px; padding: 10px; background: #fff;">
-                                    @php $selectedCategories = old('categories', $banner->categories->pluck('id')->toArray()); @endphp
-                                    @foreach($allCategories as $cat)
-                                        @php 
-                                            $pivot = $banner->categories->where('id', $cat->id)->first();
-                                            $existingDesc = $pivot ? $pivot->pivot->description : '';
-                                        @endphp
-                                        <div style="display: flex; flex-direction: column; gap: 5px; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
-                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                <input type="checkbox" name="categories[]" id="cat_{{ $cat->id }}" value="{{ $cat->id }}"
-                                                    {{ in_array($cat->id, $selectedCategories) ? 'checked' : '' }}
-                                                    style="cursor: pointer; accent-color: #007bff;">
-                                                <label for="cat_{{ $cat->id }}" style="font-size: 0.85rem; cursor: pointer; font-weight: 500;">{{ $cat->chemin ?? $cat->nom }}</label>
-                                            </div>
-                                            <div style="padding-left: 25px;">
-                                                <input type="text" name="category_descriptions[{{ $cat->id }}]" 
-                                                       value="{{ old('category_descriptions.'.$cat->id, $existingDesc) }}" 
-                                                       class="form-input" 
-                                                       placeholder="Description / Critères" 
-                                                       style="font-size: 0.75rem; height: 30px; padding: 4px 8px;">
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                                <p style="font-size: 0.75rem; color: #555; margin-top: 8px;">Si coché, les utilisateurs seront redirigés vers une page regroupant ces catégories.</p>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
 

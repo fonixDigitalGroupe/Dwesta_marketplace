@@ -50,18 +50,13 @@ class BannerController extends Controller
             'category_id' => 'nullable|exists:categories,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'landing_page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
-            'link_url' => 'nullable|string|max:255',
             'promo_discount' => 'nullable|string|max:20',
             'promo_conditions' => 'nullable|string|max:50',
             'promo_code' => 'nullable|string|max:20',
-            'is_promo' => 'boolean',
             'active' => 'boolean',
             'order' => 'integer|min:0',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'categories' => 'nullable|array',
-            'categories.*' => 'exists:categories,id',
-            'category_descriptions' => 'nullable|array',
         ]);
 
         $data = $request->all();
@@ -78,21 +73,11 @@ class BannerController extends Controller
 
         // Par défaut actif à la création si non précisé (le champ est retiré du form)
         $data['active'] = $request->has('active') ? $request->boolean('active') : true;
-        // is_promo est vrai si des catégories sont associées
-        $data['is_promo'] = $request->has('categories') && count($request->input('categories')) > 0;
         $data['has_payment_4x'] = $request->boolean('has_payment_4x');
         $data['slug'] = Str::slug($data['title']);
+        $data['is_promo'] = false; // Par défaut plus de promo si plus de catégories
 
         $banner = Banner::create($data);
-
-        if ($request->has('categories')) {
-            $syncData = [];
-            $descriptions = $request->input('category_descriptions', []);
-            foreach ($request->input('categories') as $catId) {
-                $syncData[$catId] = ['description' => $descriptions[$catId] ?? null];
-            }
-            $banner->categories()->sync($syncData);
-        }
 
         return redirect()->route('admin.banners.index')
             ->with('success', 'Bannière créée avec succès.');
@@ -118,18 +103,13 @@ class BannerController extends Controller
             'category_id' => 'nullable|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'landing_page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
-            'link_url' => 'nullable|string|max:255',
             'promo_discount' => 'nullable|string|max:20',
             'promo_conditions' => 'nullable|string|max:50',
             'promo_code' => 'nullable|string|max:20',
-            'is_promo' => 'boolean',
             'active' => 'boolean',
             'order' => 'integer|min:0',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'categories' => 'nullable|array',
-            'categories.*' => 'exists:categories,id',
-            'category_descriptions' => 'nullable|array',
         ]);
 
         $data = $request->all();
@@ -151,22 +131,11 @@ class BannerController extends Controller
             $data['active'] = $request->boolean('active');
         }
         
-        // is_promo est vrai si des catégories sont associées
-        $data['is_promo'] = $request->has('categories') && count($request->input('categories')) > 0;
+        $data['is_promo'] = false; // Par défaut plus de promo si plus de catégories
         $data['has_payment_4x'] = $request->boolean('has_payment_4x');
         $data['slug'] = Str::slug($data['title']);
 
         $banner->update($data);
-
-        $syncData = [];
-        $categories = $request->input('categories', []);
-        $descriptions = $request->input('category_descriptions', []);
-        
-        foreach ($categories as $catId) {
-            $syncData[$catId] = ['description' => $descriptions[$catId] ?? null];
-        }
-        
-        $banner->categories()->sync($syncData);
 
         return redirect()->route('admin.banners.index')
             ->with('success', 'Bannière mise à jour avec succès.');
