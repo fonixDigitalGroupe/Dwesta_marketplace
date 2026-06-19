@@ -61,7 +61,7 @@
                     box-shadow: none;
                     border: 1px solid rgba(255,255,255,0.1);
                     width: 100%;
-                    max-width: 800px;
+                    max-width: 450px;
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
