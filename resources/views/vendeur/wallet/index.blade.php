@@ -62,25 +62,17 @@
         color: #fff;
         position: relative;
         overflow: hidden;
-        box-shadow:
-            0 8px 20px rgba(0, 74, 173, 0.18),
-            0 3px 8px rgba(0,0,0,0.1),
-            inset 0 1px 0 rgba(255,255,255,0.15);
         /* Standard card ratio 85.6mm × 53.98mm */
         aspect-ratio: 85.6 / 53.98;
         max-width: 420px;
         width: 100%;
         font-family: 'Courier New', 'Lucida Console', monospace;
-        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        transition: transform 0.4s ease;
         cursor: default;
         user-select: none;
     }
     .finance-card:hover {
         transform: translateY(-4px) rotateX(2deg);
-        box-shadow:
-            0 14px 28px rgba(0, 74, 173, 0.22),
-            0 6px 12px rgba(0,0,0,0.12),
-            inset 0 1px 0 rgba(255,255,255,0.2);
     }
     /* ── Shimmer overlay ── */
     .finance-card::before {
