@@ -673,15 +673,39 @@
                         </div>
                     </div>
 
-                    {{-- Row 3: Holder + Secure --}}
+                    {{-- Row 3: Info mid —— ID vendeur + Total en séquestre --}}
+                    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:0.1rem;">
+                        <div>
+                            <div class="card-holder-label">ID Compte vendeur</div>
+                            <div style="font-family:'Courier New',monospace; font-size:0.82rem; letter-spacing:0.12em; opacity:0.9;">
+                                KRN-{{ str_pad($user->vendeur->id ?? $user->id, 6, '0', STR_PAD_LEFT) }}
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div class="card-expiry-label">Membre depuis</div>
+                            <div class="card-expiry-value">{{ $user->created_at->format('M Y') }}</div>
+                        </div>
+                    </div>
+
+                    {{-- Row 4: Holder + Plan --}}
                     <div class="card-row-holder">
                         <div>
                             <div class="card-holder-label">Titulaire</div>
-                            <div class="card-holder-name">{{ strtoupper(auth()->user()->name) }}</div>
+                            <div class="card-holder-name">{{ strtoupper($user->name) }}</div>
                         </div>
-                        <div class="card-secure-badge">
-                            <i class="fas fa-lock" style="font-size:0.55rem;"></i> Sécurisé
-                        </div>
+                        @php
+                            $activePlan = $user->vendeur?->abonnementActif?->abonnement?->nom ?? null;
+                        @endphp
+                        @if($activePlan)
+                            <div class="card-secure-badge">
+                                <i class="fas fa-star" style="font-size:0.5rem; color:#f68b1e;"></i>
+                                {{ $activePlan }}
+                            </div>
+                        @else
+                            <div class="card-secure-badge">
+                                <i class="fas fa-lock" style="font-size:0.55rem;"></i> Sécurisé
+                            </div>
+                        @endif
                     </div>
 
                 </div>
