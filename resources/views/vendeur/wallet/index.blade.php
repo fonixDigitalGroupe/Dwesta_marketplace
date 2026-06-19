@@ -56,7 +56,7 @@
         margin-bottom: 1.75rem;
     }
     .finance-card {
-        background: linear-gradient(135deg, #003a8c 0%, #004aad 35%, #0062d6 65%, #0a7aff 100%);
+        background: linear-gradient(135deg, #001f3f 0%, #004aad 100%);
         border-radius: 20px;
         padding: 1.75rem 2rem 1.5rem;
         color: #fff;
