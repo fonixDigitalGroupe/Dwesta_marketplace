@@ -138,112 +138,98 @@
                 }
                 .pack-card {
                     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-                    border: 1px solid rgba(255,255,255,0.1);
-                    border-radius: 20px;
-                    padding: 2.2rem 2rem;
-                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    border-radius: 16px;
+                    padding: 24px 28px;
+                    color: #fff;
                     position: relative;
                     overflow: hidden;
                     display: flex;
                     flex-direction: column;
-                    align-items: center;
-                    text-align: center;
-                    color: #fff;
+                    min-height: 200px;
+                    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                    text-align: left;
                 }
                 .pack-card::before {
                     content: '';
                     position: absolute;
-                    top: -30px; right: -30px;
-                    width: 100px; height: 100px;
+                    top: -40px; right: -40px;
+                    width: 150px; height: 150px;
+                    background: rgba(255,255,255,0.04);
+                    border-radius: 50%;
+                }
+                .pack-card::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -50px; left: -20px;
+                    width: 180px; height: 180px;
                     background: rgba(255,255,255,0.03);
                     border-radius: 50%;
                 }
                 .pack-card:hover {
-                    transform: translateY(-10px);
+                    transform: translateY(-8px) scale(1.02);
                     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-                    border-color: rgba(255,215,0,0.3);
                 }
-                .pack-card.popular {
-                    border: 2px solid #f68b1e;
-                }
-                .popular-badge {
+                .pack-brand {
                     position: absolute;
-                    top: 0;
-                    right: 0;
-                    background: #f68b1e;
-                    color: #fff;
-                    padding: 5px 20px;
-                    font-size: 0.75rem;
-                    font-weight: 800;
-                    border-bottom-left-radius: 12px;
-                    z-index: 2;
-                }
-                .pack-icon {
-                    width: 55px;
-                    height: 55px;
-                    background: rgba(255,255,255,0.05);
-                    border-radius: 14px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-bottom: 1.5rem;
-                    color: #FFD700;
-                    font-size: 1.4rem;
-                    transition: all 0.3s;
-                    border: 1px solid rgba(255,255,255,0.1);
-                }
-                .pack-card:hover .pack-icon {
-                    background: #FFD700;
-                    color: #000;
-                    transform: scale(1.1) rotate(5deg);
-                }
-                .pack-name {
-                    font-size: 0.8rem;
-                    font-weight: 700;
-                    color: rgba(255,255,255,0.5);
-                    text-transform: uppercase;
-                    letter-spacing: 0.1em;
-                    margin-bottom: 0.5rem;
-                }
-                .pack-credits {
-                    font-size: 2.8rem;
+                    top: 20px;
+                    right: 24px;
+                    font-size: 14px;
                     font-weight: 900;
+                    color: rgba(255,255,255,0.25);
+                    letter-spacing: -0.5px;
+                }
+                .pack-label {
+                    font-size: 9px;
+                    color: rgba(255,255,255,0.55);
+                    letter-spacing: 1.5px;
+                    text-transform: uppercase;
+                    margin-bottom: 4px;
+                    font-weight: 700;
+                }
+                .pack-value-large {
+                    font-size: 24px;
+                    font-weight: 800;
+                    letter-spacing: 2px;
                     color: #fff;
-                    margin-bottom: 0.25rem;
-                    line-height: 1;
-                    letter-spacing: -0.02em;
+                    font-family: 'Courier New', monospace;
+                    margin: 4px 0 15px 0;
                 }
-                .pack-price {
-                    font-size: 1.35rem;
+                .pack-price-gold {
+                    font-size: 26px;
                     font-weight: 800;
                     color: #FFD700;
-                    margin-bottom: 1.5rem;
+                    margin-top: auto;
                 }
-                .pack-bonus {
-                    background: rgba(255, 215, 0, 0.15);
+                .pack-bonus-badge {
+                    display: inline-block;
+                    padding: 3px 10px;
+                    border-radius: 20px;
+                    font-size: 10px;
+                    font-weight: 700;
+                    margin-top: 10px;
+                    background: rgba(255,215,0,0.15);
                     color: #FFD700;
-                    font-size: 0.75rem;
-                    font-weight: 800;
-                    padding: 6px 14px;
-                    border-radius: 100px;
-                    margin-bottom: 2.2rem;
-                    border: 1px solid rgba(255, 215, 0, 0.2);
+                    border: 1px solid rgba(255,215,0,0.3);
                 }
-                .btn-buy {
+                .btn-buy-card {
+                    margin-top: 20px;
                     width: 100%;
-                    padding: 0.9rem;
-                    border-radius: 12px;
+                    padding: 0.8rem;
+                    border-radius: 10px;
                     border: none;
+                    background: rgba(255,255,255,0.1);
+                    color: #fff;
+                    font-weight: 700;
+                    font-size: 0.85rem;
+                    cursor: pointer;
+                    backdrop-filter: blur(5px);
+                    transition: all 0.2s;
+                    border: 1px solid rgba(255,255,255,0.2);
+                }
+                .btn-buy-card:hover {
                     background: #fff;
                     color: #111827;
-                    font-weight: 800;
-                    font-size: 0.9rem;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-                .btn-buy:hover {
-                    background: #FFD700;
-                    transform: scale(1.03);
                 }
 
                 /* 📝 Transactions List */
@@ -344,32 +330,29 @@
                 <h2 class="section-title">Recharger mon compte</h2>
                 <div class="packs-grid">
                     @foreach($packs as $pack)
-                        @php
-                            $isPopular = ($pack->nom === 'Pack 25 000' || ($pack->popular ?? false) || $pack->credits >= 100);
-                        @endphp
-                        <div class="pack-card {{ $isPopular ? 'popular' : '' }}">
-                            @if($isPopular)
-                                <div class="popular-badge">POPULAIRE</div>
-                            @endif
-
-                            <div class="pack-icon">
-                                <i class="fas {{ $pack->credits > 50 ? 'fa-crown' : 'fa-coins' }}"></i>
+                        <div class="pack-card">
+                            <div class="pack-brand">KARNOU</div>
+                            
+                            <div class="pack-label">Type de forfait</div>
+                            <div style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: rgba(255,255,255,0.9);">
+                                {{ $pack->nom ?? 'Forfait Crédits' }}
                             </div>
 
-                            <div class="pack-name">{{ $pack->nom ?? 'Forfait Crédits' }}</div>
-                            <div class="pack-credits">{{ number_format($pack->credits, 0, ',', ' ') }} <small style="font-size: 0.9rem; vertical-align: middle;">CR</small></div>
-                            <div class="pack-price">{{ number_format($pack->prix, 0, ',', ' ') }} FCFA</div>
+                            <div class="pack-label">Valeur en crédits</div>
+                            <div class="pack-value-large">{{ number_format($pack->credits, 0, ',', ' ') }} CR</div>
+
+                            <div class="pack-price-gold">{{ number_format($pack->prix, 0, ',', ' ') }} FCFA</div>
 
                             @if($pack->bonus_credits > 0)
-                                <div class="pack-bonus">+ {{ number_format($pack->bonus_credits, 0, ',', ' ') }} offerts</div>
-                            @else
-                                <div style="margin-bottom: 3.5rem;"></div>
+                                <div>
+                                    <span class="pack-bonus-badge">+ {{ number_format($pack->bonus_credits, 0, ',', ' ') }} CR OFFERTS</span>
+                                </div>
                             @endif
 
                             <form action="{{ route('account.credits.checkout') }}" method="POST" onsubmit="return confirm('Confirmer l\'achat de ce forfait pour {{ number_format($pack->prix, 0, ',', ' ') }} FCFA ?')" style="width: 100%;">
                                 @csrf
                                 <input type="hidden" name="pack_id" value="{{ $pack->id }}">
-                                <button type="submit" class="btn-buy">
+                                <button type="submit" class="btn-buy-card">
                                     Prendre ce pack
                                 </button>
                             </form>
