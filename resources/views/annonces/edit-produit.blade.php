@@ -959,8 +959,13 @@
                 <!-- Étape 4: Booster votre annonce -->
                 <div class="form-step" id="step4">
                     <span id="user-credit-balance" style="display: none;">{{ $creditBalance ?? 0 }}</span>
-                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+                    
+                    <div style="margin-bottom: 2rem;">
+                        <h2 class="form-title" style="margin-bottom: 0.5rem;">🚀 Booster votre annonce</h2>
+                        <p class="instruction-text" style="color: #666; font-size: 0.95rem;">Mettez votre annonce en avant pour vendre d'autant plus vite.</p>
+                    </div>
 
+                    <div style="margin-bottom: 2rem;">
                         <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Options de visibilité</h3>
                         <div style="display: flex; flex-direction: column; gap: 1rem;">
                             @php
