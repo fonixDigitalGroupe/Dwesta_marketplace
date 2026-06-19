@@ -570,12 +570,15 @@
         }
 
         .btn-primary {
-            background: black;
+            background: #008400;
             color: white;
+            box-shadow: 0 2px 4px rgba(0, 132, 0, 0.15);
         }
 
         .btn-primary:hover {
-            background: #333;
+            background: #007300;
+            box-shadow: 0 4px 8px rgba(0, 115, 0, 0.2);
+            transform: translateY(-1px);
         }
 
         .btn-secondary {
@@ -755,16 +758,6 @@
                 </div>
                 <div class="step-content">
                     <div class="step-number">ETAPE 4</div>
-                    <div class="step-title">Expédition</div>
-                </div>
-            </div>
-            <div class="progress-step" data-step="5">
-                <div class="step-circle">
-                    <div class="step-dot"></div>
-                    <div class="step-check">✓</div>
-                </div>
-                <div class="step-content">
-                    <div class="step-number">ETAPE 5</div>
                     <div class="step-title">Booster votre annonce</div>
                 </div>
             </div>
@@ -777,6 +770,8 @@
                 @method('PUT')
                 <input type="hidden" name="type" value="produit">
                 <input type="hidden" id="current_step_input" name="current_step" value="{{ old('current_step', 1) }}">
+                <input type="hidden" id="type_livraison" name="type_livraison" value="{{ $annonce->type_livraison ?? 'retrait_point_relais' }}">
+                <input type="hidden" id="user_phone" name="user_phone" value="{{ $annonce->vendeur->user->telephone ?? auth()->user()->telephone ?? '00000000' }}">
 
                 @if ($errors->any())
                     <div class="alert alert-danger" style="background: #fee2e2; border: 1px solid #ef4444; color: #b91c1c; padding: 1rem; border-radius: 8px; margin-bottom: 2rem;">
@@ -944,12 +939,12 @@
                         <textarea id="description" name="description" class="form-input" rows="5" placeholder="Description" required>{{ old('description', $annonce->description) }}</textarea>
                     </div>
 
-                    <div style="display: flex; gap: 1rem;">
-                        <div class="form-group" style="flex: 1;">
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 2rem;">
+                        <div class="form-group">
                             <label for="prix" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Prix de vente (FCFA)</label>
                             <input type="number" id="prix" name="prix" class="form-input" placeholder="Ex: 5000" min="0" required value="{{ old('prix', $annonce->prix) }}">
                         </div>
-                        <div id="quantity-container" class="form-group" style="flex: 1;">
+                        <div id="quantity-container" class="form-group">
                             <label for="quantite" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Quantité</label>
                             <input type="number" id="quantite" name="quantite" class="form-input" placeholder="Ex: 1" min="1" required value="{{ old('quantite', $annonce->produit->quantite ?? 1) }}">
                         </div>
@@ -961,48 +956,8 @@
                     </div>
                 </div>
 
-                <!-- Étape 4: Moyen d'expédition -->
+                <!-- Étape 4: Booster votre annonce -->
                 <div class="form-step" id="step4">
-                    <h1 class="form-title">🚚 Moyen d'expédition</h1>
-                    <div class="form-instructions">
-                        <p class="instruction-text">Choisissez comment vous souhaitez <strong style="color: #00A400;">envoyer</strong> votre article.</p>
-                    </div>
-
-                    <input type="hidden" id="type_livraison" name="type_livraison" value="{{ old('type_livraison', $annonce->type_livraison ?? 'retrait_point_relais') }}" required>
-                    <input type="hidden" id="user_phone" name="user_phone" value="{{ old('user_phone', $annonce->vendeur->user->telephone ?? auth()->user()->telephone ?? '00000000') }}">
-                    
-                    <div class="status-cards-grid">
-                        <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'retrait_point_relais') == 'retrait_point_relais' ? 'selected' : '' }}" onclick="selectShipping(this, 'retrait_point_relais')">
-                            <div class="radio-circle"></div>
-                            <div style="display: flex; flex-direction: column;">
-                                <span style="font-weight: 600;">Retrait en point retrait</span>
-                                <small style="color: #666; font-size: 0.75rem;">Le client retire son colis en point retrait (point Karnou)</small>
-                            </div>
-                        </div>
-                        <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'retrait_point_relais') == 'retrait_boutique' ? 'selected' : '' }}" onclick="selectShipping(this, 'retrait_boutique')">
-                            <div class="radio-circle"></div>
-                            <div style="display: flex; flex-direction: column;">
-                                <span style="font-weight: 600;">Retrait en boutique</span>
-                                <small style="color: #666; font-size: 0.75rem;">Le client retire son colis en boutique</small>
-                            </div>
-                        </div>
-                        <div class="status-card {{ old('type_livraison', $annonce->type_livraison ?? 'retrait_point_relais') == 'livraison_point_special' ? 'selected' : '' }}" onclick="selectShipping(this, 'livraison_point_special')">
-                            <div class="radio-circle"></div>
-                            <div style="display: flex; flex-direction: column;">
-                                <span style="font-weight: 600;">Livraison en point spécial</span>
-                                <small style="color: #666; font-size: 0.75rem;">Livraison dans des lieux choisis par Karnou</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent</button>
-                        <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer</button>
-                    </div>
-                </div>
-
-                <!-- Étape 5: Booster votre annonce -->
-                <div class="form-step" id="step5">
                     <span id="user-credit-balance" style="display: none;">{{ $creditBalance ?? 0 }}</span>
                     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
 
@@ -1020,7 +975,7 @@
                                 @php
                                     $isAlreadyActive = in_array($service->cle, $activeServices);
                                 @endphp
-                                <label class="service-card {{ $isAlreadyActive ? 'already-active' : '' }}" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border: 2px solid {{ $isAlreadyActive ? '#4caf50' : '#e0e0e0' }}; border-radius: 12px; cursor: {{ $isAlreadyActive ? 'default' : 'pointer' }}; transition: all 0.2s; position: relative; {{ $isAlreadyActive ? 'background: #f1f8e9; opacity: 0.9;' : '' }}">
+                                <label class="service-card" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border: 2px solid {{ $isAlreadyActive ? '#4caf50' : '#e0e0e0' }}; border-radius: 12px; cursor: {{ $isAlreadyActive ? 'default' : 'pointer' }}; transition: all 0.2s; position: relative; {{ $isAlreadyActive ? 'background: #f1f8e9; opacity: 0.9;' : '' }}">
                                     @if($isAlreadyActive)
                                         <div style="width: 20px; height: 20px; margin-top: 4px; display: flex; align-items: center; justify-content: center; background: #4caf50; border-radius: 4px; color: white;">✓</div>
                                         <input type="hidden" name="services[]" value="{{ $service->cle }}">
@@ -1033,8 +988,6 @@
                                             {{ $service->nom }}
                                             @if($isAlreadyActive)
                                                 <span style="background: #4caf50; color: white; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: text-bottom;">Déjà actif</span>
-                                            @elseif($service->cle == 'mise_en_avant' || $service->cle == 'boost')
-                                                <span style="background: #eef2ff; color: #004aad; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: text-bottom;">Recommandé</span>
                                             @endif
                                         </div>
                                         <div style="font-size: 0.9rem; color: #666; line-height: 1.4;">{{ $service->description }}</div>
@@ -1102,7 +1055,7 @@
 
     <script>
         var currentStep = parseInt("{{ old('current_step', 1) }}");
-        var totalSteps = 5;
+        var totalSteps = 4;
         var uploadedImages = [];
         var deletedMediaIds = [];
         const categoriesData = {
@@ -1308,10 +1261,7 @@
                 }
                 return true;
             }
-            if (currentStep === 4) {
-                const shipping = document.getElementById('type_livraison').value;
-                if (!shipping) { alert('Veuillez sélectionner un moyen d\'expédition.'); return false; }
-            }
+
             return true;
         }
 
@@ -1441,11 +1391,7 @@
             el.classList.add('selected');
         }
 
-        function selectShipping(el, val) {
-            document.getElementById('type_livraison').value = val;
-            document.querySelectorAll('#step4 .status-card').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-        }
+
 
         function closeSubcategoryModal() { }
         function goBackInModal() { }
