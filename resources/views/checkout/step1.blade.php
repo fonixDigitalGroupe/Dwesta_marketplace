@@ -958,10 +958,7 @@
                             <span class="radio-custom"></span>
                             <div class="payment-info-wrapper">
                                 <div class="payment-title-row">
-                                    <span class="payment-name">Avec Orange Money <span
-                                            style="background: #fff0e0; color: #f68b1e; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 3px; margin-left: 5px;">soit
-                                            un montant total de <span class="payment-total-value">0</span>
-                                            FCFA</span></span>
+                                    <span class="payment-name">Avec Orange Money</span>
                                     <div style="margin-left: auto;">
                                         <img src="{{ asset('images/logoOM.png') }}" alt="Orange Money" class="method-logo"
                                             style="height: 30px;">
@@ -979,10 +976,7 @@
                             <span class="radio-custom"></span>
                             <div class="payment-info-wrapper">
                                 <div class="payment-title-row">
-                                    <span class="payment-name">Avec Wave <span
-                                            style="background: #fff0e0; color: #f68b1e; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 3px; margin-left: 5px;">soit
-                                            un montant total de <span class="payment-total-value">0</span>
-                                            FCFA</span></span>
+                                    <span class="payment-name">Avec Wave</span>
                                     <div style="margin-left: auto;">
                                         <img src="{{ asset('images/logowave.png') }}" alt="Wave" class="method-logo">
                                     </div>
@@ -998,10 +992,7 @@
                             <span class="radio-custom"></span>
                             <div class="payment-info-wrapper">
                                 <div class="payment-title-row">
-                                    <span class="payment-name">Free Money <span
-                                            style="background: #fff0e0; color: #f68b1e; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 3px; margin-left: 5px;">soit
-                                            un montant total de <span class="payment-total-value">0</span>
-                                            FCFA</span></span>
+                                    <span class="payment-name">Free Money</span>
                                     <div style="margin-left: auto;">
                                         <img src="https://seeklogo.com/images/F/free-money-logo-A9D7E8B8B5-seeklogo.com.png" alt="Free Money" class="method-logo">
                                     </div>
