@@ -296,37 +296,42 @@
                     overflow: hidden;
                     margin-top: 1rem;
                     box-shadow: 0 4px 16px rgba(15, 52, 96, 0.15);
+                    max-width: 450px;
                 }
                 .gift-card-visual::before {
-                    content: '';
+                    content: '\f06b';
+                    font-family: 'Font Awesome 5 Free';
+                    font-weight: 900;
                     position: absolute;
-                    top: -40px; right: -40px;
-                    width: 150px; height: 150px;
-                    background: rgba(255,255,255,0.04);
-                    border-radius: 50%;
+                    top: -20px; right: 20px;
+                    font-size: 80px;
+                    color: rgba(255,255,255,0.03);
+                    transform: rotate(15deg);
                     pointer-events: none;
                 }
                 .gift-card-visual::after {
-                    content: '';
+                    content: '\f06b';
+                    font-family: 'Font Awesome 5 Free';
+                    font-weight: 900;
                     position: absolute;
-                    bottom: -50px; left: -20px;
-                    width: 180px; height: 180px;
-                    background: rgba(255,255,255,0.03);
-                    border-radius: 50%;
+                    bottom: -20px; left: 20px;
+                    font-size: 60px;
+                    color: rgba(255,255,255,0.02);
+                    transform: rotate(-15deg);
                     pointer-events: none;
                 }
                 .gc-brand { position: absolute; top: 20px; right: 24px; font-size: 16px; font-weight: 900; color: rgba(255,255,255,0.25); letter-spacing: -1px; }
                 .gc-label { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
                 .gc-code { font-size: 22px; font-weight: 800; letter-spacing: 5px; color: #fff; font-family: 'Courier New', monospace; margin: 6px 0 18px 0; }
                 .gc-row { display: flex; gap: 40px; align-items: flex-end; }
-                .gc-amount { font-size: 28px; font-weight: 800; color: #FFD700; }
+                .gc-amount { font-size: 28px; font-weight: 800; color: #3b82f6; }
                 .gc-expiry { font-size: 12px; color: rgba(255,255,255,0.6); }
                 .gc-status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-top: 14px; }
                 .gc-status-active { background: rgba(76,175,80,0.25); color: #81C784; border: 1px solid rgba(76,175,80,0.4); }
                 .gc-status-used { background: rgba(244,67,54,0.2); color: #EF9A9A; border: 1px solid rgba(244,67,54,0.3); }
                 .gc-status-expired { background: rgba(158,158,158,0.2); color: #BDBDBD; border: 1px solid rgba(158,158,158,0.3); }
                 .gc-balance-bar-wrap { margin-top: 16px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; height: 6px; }
-                .gc-balance-bar { height: 6px; background: linear-gradient(90deg, #FFD700, #FFA000); border-radius: 20px; transition: width 0.6s ease; }
+                .gc-balance-bar { height: 6px; background: linear-gradient(90deg, #3b82f6, #2563eb); border-radius: 20px; transition: width 0.6s ease; }
             </style>
 
             <div class="account-header">
@@ -465,6 +470,7 @@ async function checkGiftCardBalance() {
                     <div class="gc-label">Code de la carte</div>
                     <div class="gc-code">${data.code}</div>
                     <div class="gc-row">
+                        <i class="fas fa-gift" style="position: absolute; bottom: 40px; right: 30px; font-size: 40px; color: rgba(255,255,255,0.05); pointer-events: none;"></i>
                         <div>
                             <div class="gc-label">Solde disponible</div>
                             <div class="gc-amount">${data.balance.toLocaleString('fr-FR')} FCFA</div>
