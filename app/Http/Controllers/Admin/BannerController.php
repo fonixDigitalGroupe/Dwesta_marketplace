@@ -35,10 +35,9 @@ class BannerController extends Controller
      */
     public function create()
     {
-        $familles = \App\Models\Category::getFamilles();
         $categories = \App\Models\Category::whereNull('parent_id')->get();
         $allCategories = \App\Models\Category::orderBy('nom')->get();
-        return view('admin.banners.create', compact('familles', 'categories', 'allCategories'));
+        return view('admin.banners.create', compact('categories', 'allCategories'));
     }
 
     /**
@@ -48,7 +47,6 @@ class BannerController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'famille' => 'nullable|string|max:50',
             'category_id' => 'nullable|exists:categories,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'landing_page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
@@ -105,10 +103,9 @@ class BannerController extends Controller
      */
     public function edit(Banner $banner)
     {
-        $familles = \App\Models\Category::getFamilles();
         $categories = \App\Models\Category::whereNull('parent_id')->get();
         $allCategories = \App\Models\Category::orderBy('nom')->get();
-        return view('admin.banners.edit', compact('banner', 'familles', 'categories', 'allCategories'));
+        return view('admin.banners.edit', compact('banner', 'categories', 'allCategories'));
     }
 
     /**
@@ -118,7 +115,6 @@ class BannerController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'famille' => 'nullable|string|max:50',
             'category_id' => 'nullable|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'landing_page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',

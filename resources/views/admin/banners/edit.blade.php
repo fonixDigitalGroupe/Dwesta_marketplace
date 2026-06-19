@@ -118,18 +118,7 @@
 
                     <div style="display: flex; flex-direction: column; gap: 20px;">
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                            <div>
-                                <label for="famille" class="form-label">Famille de la page</label>
-                                <select name="famille" id="famille" class="form-select @error('famille') is-invalid @enderror">
-                                    <option value="">-- Bannière Globale --</option>
-                                    @foreach($familles as $famille)
-                                        <option value="{{ $famille }}" {{ old('famille', $banner->famille) == $famille ? 'selected' : '' }}>{{ $famille }}</option>
-                                    @endforeach
-                                </select>
-                                @error('famille') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
-
-                            </div>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
                             <div>
                                 <label for="category_id" class="form-label">Catégorie cible (optionnel)</label>
                                 <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
@@ -139,7 +128,6 @@
                                     @endforeach
                                 </select>
                                 @error('category_id') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
-
                             </div>
                         </div>
 
