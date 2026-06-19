@@ -15,6 +15,7 @@ class Banner extends Model
         'category_id',
         'category_id_n1',
         'category_id_n2',
+        'filters',
         'image_url',
         'landing_page_image',
         'link_url',
@@ -35,6 +36,7 @@ class Banner extends Model
         'has_payment_4x' => 'boolean',
         'start_date' => 'datetime',
         'end_date' => 'datetime',
+        'filters' => 'array',
         'order' => 'integer',
     ];
 

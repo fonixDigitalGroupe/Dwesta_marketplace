@@ -59,6 +59,7 @@ class BannerController extends Controller
             'order' => 'integer|min:0',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
+            'filters' => 'nullable|array',
         ]);
 
         $data = $request->all();
@@ -73,11 +74,10 @@ class BannerController extends Controller
             $data['landing_page_image'] = Storage::url($path);
         }
 
-        // Par défaut actif à la création si non précisé (le champ est retiré du form)
         $data['active'] = $request->has('active') ? $request->boolean('active') : true;
         $data['has_payment_4x'] = $request->boolean('has_payment_4x');
         $data['slug'] = Str::slug($data['title']);
-        $data['is_promo'] = false; // Par défaut plus de promo si plus de catégories
+        $data['is_promo'] = false;
 
         $banner = Banner::create($data);
 
@@ -114,6 +114,7 @@ class BannerController extends Controller
             'order' => 'integer|min:0',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
+            'filters' => 'nullable|array',
         ]);
 
         $data = $request->all();
@@ -128,14 +129,13 @@ class BannerController extends Controller
             $data['landing_page_image'] = Storage::url($path);
         }
 
-        // Préserver le statut actuel si le champ est absent du formulaire (cas standard après retrait du checkbox)
         if (!$request->has('active')) {
             unset($data['active']);
         } else {
             $data['active'] = $request->boolean('active');
         }
         
-        $data['is_promo'] = false; // Par défaut plus de promo si plus de catégories
+        $data['is_promo'] = false;
         $data['has_payment_4x'] = $request->boolean('has_payment_4x');
         $data['slug'] = Str::slug($data['title']);
 
@@ -143,6 +143,15 @@ class BannerController extends Controller
 
         return redirect()->route('admin.banners.index')
             ->with('success', 'Bannière mise à jour avec succès.');
+    }
+
+    /**
+     * Get filters for a category.
+     */
+    public function getFilters(\App\Models\Category $category)
+    {
+        $filters = \App\Models\CategoryFilter::where('category_id', $category->id)->get();
+        return response()->json($filters);
     }
 
     /**

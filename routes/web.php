@@ -278,6 +278,7 @@ Route::middleware('auth')->group(function () {
             ]);
 
             // Gestion des Bannières
+            Route::get('banners/categories/{category}/filters', [\App\Http\Controllers\Admin\BannerController::class, 'getFilters'])->name('banners.categories.filters');
             Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class);
             Route::patch('banners/{banner}/toggle-status', [\App\Http\Controllers\Admin\BannerController::class, 'toggleStatus'])->name('banners.toggle-status');
 
