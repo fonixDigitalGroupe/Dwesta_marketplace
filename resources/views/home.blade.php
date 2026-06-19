@@ -922,6 +922,7 @@
         padding: 0 5rem;
         align-items: center;
         justify-content: space-between;
+        pointer-events: none;
     }
 
     .banner-logos {
