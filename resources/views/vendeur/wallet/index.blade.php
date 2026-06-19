@@ -49,111 +49,294 @@
     .wallet-alert.error   { background: #fff5f5; color: #7f1d1d; border: 1px solid #fca5a5; }
 
     /* ══════════════════════════════
-       FINANCE CARD
+       REALISTIC BANK CARD
     ══════════════════════════════ */
+    .card-scene {
+        perspective: 1200px;
+        margin-bottom: 1.75rem;
+    }
     .finance-card {
-        background: linear-gradient(135deg, #004aad 0%, #0066ee 60%, #0a84ff 100%);
-        border-radius: 18px;
-        padding: 2rem 2.25rem;
+        background: linear-gradient(135deg, #003a8c 0%, #004aad 35%, #0062d6 65%, #0a7aff 100%);
+        border-radius: 20px;
+        padding: 1.75rem 2rem 1.5rem;
         color: #fff;
         position: relative;
         overflow: hidden;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0, 74, 173, 0.12);
+        box-shadow:
+            0 25px 50px rgba(0, 74, 173, 0.35),
+            0 10px 20px rgba(0,0,0,0.2),
+            inset 0 1px 0 rgba(255,255,255,0.15);
+        /* Standard card ratio 85.6mm × 53.98mm */
+        aspect-ratio: 85.6 / 53.98;
+        max-width: 420px;
+        width: 100%;
+        font-family: 'Courier New', 'Lucida Console', monospace;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        cursor: default;
+        user-select: none;
     }
+    .finance-card:hover {
+        transform: translateY(-4px) rotateX(2deg);
+        box-shadow:
+            0 35px 60px rgba(0, 74, 173, 0.4),
+            0 15px 30px rgba(0,0,0,0.25),
+            inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    /* ── Shimmer overlay ── */
     .finance-card::before {
         content: '';
         position: absolute;
-        width: 320px; height: 320px;
-        background: rgba(255,255,255,0.06);
-        border-radius: 50%;
-        top: -120px; right: -80px;
+        inset: 0;
+        background: linear-gradient(
+            105deg,
+            transparent 30%,
+            rgba(255,255,255,0.08) 50%,
+            transparent 70%
+        );
+        pointer-events: none;
+        z-index: 1;
     }
+    /* ── Big decorative circle top-right ── */
     .finance-card::after {
         content: '';
         position: absolute;
-        width: 200px; height: 200px;
-        background: rgba(255,255,255,0.04);
+        width: 260px; height: 260px;
+        background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
         border-radius: 50%;
-        bottom: -60px; left: 40px;
+        top: -80px; right: -60px;
+        pointer-events: none;
     }
-    .finance-card-top {
+    /* ── Card inner layers ── */
+    .card-deco-circle {
+        position: absolute;
+        width: 180px; height: 180px;
+        background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+        border-radius: 50%;
+        bottom: -60px; left: -40px;
+        pointer-events: none;
+    }
+    .card-inner { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+
+    /* ── Row 1: Brand + Network ── */
+    .card-row-top {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 1.75rem;
-        position: relative; z-index: 1;
+        align-items: center;
     }
-    .finance-card-label {
-        font-size: 0.78rem;
-        font-weight: 500;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
+    .card-brand-name {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1.1rem;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+        color: #fff;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+    .card-brand-name span { color: #f68b1e; }
+    /* Visa-style logo circles */
+    .card-network {
+        display: flex;
+        align-items: center;
+    }
+    .card-network-circles {
+        display: flex;
+    }
+    .card-network-circles span {
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        display: block;
+    }
+    .card-network-circles span:first-child {
+        background: rgba(255,255,255,0.85);
+        margin-right: -10px;
+    }
+    .card-network-circles span:last-child {
+        background: rgba(246,139,30,0.85);
+    }
+
+    /* ── Row 2: Chip + NFC ── */
+    .card-row-chip {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 0.2rem;
+    }
+    /* Gold chip SVG-based */
+    .card-chip {
+        width: 46px;
+        height: 36px;
+        background: linear-gradient(135deg, #c8a951 0%, #f5d060 30%, #d4a82a 55%, #f0c040 75%, #b8952a 100%);
+        border-radius: 6px;
+        position: relative;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.3);
+        flex-shrink: 0;
+        overflow: hidden;
+    }
+    /* Chip internal lines */
+    .card-chip::before {
+        content: '';
+        position: absolute;
+        top: 50%; left: 0; right: 0;
+        height: 1px;
+        background: rgba(0,0,0,0.2);
+        transform: translateY(-50%);
+    }
+    .card-chip::after {
+        content: '';
+        position: absolute;
+        left: 50%; top: 0; bottom: 0;
+        width: 1px;
+        background: rgba(0,0,0,0.2);
+        transform: translateX(-50%);
+    }
+    .chip-inner {
+        position: absolute;
+        inset: 6px;
+        background: linear-gradient(135deg, #e8c140, #c8a030);
+        border-radius: 3px;
+        border: 1px solid rgba(0,0,0,0.15);
+    }
+    /* NFC icon */
+    .card-nfc {
         opacity: 0.8;
-        margin-bottom: 0.4rem;
+        font-size: 1.3rem;
+        transform: rotate(90deg);
+        display: inline-block;
     }
-    .finance-card-balance {
-        font-size: 2.6rem;
-        font-weight: 700;
+
+    /* ── Row 3: Balance label ── */
+    .card-balance-section { }
+    .card-balance-label {
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.65rem;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        opacity: 0.65;
+        margin-bottom: 3px;
+    }
+    .card-balance-amount {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1.85rem;
+        font-weight: 800;
         letter-spacing: -0.5px;
         line-height: 1;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
-    .finance-card-balance sup {
-        font-size: 1rem;
+    .card-balance-amount sup {
+        font-size: 0.85rem;
         font-weight: 500;
-        opacity: 0.75;
+        opacity: 0.7;
         vertical-align: super;
         margin-right: 4px;
+        letter-spacing: 0.05em;
     }
-    .finance-card-currency {
-        font-size: 0.9rem;
-        opacity: 0.7;
-        margin-left: 6px;
-        font-weight: 400;
+
+    /* ── Row 4: Number + Expiry ── */
+    .card-row-number {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
     }
-    .finance-card-badge {
-        background: rgba(255,255,255,0.15);
-        border: 1px solid rgba(255,255,255,0.3);
+    .card-number {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 0.95rem;
+        letter-spacing: 0.18em;
+        opacity: 0.9;
+    }
+    .card-number-group { letter-spacing: 0.2em; }
+    .card-expiry-block { text-align: right; }
+    .card-expiry-label {
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.55rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.6;
+        margin-bottom: 1px;
+    }
+    .card-expiry-value {
+        font-size: 0.85rem;
+        letter-spacing: 0.12em;
+        opacity: 0.9;
+    }
+
+    /* ── Row 5: Holder ── */
+    .card-row-holder {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .card-holder-label {
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.55rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.6;
+        margin-bottom: 1px;
+    }
+    .card-holder-name {
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        opacity: 0.95;
+    }
+    /* Secure badge */
+    .card-secure-badge {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.25);
         border-radius: 20px;
-        padding: 4px 12px;
-        font-size: 0.7rem;
+        padding: 3px 10px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 0.6rem;
         font-weight: 600;
         letter-spacing: 0.06em;
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 4px;
         backdrop-filter: blur(4px);
+        opacity: 0.9;
     }
-    .finance-card-stats {
+
+    /* ── Below-card stats strip ── */
+    .card-stats-strip {
         display: flex;
-        gap: 2rem;
-        position: relative; z-index: 1;
-        flex-wrap: wrap;
+        gap: 0;
+        margin-bottom: 1.75rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
-    .finance-stat {
+    .cstat {
         flex: 1;
-        min-width: 120px;
+        padding: 0.9rem 1rem;
+        text-align: center;
+        border-right: 1px solid #f3f4f6;
     }
-    .finance-stat-label {
-        font-size: 0.73rem;
-        opacity: 0.65;
+    .cstat:last-child { border-right: none; }
+    .cstat-label {
+        font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        margin-bottom: 3px;
+        color: #9ca3af;
+        font-weight: 600;
+        margin-bottom: 4px;
         display: flex;
         align-items: center;
-        gap: 5px;
+        justify-content: center;
+        gap: 4px;
     }
-    .finance-stat-value {
-        font-size: 1.2rem;
+    .cstat-value {
+        font-size: 1.05rem;
         font-weight: 700;
+        color: #111827;
     }
-    .finance-stat-value.muted { opacity: 0.6; font-size: 0.95rem; font-weight: 400; }
-    .finance-divider {
-        width: 1px;
-        background: rgba(255,255,255,0.2);
-        align-self: stretch;
-    }
+    .cstat-value.green { color: #15803d; }
+    .cstat-value.amber { color: #d97706; }
 
     /* ── Action Buttons Row ── */
     .wallet-actions {
@@ -460,44 +643,82 @@
             </div>
         @endif
 
-        {{-- ══ FINANCE CARD ══ --}}
-        <div class="finance-card">
-            <div class="finance-card-top">
-                <div>
-                    <div class="finance-card-label">Solde disponible</div>
-                    <div class="finance-card-balance">
-                        <sup>FCFA</sup>{{ number_format($availableBalance, 0, ',', ' ') }}
+        {{-- ══ REALISTIC BANK CARD ══ --}}
+        <div class="card-scene">
+            <div class="finance-card">
+                <div class="card-deco-circle"></div>
+                <div class="card-inner">
+
+                    {{-- Row 1: Brand + Network --}}
+                    <div class="card-row-top">
+                        <div class="card-brand-name">Kar<span>nou</span></div>
+                        <div class="card-network">
+                            <div class="card-network-circles">
+                                <span></span><span></span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <div class="finance-card-badge">
-                        <i class="fas fa-shield-alt"></i> Sécurisé
+
+                    {{-- Row 2: Chip + NFC + Balance --}}
+                    <div style="display:flex; align-items:center; justify-content:space-between;">
+                        <div class="card-row-chip">
+                            <div class="card-chip"><div class="chip-inner"></div></div>
+                            <span class="card-nfc">&#x1F6DC;</span>
+                        </div>
+                        <div class="card-balance-section" style="text-align:right;">
+                            <div class="card-balance-label">Solde disponible</div>
+                            <div class="card-balance-amount">
+                                <sup>FCFA</sup>{{ number_format($availableBalance, 0, ',', ' ') }}
+                            </div>
+                        </div>
                     </div>
-                    <div style="font-size: 0.7rem; opacity: 0.6; text-align: right; margin-top: 8px;">
-                        {{ now()->format('d/m/Y') }}
+
+                    {{-- Row 3: Card number --}}
+                    <div class="card-row-number">
+                        <div class="card-number">
+                            <span class="card-number-group">●●●●</span>
+                            <span class="card-number-group">●●●●</span>
+                            <span class="card-number-group">●●●●</span>
+                            <span class="card-number-group" style="letter-spacing:0.15em; opacity:1;">{{ str_pad(substr(md5($user->id), 0, 4), 4, '0', STR_PAD_LEFT) }}</span>
+                        </div>
+                        <div class="card-expiry-block">
+                            <div class="card-expiry-label">Expire</div>
+                            <div class="card-expiry-value">{{ now()->addYear()->format('m/y') }}</div>
+                        </div>
                     </div>
+
+                    {{-- Row 4: Holder + Secure --}}
+                    <div class="card-row-holder">
+                        <div>
+                            <div class="card-holder-label">Titulaire</div>
+                            <div class="card-holder-name">{{ strtoupper(auth()->user()->name) }}</div>
+                        </div>
+                        <div class="card-secure-badge">
+                            <i class="fas fa-lock" style="font-size:0.55rem;"></i> Sécurisé
+                        </div>
+                    </div>
+
                 </div>
             </div>
+        </div>
 
-            <div class="finance-card-stats">
-                <div class="finance-stat">
-                    <div class="finance-stat-label"><i class="fas fa-hourglass-half"></i> En séquestre</div>
-                    @if($pendingBalance > 0)
-                        <div class="finance-stat-value">{{ number_format($pendingBalance, 0, ',', ' ') }} <span style="font-size:0.75rem;font-weight:400;opacity:0.75;">FCFA</span></div>
-                    @else
-                        <div class="finance-stat-value muted">— FCFA</div>
-                    @endif
-                </div>
-                <div class="finance-divider"></div>
-                <div class="finance-stat">
-                    <div class="finance-stat-label"><i class="fas fa-arrow-down"></i> Total disponible</div>
-                    <div class="finance-stat-value" style="color: #86efac;">{{ number_format($availableBalance, 0, ',', ' ') }} <span style="font-size:0.75rem;font-weight:400;opacity:0.75;">FCFA</span></div>
-                </div>
-                <div class="finance-divider"></div>
-                <div class="finance-stat">
-                    <div class="finance-stat-label"><i class="fas fa-exchange-alt"></i> Transactions</div>
-                    <div class="finance-stat-value">{{ $recentTransactions->total() }}</div>
-                </div>
+        {{-- Stats strip below card --}}
+        <div class="card-stats-strip">
+            <div class="cstat">
+                <div class="cstat-label"><i class="fas fa-hourglass-half"></i> En séquestre</div>
+                @if($pendingBalance > 0)
+                    <div class="cstat-value amber">{{ number_format($pendingBalance, 0, ',', ' ') }} <span style="font-size:0.72rem;font-weight:400;">FCFA</span></div>
+                @else
+                    <div class="cstat-value" style="color:#d1d5db;">— FCFA</div>
+                @endif
+            </div>
+            <div class="cstat">
+                <div class="cstat-label"><i class="fas fa-check-circle"></i> Disponible</div>
+                <div class="cstat-value green">{{ number_format($availableBalance, 0, ',', ' ') }} <span style="font-size:0.72rem;font-weight:400;">FCFA</span></div>
+            </div>
+            <div class="cstat">
+                <div class="cstat-label"><i class="fas fa-exchange-alt"></i> Transactions</div>
+                <div class="cstat-value">{{ $recentTransactions->total() }}</div>
             </div>
         </div>
 
