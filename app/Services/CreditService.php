@@ -100,7 +100,7 @@ class CreditService
                 'user_id'      => $user->id,
                 'type'         => 'depense',
                 'montant'      => -$config->credits_requis,
-                'description'  => "Service « {$config->nom} » sur l'annonce #{$annonce->id}",
+                'description'  => "Service « {$config->nom} » sur l'annonce « {$annonce->titre} »",
                 'related_type' => Annonce::class,
                 'related_id'   => $annonce->id,
             ]);
