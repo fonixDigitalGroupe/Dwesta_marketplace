@@ -161,6 +161,7 @@
                     width: 150px; height: 150px;
                     background: rgba(255,255,255,0.04);
                     border-radius: 50%;
+                    pointer-events: none;
                 }
                 .pack-card::after {
                     content: '';
@@ -169,6 +170,7 @@
                     width: 180px; height: 180px;
                     background: rgba(255,255,255,0.03);
                     border-radius: 50%;
+                    pointer-events: none;
                 }
                 .pack-brand {
                     position: absolute;
@@ -223,9 +225,10 @@
                     font-weight: 700;
                     font-size: 0.8rem;
                     cursor: pointer;
-                    backdrop-filter: blur(5px);
                     transition: all 0.2s;
                     border: 1px solid rgba(255,255,255,0.2);
+                    position: relative;
+                    z-index: 5;
                 }
                 .btn-buy-card:hover {
                     background: #fff;
@@ -353,7 +356,7 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('account.credits.checkout') }}" method="POST" onsubmit="return confirm('Confirmer l\'achat de ce pack ?')" style="width: 100%;">
+                            <form action="{{ route('account.credits.checkout') }}" method="POST" style="width: 100%;">
                                 @csrf
                                 <input type="hidden" name="pack_id" value="{{ $pack->id }}">
                                 <button type="submit" class="btn-buy-card">
