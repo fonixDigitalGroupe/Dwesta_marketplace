@@ -693,8 +693,8 @@
                 </div>
             </div> <!-- Close rk-price-box -->
             
-            @if($annonce->vendeur)
-            <!-- Seller Info: Shown for all sellers -->
+            @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
+            <!-- Seller Info: Only shown for Pro sellers -->
             <div class="rk-seller-card" style="background: #ffffff; padding: 1.5rem 0; margin-top: 0.5rem; border-radius: 0; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;">
                 <div style="display: flex; align-items: center; gap: 1.25rem;">
                      <div class="rk-seller-avatar" style="width: 50px; height: 50px; background: #ffffff; border: 1px solid #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 2px;">
