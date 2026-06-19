@@ -115,28 +115,31 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <div>
                                 <label for="famille" class="form-label">Famille de la page</label>
-                                <select name="famille" id="famille" class="form-select">
+                                <select name="famille" id="famille" class="form-select @error('famille') is-invalid @enderror">
                                     <option value="">-- Bannière Globale --</option>
                                     @foreach($familles as $famille)
                                         <option value="{{ $famille }}" {{ old('famille') == $famille ? 'selected' : '' }}>{{ $famille }}</option>
                                     @endforeach
                                 </select>
+                                @error('famille') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                                 <p style="font-size: 0.75rem; color: #555; margin-top: 5px;">Détermine sur quelle page s'affiche la bannière.</p>
                             </div>
                             <div>
                                 <label for="category_id" class="form-label">Catégorie cible (optionnel)</label>
-                                <select name="category_id" id="category_id" class="form-select">
+                                <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
                                     <option value="">-- Toutes les catégories --</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->nom }}</option>
                                     @endforeach
                                 </select>
+                                @error('category_id') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
                         <div>
                             <label for="title" class="form-label">Titre commercial <span style="color: #c40000;">*</span></label>
-                            <input type="text" name="title" id="title" value="{{ old('title') }}" class="form-input" placeholder="Ex: Promo d'été 2025, Jusqu'à -50%" required>
+                            <input type="text" name="title" id="title" value="{{ old('title') }}" class="form-input @error('title') is-invalid @enderror" placeholder="Ex: Promo d'été 2025, Jusqu'à -50%" required>
+                            @error('title') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                         </div>
 
                         <div>
@@ -166,6 +169,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            @error('link_url') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                         </div>
                     </div>
                 </div>
@@ -185,6 +189,7 @@
                         <img id="preview-img" style="display: none; max-width: 100%; max-height: 250px; object-fit: contain; border-radius: 2px;">
                     </div>
                     <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="previewImage(this)" required>
+                    @error('image') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                 </div>
 
             </div>
@@ -199,6 +204,7 @@
                         <div>
                             <label for="order" class="form-label">Ordre d'affichage</label>
                             <input type="number" name="order" id="order" value="{{ old('order', 0) }}" min="0" class="form-input" required>
+                            @error('order') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                             <p style="font-size: 0.75rem; color: #555; margin-top: 5px;">Plus le chiffre est bas, plus la bannière apparaît en premier.</p>
                         </div>
 

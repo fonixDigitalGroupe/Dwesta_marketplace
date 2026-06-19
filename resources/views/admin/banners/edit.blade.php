@@ -40,6 +40,11 @@
         
     }
 
+    .is-invalid {
+        border-color: #c40000 !important;
+        background-color: #fff8f8 !important;
+    }
+
     .btn-amazon-primary {
         background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad;
         border-radius: 3px; color: #fff;
@@ -116,27 +121,32 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <div>
                                 <label for="famille" class="form-label">Famille de la page</label>
-                                <select name="famille" id="famille" class="form-select">
+                                <select name="famille" id="famille" class="form-select @error('famille') is-invalid @enderror">
                                     <option value="">-- Bannière Globale --</option>
                                     @foreach($familles as $famille)
                                         <option value="{{ $famille }}" {{ old('famille', $banner->famille) == $famille ? 'selected' : '' }}>{{ $famille }}</option>
                                     @endforeach
                                 </select>
+                                @error('famille') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
+
                             </div>
                             <div>
                                 <label for="category_id" class="form-label">Catégorie cible (optionnel)</label>
-                                <select name="category_id" id="category_id" class="form-select">
+                                <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
                                     <option value="">-- Toutes les catégories --</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" {{ old('category_id', $banner->category_id) == $category->id ? 'selected' : '' }}>{{ $category->nom }}</option>
                                     @endforeach
                                 </select>
+                                @error('category_id') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
+
                             </div>
                         </div>
 
                         <div>
                             <label for="title" class="form-label">Titre commercial <span style="color: #c40000;">*</span></label>
-                            <input type="text" name="title" id="title" value="{{ old('title', $banner->title) }}" class="form-input" required>
+                            <input type="text" name="title" id="title" value="{{ old('title', $banner->title) }}" class="form-input @error('title') is-invalid @enderror" required>
+                            @error('title') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                         </div>
 
                         <div>
@@ -167,6 +177,8 @@
                                     </option>
                                 @endforeach
                             </select>
+                            @error('link_url') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
+
                         </div>
                     </div>
                 </div>
@@ -185,6 +197,7 @@
                         </div>
                     </div>
                     <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="previewImage(this)">
+                    @error('image') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                 </div>
 
             </div>
