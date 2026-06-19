@@ -10,35 +10,43 @@
     .landing-hero {
         width: 100%;
         position: relative;
-        background: #111;
+        background: #f8f8f8;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .landing-hero img {
         width: 100%;
-        max-height: 480px;
+        max-height: 140px; /* Slim height for premium look */
         object-fit: cover;
         object-position: center;
         display: block;
-        opacity: 0.92;
     }
     .landing-hero-overlay {
         position: absolute;
-        bottom: 0; left: 0; right: 0;
-        padding: 2.5rem 3rem;
-        background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%);
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        background: rgba(0,0,0,0.25);
     }
     .landing-hero-title {
         font-family: 'Outfit', sans-serif;
-        font-size: 2.2rem;
+        font-size: 1.8rem;
         font-weight: 800;
         color: #fff;
-        margin: 0 0 0.5rem 0;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        margin: 0;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        text-align: center;
     }
     .landing-hero-subtitle {
-        font-size: 1rem;
-        color: rgba(255,255,255,0.85);
-        margin: 0;
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.95);
+        margin-top: 4px;
+        text-align: center;
     }
 
     /* ===== BREADCRUMB ===== */
@@ -275,9 +283,10 @@
     }
 
     @media (max-width: 768px) {
-        .landing-hero img { max-height: 260px; }
-        .landing-hero-title { font-size: 1.35rem; }
-        .landing-hero-overlay { padding: 1.5rem; }
+        .landing-hero img { max-height: 100px; }
+        .landing-hero-title { font-size: 1.15rem; }
+        .landing-hero-subtitle { font-size: 0.75rem; }
+        .landing-hero-overlay { padding: 0.8rem; }
         .landing-products-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 480px) {
