@@ -173,15 +173,8 @@
                         </div>
 
                         <div style="border-top: 1px solid #eee; padding-top: 20px;">
-                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                                <input type="checkbox" name="is_promo" id="is_promo" value="1" {{ old('is_promo') ? 'checked' : '' }} 
-                                       style="width: 18px; height: 18px; cursor: pointer; accent-color: #e47911;"
-                                       onchange="togglePromoCategories(this.checked)">
-                                <label for="is_promo" style="font-weight: 700; cursor: pointer; color: #111;">Bannière Promotionnelle</label>
-                            </div>
-                            
-                            <div id="promo-categories-section" style="{{ old('is_promo') ? 'display: block;' : 'display: none;' }} background: #fcfcfc; border: 1px solid #eee; padding: 15px; border-radius: 4px;">
-                                <label class="form-label">Associer à une ou plusieurs catégories</label>
+                            <div id="promo-categories-section" style="background: #fcfcfc; border: 1px solid #eee; padding: 15px; border-radius: 4px;">
+                                <label class="form-label">Associer à une ou plusieurs catégories (Menu de la page)</label>
                                 <div style="max-height: 200px; overflow-y: auto; border: 1px solid #adb1b8; border-radius: 3px; padding: 10px; background: #fff;">
                                     @foreach($allCategories as $cat)
                                         <div style="display: flex; flex-direction: column; gap: 5px; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
@@ -314,15 +307,7 @@ function previewImage(input, previewId, dropzoneId) {
     }
 }
 function togglePromoCategories(checked) {
-    const section = document.getElementById('promo-categories-section');
-    const linkUrl = document.getElementById('link_url');
-    if (checked) {
-        section.style.display = 'block';
-        if (linkUrl) linkUrl.closest('div').style.opacity = '0.5';
-    } else {
-        section.style.display = 'none';
-        if (linkUrl) linkUrl.closest('div').style.opacity = '1';
-    }
+    // Logic removed as per user request
 }
 </script>
 @endsection

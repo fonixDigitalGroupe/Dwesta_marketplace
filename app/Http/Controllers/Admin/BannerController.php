@@ -80,7 +80,8 @@ class BannerController extends Controller
 
         // Par défaut actif à la création si non précisé (le champ est retiré du form)
         $data['active'] = $request->has('active') ? $request->boolean('active') : true;
-        $data['is_promo'] = $request->boolean('is_promo');
+        // is_promo est vrai si des catégories sont associées
+        $data['is_promo'] = $request->has('categories') && count($request->input('categories')) > 0;
         $data['has_payment_4x'] = $request->boolean('has_payment_4x');
         $data['slug'] = Str::slug($data['title']);
 
@@ -154,7 +155,8 @@ class BannerController extends Controller
             $data['active'] = $request->boolean('active');
         }
         
-        $data['is_promo'] = $request->boolean('is_promo');
+        // is_promo est vrai si des catégories sont associées
+        $data['is_promo'] = $request->has('categories') && count($request->input('categories')) > 0;
         $data['has_payment_4x'] = $request->boolean('has_payment_4x');
         $data['slug'] = Str::slug($data['title']);
 
