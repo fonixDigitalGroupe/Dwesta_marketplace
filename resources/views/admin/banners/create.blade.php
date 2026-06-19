@@ -147,13 +147,6 @@
                             @error('title') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                         </div>
 
-                        <div id="filters-container" style="display: none; border-top: 1px solid #eee; padding-top: 20px;">
-                            <label class="form-label" style="margin-bottom: 15px;">Critères de filtre spécifiques</label>
-                            <div id="filters-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; background: #fcfcfc; border: 1px solid #eee; padding: 15px; border-radius: 4px;">
-                                {{-- JS will populate this --}}
-                            </div>
-                        </div>
-
                         {{-- Redirection and Category sections removed --}}
                     </div>
                 </div>
@@ -300,79 +293,8 @@ function filterN3Categories() {
             const opt = document.createElement('option');
             opt.value = c.id;
             opt.textContent = c.nom;
-            opt.onchange = function() { loadFilters(this.value); }; // Inline won't work for select children easily
             n3Select.appendChild(opt);
         });
-    }
-
-    // Add event listener to n3Select if not already present
-    if (!n3Select.dataset.listenerAdded) {
-        n3Select.addEventListener('change', function() {
-            loadFilters(this.value);
-        });
-        n3Select.dataset.listenerAdded = "true";
-    }
-}
-
-async function loadFilters(categoryId) {
-    const container = document.getElementById('filters-container');
-    const list = document.getElementById('filters-list');
-    
-    if (!categoryId) {
-        container.style.display = 'none';
-        list.innerHTML = '';
-        return;
-    }
-
-    try {
-        const response = await fetch(`/admin/banners/categories/${categoryId}/filters`);
-        const filters = await response.json();
-        
-        if (filters.length > 0) {
-            container.style.display = 'block';
-            list.innerHTML = '';
-            
-            filters.forEach(filter => {
-                const group = document.createElement('div');
-                group.style.marginBottom = '10px';
-                group.innerHTML = `<p style="font-size: 0.8rem; font-weight: 700; color: #555; margin-bottom: 5px; border-bottom: 1px solid #efefef; padding-bottom: 3px;">${filter.nom}</p>`;
-                
-                if (filter.options && filter.options.length > 0) {
-                    const optionsDiv = document.createElement('div');
-                    optionsDiv.style.display = 'flex';
-                    optionsDiv.style.flexDirection = 'column';
-                    optionsDiv.style.gap = '5px';
-                    
-                    filter.options.forEach(opt => {
-                        const label = document.createElement('label');
-                        label.style.display = 'flex';
-                        label.style.alignItems = 'center';
-                        label.style.gap = '8px';
-                        label.style.fontSize = '0.75rem';
-                        label.style.cursor = 'pointer';
-                        
-                        const input = document.createElement('input');
-                        input.type = 'checkbox';
-                        input.name = `filters[${filter.slug}][]`;
-                        input.value = opt;
-                        input.style.accentColor = '#e47911';
-                        
-                        label.appendChild(input);
-                        label.appendChild(document.createTextNode(opt));
-                        optionsDiv.appendChild(label);
-                    });
-                    group.appendChild(optionsDiv);
-                } else {
-                    group.innerHTML += '<p style="font-size: 0.7rem; color: #999;">Pas d\'options</p>';
-                }
-                list.appendChild(group);
-            });
-        } else {
-            container.style.display = 'none';
-            list.innerHTML = '';
-        }
-    } catch (error) {
-        console.error('Error loading filters:', error);
     }
 }
 </script>

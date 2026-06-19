@@ -59,7 +59,6 @@ class BannerController extends Controller
             'order' => 'integer|min:0',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'filters' => 'nullable|array',
         ]);
 
         $data = $request->all();
@@ -114,7 +113,6 @@ class BannerController extends Controller
             'order' => 'integer|min:0',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
-            'filters' => 'nullable|array',
         ]);
 
         $data = $request->all();
@@ -143,15 +141,6 @@ class BannerController extends Controller
 
         return redirect()->route('admin.banners.index')
             ->with('success', 'Bannière mise à jour avec succès.');
-    }
-
-    /**
-     * Get filters for a category.
-     */
-    public function getFilters(\App\Models\Category $category)
-    {
-        $filters = \App\Models\CategoryFilter::where('category_id', $category->id)->get();
-        return response()->json($filters);
     }
 
     /**
