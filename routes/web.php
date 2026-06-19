@@ -33,6 +33,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/offres/{slug}', [\App\Http\Controllers\BannerLandingController::class, 'show'])->name('banner.landing');
 Route::get('/a-propos', [PageController::class, 'about'])->name('about');
 Route::get('/conditions-generales', [PageController::class, 'terms'])->name('terms');
 Route::get('/vie-privee', [PageController::class, 'privacy'])->name('privacy');
@@ -278,7 +279,6 @@ Route::middleware('auth')->group(function () {
             ]);
 
             // Gestion des Bannières
-            Route::get('offres/{slug}', [\App\Http\Controllers\BannerLandingController::class, 'show'])->name('banner.landing');
             Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class);
             Route::patch('banners/{banner}/toggle-status', [\App\Http\Controllers\Admin\BannerController::class, 'toggleStatus'])->name('banners.toggle-status');
 
