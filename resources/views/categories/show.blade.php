@@ -265,9 +265,10 @@
         flex-wrap: wrap;
     }
     .price-value-flat {
-        color: #ff9900;
+        color: #004aad;
         font-weight: 800;
         font-size: 1.2rem;
+        text-shadow: none !important;
     }
     .card-etat-badge {
         font-size: 0.75rem;
@@ -492,7 +493,7 @@
                                                 <span class="n1-old-price">{{ number_format($oldPrice, 0, ',', ' ') }} FCFA</span>
                                                 <span class="n1-discount-badge">-{{ $discount }}%</span>
                                             </div>
-                                            <div class="n1-actual-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</div>
+                                            <div class="n1-actual-price" style="color: #004aad; text-shadow: none !important;">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</div>
                                         </div>
                                     </div>
                                 </a>
@@ -559,7 +560,7 @@
                                     
                                     <div class="n1-merchant-deals-info">
                                         <div class="n1-v2-price-row">
-                                            <span class="n1-v2-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                            <span class="n1-v2-price" style="color: #004aad; text-shadow: none !important;">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
                                             @if($annonce->should_show_etat)
                                                 <span class="n1-v2-state" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
                                             @endif

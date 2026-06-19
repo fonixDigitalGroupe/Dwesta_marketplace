@@ -167,7 +167,8 @@
     .price-main {
         font-size: 1.3rem;
         font-weight: 900;
-        color: #e60000;
+        color: #004aad;
+        text-shadow: none !important;
     }
 
     .condition {

@@ -1251,9 +1251,10 @@
         font-weight: 500;
     }
     .n1-top-price-val {
-        color: #ee8800;
+        color: #004aad;
         font-weight: 700;
         font-size: 1.05rem;
+        text-shadow: none !important;
     }
     .n1-top-rating {
         display: flex;
@@ -1698,9 +1699,10 @@
         font-weight: 700;
     }
     .price-value-flat {
-        color: #ff9900;
+        color: #004aad;
         font-weight: 800;
         font-size: 1.25rem;
+        text-shadow: none !important;
     }
     .card-price-separator {
         color: #bbb;
