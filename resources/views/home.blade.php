@@ -171,7 +171,7 @@
                                 <!-- Background Image covering full width without gradient -->
                                 @php
                                     $bannerLink = $banner->link_url ?? '#';
-                                    if ($banner->is_promo && $banner->slug) {
+                                    if ($banner->slug) {
                                         $bannerLink = route('collections.show', $banner->slug);
                                     }
                                 @endphp
