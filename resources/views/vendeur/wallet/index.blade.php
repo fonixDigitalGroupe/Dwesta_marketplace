@@ -769,7 +769,6 @@
 
                 {{-- En séquestre --}}
                 <div class="fin-stat">
-                    <div class="fin-stat-icon amber"><i class="fas fa-shield-alt"></i></div>
                     <div class="fin-stat-label">En séquestre</div>
                     @if($pendingBalance > 0)
                         <div class="fin-stat-value amber" data-count="{{ $pendingBalance }}">{{ number_format($pendingBalance, 0, ',', ' ') }}<span class="fin-unit">FCFA</span></div>
@@ -780,14 +779,12 @@
 
                 {{-- Solde disponible --}}
                 <div class="fin-stat">
-                    <div class="fin-stat-icon green"><i class="fas fa-wallet"></i></div>
                     <div class="fin-stat-label">Solde disponible</div>
                     <div class="fin-stat-value green" data-count="{{ $availableBalance }}">{{ number_format($availableBalance, 0, ',', ' ') }}<span class="fin-unit">FCFA</span></div>
                 </div>
 
                 {{-- Transactions --}}
                 <div class="fin-stat">
-                    <div class="fin-stat-icon blue"><i class="fas fa-layer-group"></i></div>
                     <div class="fin-stat-label">Transactions</div>
                     <div class="fin-stat-value blue" data-count="{{ $recentTransactions->total() }}">{{ $recentTransactions->total() }}</div>
                 </div>
