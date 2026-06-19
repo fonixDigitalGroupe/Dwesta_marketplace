@@ -50,18 +50,19 @@
                 /* 💳 Balance Card - Premium Dark Glossy */
                 .balance-card {
                     background: linear-gradient(135deg, #001f3f 0%, #004aad 100%);
-                    border-radius: 24px;
-                    padding: 40px;
+                    border-radius: 18px;
+                    padding: 24px 32px;
                     color: #fff;
                     position: relative;
                     overflow: hidden;
-                    margin-bottom: 3rem;
-                    box-shadow: 0 20px 40px rgba(0, 74, 173, 0.15);
-                    max-width: 900px;
+                    margin-bottom: 2.5rem;
+                    box-shadow: none;
+                    border: 1px solid rgba(255,255,255,0.1);
+                    max-width: 800px;
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
-                    min-height: 220px;
+                    min-height: 160px;
                 }
                 .balance-card::before {
                     content: '';
@@ -94,12 +95,12 @@
                     margin-bottom: 5px;
                 }
                 .balance-card-value {
-                    font-size: 3.5rem;
+                    font-size: 2.8rem;
                     font-weight: 900;
                     letter-spacing: -0.03em;
                     display: flex;
                     align-items: center;
-                    gap: 15px;
+                    gap: 12px;
                 }
                 .balance-card-unit {
                     font-size: 1rem;
@@ -325,7 +326,7 @@
                 </div>
                 
                 <div class="balance-card-footer">
-                    <div class="balance-card-holder">{{ Auth::user()->name ?? 'MEMBRE KARNOU' }}</div>
+                    <div class="balance-card-holder">{{ Auth::user()->name ?? 'Landing savane Diallo' }}</div>
                     <div class="balance-card-brand">Karnou Pass</div>
                 </div>
             </div>
