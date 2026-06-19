@@ -1289,6 +1289,11 @@
                     <span id="user-credit-balance" style="display: none;">{{ $creditBalance }}</span>
 
                     <div style="margin-bottom: 2rem;">
+                        <h2 class="form-title" style="margin-bottom: 0.5rem;">🚀 Booster votre annonce</h2>
+                        <p class="instruction-text" style="color: #666; font-size: 0.95rem;">Mettez votre annonce en avant pour vendre d'autant plus vite.</p>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
                         <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Options de visibilité</h3>
                         <div style="display: flex; flex-direction: column; gap: 1rem;">
                             @foreach($creditServices as $service)
@@ -1298,14 +1303,17 @@
                                     <div style="flex: 1;">
                                         <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 0.25rem; color: #333;">
                                             {{ $service->nom }}
+                                            @if($service->cle == 'mise_en_avant' || $service->cle == 'boost')
+                                                <span style="background: #eef2ff; color: #004aad; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: text-bottom;">Recommandé</span>
+                                            @endif
                                         </div>
                                         <div style="font-size: 0.9rem; color: #666; line-height: 1.4;">{{ $service->description }}</div>
                                         @if($service->duree_jours)
-                                            <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem; font-weight: 600;">Valable {{ $service->duree_jours }} jours</div>
+                                            <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem; font-weight: 600;">⏳ Valable {{ $service->duree_jours }} jours</div>
                                         @endif
                                     </div>
                                     <div style="font-weight: 800; font-size: 1.25rem; color: #ef6c00; white-space: nowrap;">
-                                        +{{ $service->credits_requis }}
+                                        +{{ $service->credits_requis }} ⭐
                                     </div>
                                 </label>
                             @endforeach
@@ -1329,7 +1337,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 1rem;">
                             <span style="font-weight: 700; font-size: 1.1rem; color: #000;">Total à payer :</span>
                             <span style="font-weight: 800; font-size: 1.5rem; color: #111;">
-                                <span id="total-cost-display">0</span>
+                                <span id="total-cost-display">0</span> <span style="font-size: 1.2rem; color: #ffbe00;">⭐</span>
                             </span>
                         </div>
                         <div id="insufficient-credits-warning" style="display: none; background: #fde8e8; color: #c62828; padding: 0.75rem 1rem; border-radius: 6px; margin-top: 1rem; font-size: 0.9rem; border: 1px solid #ffcdd2;">
