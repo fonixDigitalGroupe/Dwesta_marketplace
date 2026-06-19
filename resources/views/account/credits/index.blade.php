@@ -132,22 +132,23 @@
                 /* 📦 Pack Cards */
                 .packs-grid {
                     display: grid;
-                    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                    gap: 1.5rem;
-                    margin-bottom: 4rem;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 1rem;
+                    margin-bottom: 3rem;
+                    max-width: 950px;
                 }
                 .pack-card {
                     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-                    border-radius: 16px;
-                    padding: 24px 28px;
+                    border-radius: 14px;
+                    padding: 18px 20px;
                     color: #fff;
                     position: relative;
                     overflow: hidden;
                     display: flex;
                     flex-direction: column;
-                    min-height: 200px;
+                    min-height: 180px;
                     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
                     text-align: left;
                 }
                 .pack-card::before {
@@ -172,56 +173,56 @@
                 }
                 .pack-brand {
                     position: absolute;
-                    top: 20px;
-                    right: 24px;
-                    font-size: 14px;
+                    top: 15px;
+                    right: 18px;
+                    font-size: 11px;
                     font-weight: 900;
                     color: rgba(255,255,255,0.25);
                     letter-spacing: -0.5px;
                 }
                 .pack-label {
-                    font-size: 9px;
+                    font-size: 8px;
                     color: rgba(255,255,255,0.55);
-                    letter-spacing: 1.5px;
+                    letter-spacing: 1.2px;
                     text-transform: uppercase;
-                    margin-bottom: 4px;
+                    margin-bottom: 3px;
                     font-weight: 700;
                 }
                 .pack-value-large {
-                    font-size: 24px;
+                    font-size: 18px;
                     font-weight: 800;
-                    letter-spacing: 2px;
+                    letter-spacing: 1.5px;
                     color: #fff;
                     font-family: 'Courier New', monospace;
-                    margin: 4px 0 15px 0;
+                    margin: 2px 0 10px 0;
                 }
                 .pack-price-gold {
-                    font-size: 26px;
+                    font-size: 20px;
                     font-weight: 800;
                     color: #FFD700;
                     margin-top: auto;
                 }
                 .pack-bonus-badge {
                     display: inline-block;
-                    padding: 3px 10px;
+                    padding: 2px 8px;
                     border-radius: 20px;
-                    font-size: 10px;
+                    font-size: 9px;
                     font-weight: 700;
-                    margin-top: 10px;
+                    margin-top: 8px;
                     background: rgba(255,215,0,0.15);
                     color: #FFD700;
                     border: 1px solid rgba(255,215,0,0.3);
                 }
                 .btn-buy-card {
-                    margin-top: 20px;
+                    margin-top: 15px;
                     width: 100%;
-                    padding: 0.8rem;
-                    border-radius: 10px;
+                    padding: 0.65rem;
+                    border-radius: 8px;
                     border: none;
                     background: rgba(255,255,255,0.1);
                     color: #fff;
                     font-weight: 700;
-                    font-size: 0.85rem;
+                    font-size: 0.8rem;
                     cursor: pointer;
                     backdrop-filter: blur(5px);
                     transition: all 0.2s;
@@ -291,10 +292,14 @@
                 .tx-amount.plus { color: #10b981; }
                 .tx-amount.minus { color: #ef4444; }
 
+                @media (max-width: 991px) {
+                    .packs-grid { grid-template-columns: repeat(2, 1fr); }
+                }
                 @media (max-width: 768px) {
                     .balance-card { padding: 25px; min-height: 180px; }
                     .balance-card-value { font-size: 2.5rem; }
                     .tx-item { padding: 1rem; gap: 1rem; }
+                    .packs-grid { grid-template-columns: 1fr; }
                 }
             </style>
 
