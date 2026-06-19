@@ -647,23 +647,7 @@
                         <span class="rk-spec-value">{{ $annonce->category->nom }}</span>
                     </div>
                     @endif
-                    @if($annonce->type_livraison)
-                    <div class="rk-spec-separator" style="margin: 0 10px;">|</div>
-                    <div class="rk-spec-item">
-                        <span class="rk-spec-label"><i class="fas fa-truck" style="margin-right: 5px;"></i> Expédition :</span>
-                        <span class="rk-spec-value">
-                            @if($annonce->type_livraison == 'retrait_point_relais')
-                                Retrait en point retrait
-                            @elseif($annonce->type_livraison == 'retrait_boutique')
-                                Retrait en boutique
-                            @elseif($annonce->type_livraison == 'livraison_point_special')
-                                Livraison en point spécial
-                            @else
-                                {{ ucfirst(str_replace('_', ' ', $annonce->type_livraison)) }}
-                            @endif
-                        </span>
-                    </div>
-                    @endif
+
                 </div>
             </div>
 
