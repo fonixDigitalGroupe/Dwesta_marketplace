@@ -368,7 +368,7 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('gift-cards.buy') }}" method="POST" onsubmit="return confirm('Confirmer l\'achat de cette carte cadeau pour {{ number_format($option->amount, 0, ',', ' ') }} FCFA ?')" style="width: 100%;">
+                            <form action="{{ route('gift-cards.buy') }}" method="POST" style="width: 100%;">
                                 @csrf
                                 <input type="hidden" name="amount" value="{{ $option->amount }}">
                                 <button type="submit" class="btn-buy-card">
