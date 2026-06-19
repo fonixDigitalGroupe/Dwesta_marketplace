@@ -271,10 +271,11 @@
         align-items: center;
         gap: 4px;
         font-style: italic;
+        color: #004aad;
     }
 
     .express-text span {
-        color: #004aad;
+        color: #f68b1e;
     }
 
     .btn-order {
