@@ -70,8 +70,8 @@
             justify-content: center;
             width: 100%;
             height: 100%;
-            font-size: 0.85rem;
-            font-weight: 500;
+            font-size: 1.05rem;
+            font-weight: 700;
             color: rgba(255,255,255,0.98);
             text-decoration: none;
             text-align: center;
