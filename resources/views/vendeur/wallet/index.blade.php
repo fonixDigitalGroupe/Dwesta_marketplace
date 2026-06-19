@@ -326,9 +326,9 @@
         font-size: 0.95rem;
         flex-shrink: 0;
     }
-    .fin-stat-icon.amber { background: #fff8e6; color: #d97706; }
-    .fin-stat-icon.green { background: #edfaf5; color: #059669; }
-    .fin-stat-icon.blue  { background: #eef3ff; color: #004aad; }
+    .fin-stat-icon.amber { background: #f5f3ff; color: #7c3aed; }
+    .fin-stat-icon.green { background: #ecfdf5; color: #059669; }
+    .fin-stat-icon.blue  { background: #eff6ff; color: #004aad; }
     /* Label */
     .fin-stat-label {
         font-size: 0.68rem;
@@ -346,7 +346,7 @@
         color: #111827;
         font-family: 'Roboto', sans-serif;
     }
-    .fin-stat-value.amber { color: #d97706; }
+    .fin-stat-value.amber { color: #7c3aed; }
     .fin-stat-value.green { color: #059669; }
     .fin-stat-value.blue  { color: #004aad; }
     .fin-stat-value.muted { color: #d1d5db; }
