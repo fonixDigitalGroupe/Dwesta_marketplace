@@ -50,7 +50,8 @@ class BannerController extends Controller
             'title' => 'required|string|max:255',
             'famille' => 'nullable|string|max:50',
             'category_id' => 'nullable|exists:categories,id',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
+            'landing_page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'link_url' => 'nullable|string|max:255',
             'promo_discount' => 'nullable|string|max:20',
             'promo_conditions' => 'nullable|string|max:50',
@@ -62,6 +63,7 @@ class BannerController extends Controller
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
+            'category_descriptions' => 'nullable|array',
         ]);
 
         $data = $request->all();
@@ -69,6 +71,11 @@ class BannerController extends Controller
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('banners', 'public');
             $data['image_url'] = Storage::url($path);
+        }
+
+        if ($request->hasFile('landing_page_image')) {
+            $path = $request->file('landing_page_image')->store('banners', 'public');
+            $data['landing_page_image'] = Storage::url($path);
         }
 
         // Par défaut actif à la création si non précisé (le champ est retiré du form)
@@ -79,8 +86,13 @@ class BannerController extends Controller
 
         $banner = Banner::create($data);
 
-        if ($request->has('categories') && $data['is_promo']) {
-            $banner->categories()->sync($request->input('categories'));
+        if ($request->has('categories')) {
+            $syncData = [];
+            $descriptions = $request->input('category_descriptions', []);
+            foreach ($request->input('categories') as $catId) {
+                $syncData[$catId] = ['description' => $descriptions[$catId] ?? null];
+            }
+            $banner->categories()->sync($syncData);
         }
 
         return redirect()->route('admin.banners.index')
@@ -107,7 +119,8 @@ class BannerController extends Controller
             'title' => 'required|string|max:255',
             'famille' => 'nullable|string|max:50',
             'category_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
+            'landing_page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'link_url' => 'nullable|string|max:255',
             'promo_discount' => 'nullable|string|max:20',
             'promo_conditions' => 'nullable|string|max:50',
@@ -119,6 +132,7 @@ class BannerController extends Controller
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
+            'category_descriptions' => 'nullable|array',
         ]);
 
         $data = $request->all();
@@ -126,6 +140,11 @@ class BannerController extends Controller
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('banners', 'public');
             $data['image_url'] = Storage::url($path);
+        }
+
+        if ($request->hasFile('landing_page_image')) {
+            $path = $request->file('landing_page_image')->store('banners', 'public');
+            $data['landing_page_image'] = Storage::url($path);
         }
 
         // Préserver le statut actuel si le champ est absent du formulaire (cas standard après retrait du checkbox)
@@ -141,11 +160,15 @@ class BannerController extends Controller
 
         $banner->update($data);
 
-        if ($data['is_promo']) {
-            $banner->categories()->sync($request->input('categories', []));
-        } else {
-            $banner->categories()->detach();
+        $syncData = [];
+        $categories = $request->input('categories', []);
+        $descriptions = $request->input('category_descriptions', []);
+        
+        foreach ($categories as $catId) {
+            $syncData[$catId] = ['description' => $descriptions[$catId] ?? null];
         }
+        
+        $banner->categories()->sync($syncData);
 
         return redirect()->route('admin.banners.index')
             ->with('success', 'Bannière mise à jour avec succès.');

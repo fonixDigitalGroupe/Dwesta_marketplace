@@ -193,11 +193,24 @@
                                 <div style="max-height: 200px; overflow-y: auto; border: 1px solid #adb1b8; border-radius: 3px; padding: 10px; background: #fff;">
                                     @php $selectedCategories = old('categories', $banner->categories->pluck('id')->toArray()); @endphp
                                     @foreach($allCategories as $cat)
-                                        <div style="display: flex; align-items: center; gap: 8px; padding: 4px 0;">
-                                            <input type="checkbox" name="categories[]" id="cat_{{ $cat->id }}" value="{{ $cat->id }}"
-                                                {{ in_array($cat->id, $selectedCategories) ? 'checked' : '' }}
-                                                style="cursor: pointer; accent-color: #007bff;">
-                                            <label for="cat_{{ $cat->id }}" style="font-size: 0.85rem; cursor: pointer;">{{ $cat->chemin ?? $cat->nom }}</label>
+                                        @php 
+                                            $pivot = $banner->categories->where('id', $cat->id)->first();
+                                            $existingDesc = $pivot ? $pivot->pivot->description : '';
+                                        @endphp
+                                        <div style="display: flex; flex-direction: column; gap: 5px; padding: 8px 0; border-bottom: 1px solid #f0f0f0;">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" name="categories[]" id="cat_{{ $cat->id }}" value="{{ $cat->id }}"
+                                                    {{ in_array($cat->id, $selectedCategories) ? 'checked' : '' }}
+                                                    style="cursor: pointer; accent-color: #007bff;">
+                                                <label for="cat_{{ $cat->id }}" style="font-size: 0.85rem; cursor: pointer; font-weight: 500;">{{ $cat->chemin ?? $cat->nom }}</label>
+                                            </div>
+                                            <div style="padding-left: 25px;">
+                                                <input type="text" name="category_descriptions[{{ $cat->id }}]" 
+                                                       value="{{ old('category_descriptions.'.$cat->id, $existingDesc) }}" 
+                                                       class="form-input" 
+                                                       placeholder="Description / Critères" 
+                                                       style="font-size: 0.75rem; height: 30px; padding: 4px 8px;">
+                                            </div>
                                         </div>
                                     @endforeach
                                 </div>
@@ -208,21 +221,46 @@
                     </div>
                 </div>
 
-                {{-- Carte Visuel --}}
-                <div class="amazon-card">
-                    <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 15px;">
-                        Visuel de la bannière
-                    </h2>
+                {{-- Carte Visuels --}}
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="amazon-card">
+                        <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                            Image de la bannière
+                        </h2>
 
-                    <div class="dropzone-amazon" onclick="document.getElementById('image-input').click()">
-                        <img id="preview-img" src="{{ $banner->image_url }}" style="max-width: 100%; max-height: 250px; object-fit: contain; border-radius: 2px;">
-                        
-                        <div style="margin-top: 15px; color: #565959; font-size: 0.85rem;">
-                            <i class="fas fa-sync" style="margin-right: 5px;"></i> Cliquez pour changer l'image
+                        <div class="dropzone-amazon" onclick="document.getElementById('image-input').click()">
+                            <img id="preview-img" src="{{ $banner->image_url }}" style="max-width: 100%; max-height: 150px; object-fit: contain; border-radius: 2px;">
+                            
+                            <div style="margin-top: 10px; color: #565959; font-size: 0.8rem;">
+                                <i class="fas fa-sync" style="margin-right: 5px;"></i> Changer l'image
+                            </div>
                         </div>
+                        <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview-img')">
+                        @error('image') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                     </div>
-                    <input type="file" id="image-input" name="image" accept="image/*" style="display: none;" onchange="previewImage(this)">
-                    @error('image') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
+
+                    <div class="amazon-card">
+                        <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 15px;">
+                            Image de la page (Landing)
+                        </h2>
+
+                        <div class="dropzone-amazon" onclick="document.getElementById('landing-image-input').click()">
+                            @if($banner->landing_page_image)
+                                <img id="preview-landing-img" src="{{ $banner->landing_page_image }}" style="max-width: 100%; max-height: 150px; object-fit: contain; border-radius: 2px;">
+                            @else
+                                <div id="landing-dropzone-content">
+                                    <i class="fas fa-desktop" style="font-size: 32px; color: #bbb; margin-bottom: 15px;"></i>
+                                    <p style="font-size: 0.85rem; color: #111; font-weight: 700;">Ajouter une image de page</p>
+                                </div>
+                                <img id="preview-landing-img" style="display: none; max-width: 100%; max-height: 150px; object-fit: contain; border-radius: 2px;">
+                            @endif
+                            <div style="margin-top: 10px; color: #565959; font-size: 0.8rem;">
+                                <i class="fas fa-sync" style="margin-right: 5px;"></i> {{ $banner->landing_page_image ? 'Changer' : 'Choisir' }} l'image
+                            </div>
+                        </div>
+                        <input type="file" id="landing-image-input" name="landing_page_image" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview-landing-img', 'landing-dropzone-content')">
+                        @error('landing_page_image') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
+                    </div>
                 </div>
 
             </div>
@@ -286,12 +324,15 @@
 </div>
 
 <script>
-function previewImage(input) {
+function previewImage(input, previewId, dropzoneId) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function(e) {
-            const preview = document.getElementById('preview-img');
+            const preview = document.getElementById(previewId);
+            const dropzone = document.getElementById(dropzoneId);
             preview.src = e.target.result;
+            preview.style.display = 'inline-block';
+            if (dropzone) dropzone.style.display = 'none';
         }
         reader.readAsDataURL(input.files[0]);
     }

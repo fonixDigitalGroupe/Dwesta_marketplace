@@ -14,6 +14,7 @@ class Banner extends Model
 
         'category_id',
         'image_url',
+        'landing_page_image',
         'link_url',
         'promo_discount',
         'promo_conditions',
@@ -37,7 +38,7 @@ class Banner extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'banner_category');
+        return $this->belongsToMany(Category::class, 'banner_category')->withPivot('description');
     }
 
     /**
