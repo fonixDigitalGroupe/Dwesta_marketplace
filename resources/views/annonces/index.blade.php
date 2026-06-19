@@ -390,14 +390,16 @@
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
+        <div class="alert alert-success" id="alert-success" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>{{ session('success') }}</span>
+            <button onclick="document.getElementById('alert-success').style.display='none'" style="background: none; border: none; font-size: 1.25rem; line-height: 1; color: #065f46; cursor: pointer; padding: 0 0 0 1rem; opacity: 0.7;" title="Fermer">✕</button>
         </div>
     @endif
 
     @if(session('error'))
-        <div class="alert alert-error">
-            {{ session('error') }}
+        <div class="alert alert-error" id="alert-error" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>{{ session('error') }}</span>
+            <button onclick="document.getElementById('alert-error').style.display='none'" style="background: none; border: none; font-size: 1.25rem; line-height: 1; color: #991b1b; cursor: pointer; padding: 0 0 0 1rem; opacity: 0.7;" title="Fermer">✕</button>
         </div>
     @endif
 
