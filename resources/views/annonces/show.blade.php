@@ -588,9 +588,9 @@
             <button class="rk-wishlist-btn" 
                     id="wishlist-btn" 
                     data-annonce-slug="{{ $annonce->slug }}"
-                    style="position: absolute; top: 15px; right: 15px; background: white; border: 1px solid #eee; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #666; transition: all 0.3s ease; z-index: 20;">
+                    style="position: absolute; top: 15px; right: 15px; background: rgba(246, 139, 30, 0.12); border: none; border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #f68b1e; transition: all 0.3s ease; z-index: 20;">
                 <i class="{{ auth()->check() && auth()->user()->favorites()->where('annonce_id', $annonce->id)->exists() ? 'fas' : 'far' }} fa-heart" 
-                   style="font-size: 1.4rem; color: {{ auth()->check() && auth()->user()->favorites()->where('annonce_id', $annonce->id)->exists() ? '#bf0000' : '#666' }};"></i>
+                   style="font-size: 1.3rem; color: #f68b1e;"></i>
             </button>
         </div>
 
@@ -967,12 +967,11 @@
             if (data.status === 'added') {
                 icon.classList.remove('far');
                 icon.classList.add('fas');
-                icon.style.color = '#bf0000';
             } else {
                 icon.classList.remove('fas');
                 icon.classList.add('far');
-                icon.style.color = '#666';
             }
+            icon.style.color = '#f68b1e';
 
             // Optional: Provide feedback via toast
             window.dispatchEvent(new CustomEvent('notify', {
