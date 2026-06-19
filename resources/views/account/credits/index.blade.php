@@ -353,7 +353,7 @@
                                 </div>
                             @endif
 
-                            <form action="{{ route('account.credits.checkout') }}" method="POST" onsubmit="return confirm('Confirmer l\'achat de ce forfait pour {{ number_format($pack->prix, 0, ',', ' ') }} FCFA ?')" style="width: 100%;">
+                            <form action="{{ route('account.credits.checkout') }}" method="POST" onsubmit="return confirm('Confirmer l\'achat de ce pack ?')" style="width: 100%;">
                                 @csrf
                                 <input type="hidden" name="pack_id" value="{{ $pack->id }}">
                                 <button type="submit" class="btn-buy-card">
