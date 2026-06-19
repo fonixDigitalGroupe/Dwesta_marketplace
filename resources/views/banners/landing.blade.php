@@ -306,11 +306,6 @@
     @endif
     <div class="landing-hero-overlay">
         <h1 class="landing-hero-title">{{ $banner->title }}</h1>
-        @if($category)
-            <p class="landing-hero-subtitle">
-                Découvrez notre sélection dans la catégorie <strong>{{ $category->nom }}</strong>
-            </p>
-        @endif
     </div>
 </div>
 
