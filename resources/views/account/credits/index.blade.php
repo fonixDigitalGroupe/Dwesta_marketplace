@@ -60,7 +60,8 @@
                     margin-bottom: 2.5rem;
                     box-shadow: none;
                     border: 1px solid rgba(255,255,255,0.1);
-                    max-width: 500px;
+                    width: 100%;
+                    max-width: 800px;
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
@@ -138,7 +139,7 @@
                     grid-template-columns: repeat(3, 1fr);
                     gap: 1rem;
                     margin-bottom: 3rem;
-                    max-width: 950px;
+                    max-width: 800px;
                 }
                 .pack-card {
                     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
