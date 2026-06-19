@@ -171,6 +171,31 @@
                             </select>
                             @error('link_url') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                         </div>
+
+                        <div style="border-top: 1px solid #eee; padding-top: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                                <input type="checkbox" name="is_promo" id="is_promo" value="1" {{ old('is_promo') ? 'checked' : '' }} 
+                                       style="width: 18px; height: 18px; cursor: pointer; accent-color: #e47911;"
+                                       onchange="togglePromoCategories(this.checked)">
+                                <label for="is_promo" style="font-weight: 700; cursor: pointer; color: #111;">Bannière Promotionnelle</label>
+                            </div>
+                            
+                            <div id="promo-categories-section" style="{{ old('is_promo') ? 'display: block;' : 'display: none;' }} background: #fcfcfc; border: 1px solid #eee; padding: 15px; border-radius: 4px;">
+                                <label class="form-label">Associer à une ou plusieurs catégories</label>
+                                <div style="max-height: 200px; overflow-y: auto; border: 1px solid #adb1b8; border-radius: 3px; padding: 10px; background: #fff;">
+                                    @foreach($allCategories as $cat)
+                                        <div style="display: flex; align-items: center; gap: 8px; padding: 4px 0;">
+                                            <input type="checkbox" name="categories[]" id="cat_{{ $cat->id }}" value="{{ $cat->id }}"
+                                                {{ is_array(old('categories')) && in_array($cat->id, old('categories')) ? 'checked' : '' }}
+                                                style="cursor: pointer; accent-color: #007bff;">
+                                            <label for="cat_{{ $cat->id }}" style="font-size: 0.85rem; cursor: pointer;">{{ $cat->chemin ?? $cat->nom }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <p style="font-size: 0.75rem; color: #555; margin-top: 8px;">Si coché, les utilisateurs seront redirigés vers une page regroupant ces catégories.</p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -260,6 +285,17 @@ function previewImage(input) {
             if (dropzone) dropzone.style.display = 'none';
         }
         reader.readAsDataURL(input.files[0]);
+    }
+}
+function togglePromoCategories(checked) {
+    const section = document.getElementById('promo-categories-section');
+    const linkUrl = document.getElementById('link_url');
+    if (checked) {
+        section.style.display = 'block';
+        if (linkUrl) linkUrl.closest('div').style.opacity = '0.5';
+    } else {
+        section.style.display = 'none';
+        if (linkUrl) linkUrl.closest('div').style.opacity = '1';
     }
 }
 </script>

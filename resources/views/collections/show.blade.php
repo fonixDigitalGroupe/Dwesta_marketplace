@@ -42,7 +42,7 @@
     .n1-top-item-title { font-size: 0.85rem; line-height: 1.4; color: #555; margin-bottom: 0.8rem; height: 2.8rem; overflow: hidden; }
     .n1-top-price-row { display: flex; flex-direction: column; gap: 2px; margin-bottom: 0.5rem; }
     .n1-top-price-state { font-size: 0.7rem; color: #888; }
-    .n1-top-price-val { font-size: 1rem; font-weight: 800; color: #bf0000; }
+    .n1-top-price-val { font-size: 1rem; font-weight: 800; color: #f68b1e; }
     .n1-top-rating { display: flex; align-items: center; gap: 5px; }
     .n1-top-stars { display: flex; gap: 1px; color: #ffbc00; font-size: 0.75rem; }
     .n1-top-rating-count { font-size: 0.75rem; color: #888; }
@@ -81,7 +81,7 @@
     .n1-discount-badge { background: #ee8800; color: white; font-size: 11px; font-weight: 700; padding: 2px 5px; border-radius: 4px; }
     .n1-actual-price { font-size: 18px; font-weight: 800; color: #bf0000; margin-top: 4px; }
     .n1-merchant-deals-info { padding: 0 10px 15px; display: flex; flex-direction: column; gap: 4px; }
-    .n1-v2-price-row { display: flex; align-items: center; gap: 8px; color: #bf0000; font-weight: 700; font-size: 16px; }
+    .n1-v2-price-row { display: flex; align-items: center; gap: 8px; color: #f68b1e; font-weight: 700; font-size: 16px; }
     .n1-v2-merchant-row { display: flex; align-items: center; gap: 8px; color: #777; font-size: 13px; }
     .n1-v2-shop-name { max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .n1-v2-badge-pro { background: #f4f4f4; color: #555; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 700; }

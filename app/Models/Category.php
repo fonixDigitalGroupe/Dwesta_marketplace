@@ -276,4 +276,8 @@ class Category extends Model
     {
         return $this->hasMany(CategoryFilter::class);
     }
+    public function banners()
+    {
+        return $this->belongsToMany(Banner::class, 'banner_category');
+    }
 }

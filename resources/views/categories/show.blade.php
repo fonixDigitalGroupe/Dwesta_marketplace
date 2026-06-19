@@ -374,8 +374,14 @@
         }
     @endphp
     <div class="n1-grand-banner" style="background-image: url('{{ $bgImage }}');">
-        @if($banner && $banner->link_url)
-            <a href="{{ $banner->link_url }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5;"></a>
+        @php
+            $bannerLink = $banner->link_url ?? '#';
+            if ($banner && $banner->is_promo && $banner->slug) {
+                $bannerLink = route('collections.show', $banner->slug);
+            }
+        @endphp
+        @if($banner && $bannerLink)
+            <a href="{{ $bannerLink }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5;"></a>
         @endif
     </div>
 

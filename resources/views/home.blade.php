@@ -169,7 +169,13 @@
                         <div class="slider-slide {{ $loop->first ? 'active' : '' }}">
                             <div class="rakuten-banner-content">
                                 <!-- Background Image covering full width without gradient -->
-                                <a href="{{ $banner->link_url ?? '#' }}" class="banner-bg-image" style="background-image: url('{{ $banner->image_url }}'); display: block;"></a>
+                                @php
+                                    $bannerLink = $banner->link_url ?? '#';
+                                    if ($banner->is_promo && $banner->slug) {
+                                        $bannerLink = route('collections.show', $banner->slug);
+                                    }
+                                @endphp
+                                <a href="{{ $bannerLink }}" class="banner-bg-image" style="background-image: url('{{ $banner->image_url }}'); display: block;"></a>
                                 
                                 <div class="banner-inner-container">
                                     <div class="banner-text-content">

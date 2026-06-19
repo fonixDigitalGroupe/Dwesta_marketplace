@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BannerController extends Controller
 {
@@ -36,7 +37,8 @@ class BannerController extends Controller
     {
         $familles = \App\Models\Category::getFamilles();
         $categories = \App\Models\Category::whereNull('parent_id')->get();
-        return view('admin.banners.create', compact('familles', 'categories'));
+        $allCategories = \App\Models\Category::orderBy('nom')->get();
+        return view('admin.banners.create', compact('familles', 'categories', 'allCategories'));
     }
 
     /**
@@ -53,11 +55,13 @@ class BannerController extends Controller
             'promo_discount' => 'nullable|string|max:20',
             'promo_conditions' => 'nullable|string|max:50',
             'promo_code' => 'nullable|string|max:20',
-            'has_payment_4x' => 'boolean',
+            'is_promo' => 'boolean',
             'active' => 'boolean',
             'order' => 'integer|min:0',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
         $data = $request->all();
@@ -69,9 +73,15 @@ class BannerController extends Controller
 
         // Par défaut actif à la création si non précisé (le champ est retiré du form)
         $data['active'] = $request->has('active') ? $request->boolean('active') : true;
+        $data['is_promo'] = $request->boolean('is_promo');
         $data['has_payment_4x'] = $request->boolean('has_payment_4x');
+        $data['slug'] = Str::slug($data['title']);
 
-        Banner::create($data);
+        $banner = Banner::create($data);
+
+        if ($request->has('categories') && $data['is_promo']) {
+            $banner->categories()->sync($request->input('categories'));
+        }
 
         return redirect()->route('admin.banners.index')
             ->with('success', 'Bannière créée avec succès.');
@@ -84,7 +94,8 @@ class BannerController extends Controller
     {
         $familles = \App\Models\Category::getFamilles();
         $categories = \App\Models\Category::whereNull('parent_id')->get();
-        return view('admin.banners.edit', compact('banner', 'familles', 'categories'));
+        $allCategories = \App\Models\Category::orderBy('nom')->get();
+        return view('admin.banners.edit', compact('banner', 'familles', 'categories', 'allCategories'));
     }
 
     /**
@@ -101,11 +112,13 @@ class BannerController extends Controller
             'promo_discount' => 'nullable|string|max:20',
             'promo_conditions' => 'nullable|string|max:50',
             'promo_code' => 'nullable|string|max:20',
-            'has_payment_4x' => 'boolean',
+            'is_promo' => 'boolean',
             'active' => 'boolean',
             'order' => 'integer|min:0',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
+            'categories' => 'nullable|array',
+            'categories.*' => 'exists:categories,id',
         ]);
 
         $data = $request->all();
@@ -122,9 +135,17 @@ class BannerController extends Controller
             $data['active'] = $request->boolean('active');
         }
         
+        $data['is_promo'] = $request->boolean('is_promo');
         $data['has_payment_4x'] = $request->boolean('has_payment_4x');
+        $data['slug'] = Str::slug($data['title']);
 
         $banner->update($data);
+
+        if ($data['is_promo']) {
+            $banner->categories()->sync($request->input('categories', []));
+        } else {
+            $banner->categories()->detach();
+        }
 
         return redirect()->route('admin.banners.index')
             ->with('success', 'Bannière mise à jour avec succès.');

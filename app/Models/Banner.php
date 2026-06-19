@@ -19,6 +19,7 @@ class Banner extends Model
         'promo_conditions',
         'promo_code',
         'has_payment_4x',
+        'is_promo',
         'active',
         'order',
         'start_date',
@@ -26,12 +27,18 @@ class Banner extends Model
     ];
 
     protected $casts = [
+        'is_promo' => 'boolean',
         'active' => 'boolean',
         'has_payment_4x' => 'boolean',
         'start_date' => 'datetime',
         'end_date' => 'datetime',
         'order' => 'integer',
     ];
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'banner_category');
+    }
 
     /**
      * Scope for active banners
