@@ -57,6 +57,16 @@
         /* ---- Ticker crossfade ---- */
         .banner-ticker-container {
             width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 50px;
+        }
+        .ticker-items-wrapper {
+            flex: 1;
             height: 100%;
             position: relative;
             display: flex;
@@ -70,15 +80,16 @@
             justify-content: center;
             width: 100%;
             height: 100%;
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 700;
-            color: rgba(255,255,255,0.98);
+            color: rgba(255,255,255,1);
             text-decoration: none;
             text-align: center;
             opacity: 0;
             transition: opacity 0.8s ease;
             pointer-events: none;
-            padding: 0 20px;
+            padding: 0 10px;
+            line-height: normal;
         }
         .ticker-item.active {
             opacity: 1;
@@ -86,6 +97,45 @@
         }
         .ticker-item:hover {
             color: #f68b1e;
+        }
+        .en-profiter {
+            margin-left: 12px;
+            text-decoration: underline;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .ticker-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            font-size: 0.9rem;
+            opacity: 0.85;
+            transition: all 0.2s;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ticker-arrow:hover {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.1);
+        }
+        .ticker-arrow.prev { left: 0; }
+        .ticker-arrow.next { right: 0; }
+
+        @media (max-width: 768px) {
+            .ticker-arrow { display: none; }
+            .banner-ticker-container { padding: 0 10px; }
+            .ticker-item { font-size: 0.85rem; }
+            .en-profiter { font-size: 0.75rem; margin-left: 6px; }
         }
 
         /* Global mobile rules for non-header elements */
@@ -150,11 +200,18 @@
         <div class="top-banner">
             @if($tickerBanners->count() > 0)
             <div class="banner-ticker-container">
-                @foreach($tickerBanners->filter(fn($b) => !empty($b->slug)) as $i => $tb)
-                    <a href="{{ route('banner.landing', $tb->slug) }}" class="ticker-item {{ $i === 0 ? 'active' : '' }}">
-                        {{ $tb->title }}
-                    </a>
-                @endforeach
+                <button class="ticker-arrow prev" onclick="prevTicker()"><i class="fas fa-chevron-left"></i></button>
+                <div class="ticker-items-wrapper">
+                    @foreach($tickerBanners->filter(fn($b) => !empty($b->slug)) as $i => $tb)
+                        <a href="{{ route('banner.landing', $tb->slug) }}" class="ticker-item {{ $i === 0 ? 'active' : '' }}">
+                            <span>
+                                {{ $tb->title }} 
+                                <span class="en-profiter">En profiter <i class="fas fa-chevron-down"></i></span>
+                            </span>
+                        </a>
+                    @endforeach
+                </div>
+                <button class="ticker-arrow next" onclick="nextTicker()"><i class="fas fa-chevron-right"></i></button>
             </div>
             @endif
         </div>
@@ -237,16 +294,45 @@
         }
     </script>
     <script>
+        let tickerInterval;
+        let currentTickerIndex = 0;
+
+        function showTickerIndex(index) {
+            const items = document.querySelectorAll('.ticker-item');
+            if (items.length === 0) return;
+            
+            items.forEach(item => item.classList.remove('active'));
+            
+            // Wrap index
+            if (index >= items.length) currentTickerIndex = 0;
+            else if (index < 0) currentTickerIndex = items.length - 1;
+            else currentTickerIndex = index;
+            
+            items[currentTickerIndex].classList.add('active');
+        }
+
+        function nextTicker() {
+            showTickerIndex(currentTickerIndex + 1);
+            resetTickerInterval();
+        }
+
+        function prevTicker() {
+            showTickerIndex(currentTickerIndex - 1);
+            resetTickerInterval();
+        }
+
+        function resetTickerInterval() {
+            clearInterval(tickerInterval);
+            tickerInterval = setInterval(() => {
+                showTickerIndex(currentTickerIndex + 1);
+            }, 5000);
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Ticker rotation logic
             const items = document.querySelectorAll('.ticker-item');
             if (items.length > 1) {
-                let currentIndex = 0;
-                setInterval(() => {
-                    items[currentIndex].classList.remove('active');
-                    currentIndex = (currentIndex + 1) % items.length;
-                    items[currentIndex].classList.add('active');
-                }, 4000); // Switch every 4 seconds
+                resetTickerInterval();
             }
 
             @if(session('error'))
