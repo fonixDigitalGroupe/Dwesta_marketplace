@@ -1005,10 +1005,7 @@
                             </div>
                         </label>
 
-                        <div id="phone-field-modern" style="display: none; margin-top: 20px; padding: 15px; background: #fffcf5; border: 1px solid #ffe8cc; border-radius: 4px;">
-                            <label for="step1_phone_number" style="font-weight: 700; font-size: 13px; display: block; margin-bottom: 8px;">Numéro de téléphone PayDunya</label>
-                            <input type="text" name="phone_number" id="step1_phone_number" class="form-control" placeholder="7x xxx xx xx" value="{{ $user->telephone }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
-                        </div>
+
 
                         <div class="payment-section-title">Paiement à la livraison</div>
 
@@ -1505,13 +1502,7 @@
             document.getElementById('gestion_paiement').value = gestion;
             document.getElementById('moyen_paiement').value = moyen;
 
-            // Show/Hide phone field for mobile money
-            const phoneField = document.getElementById('phone-field-modern');
-            if (['om', 'wave', 'free'].includes(moyen)) {
-                phoneField.style.display = 'block';
-            } else {
-                phoneField.style.display = 'none';
-            }
+
 
             // Show Voucher Input
             document.getElementById('voucher-container').style.display = 'block';
