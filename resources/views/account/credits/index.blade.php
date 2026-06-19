@@ -199,7 +199,7 @@
                 .pack-price-gold {
                     font-size: 20px;
                     font-weight: 800;
-                    color: #FFD700;
+                    color: #f68b1e;
                     margin-top: auto;
                 }
                 .pack-bonus-badge {
@@ -209,9 +209,9 @@
                     font-size: 9px;
                     font-weight: 700;
                     margin-top: 8px;
-                    background: rgba(255,215,0,0.15);
-                    color: #FFD700;
-                    border: 1px solid rgba(255,215,0,0.3);
+                    background: rgba(246, 139, 30, 0.15);
+                    color: #f68b1e;
+                    border: 1px solid rgba(246, 139, 30, 0.3);
                 }
                 .btn-buy-card {
                     margin-top: 15px;
