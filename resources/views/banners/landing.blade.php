@@ -304,9 +304,6 @@
     @elseif($banner->image_url)
         <img src="{{ $banner->image_url }}" alt="{{ $banner->title }}">
     @endif
-    <div class="landing-hero-overlay">
-        <h1 class="landing-hero-title">{{ $banner->title }}</h1>
-    </div>
 </div>
 
 {{-- BREADCRUMB --}}
