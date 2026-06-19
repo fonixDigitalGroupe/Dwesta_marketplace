@@ -131,12 +131,7 @@
                             @error('title') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
                         </div>
 
-                        <div>
-                            <label for="link_url" class="form-label">Redirection lors du clic</label>
-                            <select name="link_url" id="link_url" class="form-select">
-                                <option value="">-- Sélectionner une destination --</option>
-                                @foreach($categories as $category)
-                                    @php
+                        {{-- Redirection and Category sections removed --}}
                     </div>
                 </div>
 
