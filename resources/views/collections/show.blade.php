@@ -184,7 +184,7 @@
 
 {{-- GRAND BANNER --}}
 <div class="n1-grand-banner">
-    <img src="{{ $banner->image_url }}" alt="{{ $banner->title }}">
+    <img src="{{ $banner->landing_page_image ?? $banner->image_url }}" alt="{{ $banner->title }}">
 </div>
 
 {{-- TOP CONSULTES --}}

@@ -18,23 +18,17 @@ class CollectionController extends Controller
             ->where('active', true)
             ->firstOrFail();
 
-        // Si la bannière est promotionnelle, on récupère toutes les catégories associées
         $categoryIds = [];
-        if ($banner->is_promo) {
-            $associatedCategories = $banner->categories()->where('actif', true)->get();
-            foreach ($associatedCategories as $cat) {
-                $categoryIds = array_merge($categoryIds, $cat->getAllDescendantIds());
-            }
-            $categoryIds = array_unique($categoryIds);
-        } elseif ($banner->category_id) {
-            // Logique classique pour une seule catégorie
+        $category = null;
+
+        if ($banner->category_id) {
             $category = Category::where('id', $banner->category_id)
                 ->where('actif', true)
                 ->with(['parent', 'enfantsActifs.enfantsActifs'])
                 ->first();
             
             if ($category) {
-                $categoryIds = $category->getAllDescendantIds();
+                $categoryIds = $category->getAllDescendantIds()->toArray();
             }
         }
 
