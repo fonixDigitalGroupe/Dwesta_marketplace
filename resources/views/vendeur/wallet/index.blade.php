@@ -294,122 +294,89 @@
 
     /* ══ Financial Summary Panel (Stripe/Revolut style) ══ */
     .fin-summary {
-        background: linear-gradient(145deg, #0d1b3e 0%, #0a1628 50%, #061020 100%);
-        border-radius: 18px;
+        background: #ffffff;
+        border-radius: 16px;
         padding: 0;
         margin-bottom: 1.75rem;
         overflow: hidden;
-        position: relative;
-        border: 1px solid rgba(255,255,255,0.07);
-    }
-    /* Subtle glow background blob */
-    .fin-summary::before {
-        content: '';
-        position: absolute;
-        width: 300px; height: 300px;
-        background: radial-gradient(circle, rgba(0,74,173,0.25) 0%, transparent 70%);
-        top: -80px; left: -60px;
-        pointer-events: none;
-    }
-    .fin-summary::after {
-        content: '';
-        position: absolute;
-        width: 200px; height: 200px;
-        background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, transparent 70%);
-        bottom: -50px; right: 40px;
-        pointer-events: none;
+        border: 1px solid #e9ecef;
     }
     .fin-summary-inner {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        position: relative;
-        z-index: 1;
     }
-    /* Vertical dividers */
     .fin-stat {
-        padding: 1.6rem 1.5rem 1.4rem;
+        padding: 1.4rem 1.5rem 1.25rem;
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: 0.6rem;
-        transition: background 0.2s;
+        gap: 0.5rem;
+        transition: background 0.18s;
+        border-top: 3px solid transparent;
     }
-    .fin-stat:hover {
-        background: rgba(255,255,255,0.03);
+    .fin-stat:hover { background: #fafbff; }
+    .fin-stat.amber-stat { border-top-color: #f59e0b; }
+    .fin-stat.green-stat { border-top-color: #10b981; }
+    .fin-stat.blue-stat  { border-top-color: #004aad; }
+    /* Dividers */
+    .fin-stat + .fin-stat {
+        border-left: 1px solid #f0f2f5;
     }
-    .fin-stat + .fin-stat::before {
-        content: '';
-        position: absolute;
-        left: 0; top: 20%; bottom: 20%;
-        width: 1px;
-        background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.12), transparent);
-    }
-    /* Icon circle */
+    /* Icon */
     .fin-stat-icon {
-        width: 38px; height: 38px;
-        border-radius: 50%;
+        width: 40px; height: 40px;
+        border-radius: 10px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 0.9rem;
-        margin-bottom: 0.1rem;
+        font-size: 0.95rem;
         flex-shrink: 0;
     }
-    .fin-stat-icon.amber {
-        background: rgba(245,158,11,0.15);
-        color: #fbbf24;
-        box-shadow: 0 0 14px rgba(245,158,11,0.2);
-    }
-    .fin-stat-icon.green {
-        background: rgba(16,185,129,0.15);
-        color: #34d399;
-        box-shadow: 0 0 14px rgba(16,185,129,0.2);
-    }
-    .fin-stat-icon.blue {
-        background: rgba(59,130,246,0.15);
-        color: #60a5fa;
-        box-shadow: 0 0 14px rgba(59,130,246,0.18);
-    }
+    .fin-stat-icon.amber { background: #fff8e6; color: #d97706; }
+    .fin-stat-icon.green { background: #edfaf5; color: #059669; }
+    .fin-stat-icon.blue  { background: #eef3ff; color: #004aad; }
+    /* Label */
     .fin-stat-label {
-        font-size: 0.67rem;
+        font-size: 0.68rem;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: rgba(255,255,255,0.4);
-        font-weight: 600;
+        letter-spacing: 0.09em;
+        color: #9ca3af;
+        font-weight: 700;
     }
+    /* Value */
     .fin-stat-value {
-        font-size: 1.55rem;
+        font-size: 1.5rem;
         font-weight: 800;
         letter-spacing: -0.5px;
-        line-height: 1;
-        color: #fff;
+        line-height: 1.1;
+        color: #111827;
         font-family: 'Roboto', sans-serif;
     }
-    .fin-stat-value.amber { color: #fbbf24; }
-    .fin-stat-value.green { color: #34d399; }
-    .fin-stat-value.blue  { color: #60a5fa; }
+    .fin-stat-value.amber { color: #d97706; }
+    .fin-stat-value.green { color: #059669; }
+    .fin-stat-value.blue  { color: #004aad; }
+    .fin-stat-value.muted { color: #d1d5db; }
     .fin-stat-value .fin-unit {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         font-weight: 500;
-        opacity: 0.55;
+        color: #9ca3af;
         margin-left: 4px;
         letter-spacing: 0;
     }
+    /* Sub badge */
     .fin-stat-sub {
         display: inline-flex;
         align-items: center;
         gap: 5px;
         font-size: 0.68rem;
         font-weight: 600;
-        letter-spacing: 0.03em;
         padding: 3px 9px;
         border-radius: 20px;
         width: fit-content;
-        margin-top: 2px;
     }
-    .fin-stat-sub.amber { background: rgba(245,158,11,0.15); color: #fbbf24; }
-    .fin-stat-sub.green { background: rgba(16,185,129,0.15); color: #34d399; }
-    .fin-stat-sub.blue  { background: rgba(59,130,246,0.15);  color: #60a5fa; }
-    .fin-stat-sub.muted { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.35); }
-    /* Pulse dot for live status */
+    .fin-stat-sub.amber { background: #fff8e6; color: #b45309; }
+    .fin-stat-sub.green { background: #edfaf5; color: #065f46; }
+    .fin-stat-sub.blue  { background: #eef3ff; color: #1e40af; }
+    .fin-stat-sub.muted { background: #f3f4f6; color: #9ca3af; }
+    /* Pulse dot */
     .pulse-dot {
         width: 6px; height: 6px;
         border-radius: 50%;
@@ -423,9 +390,7 @@
     }
     @media (max-width: 640px) {
         .fin-summary-inner { grid-template-columns: 1fr; }
-        .fin-stat + .fin-stat::before { top: 0; bottom: auto; left: 20%; right: 20%; width: auto; height: 1px;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
-        }
+        .fin-stat + .fin-stat { border-left: none; border-top: 1px solid #f0f2f5; }
     }
 
     /* ── Action Buttons Row ── */
@@ -807,20 +772,20 @@
             <div class="fin-summary-inner">
 
                 {{-- En séquestre --}}
-                <div class="fin-stat">
+                <div class="fin-stat amber-stat">
                     <div class="fin-stat-icon amber"><i class="fas fa-shield-alt"></i></div>
                     <div class="fin-stat-label">En séquestre</div>
                     @if($pendingBalance > 0)
                         <div class="fin-stat-value amber" data-count="{{ $pendingBalance }}">{{ number_format($pendingBalance, 0, ',', ' ') }}<span class="fin-unit">FCFA</span></div>
                         <div class="fin-stat-sub amber"><span class="pulse-dot"></span> Fonds en attente</div>
                     @else
-                        <div class="fin-stat-value" style="color:rgba(255,255,255,0.2);">—<span class="fin-unit">FCFA</span></div>
+                        <div class="fin-stat-value muted">—<span class="fin-unit">FCFA</span></div>
                         <div class="fin-stat-sub muted">Aucun fond bloqué</div>
                     @endif
                 </div>
 
                 {{-- Solde disponible --}}
-                <div class="fin-stat">
+                <div class="fin-stat green-stat">
                     <div class="fin-stat-icon green"><i class="fas fa-wallet"></i></div>
                     <div class="fin-stat-label">Solde disponible</div>
                     <div class="fin-stat-value green" data-count="{{ $availableBalance }}">{{ number_format($availableBalance, 0, ',', ' ') }}<span class="fin-unit">FCFA</span></div>
@@ -828,7 +793,7 @@
                 </div>
 
                 {{-- Transactions --}}
-                <div class="fin-stat">
+                <div class="fin-stat blue-stat">
                     <div class="fin-stat-icon blue"><i class="fas fa-layer-group"></i></div>
                     <div class="fin-stat-label">Transactions</div>
                     <div class="fin-stat-value blue" data-count="{{ $recentTransactions->total() }}">{{ $recentTransactions->total() }}</div>
