@@ -1054,16 +1054,6 @@
                 </div>
                 <div class="step-content">
                     <div class="step-number">ETAPE 4</div>
-                    <div class="step-title">Expédition</div>
-                </div>
-            </div>
-            <div class="progress-step" data-step="5">
-                <div class="step-circle">
-                    <div class="step-dot"></div>
-                    <div class="step-check">✓</div>
-                </div>
-                <div class="step-content">
-                    <div class="step-number">ETAPE 5</div>
                     <div class="step-title">Booster votre annonce</div>
                 </div>
             </div>
@@ -1106,6 +1096,9 @@
                 @csrf
                 <input type="hidden" name="type" value="produit">
                 <input type="hidden" id="currentStep" value="1">
+                <input type="hidden" id="type_livraison" name="type_livraison" value="retrait_point_relais">
+                <input type="hidden" id="user_phone" name="user_phone" value="{{ auth()->user()->telephone ?? '' }}">
+                <input type="hidden" id="code_postal" name="code_postal" value="{{ auth()->user()->code_postal ?? '00000' }}">
                 <!-- Étape 1: Votre annonce -->
                 <div class="form-step active" id="step1">
                     <h1 class="form-title">👋 Que vendez-vous aujourd'hui ?</h1>
@@ -1291,49 +1284,8 @@
                             onclick="previousStep()">Précédent </button><button type="button" class="btn btn-primary"
                             onclick="nextStep()">Continuer </button></div>
                 </div>
-                <!-- Étape 4: Moyen d'expédition -->
+                <!-- Étape 4: Booster votre annonce -->
                 <div class="form-step" id="step4">
-                    <h1 class="form-title">🚚 Moyen d'expédition</h1>
-                    <div class="form-instructions">
-                        <p class="instruction-text">Choisissez comment vous souhaitez <strong style="color: #00A400;">envoyer</strong> votre article.</p>
-                    </div>
-
-                    <input type="hidden" id="type_livraison" name="type_livraison" value="retrait_point_relais" required>
-                    <input type="hidden" id="user_phone" name="user_phone" value="{{ auth()->user()->telephone ?? '' }}">
-                    <input type="hidden" id="code_postal" name="code_postal" value="{{ auth()->user()->code_postal ?? '00000' }}">
-
-                    <div class="status-cards-grid">
-                        <div class="status-card selected" onclick="selectShipping(this, 'retrait_point_relais')">
-                            <div class="radio-circle"></div>
-                            <div style="display: flex; flex-direction: column;">
-                                <span style="font-weight: 600;">Retrait en point retrait</span>
-                                <small style="color: #666; font-size: 0.75rem;">Le client retire son colis en point retrait (point Karnou)</small>
-                            </div>
-                        </div>
-                        <div class="status-card" onclick="selectShipping(this, 'retrait_boutique')">
-                            <div class="radio-circle"></div>
-                            <div style="display: flex; flex-direction: column;">
-                                <span style="font-weight: 600;">Retrait en boutique</span>
-                                <small style="color: #666; font-size: 0.75rem;">Le client retire son colis en boutique</small>
-                            </div>
-                        </div>
-                        <div class="status-card" onclick="selectShipping(this, 'livraison_point_special')">
-                            <div class="radio-circle"></div>
-                            <div style="display: flex; flex-direction: column;">
-                                <span style="font-weight: 600;">Livraison en point spécial</span>
-                                <small style="color: #666; font-size: 0.75rem;">Livraison dans des lieux choisis par Karnou</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-secondary" onclick="previousStep()">Précédent</button>
-                        <button type="button" class="btn btn-primary" onclick="nextStep()">Continuer</button>
-                    </div>
-                </div>
-
-                <!-- Étape 5: Booster votre annonce -->
-                <div class="form-step" id="step5">
                     <span id="user-credit-balance" style="display: none;">{{ $creditBalance }}</span>
 
                     <div style="margin-bottom: 2rem;">
@@ -1426,7 +1378,7 @@
     </div> <!-- Close create-annonce-container -->
     <script>      // Global variabl       es
         var currentStep = 1;
-        var totalSteps = 5;
+        var totalSteps = 4;
         var uploadedImages = [];
         var mainImageIndex = 0;
 
@@ -1620,10 +1572,6 @@
 
                     // Specific Rule: Hide condition if Services or Immobilier
                     if (condGroup) condGroup.style.display = isServiceOrImmo ? 'none' : 'block';
-                } else if (step === 4) {
-                    advisory.classList.add('active');
-                    if (content2) content2.style.display = 'none';
-                    if (content3) content3.style.display = 'block';
                 }
                 else {
                     advisory.classList.remove('active');
@@ -1638,11 +1586,7 @@
             el.classList.add('selected');
         }
 
-        function selectShipping(el, val) {
-            document.getElementById('type_livraison').value = val;
-            document.querySelectorAll('#step4 .status-card').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-        }
+
 
         var photosInput, imagePreviewContainer, imageUploadArea;
 
@@ -1735,10 +1679,7 @@
                 if (uploadedImages.length > 8) { alert('Maximum 8 photos autorisées.'); return false; }
                 if (!price || price <= 0) { alert('Veuillez saisir un prix valide.'); return false; }
                 if (!qty || qty < 1) { alert('Veuillez saisir une quantité valide.'); return false; }
-            } else if (currentStep === 4) {
-                const shipping = document.getElementById('type_livraison').value;
-                if (!shipping) { alert('Veuillez sélectionner un moyen d\'expédition.'); return false; }
-            }
+
             return true;
         }
 
