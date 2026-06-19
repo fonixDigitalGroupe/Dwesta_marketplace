@@ -11,9 +11,7 @@
 
         <main class="main-content">
 
-            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
-                <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Mes Crédits</h1>
-            </div>
+
 
             @if(session('success'))
                 <div style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 4px; margin-bottom: 2rem; border: 1px solid #c3e6cb;">
@@ -305,9 +303,7 @@
                 }
             </style>
 
-            <div class="page-header">
-                <h1 class="page-title">Mes Crédits</h1>
-            </div>
+
 
             @if(session('success'))
                 <div style="background: #ecfdf5; color: #065f46; padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 2rem; border-left: 5px solid #10b981; font-weight: 500;">
