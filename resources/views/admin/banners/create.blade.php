@@ -112,13 +112,31 @@
 
                     <div style="display: flex; flex-direction: column; gap: 20px;">
                         
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
                             <div>
-                                <label for="category_id" class="form-label">Catégorie cible (optionnel)</label>
+                                <label for="category_id_n1" class="form-label">Catégorie Niveau 1</label>
+                                <select name="category_id_n1" id="category_id_n1" class="form-select @error('category_id_n1') is-invalid @enderror" onchange="filterN2Categories()">
+                                    <option value="">-- Sélectionner N1 --</option>
+                                    @foreach($n1Categories as $cat)
+                                        <option value="{{ $cat->id }}" {{ old('category_id_n1') == $cat->id ? 'selected' : '' }}>{{ $cat->nom }}</option>
+                                    @endforeach
+                                </select>
+                                @error('category_id_n1') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <label for="category_id_n2" class="form-label">Catégorie Niveau 2</label>
+                                <select name="category_id_n2" id="category_id_n2" class="form-select @error('category_id_n2') is-invalid @enderror">
+                                    <option value="">-- Sélectionner N2 --</option>
+                                    {{-- JS will populate this --}}
+                                </select>
+                                @error('category_id_n2') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <label for="category_id" class="form-label">Catégorie cible (N3)</label>
                                 <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
                                     <option value="">-- Toutes les catégories --</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->nom }}</option>
+                                    @foreach($allCategories as $category)
+                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->chemin ?? $category->nom }}</option>
                                     @endforeach
                                 </select>
                                 @error('category_id') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
@@ -242,6 +260,25 @@ function previewImage(input, previewId, dropzoneId) {
 }
 function togglePromoCategories(checked) {
     // Logic removed as per user request
+}
+
+const allCategories = @json($allCategories);
+
+function filterN2Categories() {
+    const n1Id = document.getElementById('category_id_n1').value;
+    const n2Select = document.getElementById('category_id_n2');
+    
+    n2Select.innerHTML = '<option value="">-- Sélectionner N2 --</option>';
+    
+    if (n1Id) {
+        const filtered = allCategories.filter(c => c.parent_id == n1Id);
+        filtered.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = c.nom;
+            n2Select.appendChild(opt);
+        });
+    }
 }
 </script>
 @endsection

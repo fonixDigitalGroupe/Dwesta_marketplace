@@ -13,6 +13,8 @@ class Banner extends Model
         'famille',
 
         'category_id',
+        'category_id_n1',
+        'category_id_n2',
         'image_url',
         'landing_page_image',
         'link_url',
@@ -35,6 +37,21 @@ class Banner extends Model
         'end_date' => 'datetime',
         'order' => 'integer',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function categoryN1()
+    {
+        return $this->belongsTo(Category::class, 'category_id_n1');
+    }
+
+    public function categoryN2()
+    {
+        return $this->belongsTo(Category::class, 'category_id_n2');
+    }
 
     public function categories()
     {

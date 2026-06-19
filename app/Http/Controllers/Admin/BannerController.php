@@ -35,9 +35,9 @@ class BannerController extends Controller
      */
     public function create()
     {
-        $categories = \App\Models\Category::whereNull('parent_id')->get();
-        $allCategories = \App\Models\Category::orderBy('nom')->get();
-        return view('admin.banners.create', compact('categories', 'allCategories'));
+        $n1Categories = \App\Models\Category::whereNull('parent_id')->get();
+        $allCategories = \App\Models\Category::orderBy('nom')->get(); // This will include N2 and N3
+        return view('admin.banners.create', compact('n1Categories', 'allCategories'));
     }
 
     /**
@@ -48,6 +48,8 @@ class BannerController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'category_id' => 'nullable|exists:categories,id',
+            'category_id_n1' => 'nullable|exists:categories,id',
+            'category_id_n2' => 'nullable|exists:categories,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'landing_page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'promo_discount' => 'nullable|string|max:20',
@@ -88,9 +90,9 @@ class BannerController extends Controller
      */
     public function edit(Banner $banner)
     {
-        $categories = \App\Models\Category::whereNull('parent_id')->get();
+        $n1Categories = \App\Models\Category::whereNull('parent_id')->get();
         $allCategories = \App\Models\Category::orderBy('nom')->get();
-        return view('admin.banners.edit', compact('banner', 'categories', 'allCategories'));
+        return view('admin.banners.edit', compact('banner', 'n1Categories', 'allCategories'));
     }
 
     /**
@@ -101,6 +103,8 @@ class BannerController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'category_id' => 'nullable|exists:categories,id',
+            'category_id_n1' => 'nullable|exists:categories,id',
+            'category_id_n2' => 'nullable|exists:categories,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'landing_page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'promo_discount' => 'nullable|string|max:20',
