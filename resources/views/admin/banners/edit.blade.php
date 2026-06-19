@@ -131,7 +131,7 @@
                             </div>
                             <div>
                                 <label for="category_id_n2" class="form-label">Catégorie Niveau 2</label>
-                                <select name="category_id_n2" id="category_id_n2" class="form-select @error('category_id_n2') is-invalid @enderror">
+                                <select name="category_id_n2" id="category_id_n2" class="form-select @error('category_id_n2') is-invalid @enderror" onchange="filterN3Categories()">
                                     <option value="">-- Sélectionner N2 --</option>
                                     @foreach($allCategories->where('parent_id', old('category_id_n1', $banner->category_id_n1)) as $cat2)
                                         <option value="{{ $cat2->id }}" {{ old('category_id_n2', $banner->category_id_n2) == $cat2->id ? 'selected' : '' }}>{{ $cat2->nom }}</option>
@@ -142,9 +142,9 @@
                             <div>
                                 <label for="category_id" class="form-label">Catégorie cible (N3)</label>
                                 <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
-                                    <option value="">-- Toutes les catégories --</option>
-                                    @foreach($allCategories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category_id', $banner->category_id) == $category->id ? 'selected' : '' }}>{{ $category->chemin ?? $category->nom }}</option>
+                                    <option value="">-- Sélectionner N3 --</option>
+                                    @foreach($allCategories->where('parent_id', old('category_id_n2', $banner->category_id_n2)) as $cat3)
+                                        <option value="{{ $cat3->id }}" {{ old('category_id', $banner->category_id) == $cat3->id ? 'selected' : '' }}>{{ $cat3->nom }}</option>
                                     @endforeach
                                 </select>
                                 @error('category_id') <p style="color: #c40000; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
@@ -285,8 +285,10 @@ const allCategories = @json($allCategories);
 function filterN2Categories() {
     const n1Id = document.getElementById('category_id_n1').value;
     const n2Select = document.getElementById('category_id_n2');
+    const n3Select = document.getElementById('category_id');
     
     n2Select.innerHTML = '<option value="">-- Sélectionner N2 --</option>';
+    n3Select.innerHTML = '<option value="">-- Sélectionner N3 --</option>';
     
     if (n1Id) {
         const filtered = allCategories.filter(c => c.parent_id == n1Id);
@@ -295,6 +297,23 @@ function filterN2Categories() {
             opt.value = c.id;
             opt.textContent = c.nom;
             n2Select.appendChild(opt);
+        });
+    }
+}
+
+function filterN3Categories() {
+    const n2Id = document.getElementById('category_id_n2').value;
+    const n3Select = document.getElementById('category_id');
+    
+    n3Select.innerHTML = '<option value="">-- Sélectionner N3 --</option>';
+    
+    if (n2Id) {
+        const filtered = allCategories.filter(c => c.parent_id == n2Id);
+        filtered.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = c.nom;
+            n3Select.appendChild(opt);
         });
     }
 }
