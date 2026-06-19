@@ -243,55 +243,55 @@
                 }
                 .tx-list {
                     background: #fff;
-                    border: 1px solid #e5e7eb;
-                    border-radius: 20px;
+                    border: 1px solid #f0f0f0;
+                    border-radius: 12px;
                     overflow: hidden;
                 }
                 .tx-item {
                     display: grid;
                     grid-template-columns: auto 1fr auto;
                     align-items: center;
-                    padding: 1.25rem 2rem;
-                    border-bottom: 1px solid #f3f4f6;
+                    padding: 0.9rem 1.5rem;
+                    border-bottom: 1px solid #f8f8f8;
                     transition: background 0.2s;
-                    gap: 1.5rem;
+                    gap: 1.2rem;
                 }
-                .tx-item:hover { background: #fafafa; }
+                .tx-item:hover { background: #fcfcfc; }
                 .tx-item:last-child { border-bottom: none; }
                 
                 .tx-icon {
-                    width: 48px;
-                    height: 48px;
-                    border-radius: 12px;
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 1.2rem;
+                    font-size: 0.9rem;
                 }
-                .tx-icon.in { background: #ecfdf5; color: #10b981; }
-                .tx-icon.out { background: #fef2f2; color: #ef4444; }
+                .tx-icon.in { background: #f0fdf4; color: #16a34a; }
+                .tx-icon.out { background: #fef2f2; color: #dc2626; }
 
                 .tx-info {
                     display: flex;
                     flex-direction: column;
                 }
                 .tx-desc {
-                    font-size: 0.95rem;
-                    font-weight: 700;
-                    color: #111827;
-                    margin-bottom: 2px;
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    color: #1f2937;
+                    margin-bottom: 1px;
                 }
                 .tx-date {
-                    font-size: 0.8rem;
-                    color: #6b7280;
+                    font-size: 0.75rem;
+                    color: #9ca3af;
                 }
                 .tx-amount {
-                    font-size: 1.1rem;
-                    font-weight: 800;
+                    font-size: 0.95rem;
+                    font-weight: 700;
                     text-align: right;
                 }
-                .tx-amount.plus { color: #10b981; }
-                .tx-amount.minus { color: #ef4444; }
+                .tx-amount.plus { color: #059669; }
+                .tx-amount.minus { color: #111827; }
 
                 @media (max-width: 991px) {
                     .packs-grid { grid-template-columns: repeat(2, 1fr); }
