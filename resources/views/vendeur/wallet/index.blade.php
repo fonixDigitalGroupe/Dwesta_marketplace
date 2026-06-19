@@ -426,6 +426,36 @@
         gap: 7px;
     }
     .btn-w-outline:hover { background: #f9fafb; }
+    .btn-w-red {
+        background: #fff5f5;
+        color: #dc2626;
+        border: 1.5px solid #fca5a5;
+        border-radius: 8px;
+        padding: 0.65rem 1.35rem;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.18s, border-color 0.18s;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+    .btn-w-red:hover { background: #fee2e2; border-color: #f87171; }
+    .btn-w-purple {
+        background: #f5f3ff;
+        color: #7c3aed;
+        border: 1.5px solid #c4b5fd;
+        border-radius: 8px;
+        padding: 0.65rem 1.35rem;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.18s, border-color 0.18s;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+    .btn-w-purple:hover { background: #ede9fe; border-color: #a78bfa; }
 
     /* ── Section card ── */
     .w-card {
@@ -797,11 +827,11 @@
             <button class="btn-w-primary" onclick="document.getElementById('withdraw-section').scrollIntoView({behavior:'smooth'})">
                 <i class="fas fa-paper-plane"></i> Effectuer un retrait
             </button>
-            <button class="btn-w-outline" onclick="window.print()">
-                <i class="fas fa-file-pdf" style="color: #ef4444;"></i> Relevé PDF
+            <button class="btn-w-red" onclick="window.print()">
+                <i class="fas fa-file-pdf"></i> Relevé PDF
             </button>
-            <button class="btn-w-outline" onclick="document.getElementById('tx-section').scrollIntoView({behavior:'smooth'})">
-                <i class="fas fa-list-ul" style="color: #6b7280;"></i> Voir l'historique
+            <button class="btn-w-purple" onclick="document.getElementById('tx-section').scrollIntoView({behavior:'smooth'})">
+                <i class="fas fa-list-ul"></i> Voir l'historique
             </button>
         </div>
 
