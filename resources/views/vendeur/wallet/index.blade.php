@@ -292,43 +292,91 @@
         opacity: 0.9;
     }
 
-    /* ── Below-card stats strip ── */
+    /* ══ Premium Stats Cards ══ */
     .card-stats-strip {
-        display: flex;
-        gap: 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.85rem;
         margin-bottom: 1.75rem;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        overflow: hidden;
-        background: #fff;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
     .cstat {
-        flex: 1;
-        padding: 0.9rem 1rem;
-        text-align: center;
-        border-right: 1px solid #f3f4f6;
-    }
-    .cstat:last-child { border-right: none; }
-    .cstat-label {
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: #9ca3af;
-        font-weight: 600;
-        margin-bottom: 4px;
+        background: #fff;
+        border: 1px solid #e9ecef;
+        border-radius: 14px;
+        padding: 1.1rem 1.25rem 1rem;
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 4px;
+        gap: 1rem;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.18s, border-color 0.18s;
+    }
+    .cstat:hover { transform: translateY(-2px); border-color: #d0d9ea; }
+    /* Accent bar top */
+    .cstat::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        border-radius: 14px 14px 0 0;
+    }
+    .cstat.amber-stat::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+    .cstat.green-stat::before { background: linear-gradient(90deg, #10b981, #34d399); }
+    .cstat.blue-stat::before  { background: linear-gradient(90deg, #004aad, #3b82f6); }
+
+    .cstat-icon-wrap {
+        width: 44px; height: 44px;
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.05rem;
+        flex-shrink: 0;
+    }
+    .cstat.amber-stat .cstat-icon-wrap { background: #fef3c7; color: #d97706; }
+    .cstat.green-stat .cstat-icon-wrap { background: #dcfce7; color: #15803d; }
+    .cstat.blue-stat  .cstat-icon-wrap { background: #dbeafe; color: #004aad; }
+
+    .cstat-body { flex: 1; min-width: 0; }
+    .cstat-label {
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #9ca3af;
+        font-weight: 600;
+        margin-bottom: 3px;
     }
     .cstat-value {
-        font-size: 1.05rem;
-        font-weight: 700;
+        font-size: 1.15rem;
+        font-weight: 800;
         color: #111827;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .cstat-value .cstat-unit {
+        font-size: 0.68rem;
+        font-weight: 500;
+        color: #9ca3af;
+        margin-left: 3px;
     }
     .cstat-value.green { color: #15803d; }
     .cstat-value.amber { color: #d97706; }
+    .cstat-value.blue  { color: #004aad; }
+    .cstat-badge {
+        display: inline-flex; align-items: center; gap: 4px;
+        font-size: 0.62rem; font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 2px 8px;
+        border-radius: 20px;
+        margin-top: 4px;
+    }
+    .cstat-badge.amber { background: #fef3c7; color: #92400e; }
+    .cstat-badge.green { background: #dcfce7; color: #166534; }
+    .cstat-badge.blue  { background: #dbeafe; color: #1e40af; }
+    .cstat-badge.gray  { background: #f3f4f6; color: #6b7280; }
+    @media (max-width: 640px) {
+        .card-stats-strip { grid-template-columns: 1fr; }
+    }
 
     /* ── Action Buttons Row ── */
     .wallet-actions {
@@ -704,24 +752,50 @@
             </div>
         </div>
 
-        {{-- Stats strip below card --}}
+        {{-- ══ Stats Cards ══ --}}
         <div class="card-stats-strip">
-            <div class="cstat">
-                <div class="cstat-label"><i class="fas fa-hourglass-half"></i> En séquestre</div>
-                @if($pendingBalance > 0)
-                    <div class="cstat-value amber">{{ number_format($pendingBalance, 0, ',', ' ') }} <span style="font-size:0.72rem;font-weight:400;">FCFA</span></div>
-                @else
-                    <div class="cstat-value" style="color:#d1d5db;">— FCFA</div>
-                @endif
+
+            {{-- En séquestre --}}
+            <div class="cstat amber-stat">
+                <div class="cstat-icon-wrap">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div class="cstat-body">
+                    <div class="cstat-label">En séquestre</div>
+                    @if($pendingBalance > 0)
+                        <div class="cstat-value amber">{{ number_format($pendingBalance, 0, ',', ' ') }}<span class="cstat-unit">FCFA</span></div>
+                        <div class="cstat-badge amber"><i class="fas fa-circle" style="font-size:0.4rem;"></i> En attente</div>
+                    @else
+                        <div class="cstat-value" style="color:#d1d5db;">— <span class="cstat-unit">FCFA</span></div>
+                        <div class="cstat-badge gray">Aucun fond bloqué</div>
+                    @endif
+                </div>
             </div>
-            <div class="cstat">
-                <div class="cstat-label"><i class="fas fa-check-circle"></i> Disponible</div>
-                <div class="cstat-value green">{{ number_format($availableBalance, 0, ',', ' ') }} <span style="font-size:0.72rem;font-weight:400;">FCFA</span></div>
+
+            {{-- Disponible --}}
+            <div class="cstat green-stat">
+                <div class="cstat-icon-wrap">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="cstat-body">
+                    <div class="cstat-label">Solde disponible</div>
+                    <div class="cstat-value green">{{ number_format($availableBalance, 0, ',', ' ') }}<span class="cstat-unit">FCFA</span></div>
+                    <div class="cstat-badge green"><i class="fas fa-check" style="font-size:0.5rem;"></i> Retirable</div>
+                </div>
             </div>
-            <div class="cstat">
-                <div class="cstat-label"><i class="fas fa-exchange-alt"></i> Transactions</div>
-                <div class="cstat-value">{{ $recentTransactions->total() }}</div>
+
+            {{-- Transactions --}}
+            <div class="cstat blue-stat">
+                <div class="cstat-icon-wrap">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="cstat-body">
+                    <div class="cstat-label">Transactions</div>
+                    <div class="cstat-value blue">{{ $recentTransactions->total() }}</div>
+                    <div class="cstat-badge blue"><i class="fas fa-history" style="font-size:0.5rem;"></i> Historique complet</div>
+                </div>
             </div>
+
         </div>
 
         {{-- Action buttons --}}
