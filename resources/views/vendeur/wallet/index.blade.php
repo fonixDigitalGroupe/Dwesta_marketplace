@@ -396,66 +396,50 @@
         margin-bottom: 1.75rem;
         flex-wrap: wrap;
     }
-    .btn-w-primary {
-        background: #004aad;
-        color: #fff;
+    /* Shared button base */
+    .btn-action {
         border: none;
-        border-radius: 8px;
-        padding: 0.65rem 1.35rem;
-        font-size: 0.88rem;
-        font-weight: 600;
+        border-radius: 10px;
+        padding: 0.7rem 1.4rem;
+        font-size: 0.875rem;
+        font-weight: 700;
         cursor: pointer;
-        transition: background 0.2s, transform 0.1s;
         display: flex;
         align-items: center;
-        gap: 7px;
+        gap: 8px;
+        letter-spacing: 0.01em;
+        transition: opacity 0.18s, transform 0.15s;
+        color: #fff;
     }
-    .btn-w-primary:hover { background: #003a8c; transform: translateY(-1px); }
+    .btn-action:hover { opacity: 0.88; transform: translateY(-2px); }
+    .btn-action:active { transform: translateY(0); opacity: 1; }
+    /* Bleu Karnou — retrait */
+    .btn-w-primary {
+        background: linear-gradient(135deg, #004aad 0%, #0066ee 100%);
+    }
+    /* Rouge profond — PDF */
+    .btn-w-red {
+        background: linear-gradient(135deg, #be123c 0%, #e11d48 100%);
+    }
+    /* Indigo — historique */
+    .btn-w-purple {
+        background: linear-gradient(135deg, #312e81 0%, #4f46e5 100%);
+    }
     .btn-w-outline {
         background: #fff;
         color: #374151;
         border: 1px solid #d1d5db;
-        border-radius: 8px;
-        padding: 0.65rem 1.35rem;
-        font-size: 0.88rem;
-        font-weight: 500;
+        border-radius: 10px;
+        padding: 0.7rem 1.4rem;
+        font-size: 0.875rem;
+        font-weight: 600;
         cursor: pointer;
         transition: background 0.2s;
         display: flex;
         align-items: center;
-        gap: 7px;
+        gap: 8px;
     }
     .btn-w-outline:hover { background: #f9fafb; }
-    .btn-w-red {
-        background: #fff5f5;
-        color: #dc2626;
-        border: 1.5px solid #fca5a5;
-        border-radius: 8px;
-        padding: 0.65rem 1.35rem;
-        font-size: 0.88rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.18s, border-color 0.18s;
-        display: flex;
-        align-items: center;
-        gap: 7px;
-    }
-    .btn-w-red:hover { background: #fee2e2; border-color: #f87171; }
-    .btn-w-purple {
-        background: #f5f3ff;
-        color: #7c3aed;
-        border: 1.5px solid #c4b5fd;
-        border-radius: 8px;
-        padding: 0.65rem 1.35rem;
-        font-size: 0.88rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 0.18s, border-color 0.18s;
-        display: flex;
-        align-items: center;
-        gap: 7px;
-    }
-    .btn-w-purple:hover { background: #ede9fe; border-color: #a78bfa; }
 
     /* ── Section card ── */
     .w-card {
@@ -824,13 +808,13 @@
 
         {{-- Action buttons --}}
         <div class="wallet-actions">
-            <button class="btn-w-primary" onclick="document.getElementById('withdraw-section').scrollIntoView({behavior:'smooth'})">
+            <button class="btn-action btn-w-primary" onclick="document.getElementById('withdraw-section').scrollIntoView({behavior:'smooth'})">
                 <i class="fas fa-paper-plane"></i> Effectuer un retrait
             </button>
-            <button class="btn-w-red" onclick="window.print()">
+            <button class="btn-action btn-w-red" onclick="window.print()">
                 <i class="fas fa-file-pdf"></i> Relevé PDF
             </button>
-            <button class="btn-w-purple" onclick="document.getElementById('tx-section').scrollIntoView({behavior:'smooth'})">
+            <button class="btn-action btn-w-purple" onclick="document.getElementById('tx-section').scrollIntoView({behavior:'smooth'})">
                 <i class="fas fa-list-ul"></i> Voir l'historique
             </button>
         </div>
