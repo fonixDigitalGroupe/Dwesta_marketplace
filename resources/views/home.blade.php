@@ -172,7 +172,7 @@
                                 @php
                                     $bannerLink = $banner->link_url ?? '#';
                                     if ($banner->slug) {
-                                        $bannerLink = route('collections.show', $banner->slug);
+                                        $bannerLink = route('banner.landing', $banner->slug);
                                     }
                                 @endphp
                                 <a href="{{ $bannerLink }}" class="banner-bg-image" style="background-image: url('{{ $banner->image_url }}'); display: block;"></a>
