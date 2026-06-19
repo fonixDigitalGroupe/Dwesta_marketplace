@@ -180,13 +180,13 @@
                 </div>
                 <div class="ticker-track-wrapper">
                     <div class="ticker-track" id="tickerTrack">
-                        @foreach($tickerBanners as $tb)
+                        @foreach($tickerBanners->filter(fn($b) => !empty($b->slug)) as $tb)
                             <a href="{{ route('banner.landing', $tb->slug) }}" class="ticker-item">
                                 {{ $tb->title }}
                             </a>
                         @endforeach
                         {{-- Duplicate for seamless loop --}}
-                        @foreach($tickerBanners as $tb)
+                        @foreach($tickerBanners->filter(fn($b) => !empty($b->slug)) as $tb)
                             <a href="{{ route('banner.landing', $tb->slug) }}" class="ticker-item" aria-hidden="true">
                                 {{ $tb->title }}
                             </a>
