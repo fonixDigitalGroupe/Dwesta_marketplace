@@ -63,8 +63,8 @@
         position: relative;
         overflow: hidden;
         box-shadow:
-            0 25px 50px rgba(0, 74, 173, 0.35),
-            0 10px 20px rgba(0,0,0,0.2),
+            0 8px 20px rgba(0, 74, 173, 0.18),
+            0 3px 8px rgba(0,0,0,0.1),
             inset 0 1px 0 rgba(255,255,255,0.15);
         /* Standard card ratio 85.6mm × 53.98mm */
         aspect-ratio: 85.6 / 53.98;
@@ -78,8 +78,8 @@
     .finance-card:hover {
         transform: translateY(-4px) rotateX(2deg);
         box-shadow:
-            0 35px 60px rgba(0, 74, 173, 0.4),
-            0 15px 30px rgba(0,0,0,0.25),
+            0 14px 28px rgba(0, 74, 173, 0.22),
+            0 6px 12px rgba(0,0,0,0.12),
             inset 0 1px 0 rgba(255,255,255,0.2);
     }
     /* ── Shimmer overlay ── */
