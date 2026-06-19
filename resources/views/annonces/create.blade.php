@@ -1263,22 +1263,22 @@
                     </div>
 
 
-                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                        <div class="form-group" style="flex: 1;">
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 2rem;">
+                        <div class="form-group">
                             <label for="prix" class="form-label"
                                 style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Prix actuel</label>
                             <input type="number" id="prix" name="prix" class="form-input" placeholder="Ex: 5000" min="0"
                                 required style="border-radius: 8px; border: 1.5px solid #e0e0e0; padding: 0.6rem 1rem; width: 100%; height: 45px;">
                         </div>
 
-                        <div class="form-group" style="flex: 1;">
+                        <div class="form-group">
                             <label for="prix_original" class="form-label"
                                 style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Ancien prix (facultatif)</label>
                             <input type="number" id="prix_original" name="prix_original" class="form-input" placeholder="Ex: 7000" min="0"
                                 style="border-radius: 8px; border: 1.5px solid #e0e0e0; padding: 0.6rem 1rem; width: 100%; height: 45px;">
                         </div>
 
-                        <div id="quantity-container" class="form-group" style="flex: 1;">
+                        <div id="quantity-container" class="form-group">
                             <label for="quantite" class="form-label"
                                 style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Quantité</label>
                             <input type="number" id="quantite" name="quantite" class="form-input" placeholder="Ex: 1" min="1"
