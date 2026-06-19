@@ -1679,7 +1679,7 @@
                 if (uploadedImages.length > 8) { alert('Maximum 8 photos autorisées.'); return false; }
                 if (!price || price <= 0) { alert('Veuillez saisir un prix valide.'); return false; }
                 if (!qty || qty < 1) { alert('Veuillez saisir une quantité valide.'); return false; }
-
+            }
             return true;
         }
 
