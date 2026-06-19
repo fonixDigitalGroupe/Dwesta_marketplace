@@ -46,6 +46,47 @@ class AbonnementController extends Controller
     }
 
     /**
+     * Page "Mon abonnement" (tableau de bord abonnement du vendeur)
+     */
+    public function monAbonnement()
+    {
+        $user = Auth::user();
+
+        if (!$user->estVendeurVerifie()) {
+            return redirect()->route('vendeur.show')
+                ->with('error_banner', 'Votre compte doit être vérifié pour accéder à vos abonnements.');
+        }
+
+        $vendeur = $user->vendeur;
+        $abonnements = Abonnement::where('actif', true)->orderBy('ordre')->get();
+
+        $abonnementActif = VendeurAbonnement::where('vendeur_id', $vendeur->id)
+            ->where('actif', true)
+            ->with('abonnement')
+            ->latest()
+            ->first();
+
+        return view('abonnements.mon-abonnement', compact('abonnements', 'abonnementActif'));
+    }
+
+    /**
+     * Détail d'un forfait (page show)
+     */
+    public function show(Abonnement $abonnement)
+    {
+        $abonnementActuel = null;
+
+        if (Auth::check() && Auth::user()->estVendeur() && Auth::user()->vendeur) {
+            $abonnementActuel = VendeurAbonnement::where('vendeur_id', Auth::user()->vendeur->id)
+                ->where('actif', true)
+                ->where('date_fin', '>=', Carbon::today())
+                ->first();
+        }
+
+        return view('abonnements.show', compact('abonnement', 'abonnementActuel'));
+    }
+
+    /**
      * Afficher la page de confirmation (Checkout)
      */
     public function checkout(Request $request)
@@ -74,7 +115,7 @@ class AbonnementController extends Controller
     {
         $request->validate([
             'abonnement_id' => 'required|exists:abonnements,id',
-            'payment_method' => 'required|in:om,momo,cb'
+            'payment_method' => 'required|in:om,momo,cb,wave'
         ]);
 
         $user = Auth::user();
