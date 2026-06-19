@@ -273,12 +273,12 @@
     }
 
     .express-text span {
-        color: var(--jumia-orange);
+        color: #004aad;
     }
 
     .btn-order {
         width: 100%;
-        background: var(--jumia-orange);
+        background: #004aad;
         color: white;
         border: none;
         border-radius: 4px;
@@ -288,14 +288,14 @@
         cursor: pointer;
         text-transform: uppercase;
         margin-top: 12px;
-        box-shadow: 0 4px 8px rgba(246, 139, 30, 0.3);
+        box-shadow: 0 4px 8px rgba(0, 74, 173, 0.3);
         transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .btn-order:hover {
-        background: var(--jumia-orange-hover);
+        background: #003a8f;
         transform: translateY(-1px);
-        box-shadow: 0 6px 12px rgba(246, 139, 30, 0.4);
+        box-shadow: 0 6px 12px rgba(0, 74, 173, 0.4);
     }
 
     .empty-cart {
