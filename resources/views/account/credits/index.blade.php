@@ -150,7 +150,6 @@
                     display: flex;
                     flex-direction: column;
                     min-height: 180px;
-                    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
                     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
                     text-align: left;
                 }
@@ -169,10 +168,6 @@
                     width: 180px; height: 180px;
                     background: rgba(255,255,255,0.03);
                     border-radius: 50%;
-                }
-                .pack-card:hover {
-                    transform: translateY(-8px) scale(1.02);
-                    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
                 }
                 .pack-brand {
                     position: absolute;
