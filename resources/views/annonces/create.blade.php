@@ -1116,7 +1116,8 @@
                     </div>
                     <div class="form-group"><label for="product_name" class="form-label">Nom du produit</label>
                         <div class="form-input-wrapper"><input type="text" id="product_name" name="titre" class="form-input"
-                                placeholder="Nom ou code barre du produit" maxlength="200" required>
+                                placeholder="Nom ou code barre du produit" maxlength="200" required
+                                oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
                         </div>
                     </div>
                     <div class="form-actions"><button type="button" class="btn btn-primary" onclick="nextStep()">Continuer
