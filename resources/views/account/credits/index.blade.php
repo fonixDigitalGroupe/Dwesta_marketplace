@@ -40,11 +40,10 @@
                     margin-bottom: 2rem;
                 }
                 .page-title {
-                    font-size: 1.5rem;
-                    font-weight: 800;
-                    color: #111827;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: #333;
                     margin: 0;
-                    letter-spacing: -0.02em;
                 }
 
                 /* 💳 Balance Card - Premium Dark Glossy */
@@ -236,10 +235,12 @@
 
                 /* 📝 Transactions List */
                 .section-title {
-                    font-size: 1.25rem;
-                    font-weight: 800;
-                    color: #111827;
-                    margin-bottom: 1.5rem;
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                    color: #333;
+                    text-transform: uppercase;
+                    letter-spacing: 0.05em;
+                    margin-bottom: 1.25rem;
                 }
                 .tx-list {
                     background: #fff;
