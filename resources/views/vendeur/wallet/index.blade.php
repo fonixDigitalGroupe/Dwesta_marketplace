@@ -312,12 +312,8 @@
         flex-direction: column;
         gap: 0.5rem;
         transition: background 0.18s;
-        border-top: 3px solid transparent;
     }
     .fin-stat:hover { background: #fafbff; }
-    .fin-stat.amber-stat { border-top-color: #f59e0b; }
-    .fin-stat.green-stat { border-top-color: #10b981; }
-    .fin-stat.blue-stat  { border-top-color: #004aad; }
     /* Dividers */
     .fin-stat + .fin-stat {
         border-left: 1px solid #f0f2f5;
@@ -772,7 +768,7 @@
             <div class="fin-summary-inner">
 
                 {{-- En séquestre --}}
-                <div class="fin-stat amber-stat">
+                <div class="fin-stat">
                     <div class="fin-stat-icon amber"><i class="fas fa-shield-alt"></i></div>
                     <div class="fin-stat-label">En séquestre</div>
                     @if($pendingBalance > 0)
@@ -785,7 +781,7 @@
                 </div>
 
                 {{-- Solde disponible --}}
-                <div class="fin-stat green-stat">
+                <div class="fin-stat">
                     <div class="fin-stat-icon green"><i class="fas fa-wallet"></i></div>
                     <div class="fin-stat-label">Solde disponible</div>
                     <div class="fin-stat-value green" data-count="{{ $availableBalance }}">{{ number_format($availableBalance, 0, ',', ' ') }}<span class="fin-unit">FCFA</span></div>
@@ -793,7 +789,7 @@
                 </div>
 
                 {{-- Transactions --}}
-                <div class="fin-stat blue-stat">
+                <div class="fin-stat">
                     <div class="fin-stat-icon blue"><i class="fas fa-layer-group"></i></div>
                     <div class="fin-stat-label">Transactions</div>
                     <div class="fin-stat-value blue" data-count="{{ $recentTransactions->total() }}">{{ $recentTransactions->total() }}</div>
