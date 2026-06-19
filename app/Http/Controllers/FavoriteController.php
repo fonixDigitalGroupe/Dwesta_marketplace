@@ -20,11 +20,11 @@ class FavoriteController extends Controller
         if ($isFavorite) {
             $user->favorites()->detach($annonce->id);
             $status = 'removed';
-            $message = 'Retiré des favoris';
+            $message = 'Produit retiré de votre liste d\'envies';
         } else {
             $user->favorites()->attach($annonce->id);
             $status = 'added';
-            $message = 'Ajouté aux favoris';
+            $message = 'Ce produit a été ajouté a votre liste d\'envies';
         }
 
         return response()->json([

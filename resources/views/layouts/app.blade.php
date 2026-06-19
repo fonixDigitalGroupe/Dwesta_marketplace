@@ -73,6 +73,35 @@
 @endphp
 
 <body x-data="{ mobileMenuOpen: false }">
+    <!-- Top Notification Bar (for Wishlist etc) -->
+    <div x-data="{ 
+        showBar: false, 
+        message: '', 
+        type: 'success' 
+    }"
+    @notify.window="
+        if($event.detail.type === 'success' || !$event.detail.type) {
+            message = $event.detail.message;
+            showBar = true;
+            setTimeout(() => showBar = false, 5000);
+        }
+    "
+    x-show="showBar"
+    x-cloak
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 transform -translate-y-full"
+    x-transition:enter-end="opacity-100 transform translate-y-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 transform translate-y-0"
+    x-transition:leave-end="opacity-0 transform -translate-y-full"
+    style="background: #108a43; color: white; padding: 12px 1rem; position: fixed; top: 0; left: 0; right: 0; z-index: 99999; display: flex; align-items: center; justify-content: center; gap: 15px; font-weight: 500; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <i class="fas fa-check"></i>
+        <span x-text="message" style="font-size: 0.95rem;"></span>
+        <button @click="showBar = false" style="background: rgba(255,255,255,0.2); border: none; color: white; cursor: pointer; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: 20px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+            <i class="fas fa-times" style="font-size: 0.7rem;"></i>
+        </button>
+    </div>
+
     @if(!$isCorporatePage)
         <div class="top-banner"></div>
     @endif
