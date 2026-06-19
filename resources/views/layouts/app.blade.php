@@ -49,67 +49,43 @@
             width: 100%;
             display: flex;
             align-items: center;
-            overflow: hidden;
-        }
-
-        /* ---- Ticker / défilant vertical ---- */
-        .ticker-wrapper {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            gap: 0;
-        }
-        .ticker-label {
-            flex-shrink: 0;
-            background: #f68b1e;
-            color: #fff;
-            font-size: 0.7rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 0 14px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-        }
-        .ticker-track-wrapper {
-            flex: 1;
-            height: 100%;
+            justify-content: center;
             overflow: hidden;
             position: relative;
         }
-        .ticker-track {
+
+        /* ---- Ticker crossfade ---- */
+        .banner-ticker-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
             display: flex;
-            flex-direction: column;
-            animation: tickerScroll 12s linear infinite;
+            align-items: center;
+            justify-content: center;
         }
         .ticker-item {
-            display: block;
-            height: 40px;
-            line-height: 40px;
-            font-size: 0.8rem;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            font-size: 0.85rem;
             font-weight: 500;
-            color: rgba(255,255,255,0.92);
+            color: rgba(255,255,255,0.98);
             text-decoration: none;
-            padding: 0 18px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            transition: color 0.2s;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            pointer-events: none;
+            padding: 0 20px;
+        }
+        .ticker-item.active {
+            opacity: 1;
+            pointer-events: auto;
         }
         .ticker-item:hover {
             color: #f68b1e;
-        }
-        @keyframes tickerScroll {
-            0%   { transform: translateY(0); }
-            100% { transform: translateY(-50%); }
-        }
-        /* Pause on hover */
-        .ticker-track-wrapper:hover .ticker-track {
-            animation-play-state: paused;
         }
 
         /* Global mobile rules for non-header elements */
@@ -173,26 +149,12 @@
         @endphp
         <div class="top-banner">
             @if($tickerBanners->count() > 0)
-            <div class="ticker-wrapper">
-                <div class="ticker-label">
-                    <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24" style="margin-right:5px;"><path d="M13 2.05V4.07C17.39 4.56 20.76 8.27 20.76 12.73C20.76 17.57 16.88 21.5 12 21.5C7.12 21.5 3.25 17.57 3.25 12.73C3.25 8.27 6.61 4.56 11 4.07V2.05C5.5 2.56 1.25 7.22 1.25 12.73C1.25 18.67 6.08 23.5 12 23.5C17.92 23.5 22.75 18.67 22.75 12.73C22.75 7.22 18.5 2.56 13 2.05M12 0L8 4H11V12H13V4H16L12 0Z"/></svg>
-                    Nos offres
-                </div>
-                <div class="ticker-track-wrapper">
-                    <div class="ticker-track" id="tickerTrack">
-                        @foreach($tickerBanners->filter(fn($b) => !empty($b->slug)) as $tb)
-                            <a href="{{ route('banner.landing', $tb->slug) }}" class="ticker-item">
-                                {{ $tb->title }}
-                            </a>
-                        @endforeach
-                        {{-- Duplicate for seamless loop --}}
-                        @foreach($tickerBanners->filter(fn($b) => !empty($b->slug)) as $tb)
-                            <a href="{{ route('banner.landing', $tb->slug) }}" class="ticker-item" aria-hidden="true">
-                                {{ $tb->title }}
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
+            <div class="banner-ticker-container">
+                @foreach($tickerBanners->filter(fn($b) => !empty($b->slug)) as $i => $tb)
+                    <a href="{{ route('banner.landing', $tb->slug) }}" class="ticker-item {{ $i === 0 ? 'active' : '' }}">
+                        {{ $tb->title }}
+                    </a>
+                @endforeach
             </div>
             @endif
         </div>
@@ -276,6 +238,17 @@
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Ticker rotation logic
+            const items = document.querySelectorAll('.ticker-item');
+            if (items.length > 1) {
+                let currentIndex = 0;
+                setInterval(() => {
+                    items[currentIndex].classList.remove('active');
+                    currentIndex = (currentIndex + 1) % items.length;
+                    items[currentIndex].classList.add('active');
+                }, 4000); // Switch every 4 seconds
+            }
+
             @if(session('error'))
                 if (!document.querySelector('.alert-error')) {
                     Swal.fire({
