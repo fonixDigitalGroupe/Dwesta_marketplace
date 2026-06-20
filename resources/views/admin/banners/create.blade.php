@@ -273,7 +273,7 @@
                         <div style="display: flex; flex-direction: column; gap: 15px;">
                             <div>
                                 <label for="order" class="field-label">Ordre d'affichage</label>
-                                <input type="number" name="order" id="order" value="{{ old('order', 0) }}" min="0" required>
+                                <input type="number" name="order" id="order" value="{{ old('order', $nextOrder) }}" min="0" required>
                                 <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px;">Plus bas = premier.</p>
                             </div>
 

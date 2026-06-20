@@ -37,7 +37,8 @@ class BannerController extends Controller
     {
         $n1Categories = \App\Models\Category::whereNull('parent_id')->get();
         $allCategories = \App\Models\Category::orderBy('nom')->get(); // This will include N2 and N3
-        return view('admin.banners.create', compact('n1Categories', 'allCategories'));
+        $nextOrder = Banner::max('order') + 1;
+        return view('admin.banners.create', compact('n1Categories', 'allCategories', 'nextOrder'));
     }
 
     /**
