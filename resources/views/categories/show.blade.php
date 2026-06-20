@@ -365,12 +365,10 @@
 
     @php
         $bgImage = 'https://images.unsplash.com/photo-1589923188900-85dae523342b?q=80&w=2070&auto=format&fit=crop';
-        if ($banner) {
-            $bgImage = $banner->image_url;
-        } elseif ($category->image) {
+        if ($category->image) {
             $bgImage = $category->image;
-        } elseif ($category->slug === 'e-commerce') {
-            $bgImage = 'https://images.samsung.com/is/image/samsung/assets/sn/home/2024/Galaxy_S24_Ultra_Main_KV_1440x640_pc.jpg';
+        } elseif ($banner) {
+            $bgImage = $banner->image_url;
         }
     @endphp
     <div class="n1-grand-banner" style="background-image: url('{{ $bgImage }}');">
