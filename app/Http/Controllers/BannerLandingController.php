@@ -72,11 +72,36 @@ class BannerLandingController extends Controller
                 ->get();
         }
 
+        // Sections par état (Rakuten Style)
+        $produitsNeufs = collect();
+        $produitsOccasion = collect();
+        if (!empty($categoryIds)) {
+            $produitsNeufs = Annonce::publiees()
+                ->whereIn('categorie_id', $categoryIds)
+                ->whereHas('produit', function($q) {
+                    $q->where('etat', 'Neuf');
+                })
+                ->latest()
+                ->limit(10)
+                ->get();
+
+            $produitsOccasion = Annonce::publiees()
+                ->whereIn('categorie_id', $categoryIds)
+                ->whereHas('produit', function($q) {
+                    $q->where('etat', 'Occasion');
+                })
+                ->latest()
+                ->limit(10)
+                ->get();
+        }
+
         return view('banners.landing', compact(
             'banner', 
             'category', 
             'annonces',
-            'topConsultes'
+            'topConsultes',
+            'produitsNeufs',
+            'produitsOccasion'
         ));
     }
 }
