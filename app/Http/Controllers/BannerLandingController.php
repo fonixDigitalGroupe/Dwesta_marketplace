@@ -87,6 +87,7 @@ class BannerLandingController extends Controller
                 ->whereHas('produit', function($q) {
                     $q->whereIn('etat', ['Neuf', 'neuf']);
                 })
+                ->with(['photos'])
                 ->latest()
                 ->limit(10)
                 ->get();
@@ -96,6 +97,7 @@ class BannerLandingController extends Controller
                 ->whereHas('produit', function($q) {
                     $q->whereIn('etat', ['Occasion', 'occasion']);
                 })
+                ->with(['photos'])
                 ->latest()
                 ->limit(10)
                 ->get();

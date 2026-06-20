@@ -545,6 +545,8 @@
                             <div class="rakuten-card-img">
                                 @if($p->photoPrincipale())
                                     <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
+                                @else
+                                    <i class="fas fa-image" style="font-size: 2.5rem; color: #eee;"></i>
                                 @endif
                             </div>
                             <div class="rakuten-card-title">{{ $p->titre }}</div>
@@ -563,6 +565,8 @@
                             <div class="rakuten-card-img">
                                 @if($p->photoPrincipale())
                                     <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
+                                @else
+                                    <i class="fas fa-image" style="font-size: 2.5rem; color: #eee;"></i>
                                 @endif
                             </div>
                             <div class="rakuten-card-title">{{ $p->titre }}</div>
