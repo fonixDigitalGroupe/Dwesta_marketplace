@@ -93,7 +93,7 @@
                             <div style="font-weight: 600; color: #111; font-size: 0.85rem;">{{ $banner->title }}</div>
                             @if($banner->link_url)
                                 <div style="font-size: 0.7rem; color: #0066c0; margin-top: 4px;">
-                                    {{ Str::limit($banner->link_url, 50) }}
+                                    {{ Str::limit(str_replace('/categories/e-commerce', '', $banner->link_url), 50) }}
                                 </div>
                             @endif
                         </td>
