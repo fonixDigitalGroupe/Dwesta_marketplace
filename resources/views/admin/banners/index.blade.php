@@ -81,7 +81,7 @@
                         onmouseout="this.style.background='transparent'">
 
                         <td style="padding: 12px 15px; text-align: center; font-size: 0.85rem; font-weight: 700; color: #555; border-right: 1px solid #e7e7e7;">
-                            #{{ $banner->order }}
+                            {{ $banner->order }}
                         </td>
 
                         <td style="padding: 8px; text-align: center; border-right: 1px solid #e7e7e7;">
