@@ -945,13 +945,10 @@
         position: relative;
     }
     .n1-selection-container {
-        max-width: 1250px;
+        max-width: 1300px;
         margin: 0 auto;
-        padding: 3rem 2rem;
-        background: #fff;
-        border-radius: 16px;
-        box-shadow: none;
-        border: 1px solid #f0f0f0;
+        padding: 1rem 1rem;
+        background: transparent;
     }
     .n1-filter-bar {
         display: flex;
