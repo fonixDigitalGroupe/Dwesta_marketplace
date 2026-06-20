@@ -292,6 +292,115 @@
     @media (max-width: 480px) {
         .landing-products-grid { grid-template-columns: 1fr; }
     }
+
+    /* ===== RAKUTEN STYLE TABS ===== */
+    .rakuten-tabs-section {
+        margin-top: 4rem;
+        padding: 3rem 0;
+        background: #fdf6ec; /* Very light warm peach background like Rakuten */
+        border-radius: 20px;
+    }
+    .rakuten-tabs-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+    .rakuten-tabs-nav {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 2rem;
+        justify-content: center;
+    }
+    .rakuten-tab-btn {
+        background: #fff;
+        border: 2px solid #fff;
+        padding: 12px 30px;
+        border-radius: 12px;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #333;
+        transition: all 0.2s;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .rakuten-tab-btn i { font-size: 1.1rem; color: #f68b1e; }
+    .rakuten-tab-btn.active {
+        background: #f68b1e;
+        border-color: #f68b1e;
+        color: #fff;
+        box-shadow: 0 6px 15px rgba(246, 139, 30, 0.3);
+    }
+    .rakuten-tab-btn.active i { color: #fff; }
+
+    .rakuten-tab-content {
+        display: none;
+    }
+    .rakuten-tab-content.active {
+        display: block;
+        animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .rakuten-grid {
+        display: flex;
+        gap: 15px;
+        overflow-x: auto;
+        padding: 10px 5px 20px;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+    }
+    .rakuten-grid::-webkit-scrollbar { display: none; }
+
+    .rakuten-card {
+        flex: 0 0 200px;
+        background: #fff;
+        border-radius: 14px;
+        padding: 12px;
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid #fff;
+        transition: all 0.2s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .rakuten-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        border-color: #f68b1e;
+    }
+    .rakuten-card-img {
+        height: 160px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .rakuten-card-img img {
+        max-width: 100%; max-height: 100%;
+        object-fit: contain;
+    }
+    .rakuten-card-title {
+        font-size: 0.85rem;
+        font-weight: 500;
+        line-height: 1.4;
+        height: 2.4rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        margin-bottom: 8px;
+    }
+    .rakuten-card-price {
+        color: #f68b1e;
+        font-weight: 800;
+        font-size: 1.1rem;
+    }
 </style>
 @endpush
 
@@ -409,6 +518,64 @@
 
 </div>
 
+{{-- RAKUTEN STYLE TABS SECTION --}}
+@if($produitsNeufs->count() > 0 || $produitsOccasion->count() > 0)
+<div class="rakuten-tabs-section">
+    <div class="rakuten-tabs-container">
+        <div class="rakuten-tabs-nav">
+            @if($produitsNeufs->count() > 0)
+                <button class="rakuten-tab-btn active" onclick="switchRakutenTab('tab-neuf', this)">
+                    <i class="fas fa-box"></i>
+                    Tous nos produits Neufs
+                </button>
+            @endif
+            @if($produitsOccasion->count() > 0)
+                <button class="rakuten-tab-btn {{ $produitsNeufs->count() === 0 ? 'active' : '' }}" onclick="switchRakutenTab('tab-occasion', this)">
+                    <i class="fas fa-recycle"></i>
+                    Nos bonnes occasions
+                </button>
+            @endif
+        </div>
+
+        @if($produitsNeufs->count() > 0)
+            <div id="tab-neuf" class="rakuten-tab-content active">
+                <div class="rakuten-grid">
+                    @foreach($produitsNeufs as $p)
+                        <a href="{{ route('annonces.show', $p->slug) }}" class="rakuten-card">
+                            <div class="rakuten-card-img">
+                                @if($p->photoPrincipale())
+                                    <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
+                                @endif
+                            </div>
+                            <div class="rakuten-card-title">{{ $p->titre }}</div>
+                            <div class="rakuten-card-price">{{ number_format($p->prix, 0, ',', ' ') }} FCFA</div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        @if($produitsOccasion->count() > 0)
+            <div id="tab-occasion" class="rakuten-tab-content {{ $produitsNeufs->count() === 0 ? 'active' : '' }}">
+                <div class="rakuten-grid">
+                    @foreach($produitsOccasion as $p)
+                        <a href="{{ route('annonces.show', $p->slug) }}" class="rakuten-card">
+                            <div class="rakuten-card-img">
+                                @if($p->photoPrincipale())
+                                    <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
+                                @endif
+                            </div>
+                            <div class="rakuten-card-title">{{ $p->titre }}</div>
+                            <div class="rakuten-card-price">{{ number_format($p->prix, 0, ',', ' ') }} FCFA</div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+    </div>
+</div>
+@endif
+
 @endsection
 
 @push('scripts')
@@ -419,6 +586,17 @@ function landingCarouselScroll(id, direction) {
     const card = track.querySelector('.landing-product-card');
     const width = card ? card.offsetWidth + 14 : 204;
     track.scrollBy({ left: direction * width * 3, behavior: 'smooth' });
+}
+
+function switchRakutenTab(tabId, btn) {
+    // Hide all contents
+    document.querySelectorAll('.rakuten-tab-content').forEach(c => c.classList.remove('active'));
+    // Remove active from all buttons
+    document.querySelectorAll('.rakuten-tab-btn').forEach(b => b.classList.remove('active'));
+    
+    // Show selected
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
 }
 </script>
 @endpush
