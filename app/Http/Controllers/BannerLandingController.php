@@ -19,12 +19,13 @@ class BannerLandingController extends Controller
             ->firstOrFail();
 
         $categoryIds = collect();
+        $category = null;
         
         // 1. Catégorie principale directe
         if ($banner->category_id) {
-            $cat = Category::find($banner->category_id);
-            if ($cat) {
-                $categoryIds = $categoryIds->merge($cat->getAllDescendantIds());
+            $category = Category::find($banner->category_id);
+            if ($category) {
+                $categoryIds = $categoryIds->merge($category->getAllDescendantIds());
             }
         }
 
@@ -32,6 +33,8 @@ class BannerLandingController extends Controller
         $pivotCategories = $banner->categories;
         foreach ($pivotCategories as $pivotCat) {
             $categoryIds = $categoryIds->merge($pivotCat->getAllDescendantIds());
+            // Si pas de catégorie principale, on prend la première du pivot pour le fil d'ariane
+            if (!$category) $category = $pivotCat;
         }
 
         $categoryIds = $categoryIds->unique()->toArray();
