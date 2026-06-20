@@ -81,7 +81,20 @@ class BannerLandingController extends Controller
         // Sections par état (Rakuten Style)
         $produitsNeufs = collect();
         $produitsOccasion = collect();
+        $prefCategories = collect();
+
         if (!empty($categoryIds)) {
+            // On récupère les catégories enfants directes pour les sous-onglets "Vos catégories préférées"
+            $allBannerCatIds = collect([$banner->category_id])->merge($banner->categories->pluck('id'))->unique()->filter();
+            $prefCategories = Category::whereIn('parent_id', $allBannerCatIds)
+                ->where('actif', true)
+                ->get();
+
+            // Si pas d'enfants, on prend les catégories elles-mêmes
+            if ($prefCategories->isEmpty()) {
+                $prefCategories = Category::whereIn('id', $allBannerCatIds)->get();
+            }
+
             // Requête pour les NEUFS
             $produitsNeufs = Annonce::publiees()
                 ->whereIn('categorie_id', $categoryIds)
@@ -94,10 +107,10 @@ class BannerLandingController extends Controller
                 })
                 ->with(['photos', 'produit', 'vehicule'])
                 ->latest()
-                ->limit(10)
+                ->limit(20) // Plus de produits pour filtrer par catégorie en JS ou PHP
                 ->get();
 
-            // Requête pour les OCCASIONS (y compris état null car valeur par défaut dans le modèle)
+            // Requête pour les OCCASIONS
             $produitsOccasion = Annonce::publiees()
                 ->whereIn('categorie_id', $categoryIds)
                 ->where(function($query) {
@@ -109,7 +122,7 @@ class BannerLandingController extends Controller
                 })
                 ->with(['photos', 'produit', 'vehicule'])
                 ->latest()
-                ->limit(10)
+                ->limit(20)
                 ->get();
         }
 
@@ -119,7 +132,8 @@ class BannerLandingController extends Controller
             'annonces',
             'topConsultes',
             'produitsNeufs',
-            'produitsOccasion'
+            'produitsOccasion',
+            'prefCategories'
         ));
     }
 }
