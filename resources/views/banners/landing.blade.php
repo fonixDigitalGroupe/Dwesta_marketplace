@@ -4,13 +4,13 @@
 
 @push('styles')
 <style>
-    body { overflow-x: hidden; }
+    body { overflow-x: hidden; background-color: #fff !important; }
 
     /* ===== HERO BANNER ===== */
     .landing-hero {
         width: 100%;
         position: relative;
-        background: #f8f8f8;
+        background: #fff;
         overflow: hidden;
         display: flex;
         align-items: center;
@@ -51,7 +51,7 @@
 
     /* ===== BREADCRUMB ===== */
     .landing-breadcrumb {
-        background: #f9f9f9;
+        background: #fff;
         border-bottom: 1px solid #eee;
         padding: 0.6rem 0;
         font-size: 0.8rem;
@@ -117,7 +117,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f9f9f9;
+        background: #fff;
         padding: 10px;
     }
     .landing-card-img img {
@@ -214,7 +214,7 @@
     }
     .landing-grid-card-img {
         height: 200px;
-        background: #f9f9f9;
+        background: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
