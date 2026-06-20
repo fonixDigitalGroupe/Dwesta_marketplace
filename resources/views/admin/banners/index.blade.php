@@ -70,7 +70,7 @@
 @endpush
 
 @section('content')
-    <div style="max-width: 1600px; margin: -15px auto 0; width: 100%; padding-top: 0;">
+    <div style="max-width: 1600px; margin: -30px auto 0; width: 100%; padding-top: 0;">
         <!-- Main Card -->
         <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
             

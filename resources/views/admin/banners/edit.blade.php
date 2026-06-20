@@ -174,7 +174,7 @@
 
 
 @section('content')
-<div style="max-width: 1200px; margin: -15px auto 0;">
+<div style="max-width: 1200px; margin: -30px auto 0;">
     <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
         
         {{-- Card Header --}}
