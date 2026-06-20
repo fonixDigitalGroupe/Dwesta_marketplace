@@ -188,11 +188,12 @@
     }
     .sections-global-title {
         font-family: 'Outfit', sans-serif;
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: #1a1a1a;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #334155;
         text-align: center;
         margin-bottom: 2rem;
+        letter-spacing: -0.01em;
     }
     .n1-top-consulted-carousel {
         max-width: 1400px;
@@ -522,7 +523,7 @@
 
             @if($dealsMarchands->count() > 0)
                 <div class="n1-offers-section" style="margin-top: 2rem; background: #fff; padding: 2rem 0; border-radius: 8px;">
-                    <h2 class="n1-offers-title" style="color: #333;">Nos deals marchands du moment</h2>
+                    <h2 class="n1-offers-title">Nos deals marchands du moment</h2>
                     <div class="n1-carousel-wrapper">
                         <button class="n1-carousel-arrow n1-arrow-left" onclick="n1CarouselScroll('n1-carousel-deals', -1)" aria-label="Précédent" style="background: rgba(255,255,255,0.9); color: #333; border: 1px solid #ddd;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
@@ -734,10 +735,11 @@
     }
     .n1-offers-title {
         text-align: center;
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: #000;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #334155;
         margin-bottom: 1.5rem;
+        letter-spacing: -0.01em;
     }
     .n1-carousel-wrapper {
         position: relative;
