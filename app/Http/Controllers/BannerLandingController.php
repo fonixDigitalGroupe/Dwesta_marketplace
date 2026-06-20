@@ -82,22 +82,32 @@ class BannerLandingController extends Controller
         $produitsNeufs = collect();
         $produitsOccasion = collect();
         if (!empty($categoryIds)) {
+            // Requête pour les NEUFS
             $produitsNeufs = Annonce::publiees()
                 ->whereIn('categorie_id', $categoryIds)
-                ->whereHas('produit', function($q) {
-                    $q->whereIn('etat', ['Neuf', 'neuf']);
+                ->where(function($query) {
+                    $query->whereHas('produit', function($q) {
+                        $q->whereIn('etat', ['Neuf', 'neuf']);
+                    })->orWhereHas('vehicule', function($q) {
+                        $q->whereIn('etat', ['Neuf', 'neuf']);
+                    });
                 })
-                ->with(['photos'])
+                ->with(['photos', 'produit', 'vehicule'])
                 ->latest()
                 ->limit(10)
                 ->get();
 
+            // Requête pour les OCCASIONS (y compris état null car valeur par défaut dans le modèle)
             $produitsOccasion = Annonce::publiees()
                 ->whereIn('categorie_id', $categoryIds)
-                ->whereHas('produit', function($q) {
-                    $q->whereIn('etat', ['Occasion', 'occasion']);
+                ->where(function($query) {
+                    $query->whereHas('produit', function($q) {
+                        $q->whereIn('etat', ['Occasion', 'occasion', 'Bon état', 'bon_etat'])->orWhereNull('etat');
+                    })->orWhereHas('vehicule', function($q) {
+                        $q->whereIn('etat', ['Occasion', 'occasion'])->orWhereNull('etat');
+                    });
                 })
-                ->with(['photos'])
+                ->with(['photos', 'produit', 'vehicule'])
                 ->latest()
                 ->limit(10)
                 ->get();
