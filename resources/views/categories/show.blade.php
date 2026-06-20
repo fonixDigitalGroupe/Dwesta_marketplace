@@ -347,8 +347,7 @@
     <div class="n1-promo-bar">
         <div class="n1-promo-content">
             <span class="n1-promo-badge">
-                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-top: -2px;"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
-                Durée limitée !
+                Profitez de cette offre pour vous faire plaisir à
             </span>
             <span class="n1-promo-text">
                 @if($banner->promo_discount)
