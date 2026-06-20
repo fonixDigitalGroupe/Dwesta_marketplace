@@ -73,9 +73,9 @@
             align-items: center;
             justify-content: center;
             height: 70px;
-            background: #ffffff;
-            /* Logo area stays bright */
-            border-bottom: 1px solid #e5e7eb;
+            background: var(--sidebar-bg);
+            /* Logo area follows sidebar style */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .sidebar-brand img {
