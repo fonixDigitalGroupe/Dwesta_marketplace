@@ -97,6 +97,7 @@
         padding: 0; 
         overflow-x: hidden; /* Global fix for the horizontal bar */
         width: 100%;
+        background-color: #fff !important;
     }
     .catalog-page-container {
         overflow-x: hidden;
