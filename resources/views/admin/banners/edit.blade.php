@@ -172,9 +172,6 @@
     </style>
 @endpush
 
-@section('sub_header')
-    @include('admin.partials.settings-tabs')
-@endsection
 
 @section('content')
 <div style="max-width: 1200px; margin: 0 auto;">
