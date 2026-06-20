@@ -18,20 +18,23 @@ class BannerLandingController extends Controller
             ->where('active', true)
             ->firstOrFail();
 
-        $categoryIds = [];
-        $category = null;
-
+        $categoryIds = collect();
+        
+        // 1. Catégorie principale directe
         if ($banner->category_id) {
-            $category = Category::where('id', $banner->category_id)
-                ->where('actif', true)
-                ->with(['parent', 'enfantsActifs.enfantsActifs'])
-                ->first();
-            
-            if ($category) {
-                // On récupère la catégorie cible et tous ses descendants
-                $categoryIds = $category->getAllDescendantIds()->toArray();
+            $cat = Category::find($banner->category_id);
+            if ($cat) {
+                $categoryIds = $categoryIds->merge($cat->getAllDescendantIds());
             }
         }
+
+        // 2. Catégories via la relation pivot
+        $pivotCategories = $banner->categories;
+        foreach ($pivotCategories as $pivotCat) {
+            $categoryIds = $categoryIds->merge($pivotCat->getAllDescendantIds());
+        }
+
+        $categoryIds = $categoryIds->unique()->toArray();
 
         $query = Annonce::publiees();
         
@@ -79,7 +82,7 @@ class BannerLandingController extends Controller
             $produitsNeufs = Annonce::publiees()
                 ->whereIn('categorie_id', $categoryIds)
                 ->whereHas('produit', function($q) {
-                    $q->where('etat', 'Neuf');
+                    $q->whereIn('etat', ['Neuf', 'neuf']);
                 })
                 ->latest()
                 ->limit(10)
@@ -88,7 +91,7 @@ class BannerLandingController extends Controller
             $produitsOccasion = Annonce::publiees()
                 ->whereIn('categorie_id', $categoryIds)
                 ->whereHas('produit', function($q) {
-                    $q->where('etat', 'Occasion');
+                    $q->whereIn('etat', ['Occasion', 'occasion']);
                 })
                 ->latest()
                 ->limit(10)
