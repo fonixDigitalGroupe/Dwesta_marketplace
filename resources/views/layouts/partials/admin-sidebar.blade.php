@@ -53,6 +53,7 @@
         <div class="sidebar-section">
             <ul class="sidebar-menu">
                 <li><a href="{{ route('admin.banners.index') }}" class="{{ request()->routeIs('admin.banners.*') ? 'active' : '' }}"><i class="fas fa-images"></i> <span>Bannières</span></a></li>
+                <li><a href="{{ route('admin.promotions.index') }}" class="{{ request()->routeIs('admin.promotions.*') ? 'active' : '' }}"><i class="fas fa-tags"></i> <span>Promotions</span></a></li>
                 <li><a href="{{ route('admin.highlights.index') }}" class="{{ request()->routeIs('admin.highlights.*') ? 'active' : '' }}"><i class="fas fa-bullhorn"></i> <span>Actualités</span></a></li>
             </ul>
         </div>
