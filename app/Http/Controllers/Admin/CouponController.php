@@ -33,10 +33,22 @@ class CouponController extends Controller
             'usage_limit' => 'nullable|integer|min:1',
             'is_active' => 'boolean',
             'category_id' => 'nullable|exists:categories,id',
+            'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $validated['code'] = strtoupper(trim($validated['code']));
         $validated['is_active'] = $request->has('is_active');
+
+        if ($request->hasFile('banner_image')) {
+            $path = $request->file('banner_image')->store('coupons', 'public');
+            $validated['banner_image'] = $path;
+        }
+
+        if ($request->hasFile('page_image')) {
+            $path = $request->file('page_image')->store('coupons', 'public');
+            $validated['page_image'] = $path;
+        }
 
         Coupon::create($validated);
 
@@ -60,10 +72,28 @@ class CouponController extends Controller
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'usage_limit' => 'nullable|integer|min:1',
             'category_id' => 'nullable|exists:categories,id',
+            'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $validated['code'] = strtoupper(trim($validated['code']));
         $validated['is_active'] = $request->has('is_active');
+
+        if ($request->hasFile('banner_image')) {
+            if ($coupon->banner_image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($coupon->banner_image);
+            }
+            $path = $request->file('banner_image')->store('coupons', 'public');
+            $validated['banner_image'] = $path;
+        }
+
+        if ($request->hasFile('page_image')) {
+            if ($coupon->page_image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($coupon->page_image);
+            }
+            $path = $request->file('page_image')->store('coupons', 'public');
+            $validated['page_image'] = $path;
+        }
 
         $coupon->update($validated);
 
@@ -72,6 +102,12 @@ class CouponController extends Controller
 
     public function destroy(Coupon $coupon)
     {
+        if ($coupon->banner_image) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($coupon->banner_image);
+        }
+        if ($coupon->page_image) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($coupon->page_image);
+        }
         $coupon->delete();
         return redirect()->route('admin.coupons.index')->with('success', 'Code promotionnel supprimé.');
     }
