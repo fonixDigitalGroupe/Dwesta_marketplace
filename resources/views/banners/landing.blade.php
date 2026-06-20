@@ -307,33 +307,75 @@
     }
     .rakuten-tabs-nav {
         display: flex;
-        gap: 10px;
-        margin-bottom: 2rem;
+        gap: 15px;
+        margin-bottom: 2.5rem;
         justify-content: center;
     }
     .rakuten-tab-btn {
         background: #fff;
         border: 2px solid #fff;
-        padding: 12px 30px;
+        padding: 14px 40px;
         border-radius: 12px;
         font-family: 'Outfit', sans-serif;
         font-weight: 700;
         cursor: pointer;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         color: #333;
         transition: all 0.2s;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        font-size: 1rem;
     }
-    .rakuten-tab-btn i { font-size: 1.1rem; color: #f68b1e; }
+    .rakuten-tab-btn i { font-size: 1.2rem; color: #333; opacity: 0.7; }
     .rakuten-tab-btn.active {
-        background: #f68b1e;
+        background: #fff4e6;
         border-color: #f68b1e;
-        color: #fff;
-        box-shadow: 0 6px 15px rgba(246, 139, 30, 0.3);
+        color: #333;
+        box-shadow: 0 4px 12px rgba(246, 139, 30, 0.1);
     }
-    .rakuten-tab-btn.active i { color: #fff; }
+    .rakuten-tab-btn.active i { color: #f68b1e; opacity: 1; }
+
+    /* Secondary Category Tabs */
+    .rakuten-pref-headline {
+        text-align: center;
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin-bottom: 2rem;
+        color: #333;
+    }
+    .rakuten-sub-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 3rem;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        padding-bottom: 5px;
+    }
+    .rakuten-sub-tab-btn {
+        background: none;
+        border: none;
+        padding: 10px 0;
+        font-weight: 600;
+        color: #666;
+        cursor: pointer;
+        font-size: 1.05rem;
+        position: relative;
+        transition: all 0.3s;
+    }
+    .rakuten-sub-tab-btn.active {
+        color: #333;
+    }
+    .rakuten-sub-tab-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: #333;
+        border-radius: 10px;
+    }
 
     .rakuten-tab-content {
         display: none;
@@ -400,6 +442,13 @@
         color: #f68b1e;
         font-weight: 800;
         font-size: 1.1rem;
+    }
+    .rakuten-sub-content {
+        display: none;
+    }
+    .rakuten-sub-content.active {
+        display: block;
+        animation: fadeIn 0.4s ease;
     }
 </style>
 @endpush
@@ -523,59 +572,85 @@
 <div class="rakuten-tabs-section">
     <div class="rakuten-tabs-container">
         <div class="rakuten-tabs-nav">
-            @if($produitsNeufs->count() > 0)
-                <button class="rakuten-tab-btn active" onclick="switchRakutenTab('tab-neuf', this)">
-                    <i class="fas fa-box"></i>
-                    Tous nos produits Neufs
-                </button>
-            @endif
-            @if($produitsOccasion->count() > 0)
-                <button class="rakuten-tab-btn {{ $produitsNeufs->count() === 0 ? 'active' : '' }}" onclick="switchRakutenTab('tab-occasion', this)">
-                    <i class="fas fa-recycle"></i>
-                    Nos bonnes occasions
-                </button>
-            @endif
+            <button class="rakuten-tab-btn active" onclick="switchRakutenTab('tab-neuf', this)">
+                <i class="fas fa-home"></i>
+                Tous nos produits
+            </button>
+            <button class="rakuten-tab-btn" onclick="switchRakutenTab('tab-occasion', this)">
+                <i class="fas fa-tools"></i>
+                Reconditionné
+            </button>
         </div>
 
-        @if($produitsNeufs->count() > 0)
-            <div id="tab-neuf" class="rakuten-tab-content active">
-                <div class="rakuten-grid">
-                    @foreach($produitsNeufs as $p)
-                        <a href="{{ route('annonces.show', $p->slug) }}" class="rakuten-card">
-                            <div class="rakuten-card-img">
-                                @if($p->photoPrincipale())
-                                    <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
-                                @else
-                                    <i class="fas fa-image" style="font-size: 2.5rem; color: #eee;"></i>
-                                @endif
-                            </div>
-                            <div class="rakuten-card-title">{{ $p->titre }}</div>
-                            <div class="rakuten-card-price">{{ number_format($p->prix, 0, ',', ' ') }} FCFA</div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-        @endif
+        <h2 class="rakuten-pref-headline">Vos catégories préférées</h2>
 
-        @if($produitsOccasion->count() > 0)
-            <div id="tab-occasion" class="rakuten-tab-content {{ $produitsNeufs->count() === 0 ? 'active' : '' }}">
-                <div class="rakuten-grid">
-                    @foreach($produitsOccasion as $p)
-                        <a href="{{ route('annonces.show', $p->slug) }}" class="rakuten-card">
-                            <div class="rakuten-card-img">
-                                @if($p->photoPrincipale())
-                                    <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
-                                @else
-                                    <i class="fas fa-image" style="font-size: 2.5rem; color: #eee;"></i>
-                                @endif
-                            </div>
-                            <div class="rakuten-card-title">{{ $p->titre }}</div>
-                            <div class="rakuten-card-price">{{ number_format($p->prix, 0, ',', ' ') }} FCFA</div>
-                        </a>
-                    @endforeach
+        <div class="rakuten-sub-tabs">
+            @foreach($prefCategories as $idx => $prefCat)
+                <button class="rakuten-sub-tab-btn {{ $idx === 0 ? 'active' : '' }}" 
+                        onclick="switchRakutenSubTab('cat-{{ $prefCat->id }}', this)">
+                    {{ $prefCat->nom }}
+                </button>
+            @endforeach
+        </div>
+
+        {{-- Contents for NEUF --}}
+        <div id="tab-neuf" class="rakuten-tab-content active">
+            @foreach($prefCategories as $idx => $prefCat)
+                <div id="tab-neuf-cat-{{ $prefCat->id }}" class="rakuten-sub-content {{ $idx === 0 ? 'active' : '' }}">
+                    <div class="rakuten-grid">
+                        @php
+                            $catProducts = $produitsNeufs->filter(function($p) use ($prefCat) {
+                                return $p->categorie_id == $prefCat->id;
+                            });
+                            // Si pas de produits directs, peut-être dans les descendants ? Simplification pour l'instant.
+                            if($catProducts->isEmpty()) $catProducts = $produitsNeufs->take(5); 
+                        @endphp
+                        @foreach($catProducts as $p)
+                            <a href="{{ route('annonces.show', $p->slug) }}" class="rakuten-card">
+                                <div class="rakuten-card-img">
+                                    @if($p->photoPrincipale())
+                                        <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
+                                    @else
+                                        <i class="fas fa-image" style="font-size: 2.5rem; color: #eee;"></i>
+                                    @endif
+                                </div>
+                                <div class="rakuten-card-title">{{ $p->titre }}</div>
+                                <div class="rakuten-card-price">{{ number_format($p->prix, 0, ',', ' ') }} FCFA</div>
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
-        @endif
+            @endforeach
+        </div>
+
+        {{-- Contents for OCCASION --}}
+        <div id="tab-occasion" class="rakuten-tab-content">
+            @foreach($prefCategories as $idx => $prefCat)
+                <div id="tab-occasion-cat-{{ $prefCat->id }}" class="rakuten-sub-content {{ $idx === 0 ? 'active' : '' }}">
+                    <div class="rakuten-grid">
+                        @php
+                            $catProductsOcc = $produitsOccasion->filter(function($p) use ($prefCat) {
+                                return $p->categorie_id == $prefCat->id;
+                            });
+                            if($catProductsOcc->isEmpty()) $catProductsOcc = $produitsOccasion->take(5);
+                        @endphp
+                        @foreach($catProductsOcc as $p)
+                            <a href="{{ route('annonces.show', $p->slug) }}" class="rakuten-card">
+                                <div class="rakuten-card-img">
+                                    @if($p->photoPrincipale())
+                                        <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
+                                    @else
+                                        <i class="fas fa-image" style="font-size: 2.5rem; color: #eee;"></i>
+                                    @endif
+                                </div>
+                                <div class="rakuten-card-title">{{ $p->titre }}</div>
+                                <div class="rakuten-card-price">{{ number_format($p->prix, 0, ',', ' ') }} FCFA</div>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+        </div>
     </div>
 </div>
 @endif
@@ -600,6 +675,24 @@ function switchRakutenTab(tabId, btn) {
     
     // Show selected
     document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
+}
+
+function switchRakutenSubTab(catId, btn) {
+    // Determine current top tab (neuf or occasion)
+    const activeTopTabId = document.querySelector('.rakuten-tab-content.active').id;
+    
+    // Hide all sub-contents in CURRENT top tab
+    document.querySelectorAll(`#${activeTopTabId} .rakuten-sub-content`).forEach(c => c.classList.remove('active'));
+    // Remove active from all sub-buttons
+    document.querySelectorAll('.rakuten-sub-tab-btn').forEach(b => b.classList.remove('active'));
+    
+    // Show selected sub-content in EVERY top tab (so it's synced when switching)
+    document.querySelectorAll('.rakuten-tab-content').forEach(topTab => {
+        const subContent = topTab.querySelector(`#${topTab.id}-${catId}`);
+        if(subContent) subContent.classList.add('active');
+    });
+    
     btn.classList.add('active');
 }
 </script>
