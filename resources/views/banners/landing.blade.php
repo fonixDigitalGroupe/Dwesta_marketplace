@@ -18,7 +18,7 @@
     }
     .landing-hero img {
         width: 100%;
-        max-height: 350px; /* Increased height for better visibility */
+        max-height: 220px; /* Aligned with category hero height */
         object-fit: cover;
         object-position: center;
         display: block;
