@@ -180,7 +180,7 @@
 
                     <div class="amazon-card">
                         <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 15px;">
-                            Image de la page (Landing)
+                            Image de la page
                         </h2>
 
                         <div class="dropzone-amazon" onclick="document.getElementById('landing-image-input').click()">
