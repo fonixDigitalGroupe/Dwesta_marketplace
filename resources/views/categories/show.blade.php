@@ -949,7 +949,7 @@
         padding: 3rem 2rem;
         background: #fff;
         border-radius: 16px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        box-shadow: none;
         border: 1px solid #f0f0f0;
     }
     .n1-filter-bar {
@@ -971,7 +971,7 @@
         min-width: 260px;
         max-width: 320px;
         cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        box-shadow: none;
         overflow: hidden;
     }
     .n1-filter-item select {
