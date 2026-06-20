@@ -51,8 +51,8 @@
 
     /* ===== BREADCRUMB ===== */
     .landing-breadcrumb {
-        background: #fff;
-        border-bottom: 1px solid #eee;
+        background: #f8fafc;
+        border-bottom: 1px solid #eff3f6;
         padding: 0.6rem 0;
         font-size: 0.8rem;
         color: #888;
