@@ -343,24 +343,6 @@
 
 <!-- GRANDE PRESENTATION POUR LES CATEGORIES DE NIVEAU 1 -->
 @if($category->parent_id === null && request('view') !== 'list')
-    @if($banner)
-    <div class="n1-promo-bar">
-        <div class="n1-promo-content">
-            <span class="n1-promo-badge">
-                Profitez de cette offre pour vous faire plaisir à
-            </span>
-            <span class="n1-promo-text">
-                @if($banner->promo_discount)
-                    <strong>{{ $banner->promo_discount }} OFFERTS*</strong> 
-                    @if($banner->promo_conditions) {{ $banner->promo_conditions }} @endif
-                    @if($banner->promo_code) avec le code <span class="n1-promo-code">{{ $banner->promo_code }}</span> @endif
-                @else
-                    {{ $banner->title }}
-                @endif
-            </span>
-        </div>
-    </div>
-    @endif
 
     @php
         $bgImage = 'https://images.unsplash.com/photo-1589923188900-85dae523342b?q=80&w=2070&auto=format&fit=crop';
