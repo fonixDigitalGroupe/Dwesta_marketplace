@@ -312,6 +312,14 @@
                                 <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
                                     {{ $campaign->message }}
                                 </div>
+                                @if($campaign->starts_at || $campaign->ends_at)
+                                    <div style="font-size: 0.73rem; color: #0369a1; margin-top: 6px; display: flex; align-items: center; gap: 4px; font-weight: 500;">
+                                        <i class="far fa-calendar-alt"></i>
+                                        Valide : 
+                                        @if($campaign->starts_at) du {{ $campaign->starts_at->format('d/m/Y') }} @endif
+                                        @if($campaign->ends_at) au {{ $campaign->ends_at->format('d/m/Y') }} @endif
+                                    </div>
+                                @endif
                             </td>
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #475569;">
                                 <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; 

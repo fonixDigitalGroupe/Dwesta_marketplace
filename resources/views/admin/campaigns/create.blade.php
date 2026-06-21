@@ -166,6 +166,15 @@
                                     <option value="particulier">Vendeurs Particuliers</option>
                                 </select>
                             </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                            <div>
+                                <label class="field-label">Date de début</label>
+                                <input type="datetime-local" name="starts_at" value="{{ old('starts_at') }}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.82rem;">
+                            </div>
+                            <div>
+                                <label class="field-label">Date de fin</label>
+                                <input type="datetime-local" name="ends_at" value="{{ old('ends_at') }}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.82rem;">
+                            </div>
                         </div>
 
                         <div style="margin-bottom: 20px;">

@@ -41,6 +41,8 @@ class CampaignController extends Controller
             'target_type' => 'required|in:particulier,professionnel,all',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
+            'starts_at' => 'nullable|date',
+            'ends_at' => 'nullable|date',
         ]);
 
         $coupon = Coupon::findOrFail($validated['coupon_id']);
@@ -59,12 +61,10 @@ class CampaignController extends Controller
         }
 
         // Création de l'enregistrement de campagne
-        $campaign = Campaign::create([
-            'coupon_id' => $coupon->id,
-            'target_type' => $validated['target_type'],
-            'subject' => $validated['subject'],
             'message' => $validated['message'],
             'sent_count' => $users->count(),
+            'starts_at' => $validated['starts_at'],
+            'ends_at' => $validated['ends_at'],
         ]);
 
         // Envoi massif de notifications
@@ -120,6 +120,8 @@ class CampaignController extends Controller
             'coupon_id' => 'required|exists:coupons,id',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
+            'starts_at' => 'nullable|date',
+            'ends_at' => 'nullable|date',
         ]);
 
         $campaign->update($validated);

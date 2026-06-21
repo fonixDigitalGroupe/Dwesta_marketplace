@@ -15,6 +15,13 @@ class Campaign extends Model
         'subject',
         'message',
         'sent_count',
+        'starts_at',
+        'ends_at',
+    ];
+
+    protected $casts = [
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
     ];
 
     public function coupon()
