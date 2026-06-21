@@ -222,16 +222,28 @@
                                 @error('code') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                             </div>
 
-                            <div>
-                                <label for="category_id" class="field-label">Restriction par catégorie</label>
-                                <select name="category_id" id="category_id">
-                                    <option value="">-- Appliquer sur tout le site --</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category_id', $coupon->category_id) == $category->id ? 'selected' : '' }}>
-                                            {{ $category->chemin ?? $category->nom }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                                <div>
+                                    <label for="category_id_n1" class="field-label">Niveau 1</label>
+                                    <select name="category_id_n1" id="category_id_n1" onchange="filterN2Categories()">
+                                        <option value="">-- Choisir N1 --</option>
+                                        @foreach($n1Categories as $cat)
+                                            <option value="{{ $cat->id }}" {{ old('category_id_n1', $coupon->category_id_n1) == $cat->id ? 'selected' : '' }}>{{ $cat->nom }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="category_id_n2" class="field-label">Niveau 2</label>
+                                    <select name="category_id_n2" id="category_id_n2" onchange="filterN3Categories()">
+                                        <option value="">-- Choisir N2 --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="category_id" class="field-label">Cible (N3)</label>
+                                    <select name="category_id" id="category_id">
+                                        <option value="">-- Choisir N3 --</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -361,5 +373,58 @@ function previewImage(input, previewId, dropzoneId) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+const allCategories = @json($allCategories);
+
+function filterN2Categories(selectedN2 = null) {
+    const n1Id = document.getElementById('category_id_n1').value;
+    const n2Select = document.getElementById('category_id_n2');
+    const n3Select = document.getElementById('category_id');
+    
+    n2Select.innerHTML = '<option value="">-- Choisir N2 --</option>';
+    n3Select.innerHTML = '<option value="">-- Choisir N3 --</option>';
+    
+    if (n1Id) {
+        const filtered = allCategories.filter(c => c.parent_id == n1Id);
+        filtered.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = c.nom;
+            if (selectedN2 && c.id == selectedN2) opt.selected = true;
+            n2Select.appendChild(opt);
+        });
+    }
+}
+
+function filterN3Categories(selectedN3 = null) {
+    const n2Id = document.getElementById('category_id_n2').value;
+    const n3Select = document.getElementById('category_id');
+    
+    n3Select.innerHTML = '<option value="">-- Choisir N3 --</option>';
+    
+    if (n2Id) {
+        const filtered = allCategories.filter(c => c.parent_id == n2Id);
+        filtered.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = c.nom;
+            if (selectedN3 && c.id == selectedN3) opt.selected = true;
+            n3Select.appendChild(opt);
+        });
+    }
+}
+
+// Initial state for Edit
+document.addEventListener('DOMContentLoaded', function() {
+    const initialN2 = @json(old('category_id_n2', $coupon->category_id_n2));
+    const initialN3 = @json(old('category_id', $coupon->category_id));
+    
+    if (document.getElementById('category_id_n1').value) {
+        filterN2Categories(initialN2);
+        if (initialN2) {
+            filterN3Categories(initialN3);
+        }
+    }
+});
 </script>
 @endsection

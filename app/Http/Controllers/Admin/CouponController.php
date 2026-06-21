@@ -17,8 +17,9 @@ class CouponController extends Controller
 
     public function create()
     {
-        $categories = Category::orderBy('nom')->get();
-        return view('admin.coupons.create', compact('categories'));
+        $n1Categories = Category::whereNull('parent_id')->get();
+        $allCategories = Category::orderBy('nom')->get();
+        return view('admin.coupons.create', compact('n1Categories', 'allCategories'));
     }
 
     public function store(Request $request)
@@ -33,6 +34,8 @@ class CouponController extends Controller
             'usage_limit' => 'nullable|integer|min:1',
             'is_active' => 'boolean',
             'category_id' => 'nullable|exists:categories,id',
+            'category_id_n1' => 'nullable|exists:categories,id',
+            'category_id_n2' => 'nullable|exists:categories,id',
             'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -57,8 +60,9 @@ class CouponController extends Controller
 
     public function edit(Coupon $coupon)
     {
-        $categories = Category::orderBy('nom')->get();
-        return view('admin.coupons.edit', compact('coupon', 'categories'));
+        $n1Categories = Category::whereNull('parent_id')->get();
+        $allCategories = Category::orderBy('nom')->get();
+        return view('admin.coupons.edit', compact('coupon', 'n1Categories', 'allCategories'));
     }
 
     public function update(Request $request, Coupon $coupon)
@@ -72,6 +76,8 @@ class CouponController extends Controller
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'usage_limit' => 'nullable|integer|min:1',
             'category_id' => 'nullable|exists:categories,id',
+            'category_id_n1' => 'nullable|exists:categories,id',
+            'category_id_n2' => 'nullable|exists:categories,id',
             'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);

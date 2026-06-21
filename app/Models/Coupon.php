@@ -22,6 +22,8 @@ class Coupon extends Model
         'category_id',
         'banner_image',
         'page_image',
+        'category_id_n1',
+        'category_id_n2',
     ];
 
     protected $casts = [
@@ -33,5 +35,15 @@ class Coupon extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function categoryN1()
+    {
+        return $this->belongsTo(Category::class, 'category_id_n1');
+    }
+
+    public function categoryN2()
+    {
+        return $this->belongsTo(Category::class, 'category_id_n2');
     }
 }

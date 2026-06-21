@@ -145,7 +145,19 @@
 
                         <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                             <div style="font-size: 0.82rem; color: #475569;">
-                                {{ $coupon->category ? ($coupon->category->chemin ?? $coupon->category->nom) : 'Tout le site' }}
+                                @if($coupon->category_id_n1)
+                                    <span style="color: #94a3b8;">{{ $coupon->categoryN1->nom }}</span>
+                                    @if($coupon->category_id_n2)
+                                        <i class="fas fa-chevron-right" style="font-size: 0.6rem; margin: 0 4px; color: #cbd5e1;"></i>
+                                        <span style="color: #94a3b8;">{{ $coupon->categoryN2->nom }}</span>
+                                    @endif
+                                    @if($coupon->category_id)
+                                        <i class="fas fa-chevron-right" style="font-size: 0.6rem; margin: 0 4px; color: #cbd5e1;"></i>
+                                        <span style="font-weight: 600;">{{ $coupon->category->nom }}</span>
+                                    @endif
+                                @else
+                                    {{ $coupon->category ? ($coupon->category->chemin ?? $coupon->category->nom) : 'Tout le site' }}
+                                @endif
                             </div>
                         </td>
 

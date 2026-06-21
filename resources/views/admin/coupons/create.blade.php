@@ -207,18 +207,30 @@
                                 <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px;">Le code que vos clients saisiront au moment du paiement.</p>
                             </div>
 
-                            <div>
-                                <label for="category_id" class="field-label">Restriction par catégorie</label>
-                                <select name="category_id" id="category_id">
-                                    <option value="">-- Appliquer sur tout le site --</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                            {{ $category->chemin ?? $category->nom }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px;">Si défini, le coupon ne sera valide que pour les articles de cette catégorie.</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                                <div>
+                                    <label for="category_id_n1" class="field-label">Niveau 1</label>
+                                    <select name="category_id_n1" id="category_id_n1" onchange="filterN2Categories()">
+                                        <option value="">-- Choisir N1 --</option>
+                                        @foreach($n1Categories as $cat)
+                                            <option value="{{ $cat->id }}" {{ old('category_id_n1') == $cat->id ? 'selected' : '' }}>{{ $cat->nom }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="category_id_n2" class="field-label">Niveau 2</label>
+                                    <select name="category_id_n2" id="category_id_n2" onchange="filterN3Categories()">
+                                        <option value="">-- Choisir N2 --</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="category_id" class="field-label">Cible (N3)</label>
+                                    <select name="category_id" id="category_id">
+                                        <option value="">-- Choisir N3 --</option>
+                                    </select>
+                                </div>
                             </div>
+                            <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px;">Si défini, le coupon ne sera valide que pour les articles de cette catégorie.</p>
                         </div>
                     </div>
 
@@ -338,6 +350,44 @@ function previewImage(input, previewId, dropzoneId) {
             if (dropzone) dropzone.style.display = 'none';
         }
         reader.readAsDataURL(input.files[0]);
+    }
+}
+
+const allCategories = @json($allCategories);
+
+function filterN2Categories() {
+    const n1Id = document.getElementById('category_id_n1').value;
+    const n2Select = document.getElementById('category_id_n2');
+    const n3Select = document.getElementById('category_id');
+    
+    n2Select.innerHTML = '<option value="">-- Choisir N2 --</option>';
+    n3Select.innerHTML = '<option value="">-- Choisir N3 --</option>';
+    
+    if (n1Id) {
+        const filtered = allCategories.filter(c => c.parent_id == n1Id);
+        filtered.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = c.nom;
+            n2Select.appendChild(opt);
+        });
+    }
+}
+
+function filterN3Categories() {
+    const n2Id = document.getElementById('category_id_n2').value;
+    const n3Select = document.getElementById('category_id');
+    
+    n3Select.innerHTML = '<option value="">-- Choisir N3 --</option>';
+    
+    if (n2Id) {
+        const filtered = allCategories.filter(c => c.parent_id == n2Id);
+        filtered.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = c.nom;
+            n3Select.appendChild(opt);
+        });
     }
 }
 </script>
