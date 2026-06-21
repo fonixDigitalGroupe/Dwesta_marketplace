@@ -625,7 +625,9 @@
                             $shopLogo = ($isOtherPro && $otherUser->vendeur->pagePro) ? $otherUser->vendeur->pagePro->logo : null;
                         @endphp
                         <div style="width: 38px; height: 38px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #475569; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; border: 1px solid #e5e7eb;">
-                            @if($isOtherPro)
+                            @if($otherUser->hasRole('admin'))
+                                <img src="{{ asset('images/logo.png') }}" style="width: 80%; height: auto; object-fit: contain;">
+                            @elseif($isOtherPro)
                                 @if($shopLogo)
                                     <img src="{{ Storage::url($shopLogo) }}" style="width: 100%; height: 100%; object-fit: cover;">
                                 @else
@@ -642,7 +644,7 @@
                                 $isOnline = $otherUser->updated_at && $otherUser->updated_at->diffInMinutes(now()) < 30;
                             @endphp
                             <div style="font-size: 1.05rem; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 6px; line-height: 1.2;">
-                                {{ $otherUser->name }} 
+                                {{ $otherUser->hasRole('admin') ? 'Karnou' : $otherUser->name }} 
                                 @if($isOnline)
                                     <span style="font-size: 10px; color: #10b981;" title="En ligne"><i class="fas fa-circle"></i></span>
                                 @else
@@ -680,7 +682,9 @@
                                         $senderShopLogo = ($isSenderPro && $sender->vendeur->pagePro) ? $sender->vendeur->pagePro->logo : null;
                                     @endphp
                                     <div style="width: 28px; height: 28px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #475569; font-size: 0.75rem; flex-shrink: 0; margin-bottom: 2px; overflow: hidden; border: 1px solid #e5e7eb;">
-                                        @if($isSenderPro)
+                                        @if($sender->hasRole('admin'))
+                                            <img src="{{ asset('images/logo.png') }}" style="width: 80%; height: auto; object-fit: contain;">
+                                        @elseif($isSenderPro)
                                             @if($senderShopLogo)
                                                 <img src="{{ Storage::url($senderShopLogo) }}" style="width: 100%; height: 100%; object-fit: cover;">
                                             @else
