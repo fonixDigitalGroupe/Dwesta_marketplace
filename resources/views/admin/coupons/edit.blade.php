@@ -274,40 +274,21 @@
                     </div>
 
                     {{-- Visuels --}}
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div class="amazon-card" style="margin: 0;">
-                            <h3 class="section-title">Image Bannière</h3>
-                            <div class="dropzone-amazon" onclick="document.getElementById('banner-image-input').click()">
-                                <div id="dropzone-banner-content" style="{{ $coupon->banner_image ? 'display: none;' : '' }}">
-                                    <i class="fas fa-image" style="font-size: 24px; color: #cbd5e1; margin-bottom: 10px;"></i>
-                                    <p style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Nouvelle image</p>
-                                </div>
-                                @if($coupon->banner_image)
-                                    <img id="preview-banner-img" src="{{ asset('storage/' . $coupon->banner_image) }}">
-                                @else
-                                    <img id="preview-banner-img" style="display: none;">
-                                @endif
+                    <div class="amazon-card" style="margin: 0;">
+                        <h3 class="section-title">Image Bannière</h3>
+                        <div class="dropzone-amazon" onclick="document.getElementById('banner-image-input').click()">
+                            <div id="dropzone-banner-content" style="{{ $coupon->banner_image ? 'display: none;' : '' }}">
+                                <i class="fas fa-image" style="font-size: 24px; color: #cbd5e1; margin-bottom: 10px;"></i>
+                                <p style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Nouvelle image</p>
                             </div>
-                            <input type="file" id="banner-image-input" name="banner_image" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview-banner-img', 'dropzone-banner-content')">
-                            @error('banner_image') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                            @if($coupon->banner_image)
+                                <img id="preview-banner-img" src="{{ asset('storage/' . $coupon->banner_image) }}">
+                            @else
+                                <img id="preview-banner-img" style="display: none;">
+                            @endif
                         </div>
-
-                        <div class="amazon-card" style="margin: 0;">
-                            <h3 class="section-title">Image Page</h3>
-                            <div class="dropzone-amazon" onclick="document.getElementById('page-image-input').click()">
-                                <div id="dropzone-page-content" style="{{ $coupon->page_image ? 'display: none;' : '' }}">
-                                    <i class="fas fa-desktop" style="font-size: 24px; color: #cbd5e1; margin-bottom: 10px;"></i>
-                                    <p style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Nouvelle image</p>
-                                </div>
-                                @if($coupon->page_image)
-                                    <img id="preview-page-img" src="{{ asset('storage/' . $coupon->page_image) }}">
-                                @else
-                                    <img id="preview-page-img" style="display: none;">
-                                @endif
-                            </div>
-                            <input type="file" id="page-image-input" name="page_image" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview-page-img', 'dropzone-page-content')">
-                            @error('page_image') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
-                        </div>
+                        <input type="file" id="banner-image-input" name="banner_image" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview-banner-img', 'dropzone-banner-content')">
+                        @error('banner_image') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                     </div>
 
                 </div>
