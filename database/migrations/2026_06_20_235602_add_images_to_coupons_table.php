@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('coupons', function (Blueprint $table) {
             $table->string('banner_image')->nullable()->after('category_id');
-            $table->string('page_image')->nullable()->after('banner_image');
         });
     }
 
@@ -24,7 +23,6 @@ return new class extends Migration
     {
         Schema::table('coupons', function (Blueprint $table) {
             $table->dropColumn('banner_image');
-            $table->dropColumn('page_image');
         });
     }
 };
