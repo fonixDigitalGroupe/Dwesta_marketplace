@@ -302,7 +302,7 @@
                         <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #475569;">
-                                {{ $campaign->created_at->format('d/m/Y H:i') }}
+                                {{ $campaign->created_at->format('d/m/Y') }}
                             </td>
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                                 <span class="code-badge">{{ $campaign->coupon->code ?? 'N/A' }}</span>

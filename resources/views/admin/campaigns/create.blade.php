@@ -206,11 +206,11 @@
                         <div style="margin-bottom: 20px;">
                             <div style="margin-bottom: 15px;">
                                 <label class="field-label">Date de début</label>
-                                <input type="datetime-local" name="starts_at" value="{{ old('starts_at') }}" style="width: 100%; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.85rem; color: #475569;">
+                                <input type="date" name="starts_at" value="{{ old('starts_at') }}" style="width: 100%; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.85rem; color: #475569;">
                             </div>
                             <div style="margin-bottom: 15px;">
                                 <label class="field-label">Date de fin</label>
-                                <input type="datetime-local" name="ends_at" value="{{ old('ends_at') }}" style="width: 100%; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.85rem; color: #475569;">
+                                <input type="date" name="ends_at" value="{{ old('ends_at') }}" style="width: 100%; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.85rem; color: #475569;">
                             </div>
                         </div>
 
