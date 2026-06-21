@@ -152,8 +152,6 @@
                     <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Code</th>
                     <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Type</th>
                     <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Valeur</th>
-                    <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Utilisations</th>
-                    <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 190px;">Période</th>
                     <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Statut</th>
                     <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 160px;">Actions</th>
                 </tr>
@@ -202,20 +200,6 @@
                             </strong>
                         </td>
 
-                        <td style="padding: 12px 15px; font-size: 0.85rem; color: #475569; border-right: 1px solid #eff3f6;">
-                            {{ $coupon->used_count ?? 0 }} / {{ $coupon->usage_limit ?? '∞' }}
-                        </td>
-
-                        <td style="padding: 12px 15px; font-size: 0.82rem; color: #475569; border-right: 1px solid #eff3f6;">
-                            @if($coupon->start_date || $coupon->end_date)
-                                <div style="display: flex; flex-direction: column; gap: 2px;">
-                                    <span>Du : <span style="font-weight: 600;">{{ $coupon->start_date ? \Carbon\Carbon::parse($coupon->start_date)->format('d/m/Y') : '∞' }}</span></span>
-                                    <span>Au : <span style="font-weight: 600;">{{ $coupon->end_date ? \Carbon\Carbon::parse($coupon->end_date)->format('d/m/Y') : '∞' }}</span></span>
-                                </div>
-                            @else
-                                <span style="color: #94a3b8; font-style: italic;">Permanent</span>
-                            @endif
-                        </td>
 
                         <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                             <form action="{{ route('admin.coupons.toggle-status', $coupon) }}" method="POST" style="display:inline;">
@@ -251,7 +235,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eff3f6;">
+                        <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eff3f6;">
                             Aucun code promo trouvé.
                         </td>
                     </tr>
