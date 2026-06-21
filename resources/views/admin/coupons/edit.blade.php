@@ -270,7 +270,7 @@
                         </div>
 
                         <div class="amazon-card" style="margin: 0;">
-                            <h3 class="section-title">Image Page (Landing)</h3>
+                            <h3 class="section-title">Image Page</h3>
                             <div class="dropzone-amazon" onclick="document.getElementById('landing-image-input').click()">
                                 <div id="dropzone-landing-content" style="{{ $coupon->landing_page_image ? 'display: none;' : '' }}">
                                     <i class="fas fa-desktop" style="font-size: 24px; color: #cbd5e1; margin-bottom: 10px;"></i>
