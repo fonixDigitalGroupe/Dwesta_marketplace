@@ -141,57 +141,7 @@
         </div>
     </div>
 
-    {{-- Bannières Section --}}
-    <div class="promo-section-header">
-        <div class="promo-section-title">
-            <i class="fas fa-image"></i> Bannières actives récentes
-        </div>
-        <a href="{{ route('admin.banners.index') }}" class="promo-btn-sm">
-            Voir toutes <i class="fas fa-arrow-right"></i>
-        </a>
-    </div>
 
-    @if($latestBanners->isEmpty())
-        <div style="background: #fff; border: 1px solid #e9ecef; border-radius: 10px; padding: 2rem; text-align: center; color: #94a3b8; margin-bottom: 2rem;">
-            <i class="fas fa-image" style="font-size: 2rem; margin-bottom: 8px;"></i><br>
-            Aucune bannière active. <a href="{{ route('admin.banners.create') }}" style="color: #2563eb;">Créer une bannière</a>
-        </div>
-    @else
-        <div class="promo-card-grid" style="margin-bottom: 2rem;">
-            @foreach($latestBanners as $banner)
-                <div class="promo-banner-card">
-                    <div class="promo-banner-img">
-                        @if($banner->image_url)
-                            <img src="{{ $banner->image_url }}" alt="{{ $banner->title }}">
-                        @else
-                            <div class="no-img"><i class="fas fa-image"></i></div>
-                        @endif
-                    </div>
-                    <div class="promo-banner-body">
-                        <div class="promo-banner-name" title="{{ $banner->title }}">{{ $banner->title }}</div>
-                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-                            <span class="promo-badge active">Active</span>
-                            @if($banner->end_date)
-                                <span style="font-size: 0.75rem; color: #94a3b8;">
-                                    Expire {{ $banner->end_date->diffForHumans() }}
-                                </span>
-                            @endif
-                        </div>
-                        <div class="promo-banner-actions">
-                            <a href="{{ route('admin.banners.edit', $banner) }}" class="promo-btn-sm primary">
-                                <i class="fas fa-edit"></i> Modifier
-                            </a>
-                            @if($banner->slug)
-                                <a href="{{ route('banner.landing', $banner->slug) }}" target="_blank" class="promo-btn-sm">
-                                    <i class="fas fa-external-link-alt"></i> Voir
-                                </a>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @endif
 
     {{-- Codes Promo Section --}}
     <div class="promo-section-header">
