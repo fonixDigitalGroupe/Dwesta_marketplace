@@ -102,6 +102,7 @@ class CampaignController extends Controller
                 'conversation_id' => $conversation->id,
                 'sender_id' => $adminId,
                 'content' => $fullContent,
+                'image_path' => $coupon->banner_image,
             ]);
         }
 
