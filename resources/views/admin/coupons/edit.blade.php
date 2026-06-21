@@ -248,30 +248,7 @@
                         </div>
                     </div>
 
-                    {{-- Règles de réduction --}}
-                    <div class="amazon-card" style="margin: 0;">
-                        <h3 class="section-title">Règles de Réduction</h3>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div>
-                                <label for="type" class="field-label">Type <span style="color: red;">*</span></label>
-                                <select name="type" id="type" required>
-                                    <option value="percent" {{ old('type', $coupon->type) == 'percent' ? 'selected' : '' }}>Pourcentage (%)</option>
-                                    <option value="fixed" {{ old('type', $coupon->type) == 'fixed' ? 'selected' : '' }}>Montant Fixe (FCFA)</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="value" class="field-label">Valeur <span style="color: red;">*</span></label>
-                                <input type="number" step="0.01" min="0" name="value" id="value" value="{{ old('value', $coupon->value) }}" placeholder="Ex: 10 ou 5000" required>
-                                @error('value') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 15px;">
-                            <label for="min_purchase" class="field-label">Montant minimum d'achat</label>
-                            <input type="number" step="0.01" min="0" name="min_purchase" id="min_purchase" value="{{ old('min_purchase', $coupon->min_purchase) }}" placeholder="Ex: 50000">
-                        </div>
-                    </div>
 
                     {{-- Visuels --}}
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
@@ -314,6 +291,31 @@
 
                 {{-- Right Column --}}
                 <div style="display: flex; flex-direction: column; gap: 20px;">
+                    {{-- Règles de réduction --}}
+                    <div class="amazon-card" style="margin: 0;">
+                        <h3 class="section-title">Règles de Réduction</h3>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <label for="type" class="field-label">Type <span style="color: red;">*</span></label>
+                                <select name="type" id="type" required>
+                                    <option value="percent" {{ old('type', $coupon->type) == 'percent' ? 'selected' : '' }}>Pourcentage (%)</option>
+                                    <option value="fixed" {{ old('type', $coupon->type) == 'fixed' ? 'selected' : '' }}>Montant Fixe (FCFA)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="value" class="field-label">Valeur <span style="color: red;">*</span></label>
+                                <input type="number" step="0.01" min="0" name="value" id="value" value="{{ old('value', $coupon->value) }}" placeholder="Ex: 10 ou 5000" required>
+                                @error('value') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 15px;">
+                            <label for="min_purchase" class="field-label">Montant minimum d'achat</label>
+                            <input type="number" step="0.01" min="0" name="min_purchase" id="min_purchase" value="{{ old('min_purchase', $coupon->min_purchase) }}" placeholder="Ex: 50000">
+                        </div>
+                    </div>
+
                     <div class="amazon-card" style="margin: 0;">
                         <h3 class="section-title">Utilisation</h3>
 
