@@ -475,7 +475,7 @@
     }
     .resize-handle { color: #cbd5e1; font-size: 0.8rem; cursor: pointer; }
     .send-btn {
-        background: #ff6600;
+        background: #2563eb;
         color: #fff;
         border: none;
         padding: 8px 24px;
@@ -484,7 +484,7 @@
         cursor: pointer;
         transition: all 0.2s;
     }
-    .send-btn:hover { background: #e55c00; transform: scale(1.02); }
+    .send-btn:hover { background: #1d4ed8; transform: scale(1.02); }
 
     /* Responsive */
     @media (max-width: 991px) {
