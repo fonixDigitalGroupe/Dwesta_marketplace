@@ -215,26 +215,26 @@
         </div>
         
         <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-            <div style="background: #fdfdfd; padding: 12px 20px; border-bottom: 1px solid #f1f5f9; border-top: 4px solid #ea580c;">
+            <div style="background: #ffffff; padding: 15px 20px; border-bottom: 1px solid #f1f5f9;">
                 <h1 style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 0;">Messages</h1>
             </div>
 
-            <div style="background: #f3f4f6; padding: 24px;">
+            <div style="background: #ffffff; padding: 20px;">
                 @forelse($conversations as $conv)
                     @php
                         $otherUser = $conv->user1_id == Auth::id() ? $conv->user2 : $conv->user1;
                         $lastMsg = $conv->messages()->latest()->first();
                         $isSystem = ($otherUser->hasRole('admin'));
                     @endphp
-                    <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 4px; padding: 24px; margin-bottom: 20px; position: relative;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                            <span style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
-                                {{ $lastMsg ? $lastMsg->created_at->translatedFormat('d F') : $conv->created_at->translatedFormat('d F') }}
+                    <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 20px; margin-bottom: 15px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">
+                                {{ $lastMsg ? $lastMsg->created_at->translatedFormat('d M') : $conv->created_at->translatedFormat('d M') }}
                             </span>
-                            <a href="{{ route('conversations.show', $conv) }}" style="color: #ea580c; font-weight: 700; font-size: 0.95rem; text-decoration: none;">Détails</a>
+                            <a href="{{ route('conversations.show', $conv) }}" style="color: #ea580c; font-weight: 600; font-size: 0.9rem; text-decoration: none;">Détails</a>
                         </div>
 
-                        <h2 style="font-size: 1.15rem; font-weight: 700; color: #111827; margin: 15px 0 8px;">
+                        <h2 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 5px 0 10px;">
                             @if($isSystem)
                                 Notification de l'administration 💡
                             @else
@@ -242,7 +242,7 @@
                             @endif
                         </h2>
 
-                        <div style="font-size: 0.95rem; color: #374151; line-height: 1.5; margin-bottom: 20px;">
+                        <div style="font-size: 0.9rem; color: #475569; line-height: 1.6; margin-bottom: 15px;">
                             {{ $lastMsg ? Str::limit(strip_tags($lastMsg->content), 300) : 'Démarrer une discussion...' }}
                         </div>
 
