@@ -180,17 +180,7 @@
                         </div>
                     </div>
 
-                    <div class="info-box">
-                        <div style="display: flex; gap: 12px; align-items: flex-start;">
-                            <i class="fas fa-info-circle" style="color: #f59e0b; font-size: 1.1rem; margin-top: 2px;"></i>
-                            <div>
-                                <h4 style="font-size: 0.8rem; font-weight: 700; color: #92400e; margin: 0 0 5px 0;">Impact de la campagne</h4>
-                                <p style="font-size: 0.78rem; color: #b45309; margin: 0; line-height: 1.5;">
-                                    Cette campagne enverra un email et une notification sur le tableau de bord de chaque vendeur ciblé. C'est un excellent moyen de les encourager à être plus compétitifs lors de vos opérations spéciales.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+
 
                 </div>
 
