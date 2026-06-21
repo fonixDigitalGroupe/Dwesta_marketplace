@@ -225,7 +225,7 @@
                             <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">
                                 {{ $lastMsg ? $lastMsg->created_at->translatedFormat('d M') : $conv->created_at->translatedFormat('d M') }}
                             </span>
-                            <a href="{{ route('conversations.show', $conv) }}" style="color: #ea580c; font-weight: 600; font-size: 0.9rem; text-decoration: none;">Détails</a>
+                            <a href="{{ route('conversations.show', $conv) }}" style="color: #2563eb; font-weight: 600; font-size: 0.9rem; text-decoration: none;">Détails</a>
                         </div>
 
                         <h2 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 5px 0 10px;">
