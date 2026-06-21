@@ -177,6 +177,7 @@
 </style>
 @endpush
 
+@section('content')
 <div class="dashboard-container" style="margin-top: 2rem;">
     @include('partials.profile-sidebar')
 
