@@ -62,7 +62,6 @@
                 <li><a href="#qui">01 — Qui sommes-nous ?</a></li>
                 <li><a href="#philosophie">02 — Notre Philosophie</a></li>
                 <li><a href="#ecosysteme">03 — Écosystème Unique</a></li>
-                <li><a href="#fondateur">04 — Parole du Fondateur</a></li>
             </ul>
         </aside>
 
@@ -153,27 +152,6 @@
                 </div>
             </article>
 
-            <!-- Section 04: Fondateur -->
-            <article id="fondateur" class="legal-article">
-                <div class="article-num">04</div>
-                <div class="article-body">
-                    <h2>Parole du Fondateur</h2>
-                    <div class="founder-card-refined">
-                        <div class="founder-image-mini">
-                            <img src="/images/founder_karnou.png" alt="Jean-Pierre Karnou">
-                        </div>
-                        <div class="founder-quote-content">
-                            <i class="fa-solid fa-quote-left"></i>
-                            <blockquote class="quote-text-refined">
-                                "Nous continuons de croire que le monde numérique a le potentiel d'améliorer la vie de nous tous. Oubliez la peur. Adoptez l'optimisme."
-                            </blockquote>
-                            <cite class="quote-author-refined">
-                                Jean-Pierre Karnou
-                            </cite>
-                        </div>
-                    </div>
-                </div>
-            </article>
 
 
         </main>
