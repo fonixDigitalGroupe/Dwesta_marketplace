@@ -403,7 +403,7 @@
 
 <style>
     .swal2-title-small {
-        font-size: 1.25rem !important;
+        font-size: 1.15rem !important;
         font-weight: 700 !important;
         color: #334155 !important;
     }
