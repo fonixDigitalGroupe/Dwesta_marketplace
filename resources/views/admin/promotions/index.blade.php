@@ -293,6 +293,7 @@
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 140px;">Cible</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Début</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Fin</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Statut</th>
                         <th style="padding: 12px 15px; text-align: center; font-weight: 700; color: #475569; font-size: 0.75rem; border-right: 1px solid #eff3f6;">ENVOYÉS</th>
                         <th style="padding: 12px 15px; text-align: right; font-weight: 700; color: #475569; font-size: 0.75rem;">ACTIONS</th>
                     </tr>
@@ -322,11 +323,40 @@
                             <td style="padding: 12px 15px; text-align: center; font-size: 0.82rem; color: #475569; border-right: 1px solid #eff3f6;">
                                 {{ $campaign->ends_at ? $campaign->ends_at->format('d/m/Y') : '-' }}
                             </td>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
+                                @php
+                                    $now = now();
+                                    $status = 'Active';
+                                    $statusColor = '#569b00';
+                                    $statusBg = '#f7fff0';
+
+                                    if ($campaign->ends_at && $campaign->ends_at->isPast()) {
+                                        $status = 'Terminée';
+                                        $statusColor = '#c40000';
+                                        $statusBg = '#fff5f5';
+                                    } elseif ($campaign->starts_at && $campaign->starts_at->isFuture()) {
+                                        $status = 'À venir';
+                                        $statusColor = '#0066c0';
+                                        $statusBg = '#f0f7ff';
+                                    }
+                                @endphp
+                                <span class="badge-amazon" style="color: {{ $statusColor }}; background: {{ $statusBg }};">
+                                    {{ $status }}
+                                </span>
+                            </td>
                             <td style="padding: 12px 15px; text-align: center; font-weight: 700; color: #1e293b; border-right: 1px solid #eff3f6;">
                                 {{ $campaign->sent_count }}
                             </td>
                             <td style="padding: 12px 15px; text-align: right;">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                                    <button type="button" 
+                                        onclick="showCampaignDetails('{{ addslashes($campaign->subject) }}', '{{ addslashes($campaign->message) }}')"
+                                        style="background: none; border: none; color: #0066c0; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                        onmouseover="this.style.textDecoration='underline'"
+                                        onmouseout="this.style.textDecoration='none'">
+                                        Détails
+                                    </button>
+                                    <span style="color: #eee;">|</span>
                                     <a href="{{ route('admin.campaigns.edit', $campaign) }}"
                                         style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
                                         onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
@@ -348,7 +378,7 @@
                         </tr>
                     @empty
                          <tr>
-                            <td colspan="7" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
+                            <td colspan="8" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
                                 Aucune campagne envoyée pour le moment.
                             </td>
                         </tr>
@@ -426,6 +456,29 @@ function confirmDeleteCoupon(id) {
         if (result.isConfirmed) {
             document.getElementById('delete-coupon-' + id).submit();
         }
+    });
+}
+
+function showCampaignDetails(subject, message) {
+    Swal.fire({
+        title: 'Détails de la campagne',
+        customClass: {
+            title: 'swal2-title-small'
+        },
+        html: `
+            <div style="text-align: left; padding: 10px;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Sujet</label>
+                    <div style="font-size: 0.9rem; color: #1e293b; font-weight: 600; background: #f8fafc; padding: 8px; border-radius: 4px;">${subject}</div>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Message</label>
+                    <div style="font-size: 0.9rem; color: #475569; background: #f8fafc; padding: 12px; border-radius: 4px; white-space: pre-wrap; line-height: 1.5;">${message}</div>
+                </div>
+            </div>
+        `,
+        confirmButtonText: 'Fermer',
+        confirmButtonColor: '#0066c0',
     });
 }
 
