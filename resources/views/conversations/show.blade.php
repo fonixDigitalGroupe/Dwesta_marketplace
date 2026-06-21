@@ -612,7 +612,7 @@
         @endphp
         <div class="wa-container">
             {{-- 1. Sidebar (List) - LEFT SIDERBAR --}}
-            @include('conversations._conversation_list')
+
 
             {{-- 2. Main (Viewport and Input) - RIGHT SIDE --}}
             <div class="wa-main" style="flex: 1; display: flex; flex-direction: column; background: #fff; overflow: hidden;">
