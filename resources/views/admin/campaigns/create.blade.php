@@ -203,14 +203,14 @@
                             L'envoi est immédiat et ne peut pas être annulé une fois lancé. Veuillez vérifier le contenu de votre message.
                         </p>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                        <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
                             <div>
                                 <label class="field-label">Date de début</label>
-                                <input type="datetime-local" name="starts_at" value="{{ old('starts_at') }}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.82rem;">
+                                <input type="datetime-local" name="starts_at" value="{{ old('starts_at') }}" style="width: 100%; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.85rem; color: #475569;">
                             </div>
                             <div>
                                 <label class="field-label">Date de fin</label>
-                                <input type="datetime-local" name="ends_at" value="{{ old('ends_at') }}" style="width: 100%; padding: 8px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.82rem;">
+                                <input type="datetime-local" name="ends_at" value="{{ old('ends_at') }}" style="width: 100%; padding: 10px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.85rem; color: #475569;">
                             </div>
                         </div>
 
