@@ -23,7 +23,7 @@
         background: #fff;
         border-radius: 0;
         box-shadow: none;
-        border: 1px solid #f0f0f0;
+        border: none;
         overflow: hidden;
         margin-top: 0;
     }
