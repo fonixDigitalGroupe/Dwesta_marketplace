@@ -285,9 +285,7 @@ Route::middleware('auth')->group(function () {
 
             // Hub Promotions & Campagnes (Cibles vendeurs)
             Route::get('promotions', [\App\Http\Controllers\Admin\PromotionController::class, 'index'])->name('promotions.index');
-            Route::get('campaigns', [\App\Http\Controllers\Admin\CampaignController::class, 'index'])->name('campaigns.index');
-            Route::get('campaigns/create', [\App\Http\Controllers\Admin\CampaignController::class, 'create'])->name('campaigns.create');
-            Route::post('campaigns', [\App\Http\Controllers\Admin\CampaignController::class, 'store'])->name('campaigns.store');
+            Route::resource('campaigns', \App\Http\Controllers\Admin\CampaignController::class)->except(['show']);
 
             // Gestion des Codes Promo (Coupons)
             Route::resource('coupons', \App\Http\Controllers\Admin\CouponController::class);

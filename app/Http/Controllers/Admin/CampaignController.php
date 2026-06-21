@@ -108,4 +108,28 @@ class CampaignController extends Controller
 
         return redirect()->route('admin.promotions.index')->with('success', 'La campagne a été envoyée avec succès à ' . $users->count() . ' vendeurs (Email, Notification et Messagerie).');
     }
+    public function edit(Campaign $campaign)
+    {
+        $coupons = Coupon::where('is_active', true)->get();
+        return view('admin.campaigns.edit', compact('campaign', 'coupons'));
+    }
+
+    public function update(Request $request, Campaign $campaign)
+    {
+        $validated = $request->validate([
+            'coupon_id' => 'required|exists:coupons,id',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
+        ]);
+
+        $campaign->update($validated);
+
+        return redirect()->route('admin.promotions.index')->with('success', 'La campagne a été mise à jour dans l\'historique.');
+    }
+
+    public function destroy(Campaign $campaign)
+    {
+        $campaign->delete();
+        return redirect()->route('admin.promotions.index')->with('success', 'La campagne a été supprimée de l\'historique.');
+    }
 }

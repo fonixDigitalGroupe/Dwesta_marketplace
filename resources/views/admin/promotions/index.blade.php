@@ -293,7 +293,8 @@
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Coupon</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Sujet / Message</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 140px;">Cible</th>
-                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 100px;">Envoyés</th>
+                        <th style="padding: 12px 15px; text-align: center; font-weight: 700; color: #475569; font-size: 0.75rem; border-right: 1px solid #eff3f6;">ENVOYÉS</th>
+                        <th style="padding: 12px 15px; text-align: right; font-weight: 700; color: #475569; font-size: 0.75rem;">ACTIONS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -320,13 +321,33 @@
                                     {{ $campaign->target_type }}
                                 </span>
                             </td>
-                            <td style="padding: 12px 15px; text-align: center; font-weight: 700; color: #1e293b;">
+                            <td style="padding: 12px 15px; text-align: center; font-weight: 700; color: #1e293b; border-right: 1px solid #eff3f6;">
                                 {{ $campaign->sent_count }}
+                            </td>
+                            <td style="padding: 12px 15px; text-align: right;">
+                                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                                    <a href="{{ route('admin.campaigns.edit', $campaign) }}"
+                                        style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
+                                        onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
+                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
+                                        Modifier
+                                    </a>
+                                    <span style="color: #eee;">|</span>
+                                    <form id="delete-campaign-{{ $campaign->id }}" action="{{ route('admin.campaigns.destroy', $campaign) }}" method="POST" style="display:inline;">
+                                        @csrf @method('DELETE')
+                                        <button type="button" onclick="confirmDeleteCampaign({{ $campaign->id }})"
+                                            style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                            onmouseover="this.style.textDecoration='underline'"
+                                            onmouseout="this.style.textDecoration='none'">
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
+                            <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
                                 Aucune campagne envoyée pour le moment.
                             </td>
                         </tr>
@@ -395,6 +416,24 @@ function confirmDeleteCoupon(id) {
         }
     });
 }
+
+function confirmDeleteCampaign(id) {
+    Swal.fire({
+        title: 'Supprimer du l\'historique ?',
+        text: "Cette action est irréversible !",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#c40000',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Oui, supprimer !',
+        cancelButtonText: 'Annuler',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-campaign-' + id).submit();
+        }
+    });
+}
+
 </script>
 @endpush
 
