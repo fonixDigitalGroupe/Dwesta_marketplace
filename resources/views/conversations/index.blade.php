@@ -205,9 +205,14 @@
     }
 </style>
 @endpush
-
-
-        
+@section('content')
+<div class="dashboard-container">
+    @include('partials.profile-sidebar')
+    
+    <div class="main-content">
+        <div class="account-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+            <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Messagerie</h1>
+        </div>
         <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
             <div style="background: #fdfdfd; padding: 12px 20px; border-bottom: 1px solid #f1f5f9; border-top: 4px solid #ea580c;">
                 <h1 style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 0;">Messages</h1>
