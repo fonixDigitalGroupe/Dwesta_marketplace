@@ -293,6 +293,8 @@
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Coupon</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Sujet / Message</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 140px;">Cible</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Début</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Fin</th>
                         <th style="padding: 12px 15px; text-align: center; font-weight: 700; color: #475569; font-size: 0.75rem; border-right: 1px solid #eff3f6;">ENVOYÉS</th>
                         <th style="padding: 12px 15px; text-align: right; font-weight: 700; color: #475569; font-size: 0.75rem;">ACTIONS</th>
                     </tr>
@@ -312,14 +314,6 @@
                                 <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
                                     {{ $campaign->message }}
                                 </div>
-                                @if($campaign->starts_at || $campaign->ends_at)
-                                    <div style="font-size: 0.73rem; color: #0369a1; margin-top: 6px; display: flex; align-items: center; gap: 4px; font-weight: 500;">
-                                        <i class="far fa-calendar-alt"></i>
-                                        Valide : 
-                                        @if($campaign->starts_at) du {{ $campaign->starts_at->format('d/m/Y') }} @endif
-                                        @if($campaign->ends_at) au {{ $campaign->ends_at->format('d/m/Y') }} @endif
-                                    </div>
-                                @endif
                             </td>
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #475569;">
                                 <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; 
@@ -328,6 +322,12 @@
                                     @else background: #f1f5f9; color: #475569; @endif">
                                     {{ $campaign->target_type }}
                                 </span>
+                            </td>
+                            <td style="padding: 12px 15px; text-align: center; font-size: 0.82rem; color: #475569; border-right: 1px solid #eff3f6;">
+                                {{ $campaign->starts_at ? $campaign->starts_at->format('d/m/Y') : '-' }}
+                            </td>
+                            <td style="padding: 12px 15px; text-align: center; font-size: 0.82rem; color: #475569; border-right: 1px solid #eff3f6;">
+                                {{ $campaign->ends_at ? $campaign->ends_at->format('d/m/Y') : '-' }}
                             </td>
                             <td style="padding: 12px 15px; text-align: center; font-weight: 700; color: #1e293b; border-right: 1px solid #eff3f6;">
                                 {{ $campaign->sent_count }}
@@ -354,8 +354,8 @@
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
+                         <tr>
+                            <td colspan="8" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
                                 Aucune campagne envoyée pour le moment.
                             </td>
                         </tr>
