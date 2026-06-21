@@ -59,13 +59,13 @@
                             </select>
                         </div>
 
-                        <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px;">
-                            <div>
+                        <div style="margin-bottom: 15px;">
+                            <div style="margin-bottom: 15px;">
                                 <label for="starts_at" style="display: block; font-size: 0.7rem; font-weight: 600; color: #64748b; margin-bottom: 5px;">Date de début</label>
                                 <input type="datetime-local" name="starts_at" id="starts_at" value="{{ old('starts_at', $campaign->starts_at ? $campaign->starts_at->format('Y-m-d\TH:i') : '') }}" 
                                        style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.85rem; color: #475569;">
                             </div>
-                            <div>
+                            <div style="margin-bottom: 15px;">
                                 <label for="ends_at" style="display: block; font-size: 0.7rem; font-weight: 600; color: #64748b; margin-bottom: 5px;">Date de fin</label>
                                 <input type="datetime-local" name="ends_at" id="ends_at" value="{{ old('ends_at', $campaign->ends_at ? $campaign->ends_at->format('Y-m-d\TH:i') : '') }}" 
                                        style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.85rem; color: #475569;">
