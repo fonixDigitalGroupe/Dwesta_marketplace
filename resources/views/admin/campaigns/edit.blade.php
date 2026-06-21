@@ -204,11 +204,7 @@
                             </div>
                         </div>
 
-                        <div style="background: #f8fafc; padding: 12px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
-                            <p style="font-size: 0.7rem; color: #64748b; margin-bottom: 5px;">Cible : <strong style="color: #1e293b;">{{ strtoupper($campaign->target_type) }}</strong></p>
-                            <p style="font-size: 0.7rem; color: #64748b; margin-bottom: 5px;">Destinataires : <strong style="color: #1e293b;">{{ $campaign->sent_count }}</strong></p>
-                            <p style="font-size: 0.7rem; color: #64748b; margin-bottom: 0;">Envoyé le : <strong style="color: #1e293b;">{{ $campaign->created_at->format('d/m/Y H:i') }}</strong></p>
-                        </div>
+
 
                         <div style="display: flex; flex-direction: column; gap: 10px;">
                             <button type="submit" class="btn-amazon-primary">
