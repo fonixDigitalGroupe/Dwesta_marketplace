@@ -152,8 +152,7 @@
                     <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Code</th>
                     <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Type</th>
                     <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Valeur</th>
-                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Statut</th>
-                    <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 160px;">Actions</th>
+                    <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 220px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -201,26 +200,24 @@
                         </td>
 
 
-                        <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
-                            <form action="{{ route('admin.coupons.toggle-status', $coupon) }}" method="POST" style="display:inline;">
-                                @csrf @method('PATCH')
-                                <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0;">
-                                    <span class="badge-amazon {{ $coupon->is_active ? 'badge-amazon-success' : 'badge-amazon-danger' }}">
-                                        {{ $coupon->is_active ? 'Actif' : 'Inactif' }}
-                                    </span>
-                                </button>
-                            </form>
-                        </td>
-
                         <td style="padding: 12px 15px; text-align: right;">
-                            <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                            <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center;">
+                                <form action="{{ route('admin.coupons.toggle-status', $coupon) }}" method="POST" style="display:inline;">
+                                    @csrf @method('PATCH')
+                                    <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;">
+                                        <span class="badge-amazon {{ $coupon->is_active ? 'badge-amazon-success' : 'badge-amazon-danger' }}" style="font-size: 0.65rem; padding: 2px 6px;">
+                                            {{ $coupon->is_active ? 'Actif' : 'Inactif' }}
+                                        </span>
+                                    </button>
+                                </form>
+                                <span style="color: #eee;">|</span>
                                 <a href="{{ route('admin.coupons.edit', $coupon) }}"
                                     style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
                                     onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
                                     onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
                                     Modifier
                                 </a>
-                                <span style="color: #ddd;">|</span>
+                                <span style="color: #eee;">|</span>
                                 <form id="delete-coupon-{{ $coupon->id }}" action="{{ route('admin.coupons.destroy', $coupon) }}" method="POST" style="display:inline;">
                                     @csrf @method('DELETE')
                                     <button type="button" onclick="confirmDeleteCoupon({{ $coupon->id }})"
@@ -235,7 +232,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eff3f6;">
+                        <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eff3f6;">
                             Aucun code promo trouvé.
                         </td>
                     </tr>
