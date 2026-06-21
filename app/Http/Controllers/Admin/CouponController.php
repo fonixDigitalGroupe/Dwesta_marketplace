@@ -57,7 +57,7 @@ class CouponController extends Controller
 
         Coupon::create($data);
 
-        return redirect()->route('admin.coupons.index')->with('success', 'Code promotionnel créé avec succès.');
+        return redirect()->route('admin.promotions.index')->with('success', 'Code promotionnel créé avec succès.');
     }
 
     public function edit(Coupon $coupon)
@@ -107,7 +107,7 @@ class CouponController extends Controller
 
         $coupon->update($data);
 
-        return redirect()->route('admin.coupons.index')->with('success', 'Code promotionnel mis à jour.');
+        return redirect()->route('admin.promotions.index')->with('success', 'Code promotionnel mis à jour.');
     }
 
     public function destroy(Coupon $coupon)

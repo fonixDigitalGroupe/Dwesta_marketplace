@@ -182,8 +182,8 @@
                 <i class="fas fa-ticket-alt" style="font-size: 0.8rem;"></i>
                 <span>Nouveau Code Promo</span>
             </div>
-            <a href="{{ route('admin.coupons.index') }}" class="btn-amazon-secondary" style="width: auto !important; height: 32px !important; padding: 0 16px !important; font-size: 0.8rem;">
-                <i class="fas fa-list" style="color: #ff9900;"></i> Voir les coupons
+            <a href="{{ route('admin.promotions.index') }}" class="btn-amazon-secondary" style="width: auto !important; height: 32px !important; padding: 0 16px !important; font-size: 0.8rem;">
+                <i class="fas fa-list" style="color: #ff9900;"></i> Promotions
             </a>
         </div>
 
@@ -306,7 +306,7 @@
                             <button type="submit" class="btn-amazon-primary">
                                 ENREGISTRER
                             </button>
-                            <a href="{{ route('admin.coupons.index') }}" class="btn-amazon-secondary">
+                            <a href="{{ route('admin.promotions.index') }}" class="btn-amazon-secondary">
                                 ANNULER
                             </a>
                         </div>

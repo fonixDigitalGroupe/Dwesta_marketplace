@@ -196,8 +196,8 @@
                 <span>Modifier le Code : <span style="color: #ff9900;">{{ $coupon->code }}</span></span>
             </div>
             <div style="display: flex; gap: 10px;">
-                <a href="{{ route('admin.coupons.index') }}" class="btn-amazon-secondary" style="width: auto !important; height: 32px !important; padding: 0 16px !important; font-size: 0.8rem;">
-                    <i class="fas fa-list" style="color: #ff9900;"></i> Liste
+                <a href="{{ route('admin.promotions.index') }}" class="btn-amazon-secondary" style="width: auto !important; height: 32px !important; padding: 0 16px !important; font-size: 0.8rem;">
+                    <i class="fas fa-list" style="color: #ff9900;"></i> Promotions
                 </a>
             </div>
         </div>
@@ -330,7 +330,7 @@
                             <button type="submit" class="btn-amazon-primary">
                                 METTRE À JOUR
                             </button>
-                            <a href="{{ route('admin.coupons.index') }}" class="btn-amazon-secondary">
+                            <a href="{{ route('admin.promotions.index') }}" class="btn-amazon-secondary">
                                 ANNULER
                             </a>
                         </div>
