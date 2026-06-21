@@ -28,4 +28,9 @@ class Campaign extends Model
     {
         return $this->belongsTo(Coupon::class);
     }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }

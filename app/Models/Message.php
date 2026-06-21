@@ -17,6 +17,7 @@ class Message extends Model
         'file_path',
         'read_at',
         'annonce_id',
+        'campaign_id',
     ];
 
     protected $casts = [
@@ -36,5 +37,10 @@ class Message extends Model
     public function annonce()
     {
         return $this->belongsTo(Annonce::class);
+    }
+
+    public function campaign()
+    {
+        return $this->belongsTo(Campaign::class);
     }
 }

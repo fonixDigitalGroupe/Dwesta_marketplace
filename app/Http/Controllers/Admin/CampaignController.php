@@ -107,6 +107,7 @@ class CampaignController extends Controller
                 'sender_id' => $adminId,
                 'content' => $fullContent,
                 'image_path' => $coupon->banner_image,
+                'campaign_id' => $campaign->id,
             ]);
         }
 
@@ -135,7 +136,10 @@ class CampaignController extends Controller
 
     public function destroy(Campaign $campaign)
     {
+        // Supprimer tous les messages associés dans la messagerie
+        $campaign->messages()->delete();
+        
         $campaign->delete();
-        return redirect()->route('admin.promotions.index')->with('success', 'La campagne a été supprimée de l\'historique.');
+        return redirect()->route('admin.promotions.index')->with('success', 'La campagne et tous les messages associés ont été supprimés.');
     }
 }
