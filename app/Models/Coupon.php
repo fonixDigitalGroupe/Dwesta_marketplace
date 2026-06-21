@@ -20,6 +20,7 @@ class Coupon extends Model
         'used_count',
         'is_active',
         'category_id',
+        'banner_image',
         'category_id_n1',
         'category_id_n2',
     ];
