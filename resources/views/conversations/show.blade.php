@@ -713,14 +713,22 @@
                                                 </div>
                                             @endif
                                         @elseif($message->image_path)
-                                            <div style="border-radius: 8px; overflow: hidden; margin-bottom: 4px;">
-                                                <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($message->image_path) }}" style="width: 100%; max-height: 300px; object-fit: cover; cursor: pointer;" onclick="window.open(this.src, '_blank')">
-                                            </div>
                                             @if($message->content)
-                                                <div class="message-body-text" style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; word-wrap: break-word; padding-top: 4px;">
+                                                <div class="message-body-text" style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; word-wrap: break-word; padding-bottom: 8px;">
                                                     {!! nl2br(e($message->content)) !!}
                                                 </div>
                                             @endif
+                                            {{-- Rich Image Card Style (Amazon/Alibaba) --}}
+                                            <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; display: flex; gap: 12px; align-items: center; margin-top: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                                                <div style="width: 70px; height: 50px; background: #f8fafc; border-radius: 4px; overflow: hidden; border: 1px solid #f1f5f9; flex-shrink: 0;">
+                                                    <img src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($message->image_path) }}" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;" onclick="window.open(this.src, '_blank')">
+                                                </div>
+                                                <div style="flex: 1; overflow: hidden;">
+                                                    <div style="font-weight: 700; color: #334155; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Offre Promotionnelle</div>
+                                                    <div style="font-size: 0.75rem; color: #64748b; margin-top: 2px;">Voir les détails du coupon</div>
+                                                </div>
+                                                <i class="fas fa-chevron-right" style="color: #cbd5e1; font-size: 0.8rem;"></i>
+                                            </div>
                                         @elseif($message->file_path)
                                             <a href="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($message->file_path) }}" target="_blank" style="text-decoration: none; display: flex; align-items: center; gap: 12px; background: #f1f5f9; padding: 10px; border-radius: 8px; margin-bottom: 4px;">
                                                 <div style="width: 32px; height: 32px; background: #e2e8f0; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #475569;">
