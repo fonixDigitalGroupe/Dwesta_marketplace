@@ -37,8 +37,6 @@ class CouponController extends Controller
             'category_id_n1' => 'nullable|exists:categories,id',
             'category_id_n2' => 'nullable|exists:categories,id',
             'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
         ]);
 
         $data = $validated;
