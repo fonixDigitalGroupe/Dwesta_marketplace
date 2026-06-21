@@ -98,9 +98,7 @@
                 <a href="{{ route('admin.campaigns.create') }}" class="btn-amazon-primary">
                     <i class="fas fa-bullhorn"></i> Nouvelle Campagne
                 </a>
-                <a href="{{ route('admin.banners.index') }}" class="btn-amazon-secondary">
-                    <i class="fas fa-image"></i> Bannières
-                </a>
+
                 <a href="{{ route('admin.coupons.create') }}" class="btn-coupon-orange">
                     <i class="fas fa-plus"></i> Nouveau code promo
                 </a>
