@@ -201,10 +201,9 @@
 
                         <div style="display: flex; flex-direction: column; gap: 15px;">
                             <div>
-                                <label for="code" class="field-label">Code Promotionnel <span style="color: red;">*</span></label>
-                                <input type="text" name="code" id="code" value="{{ old('code') }}" style="text-transform: uppercase;" placeholder="Ex: ETE2025" required>
+                                <label for="code" class="field-label">Code promotionnel <span style="color: red;">*</span></label>
+                                <input type="text" name="code" id="code" value="{{ old('code') }}" style="text-transform: uppercase;" required>
                                 @error('code') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
-                                <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px;">Le code que vos clients saisiront au moment du paiement.</p>
                             </div>
 
                             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
@@ -230,7 +229,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px;">Si défini, le coupon ne sera valide que pour les articles de cette catégorie.</p>
+
                         </div>
                     </div>
 
@@ -300,7 +299,6 @@
                                     <span class="checkmark"></span>
                                     <span style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Code actif</span>
                                 </label>
-                                <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 8px; padding-left: 28px;">Le code pourra être utilisé par les clients.</p>
                             </div>
                         </div>
 
