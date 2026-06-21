@@ -118,7 +118,7 @@
 
         {{-- Card Header --}}
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 24px;">
-            <div style="display: flex; align-items: center; gap: 12px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
                 <i class="fas fa-edit" style="font-size: 0.8rem;"></i>
                 <span>Modifier la Campagne</span>
                 
@@ -157,7 +157,28 @@
 
                     {{-- Configuration de la campagne --}}
                     <div class="amazon-card" style="margin: 0;">
-                        <h3 class="section-title">Détails du message</h3>
+                        <h3 class="section-title">Configuration</h3>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                            <div>
+                                <label class="field-label">Code Promo Associé <span style="color: red;">*</span></label>
+                                <select name="coupon_id" required>
+                                    @foreach($coupons as $coupon)
+                                        <option value="{{ $coupon->id }}" {{ old('coupon_id', $campaign->coupon_id) == $coupon->id ? 'selected' : '' }}>
+                                            {{ $coupon->code }} ({{ $coupon->type == 'percent' ? $coupon->value.'%' : number_format($coupon->value, 0).' F' }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="field-label">Cible vendeurs <span style="color: red;">*</span></label>
+                                <select name="target_type" required>
+                                    <option value="all" {{ old('target_type', $campaign->target_type) == 'all' ? 'selected' : '' }}>Tous les vendeurs</option>
+                                    <option value="professionnel" {{ old('target_type', $campaign->target_type) == 'professionnel' ? 'selected' : '' }}>Vendeurs Professionnels (Pro)</option>
+                                    <option value="particulier" {{ old('target_type', $campaign->target_type) == 'particulier' ? 'selected' : '' }}>Vendeurs Particuliers</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <div style="margin-bottom: 20px;">
                             <label class="field-label">Objet du message <span style="color: red;">*</span></label>
@@ -179,20 +200,9 @@
                 {{-- Right Column --}}
                 <div style="display: flex; flex-direction: column; gap: 20px;">
                     <div class="amazon-card" style="margin: 0;">
-                        <h3 class="section-title">Paramètres & Validité</h3>
+                        <h3 class="section-title">Validation & Mise à jour</h3>
 
                         <div style="margin-bottom: 20px;">
-                            <div style="margin-bottom: 15px;">
-                                <label class="field-label">Code Promo Associé</label>
-                                <select name="coupon_id" required>
-                                    @foreach($coupons as $coupon)
-                                        <option value="{{ $coupon->id }}" {{ old('coupon_id', $campaign->coupon_id) == $coupon->id ? 'selected' : '' }}>
-                                            {{ $coupon->code }} ({{ $coupon->type == 'percent' ? $coupon->value.'%' : number_format($coupon->value, 0).' F' }})
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
                             <div style="margin-bottom: 15px;">
                                 <label class="field-label">Date de début</label>
                                 <input type="date" name="starts_at" value="{{ old('starts_at', $campaign->starts_at ? $campaign->starts_at->format('Y-m-d') : '') }}" style="width: 100%;">
@@ -203,8 +213,6 @@
                                 <input type="date" name="ends_at" value="{{ old('ends_at', $campaign->ends_at ? $campaign->ends_at->format('Y-m-d') : '') }}" style="width: 100%;">
                             </div>
                         </div>
-
-
 
                         <div style="display: flex; flex-direction: column; gap: 10px;">
                             <button type="submit" class="btn-amazon-primary">
