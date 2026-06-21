@@ -83,6 +83,13 @@ class CampaignController extends Controller
                        "🎁 **Code Promo : " . $coupon->code . "**\n" .
                        "📉 **Réduction : " . $discountLabel . "** sur la catégorie " . $catName;
 
+        if ($campaign->starts_at || $campaign->ends_at) {
+            $fullContent .= "\n📅 **Validité :";
+            if ($campaign->starts_at) $fullContent .= " du " . $campaign->starts_at->format('d/m/Y');
+            if ($campaign->ends_at) $fullContent .= " au " . $campaign->ends_at->format('d/m/Y');
+            $fullContent .= "**";
+        }
+
         foreach ($users as $user) {
             // Trouver ou créer la conversation entre l'admin et le vendeur
             $conversation = \App\Models\Conversation::where(function($q) use ($adminId, $user) {
