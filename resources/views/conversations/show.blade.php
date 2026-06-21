@@ -697,7 +697,7 @@
                                 @endif
 
                                 {{-- The Card --}}
-                                <div class="message-card" style="background: #ffffff; border-radius: 12px; border-bottom-{{ $isMine ? 'right' : 'left' }}-radius: 2px; padding: {{ $message->annonce ? '0' : '12px 16px' }}; min-width: {{ $message->annonce ? '220px' : '60px' }}; max-width: {{ $message->annonce ? '240px' : '55%' }}; position: relative; box-shadow: none; overflow: hidden;">
+                                <div class="message-card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; border-bottom-{{ $isMine ? 'right' : 'left' }}-radius: 2px; padding: {{ $message->annonce ? '0' : '12px 16px' }}; min-width: {{ $message->annonce ? '220px' : '60px' }}; max-width: {{ $message->annonce ? '240px' : '55%' }}; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.02); overflow: hidden;">
                                     <div style="display: flex; flex-direction: column; gap: {{ $message->annonce ? '0' : '6px' }};">
                                         
                                          @if($message->annonce)
