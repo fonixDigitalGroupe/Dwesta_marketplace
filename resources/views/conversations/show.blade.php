@@ -618,7 +618,7 @@
             <div class="wa-main" style="flex: 1; display: flex; flex-direction: column; background: #fff; overflow: hidden;">
                 
                 <!-- Alibaba Style Header -->
-                <div class="conv-header" style="height: 64px; background: #fff; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; padding: 0 24px;">
+                <div class="conv-header" style="height: 64px; background: #fff; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: flex-start; padding: 0 24px;">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         @php
                             $isOtherPro = $otherUser->vendeur && $otherUser->vendeur->estProfessionnel();
