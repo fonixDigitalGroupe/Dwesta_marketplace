@@ -765,7 +765,11 @@
                                             <div style="font-size: 0.68rem; color: #94a3b8; display: flex; align-items: center; gap: 4px;">
                                                 {{ $message->created_at->format('H:i') }}
                                                 @if($isMine)
-                                                    <i class="fas fa-check-double" style="color: #94a3b8;" title="Lu"></i>
+                                                    @if($message->read_at)
+                                                        <i class="fas fa-check-double" style="color: #25D366;" title="Lu"></i>
+                                                    @else
+                                                        <i class="fas fa-check-double" style="color: #94a3b8;" title="Envoyé"></i>
+                                                    @endif
                                                 @endif
                                             </div>
                                         </div>
