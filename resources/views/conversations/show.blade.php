@@ -807,7 +807,7 @@
                                 <img src="{{ $conversation->annonce->photoPrincipale()->url ?? '' }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #e5e7eb;">
                                 <div style="flex: 1; min-width: 0;">
                                     <div style="font-weight: 600; font-size: 0.85rem; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;">{{ $conversation->annonce->titre }}</div>
-                                    <div style="font-weight: 700; font-size: 0.9rem; color: #ea580c; margin-bottom: 2px;">{{ number_format($conversation->annonce->prix, 0, ',', ' ') }} F CFA</div>
+                                    <div style="font-weight: 700; font-size: 0.9rem; color: #004aad; margin-bottom: 2px;">{{ number_format($conversation->annonce->prix, 0, ',', ' ') }} F CFA</div>
                                     <div style="font-size: 0.75rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ strip_tags($conversation->annonce->description ?? '') }}</div>
                                 </div>
                                 <div onclick="removeProductPreviewInInput()" style="position: absolute; top: 8px; right: 8px; background: #e2e8f0; color: #475569; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.6rem;">
@@ -824,17 +824,17 @@
                             </div>
                         </div>
 
-                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; border-top-left-radius: {{ (session('show_annonce_preview') && $conversation->annonce) ? '0' : '8px' }}; border-top-right-radius: {{ (session('show_annonce_preview') && $conversation->annonce) ? '0' : '8px' }}; transition: border-color 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.02) inset;" onfocusin="this.style.borderColor='#ea580c'" onfocusout="this.style.borderColor='#e2e8f0'">
+                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; border-top-left-radius: {{ (session('show_annonce_preview') && $conversation->annonce) ? '0' : '8px' }}; border-top-right-radius: {{ (session('show_annonce_preview') && $conversation->annonce) ? '0' : '8px' }}; transition: border-color 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.02) inset;" onfocusin="this.style.borderColor='#004aad'" onfocusout="this.style.borderColor='#e2e8f0'">
                             <textarea name="content" id="chat-textarea" placeholder="Saisissez votre message pour {{ $otherUser->name }}..." style="width: 100%; height: 64px; background: transparent; border: none; outline: none; resize: none; font-size: 0.95rem; line-height: 1.5; color: #1e293b; padding: 12px 16px;"></textarea>
                             
                             <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-top: 1px solid #f8fafc; background: #f8fafc; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
                                 <div style="font-size: 0.75rem; color: #64748b; display: flex; gap: 12px; align-items: center;">
-                                    <i class="fas fa-paperclip" style="cursor: pointer; font-size: 1.1rem; transition: color 0.2s;" onmouseover="this.style.color='#ea580c'" onmouseout="this.style.color='#64748b'" title="Joindre un fichier" onclick="document.getElementById('chat-attachment-input').click()"></i>
-                                    <i class="far fa-image" style="cursor: pointer; font-size: 1.1rem; transition: color 0.2s;" onmouseover="this.style.color='#ea580c'" onmouseout="this.style.color='#64748b'" title="Ajouter une image" onclick="document.getElementById('chat-attachment-input').click()"></i>
-                                    <span id="selected-file-info" style="color: #ea580c; font-weight: 500;"></span>
+                                    <i class="fas fa-paperclip" style="cursor: pointer; font-size: 1.1rem; transition: color 0.2s;" onmouseover="this.style.color='#004aad'" onmouseout="this.style.color='#64748b'" title="Joindre un fichier" onclick="document.getElementById('chat-attachment-input').click()"></i>
+                                    <i class="far fa-image" style="cursor: pointer; font-size: 1.1rem; transition: color 0.2s;" onmouseover="this.style.color='#004aad'" onmouseout="this.style.color='#64748b'" title="Ajouter une image" onclick="document.getElementById('chat-attachment-input').click()"></i>
+                                    <span id="selected-file-info" style="color: #004aad; font-weight: 500;"></span>
                                     <span style="opacity: 0.6; margin-left: 8px;">Appuyez sur "Entrée" pour envoyer</span>
                                 </div>
-                                <button type="submit" id="send-button" style="background: #ea580c; color: #fff; border: none; padding: 8px 24px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; box-shadow: 0 1px 3px rgba(234,88,12,0.2); display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#d84315'" onmouseout="this.style.background='#ea580c'">
+                                <button type="submit" id="send-button" style="background: #004aad; color: #fff; border: none; padding: 8px 24px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; box-shadow: 0 1px 3px rgba(0,74,173,0.2); display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#003a8c'" onmouseout="this.style.background='#004aad'">
                                     <i class="far fa-paper-plane"></i> Envoyer
                                 </button>
                             </div>
@@ -953,7 +953,7 @@
         document.getElementById('image-preview-wrapper').style.display = 'none';
         const sendBtn = document.getElementById('send-button');
         if (sendBtn) {
-            sendBtn.style.background = '#ea580c';
+            sendBtn.style.background = '#004aad';
             sendBtn.style.boxShadow = 'none';
         }
     }
