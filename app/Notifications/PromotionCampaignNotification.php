@@ -45,12 +45,19 @@ class PromotionCampaignNotification extends Notification implements ShouldQueue
             ? $this->coupon->value . '%' 
             : number_format($this->coupon->value, 0) . ' FCFA';
 
+        $categoryText = '';
+        if ($this->coupon->category) {
+            $categoryText = ' sur la catégorie **' . $this->coupon->category->nom . '**';
+        } elseif ($this->coupon->categoryN1) {
+            $categoryText = ' sur la catégorie **' . $this->coupon->categoryN1->nom . '**';
+        }
+
         return (new MailMessage)
             ->subject($this->subject)
             ->greeting('Bonjour ' . ($notifiable->name ?? 'Cher Vendeur') . ',')
             ->line('Une nouvelle opportunité de booster vos ventes est disponible sur Karnou !')
             ->line('Nous lançons une campagne promotionnelle avec le code : **' . $this->coupon->code . '**.')
-            ->line('Ce code offre une réduction de **' . $discountLabel . '** aux acheteurs.')
+            ->line('Ce code offre une réduction de **' . $discountLabel . '** aux acheteurs' . $categoryText . '.')
             ->line($this->customMessage)
             ->action('Gérer mes produits', route('vendeur.mes-annonces'))
             ->line('En baissant légèrement vos prix pendant cette période, vous maximiserez l\'impact de ce coupon et attirerez plus de clients.');

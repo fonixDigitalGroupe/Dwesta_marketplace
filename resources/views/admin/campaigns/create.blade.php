@@ -147,10 +147,12 @@
                                     @foreach($coupons as $coupon)
                                         @php 
                                             $discount = $coupon->type === 'percent' ? $coupon->value . '%' : number_format($coupon->value, 0) . ' FCFA';
+                                            $catName = $coupon->category->nom ?? $coupon->categoryN1->nom ?? 'votre boutique';
                                         @endphp
                                         <option value="{{ $coupon->id }}" 
                                                 data-code="{{ $coupon->code }}" 
-                                                data-discount="{{ $discount }}">
+                                                data-discount="{{ $discount }}"
+                                                data-category="{{ $catName }}">
                                             {{ $coupon->code }} ({{ $discount }})
                                         </option>
                                     @endforeach
@@ -223,9 +225,10 @@ function updateMessageTemplate(select) {
     if (option.value) {
         const code = option.getAttribute('data-code');
         const discount = option.getAttribute('data-discount');
+        const category = option.getAttribute('data-category');
         
         document.getElementById('campaign_subject').value = `Boostez vos ventes : Profitez du code ${code} sur Karnou !`;
-        document.getElementById('campaign_message').value = `Nous vous encourageons à réduire vos prix de ${discount} sur vos produits stratégiques. En combinant vos réductions avec ce code promo, vous apparaitrez en priorité sur les résultats de recherche et la page d'accueil !`;
+        document.getElementById('campaign_message').value = `Nous vous encourageons à réduire vos prix de ${discount} sur vos produits de la catégorie ${category}. En combinant vos réductions avec ce code promo, vous apparaitrez en priorité sur les résultats de recherche et la page d'accueil !`;
     }
 }
 </script>
