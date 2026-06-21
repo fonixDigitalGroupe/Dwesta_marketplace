@@ -206,27 +206,76 @@
 </style>
 @endpush
 
-@section('content')
-<div class="dashboard-container">
-    @include('partials.profile-sidebar')
-    
-    <div class="main-content">
-        <div class="account-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
-            <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Messagerie</h1>
-        </div>
-        <div class="wa-container">
-            {{-- 1. Liste à gauche (Standard Dashboard) --}}
-            @include('conversations._conversation_list')
+        @php
+            $otherUser = $conversation->user1_id == Auth::id() ? $conversation->user2 : $conversation->user1;
+        @endphp
+        
+        <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+            <div style="background: #fdfdfd; padding: 12px 20px; border-bottom: 1px solid #f1f5f9; border-top: 4px solid #ea580c;">
+                <h1 style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 0;">Messages</h1>
+            </div>
 
-            {{-- 2. Zone principale à droite --}}
-            <div class="wa-main" style="flex: 1; display: flex; flex-direction: column; background: #f8f9fa; overflow: hidden; height: 100%;">
-                <div class="wa-main-empty" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f8f9fa; text-align: center; padding: 2rem; width: 100%;">
-                    <div style="width: 100px; height: 100px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; border: 1px solid #f1f5f9;">
-                        <i class="far fa-comment-alt" style="font-size: 2.5rem; color: #cbd5e1;"></i>
+            <div style="background: #f3f4f6; padding: 24px;">
+                @forelse($conversations as $conv)
+                    @php
+                        $otherUser = $conv->user1_id == Auth::id() ? $conv->user2 : $conv->user1;
+                        $lastMsg = $conv->messages()->latest()->first();
+                        $isSystem = ($otherUser->hasRole('admin'));
+                    @endphp
+                    <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 4px; padding: 24px; margin-bottom: 20px; position: relative;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                            <span style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
+                                {{ $lastMsg ? $lastMsg->created_at->translatedFormat('d F') : $conv->created_at->translatedFormat('d F') }}
+                            </span>
+                            <a href="{{ route('conversations.show', $conv) }}" style="color: #ea580c; font-weight: 700; font-size: 0.95rem; text-decoration: none;">Détails</a>
+                        </div>
+
+                        <h2 style="font-size: 1.15rem; font-weight: 700; color: #111827; margin: 15px 0 8px;">
+                            @if($isSystem)
+                                Notification de l'administration 💡
+                            @else
+                                Conversation avec {{ $otherUser->name }}
+                            @endif
+                        </h2>
+
+                        <div style="font-size: 0.95rem; color: #374151; line-height: 1.5; margin-bottom: 20px;">
+                            {{ $lastMsg ? Str::limit(strip_tags($lastMsg->content), 300) : 'Démarrer une discussion...' }}
+                        </div>
+
+                        @if($lastMsg && $lastMsg->image_path)
+                            <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 4px; padding: 12px; display: flex; gap: 15px; align-items: center; max-width: 500px;">
+                                <div style="width: 80px; height: 60px; flex-shrink: 0; background: #f8fafc; border-radius: 4px; overflow: hidden; border: 1px solid #f1f5f9;">
+                                    <img src="{{ Storage::url($lastMsg->image_path) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: #1e293b; font-size: 0.9rem;">
+                                        @if($lastMsg->annonce)
+                                            {{ $lastMsg->annonce->titre }}
+                                        @else
+                                            Offre Promotionnelle
+                                        @endif
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">Voir les détails du message</div>
+                                </div>
+                            </div>
+                        @elseif($conv->annonce)
+                             <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 4px; padding: 12px; display: flex; gap: 15px; align-items: center; max-width: 500px;">
+                                <div style="width: 80px; height: 60px; flex-shrink: 0; background: #f8fafc; border-radius: 4px; overflow: hidden; border: 1px solid #f1f5f9;">
+                                    <img src="{{ $conv->annonce->photoPrincipale()->url ?? '' }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 600; color: #1e293b; font-size: 0.9rem;">{{ $conv->annonce->titre }}</div>
+                                    <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">{{ number_format($conv->annonce->prix, 0, ',', ' ') }} FCFA</div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
-                    <h2 style="font-size: 1.1rem; font-weight: 600; color: #333; margin-bottom: 0.3rem;">Démarrer la discussion</h2>
-                    <p style="font-size: 1rem; color: #94a3b8; max-width: 400px; line-height: 1.6;">Sélectionnez un vendeur dans la liste sur la gauche pour voir vos messages et négocier en toute sécurité.</p>
-                </div>
+                @empty
+                    <div style="background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 4px; padding: 60px; text-align: center; color: #94a3b8;">
+                        <i class="far fa-comment-alt" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                        <h3 style="font-size: 1.1rem; color: #64748b;">Aucun message pour le moment</h3>
+                    </div>
+                @endforelse
             </div>
         </div>
 
