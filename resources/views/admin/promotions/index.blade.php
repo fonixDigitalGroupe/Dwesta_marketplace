@@ -109,37 +109,7 @@
         </div>
     </div>
 
-    {{-- Stat Cards --}}
-    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-        <div class="promo-stat-card">
-            <div class="promo-stat-icon blue"><i class="fas fa-images"></i></div>
-            <div>
-                <div class="promo-stat-value">{{ $totalBanners }}</div>
-                <div class="promo-stat-label">Bannières au total</div>
-            </div>
-        </div>
-        <div class="promo-stat-card">
-            <div class="promo-stat-icon green"><i class="fas fa-check-circle"></i></div>
-            <div>
-                <div class="promo-stat-value">{{ $activeBanners }}</div>
-                <div class="promo-stat-label">Bannières actives</div>
-            </div>
-        </div>
-        <div class="promo-stat-card">
-            <div class="promo-stat-icon orange"><i class="fas fa-percentage"></i></div>
-            <div>
-                <div class="promo-stat-value">{{ $totalCoupons }}</div>
-                <div class="promo-stat-label">Codes promo au total</div>
-            </div>
-        </div>
-        <div class="promo-stat-card">
-            <div class="promo-stat-icon green"><i class="fas fa-ticket-alt"></i></div>
-            <div>
-                <div class="promo-stat-value">{{ $activeCoupons }}</div>
-                <div class="promo-stat-label">Codes promo actifs</div>
-            </div>
-        </div>
-    </div>
+
 
 
 
