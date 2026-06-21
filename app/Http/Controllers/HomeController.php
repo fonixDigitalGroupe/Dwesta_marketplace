@@ -20,15 +20,8 @@ class HomeController extends Controller
             ->whereNotNull('banner_image')
             ->get()
             ->map(function($coupon) {
-                // Déterminer le lien : Catégorie du coupon si présente, sinon accueil
-                $link = route('home');
-                if ($coupon->category_id) {
-                    $cat = \App\Models\Category::find($coupon->category_id);
-                    if ($cat) $link = route('search.index', ['category' => $cat->slug, 'coupon' => $coupon->code]);
-                } elseif ($coupon->category_id_n1) {
-                    $cat = \App\Models\Category::find($coupon->category_id_n1);
-                    if ($cat) $link = route('search.index', ['category' => $cat->slug, 'coupon' => $coupon->code]);
-                }
+                // Déterminer le lien : Nouvelle route dédiée pour les coupons
+                $link = route('coupons.landing', $coupon->code);
 
                 return (object) [
                     'id'          => 'coupon-' . $coupon->id,

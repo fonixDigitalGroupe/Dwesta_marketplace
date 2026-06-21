@@ -34,6 +34,7 @@ use App\Http\Controllers\PageController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/offres/{slug}', [\App\Http\Controllers\BannerLandingController::class, 'show'])->name('banner.landing');
+Route::get('/promotions/{code}', [\App\Http\Controllers\CouponLandingController::class, 'show'])->name('coupons.landing');
 Route::get('/a-propos', [PageController::class, 'about'])->name('about');
 Route::get('/conditions-generales', [PageController::class, 'terms'])->name('terms');
 Route::get('/vie-privee', [PageController::class, 'privacy'])->name('privacy');
