@@ -177,15 +177,7 @@
 </style>
 @endpush
 
-@section('content')
-<nav class="breadcrumb">
-    <a href="{{ route('home') }}">Accueil</a> &gt; 
-    <a href="{{ route('account.index') }}">Mon compte</a> &gt; 
-    <a href="{{ route('conversations.index') }}">Mes messages</a> &gt; 
-    <span>Nouveau message</span>
-</nav>
-
-<div class="dashboard-container">
+<div class="dashboard-container" style="margin-top: 2rem;">
     @include('partials.profile-sidebar')
 
     <div class="main-content">

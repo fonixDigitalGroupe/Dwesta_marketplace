@@ -588,16 +588,7 @@
 </style>
 @endpush
 
-@section('content')
-@if(request('layout') != 'mini')
-<nav class="breadcrumb">
-    <a href="{{ route('home') }}">Accueil</a> &gt; 
-    <a href="{{ route('account.index') }}">Mon compte</a> &gt; 
-    <a href="{{ route('conversations.index') }}">Mes messages</a>
-</nav>
-@endif
-
-<div class="dashboard-container">
+<div class="dashboard-container" style="margin-top: 2rem;">
     @if(request('layout') != 'mini')
         @include('partials.profile-sidebar')
     @endif
