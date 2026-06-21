@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CouponController extends Controller
 {
@@ -32,7 +33,7 @@ class CouponController extends Controller
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'usage_limit' => 'nullable|integer|min:1',
-            'is_active' => 'boolean',
+            'is_active' => 'nullable|in:0,1',
             'category_id' => 'nullable|exists:categories,id',
             'category_id_n1' => 'nullable|exists:categories,id',
             'category_id_n2' => 'nullable|exists:categories,id',
@@ -70,6 +71,7 @@ class CouponController extends Controller
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'usage_limit' => 'nullable|integer|min:1',
+            'is_active' => 'nullable|in:0,1',
             'category_id' => 'nullable|exists:categories,id',
             'category_id_n1' => 'nullable|exists:categories,id',
             'category_id_n2' => 'nullable|exists:categories,id',
