@@ -230,9 +230,7 @@
 
                         <h2 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 5px 0 10px;">
                             @if($isSystem)
-                                <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span>Karnou</span>
-                                </div>
+                                <span>Karnou</span>
                             @else
                                 Conversation avec {{ $otherUser->name }}
                             @endif
