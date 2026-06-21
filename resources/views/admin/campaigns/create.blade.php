@@ -53,7 +53,7 @@
 <div style="max-width: 900px; margin: 0 auto; padding: 20px;">
     
     <div style="margin-bottom: 25px;">
-        <a href="{{ route('promotions.index') }}" style="color: #0066c0; text-decoration: none; font-size: 0.85rem;">
+        <a href="{{ route('admin.promotions.index') }}" style="color: #0066c0; text-decoration: none; font-size: 0.85rem;">
             ← Retour aux promotions
         </a>
     </div>
@@ -64,7 +64,7 @@
             <p style="font-size: 0.85rem; color: #555; margin-top: 5px;">Motivez vos vendeurs à baisser leurs prix en les informant d'un nouveau code promo.</p>
         </div>
 
-        <form action="{{ route('campaigns.store') }}" method="POST" style="padding: 24px;">
+        <form action="{{ route('admin.campaigns.store') }}" method="POST" style="padding: 24px;">
             @csrf
 
             <div class="row">

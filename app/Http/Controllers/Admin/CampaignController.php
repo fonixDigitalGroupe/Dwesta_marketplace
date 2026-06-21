@@ -70,6 +70,6 @@ class CampaignController extends Controller
         // Envoi massif de notifications
         Notification::send($users, new PromotionCampaignNotification($coupon, $validated['subject'], $validated['message']));
 
-        return redirect()->route('promotions.index')->with('success', 'La campagne a été envoyée avec succès à ' . $users->count() . ' vendeurs.');
+        return redirect()->route('admin.promotions.index')->with('success', 'La campagne a été envoyée avec succès à ' . $users->count() . ' vendeurs.');
     }
 }
