@@ -6,6 +6,7 @@
     <style>
         input[type="text"],
         input[type="number"],
+        input[type="date"],
         textarea,
         select {
             width: 100%;
