@@ -13,8 +13,34 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // 0. Bannières publicitaires
+        // 0. Bannières publicitaires (Bannières classiques + Coupons avec image)
         $banners = Banner::active()->orderBy('order', 'asc')->get();
+
+        $couponBanners = \App\Models\Coupon::where('is_active', true)
+            ->whereNotNull('banner_image')
+            ->get()
+            ->map(function($coupon) {
+                // Déterminer le lien : Catégorie du coupon si présente, sinon accueil
+                $link = route('home');
+                if ($coupon->category_id) {
+                    $cat = \App\Models\Category::find($coupon->category_id);
+                    if ($cat) $link = route('search.index', ['category' => $cat->slug, 'coupon' => $coupon->code]);
+                } elseif ($coupon->category_id_n1) {
+                    $cat = \App\Models\Category::find($coupon->category_id_n1);
+                    if ($cat) $link = route('search.index', ['category' => $cat->slug, 'coupon' => $coupon->code]);
+                }
+
+                return (object) [
+                    'id'          => 'coupon-' . $coupon->id,
+                    'image_url'   => \Storage::url($coupon->banner_image),
+                    'link_url'    => $link,
+                    'slug'        => null,
+                    'title'       => $coupon->code,
+                    'is_coupon'   => true
+                ];
+            });
+
+        $banners = $banners->concat($couponBanners);
 
         // 1. Sections Dynamiques (Nouveau système)
         $homeSections = \App\Models\HomeSection::active()->ordered()->get()->map(function ($section) {
