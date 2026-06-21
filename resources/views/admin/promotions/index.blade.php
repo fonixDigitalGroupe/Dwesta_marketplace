@@ -95,6 +95,9 @@
                 <span style="line-height: 1;">Gestion des Codes Promo</span>
             </div>
             <div style="display: flex; gap: 8px;">
+                <a href="{{ route('campaigns.create') }}" class="btn-amazon-primary" style="background: linear-gradient(180deg, #37475a 0%, #232f3e 100%); border-color: #131a22; color: #fff;">
+                    <i class="fas fa-bullhorn"></i> Nouvelle Campagne
+                </a>
                 <a href="{{ route('admin.banners.index') }}" class="btn-amazon-secondary">
                     <i class="fas fa-image"></i> Bannières
                 </a>

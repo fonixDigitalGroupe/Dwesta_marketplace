@@ -79,11 +79,31 @@ try {
         echo "ℹ️ 'category_id_n2' already exists.\n";
     }
 
+    // Table: campaigns
+    $checkCampaigns = $pdo->query("SHOW TABLES LIKE 'campaigns'")->fetch();
+    if (!$checkCampaigns) {
+        $pdo->exec("CREATE TABLE campaigns (
+            id BIGINT(20) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            coupon_id BIGINT(20) UNSIGNED NOT NULL,
+            target_type ENUM('particulier', 'professionnel', 'all') DEFAULT 'all',
+            subject VARCHAR(191) NOT NULL,
+            message TEXT NOT NULL,
+            sent_count INT DEFAULT 0,
+            created_at TIMESTAMP NULL,
+            updated_at TIMESTAMP NULL,
+            CONSTRAINT fk_campaign_coupon FOREIGN KEY (coupon_id) REFERENCES coupons(id) ON DELETE CASCADE
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        echo "✅ Created 'campaigns' table.\n";
+    } else {
+        echo "ℹ️ 'campaigns' table already exists.\n";
+    }
+
     // Mark migrations as complete
     $migrations = [
         '2026_06_20_235602_add_images_to_coupons_table',
         '2026_06_21_000337_add_category_levels_to_coupons_table',
-        '2026_06_21_151800_add_landing_page_image_to_coupons_table'
+        '2026_06_21_151800_add_landing_page_image_to_coupons_table',
+        '2026_06_21_153342_create_campaigns_table'
     ];
 
     $checkBatch = $pdo->query("SELECT MAX(batch) as max_batch FROM migrations")->fetch();

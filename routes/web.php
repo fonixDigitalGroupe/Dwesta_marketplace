@@ -283,8 +283,11 @@ Route::middleware('auth')->group(function () {
             Route::resource('banners', \App\Http\Controllers\Admin\BannerController::class);
             Route::patch('banners/{banner}/toggle-status', [\App\Http\Controllers\Admin\BannerController::class, 'toggleStatus'])->name('banners.toggle-status');
 
-            // Hub Promotions
+            // Hub Promotions & Campagnes
             Route::get('promotions', [\App\Http\Controllers\Admin\PromotionController::class, 'index'])->name('promotions.index');
+            Route::get('campaigns', [\App\Http\Controllers\Admin\CampaignController::class, 'index'])->name('campaigns.index');
+            Route::get('campaigns/create', [\App\Http\Controllers\Admin\CampaignController::class, 'create'])->name('campaigns.create');
+            Route::post('campaigns', [\App\Http\Controllers\Admin\CampaignController::class, 'store'])->name('campaigns.store');
 
             // Gestion des Codes Promo (Coupons)
             Route::resource('coupons', \App\Http\Controllers\Admin\CouponController::class);
