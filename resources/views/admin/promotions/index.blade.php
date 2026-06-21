@@ -336,6 +336,45 @@
                     @endforelse
                 </tbody>
             </table>
+
+            {{-- Pagination Campagnes --}}
+            @if($campaigns->total() > 0)
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #eff3f6; border-radius: 4px; margin-top: 20px;">
+                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
+                        <strong>{{ $campaigns->total() }}</strong> campagne(s)
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                        @if($campaigns->onFirstPage())
+                            <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Précédent</span>
+                        @else
+                            <a href="{{ $campaigns->previousPageUrl() }}"
+                                style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px; transition: all 0.2s;"
+                                onmouseover="this.style.background='#f8fafc'"
+                                onmouseout="this.style.background='#fff'">Précédent</a>
+                        @endif
+
+                        @foreach(range(max(1, $campaigns->currentPage() - 2), min($campaigns->lastPage(), $campaigns->currentPage() + 2)) as $i)
+                            @if($i == $campaigns->currentPage())
+                                <span style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border: 1px solid #1e40af; border-radius: 4px;">{{ $i }}</span>
+                            @else
+                                <a href="{{ $campaigns->url($i) }}"
+                                    style="padding: 6px 12px; background: #fff; color: #64748b; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;"
+                                    onmouseover="this.style.background='#f8fafc'"
+                                    onmouseout="this.style.background='#fff'">{{ $i }}</a>
+                            @endif
+                        @endforeach
+
+                        @if($campaigns->hasMorePages())
+                            <a href="{{ $campaigns->nextPageUrl() }}"
+                                style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;"
+                                onmouseover="this.style.background='#f8fafc'"
+                                onmouseout="this.style.background='#fff'">Suivant</a>
+                        @else
+                            <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Suivant</span>
+                        @endif
+                    </div>
+                </div>
+            @endif
         </div>
 
     </div>

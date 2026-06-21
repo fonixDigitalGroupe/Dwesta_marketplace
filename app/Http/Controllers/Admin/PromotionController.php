@@ -20,10 +20,13 @@ class PromotionController extends Controller
                 $q->where('code', 'like', "%{$search}%");
             })
             ->orderByDesc('created_at')
-            ->paginate($perPage)
-            ->appends($request->only(['search', 'per_page']));
+            ->paginate($perPage, ['*'], 'coupons_page')
+            ->appends($request->only(['search', 'per_page', 'campaigns_page']));
 
-        $campaigns = \App\Models\Campaign::with('coupon')->latest()->take(10)->get();
+        $campaigns = \App\Models\Campaign::with('coupon')
+            ->latest()
+            ->paginate(10, ['*'], 'campaigns_page')
+            ->appends($request->only(['search', 'per_page', 'coupons_page']));
 
         return view('admin.promotions.index', compact('coupons', 'campaigns'));
     }
