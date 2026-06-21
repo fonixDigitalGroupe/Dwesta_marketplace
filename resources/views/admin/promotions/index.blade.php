@@ -291,7 +291,7 @@
                     <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 150px;">Date</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Coupon</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Sujet / Message</th>
+
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 140px;">Cible</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Début</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Fin</th>
@@ -309,12 +309,7 @@
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                                 <span class="code-badge">{{ $campaign->coupon->code ?? 'N/A' }}</span>
                             </td>
-                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
-                                <div style="font-size: 0.85rem; font-weight: 600; color: #1e293b;">{{ $campaign->subject }}</div>
-                                <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
-                                    {{ $campaign->message }}
-                                </div>
-                            </td>
+
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #475569;">
                                 <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; 
                                     @if($campaign->target_type == 'professionnel') background: #e0f2fe; color: #0369a1; 
@@ -355,7 +350,7 @@
                         </tr>
                     @empty
                          <tr>
-                            <td colspan="8" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
+                            <td colspan="7" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
                                 Aucune campagne envoyée pour le moment.
                             </td>
                         </tr>
