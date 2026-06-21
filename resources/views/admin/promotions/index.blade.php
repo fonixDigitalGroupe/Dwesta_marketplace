@@ -405,13 +405,13 @@
 <script>
 function confirmDeleteCoupon(id) {
     Swal.fire({
-        title: 'Êtes-vous sûr ?',
-        text: "Cette action est irréversible !",
+        title: 'Supprimer ce coupon ?',
+        text: "Voulez-vous vraiment supprimer ce coupon ? Cette action est irréversible.",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#c40000',
+        confirmButtonColor: '#d33',
         cancelButtonColor: '#6b7280',
-        confirmButtonText: 'Oui, supprimer !',
+        confirmButtonText: 'Oui, supprimer',
         cancelButtonText: 'Annuler',
     }).then((result) => {
         if (result.isConfirmed) {
@@ -422,13 +422,13 @@ function confirmDeleteCoupon(id) {
 
 function confirmDeleteCampaign(id) {
     Swal.fire({
-        title: 'Supprimer du l\'historique ?',
-        text: "Cette action est irréversible !",
+        title: 'Supprimer la campagne ?',
+        text: "Voulez-vous vraiment retirer cette campagne de l'historique ? Cela supprimera également les messages associés dans la messagerie des vendeurs.",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#c40000',
+        confirmButtonColor: '#d33',
         cancelButtonColor: '#6b7280',
-        confirmButtonText: 'Oui, supprimer !',
+        confirmButtonText: 'Oui, supprimer',
         cancelButtonText: 'Annuler',
     }).then((result) => {
         if (result.isConfirmed) {
