@@ -98,8 +98,8 @@
                 <a href="{{ route('admin.campaigns.create') }}" class="btn-amazon-primary" style="background: linear-gradient(180deg, #37475a 0%, #232f3e 100%); border-color: #131a22; color: #fff;">
                     <i class="fas fa-bullhorn"></i> Nouvelle Campagne
                 </a>
-                <a href="{{ route('admin.banners.index') }}" class="btn-amazon-secondary">
-                    <i class="fas fa-image"></i> Bannières
+                <a href="{{ route('admin.banners.create') }}" class="btn-amazon-primary">
+                    <i class="fas fa-image"></i> Nouvelle Campagne Bannières
                 </a>
                 <a href="{{ route('admin.coupons.create') }}" class="btn-coupon-orange">
                     <i class="fas fa-plus"></i> Nouveau code promo
