@@ -70,6 +70,41 @@ class CampaignController extends Controller
         // Envoi massif de notifications
         Notification::send($users, new PromotionCampaignNotification($coupon, $validated['subject'], $validated['message']));
 
-        return redirect()->route('admin.promotions.index')->with('success', 'La campagne a été envoyée avec succès à ' . $users->count() . ' vendeurs.');
+        // Intégration Messagerie Interne
+        $adminId = auth()->id();
+        $discountLabel = $coupon->type === 'percent' ? $coupon->value . '%' : number_format($coupon->value, 0) . ' FCFA';
+        $catName = $coupon->category->nom ?? $coupon->categoryN1->nom ?? 'votre boutique';
+        
+        $fullContent = $validated['message'] . "\n\n" . 
+                       "🎁 **Code Promo : " . $coupon->code . "**\n" .
+                       "📉 **Réduction : " . $discountLabel . "** sur la catégorie " . $catName;
+
+        foreach ($users as $user) {
+            // Trouver ou créer la conversation entre l'admin et le vendeur
+            $conversation = \App\Models\Conversation::where(function($q) use ($adminId, $user) {
+                $q->where('user1_id', $adminId)->where('user2_id', $user->id);
+            })->orWhere(function($q) use ($adminId, $user) {
+                $q->where('user1_id', $user->id)->where('user2_id', $adminId);
+            })->first();
+
+            if (!$conversation) {
+                $conversation = \App\Models\Conversation::create([
+                    'user1_id' => $adminId,
+                    'user2_id' => $user->id,
+                    'last_message_at' => now(),
+                ]);
+            } else {
+                $conversation->update(['last_message_at' => now()]);
+            }
+
+            // Créer le message
+            \App\Models\Message::create([
+                'conversation_id' => $conversation->id,
+                'sender_id' => $adminId,
+                'content' => $fullContent,
+            ]);
+        }
+
+        return redirect()->route('admin.promotions.index')->with('success', 'La campagne a été envoyée avec succès à ' . $users->count() . ' vendeurs (Email, Notification et Messagerie).');
     }
 }
