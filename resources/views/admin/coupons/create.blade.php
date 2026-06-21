@@ -287,11 +287,7 @@
                             </div>
                         </div>
 
-                        <div style="margin-top: 15px;">
-                            <label for="min_purchase" class="field-label">Montant minimum d'achat</label>
-                            <input type="number" step="0.01" min="0" name="min_purchase" id="min_purchase" value="{{ old('min_purchase') }}" placeholder="Ex: 50000">
-                            <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px;">Laissez vide ou mettez 0 pour ignorer ce critère.</p>
-                        </div>
+
                     </div>
 
                     <div class="amazon-card" style="margin: 0;">
