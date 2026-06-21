@@ -61,6 +61,10 @@ class CampaignController extends Controller
         }
 
         // Création de l'enregistrement de campagne
+        $campaign = Campaign::create([
+            'coupon_id' => $coupon->id,
+            'target_type' => $validated['target_type'],
+            'subject' => $validated['subject'],
             'message' => $validated['message'],
             'sent_count' => $users->count(),
             'starts_at' => $validated['starts_at'],
