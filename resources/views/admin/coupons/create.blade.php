@@ -260,17 +260,32 @@
                     </div>
 
                     {{-- Visuels --}}
-                    <div class="amazon-card" style="margin: 0;">
-                        <h3 class="section-title">Image Bannière</h3>
-                        <div class="dropzone-amazon" onclick="document.getElementById('banner-image-input').click()">
-                            <div id="dropzone-banner-content">
-                                <i class="fas fa-image" style="font-size: 24px; color: #cbd5e1; margin-bottom: 10px;"></i>
-                                <p style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Image principale</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="amazon-card" style="margin: 0;">
+                            <h3 class="section-title">Image Bannière (Home)</h3>
+                            <div class="dropzone-amazon" onclick="document.getElementById('banner-image-input').click()">
+                                <div id="dropzone-banner-content">
+                                    <i class="fas fa-image" style="font-size: 24px; color: #cbd5e1; margin-bottom: 10px;"></i>
+                                    <p style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Slider Principal</p>
+                                </div>
+                                <img id="preview-banner-img" style="display: none; max-width: 100%; max-height: 120px; object-fit: contain;">
                             </div>
-                            <img id="preview-banner-img" style="display: none; max-width: 100%; max-height: 120px; object-fit: contain;">
+                            <input type="file" id="banner-image-input" name="banner_image" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview-banner-img', 'dropzone-banner-content')">
+                            @error('banner_image') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                         </div>
-                        <input type="file" id="banner-image-input" name="banner_image" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview-banner-img', 'dropzone-banner-content')">
-                        @error('banner_image') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+
+                        <div class="amazon-card" style="margin: 0;">
+                            <h3 class="section-title">Image Page (Landing)</h3>
+                            <div class="dropzone-amazon" onclick="document.getElementById('landing-image-input').click()">
+                                <div id="dropzone-landing-content">
+                                    <i class="fas fa-desktop" style="font-size: 24px; color: #cbd5e1; margin-bottom: 10px;"></i>
+                                    <p style="font-size: 0.75rem; color: #64748b; font-weight: 600;">En-tête de page</p>
+                                </div>
+                                <img id="preview-landing-img" style="display: none; max-width: 100%; max-height: 120px; object-fit: contain;">
+                            </div>
+                            <input type="file" id="landing-image-input" name="landing_page_image" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview-landing-img', 'dropzone-landing-content')">
+                            @error('landing_page_image') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                        </div>
                     </div>
 
                 </div>

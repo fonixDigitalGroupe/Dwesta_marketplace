@@ -274,21 +274,40 @@
                     </div>
 
                     {{-- Visuels --}}
-                    <div class="amazon-card" style="margin: 0;">
-                        <h3 class="section-title">Image Bannière</h3>
-                        <div class="dropzone-amazon" onclick="document.getElementById('banner-image-input').click()">
-                            <div id="dropzone-banner-content" style="{{ $coupon->banner_image ? 'display: none;' : '' }}">
-                                <i class="fas fa-image" style="font-size: 24px; color: #cbd5e1; margin-bottom: 10px;"></i>
-                                <p style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Nouvelle image</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="amazon-card" style="margin: 0;">
+                            <h3 class="section-title">Image Bannière (Home)</h3>
+                            <div class="dropzone-amazon" onclick="document.getElementById('banner-image-input').click()">
+                                <div id="dropzone-banner-content" style="{{ $coupon->banner_image ? 'display: none;' : '' }}">
+                                    <i class="fas fa-image" style="font-size: 24px; color: #cbd5e1; margin-bottom: 10px;"></i>
+                                    <p style="font-size: 0.75rem; color: #64748b; font-weight: 600;">Slider Principal</p>
+                                </div>
+                                @if($coupon->banner_image)
+                                    <img id="preview-banner-img" src="{{ Storage::url($coupon->banner_image) }}">
+                                @else
+                                    <img id="preview-banner-img" style="display: none;">
+                                @endif
                             </div>
-                            @if($coupon->banner_image)
-                                <img id="preview-banner-img" src="{{ asset('storage/' . $coupon->banner_image) }}">
-                            @else
-                                <img id="preview-banner-img" style="display: none;">
-                            @endif
+                            <input type="file" id="banner-image-input" name="banner_image" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview-banner-img', 'dropzone-banner-content')">
+                            @error('banner_image') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                         </div>
-                        <input type="file" id="banner-image-input" name="banner_image" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview-banner-img', 'dropzone-banner-content')">
-                        @error('banner_image') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+
+                        <div class="amazon-card" style="margin: 0;">
+                            <h3 class="section-title">Image Page (Landing)</h3>
+                            <div class="dropzone-amazon" onclick="document.getElementById('landing-image-input').click()">
+                                <div id="dropzone-landing-content" style="{{ $coupon->landing_page_image ? 'display: none;' : '' }}">
+                                    <i class="fas fa-desktop" style="font-size: 24px; color: #cbd5e1; margin-bottom: 10px;"></i>
+                                    <p style="font-size: 0.75rem; color: #64748b; font-weight: 600;">En-tête de page</p>
+                                </div>
+                                @if($coupon->landing_page_image)
+                                    <img id="preview-landing-img" src="{{ Storage::url($coupon->landing_page_image) }}">
+                                @else
+                                    <img id="preview-landing-img" style="display: none;">
+                                @endif
+                            </div>
+                            <input type="file" id="landing-image-input" name="landing_page_image" accept="image/*" style="display: none;" onchange="previewImage(this, 'preview-landing-img', 'dropzone-landing-content')">
+                            @error('landing_page_image') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                        </div>
                     </div>
 
                 </div>

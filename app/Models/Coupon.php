@@ -21,6 +21,7 @@ class Coupon extends Model
         'is_active',
         'category_id',
         'banner_image',
+        'landing_page_image',
         'category_id_n1',
         'category_id_n2',
     ];

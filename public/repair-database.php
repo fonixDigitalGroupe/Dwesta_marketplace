@@ -52,10 +52,19 @@ try {
         echo "ℹ️ 'banner_image' already exists.\n";
     }
 
+    // Column: landing_page_image
+    $checkLanding = $pdo->query("SHOW COLUMNS FROM coupons LIKE 'landing_page_image'")->fetch();
+    if (!$checkLanding) {
+        $pdo->exec("ALTER TABLE coupons ADD COLUMN landing_page_image VARCHAR(191) NULL AFTER banner_image");
+        echo "✅ Added 'landing_page_image' column.\n";
+    } else {
+        echo "ℹ️ 'landing_page_image' already exists.\n";
+    }
+
     // Column: category_id_n1
     $checkN1 = $pdo->query("SHOW COLUMNS FROM coupons LIKE 'category_id_n1'")->fetch();
     if (!$checkN1) {
-        $pdo->exec("ALTER TABLE coupons ADD COLUMN category_id_n1 BIGINT(20) UNSIGNED NULL AFTER banner_image");
+        $pdo->exec("ALTER TABLE coupons ADD COLUMN category_id_n1 BIGINT(20) UNSIGNED NULL AFTER landing_page_image");
         echo "✅ Added 'category_id_n1' column.\n";
     } else {
         echo "ℹ️ 'category_id_n1' already exists.\n";
@@ -73,7 +82,8 @@ try {
     // Mark migrations as complete
     $migrations = [
         '2026_06_20_235602_add_images_to_coupons_table',
-        '2026_06_21_000337_add_category_levels_to_coupons_table'
+        '2026_06_21_000337_add_category_levels_to_coupons_table',
+        '2026_06_21_151800_add_landing_page_image_to_coupons_table'
     ];
 
     $checkBatch = $pdo->query("SELECT MAX(batch) as max_batch FROM migrations")->fetch();

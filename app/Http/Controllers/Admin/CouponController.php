@@ -38,6 +38,7 @@ class CouponController extends Controller
             'category_id_n1' => 'nullable|exists:categories,id',
             'category_id_n2' => 'nullable|exists:categories,id',
             'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'landing_page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $data = $validated;
@@ -47,6 +48,11 @@ class CouponController extends Controller
         if ($request->hasFile('banner_image')) {
             $path = $request->file('banner_image')->store('coupons', 'public');
             $data['banner_image'] = $path;
+        }
+
+        if ($request->hasFile('landing_page_image')) {
+            $path = $request->file('landing_page_image')->store('coupons', 'public');
+            $data['landing_page_image'] = $path;
         }
 
         Coupon::create($data);
@@ -76,6 +82,7 @@ class CouponController extends Controller
             'category_id_n1' => 'nullable|exists:categories,id',
             'category_id_n2' => 'nullable|exists:categories,id',
             'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'landing_page_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $data = $validated;
@@ -88,6 +95,14 @@ class CouponController extends Controller
             }
             $path = $request->file('banner_image')->store('coupons', 'public');
             $data['banner_image'] = $path;
+        }
+
+        if ($request->hasFile('landing_page_image')) {
+            if ($coupon->landing_page_image) {
+                Storage::disk('public')->delete($coupon->landing_page_image);
+            }
+            $path = $request->file('landing_page_image')->store('coupons', 'public');
+            $data['landing_page_image'] = $path;
         }
 
         $coupon->update($data);
