@@ -298,6 +298,61 @@
             </div>
         @endif
 
+        {{-- Section Historique des Campagnes --}}
+        <div style="margin-top: 40px; border-top: 2px solid #eff3f6; padding-top: 25px;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px;">
+                <i class="fas fa-history" style="font-size: 0.8rem;"></i>
+                <span>Historique des Campagnes Envoyées</span>
+            </div>
+
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid #eff3f6;">
+                <thead>
+                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 150px;">Date</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Coupon</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Sujet / Message</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 140px;">Cible</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 100px;">Envoyés</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($campaigns as $campaign)
+                        <tr style="border-bottom: 1px solid #eff3f6;">
+                            <td style="padding: 12px 15px; font-size: 0.82rem; color: #475569; border-right: 1px solid #eff3f6;">
+                                {{ $campaign->created_at->format('d/m/Y H:i') }}
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
+                                <span class="code-badge">{{ $campaign->coupon->code ?? 'N/A' }}</span>
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
+                                <div style="font-size: 0.85rem; font-weight: 600; color: #1e293b;">{{ $campaign->subject }}</div>
+                                <div style="font-size: 0.75rem; color: #64748b; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">
+                                    {{ $campaign->message }}
+                                </div>
+                            </td>
+                            <td style="padding: 12px 15px; font-size: 0.82rem; color: #475569; border-right: 1px solid #eff3f6;">
+                                <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; 
+                                    @if($campaign->target_type == 'professionnel') background: #e0f2fe; color: #0369a1; 
+                                    @elseif($campaign->target_type == 'particulier') background: #fef3c7; color: #92400e;
+                                    @else background: #f1f5f9; color: #475569; @endif">
+                                    {{ $campaign->target_type }}
+                                </span>
+                            </td>
+                            <td style="padding: 12px 15px; text-align: center; font-weight: 700; color: #1e293b;">
+                                {{ $campaign->sent_count }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
+                                Aucune campagne envoyée pour le moment.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </div>
 

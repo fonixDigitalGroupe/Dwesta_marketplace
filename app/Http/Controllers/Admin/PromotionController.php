@@ -23,6 +23,8 @@ class PromotionController extends Controller
             ->paginate($perPage)
             ->appends($request->only(['search', 'per_page']));
 
-        return view('admin.promotions.index', compact('coupons'));
+        $campaigns = \App\Models\Campaign::with('coupon')->latest()->take(10)->get();
+
+        return view('admin.promotions.index', compact('coupons', 'campaigns'));
     }
 }
