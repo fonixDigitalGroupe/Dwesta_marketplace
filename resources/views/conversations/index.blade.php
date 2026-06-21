@@ -230,7 +230,10 @@
 
                         <h2 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 5px 0 10px;">
                             @if($isSystem)
-                                Notification de l'administration 💡
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <img src="{{ asset('images/logo.png') }}" style="height: 20px; width: auto; object-fit: contain;">
+                                    <span>Karnou</span>
+                                </div>
                             @else
                                 Conversation avec {{ $otherUser->name }}
                             @endif
