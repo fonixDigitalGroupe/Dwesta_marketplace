@@ -28,14 +28,16 @@ $db_user = $env['DB_USERNAME'] ?? '';
 $db_pass = $env['DB_PASSWORD'] ?? '';
 
 try {
+    echo "<h1>🛠️ Force Database Repair</h1>";
+    echo "<pre>";
+    echo "Connecting to: $db_host:$db_port (Database: $db_name)...\n";
+    
     $dsn = "mysql:host=$db_host;port=$db_port;dbname=$db_name;charset=utf8mb4";
     $pdo = new PDO($dsn, $db_user, $db_pass, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     ]);
-
-    echo "<h1>🛠️ Force Database Repair</h1>";
-    echo "<pre>";
+    echo "✅ Connected successfully!\n\n";
 
     // Column: banner_image
     $checkBanner = $pdo->query("SHOW COLUMNS FROM coupons LIKE 'banner_image'")->fetch();
