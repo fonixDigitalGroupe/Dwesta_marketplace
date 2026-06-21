@@ -401,11 +401,22 @@
     </div>
 </div>
 
+<style>
+    .swal2-title-small {
+        font-size: 1.25rem !important;
+        font-weight: 700 !important;
+        color: #334155 !important;
+    }
+</style>
+
 @push('scripts')
 <script>
 function confirmDeleteCoupon(id) {
     Swal.fire({
         title: 'Supprimer ce coupon ?',
+        customClass: {
+            title: 'swal2-title-small'
+        },
         text: "Voulez-vous vraiment supprimer ce coupon ? Cette action est irréversible.",
         icon: 'warning',
         showCancelButton: true,
@@ -423,6 +434,9 @@ function confirmDeleteCoupon(id) {
 function confirmDeleteCampaign(id) {
     Swal.fire({
         title: 'Supprimer la campagne ?',
+        customClass: {
+            title: 'swal2-title-small'
+        },
         text: "Voulez-vous vraiment retirer cette campagne de l'historique ? Cela supprimera également les messages associés dans la messagerie des vendeurs.",
         icon: 'warning',
         showCancelButton: true,
