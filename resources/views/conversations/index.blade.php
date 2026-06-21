@@ -206,9 +206,7 @@
 </style>
 @endpush
 
-        @php
-            $otherUser = $conversation->user1_id == Auth::id() ? $conversation->user2 : $conversation->user1;
-        @endphp
+
         
         <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
             <div style="background: #fdfdfd; padding: 12px 20px; border-bottom: 1px solid #f1f5f9; border-top: 4px solid #ea580c;">
