@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('coupons', function (Blueprint $table) {
-            $table->string('banner_image')->nullable()->after('category_id');
+            if (!Schema::hasColumn('coupons', 'banner_image')) {
+                $table->string('banner_image')->nullable()->after('category_id');
+            }
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('coupons', function (Blueprint $table) {
-            $table->dropColumn('banner_image');
+            if (Schema::hasColumn('coupons', 'banner_image')) {
+                $table->dropColumn('banner_image');
+            }
         });
     }
 };
