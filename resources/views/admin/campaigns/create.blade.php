@@ -176,7 +176,7 @@
                         <div>
                             <label class="field-label">Message aux vendeurs <span style="color: red;">*</span></label>
                             <textarea name="message" id="campaign_message" rows="6" required placeholder="Expliquez aux vendeurs pourquoi ils doivent baisser leurs prix...">C'est le moment idéal pour ajuster vos prix ! Nous venons de lancer une campagne de publicité massive pour attirer les clients vers vos catégories.</textarea>
-                            <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 8px;">Un bloc contenant le code promo sera automatiquement ajouté à la fin du message.</p>
+
                         </div>
                     </div>
 
