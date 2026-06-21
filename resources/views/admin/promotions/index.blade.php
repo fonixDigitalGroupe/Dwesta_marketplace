@@ -317,8 +317,9 @@
                 </thead>
                 <tbody>
                     @forelse($campaigns as $campaign)
-                        <tr style="border-bottom: 1px solid #eff3f6;">
-                            <td style="padding: 12px 15px; font-size: 0.82rem; color: #475569; border-right: 1px solid #eff3f6;">
+                        <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
+                            onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #475569;">
                                 {{ $campaign->created_at->format('d/m/Y H:i') }}
                             </td>
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
@@ -330,7 +331,7 @@
                                     {{ $campaign->message }}
                                 </div>
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.82rem; color: #475569; border-right: 1px solid #eff3f6;">
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #475569;">
                                 <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; 
                                     @if($campaign->target_type == 'professionnel') background: #e0f2fe; color: #0369a1; 
                                     @elseif($campaign->target_type == 'particulier') background: #fef3c7; color: #92400e;
