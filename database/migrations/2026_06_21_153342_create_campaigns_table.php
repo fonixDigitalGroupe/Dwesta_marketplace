@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('campaigns', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('coupon_id')->constrained()->onDelete('cascade');
-            $table->enum('target_type', ['particulier', 'professionnel', 'all'])->default('all');
-            $table->string('subject');
-            $table->text('message');
-            $table->integer('sent_count')->default(0);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('campaigns')) {
+            Schema::create('campaigns', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('coupon_id')->constrained()->onDelete('cascade');
+                $table->enum('target_type', ['particulier', 'professionnel', 'all'])->default('all');
+                $table->string('subject');
+                $table->text('message');
+                $table->integer('sent_count')->default(0);
+                $table->timestamps();
+            });
+        }
     }
 
     /**
