@@ -618,7 +618,7 @@
                         @endphp
                         <div style="width: 38px; height: 38px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #475569; font-size: 1.1rem; flex-shrink: 0; overflow: hidden; border: 1px solid #e5e7eb;">
                             @if($otherUser->hasRole('admin'))
-                                <i class="fas fa-user-shield" style="font-size: 1.1rem; color: #94a3b8;"></i>
+                                <img src="{{ asset('images/logo.png') }}" style="width: 80%; height: auto; object-fit: contain;">
                             @elseif($isOtherPro)
                                 @if($shopLogo)
                                     <img src="{{ Storage::url($shopLogo) }}" style="width: 100%; height: 100%; object-fit: cover;">
