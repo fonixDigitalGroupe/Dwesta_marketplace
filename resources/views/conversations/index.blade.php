@@ -215,9 +215,7 @@
         </div>
         
         <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-            <div style="background: #ffffff; padding: 15px 20px; border-bottom: 1px solid #f1f5f9;">
-                <h1 style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 0;">Messages</h1>
-            </div>
+
 
             <div style="background: #ffffff; padding: 20px;">
                 @forelse($conversations as $conv)
