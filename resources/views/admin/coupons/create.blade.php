@@ -293,26 +293,10 @@
                 {{-- Right Column --}}
                 <div style="display: flex; flex-direction: column; gap: 20px;">
                     <div class="amazon-card" style="margin: 0;">
-                        <h3 class="section-title">Validité & Utilisation</h3>
+                        <h3 class="section-title">Utilisation</h3>
 
                         <div style="display: flex; flex-direction: column; gap: 15px;">
-                            <div>
-                                <label for="start_date" class="field-label">Date de début</label>
-                                <input type="datetime-local" name="start_date" id="start_date" value="{{ old('start_date') }}">
-                            </div>
-
-                            <div>
-                                <label for="end_date" class="field-label">Date de fin</label>
-                                <input type="datetime-local" name="end_date" id="end_date" value="{{ old('end_date') }}">
-                            </div>
-
-                            <div style="border-top: 1px solid #f1f5f9; padding-top: 15px;">
-                                <label for="usage_limit" class="field-label">Limite d'utilisation globale</label>
-                                <input type="number" min="1" name="usage_limit" id="usage_limit" value="{{ old('usage_limit') }}" placeholder="Ex: 100">
-                                <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px;">Vide = illimité.</p>
-                            </div>
-
-                            <div style="border-top: 1px solid #f1f5f9; padding-top: 15px;">
+                            <div style="border-top: 1px solid #f1f5f9; padding-top: 0;">
                                 <label class="checkbox-container">
                                     <input type="checkbox" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
                                     <span class="checkmark"></span>
