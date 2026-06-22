@@ -24,10 +24,10 @@ class VendeurWalletController extends Controller
     {
         $user = Auth::user();
         
-        // On s'assure qu'il est vendeur
-        if (!$user->vendeur) {
-            return redirect()->route('vendeur.create')->with('info', 'Vous devez être vendeur pour accéder au wallet.');
-        }
+        // On s'assure qu'il est vendeur (Supprimé pour permettre l'accès à tous les utilisateurs selon la demande)
+        // if (!$user->vendeur) {
+        //     return redirect()->route('vendeur.create')->with('info', 'Vous devez être vendeur pour accéder au wallet.');
+        // }
 
         // Revenus disponibles (déjà libérés)
         $availableBalance = $user->credit_balance;

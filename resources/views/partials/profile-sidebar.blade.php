@@ -459,6 +459,12 @@
         <span style="font-size: 0.95rem; color: #555;">Localisation & Préférences</span>
     </a>
 
+    <a href="{{ route('vendeur.wallet.index') }}"
+        class="sidebar-item {{ request()->routeIs('vendeur.wallet.*') ? 'active' : '' }}"
+        style="padding-left: 16px;">
+        <span style="font-size: 0.95rem; color: #555;">Mon Porte-Monnaie</span>
+    </a>
+
     <!-- Vendeur Section -->
     <div class="sidebar-divider"></div>
 
@@ -549,26 +555,7 @@
         </div>
     @endif
 
-    @if($user->vendeur)
-        @if(!$isInactiveForPro)
-            <a href="{{ route('vendeur.wallet.index') }}"
-                class="sidebar-item {{ request()->routeIs('vendeur.wallet.*') ? 'active' : '' }}">
-                <i class="fa-solid fa-wallet"></i>
-                <span>Mon Porte-Monnaie</span>
-            </a>
-        @else
-            <div class="inactive-link"
-                title="{{ $isRejected ? 'Compte rejeté' : ($isProWithoutPlan ? 'Veuillez souscrire à un forfait Basic ou Expert' : 'Réservé aux vendeurs') }}">
-                <i class="fa-solid fa-wallet"></i>
-                <span>Mon Porte-Monnaie</span>
-            </div>
-        @endif
-    @else
-        <div class="inactive-link" title="Réservé aux vendeurs">
-            <i class="fa-solid fa-wallet"></i>
-            <span>Mon Porte-Monnaie</span>
-        </div>
-    @endif
+    {{-- Mon Porte-Monnaie moved up to general section --}}
 
 
     @if($user->vendeur)
