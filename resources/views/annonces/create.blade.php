@@ -1800,6 +1800,12 @@
             const nextEl = document.getElementById('step' + currentStep);
             if (nextEl) nextEl.classList.add('active');
 
+            // Force promo check when reaching step 4
+            if (currentStep === 4) {
+                const catId = document.getElementById('categorie_id').value;
+                if (typeof checkCategoryPromo === 'function') checkCategoryPromo(catId);
+            }
+
             const nextProg = document.querySelector(`.progress-step[data-step="${currentStep}"]`);
             if (nextProg) nextProg.classList.add('active');
 
