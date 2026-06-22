@@ -139,6 +139,24 @@
 
     .btn-filter:hover { background: #003a8c; }
 
+    .btn-reset {
+        background: #f68b1e;
+        color: white;
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+    }
+
+    .btn-reset:hover { background: #e87a0e; color: white; }
+
     /* Card Variations */
     .card-rev .icon-circle { background: #fff4e5; color: #f68b1e; }
     .card-orders .icon-circle { background: #e8f5e9; color: #2e7d32; }
@@ -214,7 +232,7 @@
                     <input type="date" name="date_fin" value="{{ $dateFin }}">
                 </div>
                 <button type="submit" class="btn-filter">Appliquer</button>
-                <a href="{{ route('vendeur.stats') }}" style="font-size: 0.8rem; color: #888; text-decoration: none; margin-bottom: 0.6rem; margin-left: 0.5rem;">Réinitialiser</a>
+                <a href="{{ route('vendeur.stats') }}" class="btn-reset">Réinitialiser</a>
             </form>
 
             <h2 class="section-title">Aperçu global</h2>
