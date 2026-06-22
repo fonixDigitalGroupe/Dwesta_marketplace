@@ -79,11 +79,19 @@
                             </a>
                         @endif
                         <div class="auth-dropdown-container">
-                            <a href="{{ route('account.index') }}" class="header-link">
+                            <a href="{{ route('account.index') }}" class="header-link" style="position: relative;">
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
+                                @php
+                                    $unreadCount = auth()->user()->unreadMessagesCount();
+                                @endphp
+                                @if($unreadCount > 0)
+                                    <span style="position: absolute; top: -5px; left: 10px; background: #e11d48; color: white; border-radius: 50%; width: 17px; height: 17px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 10;">
+                                        {{ $unreadCount }}
+                                    </span>
+                                @endif
                                 <span>{{ auth()->user()->prenom ?? auth()->user()->name }}</span>
                                 <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 12px; height: 12px; margin-left: -4px;">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>

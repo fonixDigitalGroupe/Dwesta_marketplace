@@ -208,6 +208,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return trim($this->prenom . ' ' . ($this->nom ?? ''));
     }
 
+    /**
+     * Compter les messages non lus envoyés à l'utilisateur
+     */
+    public function unreadMessagesCount(): int
+    {
+        return Message::whereHas('conversation', function ($query) {
+            $query->where('user1_id', $this->id)->orWhere('user2_id', $this->id);
+        })
+        ->where('sender_id', '!=', $this->id)
+        ->whereNull('read_at')
+        ->count();
+    }
+
     public function messagesSent()
     {
         return $this->hasMany(Message::class, 'sender_id');
