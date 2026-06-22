@@ -87,7 +87,7 @@ class AbonnementController extends Controller
     }
 
     /**
-     * Afficher la page de confirmation (Checkout)
+     * Afficher la page de confirmation (Checkout) - kept for legacy
      */
     public function checkout(Request $request)
     {
@@ -99,13 +99,87 @@ class AbonnementController extends Controller
 
         $abonnement = Abonnement::findOrFail($request->get('abonnement_id'));
 
-        // Sécurité vendeur particulier
         if ($user->vendeur->estParticulier() && $abonnement->prix_mensuel > 0) {
             return redirect()->route('abonnements.index')
                 ->with('error_banner', 'En tant que vendeur particulier, vous ne pouvez souscrire qu\'au forfait gratuit.');
         }
 
         return view('abonnements.checkout', compact('abonnement'));
+    }
+
+    /**
+     * Initier le paiement directement — crée une session PayDunya et redirige
+     * vers la page de paiement personnalisée (SoftPay), sans page intermédiaire.
+     */
+    public function initiate(Request $request)
+    {
+        $request->validate([
+            'abonnement_id' => 'required|exists:abonnements,id',
+        ]);
+
+        $user = Auth::user();
+
+        if (!$user->estVendeurVerifie()) {
+            return redirect()->route('vendeur.show')
+                ->with('error_banner', 'Votre compte doit être vérifié pour souscrire à un abonnement.');
+        }
+
+        $vendeur = $user->vendeur;
+        $abonnement = Abonnement::findOrFail($request->abonnement_id);
+
+        if ($vendeur->estParticulier() && $abonnement->prix_mensuel > 0) {
+            return back()->with('error', 'Les vendeurs particuliers ne peuvent pas souscrire à des forfaits payants.');
+        }
+
+        if ($vendeur->estProfessionnel() && $abonnement->prix_mensuel == 0) {
+            return back()->with('error', 'Les vendeurs professionnels doivent souscrire à un forfait Basic ou Expert.');
+        }
+
+        // Forfait gratuit : activation directe
+        if ($abonnement->prix_mensuel == 0) {
+            try {
+                DB::beginTransaction();
+                VendeurAbonnement::where('vendeur_id', $vendeur->id)->update(['actif' => false]);
+                $sub = VendeurAbonnement::create([
+                    'vendeur_id' => $vendeur->id,
+                    'abonnement_id' => $abonnement->id,
+                    'date_debut' => Carbon::today(),
+                    'date_fin' => Carbon::today()->addMonth(),
+                    'actif' => true,
+                    'renouvellement_automatique' => false,
+                    'nombre_annonces_utilisees' => 0,
+                ]);
+                DB::commit();
+                Mail::to($user->email)->send(new SubscriptionConfirmed($sub));
+                return redirect()->route('vendeur.show')->with('success', 'Vous avez activé le forfait gratuit !');
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return back()->with('error', $e->getMessage());
+            }
+        }
+
+        // Forfait payant : créer une session PayDunya avec wave par défaut
+        // L'utilisateur pourra changer l'opérateur sur la page de paiement
+        try {
+            $session = $this->payDunyaService->createCheckoutSession(
+                $abonnement->prix_mensuel,
+                "Abonnement " . $abonnement->nom . " sur Karnou",
+                route('paydunya.success'),
+                route('abonnements.index'),
+                [
+                    'vendeur_id' => $vendeur->id,
+                    'plan_id' => $abonnement->id,
+                    'type' => 'seller_subscription'
+                ],
+                null // Pas d'opérateur forcé — l'utilisateur pourra choisir sur la page de paiement
+            );
+
+            // Redirection directe vers la page de paiement personnalisée
+            return redirect()->route('checkout.pay', ['token' => $session->token]);
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Erreur PayDunya : ' . $e->getMessage());
+        }
     }
 
     /**

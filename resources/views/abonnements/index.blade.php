@@ -307,9 +307,8 @@
                 @endif
 
                 {{-- Form --}}
-                <form action="{{ route('abonnements.subscribe') }}" method="POST" id="subscription-form">
+                <form action="{{ route('abonnements.initiate') }}" method="POST" id="subscription-form">
                     @csrf
-                    <input type="hidden" name="payment_method" value="cb">
                     <input type="hidden" name="abonnement_id" id="selected-abonnement-id" value="">
 
                     {{-- Section: abonnements vendeur --}}
@@ -418,7 +417,7 @@
                             Forfait sélectionné :
                             <strong id="selected-plan-name" style="color: #004aad;">...</strong>
                         </div>
-                        <button type="button" class="btn-subscribe" id="submit-btn" onclick="goToCheckout()">
+                        <button type="submit" class="btn-subscribe" id="submit-btn">
                             Continuer vers le paiement →
                         </button>
                     </div>
@@ -438,16 +437,9 @@
         var selectedAbonnementId = null;
 
         function selectPlan(id, name) {
-            // Uncheck all
-            document.querySelectorAll('.abn-check').forEach(function(r) {
-                r.checked = false;
-            });
-            // Remove highlight from all rows
-            document.querySelectorAll('.abn-plan-row:not(.is-active-plan)').forEach(function(row) {
-                row.style.background = '';
-            });
+            document.querySelectorAll('.abn-check').forEach(function(r) { r.checked = false; });
+            document.querySelectorAll('.abn-plan-row:not(.is-active-plan)').forEach(function(row) { row.style.background = ''; });
 
-            // Check selected
             var radio = document.getElementById('plan-' + id);
             if (radio && !radio.disabled) {
                 radio.checked = true;
@@ -456,13 +448,14 @@
             }
 
             selectedAbonnementId = id;
+            document.getElementById('selected-abonnement-id').value = id;
             document.getElementById('selected-plan-name').innerText = name;
             document.getElementById('checkout-bar').style.display = 'flex';
         }
 
         function goToCheckout() {
             if (selectedAbonnementId) {
-                window.location.href = '{{ route("abonnements.checkout") }}?abonnement_id=' + selectedAbonnementId;
+                document.getElementById('subscription-form').submit();
             }
         }
     </script>
