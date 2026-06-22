@@ -92,19 +92,13 @@ class CampaignPromoController extends Controller
         }
 
         $categoryIds = $this->getAncestorIds($category);
-        $user = auth()->user();
-        $sellerType = ($user && $user->vendeur) ? $user->vendeur->type : 'particulier';
 
-        $hasCampaign = Campaign::whereHas('coupon', function ($q) use ($categoryIds, $sellerType) {
+        $hasCampaign = Campaign::whereHas('coupon', function ($q) use ($categoryIds) {
                 $q->where('is_active', true)
                   ->where(function ($sq) use ($categoryIds) {
                       $sq->whereIn('category_id', $categoryIds)
                         ->orWhereIn('category_id_n1', $categoryIds)
                         ->orWhereIn('category_id_n2', $categoryIds);
-                  })
-                  ->where(function ($sq) use ($sellerType) {
-                      $sq->where('seller_type', 'all')
-                        ->orWhere('seller_type', $sellerType);
                   });
             })
             ->where(function ($q) {
