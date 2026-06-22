@@ -65,11 +65,14 @@ class CampaignPromoController extends Controller
                 return response()->json(['valid' => false, 'message' => 'Aucune campagne active pour ce code.']);
             }
 
+            // Determine the end date (Campaign priority, then Coupon)
+            $endsAt = $campaign->ends_at ?? $coupon->end_date;
+
             return response()->json([
                 'valid'            => true,
                 'discount_type'    => $coupon->type,
                 'discount_value'   => $coupon->value,
-                'campaign_ends_at' => $campaign->ends_at ? $campaign->ends_at->toIsoString() : null,
+                'campaign_ends_at' => $endsAt ? $endsAt->toIsoString() : null,
                 'campaign_id'      => $campaign->id,
                 'coupon_id'        => $coupon->id,
             ]);

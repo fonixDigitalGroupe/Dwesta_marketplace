@@ -1714,12 +1714,17 @@
             // Add duration to success message
             const successEl = document.getElementById('promo-success-text');
             let successMsg = "Félicitations ! Votre annonce sera mise en avant avec ce prix barré pour attirer plus de clients.";
+            
             if (activeCampaignData.campaign_ends_at) {
                 const endDate = new Date(activeCampaignData.campaign_ends_at);
                 const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                successMsg += ` (Valable jusqu'au ${endDate.toLocaleDateString('fr-FR', options)})`;
+                const dateStr = endDate.toLocaleDateString('fr-FR', options);
+                successMsg += `<br><span style="color: #fa5252; font-weight: 800; display: block; margin-top: 4px;">📅 Valable jusqu'au ${dateStr}</span>`;
+            } else {
+                successMsg += `<br><span style="color: #b7791f; font-weight: 800; display: block; margin-top: 4px;">📅 Offre à durée limitée</span>`;
             }
-            successEl.textContent = successMsg;
+            
+            successEl.innerHTML = successMsg;
 
             preview.style.display = 'block';
         }
