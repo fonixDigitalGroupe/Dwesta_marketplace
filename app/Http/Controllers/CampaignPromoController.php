@@ -74,7 +74,8 @@ class CampaignPromoController extends Controller
                 'coupon_id'        => $coupon->id,
             ]);
         } catch (\Exception $e) {
-            return response()->json(['valid' => false, 'message' => 'DEBUG: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine()]);
+            \Log::error('Promo check error: ' . $e->getMessage());
+            return response()->json(['valid' => false, 'message' => 'Une erreur est survenue lors de la vérification.']);
         }
     }
 
