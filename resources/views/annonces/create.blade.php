@@ -1264,12 +1264,7 @@
                                 required style="border-radius: 8px; border: 1.5px solid #e0e0e0; padding: 0.6rem 1rem; width: 100%; height: 45px;">
                         </div>
 
-                        <div class="form-group">
-                            <label for="prix_original" class="form-label"
-                                style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Ancien prix (facultatif)</label>
-                            <input type="number" id="prix_original" name="prix_original" class="form-input" placeholder="Ex: 7000" min="0"
-                                style="border-radius: 8px; border: 1.5px solid #e0e0e0; padding: 0.6rem 1rem; width: 100%; height: 45px;">
-                        </div>
+
 
                         <div id="quantity-container" class="form-group">
                             <label for="quantite" class="form-label"
