@@ -28,8 +28,8 @@ class CampaignPromoController extends Controller
             return response()->json(['valid' => false, 'message' => 'Catégorie introuvable.']);
         }
 
-        // Collecter tous les IDs parents (N1, N2, N3 = la catégorie elle-même)
-        $categoryIds = $this->getAncestorIds($category);
+        $user = auth()->user();
+        $sellerType = ($user && $user->vendeur) ? $user->vendeur->type : 'particulier';
 
         // Trouver un coupon actif correspondant à ce code et à cette famille de catégories
         $coupon = Coupon::where('code', $code)
@@ -39,10 +39,14 @@ class CampaignPromoController extends Controller
                   ->orWhereIn('category_id_n1', $categoryIds)
                   ->orWhereIn('category_id_n2', $categoryIds);
             })
+            ->where(function ($q) use ($sellerType) {
+                $q->where('seller_type', 'all')
+                  ->orWhere('seller_type', $sellerType);
+            })
             ->first();
 
         if (!$coupon) {
-            return response()->json(['valid' => false, 'message' => 'Code promo invalide ou non applicable à cette catégorie.']);
+            return response()->json(['valid' => false, 'message' => 'Code promo invalide, expiré ou non applicable à votre profil/catégorie.']);
         }
 
         // Vérifier si une campagne active est liée à ce coupon
@@ -87,13 +91,19 @@ class CampaignPromoController extends Controller
         }
 
         $categoryIds = $this->getAncestorIds($category);
+        $user = auth()->user();
+        $sellerType = ($user && $user->vendeur) ? $user->vendeur->type : 'particulier';
 
-        $hasCampaign = Campaign::whereHas('coupon', function ($q) use ($categoryIds) {
+        $hasCampaign = Campaign::whereHas('coupon', function ($q) use ($categoryIds, $sellerType) {
                 $q->where('is_active', true)
                   ->where(function ($sq) use ($categoryIds) {
                       $sq->whereIn('category_id', $categoryIds)
                         ->orWhereIn('category_id_n1', $categoryIds)
                         ->orWhereIn('category_id_n2', $categoryIds);
+                  })
+                  ->where(function ($sq) use ($sellerType) {
+                      $sq->where('seller_type', 'all')
+                        ->orWhere('seller_type', $sellerType);
                   });
             })
             ->where(function ($q) {
