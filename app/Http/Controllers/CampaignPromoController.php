@@ -30,6 +30,7 @@ class CampaignPromoController extends Controller
 
         $user = auth()->user();
         $sellerType = ($user && $user->vendeur) ? $user->vendeur->type : 'particulier';
+        $categoryIds = $this->getAncestorIds($category);
 
         // Trouver un coupon actif correspondant à ce code et à cette famille de catégories
         $coupon = Coupon::where('code', $code)

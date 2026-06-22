@@ -1622,31 +1622,19 @@
 
             if (!categoryId) { promoSection.style.display = 'none'; return; }
 
-            // Check if any active campaign targets this category (no code needed to SHOW the section)
-            fetch(`/api/campaigns/check-promo?code=NOCHECK&categorie_id=${categoryId}`)
+            // Call a lightweight endpoint to detect if an active campaign exists for this category + user type
+            fetch(`/api/campaigns/has-active?categorie_id=${categoryId}`)
                 .then(r => r.json())
-                .then(data => {
-                    // We always show the section if a campaign might be active for this category
-                    // A better check: try a known-invalid code — if the response says "Code promo invalide"
-                    // it means a campaign exists but the code is wrong; "Aucune campagne" = none exists.
-                    const hasActiveCampaign = data.message !== 'Aucune campagne active pour ce code.' && data.message !== 'Paramètres manquants.';
-
-                    // Actually call a lightweight endpoint to just detect if a campaign exists
-                    return fetch(`/api/campaigns/has-active?categorie_id=${categoryId}`)
-                        .then(r => r.json())
-                        .then(res => {
-                            if (res.has_campaign) {
-                                promoSection.style.display = 'block';
-                            } else {
-                                promoSection.style.display = 'none';
-                            }
-                        })
-                        .catch(() => {
-                            // Fallback: show section anyway (harmless)
-                            promoSection.style.display = 'block';
-                        });
+                .then(res => {
+                    if (res.has_campaign) {
+                        promoSection.style.display = 'block';
+                    } else {
+                        promoSection.style.display = 'none';
+                    }
                 })
-                .catch(() => {});
+                .catch(() => {
+                    promoSection.style.display = 'none';
+                });
         }
 
         function resetPromoState() {
