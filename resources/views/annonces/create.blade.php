@@ -1650,6 +1650,20 @@
             if (error) error.style.display = 'none';
         }
 
+        function revokePromoCode() {
+            resetPromoState();
+            const error = document.getElementById('promo-error');
+            if (error) {
+                error.textContent = "Le code promo a été révoqué.";
+                error.style.color = "#495057";
+                error.style.display = "block";
+                setTimeout(() => { 
+                    error.style.display = "none"; 
+                    error.style.color = "#e03131"; 
+                }, 3000);
+            }
+        }
+
         function applyPromoCode() {
             const code = document.getElementById('promo_code_input').value.trim();
             const categorieId = document.getElementById('categorie_id').value;
@@ -1727,10 +1741,12 @@
             }
             
             if (periodStr) {
-                successMsg += `<br><span style="color: #fa5252; font-weight: 800; display: block; margin-top: 6px; padding: 4px 8px; background: #fff5f5; border-radius: 4px; border: 1px solid #ffe3e3;">📅 Période : ${periodStr}</span>`;
+                successMsg += `<br><span style="color: #fa5252; font-weight: 800; display: block; margin-top: 6px; padding: 4px 8px; background: #fff5f5; border-radius: 4px; border: 1px solid #ffe3e3;">Période : ${periodStr}</span>`;
             } else {
-                successMsg += `<br><span style="color: #b7791f; font-weight: 800; display: block; margin-top: 4px;">📅 Offre à durée limitée</span>`;
+                successMsg += `<br><span style="color: #b7791f; font-weight: 800; display: block; margin-top: 4px;">Offre à durée limitée</span>`;
             }
+            
+            successMsg += `<div style="margin-top: 10px; text-align: right;"><button type="button" onclick="revokePromoCode()" style="background: none; border: none; color: #fa5252; text-decoration: underline; font-size: 0.75rem; font-weight: 700; cursor: pointer; padding: 0;">ANNULER / RÉVOQUER LE CODE</button></div>`;
             
             successEl.innerHTML = successMsg;
 
