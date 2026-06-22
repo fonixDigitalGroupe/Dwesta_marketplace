@@ -530,8 +530,6 @@ class VendeurController extends Controller
             'total_orders' => $ordersQuery->count(),
             'total_revenue' => $ordersQuery->sum('total_produits'),
             'total_commissions' => $ordersQuery->sum('commission_plateforme'),
-            'orders_this_month' => (clone $ordersQuery)->whereMonth('created_at', now()->month)->count(),
-            'revenue_this_month' => (clone $ordersQuery)->whereMonth('created_at', now()->month)->sum('total_produits'),
         ];
 
         $recentOrders = $vendeur->orders()

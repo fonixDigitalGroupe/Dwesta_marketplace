@@ -174,22 +174,6 @@
             </div>
         </div>
 
-        <div class="gift-card-box">
-            <h2 class="section-title">Performance mensuelle</h2>
-            <div class="stats-grid">
-                <div class="stat-card card-month-rev">
-                    <div class="icon-circle"><i class="fas fa-chart-line"></i></div>
-                    <div class="amount">{{ number_format($stats['revenue_this_month'], 0, ',', ' ') }} <small>FCFA</small></div>
-                    <div class="label">Revenus ce mois</div>
-                </div>
-
-                <div class="stat-card card-month-orders">
-                    <div class="icon-circle"><i class="fas fa-box"></i></div>
-                    <div class="amount">{{ $stats['orders_this_month'] }}</div>
-                    <div class="label">Commandes ce mois</div>
-                </div>
-            </div>
-        </div>
 
         <!-- Recent Sales Table -->
         <div class="gift-card-box">
