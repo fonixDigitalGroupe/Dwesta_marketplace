@@ -607,10 +607,10 @@
                 // Échapper d'abord pour la sécurité
                 $text = e($text);
                 
-                // Convertir les liens Markdown [texte](url) en BOUTONS stylés
+                // Convertir les liens Markdown [texte](url) en LIENS BLEUS
                 $text = preg_replace(
                     '/\[(.*?)\]\((.*?)\)/i', 
-                    '<a href="$2" style="display: inline-block; margin: 5px 5px 5px 0; padding: 8px 16px; background: #004aad; color: #ffffff !important; border-radius: 20px; font-size: 0.82rem; font-weight: 600; text-decoration: none; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,74,173,0.15); border: none; cursor: pointer;">$1</a>', 
+                    '<a href="$2" style="color: #004aad; text-decoration: underline; font-weight: 600; cursor: pointer;">$1</a>', 
                     $text
                 );
 
