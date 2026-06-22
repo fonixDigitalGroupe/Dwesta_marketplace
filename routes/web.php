@@ -136,8 +136,8 @@ Route::middleware('auth')->group(function () {
         Route::prefix('abonnements')->name('abonnements.')->group(function () {
             Route::get('/', [AbonnementController::class, 'index'])->name('index');
             Route::get('/mon-abonnement', [AbonnementController::class, 'monAbonnement'])->name('mon-abonnement');
+            Route::get('/checkout', [AbonnementController::class, 'checkout'])->name('checkout');
             Route::get('/{abonnement}', [AbonnementController::class, 'show'])->name('show');
-            Route::post('/checkout', [AbonnementController::class, 'checkout'])->name('checkout');
             Route::post('/subscribe', [AbonnementController::class, 'subscribe'])->name('subscribe');
             Route::post('/cancel', [AbonnementController::class, 'cancel'])->name('cancel');
         });

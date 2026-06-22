@@ -97,7 +97,7 @@ class AbonnementController extends Controller
                 ->with('error_banner', 'Votre compte doit être vérifié pour accéder au paiement.');
         }
 
-        $abonnement = Abonnement::findOrFail($request->abonnement_id);
+        $abonnement = Abonnement::findOrFail($request->get('abonnement_id'));
 
         // Sécurité vendeur particulier
         if ($user->vendeur->estParticulier() && $abonnement->prix_mensuel > 0) {

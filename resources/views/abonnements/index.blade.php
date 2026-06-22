@@ -418,7 +418,7 @@
                             Forfait sélectionné :
                             <strong id="selected-plan-name" style="color: #004aad;">...</strong>
                         </div>
-                        <button type="submit" class="btn-subscribe" id="submit-btn">
+                        <button type="button" class="btn-subscribe" id="submit-btn" onclick="goToCheckout()">
                             Continuer vers le paiement →
                         </button>
                     </div>
@@ -435,6 +435,8 @@
     </div>
 
     <script>
+        var selectedAbonnementId = null;
+
         function selectPlan(id, name) {
             // Uncheck all
             document.querySelectorAll('.abn-check').forEach(function(r) {
@@ -453,9 +455,15 @@
                 if (row) row.style.background = '#f0f5fb';
             }
 
-            document.getElementById('selected-abonnement-id').value = id;
+            selectedAbonnementId = id;
             document.getElementById('selected-plan-name').innerText = name;
             document.getElementById('checkout-bar').style.display = 'flex';
+        }
+
+        function goToCheckout() {
+            if (selectedAbonnementId) {
+                window.location.href = '{{ route("abonnements.checkout") }}?abonnement_id=' + selectedAbonnementId;
+            }
         }
     </script>
 @endsection
