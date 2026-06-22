@@ -1345,7 +1345,7 @@
                             </div>
                             <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f3f5; display: flex; align-items: center; gap: 0.5rem;">
                                 <span style="font-size: 1rem;">✨</span>
-                                <span style="font-size: 0.75rem; color: #495057; font-weight: 600;">Félicitations ! Votre annonce sera mise en avant avec ce prix barré pour attirer plus de clients.</span>
+                                <span id="promo-success-text" style="font-size: 0.75rem; color: #495057; font-weight: 600;">Félicitations ! Votre annonce sera mise en avant avec ce prix barré pour attirer plus de clients.</span>
                             </div>
                         </div>
                         <input type="hidden" id="promo_code" name="promo_code" value="">
@@ -1710,6 +1710,17 @@
             document.getElementById('promo-original-price').textContent = vendeurPrix.toLocaleString('fr-FR') + ' FCFA';
             document.getElementById('promo-discounted-price').textContent = Math.round(promoPrix).toLocaleString('fr-FR') + ' FCFA';
             document.getElementById('promo-badge').textContent = '-' + pct + '%';
+
+            // Add duration to success message
+            const successEl = document.getElementById('promo-success-text');
+            let successMsg = "Félicitations ! Votre annonce sera mise en avant avec ce prix barré pour attirer plus de clients.";
+            if (activeCampaignData.campaign_ends_at) {
+                const endDate = new Date(activeCampaignData.campaign_ends_at);
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                successMsg += ` (Valable jusqu'au ${endDate.toLocaleDateString('fr-FR', options)})`;
+            }
+            successEl.textContent = successMsg;
+
             preview.style.display = 'block';
         }
 
