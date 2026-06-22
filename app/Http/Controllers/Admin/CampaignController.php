@@ -91,8 +91,8 @@ class CampaignController extends Controller
         }
 
         $fullContent .= "\n\n" . 
-                       "🚀 [Créer une nouvelle annonce](" . url('/annonces/create') . ")\n" .
-                       "📊 [Gérer mes annonces](" . url('/vendeur/mes-annonces') . ")";
+                       "🚀 [Créer une nouvelle annonce](/annonces/create)\n" .
+                       "📊 [Gérer mes annonces](/vendeur/mes-annonces)";
 
         foreach ($users as $user) {
             // Trouver ou créer la conversation entre l'admin et le vendeur
