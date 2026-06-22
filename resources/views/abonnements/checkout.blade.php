@@ -4,376 +4,377 @@
 
 @push('styles')
 <style>
-    body { background-color: #f7f8f8 !important; }
-
-    .ckout-page {
-        max-width: 680px;
-        margin: 2rem auto;
-        padding: 0 1.25rem 5rem;
-        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+    :root {
+        --karnou-blue: #004aad;
+        --karnou-orange: #f68b1e;
+        --bg-gray: #f8f9fa;
     }
 
-    /* Breadcrumb */
-    .ckout-breadcrumb {
-        font-size: 0.82rem;
-        color: #565959;
-        margin-bottom: 1.25rem;
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-    }
-    .ckout-breadcrumb a { color: #007185; text-decoration: none; }
-    .ckout-breadcrumb a:hover { text-decoration: underline; color: #c7511f; }
-
-    /* Page title */
-    .ckout-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #0f1111;
-        margin: 0 0 1.5rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid #ddd;
+    body {
+        background-color: var(--bg-gray) !important;
     }
 
-    /* Plan summary card */
-    .plan-card {
-        background: #fff;
-        border: 1px solid #d5d9d9;
-        border-radius: 6px;
-        padding: 1.25rem 1.5rem;
-        margin-bottom: 1.25rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-    .plan-card-name {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #0f1111;
-        margin-bottom: 4px;
-    }
-    .plan-card-desc {
-        font-size: 0.83rem;
-        color: #565959;
-        line-height: 1.5;
-    }
-    .plan-card-feat {
-        margin-top: 0.65rem;
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-    .plan-card-feat span {
-        font-size: 0.8rem;
-        color: #007600;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-    .plan-card-price {
-        text-align: right;
-        flex-shrink: 0;
-        padding-top: 2px;
-    }
-    .plan-card-price .price-val {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: #0f1111;
-    }
-    .plan-card-price .price-sub {
-        font-size: 0.78rem;
-        color: #565959;
-    }
-    .plan-card-price .price-free {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: #007600;
+    .checkout-sub-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 0 20px 60px;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* Section block */
-    .ckout-section {
-        background: #fff;
-        border: 1px solid #d5d9d9;
-        border-radius: 6px;
+    .checkout-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border: 1px solid #efefef;
         overflow: hidden;
-        margin-bottom: 1.25rem;
+        display: flex;
+        flex-wrap: wrap;
     }
-    .ckout-section-heading {
-        background: #f0f2f2;
-        padding: 0.6rem 1.25rem;
-        font-size: 0.88rem;
+
+    .checkout-summary {
+        flex: 1;
+        min-width: 320px;
+        background: #fff;
+        padding: 35px;
+        border-right: 1px solid #f0f0f0;
+    }
+
+    .checkout-payment {
+        flex: 1.2;
+        min-width: 320px;
+        padding: 35px;
+        background: #fafafa;
+    }
+
+    .summary-title {
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #999;
+        margin-bottom: 24px;
+        display: block;
+        letter-spacing: 1px;
+    }
+
+    /* Plan Details Style */
+    .plan-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        background: #eef2ff;
+        color: var(--karnou-blue);
+        border-radius: 20px;
+        font-size: 0.75rem;
         font-weight: 700;
-        color: #0f1111;
-        border-bottom: 1px solid #d5d9d9;
-    }
-    .ckout-section-body {
-        padding: 1rem 1.25rem;
+        margin-bottom: 12px;
     }
 
-    /* Payment method options */
-    .pay-options { display: flex; flex-direction: column; gap: 0.65rem; }
-    .pay-option {
+    .plan-name {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #111;
+        margin-bottom: 8px;
+    }
+
+    .plan-price {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--karnou-orange);
+        margin-bottom: 24px;
+    }
+
+    .plan-features {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 30px;
+    }
+
+    .plan-features li {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        padding: 0.75rem 1rem;
-        border: 1px solid #d5d9d9;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background 0.15s, border-color 0.15s;
-    }
-    .pay-option:hover { border-color: #a0aec0; background: #fafbfc; }
-    .pay-option input[type="radio"]:checked + .pay-label-inner { font-weight: 700; color: #0f1111; }
-    .pay-option:has(input:checked) {
-        border-color: #004aad;
-        background: #f0f5fb;
-        box-shadow: 0 0 0 2px rgba(0,74,173,0.1);
-    }
-    .pay-option input[type="radio"] {
-        accent-color: #004aad;
-        width: 18px;
-        height: 18px;
-        flex-shrink: 0;
-        cursor: pointer;
-    }
-    .pay-label-inner {
+        gap: 10px;
         font-size: 0.9rem;
-        color: #333;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        color: #444;
+        margin-bottom: 12px;
     }
 
-    /* Auto-renew row */
+    .plan-features li i {
+        color: #22c55e;
+        font-size: 0.9rem;
+    }
+
+    /* Payment Options Style */
+    .payment-option {
+        margin-bottom: 12px;
+    }
+
+    .payment-option label {
+        display: flex;
+        align-items: center;
+        padding: 16px;
+        background: white;
+        border: 2px solid #eee;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .payment-option input:checked + label {
+        border-color: var(--karnou-blue);
+        background: #f0f7ff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,74,173,0.1);
+    }
+
+    .option-icon {
+        width: 36px;
+        height: 36px;
+        margin-right: 15px;
+        object-fit: contain;
+    }
+
+    .option-name {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: #333;
+    }
+
+    /* Auto-renew Section */
+    .autorenew-box {
+        margin-top: 24px;
+        padding: 16px;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 12px;
+    }
+
     .autorenew-row {
         display: flex;
         align-items: flex-start;
-        gap: 0.75rem;
+        gap: 12px;
     }
-    .autorenew-row input[type="checkbox"] {
-        accent-color: #004aad;
-        width: 16px;
-        height: 16px;
-        margin-top: 3px;
-        cursor: pointer;
-        flex-shrink: 0;
-    }
-    .autorenew-row label {
-        font-size: 0.87rem;
-        color: #333;
-        cursor: pointer;
-        line-height: 1.5;
-    }
-    .autorenew-row label small { color: #565959; display: block; margin-top: 2px; font-size: 0.77rem; }
 
-    /* Order summary box */
-    .order-summary {
-        background: #f7f8f8;
-        border: 1px solid #d5d9d9;
-        border-radius: 6px;
-        padding: 1rem 1.25rem;
-        margin-bottom: 1.25rem;
-        font-size: 0.88rem;
+    .autorenew-row input[type="checkbox"] {
+        accent-color: var(--karnou-blue);
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        cursor: pointer;
     }
-    .order-summary-row {
+
+    .autorenew-row label {
+        font-size: 0.85rem;
+        color: #444;
+        cursor: pointer;
+        line-height: 1.4;
+    }
+
+    .autorenew-row label strong {
+        display: block;
+        color: #111;
+        margin-bottom: 2px;
+    }
+
+    /* Total Section */
+    .total-area {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px dashed #eee;
+    }
+
+    .total-row {
         display: flex;
         justify-content: space-between;
-        padding: 0.35rem 0;
-        color: #333;
-    }
-    .order-summary-row.total {
-        font-size: 1rem;
-        font-weight: 700;
-        color: #0f1111;
-        border-top: 1px solid #d5d9d9;
-        margin-top: 0.5rem;
-        padding-top: 0.65rem;
-    }
-
-    /* Submit button */
-    .btn-confirm {
-        width: 100%;
-        background: #FFD814;
-        color: #111;
-        border: 1px solid #FCD200;
-        border-radius: 6px;
-        padding: 0.75rem;
-        font-size: 1rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: background 0.15s;
-        box-shadow: 0 2px 5px rgba(213,217,217,.5);
-    }
-    .btn-confirm:hover { background: #F7CA00; }
-
-    .skip-link {
-        display: block;
-        text-align: center;
-        margin-top: 0.85rem;
-        font-size: 0.83rem;
-        color: #007185;
-        text-decoration: none;
-    }
-    .skip-link:hover { text-decoration: underline; color: #c7511f; }
-
-    .security-line {
-        display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 0.4rem;
-        font-size: 0.78rem;
-        color: #565959;
-        margin-top: 0.75rem;
+        margin-bottom: 8px;
     }
-    .security-line i { color: #007600; }
 
-    @media (max-width: 480px) {
-        .plan-card { flex-direction: column; }
-        .plan-card-price { text-align: left; }
+    .total-label {
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .total-val {
+        font-weight: 800;
+        font-size: 1.25rem;
+        color: var(--karnou-orange);
+    }
+
+    .btn-confirm {
+        display: block;
+        width: 100%;
+        background: var(--karnou-blue) !important;
+        color: white !important;
+        padding: 18px;
+        border: none;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 24px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-confirm:hover {
+        background: #003685 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,74,173,0.2);
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #777;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 24px;
+        transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--karnou-blue); }
+
+    .security-footer {
+        margin-top: 24px;
+        text-align: center;
+    }
+
+    .security-footer img { height: 22px; opacity: 0.7; margin-bottom: 10px; }
+    .security-footer p { font-size: 0.75rem; color: #aaa; margin: 0; }
+
+    @media (max-width: 768px) {
+        .checkout-summary { border-right: none; border-bottom: 1px solid #f0f0f0; }
     }
 </style>
 @endpush
 
 @section('content')
-    <div class="dashboard-container">
-        @include('partials.profile-sidebar')
+<div class="checkout-sub-container">
+    <a href="{{ route('abonnements.index') }}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Retour aux forfaits
+    </a>
 
-        <main class="main-content">
-            <div class="ckout-page">
+    <div class="checkout-card">
+        {{-- Left: Summary --}}
+        <div class="checkout-summary">
+            <span class="summary-title">Votre Forfait</span>
 
-                {{-- Breadcrumb --}}
-                <div class="ckout-breadcrumb">
-                    <a href="{{ route('abonnements.index') }}">Abonnements</a>
-                    <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>
-                    <span>Confirmation</span>
-                </div>
-
-                <h1 class="ckout-title">Confirmer votre abonnement</h1>
-
-                {{-- Plan Summary --}}
-                <div class="plan-card">
-                    <div>
-                        <div class="plan-card-name">{{ $abonnement->nom }}</div>
-                        @if($abonnement->description)
-                            <div class="plan-card-desc">{{ $abonnement->description }}</div>
-                        @endif
-                        <div class="plan-card-feat">
-                            <span><i class="fas fa-check"></i>
-                                {{ $abonnement->nombre_annonces == 0 ? 'Annonces illimitées' : $abonnement->nombre_annonces . ' annonces/mois' }}
-                            </span>
-                            <span><i class="fas fa-check"></i> Commission {{ number_format($abonnement->commission, 0) }}%</span>
-                            @if($abonnement->page_pro)
-                                <span><i class="fas fa-check"></i> Page Boutique Pro incluse</span>
-                            @endif
-                            <span><i class="fas fa-check"></i> Durée : 1 mois</span>
-                        </div>
-                    </div>
-                    <div class="plan-card-price">
-                        @if($abonnement->prix_mensuel > 0)
-                            <div class="price-val">{{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} FCFA</div>
-                            <div class="price-sub">par mois</div>
-                        @else
-                            <div class="price-free">Gratuit</div>
-                        @endif
-                    </div>
-                </div>
-
-                <form action="{{ route('abonnements.subscribe') }}" method="POST" id="checkout-form">
-                    @csrf
-                    <input type="hidden" name="abonnement_id" value="{{ $abonnement->id }}">
-
-                    {{-- Payment method --}}
-                    @if($abonnement->prix_mensuel > 0)
-                        <div class="ckout-section">
-                            <div class="ckout-section-heading">Moyen de paiement</div>
-                            <div class="ckout-section-body">
-                                <div class="pay-options">
-                                    <label class="pay-option">
-                                        <input type="radio" name="payment_method" value="om" checked>
-                                        <span class="pay-label-inner">
-                                            <img src="{{ asset('images/logoOM.png') }}" alt="Orange Money" height="20" onerror="this.style.display='none'">
-                                            Orange Money
-                                        </span>
-                                    </label>
-                                    <label class="pay-option">
-                                        <input type="radio" name="payment_method" value="wave">
-                                        <span class="pay-label-inner">
-                                            <img src="{{ asset('images/logowave.png') }}" alt="Wave" height="20" onerror="this.style.display='none'">
-                                            Wave
-                                        </span>
-                                    </label>
-                                    <label class="pay-option">
-                                        <input type="radio" name="payment_method" value="cb">
-                                        <span class="pay-label-inner">
-                                            <i class="far fa-credit-card" style="color:#004aad;"></i>
-                                            Carte Bancaire
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    @else
-                        <input type="hidden" name="payment_method" value="cb">
-                    @endif
-
-                    {{-- Auto-renew --}}
-                    <div class="ckout-section">
-                        <div class="ckout-section-heading">Options</div>
-                        <div class="ckout-section-body">
-                            <div class="autorenew-row">
-                                <input type="checkbox" name="auto_renew" value="1" id="auto_renew" checked>
-                                <label for="auto_renew">
-                                    Renouvellement automatique
-                                    <small>Votre abonnement sera renouvelé automatiquement à la fin de la période, sans interruption de service.</small>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Order total --}}
-                    <div class="order-summary">
-                        <div class="order-summary-row">
-                            <span>Forfait {{ $abonnement->nom }}</span>
-                            <span>
-                                @if($abonnement->prix_mensuel > 0)
-                                    {{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} FCFA
-                                @else
-                                    0 FCFA
-                                @endif
-                            </span>
-                        </div>
-                        <div class="order-summary-row">
-                            <span>Durée</span>
-                            <span>1 mois</span>
-                        </div>
-                        <div class="order-summary-row total">
-                            <span>Total à payer</span>
-                            <span>
-                                @if($abonnement->prix_mensuel > 0)
-                                    {{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} FCFA
-                                @else
-                                    Gratuit
-                                @endif
-                            </span>
-                        </div>
-                    </div>
-
-                    {{-- Submit --}}
-                    <button type="submit" class="btn-confirm">
-                        @if($abonnement->prix_mensuel > 0)
-                            Payer {{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} FCFA →
-                        @else
-                            Activer le forfait gratuit →
-                        @endif
-                    </button>
-                    <a href="{{ route('abonnements.index') }}" class="skip-link">Annuler et retourner aux abonnements</a>
-                    <div class="security-line">
-                        <i class="fas fa-lock"></i> Transaction sécurisée via PayDunya
-                    </div>
-                </form>
-
+            <div class="plan-badge">Abonnement Mensuel</div>
+            <h1 class="plan-name">{{ $abonnement->nom }}</h1>
+            
+            <div class="plan-price">
+                @if($abonnement->prix_mensuel > 0)
+                    {{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} FCFA <span style="font-size: 0.8rem; font-weight: 400; color: #888;">/ mois</span>
+                @else
+                    Gratuit
+                @endif
             </div>
-        </main>
+
+            <ul class="plan-features">
+                <li><i class="fas fa-check-circle"></i> 
+                    <strong>{{ $abonnement->nombre_annonces == 0 ? 'Annonces illimitées' : $abonnement->nombre_annonces . ' annonces' }}</strong> par mois
+                </li>
+                <li><i class="fas fa-check-circle"></i> Commission de <strong>{{ number_format($abonnement->commission, 0) }}%</strong> sur les ventes</li>
+                @if($abonnement->page_pro)
+                    <li><i class="fas fa-check-circle"></i> Page Boutique Professionnelle incluse</li>
+                @endif
+                <li><i class="fas fa-check-circle"></i> Support prioritaire inclus</li>
+            </ul>
+
+            <div style="font-size: 0.85rem; color: #666; line-height: 1.6; background: #fafafa; padding: 15px; border-radius: 8px; border-left: 4px solid var(--karnou-blue);">
+                Boostez votre visibilité et multipliez vos ventes en devenant un vendeur certifié Karnou. 
+                L'abonnement prend effet immédiatement après le paiement.
+            </div>
+        </div>
+
+        {{-- Right: Payment --}}
+        <div class="checkout-payment">
+            <span class="summary-title">Mode de Paiement</span>
+
+            <form action="{{ route('abonnements.subscribe') }}" method="POST" id="checkout-form">
+                @csrf
+                <input type="hidden" name="abonnement_id" value="{{ $abonnement->id }}">
+
+                @if($abonnement->prix_mensuel > 0)
+                    <div class="payment-option">
+                        <input type="radio" name="payment_method" value="wave" id="opt-wave" checked style="display: none;">
+                        <label for="opt-wave">
+                            <img src="{{ asset('images/logowave.png') }}" class="option-icon" alt="Wave">
+                            <span class="option-name">Wave Senegal</span>
+                        </label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" name="payment_method" value="om" id="opt-om" style="display: none;">
+                        <label for="opt-om">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Orange_Money_logo.svg/1024px-Orange_Money_logo.svg.png" class="option-icon" alt="Orange Money">
+                            <span class="option-name">Orange Money</span>
+                        </label>
+                    </div>
+
+                    <div class="payment-option">
+                        <input type="radio" name="payment_method" value="cb" id="opt-cb" style="display: none;">
+                        <label for="opt-cb">
+                            <div style="display: flex; gap: 6px; margin-right: 15px; font-size: 20px;">
+                                <i class="fab fa-cc-visa" style="color: #1a1f71;"></i>
+                                <i class="fab fa-cc-mastercard" style="color: #eb001b;"></i>
+                            </div>
+                            <span class="option-name">Carte Bancaire / Mastercard</span>
+                        </label>
+                    </div>
+                @else
+                    <input type="hidden" name="payment_method" value="free">
+                    <div style="padding: 20px; background: #eef2ff; border-radius: 12px; color: var(--karnou-blue); font-weight: 700; text-align: center; margin-bottom: 20px;">
+                        <i class="fas fa-gift"></i> Ce forfait est 100% Gratuit
+                    </div>
+                @endif
+
+                {{-- Auto-renew Option --}}
+                <div class="autorenew-box">
+                    <div class="autorenew-row">
+                        <input type="checkbox" name="auto_renew" value="1" id="auto_renew" checked>
+                        <label for="auto_renew">
+                            <strong>Renouvellement automatique</strong>
+                            Gagnez du temps ! Votre forfait sera renouvelé automatiquement chaque mois.
+                        </label>
+                    </div>
+                </div>
+
+                <div class="total-area">
+                    <div class="total-row">
+                        <span class="total-label">Sous-total</span>
+                        <span style="font-weight: 600;">{{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} FCFA</span>
+                    </div>
+                    <div class="total-row">
+                        <span class="total-label">Frais de service</span>
+                        <span style="font-weight: 600;">0 FCFA</span>
+                    </div>
+                    <div class="total-row" style="margin-top: 10px;">
+                        <span class="total-label" style="color: #111; font-size: 1rem;">Total à payer</span>
+                        <span class="total-val">
+                            {{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} FCFA
+                        </span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-confirm">
+                    @if($abonnement->prix_mensuel > 0)
+                        Payer et Activer →
+                    @else
+                        Activer Gratuitement →
+                    @endif
+                </button>
+            </form>
+
+            <div class="security-footer">
+                <img src="https://paydunya.com/assets/images/logo_transparent.png" alt="PayDunya">
+                <p>Paiement sécurisé et crypté via PayDunya</p>
+                <p style="margin-top: 4px; opacity: 0.5;">Frais de transaction inclus dans le prix</p>
+            </div>
+        </div>
     </div>
+</div>
 @endsection
