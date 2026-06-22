@@ -28,75 +28,120 @@
         color: #f68b1e;
     }
 
-    /* Stats Grid (Matches Gift Cards Grid) */
+    /* Stats Grid */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 1.25rem;
+        gap: 1rem;
         margin-bottom: 2rem;
     }
 
-    /* Purchase Cards for Stats (Matches Credits Purchase Card) */
+    /* Smaller, prettier cards */
     .stat-card {
-        border: 1px solid #efefef;
-        border-radius: 10px;
-        padding: 2rem 1.5rem;
-        text-align: center;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 1.25rem;
         background: #fff;
-        position: relative;
-        transition: all 0.2s;
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: center;
+        gap: 1rem;
+        transition: all 0.2s;
     }
 
     .stat-card:hover {
-        border-color: #004aad;
-        transform: translateY(-2px);
-    }
-
-    .stat-card .amount {
-        font-size: 1.75rem;
-        font-weight: 900;
-        color: #000;
-        margin-bottom: 4px;
-        line-height: 1;
-        display: flex;
-        align-items: baseline;
-        gap: 6px;
-    }
-
-    .stat-card .amount small {
-        font-size: 1rem;
-        font-weight: 700;
-        opacity: 0.5;
-    }
-
-    .stat-card .label {
-        font-size: 0.75rem;
-        font-weight: 800;
-        color: #777;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        border-color: #f68b1e;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
     .stat-card .icon-circle {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1.25rem;
-        font-size: 1.1rem;
+        font-size: 1rem;
+        flex-shrink: 0;
     }
 
+    .stat-card .content {
+        text-align: left;
+    }
+
+    .stat-card .amount {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #000;
+        margin-bottom: 2px;
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+    }
+
+    .stat-card .amount small {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #999;
+    }
+
+    .stat-card .label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+
+    /* Filter Form Styles */
+    .stats-filter-form {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        background: #f8f9fa;
+        padding: 1rem;
+        border-radius: 8px;
+        align-items: flex-end;
+        flex-wrap: wrap;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .filter-group label {
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: #666;
+        text-transform: uppercase;
+    }
+
+    .filter-group input {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 0.5rem;
+        font-size: 0.85rem;
+        outline: none;
+    }
+
+    .btn-filter {
+        background: #004aad;
+        color: white;
+        border: none;
+        padding: 0.5rem 1.25rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
+        height: 38px;
+    }
+
+    .btn-filter:hover { background: #003a8c; }
+
     /* Card Variations */
-    .card-rev .icon-circle { background: #eff6ff; color: #3b82f6; }
-    .card-orders .icon-circle { background: #ecfdf5; color: #10b981; }
-    .card-month-rev .icon-circle { background: #f5f3ff; color: #8b5cf6; }
-    .card-month-orders .icon-circle { background: #fffbeb; color: #f59e0b; }
+    .card-rev .icon-circle { background: #fff4e5; color: #f68b1e; }
+    .card-orders .icon-circle { background: #e8f5e9; color: #2e7d32; }
 
     /* History Table (Matches Credits Table) */
     .table-history {
@@ -158,18 +203,36 @@
         @endif
 
         <div class="gift-card-box">
+            <h2 class="section-title">Filtres de période</h2>
+            <form action="{{ route('vendeur.stats') }}" method="GET" class="stats-filter-form">
+                <div class="filter-group">
+                    <label>Date de début</label>
+                    <input type="date" name="date_debut" value="{{ $dateDebut }}">
+                </div>
+                <div class="filter-group">
+                    <label>Date de fin</label>
+                    <input type="date" name="date_fin" value="{{ $dateFin }}">
+                </div>
+                <button type="submit" class="btn-filter">Appliquer</button>
+                <a href="{{ route('vendeur.stats') }}" style="font-size: 0.8rem; color: #888; text-decoration: none; margin-bottom: 0.6rem; margin-left: 0.5rem;">Réinitialiser</a>
+            </form>
+
             <h2 class="section-title">Aperçu global</h2>
             <div class="stats-grid">
                 <div class="stat-card card-rev">
                     <div class="icon-circle"><i class="fas fa-wallet"></i></div>
-                    <div class="amount">{{ number_format($stats['total_revenue'], 0, ',', ' ') }} <small>FCFA</small></div>
-                    <div class="label">Chiffre d'affaires total</div>
+                    <div class="content">
+                        <div class="amount">{{ number_format($stats['total_revenue'], 0, ',', ' ') }} <small>FCFA</small></div>
+                        <div class="label">Chiffre d'affaires total</div>
+                    </div>
                 </div>
 
                 <div class="stat-card card-orders">
                     <div class="icon-circle"><i class="fas fa-shopping-bag"></i></div>
-                    <div class="amount">{{ $stats['total_orders'] }}</div>
-                    <div class="label">Total Commandes</div>
+                    <div class="content">
+                        <div class="amount">{{ $stats['total_orders'] }}</div>
+                        <div class="label">Total Commandes</div>
+                    </div>
                 </div>
             </div>
         </div>

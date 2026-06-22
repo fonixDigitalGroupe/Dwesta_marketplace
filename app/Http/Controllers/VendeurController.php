@@ -513,10 +513,7 @@ class VendeurController extends Controller
         return $pdf->download('facture-commande-' . $order->reference . '.pdf');
     }
 
-    /**
-     * Affiche les statistiques du vendeur
-     */
-    public function stats()
+    public function stats(Request $request)
     {
         $user = Auth::user();
         if (!$user->estVendeur()) {
@@ -524,7 +521,15 @@ class VendeurController extends Controller
         }
 
         $vendeur = $user->vendeur;
-        $ordersQuery = $vendeur->orders()->where('statut', '!=', 'annule');
+        
+        // Filtres de date
+        $dateDebut = $request->input('date_debut', now()->startOfYear()->format('Y-m-d'));
+        $dateFin = $request->input('date_fin', now()->format('Y-m-d'));
+
+        $ordersQuery = $vendeur->orders()
+            ->where('statut', '!=', 'annule')
+            ->whereDate('created_at', '>=', $dateDebut)
+            ->whereDate('created_at', '<=', $dateFin);
 
         $stats = [
             'total_orders' => $ordersQuery->count(),
@@ -533,12 +538,14 @@ class VendeurController extends Controller
         ];
 
         $recentOrders = $vendeur->orders()
+            ->whereDate('created_at', '>=', $dateDebut)
+            ->whereDate('created_at', '<=', $dateFin)
             ->with(['buyer', 'items.annonce'])
             ->latest()
             ->limit(10)
             ->get();
 
-        return view('vendeur.stats', compact('vendeur', 'stats', 'recentOrders'));
+        return view('vendeur.stats', compact('vendeur', 'stats', 'recentOrders', 'dateDebut', 'dateFin'));
     }
 
     /**
