@@ -15,63 +15,68 @@ class CampaignPromoController extends Controller
      */
     public function check(Request $request)
     {
-        $code = strtoupper(trim($request->query('code', '')));
-        $categorieId = intval($request->query('categorie_id', 0));
+        try {
+            $code = strtoupper(trim($request->query('code', '')));
+            $categorieId = intval($request->query('categorie_id', 0));
 
-        if (!$code || !$categorieId) {
-            return response()->json(['valid' => false, 'message' => 'Paramètres manquants.']);
+            if (!$code || !$categorieId) {
+                return response()->json(['valid' => false, 'message' => 'Paramètres manquants.']);
+            }
+
+            // Récupérer la catégorie et ses parents jusqu'au N1
+            $category = Category::find($categorieId);
+            if (!$category) {
+                return response()->json(['valid' => false, 'message' => 'Catégorie introuvable.']);
+            }
+
+            $user = auth()->user();
+            $sellerType = ($user && $user->vendeur) ? $user->vendeur->type : 'particulier';
+            $categoryIds = $this->getAncestorIds($category);
+
+            // Trouver un coupon actif correspondant à ce code et à cette famille de catégories
+            $coupon = Coupon::where('code', $code)
+                ->where('is_active', true)
+                ->where(function ($q) use ($categoryIds) {
+                    $q->whereIn('category_id', $categoryIds)
+                      ->orWhereIn('category_id_n1', $categoryIds)
+                      ->orWhereIn('category_id_n2', $categoryIds);
+                })
+                ->where(function ($q) use ($sellerType) {
+                    $q->where('seller_type', 'all')
+                      ->orWhere('seller_type', $sellerType);
+                })
+                ->first();
+
+            if (!$coupon) {
+                return response()->json(['valid' => false, 'message' => 'Code promo invalide, expiré ou non applicable à votre profil/catégorie.']);
+            }
+
+            // Vérifier si une campagne active est liée à ce coupon
+            $campaign = Campaign::where('coupon_id', $coupon->id)
+                ->where(function ($q) {
+                    $q->whereNull('starts_at')->orWhere('starts_at', '<=', now());
+                })
+                ->where(function ($q) {
+                    $q->whereNull('ends_at')->orWhere('ends_at', '>=', now());
+                })
+                ->first();
+
+            if (!$campaign) {
+                return response()->json(['valid' => false, 'message' => 'Aucune campagne active pour ce code.']);
+            }
+
+            return response()->json([
+                'valid'            => true,
+                'discount_type'    => $coupon->type,
+                'discount_value'   => $coupon->value,
+                'campaign_ends_at' => $campaign->ends_at ? $campaign->ends_at->toIsoString() : null,
+                'campaign_id'      => $campaign->id,
+                'coupon_id'        => $coupon->id,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Promo check error: ' . $e->getMessage());
+            return response()->json(['valid' => false, 'message' => 'Une erreur est survenue lors de la vérification.']);
         }
-
-        // Récupérer la catégorie et ses parents jusqu'au N1
-        $category = Category::find($categorieId);
-        if (!$category) {
-            return response()->json(['valid' => false, 'message' => 'Catégorie introuvable.']);
-        }
-
-        $user = auth()->user();
-        $sellerType = ($user && $user->vendeur) ? $user->vendeur->type : 'particulier';
-        $categoryIds = $this->getAncestorIds($category);
-
-        // Trouver un coupon actif correspondant à ce code et à cette famille de catégories
-        $coupon = Coupon::where('code', $code)
-            ->where('is_active', true)
-            ->where(function ($q) use ($categoryIds) {
-                $q->whereIn('category_id', $categoryIds)
-                  ->orWhereIn('category_id_n1', $categoryIds)
-                  ->orWhereIn('category_id_n2', $categoryIds);
-            })
-            ->where(function ($q) use ($sellerType) {
-                $q->where('seller_type', 'all')
-                  ->orWhere('seller_type', $sellerType);
-            })
-            ->first();
-
-        if (!$coupon) {
-            return response()->json(['valid' => false, 'message' => 'Code promo invalide, expiré ou non applicable à votre profil/catégorie.']);
-        }
-
-        // Vérifier si une campagne active est liée à ce coupon
-        $campaign = Campaign::where('coupon_id', $coupon->id)
-            ->where(function ($q) {
-                $q->whereNull('starts_at')->orWhere('starts_at', '<=', now());
-            })
-            ->where(function ($q) {
-                $q->whereNull('ends_at')->orWhere('ends_at', '>=', now());
-            })
-            ->first();
-
-        if (!$campaign) {
-            return response()->json(['valid' => false, 'message' => 'Aucune campagne active pour ce code.']);
-        }
-
-        return response()->json([
-            'valid'            => true,
-            'discount_type'    => $coupon->type,   // 'percent' ou 'fixed'
-            'discount_value'   => $coupon->value,
-            'campaign_ends_at' => $campaign->ends_at?->toIsoString(),
-            'campaign_id'      => $campaign->id,
-            'coupon_id'        => $coupon->id,
-        ]);
     }
 
     /**
