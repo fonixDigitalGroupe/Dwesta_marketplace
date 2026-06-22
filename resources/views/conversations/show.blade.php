@@ -601,6 +601,17 @@
 
         @php
             $otherUser = $conversation->user1_id == Auth::id() ? $conversation->user2 : $conversation->user1;
+            
+            $linkify = function($text) {
+                if (!$text) return '';
+                // Échapper d'abord pour la sécurité
+                $text = e($text);
+                // Convertir les liens Markdown [texte](url) en HTML bleus
+                $text = preg_replace('/\[(.*?)\]\((https?:\/\/.*?)\)/i', '<a href="$2" target="_blank" style="color: #004aad; text-decoration: underline; font-weight: 600; cursor: pointer;">$1</a>', $text);
+                // Convertir aussi les URLs brutes si pas déjà dans un tag <a>
+                $text = preg_replace('/(?<!href=")(?<!">)(https?:\/\/[^\s\(\)<>]+)/i', '<a href="$1" target="_blank" style="color: #004aad; text-decoration: underline; font-weight: 600; cursor: pointer;">$1</a>', $text);
+                return nl2br($text);
+            };
         @endphp
         <div class="wa-container">
             {{-- 1. Sidebar (List) - LEFT SIDERBAR --}}
@@ -705,13 +716,13 @@
                                             </a>
                                             @if($message->content && !str_contains(strtolower($message->content), 'bonjour, je suis intéressé') && !str_contains(strtolower($message->content), 'bonjour je suis intéressé') && !str_starts_with($message->content, 'http'))
                                                 <div class="message-body-text" style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; word-wrap: break-word; padding: 0 14px 8px;">
-                                                    {!! nl2br(e($message->content)) !!}
+                                                    {!! $linkify($message->content) !!}
                                                 </div>
                                             @endif
                                         @elseif($message->image_path)
                                             @if($message->content)
                                                 <div class="message-body-text" style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; word-wrap: break-word; padding-bottom: 8px;">
-                                                    {!! nl2br(e($message->content)) !!}
+                                                    {!! $linkify($message->content) !!}
                                                 </div>
                                             @endif
                                             {{-- Rich Image Card Style (Amazon/Alibaba) --}}
@@ -738,13 +749,13 @@
                                             </a>
                                             @if($message->content)
                                                 <div class="message-body-text" style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; word-wrap: break-word; padding-top: 4px;">
-                                                    {!! nl2br(e($message->content)) !!}
+                                                    {!! $linkify($message->content) !!}
                                                 </div>
                                             @endif
                                         @else
                                             {{-- Regular Message Body --}}
                                             <div class="message-body-text" style="font-size: 0.95rem; color: #1e293b; line-height: 1.5; word-wrap: break-word;">
-                                                {!! nl2br(e($message->content)) !!}
+                                                {!! $linkify($message->content) !!}
                                             </div>
                                         @endif
                                         
