@@ -1711,15 +1711,23 @@
             document.getElementById('promo-discounted-price').textContent = Math.round(promoPrix).toLocaleString('fr-FR') + ' FCFA';
             document.getElementById('promo-badge').textContent = '-' + pct + '%';
 
-            // Add duration to success message
+            // Add duration to success message (v3 - including start date)
             const successEl = document.getElementById('promo-success-text');
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
             let successMsg = "Félicitations ! Votre annonce sera mise en avant avec ce prix barré pour attirer plus de clients.";
             
-            if (activeCampaignData.campaign_ends_at) {
+            let periodStr = "";
+            if (activeCampaignData.campaign_starts_at && activeCampaignData.campaign_ends_at) {
+                const startDate = new Date(activeCampaignData.campaign_starts_at);
                 const endDate = new Date(activeCampaignData.campaign_ends_at);
-                const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                const dateStr = endDate.toLocaleDateString('fr-FR', options);
-                successMsg += `<br><span style="color: #fa5252; font-weight: 800; display: block; margin-top: 4px;">📅 Valable jusqu'au ${dateStr}</span>`;
+                periodStr = `Du ${startDate.toLocaleDateString('fr-FR', options)} au ${endDate.toLocaleDateString('fr-FR', options)}`;
+            } else if (activeCampaignData.campaign_ends_at) {
+                const endDate = new Date(activeCampaignData.campaign_ends_at);
+                periodStr = `Valable jusqu'au ${endDate.toLocaleDateString('fr-FR', options)}`;
+            }
+            
+            if (periodStr) {
+                successMsg += `<br><span style="color: #fa5252; font-weight: 800; display: block; margin-top: 6px; padding: 4px 8px; background: #fff5f5; border-radius: 4px; border: 1px solid #ffe3e3;">📅 Période : ${periodStr}</span>`;
             } else {
                 successMsg += `<br><span style="color: #b7791f; font-weight: 800; display: block; margin-top: 4px;">📅 Offre à durée limitée</span>`;
             }
