@@ -607,6 +607,9 @@
                 // Échapper d'abord pour la sécurité
                 $text = e($text);
                 
+                // Convertir le gras Markdown **texte** en HTML
+                $text = preg_replace('/\*\*(.*?)\*\*/', '<strong style="font-weight: 700; color: #0f172a;">$1</strong>', $text);
+                
                 // Convertir les liens Markdown [texte](url) en LIENS BLEUS
                 $text = preg_replace(
                     '/\[(.*?)\]\((.*?)\)/i', 

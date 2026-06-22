@@ -467,6 +467,7 @@ function showCampaignDetails(subject, message) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;")
+        .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 700; color: #1e293b;">$1</strong>')
         .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" style="color: #004aad; text-decoration: underline; font-weight: 600;">$1</a>')
         .replace(/(?<!href=")(?<!">)(https?:\/\/[^\s\(\)<>]+)/g, '<a href="$1" style="color: #004aad; text-decoration: underline; font-weight: 600;">$1</a>')
         .replace(/\n/g, '<br>');

@@ -80,13 +80,14 @@ class CampaignController extends Controller
         $catName = $coupon->category->nom ?? $coupon->categoryN1->nom ?? 'votre boutique';
         
         $fullContent = $validated['message'] . "\n\n" . 
-                       "Code Promo : " . $coupon->code . "\n" .
-                       "Réduction : " . $discountLabel . " sur la catégorie " . $catName;
+                       "Code Promo : **" . $coupon->code . "**\n" .
+                       "Réduction : **" . $discountLabel . "** sur la catégorie **" . $catName . "**";
 
         if ($campaign->starts_at || $campaign->ends_at) {
-            $fullContent .= "\nValidité :";
+            $fullContent .= "\nValidité : **";
             if ($campaign->starts_at) $fullContent .= " du " . $campaign->starts_at->format('d/m/Y');
             if ($campaign->ends_at) $fullContent .= " au " . $campaign->ends_at->format('d/m/Y');
+            $fullContent .= "**";
         }
 
         $fullContent .= "\n\n" . 
