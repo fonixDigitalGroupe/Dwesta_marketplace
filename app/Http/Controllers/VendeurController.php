@@ -526,16 +526,44 @@ class VendeurController extends Controller
         $dateDebut = $request->input('date_debut', now()->startOfYear()->format('Y-m-d'));
         $dateFin = $request->input('date_fin', now()->format('Y-m-d'));
 
+        // Base query for orders
         $ordersQuery = $vendeur->orders()
-            ->where('statut', '!=', 'annule')
             ->whereDate('created_at', '>=', $dateDebut)
             ->whereDate('created_at', '<=', $dateFin);
 
         $stats = [
-            'total_orders' => $ordersQuery->count(),
-            'total_revenue' => $ordersQuery->sum('total_produits'),
-            'total_commissions' => $ordersQuery->sum('commission_plateforme'),
+            'total_orders' => (clone $ordersQuery)->where('statut', '!=', 'annule')->count(),
+            'total_revenue' => (clone $ordersQuery)->where('statut', '!=', 'annule')->sum('total_produits'),
+            'total_commissions' => (clone $ordersQuery)->where('statut', '!=', 'annule')->sum('commission_plateforme'),
         ];
+
+        // 1. Top Sold Listings
+        $topSoldAnnonces = \App\Models\Annonce::where('vendeur_id', $vendeur->id)
+            ->withCount(['orderItems as total_sales' => function($query) use ($dateDebut, $dateFin) {
+                $query->whereHas('order', function($q) use ($dateDebut, $dateFin) {
+                    $q->where('statut', '!=', 'annule')
+                      ->whereDate('created_at', '>=', $dateDebut)
+                      ->whereDate('created_at', '<=', $dateFin);
+                });
+            }])
+            ->having('total_sales', '>', 0)
+            ->orderBy('total_sales', 'desc')
+            ->limit(5)
+            ->get();
+
+        // 2. Top Viewed Listings
+        $topViewedAnnonces = \App\Models\Annonce::where('vendeur_id', $vendeur->id)
+            ->where('vues', '>', 0)
+            ->orderBy('vues', 'desc')
+            ->limit(5)
+            ->get();
+
+        // 3. Status Breakdown
+        $statusBreakdown = (clone $ordersQuery)
+            ->select('statut', DB::raw('count(*) as count'))
+            ->groupBy('statut')
+            ->get()
+            ->pluck('count', 'statut');
 
         $recentOrders = $vendeur->orders()
             ->whereDate('created_at', '>=', $dateDebut)
@@ -545,7 +573,10 @@ class VendeurController extends Controller
             ->limit(10)
             ->get();
 
-        return view('vendeur.stats', compact('vendeur', 'stats', 'recentOrders', 'dateDebut', 'dateFin'));
+        return view('vendeur.stats', compact(
+            'vendeur', 'stats', 'recentOrders', 'dateDebut', 'dateFin', 
+            'topSoldAnnonces', 'topViewedAnnonces', 'statusBreakdown'
+        ));
     }
 
     /**

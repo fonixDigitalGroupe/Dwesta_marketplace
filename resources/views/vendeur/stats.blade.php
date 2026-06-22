@@ -157,6 +157,75 @@
 
     .btn-reset:hover { background: #e87a0e; color: white; }
 
+    /* Tabs Styles */
+    .stats-tabs {
+        display: flex;
+        gap: 2rem;
+        border-bottom: 2px solid #eee;
+        margin-bottom: 2rem;
+    }
+
+    .tab-btn {
+        padding: 0.75rem 0;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #888;
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.2s;
+        margin-bottom: -2px;
+    }
+
+    .tab-btn:hover { color: #f68b1e; }
+    .tab-btn.active {
+        color: #f68b1e;
+        border-bottom-color: #f68b1e;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Small Product Card for Stats */
+    .mini-product {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f5f5f5;
+    }
+    .mini-product:last-child { border-bottom: none; }
+    .mini-product img {
+        width: 40px;
+        height: 40px;
+        border-radius: 4px;
+        object-fit: cover;
+    }
+    .mini-product .info { flex: 1; }
+    .mini-product .name { font-weight: 700; font-size: 0.85rem; color: #333; }
+    .mini-product .meta { font-size: 0.75rem; color: #888; }
+    .mini-product .count-badge {
+        background: #f8f9fa;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #333;
+    }
+
+    @media (max-width: 768px) {
+        .stats-grid { grid-template-columns: 1fr; }
+        .stats-tabs { gap: 1rem; overflow-x: auto; white-space: nowrap; }
+    }
+
     /* Card Variations */
     .card-rev .icon-circle { background: #fff4e5; color: #f68b1e; }
     .card-orders .icon-circle { background: #e8f5e9; color: #2e7d32; }
@@ -256,55 +325,135 @@
         </div>
 
 
-        <!-- Recent Sales Table -->
         <div class="gift-card-box">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h2 class="section-title" style="margin-bottom: 0;">Ventes Récentes</h2>
-                <a href="{{ route('vendeur.orders') }}" style="font-size: 0.75rem; font-weight: 800; color: #004aad; text-transform: uppercase; text-decoration: none;">Voir tout <i class="fas fa-arrow-right"></i></a>
-            </div>
+            <h2 class="section-title">Analyse Détaillée</h2>
             
-            <div style="overflow-x: auto; border: 1px solid #eee; border-radius: 8px;">
-                <table class="table-history">
-                    <thead>
-                        <tr>
-                            <th>Référence</th>
-                            <th style="text-align: right;">Total Brut</th>
-                            <th style="text-align: right;">Com. Platef.</th>
-                            <th style="text-align: right;">Net Vendeur</th>
-                            <th style="text-align: center;">Statut</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($recentOrders as $order)
+            <div class="stats-tabs">
+                <button class="tab-btn active" onclick="showTab(event, 'tab-recent')">Ventes Récentes</button>
+                <button class="tab-btn" onclick="showTab(event, 'tab-top-sold')">Top Ventes</button>
+                <button class="tab-btn" onclick="showTab(event, 'tab-top-viewed')">Top Vues</button>
+                <button class="tab-btn" onclick="showTab(event, 'tab-status')">États des Ventes</button>
+            </div>
+
+            <!-- Tab: Ventes Récentes -->
+            <div id="tab-recent" class="tab-content active">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 class="section-title" style="margin-bottom: 0; font-size: 0.7rem;">Dernières transactions</h3>
+                    <a href="{{ route('vendeur.orders') }}" style="font-size: 0.75rem; font-weight: 800; color: #004aad; text-transform: uppercase; text-decoration: none;">Voir tout <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div style="overflow-x: auto; border: 1px solid #eee; border-radius: 8px;">
+                    <table class="table-history">
+                        <thead>
                             <tr>
-                                <td style="font-weight: 800; color: #000;">#{{ $order->reference }}</td>
-                                <td style="text-align: right; font-weight: 700;">{{ number_format($order->total_produits, 0, ',', ' ') }} <small style="font-size: 0.7rem; color: #999;">FCFA</small></td>
-                                <td style="text-align: right; color: #d32f2f; font-weight: 600;">-{{ number_format($order->commission_plateforme, 0, ',', ' ') }}</td>
-                                <td style="text-align: right; color: #2e7d32; font-weight: 800;">{{ number_format($order->total_produits - $order->commission_plateforme, 0, ',', ' ') }} <small>FCFA</small></td>
-                                <td style="text-align: center;">
-                                    @php
-                                        $s = $order->statut;
-                                        $badge = match($s) {
-                                            'livre' => 'livre',
-                                            'annule' => 'annule',
-                                            'en_attente' => 'attente',
-                                            default => 'default'
-                                        };
-                                    @endphp
-                                    <span class="badge-status status-{{ $badge }}">{{ $order->statut_label }}</span>
-                                </td>
-                                <td style="color: #777; font-size: 0.85rem;">{{ $order->created_at->format('d/m/Y') }}</td>
+                                <th>Référence</th>
+                                <th style="text-align: right;">Net Vendeur</th>
+                                <th style="text-align: center;">Statut</th>
+                                <th>Date</th>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 3rem; color: #999;">Aucune vente récente enregistrée.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @forelse($recentOrders as $order)
+                                <tr>
+                                    <td style="font-weight: 800; color: #000;">#{{ $order->reference }}</td>
+                                    <td style="text-align: right; color: #2e7d32; font-weight: 800;">{{ number_format($order->total_produits - $order->commission_plateforme, 0, ',', ' ') }} <small>FCFA</small></td>
+                                    <td style="text-align: center;">
+                                        @php
+                                            $s = $order->statut;
+                                            $badge = match($s) {
+                                                'livre' => 'livre',
+                                                'annule' => 'annule',
+                                                'en_attente' => 'attente',
+                                                default => 'default'
+                                            };
+                                        @endphp
+                                        <span class="badge-status status-{{ $badge }}">{{ $order->statut_label }}</span>
+                                    </td>
+                                    <td style="color: #777; font-size: 0.85rem;">{{ $order->created_at->format('d/m/Y') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" style="text-align: center; padding: 2rem; color: #999;">Aucune vente récente.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab: Top Ventes -->
+            <div id="tab-top-sold" class="tab-content">
+                <div style="border: 1px solid #eee; border-radius: 8px; padding: 1rem;">
+                    @forelse($topSoldAnnonces as $annonce)
+                        <div class="mini-product">
+                            <img src="{{ $annonce->photoPrincipale() ? asset('storage/' . $annonce->photoPrincipale()->chemin) : asset('images/no-image.png') }}" alt="">
+                            <div class="info">
+                                <div class="name">{{ $annonce->titre }}</div>
+                                <div class="meta">{{ $annonce->category->nom ?? 'Sans catégorie' }}</div>
+                            </div>
+                            <div class="count-badge">{{ $annonce->total_sales }} ventes</div>
+                        </div>
+                    @empty
+                        <div style="text-align: center; padding: 2rem; color: #999;">Pas encore de ventes sur cette période.</div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Tab: Top Vues -->
+            <div id="tab-top-viewed" class="tab-content">
+                <div style="border: 1px solid #eee; border-radius: 8px; padding: 1rem;">
+                    @forelse($topViewedAnnonces as $annonce)
+                        <div class="mini-product">
+                            <img src="{{ $annonce->photoPrincipale() ? asset('storage/' . $annonce->photoPrincipale()->chemin) : asset('images/no-image.png') }}" alt="">
+                            <div class="info">
+                                <div class="name">{{ $annonce->titre }}</div>
+                                <div class="meta">{{ $annonce->category->nom ?? 'Sans catégorie' }}</div>
+                            </div>
+                            <div class="count-badge">{{ $annonce->vues }} vues</div>
+                        </div>
+                    @empty
+                        <div style="text-align: center; padding: 2rem; color: #999;">Aucune vue enregistrée.</div>
+                    @endforelse
+                </div>
+            </div>
+
+            <!-- Tab: Status Breakdown -->
+            <div id="tab-status" class="tab-content">
+                <div class="stats-grid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));">
+                    @php
+                        $availableStatuses = [
+                            'en_attente' => ['label' => 'En attente', 'color' => '#f59e0b', 'bg' => '#fef3c7'],
+                            'paye' => ['label' => 'Payé', 'color' => '#10b981', 'bg' => '#d1fae5'],
+                            'expedie' => ['label' => 'Expédié', 'color' => '#3b82f6', 'bg' => '#dbeafe'],
+                            'livre' => ['label' => 'Livré', 'color' => '#059669', 'bg' => '#ecfdf5'],
+                            'annule' => ['label' => 'Annulé', 'color' => '#ef4444', 'bg' => '#fee2e2'],
+                        ];
+                    @endphp
+
+                    @foreach($availableStatuses as $key => $config)
+                        <div style="background: {{ $config['bg'] }}; padding: 1.25rem; border-radius: 8px; text-align: center; border: 1px solid {{ $config['color'] }}22;">
+                            <div style="font-size: 1.5rem; font-weight: 900; color: {{ $config['color'] }}">{{ $statusBreakdown[$key] ?? 0 }}</div>
+                            <div style="font-size: 0.75rem; font-weight: 800; color: {{ $config['color'] }}; text-transform: uppercase;">{{ $config['label'] }}</div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </main>
 </div>
+
+<script>
+    function showTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove("active");
+        }
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+</script>
 @endsection
