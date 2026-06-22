@@ -288,7 +288,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('campaigns', \App\Http\Controllers\Admin\CampaignController::class)->except(['show']);
 
             // Gestion des Codes Promo (Coupons)
-            Route::resource('coupons', \App\Http\Controllers\Admin\CouponController::class);
+            Route::resource('coupons', \App\Http\Controllers\Admin\CouponController::class)->except(['index']);
             Route::patch('coupons/{coupon}/toggle-status', [\App\Http\Controllers\Admin\CouponController::class, 'toggleActive'])->name('coupons.toggle-status');
 
             // Gestion des Cartes Cadeaux

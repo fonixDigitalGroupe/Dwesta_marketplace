@@ -116,7 +116,7 @@ class CouponController extends Controller
             Storage::disk('public')->delete($coupon->banner_image);
         }
         $coupon->delete();
-        return redirect()->route('admin.coupons.index')->with('success', 'Code promotionnel supprimé.');
+        return redirect()->route('admin.promotions.index')->with('success', 'Code promotionnel supprimé.');
     }
 
     public function toggleActive(Coupon $coupon)
