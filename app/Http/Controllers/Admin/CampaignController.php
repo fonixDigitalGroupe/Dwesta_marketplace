@@ -80,19 +80,18 @@ class CampaignController extends Controller
         $catName = $coupon->category->nom ?? $coupon->categoryN1->nom ?? 'votre boutique';
         
         $fullContent = $validated['message'] . "\n\n" . 
-                       "🎁 **Code Promo : " . $coupon->code . "**\n" .
-                       "📉 **Réduction : " . $discountLabel . "** sur la catégorie " . $catName;
+                       "Code Promo : " . $coupon->code . "\n" .
+                       "Réduction : " . $discountLabel . " sur la catégorie " . $catName;
 
         if ($campaign->starts_at || $campaign->ends_at) {
-            $fullContent .= "\n📅 **Validité :";
+            $fullContent .= "\nValidité :";
             if ($campaign->starts_at) $fullContent .= " du " . $campaign->starts_at->format('d/m/Y');
             if ($campaign->ends_at) $fullContent .= " au " . $campaign->ends_at->format('d/m/Y');
-            $fullContent .= "**";
         }
 
         $fullContent .= "\n\n" . 
-                       "🚀 [Créer une nouvelle annonce](/annonces/create)\n" .
-                       "📊 [Gérer mes annonces](/vendeur/mes-annonces)";
+                       "[Créer une nouvelle annonce](/annonces/create)\n" .
+                       "[Gérer mes annonces](/vendeur/mes-annonces)";
 
         foreach ($users as $user) {
             // Trouver ou créer la conversation entre l'admin et le vendeur
