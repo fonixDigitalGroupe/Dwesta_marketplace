@@ -576,6 +576,11 @@ class CheckoutController extends Controller
                     $successUrl = route('gift-cards.index', ['success' => 'Paiement initié. Votre carte sera générée après confirmation.']);
                 }
 
+                // Si c'est un abonnement, on redirige vers vendeur.show avec succès
+                if ($paymentData && ($paymentData['custom_data']['type'] ?? '') === 'seller_subscription') {
+                    $successUrl = route('vendeur.show', ['success' => 'Paiement de l\'abonnement initié. Il sera activé après confirmation.']);
+                }
+
                 return response()->json([
                     'success' => true,
                     'redirect_url' => $successUrl

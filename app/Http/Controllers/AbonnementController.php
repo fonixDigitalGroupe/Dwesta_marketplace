@@ -115,7 +115,7 @@ class AbonnementController extends Controller
     {
         $request->validate([
             'abonnement_id' => 'required|exists:abonnements,id',
-            'payment_method' => 'required|in:om,momo,cb,wave'
+            'payment_method' => 'required|in:om,momo,cb,wave,free'
         ]);
 
         $user = Auth::user();
@@ -163,17 +163,25 @@ class AbonnementController extends Controller
 
         // Flux PayDunya pour abonnement payant
         try {
+            $moyenPaiement = $request->payment_method;
+            
             $session = $this->payDunyaService->createCheckoutSession(
                 $abonnement->prix_mensuel,
-                "Abonnement " . $abonnement->nom . " sur Dwesta",
+                "Abonnement " . $abonnement->nom . " sur Karnou",
                 route('paydunya.success'), 
-                route('abonnements.index'), // On peut aussi utiliser paydunya.cancel
+                route('abonnements.index'), 
                 [
                     'vendeur_id' => $vendeur->id,
                     'plan_id' => $abonnement->id,
                     'type' => 'seller_subscription'
-                ]
+                ],
+                $moyenPaiement !== 'cb' ? $moyenPaiement : null
             );
+
+            // Redirection vers notre page de paiement personnalisée si Mobile Money (SoftPay)
+            if ($moyenPaiement !== 'cb') {
+                return redirect()->route('checkout.pay', ['token' => $session->token]);
+            }
 
             return redirect($session->url);
 
