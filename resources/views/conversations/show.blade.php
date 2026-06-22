@@ -606,10 +606,21 @@
                 if (!$text) return '';
                 // Échapper d'abord pour la sécurité
                 $text = e($text);
-                // Convertir les liens Markdown [texte](url) en HTML bleus
-                $text = preg_replace('/\[(.*?)\]\((https?:\/\/.*?)\)/i', '<a href="$2" target="_blank" style="color: #004aad; text-decoration: underline; font-weight: 600; cursor: pointer;">$1</a>', $text);
-                // Convertir aussi les URLs brutes si pas déjà dans un tag <a>
-                $text = preg_replace('/(?<!href=")(?<!">)(https?:\/\/[^\s\(\)<>]+)/i', '<a href="$1" target="_blank" style="color: #004aad; text-decoration: underline; font-weight: 600; cursor: pointer;">$1</a>', $text);
+                
+                // Convertir les liens Markdown [texte](url) en BOUTONS stylés
+                $text = preg_replace(
+                    '/\[(.*?)\]\((https?:\/\/.*?)\)/i', 
+                    '<a href="$2" target="_blank" style="display: inline-block; margin: 5px 5px 5px 0; padding: 8px 16px; background: #004aad; color: #ffffff !important; border-radius: 20px; font-size: 0.82rem; font-weight: 600; text-decoration: none; transition: all 0.2s; box-shadow: 0 2px 4px rgba(0,74,173,0.15); border: none; cursor: pointer;">$1</a>', 
+                    $text
+                );
+
+                // Convertir aussi les URLs brutes (en liens bleus classiques) si pas déjà dans un tag <a>
+                $text = preg_replace(
+                    '/(?<!href=")(?<!">)(https?:\/\/[^\s\(\)<>]+)/i', 
+                    '<a href="$1" target="_blank" style="color: #004aad; text-decoration: underline; font-weight: 600; cursor: pointer;">$1</a>', 
+                    $text
+                );
+
                 return nl2br($text);
             };
         @endphp
