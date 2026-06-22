@@ -460,6 +460,17 @@ function confirmDeleteCoupon(id) {
 }
 
 function showCampaignDetails(subject, message) {
+    // Linkifier simple pour le modal
+    let linkedMessage = message
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;")
+        .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" style="display: inline-block; margin: 5px 5px 5px 0; padding: 8px 16px; background: #004aad; color: #ffffff !important; border-radius: 20px; font-size: 0.82rem; font-weight: 600; text-decoration: none;">$1</a>')
+        .replace(/(?<!href=")(?<!">)(https?:\/\/[^\s\(\)<>]+)/g, '<a href="$1" style="color: #004aad; text-decoration: underline; font-weight: 600;">$1</a>')
+        .replace(/\n/g, '<br>');
+
     Swal.fire({
         title: 'Détails de la campagne',
         customClass: {
@@ -473,7 +484,7 @@ function showCampaignDetails(subject, message) {
                 </div>
                 <div>
                     <label style="display: block; font-size: 0.75rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 4px;">Message</label>
-                    <div style="font-size: 0.9rem; color: #475569; background: #f8fafc; padding: 12px; border-radius: 4px; white-space: pre-wrap; line-height: 1.5;">${message}</div>
+                    <div style="font-size: 0.9rem; color: #475569; background: #f8fafc; padding: 12px; border-radius: 4px; line-height: 1.5;">${linkedMessage}</div>
                 </div>
             </div>
         `,
