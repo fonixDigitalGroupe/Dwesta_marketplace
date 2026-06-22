@@ -1661,7 +1661,10 @@
             if (!categorieId) { showPromoError('Sélectionnez d\'abord une catégorie.'); return; }
 
             fetch(`/api/campaigns/check-promo?code=${encodeURIComponent(code)}&categorie_id=${categorieId}`)
-                .then(r => r.json())
+                .then(r => {
+                    if (!r.ok) throw new Error('Server error');
+                    return r.json();
+                })
                 .then(data => {
                     if (!data.valid) {
                         showPromoError(data.message || 'Code invalide.');
@@ -1677,7 +1680,10 @@
                     error.style.display = 'none';
                     updatePromoPreview();
                 })
-                .catch(() => showPromoError('Erreur de connexion. Réessayez.'));
+                .catch(err => {
+                    console.error('Promo error:', err);
+                    showPromoError('Une erreur est survenue lors de la vérification. Réessayez.');
+                });
         }
 
         function updatePromoPreview() {
