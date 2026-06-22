@@ -1357,46 +1357,48 @@
                         <div style="display: flex; flex-direction: column; gap: 1rem;">
                             @foreach($creditServices as $service)
                                 @if($service->cle == 'urgent') @continue @endif
-                                <label class="service-card" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border: 2px solid #e0e0e0; border-radius: 12px; cursor: pointer; transition: all 0.2s; position: relative;">
-                                    <input type="checkbox" name="services[]" value="{{ $service->cle }}" class="service-checkbox" data-cost="{{ $service->credits_requis }}" style="width: 20px; height: 20px; margin-top: 4px; accent-color: #ef6c00;">
+                                <label class="service-card" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; background: linear-gradient(135deg, #fff9db 0%, #fff3bf 100%); border: 2px dashed #fcc419; border-radius: 12px; cursor: pointer; transition: all 0.2s; position: relative; box-shadow: 0 4px 10px rgba(252, 196, 25, 0.05); animation: fadeIn 0.4s ease-out;">
+                                    <input type="checkbox" name="services[]" value="{{ $service->cle }}" class="service-checkbox" data-cost="{{ $service->credits_requis }}" style="width: 22px; height: 22px; margin-top: 4px; accent-color: #f08c00;">
                                     <div style="flex: 1;">
-                                        <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 0.25rem; color: #333;">
+                                        <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 0.25rem; color: #856404; display: flex; align-items: center; gap: 0.5rem;">
                                             {{ $service->nom }}
                                             @if($service->cle == 'mise_en_avant' || $service->cle == 'boost')
-                                                <span style="background: #eef2ff; color: #004aad; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: text-bottom;">Recommandé</span>
+                                                <span style="background: #fcc419; color: #453b0c; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; text-transform: uppercase;">Recommandé</span>
                                             @endif
                                         </div>
-                                        <div style="font-size: 0.9rem; color: #666; line-height: 1.4;">{{ $service->description }}</div>
+                                        <div style="font-size: 0.85rem; color: #92700e; line-height: 1.4; font-weight: 600;">{{ $service->description }}</div>
                                         @if($service->duree_jours)
-                                            <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem; font-weight: 600;">⏳ Valable {{ $service->duree_jours }} jours</div>
+                                            <div style="font-size: 0.8rem; color: #b7791f; margin-top: 0.5rem; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                                                <span>⏳</span> Valable {{ $service->duree_jours }} jours
+                                            </div>
                                         @endif
                                     </div>
-                                    <div style="font-weight: 800; font-size: 1.25rem; color: #ef6c00; white-space: nowrap;">
-                                        +{{ $service->credits_requis }} ⭐
+                                    <div style="font-weight: 900; font-size: 1.3rem; color: #e67e22; white-space: nowrap; text-shadow: 0 1px 0 rgba(255,255,255,0.5);">
+                                        +{{ $service->credits_requis }} <span style="color: #fcc419;">⭐</span>
                                     </div>
                                 </label>
                             @endforeach
                         </div>
                     </div>
 
-                    <div style="background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid #eee;">
+                    <div style="background: linear-gradient(135deg, #fff9db 0%, #fff3bf 100%); border: 2px dashed #fcc419; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(252, 196, 25, 0.05);">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                            <span style="font-weight: 600; color: #333;">Statut de publication</span>
-                            <div style="display: flex; gap: 1rem;">
-                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                                    <input type="radio" name="statut" value="brouillon" checked style="accent-color: #333;">
+                            <span style="font-weight: 800; color: #856404; font-size: 1rem;">Statut de publication</span>
+                            <div style="display: flex; gap: 1.5rem;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #92700e; font-weight: 700;">
+                                    <input type="radio" name="statut" value="brouillon" checked style="accent-color: #856404; width: 18px; height: 18px;">
                                     <span style="font-size: 0.95rem;">Brouillon</span>
                                 </label>
-                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                                    <input type="radio" name="statut" value="publiee" style="accent-color: #ef6c00;">
-                                    <span style="font-size: 0.95rem; font-weight: 600;">Publier maintenant</span>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #856404; font-weight: 800;">
+                                    <input type="radio" name="statut" value="publiee" style="accent-color: #f08c00; width: 18px; height: 18px;">
+                                    <span style="font-size: 0.95rem;">Publier maintenant</span>
                                 </label>
                             </div>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 1rem;">
-                            <span style="font-weight: 700; font-size: 1.1rem; color: #000;">Total à payer :</span>
-                            <span style="font-weight: 800; font-size: 1.5rem; color: #111;">
-                                <span id="total-cost-display">0</span> <span style="font-size: 1.2rem; color: #ffbe00;">⭐</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #ffec99; padding-top: 1rem; margin-top: 0.5rem;">
+                            <span style="font-weight: 900; font-size: 1.15rem; color: #453b0c; text-transform: uppercase;">Total à payer :</span>
+                            <span style="font-weight: 950; font-size: 1.75rem; color: #111;">
+                                <span id="total-cost-display" style="color: #e67e22;">0</span> <span style="font-size: 1.4rem; color: #fcc419;">⭐</span>
                             </span>
                         </div>
                         <div id="insufficient-credits-warning" style="display: none; background: #fde8e8; color: #c62828; padding: 0.75rem 1rem; border-radius: 6px; margin-top: 1rem; font-size: 0.9rem; border: 1px solid #ffcdd2;">
