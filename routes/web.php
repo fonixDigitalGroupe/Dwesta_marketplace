@@ -495,6 +495,8 @@ Route::get('/collections/{slug}', [App\Http\Controllers\CollectionController::cl
 Route::get('/recherche', [\App\Http\Controllers\SearchController::class, 'index'])->name('search.index');
 Route::get('/api/search/autocomplete', [\App\Http\Controllers\SearchController::class, 'autocomplete'])->name('search.autocomplete');
 Route::get('/api/categories/{category}/filters', [CategoryController::class, 'getFilters'])->name('api.categories.filters');
+Route::get('/api/campaigns/check-promo', [\App\Http\Controllers\CampaignPromoController::class, 'check'])->name('api.campaigns.check-promo');
+Route::get('/api/campaigns/has-active', [\App\Http\Controllers\CampaignPromoController::class, 'hasActive'])->name('api.campaigns.has-active');
 
 // Webhook Stripe (Legacy)
 Route::post('/webhook/stripe', [\App\Http\Controllers\StripeWebhookController::class, 'handle'])->name('stripe.webhook');

@@ -1261,7 +1261,45 @@
                             <label for="prix" class="form-label"
                                 style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Prix actuel</label>
                             <input type="number" id="prix" name="prix" class="form-input" placeholder="Ex: 5000" min="0"
-                                required style="border-radius: 8px; border: 1.5px solid #e0e0e0; padding: 0.6rem 1rem; width: 100%; height: 45px;">
+                                required style="border-radius: 8px; border: 1.5px solid #e0e0e0; padding: 0.6rem 1rem; width: 100%; height: 45px;"
+                                oninput="updatePromoPreview()">
+                        </div>
+
+                        {{-- === Section Code Promo (affichée dynamiquement) === --}}
+                        <div id="promo-section" style="display: none; margin-top: 0.5rem; padding: 1rem 1.25rem; background: #f0f9ff; border: 1.5px solid #bae6fd; border-radius: 10px; animation: fadeIn 0.3s ease;">
+                            <label style="font-size: 0.85rem; font-weight: 700; color: #0369a1; margin-bottom: 0.5rem; display: block;">
+                                🎫 Campagne promotionnelle active pour cette catégorie
+                            </label>
+                            <p style="font-size: 0.8rem; color: #0284c7; margin-bottom: 0.75rem;">Entrez votre code promo pour bénéficier d'un prix réduit sur votre annonce.</p>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <input type="text" id="promo_code_input" placeholder="Ex: PROMO2026"
+                                    style="flex: 1; padding: 0.6rem 1rem; border: 1.5px solid #bae6fd; border-radius: 8px; font-size: 0.9rem; text-transform: uppercase; outline: none;"
+                                    oninput="this.value = this.value.toUpperCase()">
+                                <button type="button" onclick="applyPromoCode()"
+                                    style="padding: 0.6rem 1.25rem; background: #0284c7; color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 0.875rem; cursor: pointer; white-space: nowrap;">
+                                    Appliquer
+                                </button>
+                            </div>
+                            <div id="promo-error" style="display: none; color: #dc2626; font-size: 0.8rem; margin-top: 0.5rem; font-weight: 500;"></div>
+                            {{-- Prévisualisation du prix promotionnel --}}
+                            <div id="promo-preview" style="display: none; margin-top: 1rem; padding: 0.75rem 1rem; background: white; border-radius: 8px; border: 1px solid #e0f2fe;">
+                                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                                    <div>
+                                        <span style="font-size: 0.75rem; color: #64748b; display: block; margin-bottom: 2px;">Prix barré</span>
+                                        <span id="promo-original-price" style="font-size: 1rem; color: #94a3b8; text-decoration: line-through; font-weight: 600;"></span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 0.75rem; color: #64748b; display: block; margin-bottom: 2px;">Prix promotionnel</span>
+                                        <span id="promo-discounted-price" style="font-size: 1.1rem; color: #16a34a; font-weight: 800;"></span>
+                                    </div>
+                                    <div>
+                                        <span id="promo-badge" style="background: #dc2626; color: white; font-size: 0.75rem; font-weight: 800; padding: 3px 8px; border-radius: 4px;"></span>
+                                    </div>
+                                </div>
+                                <p style="font-size: 0.75rem; color: #64748b; margin-top: 0.5rem; margin-bottom: 0;">Le prix final de votre annonce sera le prix promotionnel. Le prix barré sera visible pour les acheteurs.</p>
+                            </div>
+                            {{-- Champ hidden soumis avec le formulaire --}}
+                            <input type="hidden" id="promo_code" name="promo_code" value="">
                         </div>
 
 
@@ -1408,7 +1446,7 @@
             document.querySelectorAll('.main-cat-badge').forEach(b => b.classList.remove('selected'));
             el.classList.add('selected');
 
-            document.getElementById('categorie_id').value = id; // Set ID in case there are no children
+            document.getElementById('categorie_id').value = id;
             
             const hasChildren = populateSelect('level2Select', id);
             if (hasChildren) {
@@ -1418,8 +1456,9 @@
             }
             document.getElementById('level3Section').style.display = 'none';
 
-            fetchFilters(id); // Initial fetch in case no subcategories are selected
+            fetchFilters(id);
             toggleStockVisibility(id);
+            checkCategoryPromo(id);
         }
 
         function populateSelect(selectId, parentId) {
@@ -1458,6 +1497,7 @@
             
             fetchFilters(id);
             toggleStockVisibility(id);
+            checkCategoryPromo(id);
         }
 
         function onLevel3Change(id) {
@@ -1465,6 +1505,7 @@
             document.getElementById('categorie_id').value = id;
             fetchFilters(id);
             toggleStockVisibility(id);
+            checkCategoryPromo(id);
         }
 
         function resetCategorySelection() {
@@ -1543,6 +1584,119 @@
             }
         }
 
+        // ====== PROMO CODE LOGIC ======
+        var activeCampaignData = null; // Stores fetched campaign data
+
+        function checkCategoryPromo(categoryId) {
+            const promoSection = document.getElementById('promo-section');
+            if (!promoSection) return;
+
+            // Reset state when switching categories
+            resetPromoState();
+
+            if (!categoryId) { promoSection.style.display = 'none'; return; }
+
+            // Check if any active campaign targets this category (no code needed to SHOW the section)
+            fetch(`/api/campaigns/check-promo?code=NOCHECK&categorie_id=${categoryId}`)
+                .then(r => r.json())
+                .then(data => {
+                    // We always show the section if a campaign might be active for this category
+                    // A better check: try a known-invalid code — if the response says "Code promo invalide"
+                    // it means a campaign exists but the code is wrong; "Aucune campagne" = none exists.
+                    const hasActiveCampaign = data.message !== 'Aucune campagne active pour ce code.' && data.message !== 'Paramètres manquants.';
+
+                    // Actually call a lightweight endpoint to just detect if a campaign exists
+                    return fetch(`/api/campaigns/has-active?categorie_id=${categoryId}`)
+                        .then(r => r.json())
+                        .then(res => {
+                            if (res.has_campaign) {
+                                promoSection.style.display = 'block';
+                            } else {
+                                promoSection.style.display = 'none';
+                            }
+                        })
+                        .catch(() => {
+                            // Fallback: show section anyway (harmless)
+                            promoSection.style.display = 'block';
+                        });
+                })
+                .catch(() => {});
+        }
+
+        function resetPromoState() {
+            activeCampaignData = null;
+            const promoCode = document.getElementById('promo_code');
+            const promoInput = document.getElementById('promo_code_input');
+            const preview = document.getElementById('promo-preview');
+            const error = document.getElementById('promo-error');
+            if (promoCode) promoCode.value = '';
+            if (promoInput) promoInput.value = '';
+            if (preview) preview.style.display = 'none';
+            if (error) error.style.display = 'none';
+        }
+
+        function applyPromoCode() {
+            const code = document.getElementById('promo_code_input').value.trim();
+            const categorieId = document.getElementById('categorie_id').value;
+            const error = document.getElementById('promo-error');
+            const preview = document.getElementById('promo-preview');
+            const hiddenInput = document.getElementById('promo_code');
+
+            if (!code) { showPromoError('Veuillez entrer un code promo.'); return; }
+            if (!categorieId) { showPromoError('Sélectionnez d\'abord une catégorie.'); return; }
+
+            fetch(`/api/campaigns/check-promo?code=${encodeURIComponent(code)}&categorie_id=${categorieId}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.valid) {
+                        showPromoError(data.message || 'Code invalide.');
+                        preview.style.display = 'none';
+                        hiddenInput.value = '';
+                        activeCampaignData = null;
+                        return;
+                    }
+
+                    // Code valid!
+                    activeCampaignData = data;
+                    hiddenInput.value = code;
+                    error.style.display = 'none';
+                    updatePromoPreview();
+                })
+                .catch(() => showPromoError('Erreur de connexion. Réessayez.'));
+        }
+
+        function updatePromoPreview() {
+            if (!activeCampaignData) return;
+
+            const prixInput = document.getElementById('prix');
+            const vendeurPrix = parseFloat(prixInput.value);
+            const preview = document.getElementById('promo-preview');
+
+            if (!vendeurPrix || vendeurPrix <= 0) {
+                preview.style.display = 'none';
+                return;
+            }
+
+            let promoPrix;
+            if (activeCampaignData.discount_type === 'percent') {
+                promoPrix = vendeurPrix * (1 - activeCampaignData.discount_value / 100);
+            } else {
+                promoPrix = Math.max(0, vendeurPrix - activeCampaignData.discount_value);
+            }
+
+            const pct = Math.round(((vendeurPrix - promoPrix) / vendeurPrix) * 100);
+
+            document.getElementById('promo-original-price').textContent = vendeurPrix.toLocaleString('fr-FR') + ' FCFA';
+            document.getElementById('promo-discounted-price').textContent = Math.round(promoPrix).toLocaleString('fr-FR') + ' FCFA';
+            document.getElementById('promo-badge').textContent = '-' + pct + '%';
+            preview.style.display = 'block';
+        }
+
+        function showPromoError(msg) {
+            const el = document.getElementById('promo-error');
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
 
         function toggleAdvisoryContent(step) {
             const advisory = document.getElementById('advisoryArea');

@@ -162,6 +162,36 @@ class AnnonceController extends Controller
             }
 
             $annonceData = array_merge($validated, ['attributes' => $request->input('attributes', [])]);
+
+            // === Appliquer le code promo si valide ===
+            $promoCode = strtoupper(trim($request->input('promo_code', '')));
+            if ($promoCode) {
+                $coupon = \App\Models\Coupon::where('code', $promoCode)
+                    ->where('is_active', true)
+                    ->first();
+
+                if ($coupon) {
+                    // Vérifier campagne active
+                    $campaign = \App\Models\Campaign::where('coupon_id', $coupon->id)
+                        ->where(function ($q) { $q->whereNull('starts_at')->orWhere('starts_at', '<=', now()); })
+                        ->where(function ($q) { $q->whereNull('ends_at')->orWhere('ends_at', '>=', now()); })
+                        ->first();
+
+                    if ($campaign) {
+                        $vendeurPrix = floatval($annonceData['prix']);
+                        if ($coupon->type === 'percent') {
+                            $promoPrix = $vendeurPrix * (1 - $coupon->value / 100);
+                        } else {
+                            $promoPrix = max(0, $vendeurPrix - $coupon->value);
+                        }
+                        // Le prix du vendeur devient le prix barré, le prix promo est le prix final
+                        $annonceData['prix_original'] = $vendeurPrix;
+                        $annonceData['prix'] = round($promoPrix, 2);
+                        $annonceData['promo_expires_at'] = $campaign->ends_at;
+                    }
+                }
+            }
+
             $annonce = $this->annonceService->creerAnnonce($vendeur, $annonceData, $type);
 
             // 2. Paiement effectif de la publication
