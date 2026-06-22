@@ -1275,56 +1275,7 @@
                                 oninput="updatePromoPreview()">
                         </div>
 
-                        {{-- === Section Code Promo (Optimisée pour le vendeur) === --}}
-                        <div id="promo-section" style="display: none; margin-top: 1rem; padding: 1.25rem; background: linear-gradient(135deg, #fff9db 0%, #fff3bf 100%); border: 2px dashed #fcc419; border-radius: 12px; animation: slideIn 0.4s ease-out; box-shadow: 0 4px 15px rgba(252, 196, 25, 0.1);">
-                            <div style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
-                                <div style="font-size: 1.5rem;">🚀</div>
-                                <div>
-                                    <label style="font-size: 0.95rem; font-weight: 800; color: #856404; margin: 0; display: block;">
-                                        Boostez vos ventes gratuitement !
-                                    </label>
-                                    <p style="font-size: 0.8rem; color: #92700e; margin: 0.25rem 0 0.5rem 0; line-height: 1.4;">
-                                        Appliquez un code promo pour mettre en avant votre annonce. Un <strong>prix barré</strong> attire 3x plus d'acheteurs et accélère la vente.
-                                    </p>
-                                </div>
-                            </div>
 
-                            <div style="display: flex; gap: 0.5rem; align-items: center; background: white; padding: 0.4rem; border-radius: 10px; border: 1.5px solid #ffec99;">
-                                <input type="text" id="promo_code_input" placeholder="ENTREZ VOTRE CODE ICI"
-                                    style="flex: 1; padding: 0.6rem 0.75rem; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; outline: none; background: transparent;"
-                                    oninput="this.value = this.value.toUpperCase()">
-                                <button type="button" onclick="applyPromoCode()"
-                                    style="padding: 0.6rem 1.25rem; background: #fcc419; color: #453b0c; border: none; border-radius: 8px; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: transform 0.2s;"
-                                    onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-                                    APPLIQUER
-                                </button>
-                            </div>
-                            
-                            <div id="promo-error" style="display: none; color: #e03131; font-size: 0.75rem; margin-top: 0.5rem; font-weight: 600; padding-left: 0.5rem;"></div>
-
-                            {{-- Prévisualisation Premium --}}
-                            <div id="promo-preview" style="display: none; margin-top: 1rem; padding: 1rem; background: white; border-radius: 10px; border: 1px solid #ffec99; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-                                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-                                    <div style="display: flex; align-items: center; gap: 1rem;">
-                                        <div>
-                                            <span style="font-size: 0.7rem; color: #adb5bd; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 2px;">Prix Initial</span>
-                                            <span id="promo-original-price" style="font-size: 0.95rem; color: #adb5bd; text-decoration: line-through; font-weight: 600;"></span>
-                                        </div>
-                                        <div style="font-size: 1.25rem; color: #fab005;">➜</div>
-                                        <div>
-                                            <span style="font-size: 0.7rem; color: #fa5252; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 2px;">Prix Flash</span>
-                                            <span id="promo-discounted-price" style="font-size: 1.15rem; color: #2b8a3e; font-weight: 900;"></span>
-                                        </div>
-                                    </div>
-                                    <div id="promo-badge" style="background: #fa5252; color: white; font-size: 0.85rem; font-weight: 900; padding: 4px 10px; border-radius: 6px; box-shadow: 0 2px 5px rgba(250, 82, 82, 0.3);"></div>
-                                </div>
-                                <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f3f5; display: flex; align-items: center; gap: 0.5rem;">
-                                    <span style="font-size: 1rem;">✨</span>
-                                    <span style="font-size: 0.75rem; color: #495057; font-weight: 600;">Félicitations ! Votre annonce sera mise en avant avec ce prix barré pour attirer plus de clients.</span>
-                                </div>
-                            </div>
-                            <input type="hidden" id="promo_code" name="promo_code" value="">
-                        </div>
 
 
 
@@ -1348,6 +1299,57 @@
                     <div style="margin-bottom: 2rem;">
                         <h2 class="form-title" style="margin-bottom: 0.5rem;">🚀 Booster votre annonce</h2>
                         <p class="instruction-text" style="color: #666; font-size: 0.95rem;">Mettez votre annonce en avant pour vendre d'autant plus vite.</p>
+                    </div>
+
+                    {{-- === Section Code Promo (Etape 4) === --}}
+                    <div id="promo-section" style="display: none; margin-bottom: 2rem; padding: 1.25rem; background: linear-gradient(135deg, #fff9db 0%, #fff3bf 100%); border: 2px dashed #fcc419; border-radius: 12px; animation: slideIn 0.4s ease-out; box-shadow: 0 4px 15px rgba(252, 196, 25, 0.1);">
+                        <div style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <div style="font-size: 1.5rem;">🚀</div>
+                            <div style="flex: 1;">
+                                <label style="font-size: 0.95rem; font-weight: 800; color: #856404; margin: 0; display: block;">
+                                    Boostez vos ventes gratuitement !
+                                </label>
+                                <p style="font-size: 0.8rem; color: #92700e; margin: 0.25rem 0 0.5rem 0; line-height: 1.4;">
+                                    Appliquez un code promo pour mettre en avant votre annonce. Un <strong>prix barré</strong> attire 3x plus d'acheteurs et accélère la vente.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem; align-items: center; background: white; padding: 0.4rem; border-radius: 10px; border: 1.5px solid #ffec99;">
+                            <input type="text" id="promo_code_input" placeholder="ENTREZ VOTRE CODE ICI"
+                                style="flex: 1; padding: 0.6rem 0.75rem; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; outline: none; background: transparent;"
+                                oninput="this.value = this.value.toUpperCase()">
+                            <button type="button" onclick="applyPromoCode()"
+                                style="padding: 0.6rem 1.25rem; background: #fcc419; color: #453b0c; border: none; border-radius: 8px; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: transform 0.2s;"
+                                onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                                APPLIQUER
+                            </button>
+                        </div>
+                        
+                        <div id="promo-error" style="display: none; color: #e03131; font-size: 0.75rem; margin-top: 0.5rem; font-weight: 600; padding-left: 0.5rem;"></div>
+
+                        {{-- Prévisualisation Premium --}}
+                        <div id="promo-preview" style="display: none; margin-top: 1rem; padding: 1rem; background: white; border-radius: 10px; border: 1px solid #ffec99; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div>
+                                        <span style="font-size: 0.7rem; color: #adb5bd; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 2px;">Prix Initial</span>
+                                        <span id="promo-original-price" style="font-size: 0.95rem; color: #adb5bd; text-decoration: line-through; font-weight: 600;"></span>
+                                    </div>
+                                    <div style="font-size: 1.25rem; color: #fab005;">➜</div>
+                                    <div>
+                                        <span style="font-size: 0.7rem; color: #fa5252; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 2px;">Prix Flash</span>
+                                        <span id="promo-discounted-price" style="font-size: 1.15rem; color: #2b8a3e; font-weight: 900;"></span>
+                                    </div>
+                                </div>
+                                <div id="promo-badge" style="background: #fa5252; color: white; font-size: 0.85rem; font-weight: 900; padding: 4px 10px; border-radius: 6px; box-shadow: 0 2px 5px rgba(250, 82, 82, 0.3);"></div>
+                            </div>
+                            <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f3f5; display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="font-size: 1rem;">✨</span>
+                                <span style="font-size: 0.75rem; color: #495057; font-weight: 600;">Félicitations ! Votre annonce sera mise en avant avec ce prix barré pour attirer plus de clients.</span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="promo_code" name="promo_code" value="">
                     </div>
 
                     <div style="margin-bottom: 2rem;">
