@@ -1304,7 +1304,6 @@
                     {{-- === Section Code Promo (Etape 4) === --}}
                     <div id="promo-section" style="display: none; margin-bottom: 2rem; padding: 1.25rem; background: linear-gradient(135deg, #fff9db 0%, #fff3bf 100%); border: 2px dashed #fcc419; border-radius: 12px; animation: slideIn 0.4s ease-out; box-shadow: 0 4px 15px rgba(252, 196, 25, 0.1);">
                         <div style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
-                            <div style="font-size: 1.5rem;">🚀</div>
                             <div style="flex: 1;">
                                 <label style="font-size: 0.95rem; font-weight: 800; color: #856404; margin: 0; display: block;">
                                     Boostez vos ventes gratuitement !
