@@ -90,6 +90,10 @@ class CampaignController extends Controller
             $fullContent .= "**";
         }
 
+        $fullContent .= "\n\n" . 
+                       "🚀 [Créer une nouvelle annonce](" . url('/annonces/create') . ")\n" .
+                       "📊 [Gérer mes annonces](" . url('/vendeur/mes-annonces') . ")";
+
         foreach ($users as $user) {
             // Trouver ou créer la conversation entre l'admin et le vendeur
             $conversation = \App\Models\Conversation::where(function($q) use ($adminId, $user) {
