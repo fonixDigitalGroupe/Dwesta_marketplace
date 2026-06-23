@@ -88,14 +88,15 @@
 
     /* ===== BREADCRUMB ===== */
     .landing-breadcrumb {
-        background: #ff8c00;
+        background: #f9f9f9;
+        border-bottom: 1px solid #eee;
         padding: 0.6rem 0;
         font-size: 0.8rem;
-        color: #fff;
+        color: #666;
     }
-    .landing-breadcrumb a { color: #fff; text-decoration: none; font-weight: 500; opacity: 0.9; }
-    .landing-breadcrumb a:hover { opacity: 1; text-decoration: underline; }
-    .landing-breadcrumb span { margin: 0 6px; color: rgba(255,255,255,0.7); }
+    .landing-breadcrumb a { color: #555; text-decoration: none; font-weight: 500; }
+    .landing-breadcrumb a:hover { color: #ff8c00; text-decoration: underline; }
+    .landing-breadcrumb span { margin: 0 6px; color: #999; }
 
     /* ===== MAIN CONTENT ===== */
     .landing-body {
@@ -519,7 +520,7 @@
             <a href="{{ route('search.index', ['category' => $category->slug]) }}">{{ $category->nom }}</a>
             <span>›</span>
         @endif
-        <span style="color: #fff; font-weight: 700;">{{ $banner->title }}</span>
+        <span style="color: #333; font-weight: 700;">{{ $banner->title }}</span>
     </div>
 </div>
 
