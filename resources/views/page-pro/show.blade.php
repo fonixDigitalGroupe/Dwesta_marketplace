@@ -218,36 +218,118 @@
 
 
 
-    /* Fix text color when not overlapping banner for responsiveness if wrapped */
+    /* Responsive Design Refinements */
     @media (max-width: 768px) {
-        .shop-info-bar {
-            margin-top: 0;
-            background: white;
-            padding: 20px;
-            align-items: center;
+        .shop-banner {
+            height: 160px;
+        }
+
+        .shop-identity-card {
             flex-direction: column;
+            margin: -40px 10px 0 10px;
+            padding: 20px;
+            gap: 15px;
+            position: relative; /* Remove sticky on mobile to save space */
+            width: auto;
             text-align: center;
         }
-        .shop-identity {
-            flex-direction: column;
+
+        .shop-logo-box {
+            width: 70px;
+            height: 70px;
+            margin-top: -50px; /* Overlap effect even more on mobile */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .shop-meta-info {
             align-items: center;
+        }
+
+        .shop-name-row {
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .shop-name-text {
+            font-size: 1.2rem;
+        }
+
+        .shop-search-container {
             width: 100%;
         }
-        .shop-logo, .shop-logo-placeholder {
-            margin-top: -90px;
+
+        .shop-layout {
+            grid-template-columns: 1fr;
         }
-        .shop-text {
-            color: #333;
-            text-shadow: none;
-            padding-bottom: 0;
+
+        .shop-sidebar {
+            display: none; /* Hide sidebar on mobile by default */
         }
-        .shop-actions {
-            padding-bottom: 0;
+
+        .shop-info-section {
+            padding: 20px 15px;
+        }
+
+        .shop-title-main {
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .shop-description-text {
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .products-header {
+            padding: 10px 15px;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .products-header-right {
             width: 100%;
-            justify-content: center;
         }
-        .shop-grid {
-            grid-template-columns: 1fr; /* Stack sidebar and content */
+
+        .sort-select {
+            width: 100%;
+        }
+
+        .products-grid-container {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .product-card {
+            padding: 10px;
+            min-height: auto;
+            border-right: 1px solid #eee;
+        }
+
+        .product-image-container {
+            height: 140px;
+        }
+
+        .product-title {
+            font-size: 0.85rem;
+            height: 2.4rem;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .product-price-value {
+            font-size: 1rem;
+        }
+
+        .custom-pagination {
+            gap: 20px;
+            padding: 20px 10px;
+        }
+
+        .pagination-next-btn {
+            padding: 10px 15px;
+            font-size: 0.9rem;
         }
     }
 
