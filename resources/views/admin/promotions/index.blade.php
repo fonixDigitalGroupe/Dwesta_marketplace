@@ -288,10 +288,7 @@
                 <thead>
                     <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 150px;">Date</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Titre</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Coupon</th>
-
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 140px;">Cible</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Début</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Fin</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Statut</th>
@@ -306,20 +303,8 @@
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #475569;">
                                 {{ $campaign->created_at->format('d/m/Y') }}
                             </td>
-                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; font-weight: 600; color: #1e293b;">
-                                {{ $campaign->title ?? $campaign->subject }}
-                            </td>
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                                 <span class="code-badge">{{ $campaign->coupon->code ?? 'N/A' }}</span>
-                            </td>
-
-                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #475569;">
-                                <span style="display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; 
-                                    @if($campaign->target_type == 'professionnel') background: #e0f2fe; color: #0369a1; 
-                                    @elseif($campaign->target_type == 'particulier') background: #fef3c7; color: #92400e;
-                                    @else background: #f1f5f9; color: #475569; @endif">
-                                    {{ $campaign->target_type }}
-                                </span>
                             </td>
                             <td style="padding: 12px 15px; text-align: center; font-size: 0.82rem; color: #475569; border-right: 1px solid #eff3f6;">
                                 {{ $campaign->starts_at ? $campaign->starts_at->format('d/m/Y') : '-' }}
@@ -382,7 +367,7 @@
                         </tr>
                     @empty
                          <tr>
-                            <td colspan="8" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
+                            <td colspan="7" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
                                 Aucune campagne envoyée pour le moment.
                             </td>
                         </tr>
