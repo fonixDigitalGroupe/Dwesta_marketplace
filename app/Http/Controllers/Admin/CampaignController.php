@@ -37,6 +37,7 @@ class CampaignController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'title' => 'required|string|max:255',
             'coupon_id' => 'required|exists:coupons,id',
             'target_type' => 'required|in:particulier,professionnel,all',
             'subject' => 'required|string|max:255',
@@ -62,6 +63,7 @@ class CampaignController extends Controller
 
         // Création de l'enregistrement de campagne
         $campaign = Campaign::create([
+            'title' => $validated['title'],
             'coupon_id' => $coupon->id,
             'target_type' => $validated['target_type'],
             'subject' => $validated['subject'],
@@ -133,6 +135,7 @@ class CampaignController extends Controller
     public function update(Request $request, Campaign $campaign)
     {
         $validated = $request->validate([
+            'title' => 'required|string|max:255',
             'coupon_id' => 'required|exists:coupons,id',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',

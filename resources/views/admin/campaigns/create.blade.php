@@ -170,6 +170,11 @@
                         </div>
 
                         <div style="margin-bottom: 20px;">
+                            <label class="field-label">Titre de la campagne <span style="color: red;">*</span></label>
+                            <input type="text" name="title" value="{{ old('title') }}" required placeholder="Ex: Campagne d'été 2024">
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
                             <label class="field-label">Objet du message <span style="color: red;">*</span></label>
                             <input type="text" name="subject" id="campaign_subject" value="Boostez vos ventes : Nouveau code promo disponible !" required placeholder="Sujet de l'email et de la notification">
                         </div>

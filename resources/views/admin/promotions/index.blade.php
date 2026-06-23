@@ -288,6 +288,7 @@
                 <thead>
                     <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 150px;">Date</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Titre</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Coupon</th>
 
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 140px;">Cible</th>
@@ -304,6 +305,9 @@
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #475569;">
                                 {{ $campaign->created_at->format('d/m/Y') }}
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; font-weight: 600; color: #1e293b;">
+                                {{ $campaign->title ?? $campaign->subject }}
                             </td>
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                                 <span class="code-badge">{{ $campaign->coupon->code ?? 'N/A' }}</span>

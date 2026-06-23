@@ -10,6 +10,7 @@ class Campaign extends Model
     use HasFactory;
 
     protected $fillable = [
+        'title',
         'coupon_id',
         'target_type',
         'subject',
