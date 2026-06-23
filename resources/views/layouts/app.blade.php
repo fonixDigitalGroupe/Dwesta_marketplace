@@ -44,7 +44,7 @@
         @endif
 
         .top-banner {
-            background-color: #ff8c00;
+            background-color: #004aad;
             height: 40px;
             width: 100%;
             display: flex;

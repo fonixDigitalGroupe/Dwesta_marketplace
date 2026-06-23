@@ -81,7 +81,7 @@
         justify-content: center;
         width: 38px;
         height: 38px;
-        background-color: #ff8c00;
+        background-color: #004aad;
         color: #fff;
         border: none;
         border-radius: 8px;
@@ -89,7 +89,7 @@
         flex-shrink: 0;
         transition: all 0.2s ease;
     }
-    .n1-nav-home-btn:hover { background-color: #e67e00; transform: scale(1.05); }
+    .n1-nav-home-btn:hover { background-color: #003a8c; transform: scale(1.05); }
 
     body { 
         margin: 0; 
@@ -119,17 +119,17 @@
         box-shadow: none;
     }
     .n1-cat-nav-link:hover { 
-        color: #ff8c00; 
+        color: #004aad; 
     }
     .n1-cat-nav-link.active {
         background-color: transparent;
-        color: #ff8c00 !important;
+        color: #004aad !important;
         font-weight: 800;
         border: none;
         box-shadow: none;
     }
     .n1-nav-home-btn.active {
-        background-color: #ff8c00 !important;
+        background-color: #004aad !important;
         color: #fff !important;
         box-shadow: none;
     }

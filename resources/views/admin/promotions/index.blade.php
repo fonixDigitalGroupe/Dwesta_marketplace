@@ -7,8 +7,8 @@
         .main-content { background-color: #f8f9fa !important; }
 
         .btn-amazon-primary {
-            background: linear-gradient(180deg, #ff9900 0%, #e77600 100%);
-            border: 1px solid #c05d00;
+            background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
+            border: 1px solid #1e40af;
             color: #fff;
             padding: 6px 14px;
             border-radius: 4px;
