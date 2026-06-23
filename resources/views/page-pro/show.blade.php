@@ -381,10 +381,7 @@
         }
 
         .btn-voir-produit {
-            padding: 5px 12px;
-            font-size: 0.75rem;
-            margin-top: 5px;
-            align-self: flex-start;
+            display: none !important; /* Entire card is clickable */
         }
 
         .product-price-value {
