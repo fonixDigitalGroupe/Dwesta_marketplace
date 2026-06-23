@@ -73,6 +73,9 @@ class CampaignController extends Controller
             'ends_at' => $validated['ends_at'],
         ]);
 
+        // Activer automatiquement le coupon lié
+        $coupon->update(['is_active' => true]);
+
         // Envoi massif de notifications
         Notification::send($users, new PromotionCampaignNotification($coupon, $validated['subject'], $validated['message']));
 
@@ -128,7 +131,7 @@ class CampaignController extends Controller
     }
     public function edit(Campaign $campaign)
     {
-        $coupons = Coupon::where('is_active', true)->get();
+        $coupons = Coupon::orderBy('code')->get();
         return view('admin.campaigns.edit', compact('campaign', 'coupons'));
     }
 
@@ -150,12 +153,12 @@ class CampaignController extends Controller
 
     public function destroy(Campaign $campaign)
     {
-        // 1. Désactiver le coupon associé et enlever sa bannière
+        // 1. Si le coupon n'a plus d'autres campagnes après suppression, le désactiver
         if ($campaign->coupon) {
-            $campaign->coupon->update([
-                'is_active' => false,
-                'banner_image' => null
-            ]);
+            $remainingCampaigns = $campaign->coupon->campaigns()->where('id', '!=', $campaign->id)->count();
+            if ($remainingCampaigns === 0) {
+                $campaign->coupon->update(['is_active' => false]);
+            }
         }
 
         // 2. Supprimer tous les messages associés dans la messagerie
