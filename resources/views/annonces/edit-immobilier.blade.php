@@ -1031,7 +1031,7 @@
 
     function checkCategoryPromo(categoryId) {
         if (!categoryId) return;
-        fetch(`/api/campaigns/check-category-promo?categorie_id=${categoryId}`)
+        fetch(`/api/campaigns/has-active?categorie_id=${categoryId}`)
             .then(r => r.json())
             .then(data => {
                 const promoSection = document.getElementById('promo-section');
