@@ -120,17 +120,10 @@ class HomeController extends Controller
             ->take(6)
             ->get()
             ->map(function($seller) {
-                $maxDiscount = $seller->annonces->map(function($a) {
-                    return $a->discount_percentage;
-                })->max();
+                // Remplacer "JUSQU'À -75%" par "boutique officiel" comme demandé
+                $seller->promo_val = "boutique officiel";
+                $seller->promo_sub = "";
                 
-                if ($maxDiscount > 0) {
-                    $seller->promo_val = "JUSQU'À -{$maxDiscount}%";
-                    $seller->promo_sub = "";
-                } else {
-                    $seller->promo_val = "DÉCOUVREZ";
-                    $seller->promo_sub = "la boutique";
-                }
                 return $seller;
             });
 
