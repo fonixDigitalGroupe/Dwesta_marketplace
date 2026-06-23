@@ -169,10 +169,29 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
     }
+    .landing-grid-card-price-container {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
     .landing-grid-card-price {
         font-size: 1.15rem;
         font-weight: 800;
         color: #ff8c00;
+    }
+    .landing-grid-card-old-price {
+        font-size: 0.85rem;
+        color: #999;
+        text-decoration: line-through;
+    }
+    .landing-grid-card-discount {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #d32f2f;
+        background: #ffebee;
+        padding: 2px 6px;
+        border-radius: 4px;
     }
     .landing-grid-card-state {
         font-size: 0.75rem;
@@ -281,7 +300,13 @@
                     <div class="landing-grid-card-body">
                         <div class="landing-grid-card-title">{{ $annonce->titre }}</div>
                         <div class="landing-grid-card-state">{{ $annonce->produit ? ucfirst($annonce->produit->etat) : 'Neuf' }}</div>
-                        <div class="landing-grid-card-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</div>
+                        <div class="landing-grid-card-price-container">
+                            <div class="landing-grid-card-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</div>
+                            @if($annonce->prix_original && $annonce->prix_original > $annonce->prix)
+                                <div class="landing-grid-card-old-price">{{ number_format($annonce->prix_original, 0, ',', ' ') }} FCFA</div>
+                                <div class="landing-grid-card-discount">-{{ $annonce->discount_percentage }}%</div>
+                            @endif
+                        </div>
                         @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
                             <div class="landing-grid-card-seller">
                                 Par {{ $annonce->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}
