@@ -89,8 +89,9 @@
         flex-shrink: 0;
         font-size: 0.85rem;
         transition: all 0.2s ease, transform 0.15s;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .n1-nav-home-btn:hover { background-color: #004aad; color: #fff; transform: scale(1.08); }
+    .n1-nav-home-btn:hover { background-color: #004aad; color: #fff; transform: scale(1.08); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
 
     body { 
         margin: 0; 
@@ -121,26 +122,38 @@
 
     .n1-cat-nav-link { 
         display: block; 
-        padding: 5px 12px; 
+        padding: 6px 14px; 
         text-decoration: none; 
         color: #444;
-        font-weight: 400; 
+        font-weight: 500; 
         font-size: 0.875rem; 
         white-space: nowrap;
-        transition: color 0.2s;
+        transition: all 0.2s;
+        background: #f8fafc;
+        border-radius: 20px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
-    .n1-cat-nav-link:hover { color: #004aad; font-weight: 600; }
+    .n1-cat-nav-link:hover { 
+        color: #004aad; 
+        border-color: #004aad;
+        background: #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        transform: translateY(-1px);
+    }
     .n1-cat-nav-link.active {
         background-color: #004aad;
         color: #fff !important;
-        padding: 5px 16px;
+        padding: 6px 18px;
         border-radius: 20px;
         font-weight: 600;
-        border-bottom: none;
+        border: 1px solid #004aad;
+        box-shadow: 0 4px 12px rgba(0,74,173,0.3);
     }
     .n1-nav-home-btn.active {
         background-color: #004aad !important;
         color: #fff !important;
+        box-shadow: 0 4px 12px rgba(0,74,173,0.3);
     }
 
     .n1-promo-bar {

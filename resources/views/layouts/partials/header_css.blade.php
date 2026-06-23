@@ -409,13 +409,17 @@
         font-size: 0.85rem;
         text-decoration: none;
         white-space: nowrap;
-        transition: background 0.15s, color 0.15s;
+        transition: all 0.2s;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        display: inline-flex;
+        align-items: center;
     }
     .badge-style:hover {
-        background: #cccccc;
-        color: #000;
+        background: #004aad;
+        color: #fff;
+        box-shadow: 0 3px 8px rgba(0,74,173,0.25);
+        transform: translateY(-1px);
     }
-
     /* Sidebar category item — name + chevron on same row */
     .cat-sidebar-item {
         display: flex;
