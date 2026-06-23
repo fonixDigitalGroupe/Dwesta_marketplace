@@ -351,29 +351,43 @@
 
         .product-card {
             flex-direction: row !important;
-            padding: 15px !important;
+            padding: 10px !important;
             min-height: auto !important;
-            gap: 15px;
-            align-items: flex-start; /* Alignment top like in image */
+            gap: 12px;
+            align-items: flex-start;
             border-right: none;
             border-bottom: 1px solid #f0f0f0;
         }
 
         .product-image-container {
-            width: 120px;
-            height: 120px;
+            width: 85px;
+            height: 85px;
             flex-shrink: 0;
             margin-bottom: 0;
         }
 
         .product-title {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            line-height: 1.2;
             height: auto;
+            max-height: 2.2rem;
+            overflow: hidden;
+            display: -webkit-box;
             -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .product-subtitle {
+            font-size: 0.75rem;
+            color: #777;
+            margin-bottom: 4px;
         }
 
         .product-info {
-            gap: 2px;
+            gap: 1px;
+            overflow: hidden;
         }
 
         .product-card div[style*="font-size: 0.78rem"] {
@@ -385,18 +399,19 @@
         }
 
         .product-price-value {
-            font-size: 1.25rem;
-            color: #bf0000; /* Red like Rakuten */
+            font-size: 1.15rem;
+            color: #bf0000;
+            font-weight: 700;
         }
 
         .product-status {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #bf0000;
         }
 
         .review-stars {
-            font-size: 0.8rem;
-            margin: 5px 0;
+            font-size: 0.75rem;
+            margin: 2px 0;
         }
 
         /* Sticky Bottom Navigation */
