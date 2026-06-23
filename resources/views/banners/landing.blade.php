@@ -9,44 +9,81 @@
     /* ===== HERO BANNER ===== */
     .landing-hero {
         width: 100%;
-        position: relative;
-        background: #fff;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .landing-hero img {
-        width: 100%;
-        max-height: 220px; /* Aligned with category hero height */
-        object-fit: cover;
-        object-position: center;
-        display: block;
-    }
-    .landing-hero-overlay {
-        position: absolute;
-        inset: 0;
+        height: 260px;
+        background-color: #ffffff;
+        background-size: cover;
+        background-position: center;
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
-        padding: 1rem;
-        background: rgba(0,0,0,0.25);
+        align-items: center;
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    /* Dimmer to ensure text holds regardless of the image */
+    .landing-hero::before {
+        content: '';
+        position: absolute;
+        top:0; left:0; right:0; bottom:0;
+        background: rgba(0,0,0,0.3);
+        z-index: 1;
+    }
+    .landing-hero-content { 
+        position: relative; 
+        z-index: 10; 
+        width: 100%;
+        max-width: 600px;
+        padding: 0 20px;
     }
     .landing-hero-title {
-        font-family: 'Outfit', sans-serif;
-        font-size: 1.8rem;
-        font-weight: 800;
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        font-weight: 700;
+        margin: 0 0 10px 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         color: #fff;
-        margin: 0;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        text-align: center;
     }
     .landing-hero-subtitle {
-        font-size: 0.9rem;
-        color: rgba(255,255,255,0.95);
-        margin-top: 4px;
-        text-align: center;
+        font-size: 1.3rem;
+        font-weight: 400;
+        font-style: italic;
+        margin: 0;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        color: #fff;
+    }
+
+    /* In-page Search Bar */
+    .n1-banner-search-wrapper {
+        margin-top: 25px;
+        position: relative;
+    }
+    .n1-banner-search-input {
+        width: 100%;
+        padding: 14px 20px 14px 50px;
+        border-radius: 50px;
+        border: none;
+        background: rgba(255, 255, 255, 0.95);
+        color: #333;
+        font-size: 1rem;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+    .n1-banner-search-input:focus {
+        background: #fff;
+        outline: none;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+        transform: translateY(-2px);
+    }
+    .n1-banner-search-icon {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #888;
+        font-size: 1.2rem;
     }
 
     /* ===== BREADCRUMB ===== */
@@ -244,7 +281,7 @@
     .landing-grid-card-price {
         font-size: 1.15rem;
         font-weight: 800;
-        color: #f68b1e;
+        color: #ff8c00;
     }
     .landing-grid-card-state {
         font-size: 0.75rem;
@@ -456,12 +493,19 @@
 @section('content')
 
 {{-- HERO BANNER --}}
-<div class="landing-hero">
-    @if($banner->landing_page_image)
-        <img src="{{ $banner->landing_page_image }}" alt="{{ $banner->title }}">
-    @elseif($banner->image_url)
-        <img src="{{ $banner->image_url }}" alt="{{ $banner->title }}">
-    @endif
+@php
+    $heroImg = $banner->landing_page_image ?? $banner->image_url;
+@endphp
+<div class="landing-hero" style="background-image: url('{{ $heroImg }}');">
+    <div class="landing-hero-content">
+        <h1 class="landing-hero-title">{{ $banner->title }}</h1>
+        <p class="landing-hero-subtitle">{{ $banner->description ?? 'Profitez de nos offres exceptionnelles' }}</p>
+        
+        <div class="n1-banner-search-wrapper">
+            <i class="fas fa-search n1-banner-search-icon"></i>
+            <input type="text" id="n1-page-search" class="n1-banner-search-input" placeholder="Rechercher dans cette offre..." oninput="handleInPageSearch(this.value)">
+        </div>
+    </div>
 </div>
 
 {{-- BREADCRUMB --}}
@@ -483,44 +527,11 @@
 
 <div class="landing-body">
 
-    {{-- TOP PRODUITS LES PLUS CONSULTÉS --}}
-    @if($topConsultes->count() > 0)
-    <div class="landing-top-section">
-        <h2 class="landing-section-title">Top dans cette catégorie</h2>
-        <div class="top-products-carousel-wrapper">
-            <button class="landing-carousel-arrow left" onclick="landingCarouselScroll('landing-top-track', -1)">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <div class="top-products-track" id="landing-top-track">
-                @foreach($topConsultes as $annonce)
-                    <a href="{{ route('annonces.show', $annonce->slug) }}" class="landing-product-card">
-                        <div class="landing-card-img">
-                            @if($annonce->photoPrincipale())
-                                <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
-                            @else
-                                <span style="color:#ddd; font-size:0.75rem;">Pas de photo</span>
-                            @endif
-                        </div>
-                        <div class="landing-card-body">
-                            <div class="landing-card-title">{{ $annonce->titre }}</div>
-                            <div class="landing-card-state">{{ $annonce->produit ? ucfirst($annonce->produit->etat) : 'Neuf' }}</div>
-                            <div class="landing-card-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</div>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-            <button class="landing-carousel-arrow right" onclick="landingCarouselScroll('landing-top-track', 1)">
-                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-        </div>
-    </div>
-    @endif
 
     {{-- GRILLE PRINCIPALE --}}
     <div>
-        <div class="landing-products-header">
-            <div>
-                <h2 class="landing-section-title" style="margin-bottom:0; border-bottom:none; padding-bottom:0;">Notre sélection complète</h2>
+        <div class="landing-products-header" style="justify-content: flex-end;">
+            <div style="flex: 1;">
                 <div class="landing-products-count">{{ $annonces->total() }} produit(s) trouvé(s)</div>
             </div>
             <select class="landing-sort-select" onchange="window.location.href='?sort='+this.value">
@@ -532,7 +543,7 @@
 
         <div class="landing-products-grid">
             @forelse($annonces as $annonce)
-                <a href="{{ route('annonces.show', $annonce->slug) }}" class="landing-grid-card">
+                <a href="{{ route('annonces.show', $annonce->slug) }}" class="landing-grid-card global-filter-item">
                     <div class="landing-grid-card-img">
                         @if($annonce->photoPrincipale())
                             <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
@@ -567,93 +578,6 @@
 
 </div>
 
-{{-- RAKUTEN STYLE TABS SECTION --}}
-@if($produitsNeufs->count() > 0 || $produitsOccasion->count() > 0)
-<div class="rakuten-tabs-section">
-    <div class="rakuten-tabs-container">
-        <div class="rakuten-tabs-nav">
-            <button class="rakuten-tab-btn active" onclick="switchRakutenTab('tab-neuf', this)">
-                <i class="fas fa-home"></i>
-                Tous nos produits
-            </button>
-            <button class="rakuten-tab-btn" onclick="switchRakutenTab('tab-occasion', this)">
-                <i class="fas fa-tools"></i>
-                Reconditionné
-            </button>
-        </div>
-
-        <h2 class="rakuten-pref-headline">Vos catégories préférées</h2>
-
-        <div class="rakuten-sub-tabs">
-            @foreach($prefCategories as $idx => $prefCat)
-                <button class="rakuten-sub-tab-btn {{ $idx === 0 ? 'active' : '' }}" 
-                        onclick="switchRakutenSubTab('cat-{{ $prefCat->id }}', this)">
-                    {{ $prefCat->nom }}
-                </button>
-            @endforeach
-        </div>
-
-        {{-- Contents for NEUF --}}
-        <div id="tab-neuf" class="rakuten-tab-content active">
-            @foreach($prefCategories as $idx => $prefCat)
-                <div id="tab-neuf-cat-{{ $prefCat->id }}" class="rakuten-sub-content {{ $idx === 0 ? 'active' : '' }}">
-                    <div class="rakuten-grid">
-                        @php
-                            $catProducts = $produitsNeufs->filter(function($p) use ($prefCat) {
-                                return $p->categorie_id == $prefCat->id;
-                            });
-                            // Si pas de produits directs, peut-être dans les descendants ? Simplification pour l'instant.
-                            if($catProducts->isEmpty()) $catProducts = $produitsNeufs->take(5); 
-                        @endphp
-                        @foreach($catProducts as $p)
-                            <a href="{{ route('annonces.show', $p->slug) }}" class="rakuten-card">
-                                <div class="rakuten-card-img">
-                                    @if($p->photoPrincipale())
-                                        <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
-                                    @else
-                                        <i class="fas fa-image" style="font-size: 2.5rem; color: #eee;"></i>
-                                    @endif
-                                </div>
-                                <div class="rakuten-card-title">{{ $p->titre }}</div>
-                                <div class="rakuten-card-price">{{ number_format($p->prix, 0, ',', ' ') }} FCFA</div>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        {{-- Contents for OCCASION --}}
-        <div id="tab-occasion" class="rakuten-tab-content">
-            @foreach($prefCategories as $idx => $prefCat)
-                <div id="tab-occasion-cat-{{ $prefCat->id }}" class="rakuten-sub-content {{ $idx === 0 ? 'active' : '' }}">
-                    <div class="rakuten-grid">
-                        @php
-                            $catProductsOcc = $produitsOccasion->filter(function($p) use ($prefCat) {
-                                return $p->categorie_id == $prefCat->id;
-                            });
-                            if($catProductsOcc->isEmpty()) $catProductsOcc = $produitsOccasion->take(5);
-                        @endphp
-                        @foreach($catProductsOcc as $p)
-                            <a href="{{ route('annonces.show', $p->slug) }}" class="rakuten-card">
-                                <div class="rakuten-card-img">
-                                    @if($p->photoPrincipale())
-                                        <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
-                                    @else
-                                        <i class="fas fa-image" style="font-size: 2.5rem; color: #eee;"></i>
-                                    @endif
-                                </div>
-                                <div class="rakuten-card-title">{{ $p->titre }}</div>
-                                <div class="rakuten-card-price">{{ number_format($p->prix, 0, ',', ' ') }} FCFA</div>
-                            </a>
-                        @endforeach
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-</div>
-@endif
 
 @endsection
 
@@ -667,33 +591,21 @@ function landingCarouselScroll(id, direction) {
     track.scrollBy({ left: direction * width * 3, behavior: 'smooth' });
 }
 
-function switchRakutenTab(tabId, btn) {
-    // Hide all contents
-    document.querySelectorAll('.rakuten-tab-content').forEach(c => c.classList.remove('active'));
-    // Remove active from all buttons
-    document.querySelectorAll('.rakuten-tab-btn').forEach(b => b.classList.remove('active'));
+function handleInPageSearch(query) {
+    const q = query.toLowerCase().trim();
+    const items = document.querySelectorAll('.global-filter-item');
     
-    // Show selected
-    document.getElementById(tabId).classList.add('active');
-    btn.classList.add('active');
-}
-
-function switchRakutenSubTab(catId, btn) {
-    // Determine current top tab (neuf or occasion)
-    const activeTopTabId = document.querySelector('.rakuten-tab-content.active').id;
-    
-    // Hide all sub-contents in CURRENT top tab
-    document.querySelectorAll(`#${activeTopTabId} .rakuten-sub-content`).forEach(c => c.classList.remove('active'));
-    // Remove active from all sub-buttons
-    document.querySelectorAll('.rakuten-sub-tab-btn').forEach(b => b.classList.remove('active'));
-    
-    // Show selected sub-content in EVERY top tab (so it's synced when switching)
-    document.querySelectorAll('.rakuten-tab-content').forEach(topTab => {
-        const subContent = topTab.querySelector(`#${topTab.id}-${catId}`);
-        if(subContent) subContent.classList.add('active');
+    items.forEach(item => {
+        const titleEl = item.querySelector('.landing-grid-card-title, .landing-card-title');
+        if (!titleEl) return;
+        
+        const title = titleEl.innerText.toLowerCase();
+        if (title.includes(q)) {
+            item.style.display = 'flex';
+        } else {
+            item.style.display = 'none';
+        }
     });
-    
-    btn.classList.add('active');
 }
 </script>
 @endpush
