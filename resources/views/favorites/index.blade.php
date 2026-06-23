@@ -145,7 +145,7 @@
         @if($favorites->count() > 0)
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: 1.5rem;">
                 @foreach($favorites as $annonce)
-                    <div style="position: relative;">
+                    <div class="fav-card-container" style="position: relative;">
                         {{-- Remove from favorites button --}}
                         <form action="{{ route('favorites.toggle', $annonce->slug) }}" method="POST">
                             @csrf
@@ -218,4 +218,64 @@
         @endif
     </main>
 </div>
+
+@push('scripts')
+<script>
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.fav-remove-btn');
+        if (!btn) return;
+
+        e.preventDefault();
+        const form = btn.closest('form');
+        const card = btn.closest('.fav-card-container');
+        const url = form.getAttribute('action');
+        const token = form.querySelector('input[name="_token"]').value;
+
+        // Visual feedback
+        card.style.opacity = '0.5';
+        card.style.pointerEvents = 'none';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'removed') {
+                // Smooth removal
+                card.style.transition = 'all 0.4s ease';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.9)';
+                
+                setTimeout(() => {
+                    card.remove();
+                    
+                    // Check if there are any cards left
+                    const remaining = document.querySelectorAll('.fav-card-container');
+                    if (remaining.length === 0) {
+                        window.location.reload(); // Reload to show the empty state
+                    }
+                }, 400);
+
+                // Feedback via toast
+                window.dispatchEvent(new CustomEvent('notify', {
+                    detail: { message: data.message, type: 'success' }
+                }));
+            } else {
+                card.style.opacity = '1';
+                card.style.pointerEvents = 'auto';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            card.style.opacity = '1';
+            card.style.pointerEvents = 'auto';
+        });
+    });
+</script>
+@endpush
 @endsection

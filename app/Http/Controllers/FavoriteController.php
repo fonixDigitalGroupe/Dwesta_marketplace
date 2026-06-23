@@ -8,10 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
-    public function toggle(Annonce $annonce)
+    public function toggle(Request $request, Annonce $annonce)
     {
         if (!Auth::check()) {
-            return response()->json(['error' => 'Unauthenticated'], 401);
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['error' => 'Unauthenticated'], 401);
+            }
+            return redirect()->route('login');
         }
 
         $user = Auth::user();
@@ -27,11 +30,15 @@ class FavoriteController extends Controller
             $message = 'Ce produit a été ajouté a votre liste d\'envies';
         }
 
-        return response()->json([
-            'status' => $status,
-            'message' => $message,
-            'count' => $annonce->favoritedBy()->count()
-        ]);
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'status' => $status,
+                'message' => $message,
+                'count' => $annonce->favoritedBy()->count()
+            ]);
+        }
+
+        return back()->with('success', $message);
     }
     public function index()
     {
