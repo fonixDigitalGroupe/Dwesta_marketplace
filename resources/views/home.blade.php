@@ -1452,16 +1452,20 @@
     }
 
     .brand-card-promo-val {
-        font-weight: 900;
-        font-size: 1.4rem;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        font-size: 1.8rem;
         color: #1a1a1a;
-        line-height: 1;
+        line-height: 1.1;
+        letter-spacing: -0.5px;
     }
 
     .brand-card-promo-sub {
-        font-size: 0.8rem;
-        color: #666;
-        margin-top: 4px;
+        font-family: 'Outfit', sans-serif;
+        font-size: 0.9rem;
+        color: #444;
+        margin-top: 2px;
+        font-weight: 500;
     }
 
     .brand-card-middle-text {
@@ -1475,7 +1479,7 @@
 
     .brand-card-red-footer {
         width: 100%;
-        background: #004aad;
+        background: #db0001; /* Rouge Rakuten officiel */
         color: #fff;
         display: flex;
         align-items: center;
