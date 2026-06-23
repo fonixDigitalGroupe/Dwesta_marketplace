@@ -1057,11 +1057,11 @@
     }
     .btn-voir-plus {
         background: transparent;
-        color: #333;
-        border: 1px solid rgba(0, 0, 0, 0.3);
+        color: #ff8c00;
+        border: 2px solid #ff8c00;
         padding: 0.8rem 3rem;
         border-radius: 30px;
-        font-weight: 600;
+        font-weight: 700;
         font-size: 0.95rem;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -1069,8 +1069,10 @@
         letter-spacing: 0.5px;
     }
     .btn-voir-plus:hover {
-        background: rgba(0,0,0,0.06);
+        background: #ff8c00;
+        color: #fff;
         transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
     }
 
     .n1-section-footer {
@@ -1081,21 +1083,21 @@
     }
     .btn-voir-plus-white {
         background: transparent;
-        color: #333;
-        border: 1px solid #333;
+        color: #ff8c00;
+        border: 2px solid #ff8c00;
         padding: 0.7rem 2.5rem;
         border-radius: 30px;
-        font-weight: 600;
+        font-weight: 700;
         font-size: 0.9rem;
         cursor: pointer;
         transition: all 0.3s ease;
         text-decoration: none;
     }
     .btn-voir-plus-white:hover {
-        background: #333;
+        background: #ff8c00;
         color: #fff;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
     }
 
     /* Responsive Grid */
