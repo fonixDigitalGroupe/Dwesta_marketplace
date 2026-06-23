@@ -1479,7 +1479,7 @@
 
     .brand-card-red-footer {
         width: 100%;
-        background: #db0001; /* Rouge Rakuten officiel */
+        background: #ff750f; /* Orange Karnou Pro */
         color: #fff;
         display: flex;
         align-items: center;
