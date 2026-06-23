@@ -160,6 +160,10 @@
         color: #999;
     }
 
+    .mobile-filter-trigger, .close-filters-btn {
+        display: none;
+    }
+
     /* Layout structure */
     .shop-layout {
         margin-top: 0;
@@ -263,21 +267,67 @@
         }
 
         .shop-sidebar {
-            display: none; /* Hide sidebar on mobile by default */
+            display: none; /* Collapsed by default on mobile */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 60px 20px 20px 20px;
+        }
+
+        .shop-sidebar.active {
+            display: block;
+        }
+
+        .close-filters-btn {
+            display: block;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .mobile-filter-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 12px;
+            margin: 15px 15px 0 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
         }
 
         .shop-info-section {
             padding: 20px 15px;
+            text-align: center;
+        }
+
+        .shop-breadcrumb {
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .shop-title-main {
             font-size: 1.4rem;
             text-align: center;
+            word-wrap: break-word;
+            width: 100%;
         }
 
         .shop-description-text {
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
+            margin: 0 auto;
         }
 
         .products-header {
@@ -319,7 +369,15 @@
         }
 
         .product-price-value {
-            font-size: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .product-status {
+            font-size: 0.75rem;
+        }
+
+        .review-stars {
+            font-size: 0.75rem;
         }
 
         .custom-pagination {
@@ -877,11 +935,18 @@
         </form>
     </div>
 
+    <div class="mobile-filter-trigger" onclick="toggleFilters(true)">
+        <i class="fas fa-filter"></i> Voir les filtres et catégories
+    </div>
+
     <!-- Main Content Layout -->
     <div class="shop-layout">
         
         <!-- Sidebar -->
-        <aside class="shop-sidebar">
+        <aside class="shop-sidebar" id="mobileSidebar">
+            <div class="close-filters-btn" onclick="toggleFilters(false)">
+                <i class="fas fa-times"></i>
+            </div>
             
             <!-- Categories Block -->
             <div class="sidebar-section">
@@ -1181,6 +1246,12 @@ function applyPriceFilter() {
     params.delete('page');
 
     window.location.href = window.location.pathname + '?' + params.toString();
+}
+
+function toggleFilters(show) {
+    const sidebar = document.getElementById('mobileSidebar');
+    if (show) sidebar.classList.add('active');
+    else sidebar.classList.remove('active');
 }
 
 // Permettre la touche Entrée dans les champs de prix
