@@ -1453,11 +1453,11 @@
 
     .brand-card-promo-val {
         font-family: 'Outfit', sans-serif;
-        font-weight: 800;
-        font-size: 1.8rem;
+        font-weight: 700;
+        font-size: 1.5rem;
         color: #1a1a1a;
         line-height: 1.1;
-        letter-spacing: -0.5px;
+        letter-spacing: -0.2px;
     }
 
     .brand-card-promo-sub {
