@@ -476,7 +476,7 @@
             left: 0 !important;
             width: 100% !important;
             height: 55px !important;
-            background: #004aad !important; /* Blue Karnou */
+            background: #444 !important; /* Matches Pro Shop pages */
             z-index: 10000 !important;
             box-shadow: 0 -2px 15px rgba(0,0,0,0.3) !important;
         }
