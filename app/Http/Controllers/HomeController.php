@@ -120,9 +120,9 @@ class HomeController extends Controller
             ->take(6)
             ->get()
             ->map(function($seller) {
-                // Remplacer "JUSQU'À -75%" par "boutique officiel" comme demandé
-                $seller->promo_val = "boutique officiel";
-                $seller->promo_sub = "";
+                // Ajustement style : boutique (large) et officiel (petit/minuscule) au-dessous
+                $seller->promo_val = "boutique";
+                $seller->promo_sub = "officiel";
                 
                 return $seller;
             });
