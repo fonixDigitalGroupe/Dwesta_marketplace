@@ -43,17 +43,9 @@ class CampaignLandingController extends Controller
             $query->whereIn('categorie_id', $categoryIds);
         }
 
-        // Uniquement les annonces ayant appliqué la promo
+        // Uniquement les annonces ayant appliqué la promo (prix barré)
         $query->whereNotNull('prix_original')
               ->whereColumn('prix_original', '>', 'prix');
-        
-        if ($campaign->ends_at) {
-            // Utiliser une marge d'une seconde pour éviter les problèmes de précision SQL/Carbon
-            $query->whereBetween('promo_expires_at', [
-                $campaign->ends_at->copy()->subSecond(),
-                $campaign->ends_at->copy()->addSecond()
-            ]);
-        }
 
         $query->with(['photos', 'category.parent', 'vendeur.user', 'options', 'produit', 'vehicule']);
 
