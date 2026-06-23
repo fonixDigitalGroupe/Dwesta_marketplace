@@ -103,6 +103,26 @@
         color: #dc2626; /* Red */
         border: 1px solid #fecaca;
     }
+
+    .boost-badge {
+        position: absolute;
+        top: 0.75rem;
+        left: 0.75rem;
+        padding: 0.35rem 0.85rem;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background-color: #fffbeb;
+        color: #b45309;
+        border: 1px solid #fde68a;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
     
     .card-content {
         padding: 0.75rem;
@@ -312,6 +332,14 @@
                                     <span class="status-badge status-rejected">Rejetée</span>
                                 @else
                                     <span class="status-badge status-expired">{{ ucfirst($annonce->statut) }}</span>
+                                @endif
+
+                                <!-- Boost Badge -->
+                                @if($annonce->estALaUne())
+                                    <div class="boost-badge">
+                                        <i class="fas fa-rocket"></i>
+                                        Boosté : {{ $annonce->options->jours_restants_a_la_une }}j restants
+                                    </div>
                                 @endif
 
                                 <!-- Image -->
