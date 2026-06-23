@@ -160,7 +160,7 @@
         color: #999;
     }
 
-    .mobile-filter-trigger, .close-filters-btn {
+    .mobile-filter-trigger, .close-filters-btn, .mobile-bottom-nav {
         display: none;
     }
 
