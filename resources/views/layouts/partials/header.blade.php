@@ -51,11 +51,11 @@
                     </button>
                     <div class="sell-dropdown" id="layoutSellDropdown">
                         <a href="{{ route('annonces.create') }}" class="sell-dropdown-item">
-                            <div class="sell-dropdown-item-title">Vendre un produit en tant que particulier</div>
+                            <div class="sell-dropdown-item-title">Vendre un produit</div>
                             <div class="sell-dropdown-item-subtitle">Je dépose une annonce gratuitement</div>
                         </a>
                         <a href="{{ route('vendeur.astuces') }}" class="sell-dropdown-item" style="padding-top: 0.25rem;">
-                            <div class="sell-dropdown-item-title" style="font-weight: 400; text-decoration: underline;">Astuces vendeurs particuliers</div>
+                            <div class="sell-dropdown-item-title" style="font-weight: 400; text-decoration: underline;">Astuces vendeurs</div>
                         </a>
                         <div class="sell-dropdown-separator"></div>
                         <a href="{{ route('eshop.landing') }}" class="sell-dropdown-item">
