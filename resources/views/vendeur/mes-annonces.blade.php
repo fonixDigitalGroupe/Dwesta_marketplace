@@ -66,62 +66,68 @@
         background-color: #f3f4f6;
     }
 
-    .status-badge {
+    .card-badges {
         position: absolute;
-        top: 0.75rem;
-        right: 0.75rem;
-        padding: 0.35rem 0.85rem;
-        border-radius: 20px;
-        font-size: 0.7rem;
-        font-weight: 700;
+        top: 0.6rem;
+        right: 0.6rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.4rem;
+        z-index: 10;
+        max-width: 85%;
+    }
+
+    .status-badge {
+        padding: 0.3rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.65rem;
+        font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         backdrop-filter: blur(4px);
-        z-index: 10;
+        white-space: nowrap;
     }
 
     .status-published {
-        background-color: rgba(22, 163, 74, 0.12);
-        color: #15803d;
+        background-color: rgba(22, 163, 74, 0.9);
+        color: white;
         border: 1px solid rgba(22, 163, 74, 0.35);
     }
 
     .status-pending {
-        background-color: rgba(255, 255, 255, 0.95);
-        color: #d97706; /* Amber */
+        background-color: rgba(251, 191, 36, 0.95);
+        color: #92400e;
         border: 1px solid #fbbf24;
     }
 
     .status-draft {
-        background-color: rgba(124, 58, 237, 0.10);
-        color: #6d28d9;
+        background-color: rgba(124, 58, 237, 0.9);
+        color: white;
         border: 1px solid rgba(124, 58, 237, 0.3);
     }
     
     .status-rejected {
-        background-color: rgba(255, 255, 255, 0.95);
-        color: #dc2626; /* Red */
+        background-color: rgba(220, 38, 38, 0.95);
+        color: white;
         border: 1px solid #fecaca;
     }
 
     .boost-badge {
-        position: absolute;
-        top: 0.75rem;
-        left: 0.75rem;
-        padding: 0.35rem 0.85rem;
-        border-radius: 20px;
-        font-size: 0.7rem;
-        font-weight: 700;
+        padding: 0.3rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.65rem;
+        font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         background-color: #fffbeb;
         color: #b45309;
         border: 1px solid #fde68a;
-        z-index: 10;
         display: flex;
         align-items: center;
         gap: 4px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 8px rgba(180, 83, 9, 0.1);
+        white-space: nowrap;
     }
     
     .card-content {
@@ -321,26 +327,29 @@
                     <div class="listings-grid">
                         @foreach($annonces as $annonce)
                             <div class="listing-card">
-                                <!-- Status Badge -->
-                                @if($annonce->statut === 'publiee')
-                                    <span class="status-badge status-published">Publiée</span>
-                                @elseif($annonce->statut === 'en_attente')
-                                    <span class="status-badge status-pending">En attente</span>
-                                @elseif($annonce->statut === 'brouillon')
-                                    <span class="status-badge status-draft">Brouillon</span>
-                                @elseif($annonce->statut === 'rejetee')
-                                    <span class="status-badge status-rejected">Rejetée</span>
-                                @else
-                                    <span class="status-badge status-expired">{{ ucfirst($annonce->statut) }}</span>
-                                @endif
+                                <!-- Card Badges Container -->
+                                <div class="card-badges">
+                                    <!-- Status Badge -->
+                                    @if($annonce->statut === 'publiee')
+                                        <span class="status-badge status-published">Publiée</span>
+                                    @elseif($annonce->statut === 'en_attente')
+                                        <span class="status-badge status-pending">En attente</span>
+                                    @elseif($annonce->statut === 'brouillon')
+                                        <span class="status-badge status-draft">Brouillon</span>
+                                    @elseif($annonce->statut === 'rejetee')
+                                        <span class="status-badge status-rejected">Rejetée</span>
+                                    @else
+                                        <span class="status-badge status-expired">{{ ucfirst($annonce->statut) }}</span>
+                                    @endif
 
-                                <!-- Boost Badge -->
-                                @if($annonce->estALaUne())
-                                    <div class="boost-badge">
-                                        <i class="fas fa-rocket"></i>
-                                        Boosté : {{ $annonce->options->jours_restants_a_la_une }}j restants
-                                    </div>
-                                @endif
+                                    <!-- Boost Badge -->
+                                    @if($annonce->estALaUne())
+                                        <div class="boost-badge">
+                                            <i class="fas fa-rocket"></i>
+                                            {{ $annonce->options->jours_restants_a_la_une }}j restants
+                                        </div>
+                                    @endif
+                                </div>
 
                                 <!-- Image -->
                                 <div class="card-image-wrapper">
@@ -426,8 +435,8 @@
                                     
                                     <div class="action-group">
                                         @if(!$annonce->estALaUne())
-                                            <a href="{{ route('annonces.edit', $annonce) }}?step=4" class="btn-action-sm" title="Booster" style="background-color: #fff7ed; color: #ea580c; border: 1px solid #fdba74;">
-                                                <i class="fas fa-rocket" style="margin-right: 4px;"></i> Booster
+                                            <a href="{{ route('annonces.edit', $annonce) }}?step=4" class="btn-action-sm" title="Booster" style="background-color: #fff7ed; color: #ea580c; border: 1px solid #fdba74; padding: 0.35rem 0.5rem;">
+                                                <i class="fas fa-rocket"></i>
                                             </a>
                                         @endif
 
