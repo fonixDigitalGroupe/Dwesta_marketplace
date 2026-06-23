@@ -195,8 +195,9 @@
 
     @if(!$isCorporatePage)
         @php
-            $tickerBanners = \App\Models\Banner::active()->orderBy('order')->get();
-            $activeCampaign = \App\Models\Campaign::where(function($q) {
+            $activeCampaign = \App\Models\Campaign::whereHas('coupon', function($q) {
+                $q->where('is_active', true);
+            })->where(function($q) {
                 $q->whereNull('starts_at')->orWhere('starts_at', '<=', now());
             })->where(function($q) {
                 $q->whereNull('ends_at')->orWhere('ends_at', '>=', now());

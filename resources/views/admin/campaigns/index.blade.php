@@ -46,6 +46,7 @@
                     <th style="border-top: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Cible</th>
                     <th style="border-top: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Sujet</th>
                     <th style="border-top: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; text-align: center;">Vendeurs</th>
+                    <th style="border-top: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; text-align: right;">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,6 +70,17 @@
                         <td style="font-size: 0.85rem; color: #333; vertical-align: middle;">{{ $campaign->subject }}</td>
                         <td style="text-align: center; vertical-align: middle;">
                             <span style="font-weight: 700; color: #111;">{{ $campaign->sent_count }}</span>
+                        </td>
+                        <td style="text-align: right; vertical-align: middle;">
+                            <form id="delete-campaign-{{ $campaign->id }}" action="{{ route('admin.campaigns.destroy', $campaign) }}" method="POST" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                            <button onclick="confirmDelete('campaign-{{ $campaign->id }}')" 
+                                    style="background: none; border: none; color: #e53e3e; cursor: pointer; padding: 5px; font-size: 0.9rem;" 
+                                    title="Supprimer">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         </td>
                     </tr>
                 @empty

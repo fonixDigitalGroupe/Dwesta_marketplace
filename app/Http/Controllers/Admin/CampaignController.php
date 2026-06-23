@@ -150,10 +150,23 @@ class CampaignController extends Controller
 
     public function destroy(Campaign $campaign)
     {
-        // Supprimer tous les messages associés dans la messagerie
+        // 1. Désactiver le coupon associé et enlever sa bannière
+        if ($campaign->coupon) {
+            $campaign->coupon->update([
+                'is_active' => false,
+                'banner_image' => null
+            ]);
+        }
+
+        // 2. Supprimer tous les messages associés dans la messagerie
         $campaign->messages()->delete();
         
+        // 3. Supprimer la campagne
         $campaign->delete();
-        return redirect()->route('admin.promotions.index')->with('success', 'La campagne et tous les messages associés ont été supprimés.');
+
+        // 4. Vider le cache pour mettre à jour le header et les landing pages
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
+
+        return redirect()->route('admin.promotions.index')->with('success', 'La campagne a été supprimée, le coupon associé a été désactivé et le cache du site a été vidé.');
     }
 }
