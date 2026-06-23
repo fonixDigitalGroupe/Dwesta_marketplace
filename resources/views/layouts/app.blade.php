@@ -195,6 +195,7 @@
 
     @if(!$isCorporatePage)
         @php
+            $tickerBanners = \App\Models\Banner::active()->orderBy('order')->get();
             $activeCampaign = \App\Models\Campaign::whereHas('coupon', function($q) {
                 $q->where('is_active', true);
             })->where(function($q) {
