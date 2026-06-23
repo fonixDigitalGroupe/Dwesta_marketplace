@@ -346,13 +346,13 @@
         }
 
         .products-grid-container {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr !important;
         }
 
         .product-card {
-            flex-direction: row;
-            padding: 15px;
-            min-height: auto;
+            flex-direction: row !important;
+            padding: 15px !important;
+            min-height: auto !important;
             gap: 15px;
             align-items: flex-start; /* Alignment top like in image */
             border-right: none;
@@ -432,7 +432,6 @@
         .mobile-filter-trigger { display: none; } /* Replaced by bottom nav */
         
         .shop-container { padding-bottom: 60px; } /* Space for bottom nav */
-    }
 
         .custom-pagination {
             gap: 20px;
