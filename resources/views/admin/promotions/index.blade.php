@@ -145,8 +145,6 @@
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
             <thead>
                 <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
-                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Home</th>
-                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Page</th>
                     <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Code</th>
                     <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Type</th>
                     <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Valeur</th>
@@ -157,28 +155,6 @@
                 @forelse($coupons as $coupon)
                     <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                         onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
-
-                        <td style="padding: 8px; text-align: center; border-right: 1px solid #eff3f6;">
-                            @if($coupon->banner_image)
-                                <img src="{{ Storage::url($coupon->banner_image) }}" alt="Home"
-                                     style="width: 70px; height: 28px; object-fit: cover; border: 1px solid #eff3f6; background: #fff; border-radius: 2px;">
-                            @else
-                                <div style="width: 70px; height: 28px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 2px; display: inline-flex; align-items: center; justify-content: center;">
-                                    <i class="fas fa-image" style="color: #cbd5e1; font-size: 0.8rem;"></i>
-                                </div>
-                            @endif
-                        </td>
-
-                        <td style="padding: 8px; text-align: center; border-right: 1px solid #eff3f6;">
-                            @if($coupon->landing_page_image)
-                                <img src="{{ Storage::url($coupon->landing_page_image) }}" alt="Page"
-                                     style="width: 70px; height: 28px; object-fit: cover; border: 1px solid #eff3f6; background: #fff; border-radius: 2px;">
-                            @else
-                                <div style="width: 70px; height: 28px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 2px; display: inline-flex; align-items: center; justify-content: center;">
-                                    <i class="fas fa-desktop" style="color: #cbd5e1; font-size: 0.8rem;"></i>
-                                </div>
-                            @endif
-                        </td>
 
                         <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                             <span class="code-badge">{{ $coupon->code }}</span>
@@ -237,7 +213,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eff3f6;">
+                        <td colspan="3" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eff3f6;">
                             Aucun code promo trouvé.
                         </td>
                     </tr>
