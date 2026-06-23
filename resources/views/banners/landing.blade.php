@@ -497,7 +497,6 @@
 @endphp
 <div class="landing-hero" style="background-image: url('{{ $heroImg }}');">
     <div class="landing-hero-content">
-        <h1 class="landing-hero-title">{{ $banner->title }}</h1>
         <p class="landing-hero-subtitle">{{ $banner->description ?? 'Profitez de nos offres exceptionnelles' }}</p>
         
         <div class="n1-banner-search-wrapper">
