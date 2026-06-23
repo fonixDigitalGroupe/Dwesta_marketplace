@@ -4,91 +4,103 @@
 
 @push('styles')
     <style>
-        :root {
-            --primary-black: #1a1a1a;
-            --secondary-grey: #4a4a4a;
-            --light-grey: #f5f5f5;
-            --border-color: #e0e0e0;
-            --accent-color: #000000;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: white;
+        }
+
+        /* Remove number input spinners */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
         }
 
         .create-annonce-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+            max-width: 1300px;
+            margin: 3rem auto;
+            padding: 0 2rem;
             display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 3rem;
+            grid-template-columns: 240px 1fr 280px;
+            gap: 2.5rem;
+            align-items: flex-start;
         }
 
-        /* Sidebar - Progress Indicator */
+        /* Sidebar gauche - Indicateur de progression */
         .progress-sidebar {
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem 1.5rem;
+            background: transparent;
+            border: none;
+            padding: 0;
             height: fit-content;
             position: sticky;
             top: 2rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 3.5rem;
         }
 
         .progress-step {
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 2rem;
+            align-items: center;
             position: relative;
-        }
-
-        .progress-step:last-child {
-            margin-bottom: 0;
         }
 
         .progress-step:not(:last-child)::after {
             content: '';
             position: absolute;
-            left: 12px;
+            left: 16px;
             top: 32px;
+            bottom: -3.5rem;
             width: 2px;
-            height: calc(100% + 0.5rem);
-            background: var(--border-color);
+            background-color: #f0f0f0;
+            z-index: 0;
         }
 
-        .progress-step.active:not(:last-child)::after,
         .progress-step.completed:not(:last-child)::after {
-            background: var(--primary-black);
+            background-color: #00A400;
         }
 
         .step-circle {
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            border: 2px solid var(--border-color);
+            border: 2px solid #e0e0e0;
             background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 1rem;
+            margin-right: 1.25rem;
             flex-shrink: 0;
             position: relative;
             z-index: 1;
+            transition: all 0.3s ease;
         }
 
         .progress-step.active .step-circle {
-            border-color: var(--primary-black);
-            background: var(--primary-black);
+            border-color: #00A400;
+            background: white;
         }
 
         .progress-step.completed .step-circle {
-            border-color: var(--primary-black);
-            background: var(--primary-black);
+            border-color: #00A400;
+            background: #00A400;
         }
 
         .step-dot {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            background: white;
+            background: #00A400;
             display: none;
         }
 
@@ -96,100 +108,249 @@
             display: block;
         }
 
+        .step-check {
+            color: white;
+            font-size: 14px;
+            display: none;
+        }
+
+        .progress-step.completed .step-check {
+            display: block;
+        }
+
         .step-content {
             flex: 1;
-        }
-
-        .step-title {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--secondary-grey);
-            margin-bottom: 0.25rem;
-        }
-
-        .progress-step.active .step-title {
-            color: var(--primary-black);
+            padding-top: 2px;
         }
 
         .step-number {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #888;
             font-weight: 700;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
+            margin-bottom: 2px;
+            display: block;
         }
 
-        /* Form Content */
+        .progress-step.active .step-number {
+            color: #555;
+        }
+
+        .step-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #888;
+            line-height: 1.2;
+        }
+
+        .progress-step.active .step-title {
+            color: #222;
+        }
+
+        .progress-step.completed .step-title,
+        .progress-step.completed .step-number {
+            color: #00A400;
+        }
+
+        /* Contenu principal */
         .form-content {
             background: white;
             border-radius: 12px;
-            padding: 3rem;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            padding: 2.25rem 2.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #eeeeee;
+            max-width: 600px;
         }
 
         .form-title {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--primary-black);
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.025em;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            line-height: 1.2;
+        }
+
+        .instruction-text {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .instruction-text strong {
+            color: #00A400;
+            font-weight: 600;
         }
 
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: 1.75rem;
         }
 
         .form-label {
             display: block;
-            font-weight: 700;
-            color: var(--primary-black);
-            margin-bottom: 0.75rem;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 0.65rem;
+            font-size: 0.875rem;
         }
 
-        .form-input {
+        .form-input,
+        select.form-input,
+        textarea.form-input {
             width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.2s;
+            max-width: 480px;
+            padding: 0.65rem 1rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
             outline: none;
+            transition: all 0.2s ease;
+            background: white;
         }
 
-        .form-input:focus {
-            border-color: var(--primary-black);
-            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+        .form-input:focus,
+        select.form-input:focus,
+        textarea.form-input:focus {
+            border-color: black;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
         }
 
         textarea.form-input {
-            min-height: 150px;
             resize: vertical;
+            min-height: 120px;
         }
 
-        .form-actions {
+        /* Image item for existing photos */
+        .image-preview-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 110px));
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .image-item {
+            width: 110px;
+            height: 110px;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
+            border-radius: 50%;
             display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border-color);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #333;
+            font-size: 14px;
+            z-index: 5;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .remove-btn:hover {
+            background: #fff;
+            color: #ff0000;
+            border-color: #ff0000;
+        }
+
+        /* Advisory Box */
+        .advisory-container {
+            position: sticky;
+            top: 2rem;
+            display: block;
+        }
+
+        .advisory-box {
+            width: 280px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #f0f0f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .advisory-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .advisory-text {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .advisory-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: #444;
+            font-weight: 500;
+        }
+
+        .advisory-icon {
+            width: 18px;
+            height: 18px;
+            background: #000;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 10px;
+        }
+
+        .form-step {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .btn {
             padding: 0.8rem 2rem;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 0.95rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             border: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
         }
 
         .btn-primary {
@@ -205,148 +366,146 @@
         }
 
         .btn-secondary {
-            background: var(--light-grey);
-            color: var(--primary-black);
-            border: 1px solid var(--border-color);
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #e0e0e0;
         }
 
         .btn-secondary:hover {
             background: #e5e5e5;
         }
 
-        /* Steps display */
-        .form-step {
-            display: none;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        .form-step.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Input price/quantity refinements */
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-        input[type=number]::-webkit-outer-spin-button,
-        input[type=number]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .form-input[type="number"] {
-            height: 45px;
-            padding: 0.6rem 1rem;
-            border-radius: 8px;
-        }
-
-        /* Image preview */
-        .image-preview-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
             gap: 1rem;
-            margin-top: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #f0f0f0;
         }
 
-        .image-item {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid var(--border-color);
+        /* Category Badges Styling */
+        .category-badges-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
         }
 
-        .image-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .remove-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
+        .category-badge-item {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 14px;
+            gap: 0.6rem;
+            padding: 0.6rem 1rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 50px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #444;
         }
 
-        .remove-btn:hover {
-            background: rgba(0,0,0,0.8);
+        .category-badge-item:hover {
+            border-color: #000;
+            background: #fafafa;
         }
 
-        .option-card {
-            background: #fdfdfd;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
+        .category-badge-item.selected {
+            border-color: #000;
+            background: #fff;
+            color: #000;
+            border-width: 1px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-badge-icon svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        /* Service Cards */
+        .service-card {
             display: flex;
             align-items: flex-start;
             gap: 1rem;
-            transition: all 0.2s;
-        }
-
-        .option-card:hover {
-            border-color: var(--primary-black);
-            background: #fff;
-        }
-
-        .option-card input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            margin-top: 0.25rem;
+            padding: 1.25rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
             cursor: pointer;
-            accent-color: var(--primary-black);
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .service-card.already-active {
+            background: #f1f8e9;
+            border-color: #4caf50;
+            cursor: default;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 1024px) {
+            .create-annonce-container {
+                grid-template-columns: 1fr;
+            }
+            .advisory-container {
+                display: none;
+            }
+            .progress-sidebar {
+                display: none; /* Can be refined if mobile navigation is needed */
+            }
+            .form-content {
+                max-width: 100%;
+            }
         }
     </style>
 @endpush
 
 @section('content')
-<div class="breadcrumb" style="max-width: 1200px; margin: 1rem auto; padding: 0 1rem;">
+<div class="breadcrumb" style="max-width: 1300px; margin: 1rem auto; padding: 0 2rem;">
     <a href="{{ route('home') }}">Accueil</a> > <a href="{{ route('vendeur.mes-annonces') }}">Mes annonces</a> > <span>Modifier mon bien immobilier</span>
 </div>
 
 <div class="create-annonce-container">
     <aside class="progress-sidebar">
         <div class="progress-step active" data-step="1">
-            <div class="step-circle"><div class="step-dot"></div></div>
+            <div class="step-circle">
+                <div class="step-dot"></div>
+                <div class="step-check">✓</div>
+            </div>
             <div class="step-content">
-                <div class="step-number">Étape 1</div>
+                <span class="step-number">Étape 1</span>
                 <div class="step-title">Bien & Catégorie</div>
             </div>
         </div>
         <div class="progress-step" data-step="2">
-            <div class="step-circle"><div class="step-dot"></div></div>
+            <div class="step-circle">
+                <div class="step-dot"></div>
+                <div class="step-check">✓</div>
+            </div>
             <div class="step-content">
-                <div class="step-number">Étape 2</div>
+                <span class="step-number">Étape 2</span>
                 <div class="step-title">Transaction & Prix</div>
             </div>
         </div>
         <div class="progress-step" data-step="3">
-            <div class="step-circle"><div class="step-dot"></div></div>
+            <div class="step-circle">
+                <div class="step-dot"></div>
+                <div class="step-check">✓</div>
+            </div>
             <div class="step-content">
-                <div class="step-number">Étape 3</div>
+                <span class="step-number">Étape 3</span>
                 <div class="step-title">Détails & Photos</div>
             </div>
         </div>
         <div class="progress-step" data-step="4">
-            <div class="step-circle"><div class="step-dot"></div></div>
+            <div class="step-circle">
+                <div class="step-dot"></div>
+                <div class="step-check">✓</div>
+            </div>
             <div class="step-content">
-                <div class="step-number">Étape 4</div>
+                <span class="step-number">Étape 4</span>
                 <div class="step-title">Options & Publication</div>
             </div>
         </div>
@@ -364,6 +523,9 @@
             <!-- Étape 1: Bien & Catégorie -->
             <div class="form-step active" id="step1">
                 <h2 class="form-title">Modifier votre bien</h2>
+                <div class="form-instructions">
+                    <p class="instruction-text">Mettez à jour les informations générales de votre annonce.</p>
+                </div>
                 
                 <div class="form-group">
                     <label class="form-label">Titre de l'annonce <span style="color: #bf0000;">*</span></label>
@@ -403,15 +565,15 @@
                     </div>
 
                     <div id="level2Section" style="display:none; margin-top: 1.5rem;">
-                        <label class="form-label" style="font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 0.75rem; display: block;">Choisissez une sous-catégorie</label>
-                        <select id="level2Select" class="form-input" onchange="onLevel2Change(this.value)" style="width: 100%; border-radius: 8px;">
+                        <label class="form-label">Sous-catégorie</label>
+                        <select id="level2Select" class="form-input" onchange="onLevel2Change(this.value)">
                             <option value="">Choisir une option...</option>
                         </select>
                     </div>
 
                     <div id="level3Section" style="display:none; margin-top: 1.5rem;">
-                        <label class="form-label" style="font-size: 0.9rem; font-weight: 600; color: #333; margin-bottom: 0.75rem; display: block;">Précisez votre choix (champ détaillé)</label>
-                        <select id="level3Select" class="form-input" onchange="onLevel3Change(this.value)" style="width: 100%; border-radius: 8px;">
+                        <label class="form-label">Précision complémentaire</label>
+                        <select id="level3Select" class="form-input" onchange="onLevel3Change(this.value)">
                             <option value="">Choisir une option...</option>
                         </select>
                     </div>
@@ -428,6 +590,9 @@
             <!-- Étape 2: Transaction & Prix -->
             <div class="form-step" id="step2">
                 <h2 class="form-title">Transaction immobilière</h2>
+                <div class="form-instructions">
+                    <p class="instruction-text">Indiquez le type de transaction et le prix souhaité.</p>
+                </div>
 
                 <div class="form-group">
                     <label class="form-label">Type de transaction <span style="color: #bf0000;">*</span></label>
@@ -455,10 +620,13 @@
 
             <!-- Étape 3: Détails & Photos -->
             <div class="form-step" id="step3">
-                <h2 class="form-title">Caractéristiques du bien</h2>
+                <h2 class="form-title">Caractéristiques & Photos</h2>
+                <div class="form-instructions">
+                    <p class="instruction-text">Décrivez précisément votre bien et ajoutez des photos de qualité.</p>
+                </div>
 
                 <div class="form-group">
-                    <label class="form-label">Description <span style="color: #bf0000;">*</span></label>
+                    <label class="form-label">Description détaillée <span style="color: #bf0000;">*</span></label>
                     <textarea name="description" class="form-input" required minlength="20" placeholder="Décrivez le bien : pièces, environnement, atouts...">{{ old('description', $annonce->description) }}</textarea>
                 </div>
 
@@ -481,7 +649,7 @@
                     <label class="form-label">Photos du bien</label>
                     
                     @if($annonce->photos->count() > 0)
-                        <div class="image-preview-container" style="margin-bottom: 1.5rem;">
+                        <div class="image-preview-container">
                             @foreach($annonce->photos as $photo)
                                 <div class="image-item" id="media-{{ $photo->id }}">
                                     <img src="{{ asset('storage/' . $photo->chemin) }}" alt="Photo bien">
@@ -504,13 +672,10 @@
 
             <!-- Étape 4: Booster votre annonce -->
             <div class="form-step" id="step4">
-                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
-                    <div>
-                        <h2 class="form-title" style="margin-bottom: 0.5rem;">🚀 Booster votre annonce</h2>
-                        <p class="instruction-text" style="color: #666; font-size: 0.95rem;">Mettez votre annonce en avant pour vendre d'autant plus vite.</p>
-                    </div>
-                    </div>
-
+                <h2 class="form-title">🚀 Booster votre annonce</h2>
+                <div class="form-instructions">
+                    <p class="instruction-text">Mettez votre annonce en avant pour vendre d'autant plus vite.</p>
+                </div>
 
                 <div style="margin-bottom: 2rem;">
                     <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Options de visibilité</h3>
@@ -527,12 +692,12 @@
                             @php
                                 $isAlreadyActive = in_array($service->cle, $activeServices);
                             @endphp
-                            <label class="service-card {{ $isAlreadyActive ? 'already-active' : '' }}" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border: 2px solid {{ $isAlreadyActive ? '#4caf50' : '#e0e0e0' }}; border-radius: 12px; cursor: {{ $isAlreadyActive ? 'default' : 'pointer' }}; transition: all 0.2s; position: relative; {{ $isAlreadyActive ? 'background: #f1f8e9; opacity: 0.9;' : '' }}">
+                            <label class="service-card {{ $isAlreadyActive ? 'already-active' : '' }}">
                                 @if($isAlreadyActive)
                                     <div style="width: 20px; height: 20px; margin-top: 4px; display: flex; align-items: center; justify-content: center; background: #4caf50; border-radius: 4px; color: white;">✓</div>
                                     <input type="hidden" name="services[]" value="{{ $service->cle }}">
                                 @else
-                                    <input type="checkbox" name="services[]" value="{{ $service->cle }}" class="service-checkbox" data-cost="{{ $service->credits_requis }}" {{ old('services') && in_array($service->cle, old('services')) ? 'checked' : '' }} style="width: 20px; height: 20px; margin-top: 4px; accent-color: #ef6c00;">
+                                    <input type="checkbox" name="services[]" value="{{ $service->cle }}" class="service-checkbox" data-cost="{{ $service->credits_requis }}" {{ old('services') && in_array($service->cle, old('services')) ? 'checked' : '' }} style="width: 20px; height: 20px; margin-top: 4px; accent-color: #00A400;">
                                 @endif
                                 
                                 <div style="flex: 1;">
@@ -540,8 +705,6 @@
                                         {{ $service->nom }}
                                         @if($isAlreadyActive)
                                             <span style="background: #4caf50; color: white; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: text-bottom;">Déjà actif</span>
-                                        @elseif($service->cle == 'mise_en_avant' || $service->cle == 'boost')
-                                            <span style="background: #eef2ff; color: #004aad; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: text-bottom;">Recommandé</span>
                                         @endif
                                     </div>
                                     <div style="font-size: 0.9rem; color: #666; line-height: 1.4;">{{ $service->description }}</div>
@@ -549,12 +712,8 @@
                                         <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem; font-weight: 600;">⏳ Valable {{ $service->duree_jours }} jours</div>
                                     @endif
                                 </div>
-                                <div style="font-weight: 800; font-size: 1.25rem; color: {{ $isAlreadyActive ? '#4caf50' : '#ef6c00' }}; white-space: nowrap;">
-                                    @if($isAlreadyActive)
-                                        --
-                                    @else
-                                        +{{ $service->credits_requis }} ⭐
-                                    @endif
+                                <div style="font-weight: 800; font-size: 1.25rem; color: {{ $isAlreadyActive ? '#4caf50' : '#00A400' }}; white-space: nowrap;">
+                                    @if($isAlreadyActive) -- @else +{{ $service->credits_requis }} ⭐ @endif
                                 </div>
                             </label>
                         @endforeach
@@ -570,19 +729,22 @@
                                 <span style="font-size: 0.95rem;">Brouillon</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                                <input type="radio" name="statut" value="publiee" {{ $annonce->statut == 'publiee' ? 'checked' : '' }} style="accent-color: #ef6c00;">
-                                <span style="font-size: 0.95rem; font-weight: 600;">Publier maintenant</span>
+                                <input type="radio" name="statut" value="publiee" {{ $annonce->statut == 'publiee' ? 'checked' : '' }} style="accent-color: #00A400;">
+                                <span style="font-size: 0.95rem; font-weight: 600;">Publier</span>
                             </label>
                         </div>
                     </div>
                     <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 1rem;">
-                        <span style="font-weight: 700; font-size: 1.1rem; color: #000;">NOUVEAU Total à payer :</span>
+                        <span style="font-weight: 700; font-size: 1.1rem; color: #000;">Total à payer :</span>
                         <span style="font-weight: 800; font-size: 1.5rem; color: #111;">
                             <span id="total-cost-display">0</span> <span style="font-size: 1.2rem; color: #ffbe00;">⭐</span>
                         </span>
                     </div>
                     <div id="insufficient-credits-warning" style="display: none; background: #fde8e8; color: #c62828; padding: 0.75rem 1rem; border-radius: 6px; margin-top: 1rem; font-size: 0.9rem; border: 1px solid #ffcdd2;">
-                        ⚠️ Votre solde de crédits est insuffisant pour ces NOUVELLES options. <a href="{{ route('account.credits.index') }}" target="_blank" style="color: #c62828; font-weight: bold; text-decoration: underline;">Rechargez votre compte</a>.
+                        ⚠️ Votre solde de crédits est insuffisant. <a href="{{ route('account.credits.index') }}" target="_blank" style="color: #c62828; font-weight: bold; text-decoration: underline;">Recharge</a>.
+                    </div>
+                    <div style="display: none;">
+                        <span id="user-credit-balance">{{ auth()->user()->credits }}</span>
                     </div>
                 </div>
 
@@ -593,6 +755,41 @@
             </div>
         </form>
     </main>
+
+    <aside class="advisory-container">
+        <div id="advisory-step-1" class="advisory-box">
+            <h3 class="advisory-title">Modifier votre bien immobilier</h3>
+            <p class="advisory-text">Un titre clair et une catégorie précise facilitent la recherche pour les acheteurs potentiels.</p>
+            <div class="advisory-item">
+                <div class="advisory-icon">1</div>
+                <span>Soyez précis (ex: Villa 5 pièces avec piscine)</span>
+            </div>
+        </div>
+        <div id="advisory-step-2" class="advisory-box" style="display: none;">
+            <h3 class="advisory-title">Prix & Transaction</h3>
+            <p class="advisory-text">Le prix est l'élément le plus consulté. Un prix juste attire 3x plus de contacts.</p>
+            <div class="advisory-item">
+                <div class="advisory-icon">!</div>
+                <span>Indiquez si c'est une vente ou une location.</span>
+            </div>
+        </div>
+        <div id="advisory-step-3" class="advisory-box" style="display: none;">
+            <h3 class="advisory-title">Photos de qualité</h3>
+            <p class="advisory-text">Les annonces avec de belles photos reçoivent 5x plus de visites.</p>
+            <div class="advisory-item">
+                <div class="advisory-icon">📸</div>
+                <span>Privilégiez la lumière du jour.</span>
+            </div>
+        </div>
+        <div id="advisory-step-4" class="advisory-box" style="display: none;">
+            <h3 class="advisory-title">Booster la vente</h3>
+            <p class="advisory-text">Les options de visibilité permettent d'être en tête des résultats de recherche.</p>
+            <div class="advisory-item">
+                <div class="advisory-icon">🚀</div>
+                <span>Vendez jusqu'à 10x plus vite.</span>
+            </div>
+        </div>
+    </aside>
 </div>
 @endsection
 
@@ -683,7 +880,7 @@
                         
                         const existingValue = existingAttributes[filter.id] || "";
                         let inputHtml = '';
-                        const commonStyle = 'width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; outline: none; background: white;';
+                        const commonStyle = 'width: 100%; padding: 0.65rem 1rem; border: 1.5px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; outline: none; background: white;';
                         
                         if (filter.type === 'select' || (filter.options && filter.options.length > 0)) {
                             inputHtml = `<select name="attributes[${filter.id}]" style="${commonStyle}" ${filter.is_required ? 'required' : ''}>
@@ -693,7 +890,7 @@
                         } else if (filter.type === 'number' || filter.type === 'price') {
                             inputHtml = `<div style="display: flex; align-items: center;">
                                 <input type="number" name="attributes[${filter.id}]" style="${commonStyle}" value="${existingValue}" placeholder="${filter.nom}" ${filter.is_required ? 'required' : ''}>
-                                ${filter.unit ? `<span style="padding: 0.75rem; background: #f5f5f5; border: 2px solid #e0e0e0; border-left: none; border-top-right-radius: 8px; border-bottom-right-radius: 8px; font-size: 0.9rem;">${filter.unit}</span>` : ''}
+                                ${filter.unit ? `<span style="padding: 0.75rem; background: #f5f5f5; border: 2px solid #e0e0e0; border-left: none; border-top-right-radius: 4px; border-bottom-right-radius: 4px; font-size: 0.9rem;">${filter.unit}</span>` : ''}
                             </div>`;
                         } else {
                             inputHtml = `<input type="text" name="attributes[${filter.id}]" style="${commonStyle}" value="${existingValue}" placeholder="${filter.nom}" ${filter.is_required ? 'required' : ''}>`;
@@ -705,6 +902,12 @@
                 }
             })
             .catch(() => { container.innerHTML = ''; });
+    }
+
+    function updateAdvisory(step) {
+        document.querySelectorAll('.advisory-box').forEach(box => box.style.display = 'none');
+        const activeBox = document.getElementById('advisory-step-' + step);
+        if (activeBox) activeBox.style.display = 'block';
     }
 
     function nextStep(current) {
@@ -724,6 +927,7 @@
         document.querySelector(`.progress-step[data-step="${current}"]`).classList.add('completed');
         document.querySelector(`.progress-step[data-step="${current + 1}"]`).classList.add('active');
         
+        updateAdvisory(current + 1);
         window.scrollTo(0, 0);
     }
 
@@ -735,18 +939,9 @@
         document.querySelector(`.progress-step[data-step="${current - 1}"]`).classList.remove('completed');
         document.querySelector(`.progress-step[data-step="${current - 1}"]`).classList.add('active');
         
+        updateAdvisory(current - 1);
         window.scrollTo(0, 0);
     }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const step = parseInt(urlParams.get('step'));
-        if (step && step > 1 && step <= 4) {
-            for (let i = 1; i < step; i++) {
-                nextStep(i);
-            }
-        }
-    });
 
     document.getElementById('type_transaction').addEventListener('change', function() {
         const prixVenteCont = document.getElementById('prix_vente_container');
@@ -768,20 +963,15 @@
         document.getElementById('delete_media_ids').value = deletedIds.join(',');
     }
 
-    // Add validation to form submission to catch step 4 credit check before submitting
-    document.querySelector('form').addEventListener('submit', function (e) {
-        const statut = document.querySelector('input[name="statut"]:checked').value;
-        if (statut === 'publiee') {
-            const totalCost = parseInt(document.getElementById('total-cost-display').textContent) || 0;
-            const balance = parseInt(document.getElementById('user-credit-balance').textContent) || 0;
-            if (totalCost > balance) {
-                e.preventDefault();
-                alert('Solde de crédits insuffisant pour les options choisies.');
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const step = parseInt(urlParams.get('step'));
+        if (step && step > 1 && step <= 4) {
+            for (let i = 1; i < step; i++) {
+                nextStep(i);
             }
         }
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
+        
         // --- Credit Services Logic ---
         const serviceCheckboxes = document.querySelectorAll('.service-checkbox');
         const statutRadios = document.querySelectorAll('input[name="statut"]');
@@ -789,25 +979,6 @@
         const warningDisplay = document.getElementById('insufficient-credits-warning');
         const submitButton = document.getElementById('submitButton');
         const userBalance = parseInt(document.getElementById('user-credit-balance').textContent) || 0;
-        
-        // Add video upload container dynamically if 'video' service is selected
-        const videoServiceCheckbox = document.querySelector('.service-checkbox[value="video"]');
-        const isVideoAlreadyActive = document.querySelector('.already-active input[value="video"]');
-        
-        if (videoServiceCheckbox && !isVideoAlreadyActive) {
-            const videoUploadHtml = `
-                <div id="video-upload-container" style="display: none; padding: 1rem; border: 1px dashed #ef6c00; border-radius: 8px; background: #fff5e6; margin-top: 10px;">
-                    <label style="font-weight: 700; display: block; margin-bottom: 0.5rem; color: #ef6c00;">🎥 Télécharger votre vidéo</label>
-                    <input type="file" name="video" accept="video/mp4,video/quicktime,video/webm" class="form-input" style="background: white;">
-                    <small style="color: #666; display: block; margin-top: 5px;">Format MP4, MOV. Max 50Mo. La vidéo doit être cochée lors de la publication pour être validée.</small>
-                </div>
-            `;
-            videoServiceCheckbox.closest('.service-card').insertAdjacentHTML('afterend', videoUploadHtml);
-            
-            videoServiceCheckbox.addEventListener('change', function() {
-                document.getElementById('video-upload-container').style.display = this.checked ? 'block' : 'none';
-            });
-        }
 
         function calculateTotal() {
             const statut = document.querySelector('input[name="statut"]:checked').value;
@@ -836,11 +1007,8 @@
 
         serviceCheckboxes.forEach(cb => cb.addEventListener('change', calculateTotal));
         statutRadios.forEach(radio => radio.addEventListener('change', calculateTotal));
-        
-        // Initial calculation
         calculateTotal();
 
-        // Path logic (existing)
         const catId = "{{ $annonce->categorie_id }}";
         if (catId) {
             let path = [];
@@ -856,7 +1024,6 @@
                     setTimeout(() => {
                         const l2 = document.getElementById('level2Select');
                         if (l2) { l2.value = path[1]; onLevel2Change(path[1]); }
-                        
                         if (path.length >= 3) {
                             setTimeout(() => {
                                 const l3 = document.getElementById('level3Select');
