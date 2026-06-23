@@ -5,11 +5,11 @@
 @push('styles')
 <style>
     :root {
-        --primary-color: #004aad;
-        --p-orange: #f0c14b;
-        --p-orange-hover: #f5d78e;
-        --p-blue: #007185;
-        --p-blue-hover: #c8f3fa;
+        --primary-color: #333;
+        --p-orange: #ff9900;
+        --p-orange-hover: #e68a00;
+        --p-blue: #333;
+        --p-blue-hover: #eeeeee;
         --bg-gray: #f3f3f3;
         --border-main: #D5D9D9;
         --text-dark: #111;
@@ -154,7 +154,7 @@
     }
 
     .btn-ok {
-        background: #004aad; /* Bleu Header */
+        background: #444; /* Matches Pro Shop */
         color: #fff;
         border: none;
         padding: 5px 12px;
@@ -383,7 +383,7 @@
     }
 
     .btn-pagination.next {
-        background: var(--primary-color);
+        background: #444;
         color: #fff;
         border: none;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
