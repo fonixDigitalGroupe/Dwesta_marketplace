@@ -1070,20 +1070,6 @@
                     </div>
                 </div>
 
-                <!-- Shipping Options -->
-                <div style="margin-bottom: 20px;">
-                    <div class="sidebar-subtitle">Options d'expédition</div>
-                    <label class="filter-item">
-                        <input type="checkbox" class="shipping-checkbox" data-val="retrait_point_relais" {{ request('shipping') == 'retrait_point_relais' ? 'checked' : '' }}> <span>Retrait en point retrait</span>
-                    </label>
-                    <label class="filter-item">
-                        <input type="checkbox" class="shipping-checkbox" data-val="retrait_boutique" {{ request('shipping') == 'retrait_boutique' ? 'checked' : '' }}> <span>Retrait en boutique</span>
-                    </label>
-                    <label class="filter-item">
-                        <input type="checkbox" class="shipping-checkbox" data-val="livraison_point_special" {{ request('shipping') == 'livraison_point_special' ? 'checked' : '' }}> <span>Livraison en point spécial</span>
-                    </label>
-                </div>
-
                 <!-- Avis client -->
                 <div style="margin-bottom: 20px;">
                     <div class="sidebar-subtitle">Avis client</div>
@@ -1412,27 +1398,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 params.set(`filters[${filterId}]`, this.dataset.val);
             } else {
                 params.delete(`filters[${filterId}]`);
-            }
-
-            window.location.href = window.location.pathname + '?' + params.toString();
-        });
-    });
-
-    // Filtrage par mode d'expédition
-    document.querySelectorAll('.shipping-checkbox').forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            // Décocher les autres
-            document.querySelectorAll('.shipping-checkbox').forEach(cb => {
-                if (cb !== this) cb.checked = false;
-            });
-
-            const params = new URLSearchParams(window.location.search);
-            params.delete('page');
-
-            if (this.checked) {
-                params.set('shipping', this.dataset.val);
-            } else {
-                params.delete('shipping');
             }
 
             window.location.href = window.location.pathname + '?' + params.toString();
