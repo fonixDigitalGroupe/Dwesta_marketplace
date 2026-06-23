@@ -40,12 +40,6 @@ class Campaign extends Model
      */
     public function getLinkAttribute()
     {
-        if ($this->coupon) {
-            $cat = $this->coupon->category ?? $this->coupon->categoryN2 ?? $this->coupon->categoryN1;
-            if ($cat) {
-                return route('search.index', ['category' => $cat->slug]);
-            }
-        }
-        return route('home');
+        return route('campaign.landing', $this->id);
     }
 }
