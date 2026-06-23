@@ -980,7 +980,7 @@
 
     /* Notre Sélection Styling (Professional Cool Gray) */
     .n1-selection-section {
-        background: #fff;
+        background: #f9f9f9;
         padding: 5rem 0;
         margin-top: 2rem;
         position: relative;
