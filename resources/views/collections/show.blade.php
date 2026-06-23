@@ -18,8 +18,84 @@
     .n1-promo-code { background: #fff; color: #000; padding: 1px 4px; font-weight: 800; margin-left: 4px; border-radius: 1px; }
 
     /* === GRAND BANNER === */
-    .n1-grand-banner { width: 100%; display: block; line-height: 0; }
-    .n1-grand-banner img { width: 100%; height: 180px; display: block; object-fit: cover; object-position: center; }
+    .n1-grand-banner {
+        width: 100%;
+        height: 260px;
+        background-color: #ffffff;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    /* Dimmer to ensure text holds regardless of the image */
+    .n1-grand-banner::before {
+        content: '';
+        position: absolute;
+        top:0; left:0; right:0; bottom:0;
+        background: rgba(0,0,0,0.3);
+        z-index: 1;
+    }
+    .n1-grand-banner-content { 
+        position: relative; 
+        z-index: 10; 
+        width: 100%;
+        max-width: 600px;
+        padding: 0 20px;
+    }
+    .n1-grand-banner h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        font-weight: 700;
+        margin: 0 0 10px 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        color: #fff;
+    }
+    .n1-grand-banner p {
+        font-size: 1.3rem;
+        font-weight: 400;
+        font-style: italic;
+        margin: 0;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        color: #fff;
+    }
+
+    /* In-page Search Bar */
+    .n1-banner-search-wrapper {
+        margin-top: 25px;
+        position: relative;
+    }
+    .n1-banner-search-input {
+        width: 100%;
+        padding: 14px 20px 14px 50px;
+        border-radius: 50px;
+        border: none;
+        background: rgba(255, 255, 255, 0.95);
+        color: #333;
+        font-size: 1rem;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+    .n1-banner-search-input:focus {
+        background: #fff;
+        outline: none;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+        transform: translateY(-2px);
+    }
+    .n1-banner-search-icon {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #888;
+        font-size: 1.2rem;
+    }
 
     /* === TOP CONSULTED === */
     .n1-top-consulted-section { padding: 3rem 0; background: #fff; }
@@ -48,11 +124,23 @@
     .n1-top-rating-count { font-size: 0.75rem; color: #888; }
     .n1-top-footer { display: flex; justify-content: center; margin-top: 1.5rem; }
     .btn-voir-plus-outline {
-        background: transparent; color: #333; border: 1px solid #333;
-        padding: 0.7rem 2.5rem; border-radius: 30px; font-weight: 600; font-size: 0.9rem;
-        cursor: pointer; text-decoration: none; transition: all 0.3s ease;
+        background: transparent;
+        color: #ff8c00;
+        border: 2px solid #ff8c00;
+        padding: 0.7rem 2.5rem;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
     }
-    .btn-voir-plus-outline:hover { background: #333; color: #fff; transform: translateY(-2px); }
+    .btn-voir-plus-outline:hover {
+        background: #ff8c00;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+    }
 
     /* === OFFER / DEAL CAROUSEL === */
     .n1-offers-section { padding: 1.5rem 0 3rem; margin: 0 auto; max-width: 1300px; overflow: hidden; }
@@ -87,11 +175,23 @@
     .n1-v2-badge-pro { background: #f4f4f4; color: #555; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 700; }
     .n1-section-footer { display: flex; justify-content: center; margin-top: 1.5rem; }
     .btn-voir-plus-white {
-        background: transparent; color: #333; border: 1px solid #333;
-        padding: 0.7rem 2.5rem; border-radius: 30px; font-weight: 600; font-size: 0.9rem;
-        cursor: pointer; transition: all 0.3s ease; text-decoration: none;
+        background: transparent;
+        color: #ff8c00;
+        border: 2px solid #ff8c00;
+        padding: 0.7rem 2.5rem;
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
     }
-    .btn-voir-plus-white:hover { background: #333; color: #fff; transform: translateY(-2px); }
+    .btn-voir-plus-white:hover {
+        background: #ff8c00;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+    }
 
     /* === CAROUSEL ARROWS === */
     .n1-carousel-arrow {
@@ -183,8 +283,16 @@
 </div>
 
 {{-- GRAND BANNER --}}
-<div class="n1-grand-banner">
-    <img src="{{ $banner->landing_page_image ?? $banner->image_url }}" alt="{{ $banner->title }}">
+<div class="n1-grand-banner" style="background-image: url('{{ $banner->landing_page_image ?? $banner->image_url }}');">
+    <div class="n1-grand-banner-content">
+        <h1>{{ $banner->title }}</h1>
+        <p>{{ $banner->description ?? 'Profitez de nos offres exceptionnelles' }}</p>
+        
+        <div class="n1-banner-search-wrapper">
+            <i class="fas fa-search n1-banner-search-icon"></i>
+            <input type="text" id="n1-page-search" class="n1-banner-search-input" placeholder="Rechercher dans cette collection..." oninput="handleInPageSearch(this.value)">
+        </div>
+    </div>
 </div>
 
 {{-- TOP CONSULTES --}}
@@ -197,7 +305,7 @@
         </button>
         <div class="n1-top-grid" id="n1-top-products">
             @foreach($topConsultes as $annonce)
-                <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-top-card">
+                <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-top-card global-filter-item">
                     <div class="n1-top-media">
                         @if($annonce->photoPrincipale())
                             <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
@@ -249,7 +357,7 @@
                     $oldPrice = $annonce->produit->prix_moyen_marche ?? ($annonce->prix * 1.15);
                     $discount = $oldPrice > $annonce->prix ? round((($oldPrice - $annonce->prix) / $oldPrice) * 100) : 0;
                 @endphp
-                <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-promo-card">
+                <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-promo-card global-filter-item">
                     <div class="n1-card-media">
                         @if($annonce->photoPrincipale())
                             <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
@@ -291,7 +399,7 @@
         </button>
         <div class="n1-catalog-grid" id="n1-carousel-deals">
             @foreach($dealsMarchands as $annonce)
-                <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-promo-card">
+                <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-promo-card global-filter-item">
                     <div class="n1-card-media">
                         @if($annonce->photoPrincipale())
                             <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
@@ -337,7 +445,7 @@
     <div class="n1-selection-grid">
         @forelse($annonces as $annonce)
             <div class="n1-selection-item">
-                <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-promo-card">
+                <a href="{{ route('annonces.show', $annonce->slug) }}" class="n1-promo-card global-filter-item">
                     <div class="n1-card-media">
                         @if($annonce->photoPrincipale())
                             <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
@@ -381,6 +489,26 @@ function n1CarouselScroll(id, direction) {
     const card = carousel.querySelector('.n1-top-card, .n1-promo-card');
     const cardWidth = card ? card.offsetWidth + 12 : 232;
     carousel.scrollBy({ left: direction * cardWidth * 3, behavior: 'smooth' });
+}
+
+function handleInPageSearch(query) {
+    const q = query.toLowerCase().trim();
+    const items = document.querySelectorAll('.global-filter-item');
+    
+    items.forEach(item => {
+        // Search in n1-top-item-title or n1-card-title
+        const titleEl = item.querySelector('.n1-top-item-title, .n1-card-title');
+        if (!titleEl) return;
+        
+        const title = titleEl.innerText.toLowerCase();
+        if (title.includes(q)) {
+            item.style.display = 'flex'; // Use flex for cards
+        } else {
+            item.style.display = 'none';
+        }
+    });
+
+    // Handle sections with headers/footers if needed, but for now just filter items
 }
 </script>
 @endpush
