@@ -22,6 +22,11 @@ class DashboardController extends Controller
         // 1. Utilisateurs & Vendeurs
         $usersCount = User::count();
         $newUsersThisMonth = User::where('created_at', '>=', $startOfMonth)->count();
+
+        // Clients (Acheteurs qui ne sont pas vendeurs)
+        $clientsCount = User::role('acheteur')->doesntHave('vendeur')->count();
+        $newClientsThisMonth = User::role('acheteur')->doesntHave('vendeur')
+            ->where('created_at', '>=', $startOfMonth)->count();
         
         $vendeursCount = Vendeur::count();
         $proSellers = Vendeur::where('type', 'professionnel')->count();
@@ -62,7 +67,8 @@ class DashboardController extends Controller
             ->get();
 
         $stats = compact(
-            'usersCount', 'newUsersThisMonth', 'vendeursCount', 'proSellers', 'amateurSellers', 'vendeursPending',
+            'usersCount', 'newUsersThisMonth', 'clientsCount', 'newClientsThisMonth',
+            'vendeursCount', 'proSellers', 'amateurSellers', 'vendeursPending',
             'annoncesCount', 'annoncesPending', 'pointsRelaisCount', 'litigesOpen',
             'ordersCount', 'ordersInProgress', 'ordersDelivered', 
             'totalCA', 'totalCommissions',

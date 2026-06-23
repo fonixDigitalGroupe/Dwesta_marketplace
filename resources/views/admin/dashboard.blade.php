@@ -74,19 +74,36 @@
     {{-- ROW 2: USERS & SELLERS DETAILS --}}
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
         
-        {{-- UTILISATEURS --}}
+        {{-- CLIENTS --}}
         <div style="background: #fff; border-radius: 8px; padding: 1rem; border: 1px solid #edf2f7;">
             <h2 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
-                <i class="fas fa-users" style="color: #3182ce; font-size: 0.85rem;"></i> Communauté
+                <i class="fas fa-user-tag" style="color: #38a169; font-size: 0.85rem;"></i> Clients (Acheteurs)
+            </h2>
+            <div style="display: flex; align-items: center;">
+                <div style="flex: 1; text-align: center; border-right: 1px solid #f1f5f9;">
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #2d3748;">{{ $stats['clientsCount'] }}</div>
+                    <div style="font-size: 0.75rem; color: #718096;">Clients simples</div>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="font-size: 1.25rem; font-weight: 800; color: #38a169;">+{{ $stats['newClientsThisMonth'] }}</div>
+                    <div style="font-size: 0.75rem; color: #718096;">Nouveaux (mois)</div>
+                </div>
+            </div>
+        </div>
+
+        {{-- UTILISATEURS (TOTAL) --}}
+        <div style="background: #fff; border-radius: 8px; padding: 1rem; border: 1px solid #edf2f7;">
+            <h2 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-users" style="color: #3182ce; font-size: 0.85rem;"></i> Audience Globale
             </h2>
             <div style="display: flex; align-items: center;">
                 <div style="flex: 1; text-align: center; border-right: 1px solid #f1f5f9;">
                     <div style="font-size: 1.5rem; font-weight: 800; color: #2d3748;">{{ $stats['usersCount'] }}</div>
-                    <div style="font-size: 0.75rem; color: #718096;">Utilisateurs inscrits</div>
+                    <div style="font-size: 0.75rem; color: #718096;">Total Utilisateurs</div>
                 </div>
                 <div style="flex: 1; text-align: center;">
-                    <div style="font-size: 1.25rem; font-weight: 800; color: #38a169;">+{{ $stats['newUsersThisMonth'] }}</div>
-                    <div style="font-size: 0.75rem; color: #718096;">Mois en cours</div>
+                    <div style="font-size: 1.25rem; font-weight: 800; color: #3182ce;">+{{ $stats['newUsersThisMonth'] }}</div>
+                    <div style="font-size: 0.75rem; color: #718096;">Nouveaux (mois)</div>
                 </div>
             </div>
         </div>
