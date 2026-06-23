@@ -17,6 +17,7 @@ class HomeController extends Controller
         $banners = Banner::active()->orderBy('order', 'asc')->get();
 
         $couponBanners = \App\Models\Coupon::where('is_active', true)
+            ->has('campaigns')
             ->whereNotNull('banner_image')
             ->get()
             ->map(function($coupon) {
