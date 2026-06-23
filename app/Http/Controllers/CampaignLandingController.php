@@ -43,6 +43,14 @@ class CampaignLandingController extends Controller
             $query->whereIn('categorie_id', $categoryIds);
         }
 
+        // Uniquement les annonces ayant appliqué la promo
+        $query->whereNotNull('prix_original')
+              ->whereColumn('prix_original', '>', 'prix');
+        
+        if ($campaign->ends_at) {
+            $query->where('promo_expires_at', $campaign->ends_at);
+        }
+
         $query->with(['photos', 'category.parent', 'vendeur.user', 'options', 'produit', 'vehicule']);
 
         // Tri par défaut : Pertinence
