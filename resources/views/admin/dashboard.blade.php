@@ -3,7 +3,7 @@
 @section('title', 'Tableau de Bord')
 
 @section('content')
-<div style="max-width: 1400px; margin: 0 auto; padding-bottom: 1rem;">
+<div style="max-width: 1400px; margin: -0.75rem auto 0; padding-bottom: 1rem;">
 
 
     {{-- ROW 1: KEY PERFORMANCE INDICATORS --}}
