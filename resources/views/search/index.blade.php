@@ -470,7 +470,7 @@
 
         /* Sticky Bottom Navigation */
         .mobile-bottom-nav {
-            display: flex;
+            display: flex !important;
             position: fixed;
             bottom: 0;
             left: 0;
@@ -513,7 +513,7 @@
         }
 
         .close-filters-btn {
-            display: block;
+            display: block !important;
             position: absolute;
             top: 15px;
             right: 15px;
