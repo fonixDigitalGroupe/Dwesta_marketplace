@@ -171,7 +171,7 @@
 
                         <div style="margin-bottom: 20px;">
                             <label class="field-label">Titre de la campagne <span style="color: red;">*</span></label>
-                            <input type="text" name="title" value="{{ old('title') }}" required placeholder="Ex: Campagne d'été 2024">
+                            <input type="text" name="title" value="{{ old('title') }}" required>
                         </div>
 
                         <div style="margin-bottom: 20px;">

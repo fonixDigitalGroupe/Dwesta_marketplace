@@ -27,7 +27,7 @@ class CampaignController extends Controller
      */
     public function create()
     {
-        $coupons = Coupon::where('is_active', true)->get();
+        $coupons = Coupon::orderBy('code')->get();
         return view('admin.campaigns.create', compact('coupons'));
     }
 
