@@ -5,13 +5,6 @@
 @section('content')
 <div style="max-width: 1400px; margin: 0 auto; padding-bottom: 1rem;">
 
-    <div style="margin-bottom: 1.25rem; border-bottom: 1px solid #edf2f7; padding-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: flex-end;">
-        <div>
-            <h1 style="font-size: 1.5rem; font-weight: 900; color: #111; margin-bottom: 0.15rem; letter-spacing: -0.025em; text-transform: uppercase; font-family: 'Plus Jakarta Sans', sans-serif;">Tableau de Bord</h1>
-            <p style="font-size: 0.9rem; color: #666; margin: 0; font-weight: 500;">Centre de contrôle marketplace.</p>
-        </div>
-        <div style="font-size: 0.7rem; color: #a0aec0; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Session Administrateur</div>
-    </div>
 
     {{-- ROW 1: KEY PERFORMANCE INDICATORS --}}
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
