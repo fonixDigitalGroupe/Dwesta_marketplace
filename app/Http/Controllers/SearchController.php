@@ -144,30 +144,30 @@ class SearchController extends Controller
         }
 
         // Tri
-        $sort = $request->get('sort', 'relevance');
-        switch ($sort) {
+        // Toujours prioriser 1) Sponsorisé (À la une) | 2) Vendeurs pro
+        $query->leftJoin('vendeurs', 'vendeurs.id', '=', 'annonces.vendeur_id')
+              ->orderByRaw("CASE WHEN EXISTS (SELECT 1 FROM annonce_options WHERE annonce_id = annonces.id AND a_la_une = 1) THEN 0 ELSE 1 END")
+              ->orderByRaw("CASE WHEN vendeurs.type = 'professionnel' THEN 0 ELSE 1 END");
+
+        switch ($request->sort) {
             case 'price_asc':
-                $query->orderBy('prix', 'asc');
+                $query->orderBy('annonces.prix', 'asc');
                 break;
             case 'price_desc':
-                $query->orderBy('prix', 'desc');
+                $query->orderBy('annonces.prix', 'desc');
                 break;
             case 'newest':
-                $query->orderBy('publiee_le', 'desc');
+                $query->orderBy('annonces.publiee_le', 'desc');
                 break;
             case 'vues_desc':
-                $query->orderBy('vues', 'desc');
+                $query->orderBy('annonces.vues', 'desc');
                 break;
             default:
-                // Priorité : 1) Sponsorisé (À la une) | 2) Vendeurs pro | 3) Vues
-                $query
-                    ->leftJoin('vendeurs', 'vendeurs.id', '=', 'annonces.vendeur_id')
-                    ->orderByRaw("CASE WHEN EXISTS (SELECT 1 FROM annonce_options WHERE annonce_id = annonces.id AND a_la_une = 1) THEN 0 ELSE 1 END")
-                    ->orderByRaw("CASE WHEN vendeurs.type = 'professionnel' THEN 0 ELSE 1 END")
-                    ->orderBy('annonces.vues', 'desc')
-                    ->select('annonces.*');
+                $query->orderBy('annonces.vues', 'desc');
                 break;
         }
+
+        $query->select('annonces.*');
 
         $annonces = $query->paginate(20)->withQueryString();
 
