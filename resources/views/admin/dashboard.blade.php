@@ -136,6 +136,23 @@
             </div>
         </div>
 
+        {{-- LOGISTIQUE --}}
+        <div style="background: #fff; border-radius: 8px; padding: 1rem; border: 1px solid #edf2f7;">
+            <h2 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-truck" style="color: #805ad5; font-size: 0.85rem;"></i> Logistique
+            </h2>
+            <div style="display: flex; align-items: center;">
+                <div style="flex: 1; text-align: center; border-right: 1px solid #f1f5f9;">
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #2d3748;">{{ $stats['livreursCount'] }}</div>
+                    <div style="font-size: 0.75rem; color: #718096;">Livreurs actifs</div>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div style="font-size: 1.5rem; font-weight: 800; color: #805ad5;">{{ $stats['pointsRelaisCount'] }}</div>
+                    <div style="font-size: 0.75rem; color: #718096;">Points Relais</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     {{-- ROW 3: RECENT TABLES --}}

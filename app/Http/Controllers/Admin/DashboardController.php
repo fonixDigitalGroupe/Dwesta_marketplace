@@ -33,6 +33,9 @@ class DashboardController extends Controller
         $amateurSellers = Vendeur::where('type', 'particulier')->count();
         $vendeursPending = Vendeur::where('statut_verification', 'en_attente')->count();
 
+        // Livreurs
+        $livreursCount = User::role('livreur')->count();
+
         // 2. Annonces (Catalogue)
         $annoncesCount = Annonce::where('statut', 'publiee')->count();
         $annoncesPending = Annonce::where('statut', 'en_attente')->count();
@@ -69,6 +72,7 @@ class DashboardController extends Controller
         $stats = compact(
             'usersCount', 'newUsersThisMonth', 'clientsCount', 'newClientsThisMonth',
             'vendeursCount', 'proSellers', 'amateurSellers', 'vendeursPending',
+            'livreursCount',
             'annoncesCount', 'annoncesPending', 'pointsRelaisCount', 'litigesOpen',
             'ordersCount', 'ordersInProgress', 'ordersDelivered', 
             'totalCA', 'totalCommissions',
