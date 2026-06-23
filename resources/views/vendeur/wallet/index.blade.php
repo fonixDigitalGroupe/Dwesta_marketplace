@@ -118,7 +118,7 @@
         color: #fff;
         text-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
-    .card-brand-name span { color: #f68b1e; }
+    .card-brand-name span { color: #fff; }
     /* Visa-style logo circles */
     .card-network {
         display: flex;
@@ -706,12 +706,7 @@
 
                     {{-- Row 1: Brand + Network --}}
                     <div class="card-row-top">
-                        <div class="card-brand-name">Kar<span>nou</span></div>
-                        <div class="card-network">
-                            <div class="card-network-circles">
-                                <span></span><span></span>
-                            </div>
-                        </div>
+                        <div class="card-brand-name">Karnou</div>
                     </div>
 
                     {{-- Row 2: Chip + NFC + Balance --}}
@@ -750,8 +745,9 @@
                         </div>
                         @php
                             $activePlan = $user->vendeur?->abonnementActif?->abonnement?->nom ?? null;
+                            $showPlan = $activePlan && stripos($activePlan, 'Basic') === false;
                         @endphp
-                        @if($activePlan)
+                        @if($showPlan)
                             <div class="card-secure-badge">
                                 <i class="fas fa-star" style="font-size:0.5rem; color:#f68b1e;"></i>
                                 {{ $activePlan }}
