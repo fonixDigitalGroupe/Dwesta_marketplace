@@ -471,14 +471,14 @@
         /* Sticky Bottom Navigation */
         .mobile-bottom-nav {
             display: flex !important;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50px;
-            background: #444;
-            z-index: 1001;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            position: fixed !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 55px !important;
+            background: #004aad !important; /* Blue Karnou */
+            z-index: 10000 !important;
+            box-shadow: 0 -2px 15px rgba(0,0,0,0.3) !important;
         }
 
         .bottom-nav-item {
@@ -486,10 +486,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #fff;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-right: 1px solid #555;
+            color: #fff !important;
+            font-size: 1rem !important;
+            font-weight: 700 !important;
             cursor: pointer;
         }
 
@@ -502,23 +501,24 @@
         .sidebar-column.mobile-active {
             display: block !important;
             position: fixed !important;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            z-index: 2000;
-            overflow-y: auto;
-            padding: 60px 20px 20px 20px;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: white !important;
+            z-index: 11000 !important;
+            overflow-y: auto !important;
+            padding: 70px 20px 20px 20px !important;
         }
 
         .close-filters-btn {
             display: block !important;
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            color: #333;
+            position: fixed !important;
+            top: 20px !important;
+            right: 20px !important;
+            z-index: 11001 !important;
+            font-size: 1.8rem !important;
+            color: #333 !important;
             cursor: pointer;
         }
         
@@ -534,16 +534,16 @@
 @endpush
 
 @section('content')
+<!-- Mobile Bottom Navigation -->
+<div class="mobile-bottom-nav">
+    <div class="bottom-nav-item" onclick="toggleFilters(true)">
+        <i class="fas fa-sliders-h"></i> Filtrer et catégories
+    </div>
+</div>
+
 <div class="catalog-page-container">
     <div class="shop-layout">
-        <!-- Mobile Bottom Navigation -->
-        <div class="mobile-bottom-nav">
-            <div class="bottom-nav-item" onclick="toggleFilters(true)" style="border-right: none;">
-                <i class="fas fa-sliders-h"></i> Filtrer et catégories
-            </div>
-        </div>
-
-        <!-- Sidebar -->
+        <!-- Sidebar Drawer -->
         <aside class="sidebar-column" id="mobileSidebar">
             <div class="close-filters-btn" onclick="toggleFilters(false)">
                 <i class="fas fa-times"></i>
