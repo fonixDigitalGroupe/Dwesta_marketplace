@@ -728,6 +728,16 @@
         window.scrollTo(0, 0);
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const step = parseInt(urlParams.get('step'));
+        if (step && step > 1 && step <= 4) {
+            for (let i = 1; i < step; i++) {
+                nextStep(i);
+            }
+        }
+    });
+
     let deletedIds = [];
     function markForDeletion(id) {
         deletedIds.push(id);

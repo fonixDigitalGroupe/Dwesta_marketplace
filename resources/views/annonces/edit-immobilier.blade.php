@@ -738,6 +738,16 @@
         window.scrollTo(0, 0);
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const step = parseInt(urlParams.get('step'));
+        if (step && step > 1 && step <= 4) {
+            for (let i = 1; i < step; i++) {
+                nextStep(i);
+            }
+        }
+    });
+
     document.getElementById('type_transaction').addEventListener('change', function() {
         const prixVenteCont = document.getElementById('prix_vente_container');
         const loyerCont = document.getElementById('loyer_container');

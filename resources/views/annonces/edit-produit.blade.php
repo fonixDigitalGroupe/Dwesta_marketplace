@@ -1059,7 +1059,7 @@
 
 
     <script>
-        var currentStep = parseInt("{{ old('current_step', 1) }}");
+        var currentStep = parseInt("{{ request('step', old('current_step', 1)) }}");
         var totalSteps = 4;
         var uploadedImages = [];
         var deletedMediaIds = [];
