@@ -306,7 +306,7 @@ class AnnonceController extends Controller
         $user = Auth::user();
 
         if ($annonce->vendeur_id !== $user->vendeur->id) {
-            return redirect()->route('annonces.index')
+            return redirect()->route('vendeur.mes-annonces')
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
         }
 
@@ -337,7 +337,7 @@ class AnnonceController extends Controller
         $user = Auth::user();
 
         if ($annonce->vendeur_id !== $user->vendeur->id) {
-            return redirect()->route('annonces.index')
+            return redirect()->route('vendeur.mes-annonces')
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
         }
 
@@ -438,17 +438,17 @@ class AnnonceController extends Controller
         $user = Auth::user();
 
         if ($annonce->vendeur_id !== $user->vendeur->id) {
-            return redirect()->route('annonces.index')
+            return redirect()->route('vendeur.mes-annonces')
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
         }
 
         try {
             $this->annonceService->publierAnnonce($annonce);
 
-            return redirect()->route('annonces.index')
+            return redirect()->route('vendeur.mes-annonces')
                 ->with('success', 'Annonce publiée avec succès !');
         } catch (\Exception $e) {
-            return redirect()->route('annonces.index')
+            return redirect()->route('vendeur.mes-annonces')
                 ->with('error', $e->getMessage());
         }
     }
@@ -461,7 +461,7 @@ class AnnonceController extends Controller
         $user = Auth::user();
 
         if ($annonce->vendeur_id !== $user->vendeur->id) {
-            return redirect()->route('annonces.index')
+            return redirect()->route('vendeur.mes-annonces')
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
         }
 
@@ -472,7 +472,7 @@ class AnnonceController extends Controller
             // Supprimer l'annonce (cascade supprimera les relations)
             $annonce->delete();
 
-            return redirect()->route('annonces.index')
+            return redirect()->route('vendeur.mes-annonces')
                 ->with('success', 'Annonce supprimée avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur suppression annonce: ' . $e->getMessage());
@@ -488,7 +488,7 @@ class AnnonceController extends Controller
         $user = Auth::user();
 
         if ($annonce->vendeur_id !== $user->vendeur->id) {
-            return redirect()->route('annonces.index')
+            return redirect()->route('vendeur.mes-annonces')
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
         }
 
@@ -618,7 +618,7 @@ class AnnonceController extends Controller
     public function showImportForm()
     {
         // if (!$user->vendeur->estProfessionnel()) {
-        //     return redirect()->route('annonces.index')
+        //     return redirect()->route('vendeur.mes-annonces')
         //         ->with('error', 'Cette fonctionnalité est réservée aux vendeurs professionnels.');
         // }
 
@@ -657,7 +657,7 @@ class AnnonceController extends Controller
             // Supprimer le fichier temporaire
             Storage::disk('local')->delete($filePath);
 
-            return redirect()->route('annonces.index')
+            return redirect()->route('vendeur.mes-annonces')
                 ->with('success', "Import terminé: {$rapport['reussies']} annonce(s) créée(s), {$rapport['echecs']} échec(s).")
                 ->with('import_rapport', $rapport);
         } catch (\Exception $e) {
