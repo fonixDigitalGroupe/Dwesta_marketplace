@@ -120,9 +120,9 @@ class HomeController extends Controller
             ->take(6)
             ->get()
             ->map(function($seller) {
-                // Ajustement style : boutique (large) et officiel (petit/minuscule) au-dessous
-                $seller->promo_val = "boutique";
-                $seller->promo_sub = "officiel";
+                // Choix final : VENDEUR (large/pro) et certifié (petit/engageant)
+                $seller->promo_val = "VENDEUR";
+                $seller->promo_sub = "certifié";
                 
                 return $seller;
             });
