@@ -351,15 +351,17 @@
 
         .product-card {
             flex-direction: row;
-            padding: 12px;
+            padding: 15px;
             min-height: auto;
             gap: 15px;
-            align-items: center;
+            align-items: flex-start; /* Alignment top like in image */
+            border-right: none;
+            border-bottom: 1px solid #f0f0f0;
         }
 
         .product-image-container {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             flex-shrink: 0;
             margin-bottom: 0;
         }
@@ -386,16 +388,51 @@
         }
 
         .product-price-value {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
+            color: #bf0000; /* Red like Rakuten */
         }
 
         .product-status {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
+            color: #bf0000;
         }
 
         .review-stars {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
+            margin: 5px 0;
         }
+
+        /* Sticky Bottom Navigation */
+        .mobile-bottom-nav {
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: #444;
+            z-index: 1001;
+            color: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .bottom-nav-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-right: 1px solid #555;
+        }
+
+        .bottom-nav-item:last-child { border-right: none; }
+
+        .mobile-filter-trigger { display: none; } /* Replaced by bottom nav */
+        
+        .shop-container { padding-bottom: 60px; } /* Space for bottom nav */
+    }
 
         .custom-pagination {
             gap: 20px;
@@ -952,8 +989,30 @@
         </form>
     </div>
 
-    <div class="mobile-filter-trigger" onclick="toggleFilters(true)">
-        <i class="fas fa-filter"></i> Voir les filtres et catégories
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <div class="bottom-nav-item" onclick="toggleSortDrawer(true)">
+            <i class="fas fa-sort-amount-down"></i> {{ $active_sort_label ?? 'Trier par' }}
+        </div>
+        <div class="bottom-nav-item" onclick="toggleFilters(true)">
+            <i class="fas fa-sliders-h"></i> Filtrer
+        </div>
+    </div>
+
+    <!-- Mobile Sort Drawer -->
+    <div class="shop-sidebar" id="mobileSortDrawer">
+        <div class="close-filters-btn" onclick="toggleSortDrawer(false)">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="sidebar-section">
+            <div class="sidebar-header">Trier les produits</div>
+            <ul class="sidebar-menu">
+                <li><a href="?sort=latest&{{ http_build_query(request()->except('sort', 'page')) }}">Meilleures ventes</a></li>
+                <li><a href="?sort=newest&{{ http_build_query(request()->except('sort', 'page')) }}">Nouveautés</a></li>
+                <li><a href="?sort=price_asc&{{ http_build_query(request()->except('sort', 'page')) }}">Prix croissant</a></li>
+                <li><a href="?sort=price_desc&{{ http_build_query(request()->except('sort', 'page')) }}">Prix décroissant</a></li>
+            </ul>
+        </div>
     </div>
 
     <!-- Main Content Layout -->
@@ -1177,6 +1236,7 @@
                                 </div>
                                 <div class="product-info">
                                     <h3 class="product-title">{{ $annonce->titre }}</h3>
+                                    <div class="product-subtitle">- {{ $annonce->categorie ? $annonce->categorie->nom : 'Divers' }}</div>
                                     
                                     <div class="product-price-row">
                                         @if($annonce->should_show_etat)
@@ -1267,8 +1327,18 @@ function applyPriceFilter() {
 
 function toggleFilters(show) {
     const sidebar = document.getElementById('mobileSidebar');
-    if (show) sidebar.classList.add('active');
-    else sidebar.classList.remove('active');
+    if (sidebar) {
+        if (show) sidebar.classList.add('active');
+        else sidebar.classList.remove('active');
+    }
+}
+
+function toggleSortDrawer(show) {
+    const drawer = document.getElementById('mobileSortDrawer');
+    if (drawer) {
+        if (show) drawer.classList.add('active');
+        else drawer.classList.remove('active');
+    }
 }
 
 // Permettre la touche Entrée dans les champs de prix
