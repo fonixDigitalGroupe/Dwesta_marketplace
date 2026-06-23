@@ -346,30 +346,47 @@
         }
 
         .products-grid-container {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
         }
 
         .product-card {
-            padding: 10px;
+            flex-direction: row;
+            padding: 12px;
             min-height: auto;
-            border-right: 1px solid #eee;
+            gap: 15px;
+            align-items: center;
         }
 
         .product-image-container {
-            height: 140px;
+            width: 100px;
+            height: 100px;
+            flex-shrink: 0;
+            margin-bottom: 0;
         }
 
         .product-title {
-            font-size: 0.85rem;
-            height: 2.4rem;
-            overflow: hidden;
-            display: -webkit-box;
+            font-size: 0.95rem;
+            height: auto;
             -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
+        }
+
+        .product-info {
+            gap: 2px;
+        }
+
+        .product-card div[style*="font-size: 0.78rem"] {
+            display: none; /* Hide 'par vendeur PRO' - we are already on their shop */
+        }
+
+        .btn-voir-produit {
+            padding: 5px 12px;
+            font-size: 0.75rem;
+            margin-top: 5px;
+            align-self: flex-start;
         }
 
         .product-price-value {
-            font-size: 0.95rem;
+            font-size: 1.1rem;
         }
 
         .product-status {
