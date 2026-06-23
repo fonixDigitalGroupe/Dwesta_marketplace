@@ -200,14 +200,21 @@
 
                         <td style="padding: 12px 15px; text-align: right;">
                             <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center;">
-                                <form action="{{ route('admin.coupons.toggle-status', $coupon) }}" method="POST" style="display:inline;">
-                                    @csrf @method('PATCH')
-                                    <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;">
-                                        <span class="badge-amazon {{ $coupon->is_active ? 'badge-amazon-success' : 'badge-amazon-danger' }}" style="font-size: 0.65rem; padding: 2px 6px;">
-                                            {{ $coupon->is_active ? 'Actif' : 'Inactif' }}
-                                        </span>
-                                    </button>
-                                </form>
+                                @if($coupon->campaigns_count === 0)
+                                    {{-- Pas de campagne liée : statut toujours Inactif --}}
+                                    <span class="badge-amazon badge-amazon-danger" style="font-size: 0.65rem; padding: 2px 6px; cursor: default;" title="Aucune campagne liée">
+                                        Inactif
+                                    </span>
+                                @else
+                                    <form action="{{ route('admin.coupons.toggle-status', $coupon) }}" method="POST" style="display:inline;">
+                                        @csrf @method('PATCH')
+                                        <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;">
+                                            <span class="badge-amazon {{ $coupon->is_active ? 'badge-amazon-success' : 'badge-amazon-danger' }}" style="font-size: 0.65rem; padding: 2px 6px;">
+                                                {{ $coupon->is_active ? 'Actif' : 'Inactif' }}
+                                            </span>
+                                        </button>
+                                    </form>
+                                @endif
                                 <span style="color: #eee;">|</span>
                                 <a href="{{ route('admin.coupons.edit', $coupon) }}"
                                     style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"

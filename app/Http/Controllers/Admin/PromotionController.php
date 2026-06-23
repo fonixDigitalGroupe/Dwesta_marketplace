@@ -16,7 +16,8 @@ class PromotionController extends Controller
         $perPage = $request->input('per_page', 15);
         $search  = $request->input('search');
 
-        $coupons = Coupon::when($search, function ($q) use ($search) {
+        $coupons = Coupon::withCount('campaigns')
+            ->when($search, function ($q) use ($search) {
                 $q->where('code', 'like', "%{$search}%");
             })
             ->orderByDesc('created_at')

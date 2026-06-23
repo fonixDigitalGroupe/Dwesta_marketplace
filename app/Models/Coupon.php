@@ -47,4 +47,9 @@ class Coupon extends Model
     {
         return $this->belongsTo(Category::class, 'category_id_n2');
     }
+
+    public function campaigns()
+    {
+        return $this->hasMany(Campaign::class);
+    }
 }
