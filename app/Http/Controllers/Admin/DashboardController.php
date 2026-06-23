@@ -24,8 +24,10 @@ class DashboardController extends Controller
         $newUsersThisMonth = User::where('created_at', '>=', $startOfMonth)->count();
 
         // Clients (Acheteurs qui ne sont pas vendeurs)
-        $clientsCount = User::role('acheteur')->doesntHave('vendeur')->count();
-        $newClientsThisMonth = User::role('acheteur')->doesntHave('vendeur')
+        $clientsCount = User::whereHas('roles', fn($q) => $q->whereIn('name', ['Acheteur', 'acheteur']))
+            ->doesntHave('vendeur')->count();
+        $newClientsThisMonth = User::whereHas('roles', fn($q) => $q->whereIn('name', ['Acheteur', 'acheteur']))
+            ->doesntHave('vendeur')
             ->where('created_at', '>=', $startOfMonth)->count();
         
         $vendeursCount = Vendeur::count();
@@ -34,7 +36,7 @@ class DashboardController extends Controller
         $vendeursPending = Vendeur::where('statut_verification', 'en_attente')->count();
 
         // Livreurs
-        $livreursCount = User::role('livreur')->count();
+        $livreursCount = User::whereHas('roles', fn($q) => $q->whereIn('name', ['Livreur', 'livreur']))->count();
 
         // 2. Annonces (Catalogue)
         $annoncesCount = Annonce::where('statut', 'publiee')->count();
