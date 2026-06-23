@@ -128,17 +128,6 @@
                        onmouseout="this.style.textDecoration='none'">Effacer</a>
                 @endif
             </form>
-
-            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555; border-left: 1px solid #eff3f6; padding-left: 15px;">
-                <span>Afficher</span>
-                <select onchange="window.location.href='{{ route('admin.promotions.index') }}?per_page='+this.value+'&search={{ request('search') }}'"
-                    style="padding: 6px 10px; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; font-size: 0.8rem; color: #475569; cursor: pointer; outline: none;">
-                    <option value="15"  {{ request('per_page', 15) == 15  ? 'selected' : '' }}>15</option>
-                    <option value="25"  {{ request('per_page') == 25  ? 'selected' : '' }}>25</option>
-                    <option value="50"  {{ request('per_page') == 50  ? 'selected' : '' }}>50</option>
-                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                </select>
-            </div>
         </div>
 
         {{-- Table --}}
