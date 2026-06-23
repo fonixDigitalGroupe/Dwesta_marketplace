@@ -196,19 +196,38 @@
     @if(!$isCorporatePage)
         @php
             $tickerBanners = \App\Models\Banner::active()->orderBy('order')->get();
+            $activeCampaign = \App\Models\Campaign::where(function($q) {
+                $q->whereNull('starts_at')->orWhere('starts_at', '<=', now());
+            })->where(function($q) {
+                $q->whereNull('ends_at')->orWhere('ends_at', '>=', now());
+            })->latest()->first();
         @endphp
         <div class="top-banner">
-            @if($tickerBanners->count() > 0)
+            @if($tickerBanners->count() > 0 || $activeCampaign)
             <div class="banner-ticker-container">
                 <button class="ticker-arrow prev" onclick="prevTicker()"><i class="fas fa-chevron-left"></i></button>
                 <div class="ticker-items-wrapper">
-                    @foreach($tickerBanners->filter(fn($b) => !empty($b->slug)) as $i => $tb)
-                        <a href="{{ route('banner.landing', $tb->slug) }}" class="ticker-item {{ $i === 0 ? 'active' : '' }}">
+                    @php $itemIndex = 0; @endphp
+
+                    @if($activeCampaign)
+                        <div class="ticker-item active">
+                            <span>
+                                <i class="fas fa-bullhorn" style="margin-right: 8px; font-size: 0.9rem;"></i>
+                                {{ $activeCampaign->title }} 
+                                <span class="en-profiter">En profiter <i class="fas fa-chevron-down"></i></span>
+                            </span>
+                        </div>
+                        @php $itemIndex++; @endphp
+                    @endif
+
+                    @foreach($tickerBanners->filter(fn($b) => !empty($b->slug)) as $tb)
+                        <a href="{{ route('banner.landing', $tb->slug) }}" class="ticker-item {{ $itemIndex === 0 ? 'active' : '' }}">
                             <span>
                                 {{ $tb->title }} 
                                 <span class="en-profiter">En profiter <i class="fas fa-chevron-down"></i></span>
                             </span>
                         </a>
+                        @php $itemIndex++; @endphp
                     @endforeach
                 </div>
                 <button class="ticker-arrow next" onclick="nextTicker()"><i class="fas fa-chevron-right"></i></button>
