@@ -210,13 +210,13 @@
                     @php $itemIndex = 0; @endphp
 
                     @if($activeCampaign)
-                        <div class="ticker-item active">
+                        <a href="{{ $activeCampaign->link }}" class="ticker-item active">
                             <span>
                                 <i class="fas fa-bullhorn" style="margin-right: 8px; font-size: 0.9rem;"></i>
                                 {{ $activeCampaign->title }} 
                                 <span class="en-profiter">En profiter <i class="fas fa-chevron-down"></i></span>
                             </span>
-                        </div>
+                        </a>
                         @php $itemIndex++; @endphp
                     @endif
 
