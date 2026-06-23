@@ -103,7 +103,7 @@
                     <i class="fas fa-store" style="color: #ff8c00;"></i> Vendeurs
                 </h2>
                 @if($stats['vendeursPending'] > 0)
-                    <a href="{{ route('admin.vendeurs.index') }}" style="font-size: 0.75rem; font-weight: 700; color: #ff8c00; text-decoration: none; background: #fffaf0; padding: 4px 10px; border-radius: 20px;">
+                    <a href="{{ route('admin.users.index', ['role' => 'vendeur', 'status' => 'attente']) }}" style="font-size: 0.75rem; font-weight: 700; color: #ff8c00; text-decoration: none; background: #fffaf0; padding: 4px 10px; border-radius: 20px;">
                         {{ $stats['vendeursPending'] }} en attente
                     </a>
                 @endif
