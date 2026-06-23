@@ -120,9 +120,9 @@ class HomeController extends Controller
             ->take(6)
             ->get()
             ->map(function($seller) {
-                // Choix final : VENDEUR (large/pro) et certifié (petit/engageant)
-                $seller->promo_val = "VENDEUR";
-                $seller->promo_sub = "certifié";
+                // Choix final validé : BOUTIQUE (large) et officielle (petit)
+                $seller->promo_val = "BOUTIQUE";
+                $seller->promo_sub = "officielle";
                 
                 return $seller;
             });
