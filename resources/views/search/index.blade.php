@@ -754,7 +754,7 @@
                         <div class="product-info">
                             @if($annonce->estALaUne())
                                 <div style="font-size: 0.75rem; color: #666; margin-bottom: 2px; font-weight: 600; display: flex; align-items: center; gap: 4px;">
-                                    <i class="fas fa-ad" style="font-size: 0.7rem; color: #999;"></i> Sponsorisé
+                                    Sponsorisé
                                 </div>
                             @endif
                             <h2 class="product-title">{{ $annonce->titre }}</h2>
