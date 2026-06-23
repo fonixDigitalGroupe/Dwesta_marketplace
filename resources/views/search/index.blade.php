@@ -400,7 +400,135 @@
     @media (max-width: 900px) {
         .shop-layout { grid-template-columns: 1fr; }
         .sidebar-column { display: none; }
-        .products-grid { grid-template-columns: repeat(2, 1fr); }
+        .products-grid { grid-template-columns: 1fr !important; }
+        
+        .results-header {
+            display: none !important;
+        }
+
+        .product-card {
+            flex-direction: row !important;
+            flex-wrap: wrap !important;
+            padding: 12px !important;
+            min-height: auto !important;
+            gap: 12px !important;
+            align-items: flex-start !important;
+            border-right: none;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex !important;
+        }
+
+        .product-image-container {
+            width: 90px !important;
+            height: 90px !important;
+            flex-shrink: 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+        .product-info {
+            flex: 1 !important;
+            gap: 2px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden;
+        }
+
+        .product-title {
+            font-size: 0.9rem !important;
+            line-height: 1.2 !important;
+            margin-bottom: 2px !important;
+            font-weight: 700 !important;
+            display: -webkit-box !important;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .product-price-value {
+            font-size: 1.15rem !important;
+            color: #ff9900 !important;
+            font-weight: 700 !important;
+        }
+
+        .product-status {
+            font-size: 0.75rem !important;
+            color: #ff9900 !important;
+            font-weight: 600;
+        }
+
+        .product-view-btn {
+            display: flex !important;
+            width: 100% !important;
+            margin-top: 10px !important;
+            justify-content: center !important;
+            padding: 10px !important;
+            border: 1px solid #ddd !important;
+            border-radius: 6px !important;
+            background: #fff !important;
+            font-weight: 600 !important;
+        }
+
+        /* Sticky Bottom Navigation */
+        .mobile-bottom-nav {
+            display: flex;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: #444;
+            z-index: 1001;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .bottom-nav-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-right: 1px solid #555;
+            cursor: pointer;
+        }
+
+        .bottom-nav-item i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+
+        /* Drawer for Mobile Sidebar */
+        .sidebar-column.mobile-active {
+            display: block !important;
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 60px 20px 20px 20px;
+        }
+
+        .close-filters-btn {
+            display: block;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+        }
+        
+        .catalog-page-container {
+            padding-bottom: 60px;
+        }
+    }
+
+    .mobile-bottom-nav, .close-filters-btn {
+        display: none;
     }
 </style>
 @endpush
@@ -408,8 +536,18 @@
 @section('content')
 <div class="catalog-page-container">
     <div class="shop-layout">
+        <!-- Mobile Bottom Navigation -->
+        <div class="mobile-bottom-nav">
+            <div class="bottom-nav-item" onclick="toggleFilters(true)" style="border-right: none;">
+                <i class="fas fa-sliders-h"></i> Filtrer et catégories
+            </div>
+        </div>
+
         <!-- Sidebar -->
-        <aside class="sidebar-column">
+        <aside class="sidebar-column" id="mobileSidebar">
+            <div class="close-filters-btn" onclick="toggleFilters(false)">
+                <i class="fas fa-times"></i>
+            </div>
             <!-- Categories -->
             <div class="sidebar-section" style="padding-bottom: 0; border-bottom: none; margin-bottom: 0;">
                 <div class="sidebar-header">Catégories</div>
@@ -695,4 +833,16 @@
         </main>
     </div>
 </div>
+<script>
+function toggleFilters(show) {
+    const sidebar = document.getElementById('mobileSidebar');
+    if (show) {
+        sidebar.classList.add('mobile-active');
+        document.body.style.overflow = 'hidden';
+    } else {
+        sidebar.classList.remove('mobile-active');
+        document.body.style.overflow = '';
+    }
+}
+</script>
 @endsection
