@@ -153,6 +153,12 @@
 
 
 
+                    <a href="{{ route('favorites.index') }}" class="header-link" title="Mes Favoris">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </a>
+
                     @inject('cartService', 'App\Services\CartService')
                     <a href="{{ route('cart.index') }}" class="header-link" title="Mon Panier" style="position: relative;">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -162,7 +168,7 @@
                         </svg>
                         @if($cartService->getItemsCount() > 0)
                             <span
-                                style="position: absolute; top: -8px; right: -8px; background: #004aad; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white;">
+                                style="position: absolute; top: -8px; right: -8px; background: #f68b1e; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white;">
                                 {{ $cartService->getItemsCount() }}
                             </span>
                         @endif
