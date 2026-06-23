@@ -752,9 +752,6 @@
                         </div>
 
                         <div class="product-info">
-                            @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
-                                <div style="font-size: 0.75rem; color: #565959; margin-bottom: 2px; font-weight: 500;">Sponsorisée</div>
-                            @endif
                             <h2 class="product-title">{{ $annonce->titre }}</h2>
                             
                             <div class="review-stars">
@@ -795,11 +792,6 @@
                             
                              {{-- Sell yours removed --}}
 
-                            <div class="product-tags">
-                                @if($annonce->estALaUne())
-                                    <span class="tag-sponsored">Sponsorisé</span>
-                                @endif
-                            </div>
                         </div>
                     </a>
                 @empty
