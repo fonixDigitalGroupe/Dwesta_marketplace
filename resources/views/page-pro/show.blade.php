@@ -331,18 +331,7 @@
         }
 
         .products-header {
-            padding: 10px 15px;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
-        }
-
-        .products-header-right {
-            width: 100%;
-        }
-
-        .sort-select {
-            width: 100%;
+            display: none !important;
         }
 
         .products-grid-container {
@@ -1018,29 +1007,13 @@
 
     <!-- Mobile Bottom Navigation -->
     <div class="mobile-bottom-nav">
-        <div class="bottom-nav-item" onclick="toggleSortDrawer(true)">
-            <i class="fas fa-sort-amount-down"></i> {{ $active_sort_label ?? 'Trier par' }}
-        </div>
-        <div class="bottom-nav-item" onclick="toggleFilters(true)">
-            <i class="fas fa-sliders-h"></i> Filtrer
+        <div class="bottom-nav-item" onclick="toggleFilters(true)" style="border-right: none;">
+            <i class="fas fa-sliders-h"></i> Filtrer et catégories
         </div>
     </div>
 
-    <!-- Mobile Sort Drawer -->
-    <div class="shop-sidebar" id="mobileSortDrawer">
-        <div class="close-filters-btn" onclick="toggleSortDrawer(false)">
-            <i class="fas fa-times"></i>
-        </div>
-        <div class="sidebar-section">
-            <div class="sidebar-header">Trier les produits</div>
-            <ul class="sidebar-menu">
-                <li><a href="?sort=latest&{{ http_build_query(request()->except('sort', 'page')) }}">Meilleures ventes</a></li>
-                <li><a href="?sort=newest&{{ http_build_query(request()->except('sort', 'page')) }}">Nouveautés</a></li>
-                <li><a href="?sort=price_asc&{{ http_build_query(request()->except('sort', 'page')) }}">Prix croissant</a></li>
-                <li><a href="?sort=price_desc&{{ http_build_query(request()->except('sort', 'page')) }}">Prix décroissant</a></li>
-            </ul>
-        </div>
-    </div>
+    <!-- Mobile Sort Drawer (Removed sorting as per user request, keeping ID for no-error if JS remains) -->
+    <div class="shop-sidebar" id="mobileSortDrawer" style="display: none;"></div>
 
     <!-- Main Content Layout -->
     <div class="shop-layout">
