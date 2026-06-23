@@ -598,6 +598,51 @@
             margin-top: 2rem;
         }
 
+        /* Step 4: Booster styles */
+        .service-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #fff9db 0%, #fff3bf 100%);
+            border: 2px dashed #fcc419;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(252, 196, 25, 0.05);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .service-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(252, 196, 25, 0.1);
+            border-style: solid;
+        }
+
+        .service-card.already-active {
+            border: 2px solid #00A400;
+            background: #fafffa;
+            cursor: default;
+            opacity: 0.9;
+        }
+
+        .service-checkbox {
+            width: 22px;
+            height: 22px;
+            margin-top: 4px;
+            accent-color: #f08c00;
+        }
+
+        #promo-section {
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
         /* Modal Styles */
         .modal-overlay {
             display: none;
@@ -965,6 +1010,52 @@
                         <p class="instruction-text" style="color: #666; font-size: 0.95rem;">Mettez votre annonce en avant pour vendre d'autant plus vite.</p>
                     </div>
 
+                    {{-- === Section Code Promo (Etape 4) === --}}
+                    <div id="promo-section" style="display: none; margin-bottom: 2rem; padding: 1.25rem; background: linear-gradient(135deg, #fff9db 0%, #fff3bf 100%); border: 2px dashed #fcc419; border-radius: 12px; box-shadow: 0 4px 15px rgba(252, 196, 25, 0.1);">
+                        <div style="display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <div style="flex: 1;">
+                                <label style="font-size: 0.95rem; font-weight: 800; color: #856404; margin: 0; display: block;">
+                                    Boostez vos ventes gratuitement !
+                                </label>
+                                <p style="font-size: 0.8rem; color: #92700e; margin: 0.25rem 0 0.5rem 0; line-height: 1.4;">
+                                    Appliquez un code promo pour mettre en avant votre annonce. Un <strong>prix barré</strong> attire 3x plus d'acheteurs.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem; align-items: center; background: white; padding: 0.4rem; border-radius: 10px; border: 1.5px solid #ffec99;">
+                            <input type="text" id="promo_code_input" placeholder="ENTREZ VOTRE CODE ICI"
+                                style="flex: 1; padding: 0.6rem 0.75rem; border: none; border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; outline: none; background: transparent;"
+                                oninput="this.value = this.value.toUpperCase()">
+                            <button type="button" onclick="applyPromoCode()"
+                                style="padding: 0.6rem 1.25rem; background: #fcc419; color: #453b0c; border: none; border-radius: 8px; font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: transform 0.2s;">
+                                APPLIQUER
+                            </button>
+                        </div>
+                        
+                        <div id="promo-error" style="display: none; color: #e03131; font-size: 0.75rem; margin-top: 0.5rem; font-weight: 600; padding-left: 0.5rem;"></div>
+
+                        {{-- Prévisualisation Premium --}}
+                        <div id="promo-preview" style="display: none; margin-top: 1rem; padding: 1rem; background: white; border-radius: 10px; border: 1px solid #ffec99; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div>
+                                        <span style="font-size: 0.7rem; color: #adb5bd; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 2px;">Prix Initial</span>
+                                        <span id="promo-original-price" style="font-size: 0.95rem; color: #adb5bd; text-decoration: line-through; font-weight: 600;"></span>
+                                    </div>
+                                    <div style="font-size: 1.25rem; color: #fab005;">➜</div>
+                                    <div>
+                                        <span style="font-size: 0.7rem; color: #fa5252; font-weight: 700; text-transform: uppercase; display: block; margin-bottom: 2px;">Prix Flash</span>
+                                        <span id="promo-discounted-price" style="font-size: 1.15rem; color: #2b8a3e; font-weight: 900;"></span>
+                                    </div>
+                                </div>
+                                <div id="promo-badge" style="background: #fa5252; color: white; font-size: 0.85rem; font-weight: 900; padding: 4px 10px; border-radius: 6px; box-shadow: 0 2px 5px rgba(250, 82, 82, 0.3);"></div>
+                            </div>
+                            <div id="promo-success-text" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #f1f3f5; font-size: 0.75rem; color: #495057; font-weight: 600;"></div>
+                        </div>
+                        <input type="hidden" id="promo_code" name="promo_code" value="">
+                    </div>
+
                     <div style="margin-bottom: 2rem;">
                         <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Options de visibilité</h3>
                         <div style="display: flex; flex-direction: column; gap: 1rem;">
@@ -980,31 +1071,35 @@
                                 @php
                                     $isAlreadyActive = in_array($service->cle, $activeServices);
                                 @endphp
-                                <label class="service-card" style="display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border: 2px solid {{ $isAlreadyActive ? '#4caf50' : '#e0e0e0' }}; border-radius: 12px; cursor: {{ $isAlreadyActive ? 'default' : 'pointer' }}; transition: all 0.2s; position: relative; {{ $isAlreadyActive ? 'background: #f1f8e9; opacity: 0.9;' : '' }}">
+                                <label class="service-card {{ $isAlreadyActive ? 'already-active' : '' }}">
                                     @if($isAlreadyActive)
-                                        <div style="width: 20px; height: 20px; margin-top: 4px; display: flex; align-items: center; justify-content: center; background: #4caf50; border-radius: 4px; color: white;">✓</div>
+                                        <div style="width: 22px; height: 22px; margin-top: 4px; display: flex; align-items: center; justify-content: center; background: #00A400; border-radius: 4px; color: white;">✓</div>
                                         <input type="hidden" name="services[]" value="{{ $service->cle }}">
                                     @else
-                                        <input type="checkbox" name="services[]" value="{{ $service->cle }}" class="service-checkbox" data-cost="{{ $service->credits_requis }}" {{ old('services') && in_array($service->cle, old('services')) ? 'checked' : '' }} style="width: 20px; height: 20px; margin-top: 4px; accent-color: #ef6c00;">
+                                        <input type="checkbox" name="services[]" value="{{ $service->cle }}" class="service-checkbox" data-cost="{{ $service->credits_requis }}" {{ old('services') && in_array($service->cle, old('services')) ? 'checked' : '' }}>
                                     @endif
                                     
                                     <div style="flex: 1;">
-                                        <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 0.25rem; color: #333;">
+                                        <div style="font-weight: 800; font-size: 1.05rem; margin-bottom: 0.25rem; color: #856404; display: flex; align-items: center; gap: 0.5rem;">
                                             {{ $service->nom }}
                                             @if($isAlreadyActive)
-                                                <span style="background: #4caf50; color: white; font-size: 0.7rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: text-bottom;">Déjà actif</span>
+                                                <span style="background: #00A400; color: white; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; text-transform: uppercase;">Déjà actif</span>
+                                            @elseif($service->cle == 'mise_en_avant' || $service->cle == 'boost')
+                                                <span style="background: #fcc419; color: #453b0c; font-size: 0.65rem; font-weight: 800; padding: 2px 8px; border-radius: 6px; text-transform: uppercase;">Recommandé</span>
                                             @endif
                                         </div>
-                                        <div style="font-size: 0.9rem; color: #666; line-height: 1.4;">{{ $service->description }}</div>
+                                        <div style="font-size: 0.85rem; color: #92700e; line-height: 1.4; font-weight: 600;">{{ $service->description }}</div>
                                         @if($service->duree_jours)
-                                            <div style="font-size: 0.8rem; color: #888; margin-top: 0.5rem; font-weight: 600;">⏳ Valable {{ $service->duree_jours }} jours</div>
+                                            <div style="font-size: 0.8rem; color: #b7791f; margin-top: 0.5rem; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                                                <span>⏳</span> Valable {{ $service->duree_jours }} jours
+                                            </div>
                                         @endif
                                     </div>
-                                    <div style="font-weight: 800; font-size: 1.25rem; color: {{ $isAlreadyActive ? '#4caf50' : '#ef6c00' }}; white-space: nowrap;">
+                                    <div style="font-weight: 900; font-size: 1.3rem; color: #e67e22; white-space: nowrap; text-shadow: 0 1px 0 rgba(255,255,255,0.5);">
                                         @if($isAlreadyActive)
                                             --
                                         @else
-                                            +{{ $service->credits_requis }} ⭐
+                                            +{{ $service->credits_requis }} <span style="color: #fcc419;">⭐</span>
                                         @endif
                                     </div>
                                 </label>
@@ -1012,28 +1107,28 @@
                         </div>
                     </div>
 
-                    <div style="background: white; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid #eee;">
+                    <div style="background: linear-gradient(135deg, #fff9db 0%, #fff3bf 100%); border: 2px dashed #fcc419; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(252, 196, 25, 0.05);">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                            <span style="font-weight: 600; color: #333;">Statut de publication</span>
-                            <div style="display: flex; gap: 1rem;">
-                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                                    <input type="radio" name="statut" value="brouillon" {{ $annonce->statut == 'brouillon' ? 'checked' : '' }} style="accent-color: #333;">
+                            <span style="font-weight: 800; color: #856404; font-size: 1rem;">Statut de publication</span>
+                            <div style="display: flex; gap: 1.5rem;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #92700e; font-weight: 700;">
+                                    <input type="radio" name="statut" value="brouillon" {{ $annonce->statut == 'brouillon' ? 'checked' : '' }} style="accent-color: #856404; width: 18px; height: 18px;">
                                     <span style="font-size: 0.95rem;">Brouillon</span>
                                 </label>
-                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                                    <input type="radio" name="statut" value="publiee" {{ $annonce->statut == 'publiee' ? 'checked' : '' }} style="accent-color: #ef6c00;">
-                                    <span style="font-size: 0.95rem; font-weight: 600;">Publier maintenant</span>
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #856404; font-weight: 800;">
+                                    <input type="radio" name="statut" value="publiee" {{ $annonce->statut == 'publiee' ? 'checked' : '' }} style="accent-color: #f08c00; width: 18px; height: 18px;">
+                                    <span style="font-size: 0.95rem;">Publier maintenant</span>
                                 </label>
                             </div>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 1rem;">
-                            <span style="font-weight: 700; font-size: 1.1rem; color: #000;">NOUVEAU Total à payer :</span>
-                            <span style="font-weight: 800; font-size: 1.5rem; color: #111;">
-                                <span id="total-cost-display">0</span> <span style="font-size: 1.2rem; color: #ffbe00;">⭐</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #ffec99; padding-top: 1rem; margin-top: 0.5rem;">
+                            <span style="font-weight: 900; font-size: 1.15rem; color: #453b0c; text-transform: uppercase;">Total à payer :</span>
+                            <span style="font-weight: 950; font-size: 1.75rem; color: #111;">
+                                <span id="total-cost-display" style="color: #e67e22;">0</span> <span style="font-size: 1.4rem; color: #fcc419;">⭐</span>
                             </span>
                         </div>
                         <div id="insufficient-credits-warning" style="display: none; background: #fde8e8; color: #c62828; padding: 0.75rem 1rem; border-radius: 6px; margin-top: 1rem; font-size: 0.9rem; border: 1px solid #ffcdd2;">
-                            ⚠️ Votre solde de crédits est insuffisant pour ces NOUVELLES options. <a href="{{ route('account.credits.index') }}" target="_blank" style="color: #c62828; font-weight: bold; text-decoration: underline;">Rechargez votre compte</a>.
+                            ⚠️ Votre solde de crédits est insuffisant pour ces options. <a href="{{ route('account.credits.index') }}" target="_blank" style="color: #c62828; font-weight: bold; text-decoration: underline;">Rechargez votre compte</a>.
                         </div>
                     </div>
 
@@ -1234,6 +1329,99 @@
             } else area.classList.remove('active');
         }
 
+        // --- Promo Code Logic ---
+        var activeCampaignData = null;
+
+        function checkCategoryPromo(categoryId) {
+            if (!categoryId) return;
+            fetch(`/api/campaigns/check-category-promo?categorie_id=${categoryId}`)
+                .then(r => r.json())
+                .then(data => {
+                    const promoSection = document.getElementById('promo-section');
+                    if (data.has_campaign) {
+                        promoSection.style.display = 'block';
+                        // If it's an automatic campaign or we just want to show the potential
+                        if (data.campaign) {
+                            // Optionally pre-show something
+                        }
+                    } else {
+                        promoSection.style.display = 'none';
+                        resetPromoState();
+                    }
+                });
+        }
+
+        function resetPromoState() {
+            activeCampaignData = null;
+            document.getElementById('promo_code').value = '';
+            document.getElementById('promo_code_input').value = '';
+            document.getElementById('promo-preview').style.display = 'none';
+        }
+
+        function applyPromoCode() {
+            const code = document.getElementById('promo_code_input').value.trim();
+            const categorieId = document.getElementById('categorie_id').value;
+            const error = document.getElementById('promo-error');
+            const preview = document.getElementById('promo-preview');
+            const hiddenInput = document.getElementById('promo_code');
+
+            if (!code) { showPromoError('Veuillez entrer un code promo.'); return; }
+            if (!categorieId) { showPromoError('Sélectionnez d\'abord une catégorie.'); return; }
+
+            fetch(`/api/campaigns/check-promo?code=${encodeURIComponent(code)}&categorie_id=${categorieId}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.valid) {
+                        showPromoError(data.message || 'Code invalide.');
+                        preview.style.display = 'none';
+                        hiddenInput.value = '';
+                        activeCampaignData = null;
+                        return;
+                    }
+
+                    activeCampaignData = data;
+                    hiddenInput.value = code;
+                    error.style.display = 'none';
+                    updatePromoPreview();
+                })
+                .catch(err => {
+                    console.error('Promo error:', err);
+                    showPromoError('Une erreur est survenue.');
+                });
+        }
+
+        function updatePromoPreview() {
+            if (!activeCampaignData) return;
+            const prixInput = document.getElementById('prix');
+            const vendeurPrix = parseFloat(prixInput.value);
+            const preview = document.getElementById('promo-preview');
+            if (!vendeurPrix || vendeurPrix <= 0) { preview.style.display = 'none'; return; }
+
+            let promoPrix;
+            if (activeCampaignData.discount_type === 'percent') {
+                promoPrix = vendeurPrix * (1 - activeCampaignData.discount_value / 100);
+            } else {
+                promoPrix = Math.max(0, vendeurPrix - activeCampaignData.discount_value);
+            }
+
+            const pct = Math.round(((vendeurPrix - promoPrix) / vendeurPrix) * 100);
+            document.getElementById('promo-original-price').textContent = vendeurPrix.toLocaleString() + ' FCFA';
+            document.getElementById('promo-discounted-price').textContent = Math.round(promoPrix).toLocaleString() + ' FCFA';
+            document.getElementById('promo-badge').textContent = '-' + pct + '%';
+            document.getElementById('promo-success-text').innerHTML = "✨ Code appliqué avec succès ! Votre annonce bénéficiera d'un prix barré.";
+            preview.style.display = 'block';
+        }
+
+        function showPromoError(msg) {
+            const el = document.getElementById('promo-error');
+            el.textContent = msg;
+            el.style.display = 'block';
+        }
+
+        function revokePromoCode() {
+            resetPromoState();
+        }
+
         function validateCurrentStep() {
             if (currentStep === 1) {
                 if (document.getElementById('product_name').value.trim().length < 3) {
@@ -1347,6 +1535,10 @@
             
             // Initial calculation
             calculateTotal();
+
+            // Check promo on load if possible
+            const initialCatId = document.getElementById('categorie_id').value;
+            if (initialCatId) checkCategoryPromo(initialCatId);
         });
 
         function handleFiles(files) {
@@ -1367,6 +1559,7 @@
                 grid.insertBefore(div, document.getElementById('uploadTrigger'));
             });
             updateFileInput();
+            updatePromoPreview(); // Update promo if price exists
         }
 
         function removeNewPhoto(i) { uploadedImages.splice(i, 1); renderPhotoGrid(); }
@@ -1395,11 +1588,6 @@
             document.querySelectorAll('#step3 .status-card').forEach(c => c.classList.remove('selected'));
             el.classList.add('selected');
         }
-
-
-
-        function closeSubcategoryModal() { }
-        function goBackInModal() { }
 
         document.addEventListener('DOMContentLoaded', function() {
             const catId = "{{ $annonce->categorie_id }}";
@@ -1460,5 +1648,8 @@
                 input.setAttribute('required', 'required');
             }
         }
+        
+        // Listen for price changes to update promo preview
+        document.getElementById('prix').addEventListener('input', updatePromoPreview);
     </script>
 @endsection
