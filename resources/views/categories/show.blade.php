@@ -34,7 +34,45 @@
         top:0; left:0; right:0; bottom:0;
         background: rgba(0,0,0,0.3);
     }
-    .n1-grand-banner-content { position: relative; z-index: 10; }
+    .n1-grand-banner-content { 
+        position: relative; 
+        z-index: 10; 
+        width: 100%;
+        max-width: 600px;
+        padding: 0 20px;
+    }
+
+    /* In-page Search Bar */
+    .n1-banner-search-wrapper {
+        margin-top: 25px;
+        position: relative;
+    }
+    .n1-banner-search-input {
+        width: 100%;
+        padding: 14px 20px 14px 50px;
+        border-radius: 50px;
+        border: none;
+        background: rgba(255, 255, 255, 0.95);
+        color: #333;
+        font-size: 1rem;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+    .n1-banner-search-input:focus {
+        background: #fff;
+        outline: none;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+        transform: translateY(-2px);
+    }
+    .n1-banner-search-icon {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #888;
+        font-size: 1.2rem;
+    }
     
     .n1-grand-banner h1 {
         font-family: 'Playfair Display', serif; /* or something elegant */
@@ -355,6 +393,16 @@
         @if($banner && $bannerLink)
             <a href="{{ $bannerLink }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 5;"></a>
         @endif
+
+        <div class="n1-grand-banner-content">
+            <h1>{{ $category->nom }}</h1>
+            <p>{{ $category->description ?? 'Découvrez notre sélection exclusive' }}</p>
+            
+            <div class="n1-banner-search-wrapper">
+                <i class="fas fa-search n1-banner-search-icon"></i>
+                <input type="text" id="n1-page-search" class="n1-banner-search-input" placeholder="Rechercher dans cette catégorie..." oninput="handleInPageSearch(this.value)">
+            </div>
+        </div>
     </div>
 
     <div class="n1-horizontal-menu-wrapper">
@@ -1697,6 +1745,39 @@ function filterWholePage(n2Id, element) {
     if (n2Select) {
         n2Select.value = (n2Id === 'all') ? '' : n2Id;
         if (typeof updateN3Dropdown === 'function') updateN3Dropdown();
+    }
+}
+
+function handleInPageSearch(query) {
+    const q = query.toLowerCase().trim();
+    const items = document.querySelectorAll('.global-filter-item');
+    
+    // Clear N2 active state when searching if needed, or keep it as combined filter
+    // For simplicity and matching user "recherches sur la page", search in ALL items
+    
+    items.forEach(item => {
+        const title = item.querySelector('.card-title-flat').innerText.toLowerCase();
+        if (title.includes(q)) {
+            // Respect the N2 filter if any? 
+            // Better: reset N2 filter to "all" to allow global search on page
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+
+    // Reset N2 nav active state if query is not empty
+    if (q.length > 0) {
+        document.querySelectorAll('.n1-cat-nav-link').forEach(l => l.classList.remove('active'));
+        const homeBtn = document.querySelector('.n1-nav-home-btn');
+        if (homeBtn) homeBtn.classList.remove('active');
+    } else {
+        // If query cleared, reset to "All"
+        const homeBtn = document.querySelector('.n1-nav-home-btn');
+        if (homeBtn) {
+            homeBtn.click();
+            homeBtn.classList.add('active');
+        }
     }
 }
 </script>
