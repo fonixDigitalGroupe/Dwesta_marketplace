@@ -335,9 +335,6 @@
     {{-- GRILLE PRINCIPALE --}}
     <div>
         <div class="landing-products-header" style="justify-content: flex-end;">
-            <div style="flex: 1;">
-                <div class="landing-products-count">{{ $annonces->total() }} produit(s) trouvé(s)</div>
-            </div>
             <select class="landing-sort-select" onchange="window.location.href='?sort='+this.value">
                 <option value="relevance" {{ !request('sort') || request('sort') == 'relevance' ? 'selected' : '' }}>Pertinence</option>
                 <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Prix croissant</option>

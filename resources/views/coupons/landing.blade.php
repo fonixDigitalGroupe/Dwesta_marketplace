@@ -549,45 +549,9 @@
 
 <div class="landing-body">
 
-    {{-- TOP PRODUITS LES PLUS CONSULTÉS --}}
-    @if($topConsultes->count() > 0)
-    <div class="landing-top-section">
-        <h2 class="landing-section-title">Les favoris du moment</h2>
-        <div class="top-products-carousel-wrapper">
-            <button class="landing-carousel-arrow left" onclick="landingCarouselScroll('landing-top-track', -1)">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            <div class="top-products-track" id="landing-top-track">
-                @foreach($topConsultes as $annonce)
-                    <a href="{{ route('annonces.show', $annonce->slug) }}" class="landing-product-card global-filter-item">
-                        <div class="landing-card-img">
-                            @if($annonce->photoPrincipale())
-                                <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" alt="{{ $annonce->titre }}">
-                            @else
-                                <span style="color:#ccc; font-size:0.75rem;">Pas de photo</span>
-                            @endif
-                        </div>
-                        <div class="landing-card-body">
-                            <div class="landing-card-title">{{ $annonce->titre }}</div>
-                            <div class="landing-card-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</div>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-            <button class="landing-carousel-arrow right" onclick="landingCarouselScroll('landing-top-track', 1)">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div>
-    </div>
-    @endif
-
     {{-- GRILLE PRINCIPALE --}}
     <div>
-        <div class="landing-products-header">
-            <div style="flex: 1;">
-                <h2 class="landing-section-title" style="margin-bottom:0; border-bottom:none; padding-bottom:0;">Sélectionnée pour vous</h2>
-                <div class="landing-products-count">{{ $annonces->total() }} produit(s) trouvé(s)</div>
-            </div>
+        <div class="landing-products-header" style="justify-content: flex-end;">
             <select class="landing-sort-select" onchange="window.location.href='?sort='+this.value">
                 <option value="relevance" {{ !request('sort') || request('sort') == 'relevance' ? 'selected' : '' }}>Pertinence</option>
                 <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Prix croissant</option>
