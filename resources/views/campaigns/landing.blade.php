@@ -236,14 +236,18 @@
         .landing-products-grid { grid-template-columns: 1fr; }
     }
 
-    /* ===== COUNTDOWN TIMER (BREADCRUMB INLINE VERSION) ===== */
+    .landing-breadcrumb-container {
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .campaign-timer-container {
         display: inline-flex;
         gap: 10px;
         align-items: baseline;
-        margin-left: 15px;
-        padding-left: 15px;
-        border-left: 1px solid #ddd;
     }
     .timer-item {
         display: inline-flex;
@@ -262,7 +266,6 @@
         color: #777;
     }
     .timer-expired-msg {
-        margin-left: 15px;
         padding: 2px 10px;
         background: #ffebee;
         color: #d32f2f;
@@ -271,16 +274,9 @@
         font-size: 0.75rem;
         border: 1px solid #ffcdd2;
     }
-    .timer-prefix {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #999;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
 
     @media (max-width: 768px) {
-        .campaign-timer-container { border-left: none; margin-left: 0; padding-left: 0; margin-top: 5px; }
+        .campaign-timer-container { margin-top: 5px; }
     }
 </style>
 @endpush
@@ -305,24 +301,11 @@
 {{-- BREADCRUMB --}}
 <div class="landing-breadcrumb">
     <div class="landing-breadcrumb-container">
-        <div class="breadcrumb-text">
-            <a href="{{ route('home') }}">Accueil</a>
-            <span>›</span>
-            @if($category && $category->parent)
-                <a href="{{ route('search.index', ['category' => $category->parent->slug]) }}">{{ $category->parent->nom }}</a>
-                <span>›</span>
-            @endif
-            @if($category)
-                <a href="{{ route('search.index', ['category' => $category->slug]) }}">{{ $category->nom }}</a>
-                <span>›</span>
-            @endif
-            <span style="color: #333; font-weight: 700;">{{ $campaign->title }}</span>
-        </div>
+        {{-- BREADCRUMB TEXT REMOVED AS REQUESTED --}}
 
         {{-- COUNTDOWN TIMER --}}
         @if($campaign->ends_at)
             <div id="campaign-countdown" class="campaign-timer-container" data-end="{{ $campaign->ends_at->format('Y-m-d H:i:s') }}">
-                <span class="timer-prefix">Expire dans :</span>
                 <div class="timer-item">
                     <span class="timer-val" id="days">00</span>
                     <span class="timer-label">Jours</span>
