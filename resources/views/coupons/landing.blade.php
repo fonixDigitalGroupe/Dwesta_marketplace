@@ -500,7 +500,7 @@
 @if($heroImg)
     <div class="landing-hero" style="background-image: url('{{ Storage::url($heroImg) }}');">
         <div class="landing-hero-content">
-            <h1 class="landing-hero-title">{{ $heroTitle }}</h1>
+            <p class="landing-hero-subtitle" style="font-weight: 700; font-style: normal; font-size: 1.6rem; margin-bottom: 5px;">{{ $heroTitle }}</p>
             <p class="landing-hero-subtitle">{{ $heroSubtitle }}</p>
             
             <div class="n1-banner-search-wrapper">
@@ -537,7 +537,7 @@
 @else
     <div class="landing-hero" style="background: linear-gradient(135deg, #f68b1e 0%, #e77600 100%);">
         <div class="landing-hero-content">
-            <h1 class="landing-hero-title">{{ $heroTitle }}</h1>
+            <p class="landing-hero-subtitle" style="font-weight: 700; font-style: normal; font-size: 1.6rem; margin-bottom: 5px;">{{ $heroTitle }}</p>
             <p class="landing-hero-subtitle">{{ $heroSubtitle }}</p>
             
             <div class="n1-banner-search-wrapper">
