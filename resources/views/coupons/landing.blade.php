@@ -325,40 +325,34 @@
         .landing-products-grid { grid-template-columns: 1fr; }
     }
 
-    /* ===== COUNTDOWN TIMER (BREADCRUMB VERSION) ===== */
+    /* ===== COUNTDOWN TIMER (BREADCRUMB INLINE VERSION) ===== */
     .campaign-timer-container {
-        display: flex;
-        gap: 8px;
-        align-items: center;
+        display: inline-flex;
+        gap: 10px;
+        align-items: baseline;
+        margin-left: 15px;
+        padding-left: 15px;
+        border-left: 1px solid #ddd;
     }
-    .timer-block {
-        background: #fff;
-        border: 1px solid #ddd;
-        padding: 4px 8px;
-        border-radius: 6px;
-        min-width: 45px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    .timer-item {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 3px;
     }
     .timer-val {
         font-family: 'Outfit', sans-serif;
         font-size: 0.95rem;
         font-weight: 800;
         color: #f68b1e;
-        line-height: 1;
     }
     .timer-label {
-        font-size: 0.5rem;
-        text-transform: uppercase;
-        font-weight: 600;
-        color: #888;
-        margin-top: 1px;
-        letter-spacing: 0.3px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #777;
     }
     .timer-expired-msg {
-        padding: 4px 12px;
+        margin-left: 15px;
+        padding: 2px 10px;
         background: #ffebee;
         color: #d32f2f;
         font-weight: 700;
@@ -369,12 +363,13 @@
     .timer-prefix {
         font-size: 0.75rem;
         font-weight: 600;
-        color: #777;
-        margin-right: 5px;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    @media (max-width: 600px) {
-        .landing-breadcrumb-container { flex-direction: column; align-items: flex-start; gap: 10px; }
+    @media (max-width: 768px) {
+        .campaign-timer-container { border-left: none; margin-left: 0; padding-left: 0; margin-top: 5px; }
     }
 
     /* ===== RAKUTEN STYLE TABS ===== */
@@ -523,29 +518,27 @@
 
         {{-- COUNTDOWN TIMER --}}
         @if($campaign && $campaign->ends_at)
-            <div id="campaign-countdown-wrapper" style="display: flex; align-items: center;">
+            <div id="campaign-countdown" class="campaign-timer-container" data-end="{{ $campaign->ends_at->format('Y-m-d H:i:s') }}">
                 <span class="timer-prefix">Expire dans :</span>
-                <div id="campaign-countdown" class="campaign-timer-container" data-end="{{ $campaign->ends_at->format('Y-m-d H:i:s') }}">
-                    <div class="timer-block">
-                        <span class="timer-val" id="days">00</span>
-                        <span class="timer-label">Jours</span>
-                    </div>
-                    <div class="timer-block">
-                        <span class="timer-val" id="hours">00</span>
-                        <span class="timer-label">Heures</span>
-                    </div>
-                    <div class="timer-block">
-                        <span class="timer-val" id="minutes">00</span>
-                        <span class="timer-label">Min</span>
-                    </div>
-                    <div class="timer-block">
-                        <span class="timer-val" id="seconds">00</span>
-                        <span class="timer-label">Sec</span>
-                    </div>
+                <div class="timer-item">
+                    <span class="timer-val" id="days">00</span>
+                    <span class="timer-label">Jours</span>
                 </div>
-                <div id="timer-expired" class="timer-expired-msg" style="display: none;">
-                    <i class="fas fa-clock"></i> Expirée
+                <div class="timer-item">
+                    <span class="timer-val" id="hours">00</span>
+                    <span class="timer-label">Heures</span>
                 </div>
+                <div class="timer-item">
+                    <span class="timer-val" id="minutes">00</span>
+                    <span class="timer-label">Min</span>
+                </div>
+                <div class="timer-item">
+                    <span class="timer-val" id="seconds">00</span>
+                    <span class="timer-label">Sec</span>
+                </div>
+            </div>
+            <div id="timer-expired" class="timer-expired-msg" style="display: none;">
+                <i class="fas fa-clock"></i> Expirée
             </div>
         @endif
     </div>
