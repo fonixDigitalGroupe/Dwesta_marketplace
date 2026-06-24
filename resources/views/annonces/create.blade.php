@@ -1994,23 +1994,87 @@
             return true;
         }
 
+                // Compression côté navigateur : redimensionne et ré-encode l'image
+                // avant l'envoi pour accélérer fortement l'upload (surtout en mobile).
+                function compressImage(file) {
+                    return new Promise((resolve) => {
+                        if (!file.type.startsWith('image/')) { resolve(file); return; }
+
+                        const MAX_DIM = 1600;   // dimension max (px) du plus grand côté
+                        const QUALITY = 0.82;   // qualité JPEG
+
+                        const finalize = (source, width, height) => {
+                            try {
+                                let w = width, h = height;
+                                if (w > MAX_DIM || h > MAX_DIM) {
+                                    if (w >= h) { h = Math.round(h * MAX_DIM / w); w = MAX_DIM; }
+                                    else { w = Math.round(w * MAX_DIM / h); h = MAX_DIM; }
+                                }
+                                const canvas = document.createElement('canvas');
+                                canvas.width = w; canvas.height = h;
+                                const ctx = canvas.getContext('2d');
+                                // Fond blanc (évite un fond noir pour les PNG transparents)
+                                ctx.fillStyle = '#ffffff';
+                                ctx.fillRect(0, 0, w, h);
+                                ctx.drawImage(source, 0, 0, w, h);
+                                canvas.toBlob((blob) => {
+                                    // Si la compression n'apporte rien, on garde l'original
+                                    if (!blob || blob.size >= file.size) { resolve(file); return; }
+                                    const newName = file.name.replace(/\.[^.]+$/, '') + '.jpg';
+                                    resolve(new File([blob], newName, { type: 'image/jpeg', lastModified: Date.now() }));
+                                }, 'image/jpeg', QUALITY);
+                            } catch (e) {
+                                resolve(file);
+                            }
+                        };
+
+                        const fallback = () => {
+                            const img = new Image();
+                            const url = URL.createObjectURL(file);
+                            img.onload = () => { URL.revokeObjectURL(url); finalize(img, img.naturalWidth, img.naturalHeight); };
+                            img.onerror = () => { URL.revokeObjectURL(url); resolve(file); };
+                            img.src = url;
+                        };
+
+                        // createImageBitmap gère l'orientation EXIF (photos prises au téléphone)
+                        if (window.createImageBitmap) {
+                            createImageBitmap(file, { imageOrientation: 'from-image' })
+                                .then(bitmap => finalize(bitmap, bitmap.width, bitmap.height))
+                                .catch(fallback);
+                        } else {
+                            fallback();
+                        }
+                    });
+                }
+
                 // Image Handling
-                function handleFiles(files) {
+                async function handleFiles(files) {
                     if (uploadedImages.length + files.length > 8) {
                         alert('Vous ne pouvez pas ajouter plus de 8 photos.');
                         return;
                     }
-                    Array.from(files).forEach(file => {
-                        if (!file.type.startsWith('image/')) return;
-                        if (file.size > 5 * 1024 * 1024) return alert('Image trop lourde (max 5Mo)');
+                    for (const file of Array.from(files)) {
+                        if (!file.type.startsWith('image/')) continue;
 
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            uploadedImages.push({ file, preview: e.target.result });
-                            renderPhotoGrid();
-                        };
-                        reader.readAsDataURL(file);
-                    });
+                        let toUpload = file;
+                        try { toUpload = await compressImage(file); } catch (e) { toUpload = file; }
+
+                        if (toUpload.size > 5 * 1024 * 1024) {
+                            alert('Image trop lourde (max 5Mo) : ' + file.name);
+                            continue;
+                        }
+
+                        await new Promise((res) => {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                uploadedImages.push({ file: toUpload, preview: e.target.result });
+                                renderPhotoGrid();
+                                res();
+                            };
+                            reader.onerror = () => res();
+                            reader.readAsDataURL(toUpload);
+                        });
+                    }
                 }
 
                 function renderPhotoGrid() {
@@ -2093,6 +2157,17 @@
                                 if (totalCost > balance) {
                                     e.preventDefault();
                                     alert('Solde de crédits insuffisant pour les options choisies.');
+                                }
+                            }
+
+                            // Retour visuel + protection contre le double envoi
+                            if (!e.defaultPrevented) {
+                                const btn = document.getElementById('submitButton');
+                                if (btn) {
+                                    btn.disabled = true;
+                                    btn.style.opacity = '0.7';
+                                    btn.style.cursor = 'wait';
+                                    btn.textContent = 'Enregistrement en cours…';
                                 }
                             }
                         }
