@@ -1858,7 +1858,7 @@
             if (!container || !input) return;
 
             const cat = categoriesData[categoryId];
-            if (cat && (cat.famille === 'Services' || cat.famille === 'Immobilier')) {
+            if (cat && (cat.famille === 'Services' || cat.famille === 'Immobilier' || cat.famille === 'Véhicules')) {
                 container.style.display = 'none';
                 input.value = '1';
                 input.removeAttribute('required');

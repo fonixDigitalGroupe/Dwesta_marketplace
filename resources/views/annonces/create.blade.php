@@ -1707,9 +1707,9 @@
             if (!container || !input) return;
 
             const cat = categoriesData[categoryId];
-            if (cat && (cat.famille === 'Services' || cat.famille === 'Immobilier')) {
+            if (cat && (cat.famille === 'Services' || cat.famille === 'Immobilier' || cat.famille === 'Véhicules')) {
                 container.style.display = 'none';
-                input.value = '1'; // Default for non-stock items
+                input.value = '1'; // Default for non-stock items (services, immobilier, véhicules)
                 input.removeAttribute('required');
             } else {
                 container.style.display = 'block';
