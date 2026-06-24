@@ -1531,6 +1531,20 @@
             </div>
         </div>
     </div> <!-- Close create-annonce-container -->
+
+    <!-- Overlay d'enregistrement (évite l'impression de blocage pendant l'upload) -->
+    <div id="savingOverlay" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(255,255,255,0.96); flex-direction:column; align-items:center; justify-content:center; gap:1.25rem; text-align:center; padding:2rem;">
+        <div style="width:54px; height:54px; border:5px solid #e6f4e6; border-top-color:#00A400; border-radius:50%; animation:savingSpin 0.9s linear infinite;"></div>
+        <div>
+            <p style="font-size:1.05rem; font-weight:700; color:#222; margin:0 0 0.35rem;">Enregistrement de votre annonce…</p>
+            <p style="font-size:0.9rem; color:#666; margin:0;">Merci de patienter quelques instants, ne fermez pas cette page.</p>
+        </div>
+    </div>
+    <style>
+        @keyframes savingSpin { to { transform: rotate(360deg); } }
+        #savingOverlay.active { display: flex; }
+    </style>
+
     <script>      // Global variabl       es
         var currentStep = 1;
         var totalSteps = 4;
@@ -2169,6 +2183,8 @@
                                     btn.style.cursor = 'wait';
                                     btn.textContent = 'Enregistrement en cours…';
                                 }
+                                const overlay = document.getElementById('savingOverlay');
+                                if (overlay) overlay.classList.add('active');
                             }
                         }
                     });
