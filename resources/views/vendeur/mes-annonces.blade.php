@@ -379,13 +379,32 @@
                                         <a href="{{ route('annonces.show', $annonce) }}">{{ Str::limit($annonce->titre, 40) }}</a>
                                     </h3>
 
+                                    @php
+                                        $enPromo = $annonce->coupon_code
+                                            && $annonce->prix_original
+                                            && $annonce->prix_original > $annonce->prix
+                                            && (!$annonce->promo_expires_at || $annonce->promo_expires_at->isFuture());
+                                    @endphp
                                     @if($annonce->prix)
-                                        <div class="listing-price" style="display: flex; align-items: baseline;">
+                                        <div class="listing-price" style="display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.4rem;">
                                             @if($annonce->should_show_etat)
                                                 <span class="card-etat-badge" style="color: {{ $annonce->etat_couleur }};">{{ $annonce->etat_libelle }}</span>
                                             @endif
-                                            <span>{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                            @if($enPromo)
+                                                <span style="text-decoration: line-through; color: #9ca3af; font-size: 0.9rem; font-weight: 600;">{{ number_format($annonce->prix_original, 0, ',', ' ') }} FCFA</span>
+                                                <span style="color: #dc2626; font-weight: 800;">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                                <span style="background: #dc2626; color: #fff; font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 6px;">-{{ $annonce->discount_percentage }}%</span>
+                                            @else
+                                                <span>{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                            @endif
                                         </div>
+                                        @if($enPromo && $annonce->promo_expires_at)
+                                            <div class="promo-countdown" data-expires="{{ $annonce->promo_expires_at->toIso8601String() }}"
+                                                 style="display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 0.4rem; background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 1px solid #fdba74; color: #9a3412; font-size: 0.72rem; font-weight: 700; padding: 3px 8px; border-radius: 8px;">
+                                                <i class="fas fa-bolt" style="color: #f97316;"></i>
+                                                <span class="promo-countdown-text">Offre en cours…</span>
+                                            </div>
+                                        @endif
                                     @endif
 
                                     {{-- Avis clients --}}
@@ -480,3 +499,42 @@
         </main>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const timers = document.querySelectorAll('.promo-countdown');
+        if (!timers.length) return;
+
+        const pad = (n) => (n < 10 ? '0' + n : '' + n);
+
+        function render() {
+            const now = Date.now();
+            timers.forEach(function (el) {
+                const textEl = el.querySelector('.promo-countdown-text');
+                const end = new Date(el.dataset.expires).getTime();
+                let diff = Math.floor((end - now) / 1000);
+
+                if (isNaN(end) || diff <= 0) {
+                    textEl.textContent = 'Offre terminée';
+                    el.style.opacity = '0.6';
+                    return;
+                }
+
+                const d = Math.floor(diff / 86400); diff %= 86400;
+                const h = Math.floor(diff / 3600);  diff %= 3600;
+                const m = Math.floor(diff / 60);
+                const s = diff % 60;
+
+                let out = 'Fin dans ';
+                if (d > 0) out += d + 'j ';
+                out += pad(h) + ':' + pad(m) + ':' + pad(s);
+                textEl.textContent = out;
+            });
+        }
+
+        render();
+        setInterval(render, 1000);
+    });
+</script>
+@endpush
