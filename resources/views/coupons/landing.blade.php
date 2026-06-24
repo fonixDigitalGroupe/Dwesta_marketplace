@@ -602,65 +602,6 @@
 
 </div>
 
-{{-- RAKUTEN STYLE TABS --}}
-@if($produitsNeufs->count() > 0 || $produitsOccasion->count() > 0)
-<div class="rakuten-tabs-section">
-    <div class="rakuten-tabs-container">
-        <div class="rakuten-tabs-nav">
-            @if($produitsNeufs->count() > 0)
-                <button class="rakuten-tab-btn active" onclick="switchRakutenTab('tab-neuf', this)">
-                    <i class="fas fa-box"></i> Tout le Neuf
-                </button>
-            @endif
-            @if($produitsOccasion->count() > 0)
-                <button class="rakuten-tab-btn {{ $produitsNeufs->count() == 0 ? 'active' : '' }}" onclick="switchRakutenTab('tab-occasion', this)">
-                    <i class="fas fa-recycle"></i> Reconditionné / Occasion
-                </button>
-            @endif
-        </div>
-
-        @if($produitsNeufs->count() > 0)
-            <div id="tab-neuf" class="rakuten-tab-content active">
-                <div class="rakuten-grid">
-                    @foreach($produitsNeufs as $p)
-                        <a href="{{ route('annonces.show', $p->slug) }}" class="rakuten-card">
-                            <div class="rakuten-card-img">
-                                @if($p->photoPrincipale())
-                                    <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
-                                @else
-                                    <span style="color:#ccc; font-size:0.75rem;">Pas de photo</span>
-                                @endif
-                            </div>
-                            <div class="rakuten-card-title">{{ $p->titre }}</div>
-                            <div class="rakuten-card-price">{{ number_format($p->prix, 0, ',', ' ') }} FCFA</div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-
-        @if($produitsOccasion->count() > 0)
-            <div id="tab-occasion" class="rakuten-tab-content {{ $produitsNeufs->count() == 0 ? 'active' : '' }}">
-                <div class="rakuten-grid">
-                    @foreach($produitsOccasion as $p)
-                        <a href="{{ route('annonces.show', $p->slug) }}" class="rakuten-card">
-                            <div class="rakuten-card-img">
-                                @if($p->photoPrincipale())
-                                    <img src="{{ Storage::url($p->photoPrincipale()->chemin) }}" alt="{{ $p->titre }}">
-                                @else
-                                    <span style="color:#ccc; font-size:0.75rem;">Pas de photo</span>
-                                @endif
-                            </div>
-                            <div class="rakuten-card-title">{{ $p->titre }}</div>
-                            <div class="rakuten-card-price">{{ number_format($p->prix, 0, ',', ' ') }} FCFA</div>
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-    </div>
-</div>
-@endif
 
 @endsection
 
