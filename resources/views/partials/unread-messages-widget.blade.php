@@ -37,7 +37,7 @@
             #unread-msg-widget {
                 position: fixed;
                 bottom: 20px;
-                left: 20px;
+                right: 20px;
                 z-index: 99998;
                 width: 320px;
                 max-width: calc(100vw - 40px);
@@ -61,7 +61,7 @@
                 align-items: center;
                 gap: 10px;
                 padding: 12px 14px;
-                background: linear-gradient(135deg, #004aad 0%, #0066d6 100%);
+                background: linear-gradient(135deg, #004aad 0%, #f68b1e 100%);
                 color: #fff;
             }
             #unread-msg-widget .umw-icon {
@@ -99,7 +99,7 @@
                 display: block;
                 margin: 0 14px 14px;
                 text-align: center;
-                background: #004aad;
+                background: #f68b1e;
                 color: #fff;
                 font-weight: 700;
                 font-size: 0.85rem;
@@ -108,7 +108,7 @@
                 text-decoration: none;
                 transition: background 0.2s;
             }
-            #unread-msg-widget .umw-cta:hover { background: #003d8f; }
+            #unread-msg-widget .umw-cta:hover { background: #e07a0c; }
 
             @media (max-width: 600px) {
                 #unread-msg-widget {
