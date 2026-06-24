@@ -1111,9 +1111,21 @@
             gap: 0.6rem;
             padding: 0 0.6rem;
             margin-bottom: 2rem;
+            max-width: 620px;
         }
-        /* 2 colonnes pleine largeur au lieu d'une carte 220px isolée */
+        /* 2 colonnes sur petites tablettes */
         .n1-selection-item { width: calc(50% - 0.3rem); }
+    }
+    @media (max-width: 560px) {
+        /* Téléphones : cartes en pleine largeur (plus larges) */
+        .n1-selection-grid {
+            max-width: 100%;
+            gap: 0.9rem;
+            padding: 0 0.9rem;
+        }
+        .n1-selection-item { width: 100%; }
+        /* Image plus grande pour des cartes pleine largeur */
+        .n1-selection-item .card-media-flat { height: 200px; }
     }
     .n1-footer-right {
         padding-bottom: 2px;
