@@ -145,6 +145,27 @@
                     w.classList.remove('show');
                 };
             })();
+
+            // Synchronise le compteur du header (robuste côté client) :
+            // garantit l'affichage du badge sur l'enveloppe du header dès qu'il
+            // y a des messages non lus, même si le header est servi en cache.
+            (function () {
+                var count = {{ $unreadMsgCount }};
+                if (!count || count < 1) return;
+                var label = count > 9 ? '9+' : String(count);
+                var link = document.querySelector('.header-msg-link')
+                        || document.querySelector('.header-actions .auth-dropdown-container > a.header-link');
+                if (!link) return;
+                if (getComputedStyle(link).position === 'static') { link.style.position = 'relative'; }
+                var badge = link.querySelector('.umw-header-badge');
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.className = 'umw-header-badge';
+                    badge.style.cssText = 'position:absolute;top:-8px;right:-8px;background:#e11d48;color:#fff;border-radius:50%;min-width:18px;height:18px;padding:0 4px;font-size:0.65rem;display:flex;align-items:center;justify-content:center;font-weight:700;border:2px solid #fff;z-index:999;line-height:1;';
+                    link.appendChild(badge);
+                }
+                badge.textContent = label;
+            })();
         </script>
     @endif
 @endunless
