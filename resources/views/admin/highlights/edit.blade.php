@@ -1,3 +1,114 @@
+@extends('layouts.admin')
+
+@section('title', 'Modifier une Actualité')
+
+@push('styles')
+<style>
+    .main-content { background-color: #f8f9fa !important; }
+
+    input[type="text"]:focus, input[type="number"]:focus,
+    textarea:focus, select:focus {
+        border-color: #e77600 !important;
+        outline: none;
+    }
+
+    .amazon-card {
+        background: #fff;
+        border: 1px solid #e7e7e7;
+        border-radius: 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #111;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e7e7e7;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #111;
+        margin-bottom: 8px;
+    }
+
+    .form-input, .form-select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #adb1b8;
+        border-radius: 0;
+        font-size: 0.85rem;
+        outline: none;
+        background: #fcfcfc;
+        box-sizing: border-box;
+    }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group:last-child { margin-bottom: 0; }
+
+    .form-error {
+        color: #bf0000;
+        font-size: 0.75rem;
+        margin-top: 6px;
+    }
+
+    .btn-amazon-primary {
+        background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff;
+        padding: 8px 24px;
+        border-radius: 0;
+        font-size: 0.85rem;
+        font-weight: 400;
+        text-decoration: none;
+        box-shadow: 0 1px 0 rgba(255,255,255,.4) inset;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+    .btn-amazon-primary:hover {
+        background: linear-gradient(180deg, #0069d9 0%, #004494 100%);
+        border-color: #003d82;
+        color: #111;
+        text-decoration: none;
+    }
+
+    .btn-amazon-secondary {
+        background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
+        border: 1px solid #adb1b8;
+        color: #111;
+        padding: 8px 24px;
+        border-radius: 0;
+        font-size: 0.85rem;
+        font-weight: 400;
+        text-decoration: none;
+        box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+    .btn-amazon-secondary:hover {
+        background: linear-gradient(to bottom, #e7eaf0, #d8dade);
+        border-color: #a2a6ac;
+        color: #111;
+        text-decoration: none;
+    }
+
+    .dropzone-amazon:hover {
+        border-color: #e77600 !important;
+        background: #fffbf2 !important;
+    }
+</style>
+@endpush
+
 @section('content')
 <div style="max-width: 100%; margin-top: -50px;">
 
