@@ -1512,6 +1512,40 @@
             display: none; /* Hide sidebar on small screens for now or use a drawer */
         }
     }
+
+    /* Annonces : la mosaïque 12 colonnes devient une grille propre sur mobile */
+    @media (max-width: 768px) {
+        .catalog-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+        /* Annule le pattern mosaïque (span 4 / span 3 via nth-child(7n+...)) */
+        .catalog-grid .catalog-item {
+            grid-column: span 1 !important;
+        }
+        /* Bordures cohérentes pour 2 colonnes */
+        .catalog-grid .catalog-item:nth-child(odd) {
+            border-right: 1px solid #ebebeb;
+        }
+        .catalog-grid .catalog-item:nth-child(even) {
+            border-right: none;
+        }
+        .card-title {
+            font-size: 0.85rem;
+        }
+        .card-price-state .price-val {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 380px) {
+        /* Très petits écrans : une seule colonne pour rester lisible */
+        .catalog-grid {
+            grid-template-columns: 1fr !important;
+        }
+        .catalog-grid .catalog-item {
+            border-right: none;
+        }
+    }
 </style>
 
 <script>
