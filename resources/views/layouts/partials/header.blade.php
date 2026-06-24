@@ -69,8 +69,8 @@
                         @php
                             $unreadCount = auth()->user()->unreadMessagesCount();
                         @endphp
-                        <a href="{{ route('conversations.index') }}" class="header-link header-msg-link" style="position: relative;" title="Messagerie">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <a href="{{ route('conversations.index') }}" class="header-link header-msg-link" style="position: relative; display: inline-flex; align-items: center;" title="Messagerie">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 24px; height: 24px;">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>

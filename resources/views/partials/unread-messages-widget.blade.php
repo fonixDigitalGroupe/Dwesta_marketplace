@@ -138,16 +138,11 @@
             (function () {
                 var w = document.getElementById('unread-msg-widget');
                 if (!w) return;
-                var count = w.getAttribute('data-count');
-                var dismissed = null;
-                try { dismissed = sessionStorage.getItem('unreadMsgDismissed'); } catch (e) {}
-                // Réaffiche si le nombre de non-lus a changé depuis la dernière fermeture
-                if (dismissed !== count) {
-                    setTimeout(function () { w.classList.add('show'); }, 700);
-                }
+                // S'affiche à chaque chargement/actualisation tant qu'il reste des
+                // messages non lus (la fermeture ne masque que pour la vue courante).
+                setTimeout(function () { w.classList.add('show'); }, 700);
                 window.dismissUnreadWidget = function () {
                     w.classList.remove('show');
-                    try { sessionStorage.setItem('unreadMsgDismissed', count); } catch (e) {}
                 };
             })();
         </script>
