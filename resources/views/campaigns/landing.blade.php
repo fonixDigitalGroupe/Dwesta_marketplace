@@ -290,6 +290,12 @@
 <div class="landing-hero" style="background-image: url('{{ $heroImg }}');">
     <div class="landing-hero-content">
         <p class="landing-hero-subtitle" style="font-weight: 700; font-style: normal; font-size: 1.6rem; margin-bottom: 5px;">{{ $campaign->title }}</p>
+        <p class="landing-hero-subtitle" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.5); color: #fff;">
+            @php
+                $discountText = ($coupon->type === 'percent' ? '-' . $coupon->value . '%' : '-' . number_format($coupon->value, 0) . ' FCFA') . ' de remise !';
+            @endphp
+            {{ $discountText }}
+        </p>
         
         <div class="n1-banner-search-wrapper">
             <i class="fas fa-search n1-banner-search-icon"></i>
