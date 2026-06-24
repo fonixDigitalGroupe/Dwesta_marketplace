@@ -75,7 +75,7 @@
                                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
                             @if($unreadCount > 0)
-                                <span style="position: absolute; top: -6px; right: -6px; background: #e11d48; color: white; border-radius: 50%; min-width: 17px; height: 17px; padding: 0 4px; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 10;">
+                                <span style="position: absolute; top: -8px; right: -8px; background: #e11d48 !important; color: white !important; border-radius: 50%; min-width: 18px; height: 18px; padding: 0 4px; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 999 !important;">
                                     {{ $unreadCount > 9 ? '9+' : $unreadCount }}
                                 </span>
                             @endif
