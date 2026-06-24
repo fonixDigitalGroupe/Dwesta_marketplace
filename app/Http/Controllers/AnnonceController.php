@@ -164,34 +164,7 @@ class AnnonceController extends Controller
             $annonceData = array_merge($validated, ['attributes' => $request->input('attributes', [])]);
 
             // === Appliquer le code promo si valide ===
-            $promoCode = strtoupper(trim($request->input('promo_code', '')));
-            if ($promoCode) {
-                $coupon = \App\Models\Coupon::where('code', $promoCode)
-                    ->where('is_active', true)
-                    ->first();
-
-                if ($coupon) {
-                    // Vérifier campagne active
-                    $campaign = \App\Models\Campaign::where('coupon_id', $coupon->id)
-                        ->where(function ($q) { $q->whereNull('starts_at')->orWhere('starts_at', '<=', now()); })
-                        ->where(function ($q) { $q->whereNull('ends_at')->orWhere('ends_at', '>=', now()); })
-                        ->first();
-
-                    if ($campaign) {
-                        $vendeurPrix = floatval($annonceData['prix']);
-                        if ($coupon->type === 'percent') {
-                            $promoPrix = $vendeurPrix * (1 - $coupon->value / 100);
-                        } else {
-                            $promoPrix = max(0, $vendeurPrix - $coupon->value);
-                        }
-                        // Le prix du vendeur devient le prix barré, le prix promo est le prix final
-                        $annonceData['prix_original'] = $vendeurPrix;
-                        $annonceData['prix'] = round($promoPrix, 2);
-                        $annonceData['coupon_code'] = $coupon->code;
-                        $annonceData['promo_expires_at'] = $campaign->ends_at;
-                    }
-                }
-            }
+            $annonceData = $this->appliquerCodePromo($request, $annonceData);
 
             $annonce = $this->annonceService->creerAnnonce($vendeur, $annonceData, $type);
 
@@ -346,6 +319,10 @@ class AnnonceController extends Controller
 
         try {
             $annonceData = array_merge($validated, ['attributes' => $request->input('attributes', [])]);
+
+            // === Appliquer le code promo si valide (édition d'annonce) ===
+            $annonceData = $this->appliquerCodePromo($request, $annonceData, $annonce);
+
             $this->annonceService->mettreAJourAnnonce($annonce, $annonceData);
 
             // Gestion de la suppression des médias
@@ -496,6 +473,59 @@ class AnnonceController extends Controller
         $annonce->load(['vendeur.user', 'vendeur.professionnel', 'vendeur.pagePro', 'category', 'photos', 'video', 'options', 'produit', 'service', 'immobilier', 'vehicule']);
 
         return view('annonces.preview', compact('annonce'));
+    }
+
+    /**
+     * Applique un code promo (coupon + campagne active) aux données de l'annonce.
+     *
+     * Renseigne prix_original (prix barré), prix (prix remisé), coupon_code et
+     * promo_expires_at. Utilisé à la création comme à l'édition. En édition, si
+     * une promo est déjà active, on repart du prix barré pour éviter de cumuler
+     * les réductions.
+     */
+    private function appliquerCodePromo(Request $request, array $annonceData, ?Annonce $annonce = null): array
+    {
+        $promoCode = strtoupper(trim($request->input('promo_code', '')));
+        if (!$promoCode) {
+            return $annonceData;
+        }
+
+        $coupon = \App\Models\Coupon::where('code', $promoCode)
+            ->where('is_active', true)
+            ->first();
+        if (!$coupon) {
+            return $annonceData;
+        }
+
+        // Campagne active liée au coupon
+        $campaign = \App\Models\Campaign::where('coupon_id', $coupon->id)
+            ->where(function ($q) { $q->whereNull('starts_at')->orWhere('starts_at', '<=', now()); })
+            ->where(function ($q) { $q->whereNull('ends_at')->orWhere('ends_at', '>=', now()); })
+            ->first();
+        if (!$campaign) {
+            return $annonceData;
+        }
+
+        // Prix de base du vendeur (avant remise). En édition, si une promo est
+        // déjà appliquée, le prix soumis est déjà remisé : on repart du prix barré.
+        $vendeurPrix = floatval($annonceData['prix'] ?? 0);
+        if ($annonce && $annonce->prix_original && $annonce->prix_original > 0) {
+            $vendeurPrix = floatval($annonce->prix_original);
+        }
+
+        if ($coupon->type === 'percent') {
+            $promoPrix = $vendeurPrix * (1 - $coupon->value / 100);
+        } else {
+            $promoPrix = max(0, $vendeurPrix - $coupon->value);
+        }
+
+        // Le prix du vendeur devient le prix barré, le prix promo est le prix final
+        $annonceData['prix_original']    = $vendeurPrix;
+        $annonceData['prix']             = round($promoPrix, 2);
+        $annonceData['coupon_code']      = $coupon->code;
+        $annonceData['promo_expires_at'] = $campaign->ends_at;
+
+        return $annonceData;
     }
 
     /**
