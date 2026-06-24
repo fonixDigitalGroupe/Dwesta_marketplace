@@ -120,8 +120,8 @@
     }
     .landing-products-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+        gap: 0.85rem;
         margin-bottom: 3rem;
     }
     .landing-grid-card {
@@ -141,29 +141,29 @@
         border-color: #ddd;
     }
     .landing-grid-card-img {
-        height: 200px;
+        height: 150px;
         background: #fff;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 12px;
+        padding: 10px;
     }
     .landing-grid-card-img img {
         max-width: 100%; max-height: 100%;
         object-fit: contain;
     }
     .landing-grid-card-body {
-        padding: 12px 14px 16px;
+        padding: 10px 12px 12px;
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 5px;
         flex: 1;
     }
     .landing-grid-card-title {
-        font-size: 0.875rem;
-        line-height: 1.4;
+        font-size: 0.8rem;
+        line-height: 1.35;
         color: #333;
-        height: 2.45rem;
+        height: 2.2rem;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -176,7 +176,7 @@
         flex-wrap: wrap;
     }
     .landing-grid-card-price {
-        font-size: 1.15rem;
+        font-size: 1rem;
         font-weight: 800;
         color: #ff8c00;
     }
@@ -230,10 +230,16 @@
     }
 
     @media (max-width: 768px) {
-        .landing-products-grid { grid-template-columns: repeat(2, 1fr); }
+        .landing-products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+        .landing-grid-card-img { height: 130px; }
     }
     @media (max-width: 480px) {
-        .landing-products-grid { grid-template-columns: 1fr; }
+        /* 2 colonnes compactes sur téléphone (au lieu d'une grande carte) */
+        .landing-products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.55rem; }
+        .landing-grid-card-img { height: 115px; padding: 8px; }
+        .landing-grid-card-body { padding: 8px 10px 10px; }
+        .landing-grid-card-title { font-size: 0.75rem; }
+        .landing-grid-card-price { font-size: 0.92rem; }
     }
 
     .landing-breadcrumb-container {
