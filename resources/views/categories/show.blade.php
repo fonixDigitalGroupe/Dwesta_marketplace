@@ -1546,6 +1546,73 @@
             border-right: none;
         }
     }
+
+    /* Carrousels d'annonces (Top consultés / Phares / Deals) sur mobile */
+    @media (max-width: 768px) {
+        /* Moins d'espace perdu en haut de section */
+        .n1-top-consulted-section {
+            padding: 1.5rem 0 1rem 0;
+            margin-top: 1rem;
+        }
+        .sections-global-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Réduit le padding latéral réservé aux flèches (gaspillé sur mobile) */
+        .n1-top-consulted-carousel,
+        .n1-carousel-wrapper {
+            padding: 0 8px;
+        }
+
+        /* Permet le défilement tactile (swipe) du carrousel Top consultés */
+        .n1-top-grid {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 0.75rem 0.25rem;
+            scroll-snap-type: x mandatory;
+        }
+        .n1-top-grid::-webkit-scrollbar { display: none; }
+
+        /* ~2 cartes visibles + un aperçu de la suivante */
+        .n1-top-grid .premium-card-flat,
+        .n1-top-grid .n1-top-card {
+            flex: 0 0 44% !important;
+            scroll-snap-align: start;
+        }
+
+        /* Réduit la zone image trop haute (qui créait le vide dans la carte) */
+        .card-media-flat {
+            height: 130px;
+            margin-bottom: 0.6rem;
+        }
+
+        /* Flèches plus discrètes */
+        .carousel-arrow-btn,
+        .n1-carousel-arrow {
+            width: 30px;
+            height: 30px;
+        }
+
+        /* Cartes "Phares / Deals" : un peu plus compactes sur mobile */
+        .n1-promo-card {
+            min-width: 180px;
+            max-width: 180px;
+            padding: 0.75rem;
+        }
+        .n1-card-media {
+            height: 130px !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        /* Sur petit téléphone : ~1,5 carte visible pour des cartes plus lisibles */
+        .n1-top-grid .premium-card-flat,
+        .n1-top-grid .n1-top-card {
+            flex: 0 0 60% !important;
+        }
+    }
 </style>
 
 <script>
