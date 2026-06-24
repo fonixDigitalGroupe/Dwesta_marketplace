@@ -227,11 +227,8 @@
         outline: none;
         background: #fff;
     }
-    /* Section des annonces sur fond gris */
+    /* Section des annonces */
     .landing-products-section {
-        background: #f3f4f6;
-        border-radius: 12px;
-        padding: 1.25rem 1.25rem 1.5rem;
         margin-top: 1rem;
     }
     .landing-products-grid {
@@ -331,7 +328,6 @@
         .landing-hero-title { font-size: 1.15rem; }
         .landing-hero-subtitle { font-size: 0.75rem; }
         .landing-hero-overlay { padding: 0.8rem; }
-        .landing-products-section { padding: 0.85rem; border-radius: 10px; }
         .landing-products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
         .landing-grid-card-img { height: 130px; }
     }
