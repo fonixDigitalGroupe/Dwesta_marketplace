@@ -326,7 +326,8 @@
     @media (max-width: 768px) {
         .landing-hero img { max-height: 100px; }
         .landing-hero-title { font-size: 1.15rem; }
-        .landing-hero-subtitle { font-size: 0.75rem; }
+        .landing-hero-subtitle { font-size: 0.95rem; }
+        .landing-hero-maintitle { font-size: 1.35rem !important; }
         .landing-hero-overlay { padding: 0.8rem; }
         .landing-products-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
         .landing-grid-card-img { height: 130px; }
@@ -508,7 +509,7 @@
 @endphp
 <div class="landing-hero" style="background-image: url('{{ $heroImg }}');">
     <div class="landing-hero-content">
-        <p class="landing-hero-subtitle">{{ $banner->description ?? 'Profitez de nos offres exceptionnelles' }}</p>
+        <p class="landing-hero-subtitle landing-hero-maintitle" style="font-weight: 700; font-style: normal; font-size: 1.8rem; margin-bottom: 5px;">{{ $banner->description ?? 'Profitez de nos offres exceptionnelles' }}</p>
         
         <div class="n1-banner-search-wrapper">
             <i class="fas fa-search n1-banner-search-icon"></i>
