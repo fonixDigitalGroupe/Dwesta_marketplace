@@ -154,10 +154,12 @@ class CampaignController extends Controller
     public function destroy(Campaign $campaign)
     {
         // 1. Si le coupon n'a plus d'autres campagnes après suppression, le désactiver
+        //    et rétablir le prix initial des annonces adhérentes.
         if ($campaign->coupon) {
             $remainingCampaigns = $campaign->coupon->campaigns()->where('id', '!=', $campaign->id)->count();
             if ($remainingCampaigns === 0) {
                 $campaign->coupon->update(['is_active' => false]);
+                $campaign->coupon->retablirPrixAnnonces();
             }
         }
 

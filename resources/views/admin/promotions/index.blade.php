@@ -291,7 +291,12 @@
                                     $statusColor = '#569b00';
                                     $statusBg = '#f7fff0';
 
-                                    if ($campaign->ends_at && $campaign->ends_at->isPast()) {
+                                    if (!optional($campaign->coupon)->is_active) {
+                                        // Coupon désactivé => campagne inactive
+                                        $status = 'Inactive';
+                                        $statusColor = '#c40000';
+                                        $statusBg = '#fff5f5';
+                                    } elseif ($campaign->ends_at && $campaign->ends_at->isPast()) {
                                         $status = 'Terminée';
                                         $statusColor = '#c40000';
                                         $statusBg = '#fff5f5';
@@ -402,11 +407,19 @@
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Coupon</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Prix Initial</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Prix Réduit</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 90px;">Statut</th>
                         <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 110px;">Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($adherents as $annonce)
+                        @php
+                            // Promo active = prix toujours remisé et non expirée. Après
+                            // désactivation du coupon, le prix est rétabli (prix == prix_original).
+                            $adherentActif = $annonce->prix_original
+                                && $annonce->prix < $annonce->prix_original
+                                && (!$annonce->promo_expires_at || $annonce->promo_expires_at->isFuture());
+                        @endphp
                         <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
@@ -446,7 +459,18 @@
                                 {{ number_format($annonce->prix_original, 0, ',', ' ') }}
                             </td>
                             <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6; font-size: 0.85rem; color: #f68b1e; font-weight: 700;">
-                                {{ number_format($annonce->prix, 0, ',', ' ') }}
+                                @if($adherentActif)
+                                    {{ number_format($annonce->prix, 0, ',', ' ') }}
+                                @else
+                                    <span style="color: #cbd5e1; font-weight: 400;">—</span>
+                                @endif
+                            </td>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
+                                @if($adherentActif)
+                                    <span class="badge-amazon badge-amazon-success" style="font-size: 0.65rem; padding: 2px 8px;">Actif</span>
+                                @else
+                                    <span class="badge-amazon badge-amazon-danger" style="font-size: 0.65rem; padding: 2px 8px;">Inactif</span>
+                                @endif
                             </td>
                             <td style="padding: 12px 15px; text-align: right; font-size: 0.8rem; color: #475569;">
                                 {{ $annonce->updated_at->format('d/m/y') }}
@@ -454,7 +478,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
+                            <td colspan="7" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
                                 Aucun adhérent pour cette campagne pour le moment.
                             </td>
                         </tr>

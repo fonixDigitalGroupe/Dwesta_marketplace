@@ -107,11 +107,21 @@ class CouponController extends Controller
 
         $coupon->update($data);
 
+        // Synchroniser le prix des annonces adhérentes avec l'état/valeur du coupon
+        if ($coupon->is_active) {
+            $coupon->reappliquerAuxAnnonces();
+        } else {
+            $coupon->retablirPrixAnnonces();
+        }
+
         return redirect()->route('admin.promotions.index')->with('success', 'Code promotionnel mis à jour.');
     }
 
     public function destroy(Coupon $coupon)
     {
+        // Les annonces adhérentes reprennent leur prix initial avant suppression
+        $coupon->retablirPrixAnnonces();
+
         if ($coupon->banner_image) {
             Storage::disk('public')->delete($coupon->banner_image);
         }
@@ -122,6 +132,15 @@ class CouponController extends Controller
     public function toggleActive(Coupon $coupon)
     {
         $coupon->update(['is_active' => !$coupon->is_active]);
+
+        // Coupon désactivé -> annonces reprennent leur prix initial ;
+        // réactivé -> la remise est réappliquée.
+        if ($coupon->is_active) {
+            $coupon->reappliquerAuxAnnonces();
+        } else {
+            $coupon->retablirPrixAnnonces();
+        }
+
         return redirect()->back()->with('success', 'Statut du code mis à jour.');
     }
 }

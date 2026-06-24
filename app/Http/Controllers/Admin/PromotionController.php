@@ -29,7 +29,11 @@ class PromotionController extends Controller
             ->paginate(10, ['*'], 'campaigns_page')
             ->appends($request->only(['search', 'per_page', 'coupons_page']));
 
-        $adherents = \App\Models\Annonce::enPromotion()
+        // Toutes les annonces ayant adhéré à un coupon (actives comme inactives) :
+        // une annonce reste listée même après désactivation du coupon, avec un
+        // statut « Inactif » et son prix initial rétabli.
+        $adherents = \App\Models\Annonce::whereNotNull('coupon_code')
+            ->where('coupon_code', '!=', '')
             ->with(['vendeur.user', 'vendeur.professionnel', 'vendeur.particulier', 'category'])
             ->latest('updated_at')
             ->paginate(20, ['*'], 'adherents_page')
