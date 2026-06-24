@@ -966,20 +966,11 @@
             }
 
             .form-actions {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: white;
-                padding: 1rem;
-                padding-bottom: calc(1rem + env(safe-area-inset-bottom));
-                margin: 0;
-                box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-                border-top: 1px solid #eee;
-                z-index: 1000;
                 display: flex;
                 justify-content: space-between;
                 gap: 0.75rem;
+                margin-top: 2rem;
+                padding-top: 1.5rem;
             }
 
             .btn {
@@ -1011,10 +1002,6 @@
                 width: 100%;
                 height: auto;
                 aspect-ratio: 1;
-            }
-
-            #createAnnonceForm {
-                padding-bottom: 7rem; /* Space for fixed buttons */
             }
 
             .service-card {
