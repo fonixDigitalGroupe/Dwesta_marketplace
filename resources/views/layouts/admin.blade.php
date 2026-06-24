@@ -633,6 +633,7 @@
         };
     </script>
     @stack('scripts')
+    @include('partials.unread-messages-widget')
 </body>
 
 </html>
