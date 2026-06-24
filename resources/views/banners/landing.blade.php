@@ -511,16 +511,14 @@
 <div class="landing-breadcrumb">
     <div style="max-width: 1300px; margin: 0 auto; padding: 0 1.5rem;">
         <a href="{{ route('home') }}">Accueil</a>
-        <span>›</span>
         @if($category && $category->parent)
-            <a href="{{ route('search.index', ['category' => $category->parent->slug]) }}">{{ $category->parent->nom }}</a>
             <span>›</span>
+            <a href="{{ route('search.index', ['category' => $category->parent->slug]) }}">{{ $category->parent->nom }}</a>
         @endif
         @if($category)
-            <a href="{{ route('search.index', ['category' => $category->slug]) }}">{{ $category->nom }}</a>
             <span>›</span>
+            <a href="{{ route('search.index', ['category' => $category->slug]) }}">{{ $category->nom }}</a>
         @endif
-        <span style="color: #333; font-weight: 700;">{{ $banner->title }}</span>
     </div>
 </div>
 
