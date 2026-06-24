@@ -235,6 +235,57 @@
     @media (max-width: 480px) {
         .landing-products-grid { grid-template-columns: 1fr; }
     }
+
+    /* ===== COUNTDOWN TIMER ===== */
+    .campaign-timer-container {
+        margin-top: 20px;
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+    }
+    .timer-block {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 10px 15px;
+        border-radius: 12px;
+        min-width: 70px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .timer-val {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1;
+    }
+    .timer-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        margin-top: 4px;
+        letter-spacing: 0.5px;
+    }
+    .timer-expired-msg {
+        margin-top: 15px;
+        padding: 8px 20px;
+        background: #d32f2f;
+        color: #fff;
+        font-weight: 700;
+        border-radius: 50px;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        .campaign-timer-container { gap: 8px; }
+        .timer-block { min-width: 55px; padding: 8px 10px; }
+        .timer-val { font-size: 1.2rem; }
+        .timer-label { font-size: 0.55rem; }
+    }
 </style>
 @endpush
 
@@ -252,6 +303,31 @@
             <i class="fas fa-search n1-banner-search-icon"></i>
             <input type="text" id="n1-page-search" class="n1-banner-search-input" placeholder="Rechercher dans cette offre..." oninput="handleInPageSearch(this.value)">
         </div>
+
+        {{-- COUNTDOWN TIMER --}}
+        @if($campaign->ends_at)
+            <div id="campaign-countdown" class="campaign-timer-container" data-end="{{ $campaign->ends_at->format('Y-m-d H:i:s') }}">
+                <div class="timer-block">
+                    <span class="timer-val" id="days">00</span>
+                    <span class="timer-label">Jours</span>
+                </div>
+                <div class="timer-block">
+                    <span class="timer-val" id="hours">00</span>
+                    <span class="timer-label">Heures</span>
+                </div>
+                <div class="timer-block">
+                    <span class="timer-val" id="minutes">00</span>
+                    <span class="timer-label">Min</span>
+                </div>
+                <div class="timer-block">
+                    <span class="timer-val" id="seconds">00</span>
+                    <span class="timer-label">Sec</span>
+                </div>
+            </div>
+            <div id="timer-expired" class="timer-expired-msg" style="display: none;">
+                <i class="fas fa-clock"></i> Cette offre a expiré
+            </div>
+        @endif
     </div>
 </div>
 
@@ -350,5 +426,45 @@ function handleInPageSearch(query) {
         }
     });
 }
+
+// COUNTDOWN TIMER LOGIC
+document.addEventListener('DOMContentLoaded', function() {
+    const countdownEl = document.getElementById('campaign-countdown');
+    if (!countdownEl) return;
+
+    const endDateStr = countdownEl.getAttribute('data-end');
+    if (!endDateStr) return;
+
+    const endDate = new Promise((resolve) => {
+        // Fix for Safari and different date formats
+        const d = new Date(endDateStr.replace(/-/g, "/"));
+        resolve(d.getTime());
+    });
+
+    endDate.then(endValue => {
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = endValue - now;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                countdownEl.style.display = 'none';
+                const expiredMsg = document.getElementById('timer-expired');
+                if (expiredMsg) expiredMsg.style.display = 'inline-block';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }, 1000);
+    });
+});
 </script>
 @endpush
