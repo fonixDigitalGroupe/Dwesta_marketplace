@@ -884,21 +884,22 @@
                 top: 0;
                 z-index: 100;
                 background: white;
-                padding: 1rem 1rem 2.75rem;
+                padding: 1.1rem 1.5rem 2.75rem;
                 border-bottom: 1px solid #eee;
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: flex-start;
-                gap: 0.5rem;
+                gap: 0;
                 overflow: visible; /* allow active-step label to show below dots */
             }
 
             .progress-step {
                 flex: 1;
                 flex-direction: row;
-                gap: 0.5rem;
-                padding: 0;
                 justify-content: center;
+                align-items: flex-start;
+                gap: 0;
+                padding: 0;
             }
 
             .progress-step .step-content {
@@ -917,27 +918,47 @@
                 text-overflow: ellipsis;
                 text-align: center;
                 background: white;
-                padding: 0.25rem 0.75rem;
+                padding: 0.3rem 0.85rem;
                 border-radius: 20px;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                 border: 1px solid #eee;
             }
 
             .step-circle {
-                width: 10px;
-                height: 10px;
-                margin: 0 auto;
-                border-width: 1px;
+                width: 20px;
+                height: 20px;
+                margin: 0;
+                border-width: 2px;
             }
 
             .progress-step.active .step-circle {
-                width: 14px;
-                height: 14px;
-                background: #00A400;
+                width: 20px;
+                height: 20px;
+                border-color: #00A400;
+                background: white;
             }
 
+            .step-check {
+                font-size: 11px;
+            }
+
+            /* Ligne horizontale reliant les pastilles d'étapes */
             .progress-step:not(:last-child)::after {
-                display: none;
+                display: block;
+                content: '';
+                position: absolute;
+                top: 9px;
+                left: calc(50% + 13px);
+                right: calc(-50% + 13px);
+                bottom: auto;
+                width: auto;
+                height: 2px;
+                background-color: #e8e8e8;
+                z-index: 0;
+            }
+
+            .progress-step.completed:not(:last-child)::after {
+                background-color: #00A400;
             }
 
             .form-content {
