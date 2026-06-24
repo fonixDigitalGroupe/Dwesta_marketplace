@@ -239,6 +239,42 @@
         }
     }
 
+    /* Mobile : prix + boutons (panier / contacter vendeur) */
+    @media (max-width: 600px) {
+        .rk-price-box {
+            flex-direction: column;
+            align-items: stretch !important;
+            gap: 0.85rem;
+            padding: 1rem !important;
+        }
+        /* Bloc prix en pleine largeur (retire le séparateur vertical) */
+        .rk-price-box > div:first-child {
+            border-right: none !important;
+            padding-right: 0 !important;
+        }
+        /* Le prix ne déborde plus même si le montant est grand */
+        .rk-main-price {
+            font-size: 1.4rem !important;
+            flex-wrap: wrap;
+            row-gap: 2px;
+        }
+        .rk-actions {
+            padding-left: 0 !important;
+            width: 100%;
+        }
+        .rk-actions form {
+            display: block !important;
+            width: 100%;
+        }
+        .rk-btn-cart {
+            width: 100% !important;
+            margin-left: 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
     /* Product Content Tabs (Integrated) */
     .rk-content-section {
         margin-top: 1rem;
@@ -872,6 +908,19 @@
 
 <style>
     #quick-chat-window.active { display: flex !important; }
+
+    /* Popup messagerie en plein écran sur mobile */
+    @media (max-width: 600px) {
+        #quick-chat-window {
+            right: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 88vh !important;
+            height: 88dvh !important;
+            border-top-left-radius: 14px;
+            border-top-right-radius: 14px;
+        }
+    }
 </style>
 @endif
 
