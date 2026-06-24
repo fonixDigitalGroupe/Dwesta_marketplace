@@ -387,6 +387,113 @@
             @endif
         </div>
 
+        {{-- Section Adhérents Campagne --}}
+        <div style="margin-top: 40px; border-top: 2px solid #eff3f6; padding-top: 25px;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 20px;">
+                <i class="fas fa-users" style="font-size: 0.8rem;"></i>
+                <span>Adhérents Campagne</span>
+            </div>
+
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid #eff3f6;">
+                <thead>
+                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Annonce</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 180px;">Vendeur</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Prix Initial</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Prix Réduit</th>
+                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 130px;">Date d'adhésion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($adherents as $annonce)
+                        <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
+                            onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div style="width: 40px; height: 40px; background: #f1f5f9; border-radius: 4px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                                        @if($annonce->photoPrincipale())
+                                            <img src="{{ Storage::url($annonce->photoPrincipale()->chemin) }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                        @else
+                                            <i class="fas fa-image" style="color: #cbd5e1;"></i>
+                                        @endif
+                                    </div>
+                                    <div>
+                                        <a href="{{ route('annonces.show', $annonce->slug) }}" target="_blank" 
+                                           style="font-size: 0.85rem; color: #0066c0; font-weight: 600; text-decoration: none;"
+                                           onmouseover="this.style.textDecoration='underline'"
+                                           onmouseout="this.style.textDecoration='none'">
+                                            {{ Str::limit($annonce->titre, 40) }}
+                                        </a>
+                                        <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 2px;">{{ $annonce->category->nom ?? 'N/A' }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #475569;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-weight: 600; color: #1e293b;">{{ $annonce->vendeur->identite }}</span>
+                                    <span style="font-size: 0.72rem; color: #94a3b8;">{{ $annonce->vendeur->user->email }}</span>
+                                </div>
+                            </td>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6; font-size: 0.85rem; color: #94a3b8; text-decoration: line-through;">
+                                {{ number_format($annonce->prix_original, 0, ',', ' ') }} FCFA
+                            </td>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6; font-size: 0.9rem; color: #f68b1e; font-weight: 700;">
+                                {{ number_format($annonce->prix, 0, ',', ' ') }} FCFA
+                            </td>
+                            <td style="padding: 12px 15px; text-align: right; font-size: 0.82rem; color: #475569;">
+                                {{ $annonce->updated_at->format('d/m/Y') }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem;">
+                                Aucun adhérent pour cette campagne pour le moment.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            {{-- Pagination Adhérents --}}
+            @if($adherents->total() > 0)
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #eff3f6; border-radius: 4px; margin-top: 20px;">
+                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
+                        <strong>{{ $adherents->total() }}</strong> adhérent(s)
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                        @if($adherents->onFirstPage())
+                            <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Précédent</span>
+                        @else
+                            <a href="{{ $adherents->previousPageUrl() }}"
+                                style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;"
+                                onmouseover="this.style.background='#f8fafc'"
+                                onmouseout="this.style.background='#fff'">Précédent</a>
+                        @endif
+
+                        @foreach(range(max(1, $adherents->currentPage() - 2), min($adherents->lastPage(), $adherents->currentPage() + 2)) as $i)
+                            @if($i == $adherents->currentPage())
+                                <span style="padding: 6px 12px; background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border: 1px solid #c05d00; border-radius: 4px;">{{ $i }}</span>
+                            @else
+                                <a href="{{ $adherents->url($i) }}"
+                                    style="padding: 6px 12px; background: #fff; color: #64748b; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;"
+                                    onmouseover="this.style.background='#f8fafc'"
+                                    onmouseout="this.style.background='#fff'">{{ $i }}</a>
+                            @endif
+                        @endforeach
+
+                        @if($adherents->hasMorePages())
+                            <a href="{{ $adherents->nextPageUrl() }}"
+                                style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;"
+                                onmouseover="this.style.background='#f8fafc'"
+                                onmouseout="this.style.background='#fff'">Suivant</a>
+                        @else
+                            <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Suivant</span>
+                        @endif
+                    </div>
+                </div>
+            @endif
+        </div>
+
     </div>
 </div>
 

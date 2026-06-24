@@ -29,6 +29,12 @@ class PromotionController extends Controller
             ->paginate(10, ['*'], 'campaigns_page')
             ->appends($request->only(['search', 'per_page', 'coupons_page']));
 
-        return view('admin.promotions.index', compact('coupons', 'campaigns'));
+        $adherents = \App\Models\Annonce::enPromotion()
+            ->with(['vendeur.user', 'vendeur.professionnel', 'vendeur.particulier', 'category'])
+            ->latest('updated_at')
+            ->paginate(20, ['*'], 'adherents_page')
+            ->appends($request->only(['search', 'per_page', 'coupons_page', 'campaigns_page']));
+
+        return view('admin.promotions.index', compact('coupons', 'campaigns', 'adherents'));
     }
 }
