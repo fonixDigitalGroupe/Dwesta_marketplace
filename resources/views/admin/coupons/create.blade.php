@@ -276,13 +276,12 @@
                             <div>
                                 <label for="type" class="field-label">Type <span style="color: red;">*</span></label>
                                 <select name="type" id="type" required>
-                                    <option value="percent" {{ old('type') == 'percent' ? 'selected' : '' }}>Pourcentage (%)</option>
-                                    <option value="fixed" {{ old('type') == 'fixed' ? 'selected' : '' }}>Montant Fixe (FCFA)</option>
+                                    <option value="percent" selected>Pourcentage (%)</option>
                                 </select>
                             </div>
                             <div>
                                 <label for="value" class="field-label">Valeur <span style="color: red;">*</span></label>
-                                <input type="number" step="0.01" min="0" name="value" id="value" value="{{ old('value') }}" placeholder="Ex: 10 ou 5000" required>
+                                <input type="number" step="0.01" min="0" name="value" id="value" value="{{ old('value') }}" required>
                             </div>
                         </div>
 
