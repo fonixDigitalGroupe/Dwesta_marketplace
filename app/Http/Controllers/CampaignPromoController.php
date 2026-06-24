@@ -6,6 +6,7 @@ use App\Models\Campaign;
 use App\Models\Category;
 use App\Models\Coupon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CampaignPromoController extends Controller
 {
@@ -33,14 +34,11 @@ class CampaignPromoController extends Controller
             $sellerType = ($user && $user->vendeur) ? $user->vendeur->type : 'particulier';
             $categoryIds = $this->getAncestorIds($category);
 
-            // Trouver un coupon actif correspondant à ce code et à cette famille de catégories
+            // Trouver un coupon actif dont la cible (niveau le plus profond renseigné)
+            // correspond à la catégorie de l'annonce ou à l'un de ses ancêtres.
             $coupon = Coupon::where('code', $code)
                 ->where('is_active', true)
-                ->where(function ($q) use ($categoryIds) {
-                    $q->whereIn('category_id', $categoryIds)
-                      ->orWhereIn('category_id_n1', $categoryIds)
-                      ->orWhereIn('category_id_n2', $categoryIds);
-                })
+                ->whereIn(DB::raw('COALESCE(category_id, category_id_n2, category_id_n1)'), $categoryIds)
                 ->where(function ($q) use ($sellerType) {
                     $q->where('seller_type', 'all')
                       ->orWhere('seller_type', $sellerType);
@@ -105,11 +103,7 @@ class CampaignPromoController extends Controller
 
         $hasCampaign = Campaign::whereHas('coupon', function ($q) use ($categoryIds) {
                 $q->where('is_active', true)
-                  ->where(function ($sq) use ($categoryIds) {
-                      $sq->whereIn('category_id', $categoryIds)
-                        ->orWhereIn('category_id_n1', $categoryIds)
-                        ->orWhereIn('category_id_n2', $categoryIds);
-                  });
+                  ->whereIn(DB::raw('COALESCE(category_id, category_id_n2, category_id_n1)'), $categoryIds);
             })
             ->where(function ($q) {
                 $q->whereNull('starts_at')->orWhere('starts_at', '<=', now());
