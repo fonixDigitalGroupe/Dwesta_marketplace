@@ -43,8 +43,9 @@ class CampaignLandingController extends Controller
             $query->whereIn('categorie_id', $categoryIds);
         }
 
-        // Uniquement les annonces ayant appliqué la promo (prix barré)
-        $query->whereNotNull('prix_original')
+        // Uniquement les annonces ayant appliqué la promo de ce coupon spécifique
+        $query->where('coupon_code', $coupon->code)
+              ->whereNotNull('prix_original')
               ->whereColumn('prix_original', '>', 'prix');
 
         $query->with(['photos', 'category.parent', 'vendeur.user', 'options', 'produit', 'vehicule']);
