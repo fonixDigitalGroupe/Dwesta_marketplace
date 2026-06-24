@@ -1100,15 +1100,20 @@
         box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
     }
 
-    /* Responsive Grid */
+    /* Responsive : .n1-selection-grid est un flex, on dimensionne les items
+       (grid-template-columns n'a aucun effet sur un conteneur flex). */
     @media (max-width: 1100px) {
-        .n1-selection-grid { grid-template-columns: repeat(3, 1fr); }
+        .n1-selection-grid { max-width: 700px; }
+        .n1-selection-item { width: calc(33.333% - 0.5rem); }
     }
-    @media (max-width: 800px) {
-        .n1-selection-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 500px) {
-        .n1-selection-grid { grid-template-columns: 1fr; }
+    @media (max-width: 768px) {
+        .n1-selection-grid {
+            gap: 0.6rem;
+            padding: 0 0.6rem;
+            margin-bottom: 2rem;
+        }
+        /* 2 colonnes pleine largeur au lieu d'une carte 220px isolée */
+        .n1-selection-item { width: calc(50% - 0.3rem); }
     }
     .n1-footer-right {
         padding-bottom: 2px;
