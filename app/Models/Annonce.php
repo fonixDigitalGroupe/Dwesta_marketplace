@@ -354,6 +354,7 @@ class Annonce extends Model
     {
         return $query->whereNotNull('prix_original')
             ->whereNotNull('coupon_code')
+            ->where('coupon_code', '!=', '')
             ->whereColumn('prix_original', '>', 'prix')
             ->where(function ($q) {
                 $q->whereNull('promo_expires_at')
