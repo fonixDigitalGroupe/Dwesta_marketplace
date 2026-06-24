@@ -38,7 +38,7 @@
                 position: fixed;
                 bottom: 20px;
                 right: 20px;
-                z-index: 99998;
+                z-index: 100000;
                 width: 320px;
                 max-width: calc(100vw - 40px);
                 background: #fff;
@@ -61,7 +61,8 @@
                 align-items: center;
                 gap: 10px;
                 padding: 12px 14px;
-                background: linear-gradient(135deg, #004aad 0%, #f68b1e 100%);
+                background: #004aad;
+                border-bottom: 3px solid #f68b1e;
                 color: #fff;
             }
             #unread-msg-widget .umw-icon {

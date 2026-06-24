@@ -66,6 +66,20 @@
                 </div>
 
                     @auth
+                        @php
+                            $unreadCount = auth()->user()->unreadMessagesCount();
+                        @endphp
+                        <a href="{{ route('conversations.index') }}" class="header-link header-msg-link" style="position: relative;" title="Messagerie">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            @if($unreadCount > 0)
+                                <span style="position: absolute; top: -6px; right: -6px; background: #e11d48; color: white; border-radius: 50%; min-width: 17px; height: 17px; padding: 0 4px; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 10;">
+                                    {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                                </span>
+                            @endif
+                        </a>
                         @if(auth()->check() && auth()->user()->hasRole('admin'))
                             <a href="{{ route('admin.categories.l1') }}" class="header-link">
                                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,9 +98,6 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
-                                @php
-                                    $unreadCount = auth()->user()->unreadMessagesCount();
-                                @endphp
                                 @if($unreadCount > 0)
                                     <span style="position: absolute; top: -5px; left: 10px; background: #e11d48; color: white; border-radius: 50%; width: 17px; height: 17px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 10;">
                                         {{ $unreadCount }}
