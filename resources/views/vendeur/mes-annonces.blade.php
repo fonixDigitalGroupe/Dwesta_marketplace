@@ -400,7 +400,7 @@
                                         </div>
                                         @if($enPromo && $annonce->promo_expires_at)
                                             <div class="promo-countdown" data-expires="{{ $annonce->promo_expires_at->toIso8601String() }}"
-                                                 style="display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 0.4rem; background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 1px solid #fdba74; color: #9a3412; font-size: 0.72rem; font-weight: 700; padding: 3px 8px; border-radius: 8px;">
+                                                 style="display: flex; width: fit-content; align-items: center; gap: 0.35rem; margin: 0.5rem 0 0.75rem; background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 1px solid #fdba74; color: #9a3412; font-size: 0.72rem; font-weight: 700; padding: 4px 9px; border-radius: 8px;">
                                                 <i class="fas fa-bolt" style="color: #f97316;"></i>
                                                 <span class="promo-countdown-text">Offre en cours…</span>
                                             </div>
