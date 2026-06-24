@@ -280,7 +280,7 @@ class VendeurController extends Controller
 
         // Récupérer toutes les annonces du vendeur
         $annonces = $vendeur->annonces()
-            ->with(['category', 'photos', 'options'])
+            ->with(['category', 'photos', 'options', 'couponPromo'])
             ->latest()
             ->paginate(20);
 

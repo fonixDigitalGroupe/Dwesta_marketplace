@@ -16,7 +16,7 @@
                 <span class="card-etat-badge" style="color: {{ $annonce->etat_couleur }};">{{ $annonce->etat_libelle }}</span>
                 <span class="card-price-text" style="color: #666; font-size: 0.85rem; margin: 0 2px;">dès</span>
             @endif
-            <span class="price-value-flat">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+            <span class="price-value-flat">{{ number_format($annonce->prix_affiche, 0, ',', ' ') }} FCFA</span>
         </div>
 
         {{-- Avis clients --}}

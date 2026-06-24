@@ -656,8 +656,8 @@
                 <div style="flex: 1; border-right: 1px solid #e0e0e0; padding-right: 1rem;">
                     <div style="font-size: 0.8rem; color: #888; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.5px;">Prix de vente</div>
                     <div class="rk-main-price" id="main-price" style="display: flex; align-items: baseline; gap: 10px; color: #f68b1e; font-weight: 900; font-size: 1.8rem; text-shadow: none !important;">
-                        {{ number_format($annonce->prix, 0, ',', ' ') }} <span style="font-size: 1rem;">FCFA</span>
-                        @if($annonce->prix_original && $annonce->prix_original > $annonce->prix)
+                        {{ number_format($annonce->prix_affiche, 0, ',', ' ') }} <span style="font-size: 1rem;">FCFA</span>
+                        @if($annonce->estEnPromo())
                             <span style="font-size: 1rem; color: #999; text-decoration: line-through; font-weight: 400;">
                                 {{ number_format($annonce->prix_original, 0, ',', ' ') }}
                             </span>
@@ -877,7 +877,7 @@
 
 @push('scripts')
 <script>
-    const basePrice = {{ $annonce->prix }};
+    const basePrice = {{ $annonce->prix_affiche }};
     const priceDisplay = document.getElementById('main-price');
 
     function updatePrice(extra) {

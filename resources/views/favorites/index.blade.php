@@ -193,8 +193,8 @@
                                         <span class="card-etat-badge" style="color: {{ $annonce->etat_couleur }};">{{ $annonce->etat_libelle }}</span>
                                         <span class="card-price-text" style="color: #666; font-size: 0.85rem; margin: 0 2px;">dès</span>
                                     @endif
-                                    <span class="price-value-flat">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
-                                    @if($annonce->prix_original && $annonce->prix_original > $annonce->prix)
+                                    <span class="price-value-flat">{{ number_format($annonce->prix_affiche, 0, ',', ' ') }} FCFA</span>
+                                    @if($annonce->estEnPromo())
                                         <span class="card-price-old">{{ number_format($annonce->prix_original, 0, ',', ' ') }}</span>
                                         <span class="card-discount">-{{ $annonce->discount_percentage }}%</span>
                                     @endif

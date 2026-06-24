@@ -280,7 +280,7 @@ class CheckoutController extends Controller
             foreach ($cartGrouped as $vendeurId => $items) {
                 // Calcul du total pour CE vendeur
                 $totalProduits = $items->sum(function ($item) {
-                    return ($item->annonce->prix + ($item->variante ? $item->variante->prix_supplementaire : 0)) * $item->quantite;
+                    return ($item->annonce->prix_affiche + ($item->variante ? $item->variante->prix_supplementaire : 0)) * $item->quantite;
                 });
 
                 $vendeurModel = \App\Models\Vendeur::find($vendeurId);
@@ -329,7 +329,7 @@ class CheckoutController extends Controller
                         'annonce_id' => $item->annonce_id,
                         'annonce_variante_id' => $item->annonce_variante_id,
                         'quantite' => $item->quantite,
-                        'prix_unitaire' => $item->annonce->prix + ($item->variante ? $item->variante->prix_supplementaire : 0),
+                        'prix_unitaire' => $item->annonce->prix_affiche + ($item->variante ? $item->variante->prix_supplementaire : 0),
                     ]);
                 }
 

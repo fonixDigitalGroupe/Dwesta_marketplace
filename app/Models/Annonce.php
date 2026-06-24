@@ -339,16 +339,53 @@ class Annonce extends Model
     }
 
     /**
-     * Vérifier si l'annonce est en promotion active
+     * Relation vers le coupon appliqué (rattaché par son code).
      */
-    public function estEnPromo(): bool
+    public function couponPromo()
     {
-        return $this->prix_original > $this->prix && 
-               (!$this->promo_expires_at || $this->promo_expires_at->isFuture());
+        return $this->belongsTo(Coupon::class, 'coupon_code', 'code');
     }
 
     /**
-     * Scope pour les annonces en promotion
+     * La promotion appliquée est-elle réellement active ?
+     * Exige un coupon présent, actif et non expiré. Dès que le coupon est
+     * désactivé (ou la campagne expirée), la promo est considérée inactive et
+     * l'annonce doit réafficher son prix initial partout dans le projet.
+     */
+    public function promoActive(): bool
+    {
+        if (!$this->coupon_code || !$this->prix_original) {
+            return false;
+        }
+        if ($this->promo_expires_at && $this->promo_expires_at->isPast()) {
+            return false;
+        }
+        return (bool) optional($this->couponPromo)->is_active;
+    }
+
+    /**
+     * Prix à afficher (et à facturer) : prix remisé si la promo est active,
+     * sinon le prix initial (prix_original). Indépendant de la valeur stockée
+     * dans prix, donc fiable même si le revert en base n'a pas encore tourné.
+     */
+    public function getPrixAfficheAttribute(): float
+    {
+        if ($this->promoActive() && $this->prix_original > $this->prix) {
+            return (float) $this->prix;
+        }
+        return (float) ($this->prix_original ?: $this->prix);
+    }
+
+    /**
+     * Vérifier si l'annonce est en promotion active (coupon actif + remise réelle)
+     */
+    public function estEnPromo(): bool
+    {
+        return $this->promoActive() && $this->prix_original > $this->prix;
+    }
+
+    /**
+     * Scope pour les annonces en promotion (coupon actif uniquement)
      */
     public function scopeEnPromotion($query)
     {
@@ -359,6 +396,9 @@ class Annonce extends Model
             ->where(function ($q) {
                 $q->whereNull('promo_expires_at')
                     ->orWhere('promo_expires_at', '>', now());
+            })
+            ->whereHas('couponPromo', function ($q) {
+                $q->where('is_active', true);
             });
     }
 

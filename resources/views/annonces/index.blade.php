@@ -464,7 +464,7 @@
 
                         @if($annonce->prix)
                             <div class="listing-price">
-                                {{ number_format($annonce->prix, 0, ',', ' ') }} FCFA
+                                {{ number_format($annonce->prix_affiche, 0, ',', ' ') }} FCFA
                             </div>
                         @endif
 

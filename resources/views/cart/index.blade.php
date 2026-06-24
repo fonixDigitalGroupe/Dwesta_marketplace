@@ -343,8 +343,8 @@
                 @foreach($flattenedItems as $item)
                     @php 
                         $annonce = $item->annonce;
-                        $prixU = $annonce->prix + ($item->variante ? $item->variante->prix_supplementaire : 0);
-                        $hasPromo = $annonce->prix_original > $annonce->prix;
+                        $hasPromo = $annonce->estEnPromo();
+                        $prixU = $annonce->prix_affiche + ($item->variante ? $item->variante->prix_supplementaire : 0);
                         $discount = $annonce->discount_percentage;
                         $photo = $annonce->photoPrincipale();
                     @endphp

@@ -778,7 +778,7 @@
                             </div>
 
                              <div class="product-price-row">
-                                 <span class="product-price-value">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                 <span class="product-price-value">{{ number_format($annonce->prix_affiche, 0, ',', ' ') }} FCFA</span>
                                  @if($annonce->should_show_etat)
                                     <span class="product-status" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
                                  @endif

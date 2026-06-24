@@ -379,12 +379,7 @@
                                         <a href="{{ route('annonces.show', $annonce) }}">{{ Str::limit($annonce->titre, 40) }}</a>
                                     </h3>
 
-                                    @php
-                                        $enPromo = $annonce->coupon_code
-                                            && $annonce->prix_original
-                                            && $annonce->prix_original > $annonce->prix
-                                            && (!$annonce->promo_expires_at || $annonce->promo_expires_at->isFuture());
-                                    @endphp
+                                    @php $enPromo = $annonce->estEnPromo(); @endphp
                                     @if($annonce->prix)
                                         <div class="listing-price" style="display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.4rem;">
                                             @if($annonce->should_show_etat)
@@ -395,7 +390,7 @@
                                                 <span style="color: #dc2626; font-weight: 800;">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
                                                 <span style="background: #dc2626; color: #fff; font-size: 0.7rem; font-weight: 800; padding: 2px 6px; border-radius: 6px;">-{{ $annonce->discount_percentage }}%</span>
                                             @else
-                                                <span>{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                                                <span>{{ number_format($annonce->prix_affiche, 0, ',', ' ') }} FCFA</span>
                                             @endif
                                         </div>
                                         @if($enPromo && $annonce->promo_expires_at)

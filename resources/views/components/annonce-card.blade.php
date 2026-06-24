@@ -34,7 +34,7 @@
 
         <div style="margin-top: auto;">
             <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 4px; flex-wrap: wrap;">
-                <span style="font-size: 1.1rem; font-weight: 800; color: #db0001;">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</span>
+                <span style="font-size: 1.1rem; font-weight: 800; color: #db0001;">{{ number_format($annonce->prix_affiche, 0, ',', ' ') }} FCFA</span>
                 <span style="font-weight: bold; color: #db0001;">·</span>
                 <span style="font-size: 0.75rem; font-weight: 700; color: #db0001;">
                     {{ ucfirst($annonce->metadata?->etat ?? 'Occasion') }}

@@ -1,7 +1,7 @@
 @props(['annonce', 'label' => null])
 
 @php
-    $prix = $annonce->prix;
+    $prix = $annonce->prix_affiche;
 @endphp
 
 <a href="{{ route('annonces.show', $annonce->slug) }}" class="top-product-card-component" style="background: white; border: 1px solid #e8e8e8; text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%; border-radius: 8px; overflow: hidden; position: relative;">

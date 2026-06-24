@@ -20,15 +20,20 @@
                 
                 <div class="promo-pricing">
                     @php
-                        $originalPrice = $annonce->prix * 1.15;
-                        $discount = $originalPrice - $annonce->prix;
+                        if ($annonce->estEnPromo()) {
+                            $originalPrice = $annonce->prix_original;
+                            $discount = $annonce->prix_original - $annonce->prix;
+                        } else {
+                            $originalPrice = $annonce->prix_affiche * 1.15;
+                            $discount = $originalPrice - $annonce->prix_affiche;
+                        }
                     @endphp
                     <div class="price-row">
                         <span class="price-original">{{ number_format($originalPrice, 0, ',', ' ') }} FCFA</span>
                         <span class="price-discount">-{{ number_format($discount, 0, ',', ' ') }} FCFA</span>
                     </div>
                     <p class="price-label">à partir de</p>
-                    <div class="price-main-promo">{{ number_format($annonce->prix, 0, ',', ' ') }}<span class="price-currency">FCFA</span></div>
+                    <div class="price-main-promo">{{ number_format($annonce->prix_affiche, 0, ',', ' ') }}<span class="price-currency">FCFA</span></div>
                 </div>
             </div>
             
