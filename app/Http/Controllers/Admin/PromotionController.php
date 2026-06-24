@@ -39,6 +39,12 @@ class PromotionController extends Controller
             ->paginate(20, ['*'], 'adherents_page')
             ->appends($request->only(['search', 'per_page', 'coupons_page', 'campaigns_page']));
 
-        return view('admin.promotions.index', compact('coupons', 'campaigns', 'adherents'));
+        // Coupons des adhérents, indexés par code, pour déterminer le statut
+        // (actif/inactif) de chaque adhésion d'après l'état réel du coupon.
+        $adherentCoupons = Coupon::whereIn('code', $adherents->pluck('coupon_code')->filter()->unique())
+            ->get()
+            ->keyBy('code');
+
+        return view('admin.promotions.index', compact('coupons', 'campaigns', 'adherents', 'adherentCoupons'));
     }
 }

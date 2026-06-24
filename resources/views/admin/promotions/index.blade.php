@@ -414,11 +414,16 @@
                 <tbody>
                     @forelse($adherents as $annonce)
                         @php
-                            // Promo active = prix toujours remisé et non expirée. Après
-                            // désactivation du coupon, le prix est rétabli (prix == prix_original).
-                            $adherentActif = $annonce->prix_original
-                                && $annonce->prix < $annonce->prix_original
+                            // Statut basé sur l'état réel du coupon (actif + non expiré),
+                            // pas sur le prix : un coupon désactivé => adhésion inactive.
+                            $adherentCoupon = $adherentCoupons[$annonce->coupon_code] ?? null;
+                            $adherentActif = $adherentCoupon
+                                && $adherentCoupon->is_active
                                 && (!$annonce->promo_expires_at || $annonce->promo_expires_at->isFuture());
+                            // Prix réduit attendu (calculé depuis le coupon) quand l'adhésion est active.
+                            $prixReduit = ($adherentActif && $annonce->prix_original)
+                                ? $adherentCoupon->prixRemise((float) $annonce->prix_original)
+                                : null;
                         @endphp
                         <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
@@ -460,7 +465,7 @@
                             </td>
                             <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6; font-size: 0.85rem; color: #f68b1e; font-weight: 700;">
                                 @if($adherentActif)
-                                    {{ number_format($annonce->prix, 0, ',', ' ') }}
+                                    {{ number_format($prixReduit, 0, ',', ' ') }}
                                 @else
                                     <span style="color: #cbd5e1; font-weight: 400;">—</span>
                                 @endif
