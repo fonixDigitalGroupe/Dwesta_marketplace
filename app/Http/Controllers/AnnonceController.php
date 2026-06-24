@@ -187,6 +187,7 @@ class AnnonceController extends Controller
                         // Le prix du vendeur devient le prix barré, le prix promo est le prix final
                         $annonceData['prix_original'] = $vendeurPrix;
                         $annonceData['prix'] = round($promoPrix, 2);
+                        $annonceData['coupon_code'] = $coupon->code;
                         $annonceData['promo_expires_at'] = $campaign->ends_at;
                     }
                 }

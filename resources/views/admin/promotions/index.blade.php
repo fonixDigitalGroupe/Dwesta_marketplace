@@ -398,10 +398,11 @@
                 <thead>
                     <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Annonce</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 180px;">Vendeur</th>
-                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Prix Initial</th>
-                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Prix Réduit</th>
-                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 130px;">Date d'adhésion</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 140px;">Vendeur</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Coupon</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Prix Initial</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Prix Réduit</th>
+                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 110px;">Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -422,7 +423,7 @@
                                            style="font-size: 0.85rem; color: #0066c0; font-weight: 600; text-decoration: none;"
                                            onmouseover="this.style.textDecoration='underline'"
                                            onmouseout="this.style.textDecoration='none'">
-                                            {{ Str::limit($annonce->titre, 40) }}
+                                            {{ Str::limit($annonce->titre, 35) }}
                                         </a>
                                         <div style="font-size: 0.7rem; color: #94a3b8; margin-top: 2px;">{{ $annonce->category->nom ?? 'N/A' }}</div>
                                     </div>
@@ -434,14 +435,21 @@
                                     <span style="font-size: 0.72rem; color: #94a3b8;">{{ $annonce->vendeur->user->email }}</span>
                                 </div>
                             </td>
-                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6; font-size: 0.85rem; color: #94a3b8; text-decoration: line-through;">
-                                {{ number_format($annonce->prix_original, 0, ',', ' ') }} FCFA
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; text-align: center;">
+                                @if($annonce->coupon_code)
+                                    <span class="code-badge" style="font-size: 0.75rem;">{{ $annonce->coupon_code }}</span>
+                                @else
+                                    <span style="color: #cbd5e1; font-size: 0.75rem;">—</span>
+                                @endif
                             </td>
-                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6; font-size: 0.9rem; color: #f68b1e; font-weight: 700;">
-                                {{ number_format($annonce->prix, 0, ',', ' ') }} FCFA
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #94a3b8; text-decoration: line-through;">
+                                {{ number_format($annonce->prix_original, 0, ',', ' ') }}
                             </td>
-                            <td style="padding: 12px 15px; text-align: right; font-size: 0.82rem; color: #475569;">
-                                {{ $annonce->updated_at->format('d/m/Y') }}
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6; font-size: 0.85rem; color: #f68b1e; font-weight: 700;">
+                                {{ number_format($annonce->prix, 0, ',', ' ') }}
+                            </td>
+                            <td style="padding: 12px 15px; text-align: right; font-size: 0.8rem; color: #475569;">
+                                {{ $annonce->updated_at->format('d/m/y') }}
                             </td>
                         </tr>
                     @empty

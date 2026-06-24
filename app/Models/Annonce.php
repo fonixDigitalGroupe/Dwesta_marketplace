@@ -30,6 +30,7 @@ class Annonce extends Model
         'publiee_le',
         'expire_le',
         'prix_original',
+        'coupon_code',
         'promo_expires_at',
         'vues',
     ];
