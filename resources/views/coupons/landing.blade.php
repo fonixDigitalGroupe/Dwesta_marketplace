@@ -498,7 +498,27 @@
         <div class="landing-hero-content">
             <p class="landing-hero-subtitle" style="font-weight: 700; font-style: normal; font-size: 1.6rem; margin-bottom: 5px;">{{ $heroTitle }}</p>
             <p class="landing-hero-subtitle">{{ $heroSubtitle }}</p>
-            
+
+            <div class="n1-banner-search-wrapper">
+                <i class="fas fa-search n1-banner-search-icon"></i>
+                <input type="text" id="n1-page-search" class="n1-banner-search-input" placeholder="Rechercher dans cette offre..." oninput="handleInPageSearch(this.value)">
+            </div>
+        </div>
+    </div>
+@else
+    <div class="landing-hero" style="background: linear-gradient(135deg, #f68b1e 0%, #e77600 100%);">
+        <div class="landing-hero-content">
+            <p class="landing-hero-subtitle" style="font-weight: 700; font-style: normal; font-size: 1.6rem; margin-bottom: 5px;">{{ $heroTitle }}</p>
+            <p class="landing-hero-subtitle">{{ $heroSubtitle }}</p>
+
+            <div class="n1-banner-search-wrapper">
+                <i class="fas fa-search n1-banner-search-icon"></i>
+                <input type="text" id="n1-page-search" class="n1-banner-search-input" placeholder="Rechercher dans cette offre..." oninput="handleInPageSearch(this.value)">
+            </div>
+        </div>
+    </div>
+@endif
+
 {{-- BREADCRUMB --}}
 <div class="landing-breadcrumb">
     <div class="landing-breadcrumb-container">
