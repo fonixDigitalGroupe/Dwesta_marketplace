@@ -236,55 +236,56 @@
         .landing-products-grid { grid-template-columns: 1fr; }
     }
 
-    /* ===== COUNTDOWN TIMER ===== */
+    /* ===== COUNTDOWN TIMER (BREADCRUMB VERSION) ===== */
     .campaign-timer-container {
-        margin-top: 20px;
         display: flex;
-        gap: 12px;
-        justify-content: center;
+        gap: 8px;
+        align-items: center;
     }
     .timer-block {
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 10px 15px;
-        border-radius: 12px;
-        min-width: 70px;
+        background: #fff;
+        border: 1px solid #ddd;
+        padding: 4px 8px;
+        border-radius: 6px;
+        min-width: 45px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     .timer-val {
         font-family: 'Outfit', sans-serif;
-        font-size: 1.6rem;
+        font-size: 0.95rem;
         font-weight: 800;
-        color: #fff;
+        color: #f68b1e;
         line-height: 1;
     }
     .timer-label {
-        font-size: 0.65rem;
+        font-size: 0.5rem;
         text-transform: uppercase;
         font-weight: 600;
-        color: rgba(255, 255, 255, 0.9);
-        margin-top: 4px;
-        letter-spacing: 0.5px;
+        color: #888;
+        margin-top: 1px;
+        letter-spacing: 0.3px;
     }
     .timer-expired-msg {
-        margin-top: 15px;
-        padding: 8px 20px;
-        background: #d32f2f;
-        color: #fff;
+        padding: 4px 12px;
+        background: #ffebee;
+        color: #d32f2f;
         font-weight: 700;
-        border-radius: 50px;
-        font-size: 0.9rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        border: 1px solid #ffcdd2;
+    }
+    .timer-prefix {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #777;
+        margin-right: 5px;
     }
 
-    @media (max-width: 480px) {
-        .campaign-timer-container { gap: 8px; }
-        .timer-block { min-width: 55px; padding: 8px 10px; }
-        .timer-val { font-size: 1.2rem; }
-        .timer-label { font-size: 0.55rem; }
+    @media (max-width: 600px) {
+        .landing-breadcrumb-container { flex-direction: column; align-items: flex-start; gap: 10px; }
     }
 </style>
 @endpush
@@ -297,54 +298,50 @@
 @endphp
 <div class="landing-hero" style="background-image: url('{{ $heroImg }}');">
     <div class="landing-hero-content">
-        <p class="landing-hero-subtitle">{{ $campaign->title }}</p>
-        
-        <div class="n1-banner-search-wrapper">
-            <i class="fas fa-search n1-banner-search-icon"></i>
-            <input type="text" id="n1-page-search" class="n1-banner-search-input" placeholder="Rechercher dans cette offre..." oninput="handleInPageSearch(this.value)">
+{{-- BREADCRUMB --}}
+<div class="landing-breadcrumb">
+    <div class="landing-breadcrumb-container">
+        <div class="breadcrumb-text">
+            <a href="{{ route('home') }}">Accueil</a>
+            <span>›</span>
+            @if($category && $category->parent)
+                <a href="{{ route('search.index', ['category' => $category->parent->slug]) }}">{{ $category->parent->nom }}</a>
+                <span>›</span>
+            @endif
+            @if($category)
+                <a href="{{ route('search.index', ['category' => $category->slug]) }}">{{ $category->nom }}</a>
+                <span>›</span>
+            @endif
+            <span style="color: #333; font-weight: 700;">{{ $campaign->title }}</span>
         </div>
 
         {{-- COUNTDOWN TIMER --}}
         @if($campaign->ends_at)
-            <div id="campaign-countdown" class="campaign-timer-container" data-end="{{ $campaign->ends_at->format('Y-m-d H:i:s') }}">
-                <div class="timer-block">
-                    <span class="timer-val" id="days">00</span>
-                    <span class="timer-label">Jours</span>
+            <div id="campaign-countdown-wrapper" style="display: flex; align-items: center;">
+                <span class="timer-prefix">Expire dans :</span>
+                <div id="campaign-countdown" class="campaign-timer-container" data-end="{{ $campaign->ends_at->format('Y-m-d H:i:s') }}">
+                    <div class="timer-block">
+                        <span class="timer-val" id="days">00</span>
+                        <span class="timer-label">Jours</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-val" id="hours">00</span>
+                        <span class="timer-label">Heures</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-val" id="minutes">00</span>
+                        <span class="timer-label">Min</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-val" id="seconds">00</span>
+                        <span class="timer-label">Sec</span>
+                    </div>
                 </div>
-                <div class="timer-block">
-                    <span class="timer-val" id="hours">00</span>
-                    <span class="timer-label">Heures</span>
-                </div>
-                <div class="timer-block">
-                    <span class="timer-val" id="minutes">00</span>
-                    <span class="timer-label">Min</span>
-                </div>
-                <div class="timer-block">
-                    <span class="timer-val" id="seconds">00</span>
-                    <span class="timer-label">Sec</span>
+                <div id="timer-expired" class="timer-expired-msg" style="display: none;">
+                    <i class="fas fa-clock"></i> Expirée
                 </div>
             </div>
-            <div id="timer-expired" class="timer-expired-msg" style="display: none;">
-                <i class="fas fa-clock"></i> Cette offre a expiré
-            </div>
         @endif
-    </div>
-</div>
-
-{{-- BREADCRUMB --}}
-<div class="landing-breadcrumb">
-    <div style="max-width: 1300px; margin: 0 auto; padding: 0 1.5rem;">
-        <a href="{{ route('home') }}">Accueil</a>
-        <span>›</span>
-        @if($category && $category->parent)
-            <a href="{{ route('search.index', ['category' => $category->parent->slug]) }}">{{ $category->parent->nom }}</a>
-            <span>›</span>
-        @endif
-        @if($category)
-            <a href="{{ route('search.index', ['category' => $category->slug]) }}">{{ $category->nom }}</a>
-            <span>›</span>
-        @endif
-        <span style="color: #333; font-weight: 700;">{{ $campaign->title }}</span>
     </div>
 </div>
 
