@@ -335,37 +335,63 @@
     }
     .campaign-timer-container {
         display: inline-flex;
-        gap: 10px;
-        align-items: baseline;
+        gap: 12px;
+        align-items: center;
     }
     .timer-item {
-        display: inline-flex;
-        align-items: baseline;
-        gap: 3px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 48px;
+        padding: 6px 8px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(246, 139, 30, 0.12);
+        border: 1px solid rgba(246, 139, 30, 0.1);
+        transition: transform 0.2s;
     }
     .timer-val {
         font-family: 'Outfit', sans-serif;
-        font-size: 0.95rem;
-        font-weight: 800;
-        color: #f68b1e;
+        font-size: 1.3rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #f68b1e 0%, #e74c3c 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.1;
+        display: block;
     }
     .timer-label {
-        font-size: 0.75rem;
-        font-weight: 500;
-        color: #777;
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: #999;
+        text-transform: uppercase;
+        margin-top: 1px;
+        letter-spacing: 0.5px;
     }
     .timer-expired-msg {
-        padding: 2px 10px;
+        padding: 4px 12px;
         background: #ffebee;
         color: #d32f2f;
         font-weight: 700;
-        border-radius: 4px;
-        font-size: 0.75rem;
+        border-radius: 6px;
+        font-size: 0.8rem;
         border: 1px solid #ffcdd2;
     }
 
+    @keyframes heartbeat {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+        100% { transform: scale(1); }
+    }
+    #seconds {
+        display: inline-block;
+        animation: heartbeat 1s infinite ease-in-out;
+    }
+
     @media (max-width: 768px) {
-        .campaign-timer-container { margin-top: 5px; }
+        .campaign-timer-container { margin-top: 8px; gap: 8px; }
+        .timer-item { min-width: 42px; padding: 4px 6px; }
+        .timer-val { font-size: 1.1rem; }
     }
 
     /* ===== RAKUTEN STYLE TABS ===== */
