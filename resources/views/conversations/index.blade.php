@@ -219,11 +219,22 @@
                         $otherUser = $conv->user1_id == Auth::id() ? $conv->user2 : $conv->user1;
                         $lastMsg = $conv->messages()->latest()->first();
                         $isSystem = ($otherUser->hasRole('admin'));
+                        $unreadCount = $conv->messages()
+                            ->whereNull('read_at')
+                            ->where('sender_id', '!=', Auth::id())
+                            ->count();
                     @endphp
-                    <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 20px; margin-bottom: 15px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                    <div style="background: {{ $unreadCount > 0 ? '#f0fdf4' : '#ffffff' }}; border: 1px solid {{ $unreadCount > 0 ? '#bbf7d0' : '#e5e7eb' }}; border-left: {{ $unreadCount > 0 ? '4px solid #16a34a' : '1px solid #e5e7eb' }}; border-radius: 6px; padding: 20px; margin-bottom: 15px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                            <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">
-                                {{ $lastMsg ? $lastMsg->created_at->translatedFormat('d M') : $conv->created_at->translatedFormat('d M') }}
+                            <span style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">
+                                    {{ $lastMsg ? $lastMsg->created_at->translatedFormat('d M') : $conv->created_at->translatedFormat('d M') }}
+                                </span>
+                                @if($unreadCount > 0)
+                                    <span style="background: #16a34a; color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap;">
+                                        {{ $unreadCount }} nouveau{{ $unreadCount > 1 ? 'x' : '' }}
+                                    </span>
+                                @endif
                             </span>
                             <a href="{{ route('conversations.show', $conv) }}" style="color: #004aad; font-weight: 600; font-size: 0.9rem; text-decoration: none;">Détails</a>
                         </div>
@@ -236,7 +247,7 @@
                             @endif
                         </h2>
 
-                        <div style="font-size: 0.9rem; color: #475569; line-height: 1.6; margin-bottom: 15px;">
+                        <div style="font-size: 0.9rem; color: {{ $unreadCount > 0 ? '#0f172a' : '#475569' }}; font-weight: {{ $unreadCount > 0 ? '600' : '400' }}; line-height: 1.6; margin-bottom: 15px;">
                             {{ $lastMsg ? Str::limit(strip_tags($lastMsg->content), 300) : 'Démarrer une discussion...' }}
                         </div>
 
