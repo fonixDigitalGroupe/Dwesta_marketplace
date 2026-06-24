@@ -759,6 +759,225 @@
             padding: 0.6rem 1rem;
             border-radius: 8px;
         }
+
+        /* Responsive (aligné sur la page de création) */
+        @media (max-width: 968px) {
+            html, body {
+                overflow-x: hidden;
+            }
+
+            .create-annonce-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+            .progress-sidebar {
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: white;
+                padding: 1.1rem 1.5rem 2.75rem;
+                border-bottom: 1px solid #eee;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 0;
+                overflow: visible;
+            }
+
+            .progress-step {
+                flex: 1;
+                flex-direction: row;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 0;
+                padding: 0;
+            }
+
+            .progress-step .step-content {
+                display: none;
+            }
+
+            .progress-step.active .step-content {
+                display: block;
+                position: absolute;
+                left: 50%;
+                top: 2rem;
+                transform: translateX(-50%);
+                white-space: nowrap;
+                max-width: 90vw;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-align: center;
+                background: white;
+                padding: 0.3rem 0.85rem;
+                border-radius: 20px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                border: 1px solid #eee;
+            }
+
+            .step-circle {
+                width: 20px;
+                height: 20px;
+                margin: 0;
+                border-width: 2px;
+            }
+
+            .progress-step.active .step-circle {
+                width: 20px;
+                height: 20px;
+                border-color: #00A400;
+                background: white;
+            }
+
+            .step-check {
+                font-size: 11px;
+            }
+
+            .progress-step:not(:last-child)::after {
+                display: block;
+                content: '';
+                position: absolute;
+                top: 9px;
+                left: calc(50% + 13px);
+                right: calc(-50% + 13px);
+                bottom: auto;
+                width: auto;
+                height: 2px;
+                background-color: #e8e8e8;
+                z-index: 0;
+            }
+
+            .progress-step.completed:not(:last-child)::after {
+                background-color: #00A400;
+            }
+
+            .form-content {
+                padding: 1.5rem 1rem;
+                border-radius: 0;
+                border: none;
+                box-shadow: none;
+                margin-top: 0.5rem;
+                max-width: 100%;
+            }
+
+            .form-input,
+            select.form-input,
+            textarea.form-input {
+                max-width: 100%;
+            }
+
+            .form-title {
+                font-size: 1.25rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .advisory-container {
+                display: none !important;
+            }
+
+            .form-actions {
+                display: flex;
+                justify-content: space-between;
+                gap: 0.75rem;
+                margin-top: 2rem;
+                padding-top: 1.5rem;
+            }
+
+            .btn {
+                flex: 1;
+                padding: 0.8rem;
+                font-size: 1rem;
+            }
+
+            .status-cards-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .status-card {
+                padding: 1.25rem;
+            }
+
+            .category-badge-item {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .photo-grid-system {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .photo-upload-box, .image-preview-item {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 1;
+            }
+
+            .service-card {
+                padding: 1rem !important;
+                gap: 0.75rem !important;
+            }
+
+            .service-card input[type="checkbox"] {
+                width: 24px !important;
+                height: 24px !important;
+            }
+
+            .publish-status-row {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 0.85rem;
+            }
+
+            .publish-status-options {
+                width: 100%;
+                justify-content: space-between;
+                gap: 0.75rem !important;
+            }
+        }
+
+        /* Phones */
+        @media (max-width: 480px) {
+            .form-content {
+                padding: 1.25rem 0.85rem;
+            }
+
+            .form-title {
+                font-size: 1.15rem;
+            }
+
+            .photo-grid-system {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            #promo-preview > div {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+
+            .payment-total-row {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .payment-total-row span:first-child {
+                font-size: 1rem !important;
+            }
+
+            .service-card > div:last-child {
+                font-size: 1.1rem !important;
+            }
+
+            .btn {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.95rem;
+            }
+        }
     </style>
 @endpush
 
@@ -1108,9 +1327,9 @@
                     </div>
 
                     <div style="background: linear-gradient(135deg, #fff9db 0%, #fff3bf 100%); border: 2px dashed #fcc419; border-radius: 12px; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 4px 10px rgba(252, 196, 25, 0.05);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <div class="publish-status-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                             <span style="font-weight: 800; color: #856404; font-size: 1rem;">Statut de publication</span>
-                            <div style="display: flex; gap: 1.5rem;">
+                            <div class="publish-status-options" style="display: flex; gap: 1.5rem;">
                                 <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: #92700e; font-weight: 700;">
                                     <input type="radio" name="statut" value="brouillon" {{ $annonce->statut == 'brouillon' ? 'checked' : '' }} style="accent-color: #856404; width: 18px; height: 18px;">
                                     <span style="font-size: 0.95rem;">Brouillon</span>
@@ -1121,7 +1340,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #ffec99; padding-top: 1rem; margin-top: 0.5rem;">
+                        <div class="payment-total-row" style="display: flex; justify-content: space-between; align-items: center; border-top: 1.5px solid #ffec99; padding-top: 1rem; margin-top: 0.5rem;">
                             <span style="font-weight: 900; font-size: 1.15rem; color: #453b0c; text-transform: uppercase;">Total à payer :</span>
                             <span style="font-weight: 950; font-size: 1.75rem; color: #111;">
                                 <span id="total-cost-display" style="color: #e67e22;">0</span> <span style="font-size: 1.4rem; color: #fcc419;">⭐</span>
