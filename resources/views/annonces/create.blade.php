@@ -1533,11 +1533,16 @@
     </div> <!-- Close create-annonce-container -->
 
     <!-- Overlay d'enregistrement (évite l'impression de blocage pendant l'upload) -->
-    <div id="savingOverlay" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(255,255,255,0.96); flex-direction:column; align-items:center; justify-content:center; gap:1.25rem; text-align:center; padding:2rem;">
+    <div id="savingOverlay" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(255,255,255,0.97); flex-direction:column; align-items:center; justify-content:center; gap:1.25rem; text-align:center; padding:2rem;">
         <div style="width:54px; height:54px; border:5px solid #e6f4e6; border-top-color:#00A400; border-radius:50%; animation:savingSpin 0.9s linear infinite;"></div>
-        <div>
-            <p style="font-size:1.05rem; font-weight:700; color:#222; margin:0 0 0.35rem;">Enregistrement de votre annonce…</p>
-            <p style="font-size:0.9rem; color:#666; margin:0;">Merci de patienter quelques instants, ne fermez pas cette page.</p>
+        <div style="width:100%; max-width:320px;">
+            <p id="savingTitle" style="font-size:1.05rem; font-weight:700; color:#222; margin:0 0 0.75rem;">Envoi de votre annonce…</p>
+            <div style="height:8px; background:#eee; border-radius:8px; overflow:hidden; margin-bottom:0.5rem;">
+                <div id="savingProgressBar" style="height:100%; width:0%; background:#00A400; border-radius:8px; transition:width 0.2s ease;"></div>
+            </div>
+            <p style="font-size:0.85rem; color:#666; margin:0;">
+                <span id="savingProgressPct">0%</span> — ne fermez pas cette page.
+            </p>
         </div>
     </div>
     <style>
@@ -2014,8 +2019,8 @@
                     return new Promise((resolve) => {
                         if (!file.type.startsWith('image/')) { resolve(file); return; }
 
-                        const MAX_DIM = 1600;   // dimension max (px) du plus grand côté
-                        const QUALITY = 0.82;   // qualité JPEG
+                        const MAX_DIM = 1280;   // dimension max (px) du plus grand côté
+                        const QUALITY = 0.78;   // qualité JPEG
 
                         const finalize = (source, width, height) => {
                             try {
@@ -2158,36 +2163,99 @@
                         });
                     }
 
-                    document.getElementById('createAnnonceForm').addEventListener('submit', function (e) {
+                    const annonceForm = document.getElementById('createAnnonceForm');
+                    annonceForm.addEventListener('submit', function (e) {
                         if (currentStep < totalSteps) {
                             e.preventDefault();
                             nextStep();
-                        } else {
-                            // Validation for step 4 before final submit
-                            const statut = document.querySelector('input[name="statut"]:checked').value;
-                            if (statut === 'publiee') {
-                                const totalCost = parseInt(document.getElementById('total-cost-display').textContent) || 0;
-                                const balance = parseInt(document.getElementById('user-credit-balance').textContent) || 0;
-                                if (totalCost > balance) {
-                                    e.preventDefault();
-                                    alert('Solde de crédits insuffisant pour les options choisies.');
-                                }
-                            }
+                            return;
+                        }
 
-                            // Retour visuel + protection contre le double envoi
-                            if (!e.defaultPrevented) {
-                                const btn = document.getElementById('submitButton');
-                                if (btn) {
-                                    btn.disabled = true;
-                                    btn.style.opacity = '0.7';
-                                    btn.style.cursor = 'wait';
-                                    btn.textContent = 'Enregistrement en cours…';
-                                }
-                                const overlay = document.getElementById('savingOverlay');
-                                if (overlay) overlay.classList.add('active');
+                        // Validation de l'étape 4 avant l'envoi final
+                        const statut = document.querySelector('input[name="statut"]:checked').value;
+                        if (statut === 'publiee') {
+                            const totalCost = parseInt(document.getElementById('total-cost-display').textContent) || 0;
+                            const balance = parseInt(document.getElementById('user-credit-balance').textContent) || 0;
+                            if (totalCost > balance) {
+                                e.preventDefault();
+                                alert('Solde de crédits insuffisant pour les options choisies.');
+                                return;
                             }
                         }
+
+                        // Verrouiller le bouton (anti double-envoi) + overlay
+                        const btn = document.getElementById('submitButton');
+                        if (btn) {
+                            btn.disabled = true;
+                            btn.style.opacity = '0.7';
+                            btn.style.cursor = 'wait';
+                            btn.textContent = 'Enregistrement en cours…';
+                        }
+                        const overlay = document.getElementById('savingOverlay');
+                        if (overlay) overlay.classList.add('active');
+
+                        // Envoi en AJAX avec barre de progression (sinon envoi classique en repli)
+                        if (window.FormData && window.XMLHttpRequest && 'upload' in new XMLHttpRequest()) {
+                            e.preventDefault();
+                            submitWithProgress(annonceForm);
+                        }
                     });
+
+                    function submitWithProgress(form) {
+                        const bar = document.getElementById('savingProgressBar');
+                        const pctEl = document.getElementById('savingProgressPct');
+                        const titleEl = document.getElementById('savingTitle');
+
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', form.action, true);
+                        // Pas d'en-tête X-Requested-With : on veut que le serveur réponde
+                        // en HTML (redirection succès / page avec erreurs), pas en JSON.
+
+                        xhr.upload.addEventListener('progress', function (ev) {
+                            if (!ev.lengthComputable) return;
+                            const pct = Math.round((ev.loaded / ev.total) * 100);
+                            if (bar) bar.style.width = pct + '%';
+                            if (pctEl) pctEl.textContent = pct + '%';
+                            if (pct >= 100) {
+                                if (titleEl) titleEl.textContent = 'Finalisation en cours…';
+                                if (pctEl) pctEl.textContent = 'Traitement de vos photos';
+                            }
+                        });
+
+                        xhr.onload = function () {
+                            const url = xhr.responseURL || form.action;
+                            // Succès -> page "mes annonces" : navigation propre
+                            if (/mes-annonces/.test(url)) {
+                                window.location.href = url;
+                                return;
+                            }
+                            // Sinon (erreurs de validation) : réafficher la page renvoyée
+                            try {
+                                document.open();
+                                document.write(xhr.responseText);
+                                document.close();
+                                history.replaceState(null, '', url);
+                            } catch (err) {
+                                // En dernier recours, on renvoie le formulaire normalement
+                                form.submit();
+                            }
+                        };
+
+                        xhr.onerror = function () {
+                            const overlay = document.getElementById('savingOverlay');
+                            if (overlay) overlay.classList.remove('active');
+                            const btn = document.getElementById('submitButton');
+                            if (btn) {
+                                btn.disabled = false;
+                                btn.style.opacity = '1';
+                                btn.style.cursor = 'pointer';
+                                btn.textContent = "Enregistrer l'annonce";
+                            }
+                            alert('Une erreur réseau est survenue. Vérifiez votre connexion et réessayez.');
+                        };
+
+                        xhr.send(new FormData(form));
+                    }
 
                     // --- Credit Services Logic ---
                     const serviceCheckboxes = document.querySelectorAll('.service-checkbox');
