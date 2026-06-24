@@ -325,6 +325,57 @@
         .landing-products-grid { grid-template-columns: 1fr; }
     }
 
+    /* ===== COUNTDOWN TIMER ===== */
+    .campaign-timer-container {
+        margin-top: 20px;
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+    }
+    .timer-block {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 10px 15px;
+        border-radius: 12px;
+        min-width: 70px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .timer-val {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: #fff;
+        line-height: 1;
+    }
+    .timer-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        margin-top: 4px;
+        letter-spacing: 0.5px;
+    }
+    .timer-expired-msg {
+        margin-top: 15px;
+        padding: 8px 20px;
+        background: #d32f2f;
+        color: #fff;
+        font-weight: 700;
+        border-radius: 50px;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        .campaign-timer-container { gap: 8px; }
+        .timer-block { min-width: 55px; padding: 8px 10px; }
+        .timer-val { font-size: 1.2rem; }
+        .timer-label { font-size: 0.55rem; }
+    }
+
     /* ===== RAKUTEN STYLE TABS ===== */
     .rakuten-tabs-section {
         margin-top: 4rem;
@@ -442,7 +493,7 @@
 {{-- HERO BANNER --}}
 @php
     $heroImg = $coupon->landing_page_image ?? $coupon->banner_image;
-    $heroTitle = "OFFRE SPÉCIALE : " . $coupon->code;
+    $heroTitle = $campaign ? $campaign->title : "OFFRE SPÉCIALE : " . $coupon->code;
     $heroSubtitle = ($coupon->type === 'percent' ? '-' . $coupon->value . '%' : '-' . number_format($coupon->value, 0) . ' FCFA') . ' de remise !';
 @endphp
 
@@ -456,6 +507,31 @@
                 <i class="fas fa-search n1-banner-search-icon"></i>
                 <input type="text" id="n1-page-search" class="n1-banner-search-input" placeholder="Rechercher dans cette offre..." oninput="handleInPageSearch(this.value)">
             </div>
+
+            {{-- COUNTDOWN TIMER --}}
+            @if($campaign && $campaign->ends_at)
+                <div id="campaign-countdown" class="campaign-timer-container" data-end="{{ $campaign->ends_at->format('Y-m-d H:i:s') }}">
+                    <div class="timer-block">
+                        <span class="timer-val" id="days">00</span>
+                        <span class="timer-label">Jours</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-val" id="hours">00</span>
+                        <span class="timer-label">Heures</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-val" id="minutes">00</span>
+                        <span class="timer-label">Min</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-val" id="seconds">00</span>
+                        <span class="timer-label">Sec</span>
+                    </div>
+                </div>
+                <div id="timer-expired" class="timer-expired-msg" style="display: none;">
+                    <i class="fas fa-clock"></i> Cette offre a expiré
+                </div>
+            @endif
         </div>
     </div>
 @else
@@ -468,6 +544,31 @@
                 <i class="fas fa-search n1-banner-search-icon"></i>
                 <input type="text" id="n1-page-search" class="n1-banner-search-input" placeholder="Rechercher dans cette offre..." oninput="handleInPageSearch(this.value)">
             </div>
+
+            {{-- COUNTDOWN TIMER --}}
+            @if($campaign && $campaign->ends_at)
+                <div id="campaign-countdown" class="campaign-timer-container" data-end="{{ $campaign->ends_at->format('Y-m-d H:i:s') }}">
+                    <div class="timer-block">
+                        <span class="timer-val" id="days">00</span>
+                        <span class="timer-label">Jours</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-val" id="hours">00</span>
+                        <span class="timer-label">Heures</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-val" id="minutes">00</span>
+                        <span class="timer-label">Min</span>
+                    </div>
+                    <div class="timer-block">
+                        <span class="timer-val" id="seconds">00</span>
+                        <span class="timer-label">Sec</span>
+                    </div>
+                </div>
+                <div id="timer-expired" class="timer-expired-msg" style="display: none;">
+                    <i class="fas fa-clock"></i> Cette offre a expiré
+                </div>
+            @endif
         </div>
     </div>
 @endif
@@ -485,7 +586,7 @@
             <a href="{{ route('search.index', ['category' => $category->slug]) }}">{{ $category->nom }}</a>
             <span>›</span>
         @endif
-        <span style="color: #333; font-weight: 700;">{{ $coupon->code }}</span>
+        <span style="color: #333; font-weight: 700;">{{ $campaign ? $campaign->title : $coupon->code }}</span>
     </div>
 </div>
 
@@ -550,7 +651,13 @@
                     <div class="landing-grid-card-body">
                         <div class="landing-grid-card-title">{{ $annonce->titre }}</div>
                         <div class="landing-grid-card-state">{{ $annonce->produit ? ucfirst($annonce->produit->etat) : 'Neuf' }}</div>
-                        <div class="landing-grid-card-price">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</div>
+                        <div class="landing-grid-card-price-container" style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
+                            <div class="landing-grid-card-price" style="font-size: 1.15rem; font-weight: 800; color: #ff8c00;">{{ number_format($annonce->prix, 0, ',', ' ') }} FCFA</div>
+                            @if($annonce->prix_original && $annonce->prix_original > $annonce->prix)
+                                <div class="landing-grid-card-old-price" style="font-size: 0.85rem; color: #999; text-decoration: line-through;">{{ number_format($annonce->prix_original, 0, ',', ' ') }} FCFA</div>
+                                <div class="landing-grid-card-discount" style="font-size: 0.75rem; font-weight: 700; color: #d32f2f; background: #ffebee; padding: 2px 6px; border-radius: 4px;">-{{ $annonce->discount_percentage }}%</div>
+                            @endif
+                        </div>
                         @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
                             <div class="landing-grid-card-seller">
                                 Par {{ $annonce->vendeur->professionnel->nom_entreprise ?? 'Boutique' }}
@@ -671,5 +778,44 @@ function handleInPageSearch(query) {
         }
     });
 }
+
+// COUNTDOWN TIMER LOGIC
+document.addEventListener('DOMContentLoaded', function() {
+    const countdownEl = document.getElementById('campaign-countdown');
+    if (!countdownEl) return;
+
+    const endDateStr = countdownEl.getAttribute('data-end');
+    if (!endDateStr) return;
+
+    const endDate = new Promise((resolve) => {
+        const d = new Date(endDateStr.replace(/-/g, "/"));
+        resolve(d.getTime());
+    });
+
+    endDate.then(endValue => {
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = endValue - now;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                countdownEl.style.display = 'none';
+                const expiredMsg = document.getElementById('timer-expired');
+                if (expiredMsg) expiredMsg.style.display = 'inline-block';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }, 1000);
+    });
+});
 </script>
 @endpush

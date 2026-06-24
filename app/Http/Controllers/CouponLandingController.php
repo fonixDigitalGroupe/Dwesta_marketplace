@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Annonce;
 use App\Models\Coupon;
 use App\Models\Category;
+use App\Models\Campaign;
 use Illuminate\Http\Request;
 
 class CouponLandingController extends Controller
@@ -17,6 +18,15 @@ class CouponLandingController extends Controller
         $coupon = Coupon::where('code', $code)
             ->where('is_active', true)
             ->firstOrFail();
+
+        // Récupérer la campagne active associée à ce coupon
+        $campaign = Campaign::where('coupon_id', $coupon->id)
+            ->where(function($q) {
+                $q->whereNull('ends_at')
+                  ->orWhere('ends_at', '>=', now());
+            })
+            ->latest()
+            ->first();
 
         $categoryIds = collect();
         $category = null;
@@ -117,6 +127,7 @@ class CouponLandingController extends Controller
 
         return view('coupons.landing', compact(
             'coupon', 
+            'campaign',
             'category', 
             'annonces',
             'topConsultes',
