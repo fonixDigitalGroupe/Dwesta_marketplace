@@ -5,7 +5,7 @@
 @push('styles')
     <style>
         .main-content { background-color: #f8f9fa !important; }
-        .amazon-card { background: #fff; border: 1px solid #eff3f6; border-radius: 8px; padding: 24px; margin-bottom: 20px; }
+        .ship-section { background: transparent; border: none; padding: 0; }
         .section-title { font-size: 0.75rem; font-weight: 700; color: #475569; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; text-transform: uppercase; letter-spacing: 0.06em; }
         .field-label { display: block; font-size: 0.72rem; font-weight: 600; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
         
@@ -21,7 +21,7 @@
         .badge-relais { background: #fef2f2; color: #991b1b; }
         
         input, select { width: 100%; padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.85rem; outline: none; transition: all 0.2s; }
-        input:focus, select:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        input:focus, select:focus { border-color: #ff9900 !important; box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.15); }
     </style>
 @endpush
 
@@ -30,11 +30,21 @@
 @endsection
 
 @section('content')
-<div style="max-width: 1200px; margin: 0 auto; padding: 24px;">
-    <div style="display: grid; grid-template-columns: 1fr 350px; gap: 24px;">
-        
+<div style="max-width: 1200px; margin: 0 auto;">
+    <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+
+        {{-- Card Header --}}
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                <i class="fas fa-truck" style="font-size: 0.8rem;"></i>
+                <span>Gestion des Frais de Livraison</span>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 350px; gap: 24px; align-items: start;">
+
         <!-- Liste des Règles -->
-        <div class="amazon-card">
+        <div class="ship-section">
             <h3 class="section-title">Tarifs Actuels (Marketplace Standard)</h3>
             <table class="shipping-table">
                 <thead>
@@ -102,7 +112,7 @@
         </div>
 
         <!-- Formulaire d'ajout -->
-        <div class="amazon-card">
+        <div class="ship-section">
             <h3 class="section-title">Nouvelle Règle</h3>
             <form action="{{ route('admin.shipping.store') }}" method="POST">
                 @csrf
@@ -160,6 +170,7 @@
             </div>
         </div>
 
+        </div>
     </div>
 </div>
 @endsection
