@@ -69,17 +69,6 @@
                         @php
                             $unreadCount = auth()->user()->unreadMessagesCount();
                         @endphp
-                        <a href="{{ route('conversations.index') }}" class="header-link header-msg-link" style="position: relative; display: inline-flex; align-items: center;" title="Messagerie">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 24px; height: 24px;">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                            </svg>
-                            @if($unreadCount > 0)
-                                <span class="hdr-badge" style="position: absolute; top: -8px; right: -8px; background: #e11d48 !important; color: white !important; border-radius: 50%; min-width: 18px; height: 18px; padding: 0 4px; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 999 !important;">
-                                    {{ $unreadCount > 9 ? '9+' : $unreadCount }}
-                                </span>
-                            @endif
-                        </a>
                         @if(auth()->check() && auth()->user()->hasRole('admin'))
                             <a href="{{ route('admin.categories.l1') }}" class="header-link">
                                 <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
