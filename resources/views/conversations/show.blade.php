@@ -493,6 +493,9 @@
     @media (max-width: 767px) {
         .wa-sidebar { display: none; }
         .back-btn { display: flex !important; }
+        /* Bulles de message plus larges en vue détaillée mobile */
+        .message-card { max-width: 90% !important; }
+        .messages-viewport { padding: 16px 12px !important; }
     }
     /* Product preview bar in input */
     .product-preview-bar {
