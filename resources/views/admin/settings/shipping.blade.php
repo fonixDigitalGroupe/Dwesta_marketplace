@@ -12,13 +12,13 @@
         .btn-amazon-primary { background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%); border: none; color: #fff; padding: 8px 16px; border-radius: 4px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
         .btn-amazon-danger { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; padding: 6px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; cursor: pointer; }
         
-        .shipping-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .shipping-table th { text-align: left; font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; padding: 12px; border-bottom: 2px solid #f1f5f9; }
-        .shipping-table td { padding: 12px; border-bottom: 1px solid #f1f5f9; font-size: 0.85rem; color: #475569; }
-        
         .badge { padding: 4px 8px; border-radius: 99px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
         .badge-domicile { background: #eff6ff; color: #1e40af; }
         .badge-relais { background: #fef2f2; color: #991b1b; }
+
+        .badge-amazon { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 12px; }
+        .badge-amazon-success { color: #569b00; background: #f7fff0; }
+        .badge-amazon-danger { color: #c40000; background: #fff5f5; }
         
         input, select { width: 100%; padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.85rem; outline: none; transition: all 0.2s; }
         input:focus, select:focus { border-color: #ff9900 !important; box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.15); }
@@ -46,69 +46,75 @@
         <!-- Liste des Règles -->
         <div class="ship-section">
             <h3 class="section-title">Tarifs Actuels (Marketplace Standard)</h3>
-            <table class="shipping-table">
+            <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
                 <thead>
-                    <tr>
-                        <th>Source</th>
-                        <th>Destination</th>
-                        <th>Type</th>
-                        <th>Délai</th>
-                        <th>Prix</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Source</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Destination</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Type</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Délai</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Prix</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 90px;">Statut</th>
+                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 110px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($rules as $rule)
-                        <tr>
-                            <td style="font-weight: 700;">
+                        <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
+                            onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #111; border-right: 1px solid #eff3f6;">
                                 {{ $rule->sourceCountry->flag ?? '🌍' }} {{ $rule->sourceCountry->name ?? 'Tous' }}
                             </td>
-                            <td style="font-weight: 700;">
+                            <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #111; border-right: 1px solid #eff3f6;">
                                 {{ $rule->destinationCountry->flag ?? '🌍' }} {{ $rule->destinationCountry->name ?? 'Tous' }}
                                 @if($rule->zone_name)
                                     <br><small style="color: #64748b; font-weight: normal;">Zone: {{ $rule->zone_name }}</small>
                                 @endif
                             </td>
-                            <td>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                                 <span class="badge {{ $rule->delivery_type == 'livraison_domicile' ? 'badge-domicile' : 'badge-relais' }}">
                                     {{ $rule->delivery_type == 'livraison_domicile' ? 'À Domicile' : 'Point Relais' }}
                                 </span>
                             </td>
-                            <td><small style="color: #64748b;">{{ $rule->delivery_delay ?? '-' }}</small></td>
-                            <td style="font-weight: 700; color: #1e293b;">{{ number_format($rule->price, 0, ',', ' ') }} F</td>
-                            <td>
+                            <td style="padding: 12px 15px; font-size: 0.8rem; color: #64748b; text-align: center; border-right: 1px solid #eff3f6;">{{ $rule->delivery_delay ?? '-' }}</td>
+                            <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #1e293b; text-align: center; border-right: 1px solid #eff3f6;">{{ number_format($rule->price, 0, ',', ' ') }} F</td>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                                 <form action="{{ route('admin.shipping.toggle', $rule->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
-                                    <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
+                                    <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;" title="{{ $rule->is_active ? 'Désactiver' : 'Activer' }}">
                                         @if($rule->is_active)
-                                            <span style="color: #10b981;"><i class="fas fa-toggle-on fa-lg"></i></span>
+                                            <span class="badge-amazon badge-amazon-success">Active</span>
                                         @else
-                                            <span style="color: #94a3b8;"><i class="fas fa-toggle-off fa-lg"></i></span>
+                                            <span class="badge-amazon badge-amazon-danger">Inactive</span>
                                         @endif
                                     </button>
                                 </form>
                             </td>
-                            <td>
-                                <form action="{{ route('admin.shipping.destroy', $rule->id) }}" method="POST" onsubmit="return confirm('Supprimer cette règle ?')">
+                            <td style="padding: 12px 15px; text-align: right;">
+                                <form action="{{ route('admin.shipping.destroy', $rule->id) }}" method="POST" onsubmit="return confirm('Supprimer cette règle ?')" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-amazon-danger">
-                                        <i class="fas fa-trash"></i>
+                                    <button type="submit"
+                                            style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                            onmouseover="this.style.textDecoration='underline'"
+                                            onmouseout="this.style.textDecoration='none'">
+                                        Supprimer
                                     </button>
                                 </form>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="text-align: center; padding: 40px; color: #94a3b8;">
+                            <td colspan="7" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
                                 Aucune règle de livraison configurée.
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
 
         <!-- Formulaire d'ajout -->
