@@ -310,6 +310,15 @@
             .hide-on-mobile-account {
                 display: none !important;
             }
+            /* Colle le premier contenu visible juste sous la barre retour */
+            .hide-on-mobile-account + * {
+                margin-top: 0.25rem !important;
+            }
+            /* Neutralise les marges hautes des premiers éléments fréquents */
+            .main-content > .jumia-tabs:first-child,
+            .main-content > *:first-child {
+                margin-top: 0 !important;
+            }
         }
         
         .rakuten-mobile-nav {
@@ -488,7 +497,7 @@
                             // Rapproche le premier élément de contenu de la barre retour
                             var next = wrapper.nextElementSibling;
                             if (next && window.matchMedia('(max-width: 1024px)').matches) {
-                                next.style.marginTop = '0.4rem';
+                                next.style.marginTop = '0.25rem';
                             }
                         } else {
                             h1.classList.add('hide-on-mobile-account');
