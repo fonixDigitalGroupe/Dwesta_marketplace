@@ -143,11 +143,6 @@
                 </div>
 
                 <div style="margin-bottom: 20px;">
-                    <label class="field-label">Zone / Région de destination (Optionnel)</label>
-                    <input type="text" name="zone_name" placeholder="ex: Dakar, National...">
-                </div>
-
-                <div style="margin-bottom: 20px;">
                     <label class="field-label">Mode de Livraison</label>
                     <select name="delivery_type" required>
                         <option value="livraison_domicile">Livraison à domicile</option>
