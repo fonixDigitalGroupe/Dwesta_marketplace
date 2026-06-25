@@ -104,12 +104,9 @@
     <div class="gm-card">
         {{-- Toolbar --}}
         <div class="gm-toolbar">
-            <button type="button" class="gm-compose" onclick="openCompose()">
+            <button type="button" class="gm-compose" style="margin-left: auto;" onclick="openCompose()">
                 <i class="fas fa-pen"></i> Nouveau message
             </button>
-            <div class="gm-title" style="margin-left: auto;">
-                <i class="fas fa-inbox"></i> Boîte de réception
-            </div>
         </div>
 
         {{-- Liste des conversations --}}
