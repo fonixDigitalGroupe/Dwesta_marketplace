@@ -37,7 +37,9 @@
         <div class="sidebar-section">
             <ul class="sidebar-menu">
                 <li><a href="{{ route('admin.finance.index') }}" class="{{ request()->routeIs('admin.finance.*') ? 'active' : '' }}"><i class="fas fa-chart-bar"></i> <span>Détails Financiers</span></a></li>
+                @if(Route::has('admin.messagerie.index'))
                 <li><a href="{{ route('admin.messagerie.index') }}" class="{{ request()->routeIs('admin.messagerie.*') ? 'active' : '' }}"><i class="fas fa-envelope"></i> <span>Messagerie</span></a></li>
+                @endif
             </ul>
         </div>
 
