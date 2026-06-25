@@ -183,12 +183,12 @@
                 display: none !important;
             }
 
-            /* Page "Mon compte" : menu en liste (comme l'app) sur mobile */
+            /* Page "Mon compte" : menu en liste (comme l'app) sur mobile, sans cadre */
             .sidebar-standard.acc-index {
                 display: block !important;
                 background: #fff;
-                border: 1px solid #e0e0e0;
-                border-radius: 6px;
+                border: none;
+                border-radius: 0;
                 overflow: hidden;
             }
             .sidebar-standard.acc-index .sidebar-item {
