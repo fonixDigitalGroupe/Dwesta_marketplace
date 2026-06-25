@@ -224,7 +224,7 @@
                 display: none;
             }
             .mobile-account-greeting {
-                display: block;
+                display: block !important;
                 background: #f68b1e;
                 color: #fff;
                 padding: 16px;
