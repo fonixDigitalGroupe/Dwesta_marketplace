@@ -514,6 +514,11 @@
                                 </svg>
                             </a>
                         </div>
+
+                        <p style="text-align: center; color: #888; font-size: 0.78rem; line-height: 1.5; margin-top: 1.25rem;">
+                            En continuant, vous acceptez les conditions d'utilisation de Karnou<br>
+                            <a href="{{ route('terms') }}" style="color: #004aad; text-decoration: underline;">Termes et conditions</a>
+                        </p>
                     </form>
                 </div>
 
