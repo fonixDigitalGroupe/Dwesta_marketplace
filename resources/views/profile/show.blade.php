@@ -55,8 +55,9 @@
             margin-bottom: 1rem;
         }
 
-        @media (max-width: 768px) {
-            /* Un champ par ligne (prénom, nom, nationalité, etc.) */
+        /* Aligné sur le breakpoint mobile de l'espace compte (1024px) :
+           un champ par ligne (prénom, nom, nationalité, etc.) */
+        @media (max-width: 1024px) {
             .rakuten-form-grid {
                 grid-template-columns: 1fr !important;
             }
@@ -225,7 +226,7 @@
             margin: 0;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .content-header {
                 flex-direction: column;
                 align-items: flex-start;
