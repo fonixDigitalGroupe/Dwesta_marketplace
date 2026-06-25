@@ -302,9 +302,9 @@
                 text-decoration: none;
             }
             .account-topbar-title {
-                font-weight: 700;
-                font-size: 1.05rem;
-                color: #222;
+                font-weight: 600;
+                font-size: 1.15rem;
+                color: #333;
             }
             /* Évite le doublon du titre (déjà affiché dans la barre) */
             .hide-on-mobile-account {
@@ -323,6 +323,15 @@
         
         .rakuten-mobile-nav {
             display: none;
+        }
+
+        /* Titre de page uniforme sur tout l'espace compte (référence : « Vos commandes »).
+           S'applique en desktop comme en mobile, pour toutes les pages incluant la sidebar. */
+        .main-content h1 {
+            font-size: 1.15rem !important;
+            font-weight: 600 !important;
+            color: #333 !important;
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
         }
 
         /* L'en-tête de bienvenue n'apparaît que sur mobile */
