@@ -4,9 +4,9 @@
 
 @push('styles')
     <style>
-        .main-content { background-color: #f8f9fa !important; }
+        .main-content { background-color: #fff !important; }
 
-        .gm-card { background: #fff; border: 1px solid #eff3f6; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .gm-card { background: #fff; border: 1px solid #eff3f6; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); min-height: 78vh; display: flex; flex-direction: column; }
 
         /* Barre d'outils (façon Gmail) */
         .gm-toolbar {
@@ -34,7 +34,8 @@
         }
         .gm-row:hover { box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px rgba(60,64,67,.2); z-index: 1; }
         .gm-row.unread { background: #fff; }
-        .gm-row.read { background: #f6f8fc; }
+        .gm-row.read { background: #fff; }
+        .gm-list { flex: 1; }
 
         .gm-avatar {
             width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
@@ -88,7 +89,7 @@
 @php
     $palette = ['#1a73e8','#ea4335','#fbbc04','#34a853','#a142f4','#f5511e','#00897b','#d81b60'];
 @endphp
-<div style="max-width: 1100px; margin: 20px auto 0; width: 100%;">
+<div style="max-width: 1100px; margin: 0 auto; width: 100%;">
 
     @if(session('success'))
         <div class="alert-ok"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
@@ -123,7 +124,7 @@
                     $color = $palette[($other->id ?? 0) % count($palette)];
                     $isVendeur = $other && $other->vendeur;
                 @endphp
-                <a href="{{ route('conversations.show', $conv) }}" class="gm-row {{ $isUnread ? 'unread' : 'read' }}">
+                <a href="{{ route('admin.messagerie.show', $conv) }}" class="gm-row {{ $isUnread ? 'unread' : 'read' }}">
                     @if($isUnread)<span class="gm-unread-dot"></span>@else<span style="width:8px;flex-shrink:0;"></span>@endif
                     <div class="gm-avatar" style="background: {{ $color }};">{{ $initial }}</div>
                     <div class="gm-mid">

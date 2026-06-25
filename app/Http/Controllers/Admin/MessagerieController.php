@@ -38,6 +38,57 @@ class MessagerieController extends Controller
     }
 
     /**
+     * Affiche le détail d'une conversation DANS l'admin (pas côté marketplace).
+     */
+    public function show(Conversation $conversation)
+    {
+        $adminId = Auth::id();
+
+        if ($conversation->user1_id != $adminId && $conversation->user2_id != $adminId) {
+            abort(403);
+        }
+
+        $other = $conversation->user1_id == $adminId ? $conversation->user2 : $conversation->user1;
+
+        // Marque comme lus les messages reçus
+        $conversation->messages()
+            ->where('sender_id', '!=', $adminId)
+            ->whereNull('read_at')
+            ->update(['read_at' => now()]);
+
+        $messages = $conversation->messages()->with('sender')->orderBy('created_at')->get();
+
+        return view('admin.messagerie.show', compact('conversation', 'other', 'messages', 'adminId'));
+    }
+
+    /**
+     * Répond dans une conversation depuis l'admin.
+     */
+    public function reply(Request $request, Conversation $conversation)
+    {
+        $adminId = Auth::id();
+
+        if ($conversation->user1_id != $adminId && $conversation->user2_id != $adminId) {
+            abort(403);
+        }
+
+        $request->validate([
+            'message' => 'required|string|max:5000',
+        ], [
+            'message.required' => 'Le message est obligatoire.',
+        ]);
+
+        $conversation->messages()->create([
+            'sender_id' => $adminId,
+            'content'   => $request->input('message'),
+        ]);
+
+        $conversation->update(['last_message_at' => now()]);
+
+        return redirect()->route('admin.messagerie.show', $conversation)->with('success', 'Réponse envoyée.');
+    }
+
+    /**
      * Envoie un message à un utilisateur précis, à tous les vendeurs ou à tous les clients.
      */
     public function send(Request $request)

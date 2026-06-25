@@ -221,6 +221,8 @@ Route::middleware('auth')->group(function () {
             Route::prefix('messagerie')->name('messagerie.')->group(function () {
                 Route::get('/', [\App\Http\Controllers\Admin\MessagerieController::class, 'index'])->name('index');
                 Route::post('/send', [\App\Http\Controllers\Admin\MessagerieController::class, 'send'])->name('send');
+                Route::get('/{conversation}', [\App\Http\Controllers\Admin\MessagerieController::class, 'show'])->name('show');
+                Route::post('/{conversation}/reply', [\App\Http\Controllers\Admin\MessagerieController::class, 'reply'])->name('reply');
             });
 
 
