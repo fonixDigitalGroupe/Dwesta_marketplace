@@ -194,12 +194,15 @@
             }
 
             /* Page "Mon compte" : menu en liste (comme l'app) sur mobile, sans cadre.
+               Pleine largeur : on annule le padding latéral (0.5rem) du conteneur.
                Pas d'overflow:hidden ici sinon il rogne la marge négative du bandeau. */
             .sidebar-standard.acc-index {
                 display: block !important;
                 background: #fff;
                 border: none;
                 border-radius: 0;
+                margin-left: -0.5rem;
+                margin-right: -0.5rem;
             }
             .sidebar-standard.acc-index .sidebar-item {
                 padding: 14px 16px;
@@ -228,9 +231,9 @@
                 background: #f68b1e;
                 color: #fff;
                 padding: 16px;
-                /* Collé au header et pleine largeur : annule le padding du
-                   .dashboard-container (1rem en haut, 0.5rem sur les côtés). */
-                margin: -1rem -0.5rem 0;
+                /* Collé au header. Le conteneur .sidebar-standard.acc-index gère déjà
+                   la pleine largeur (marges latérales négatives) -> ici, seulement le haut. */
+                margin: -1rem 0 0;
             }
 
             .main-content {
