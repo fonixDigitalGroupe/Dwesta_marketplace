@@ -191,9 +191,6 @@
                             <label class="field-label">Message aux vendeurs <span style="color: red;">*</span></label>
                             <textarea name="message" rows="10" required placeholder="Contenu du message...">{{ old('message', $campaign->message) }}</textarea>
                             @error('message') <p style="color: #dc2626; font-size: 0.75rem; margin-top: 5px;">{{ $message }}</p> @enderror
-                            <p style="font-size: 0.75rem; color: #64748b; margin-top: 12px; line-height: 1.4;">
-                                <i class="fas fa-info-circle"></i> Note : La modification de ce message ne renverra pas la campagne. Cela met uniquement à jour l'historique de consultation.
-                            </p>
                         </div>
                     </div>
                 </div>
