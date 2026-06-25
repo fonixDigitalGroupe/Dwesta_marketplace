@@ -91,7 +91,7 @@
                 <div style="display: flex; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff;">
                     <input type="text" name="search" value="{{ request('search') }}"
                            placeholder="Nom de l'onglet..."
-                           style="padding: 8px 12px; border: none; outline: none; width: 220px; font-size: 0.85rem; background: transparent;">
+                           style="padding: 8px 12px; border: none; outline: none; width: 380px; max-width: 100%; font-size: 0.85rem; background: transparent;">
                     <button type="submit"
                         style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: none; color: #fff; padding: 0 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-search"></i>
