@@ -61,4 +61,11 @@ return [
         'mode' => env('PAYDUNYA_MODE', 'test'),
     ],
 
+    'orange_sms' => [
+        'client_id'     => env('ORANGE_SMS_CLIENT_ID'),
+        'client_secret' => env('ORANGE_SMS_CLIENT_SECRET'),
+        'sender_number' => env('ORANGE_SMS_SENDER_NUMBER'),
+        'sender_name'   => env('ORANGE_SMS_SENDER_NAME', 'Karnou'),
+    ],
+
 ];
