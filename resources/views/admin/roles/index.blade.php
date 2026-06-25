@@ -104,11 +104,7 @@
                 </div>
 
                 <div style="display: flex; gap: 8px;">
-                    <a href="javascript:window.print()" class="btn-amazon-secondary">
-                        <i class="fas fa-print"></i> Imprimer
-                    </a>
-                    
-                    <a href="{{ route('admin.roles.create') }}" class="btn-amazon-primary">
+                    <a href="{{ route('admin.roles.create') }}" class="btn-amazon-primary" style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border-color: #c05d00;">
                         <i class="fas fa-plus"></i> Nouveau rôle
                     </a>
                 </div>
@@ -155,6 +151,8 @@
                 </thead>
                 <tbody>
                     @forelse($roles as $role)
+                        {{-- On n'affiche pas les rôles de type « Personnel » (uniquement les rôles système) --}}
+                        @continue(!in_array($role->name, ['admin', 'vendeur', 'client']))
                         <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 12px 15px; font-size: 0.8rem; border-right: 1px solid #eff3f6;">
