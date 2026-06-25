@@ -24,6 +24,16 @@
         }
         .gm-compose:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.18); background: #b3dffc; }
 
+        /* Onglets Réception / Envoyés */
+        .gm-tabbtn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 16px; border-radius: 999px;
+            font-size: 0.8rem; font-weight: 600; text-decoration: none;
+            color: #5f6368; background: #f1f3f4; border: 1px solid transparent; transition: all 0.2s;
+        }
+        .gm-tabbtn:hover { background: #e8eaed; color: #202124; }
+        .gm-tabbtn.active { background: #e8f0fe; color: #1a73e8; border-color: #d2e3fc; }
+
         /* Liste façon Gmail */
         .gm-list { list-style: none; margin: 0; padding: 0; }
         .gm-row {
@@ -103,10 +113,17 @@
         @endif
 
         {{-- Card Header (style banners) --}}
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 16px;">
-            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
-                <i class="fas fa-envelope" style="font-size: 0.8rem;"></i>
-                <span>Messagerie</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 16px; gap: 16px; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                @php $isSent = ($folder ?? 'inbox') === 'sent'; @endphp
+                <a href="{{ route('admin.messagerie.index', ['folder' => 'inbox']) }}"
+                   class="gm-tabbtn {{ !$isSent ? 'active' : '' }}">
+                    <i class="fas fa-inbox"></i> Réception
+                </a>
+                <a href="{{ route('admin.messagerie.index', ['folder' => 'sent']) }}"
+                   class="gm-tabbtn {{ $isSent ? 'active' : '' }}">
+                    <i class="fas fa-paper-plane"></i> Envoyés
+                </a>
             </div>
             <button type="button" class="gm-compose" onclick="openCompose()">
                 <i class="fas fa-pen"></i> Nouveau message

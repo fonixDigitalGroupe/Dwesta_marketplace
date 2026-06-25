@@ -13,9 +13,10 @@ class MessagerieController extends Controller
     /**
      * Page d'envoi + liste des conversations de l'admin.
      */
-    public function index()
+    public function index(Request $request)
     {
         $adminId = Auth::id();
+        $folder = $request->get('folder') === 'sent' ? 'sent' : 'inbox';
 
         // Destinataires possibles (hors admin)
         $users = User::where('id', '!=', $adminId)
@@ -24,17 +25,29 @@ class MessagerieController extends Controller
             ->orderBy('prenom')
             ->get();
 
-        // Conversations impliquant l'admin (les plus récentes d'abord)
-        $conversations = Conversation::where('user1_id', $adminId)
-            ->orWhere('user2_id', $adminId)
-            ->with([
+        // Conversations impliquant l'admin
+        $query = Conversation::where(function ($q) use ($adminId) {
+            $q->where('user1_id', $adminId)->orWhere('user2_id', $adminId);
+        });
+
+        // Filtre selon l'expéditeur du dernier message :
+        // Réception = dernier message reçu (≠ admin) ; Envoyés = dernier message de l'admin.
+        $lastSenderSub = '(select sender_id from messages where messages.conversation_id = conversations.id order by created_at desc limit 1)';
+        if ($folder === 'sent') {
+            $query->whereRaw("$lastSenderSub = ?", [$adminId]);
+        } else {
+            $query->whereRaw("$lastSenderSub <> ?", [$adminId]);
+        }
+
+        $conversations = $query->with([
                 'user1', 'user2',
                 'messages' => fn ($q) => $q->latest()->limit(1),
             ])
             ->orderByDesc('last_message_at')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
-        return view('admin.messagerie.index', compact('users', 'conversations', 'adminId'));
+        return view('admin.messagerie.index', compact('users', 'conversations', 'adminId', 'folder'));
     }
 
     /**
