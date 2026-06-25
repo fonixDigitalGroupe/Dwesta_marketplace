@@ -595,7 +595,7 @@ class VendeurController extends Controller
             ->with(['category', 'produit'])
             ->orderByRaw("FIELD(disponibilite, 'rupture_stock', 'sur_commande', 'en_stock')")
             ->orderBy('titre')
-            ->paginate(12, ['*'], 'stock_page')
+            ->paginate(5, ['*'], 'stock_page')
             ->appends($request->except('stock_page') + ['tab' => 'stock']);
 
         return view('vendeur.stats', compact(

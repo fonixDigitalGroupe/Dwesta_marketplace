@@ -243,6 +243,59 @@
         gap: 5px;
     }
 
+    /* ── Pagination professionnelle ── */
+    .karnou-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        flex-wrap: wrap;
+    }
+    .karnou-pagination .kp-link {
+        min-width: 38px;
+        height: 38px;
+        padding: 0 12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fff;
+        color: #374151;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all 0.18s ease;
+        box-sizing: border-box;
+    }
+    .karnou-pagination a.kp-link:hover {
+        border-color: #004aad;
+        color: #004aad;
+        background: #f5f8ff;
+    }
+    .karnou-pagination .kp-active {
+        background: #004aad;
+        border-color: #004aad;
+        color: #fff;
+        box-shadow: 0 2px 6px rgba(0, 74, 173, 0.25);
+        cursor: default;
+    }
+    .karnou-pagination .kp-disabled {
+        color: #d1d5db;
+        background: #fafafa;
+        cursor: not-allowed;
+    }
+    .karnou-pagination .kp-dots {
+        border-color: transparent;
+        background: transparent;
+        font-weight: 800;
+        color: #9ca3af;
+        cursor: default;
+    }
+    .karnou-pagination .kp-arrow {
+        font-size: 0.75rem;
+    }
+
     @media (max-width: 768px) {
         .stats-grid { grid-template-columns: 1fr; }
         .stats-tabs { gap: 1rem; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
@@ -548,7 +601,7 @@
 
                 @if($stockAnnonces->hasPages())
                     <div style="margin-top: 1.5rem;">
-                        {{ $stockAnnonces->links() }}
+                        {{ $stockAnnonces->links('vendor.pagination.karnou') }}
                     </div>
                 @endif
             </div>
