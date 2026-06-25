@@ -6,9 +6,53 @@
 <style>
     .main-content { background-color: #f8f9fa !important; }
     .sub-header-slot { display: none !important; }
+
+    .btn-amazon-primary {
+        background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
+        border: 1px solid #1e40af;
+        color: #fff;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+    }
+    .btn-amazon-primary:hover {
+        background: linear-gradient(180deg, #1d4ed8 0%, #1e3a8a 100%);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        color: #fff;
+    }
+
+    .btn-amazon-secondary {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        color: #475569;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+    }
+    .btn-amazon-secondary:hover {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        color: #1e293b;
+    }
+
+    .badge-amazon { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 12px; }
+    .badge-amazon-success { color: #569b00; background: #f7fff0; }
+    .badge-amazon-danger { color: #c40000; background: #fff5f5; }
+
     select:focus, input:focus {
-        border-color: #adb1b8 !important;
-        
+        border-color: #ff9900 !important;
         outline: none;
     }
 </style>
@@ -19,91 +63,89 @@
 @endsection
 
 @section('content')
-<div style="max-width: 100%; margin-top: -1px;">
+<div style="max-width: 1600px; margin: 20px auto 0; width: 100%;">
 
-    {{-- Main Conteneur style Amazon Card --}}
-    <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px;">
+    {{-- Main Card --}}
+    <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
-                Gestion des Onglets
-            </h1>
+        {{-- Card Header --}}
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                <i class="fas fa-layer-group" style="font-size: 0.8rem;"></i>
+                <span style="line-height: 1;">Gestion des Onglets</span>
+            </div>
             <div style="display: flex; gap: 8px;">
-                <a href="{{ route('admin.highlights.index') }}"
-                   style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 6px;">
-                    <i class="fas fa-arrow-left" style="font-size: 0.75rem; opacity: 0.6;"></i> Retour aux Actualités
+                <a href="{{ route('admin.highlights.index') }}" class="btn-amazon-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour aux Actualités
                 </a>
-                <a href="{{ route('admin.highlight-tabs.create') }}"
-                   style="background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset; display: flex; align-items: center; gap: 6px;">
-                    Nouveau groupe
+                <a href="{{ route('admin.highlight-tabs.create') }}" class="btn-amazon-primary">
+                    <i class="fas fa-plus"></i> Nouveau groupe
                 </a>
             </div>
         </div>
 
-        {{-- Barre de filtre --}}
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 16px; border-radius: 0; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555;">
-                <span>Afficher</span>
-                <select name="per_page" onchange="window.location.href = '{{ route('admin.highlight-tabs.index') }}?per_page=' + this.value + '&search={{ request('search') }}'"
-                    style="padding: 4px 6px; border: 1px solid #adb1b8; border-radius: 0; background: #f0f2f2; font-size: 0.8rem; color: #111; cursor: pointer; outline: none;">
-                    <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10</option>
-                    <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
-                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                </select>
-                <span>résultats par page</span>
-            </div>
-
-            <div style="font-size: 0.8rem;">
-                <form action="{{ route('admin.highlight-tabs.index') }}" method="GET" style="display: flex; align-items: center; gap: 8px;">
-                    <input type="hidden" name="per_page" value="{{ request('per_page', 10) }}">
-                    <span style="color: #555;">Rechercher :</span>
-                    <input type="text" name="search" value="{{ request('search') }}" 
+        {{-- Barre de filtre / recherche --}}
+        <div style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; display: flex; justify-content: flex-end; align-items: center;">
+            <form action="{{ route('admin.highlight-tabs.index') }}" method="GET" style="display: flex; align-items: center; gap: 10px; font-size: 0.8rem;">
+                <span style="color: #555; flex-shrink: 0;">Rechercher :</span>
+                <div style="display: flex; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff;">
+                    <input type="text" name="search" value="{{ request('search') }}"
                            placeholder="Nom de l'onglet..."
-                           style="padding: 6px 10px; border: 1px solid #adb1b8; border-radius: 0; outline: none; width: 220px; font-size: 0.8rem;">
-                </form>
-            </div>
+                           style="padding: 8px 12px; border: none; outline: none; width: 220px; font-size: 0.85rem; background: transparent;">
+                    <button type="submit"
+                        style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: none; color: #fff; padding: 0 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                @if(request('search'))
+                    <a href="{{ route('admin.highlight-tabs.index') }}"
+                       style="color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;"
+                       onmouseover="this.style.textDecoration='underline'"
+                       onmouseout="this.style.textDecoration='none'">Effacer</a>
+                @endif
+            </form>
         </div>
 
-        {{-- Table Amazon Design --}}
-        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e7e7e7;">
+        {{-- Table --}}
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
             <thead>
-                <tr style="background: #f6f6f6; border-bottom: 1px solid #e7e7e7;">
-                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 80px;">Ordre</th>
-                    <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Nom de l'onglet</th>
-                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 100px;">Statut</th>
+                <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 80px;">Ordre</th>
+                    <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Nom de l'onglet</th>
+                    <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Statut</th>
                     <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 150px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($tabs as $tab)
-                    <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
-                        <td style="padding: 12px 15px; text-align: center; font-size: 0.85rem; font-weight: 700; color: #555; border-right: 1px solid #e7e7e7;">
+                    <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 12px 15px; text-align: center; font-size: 0.85rem; font-weight: 700; color: #555; border-right: 1px solid #eff3f6;">
                             {{ $tab->position }}
                         </td>
-                        <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; font-weight: 500; border-right: 1px solid #e7e7e7;">
+                        <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; font-weight: 500; border-right: 1px solid #eff3f6;">
                             {{ $tab->name }}
                         </td>
-                        <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
+                        <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                             @if($tab->active)
-                                <span style="font-size: 0.75rem; color: #569b00; font-weight: 600;">Actif</span>
+                                <span class="badge-amazon badge-amazon-success">Actif</span>
                             @else
-                                <span style="font-size: 0.75rem; color: #c40000; font-weight: 600;">Désactivé</span>
+                                <span class="badge-amazon badge-amazon-danger">Désactivé</span>
                             @endif
                         </td>
                         <td style="padding: 12px 15px; text-align: right;">
                             <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                                <a href="{{ route('admin.highlight-tabs.edit', $tab) }}" 
+                                <a href="{{ route('admin.highlight-tabs.edit', $tab) }}"
                                    style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
-                                   onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'" 
+                                   onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
                                    onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
                                    Modifier
                                 </a>
                                 <span style="color: #ddd;">|</span>
                                 <form id="delete-tab-{{ $tab->id }}" action="{{ route('admin.highlight-tabs.destroy', $tab) }}" method="POST" style="display:inline;">
                                     @csrf @method('DELETE')
-                                    <button type="button" onclick="confirmDeleteTab({{ $tab->id }})" 
+                                    <button type="button" onclick="confirmDeleteTab({{ $tab->id }})"
                                             style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                            onmouseover="this.style.textDecoration='underline'" 
+                                            onmouseover="this.style.textDecoration='underline'"
                                             onmouseout="this.style.textDecoration='none'">
                                         Supprimer
                                     </button>
@@ -113,7 +155,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
+                        <td colspan="4" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
                             Aucun onglet configuré.
                         </td>
                     </tr>
@@ -121,17 +163,17 @@
             </tbody>
         </table>
 
-        {{-- Pagination Info & Links Harmonisée --}}
-        @if($tabs->total() > 0)
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0; margin-top: 10px;">
+        {{-- Pagination --}}
+        @if($tabs->hasPages())
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #eff3f6; border-radius: 4px; margin-top: 20px;">
                 <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
                     Affichage de {{ $tabs->firstItem() ?? 0 }} à {{ $tabs->lastItem() ?? 0 }} sur {{ $tabs->total() }} résultats
                 </div>
-                <div style="display: flex; border: 1px solid #adb1b8; border-radius: 0; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: #fff;">
+                <div style="display: flex; gap: 6px; align-items: center;">
                     @if($tabs->onFirstPage())
-                        <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;">Précédent</span>
+                        <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Précédent</span>
                     @else
-                        <a href="{{ $tabs->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">Précédent</a>
+                        <a href="{{ $tabs->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;">Précédent</a>
                     @endif
 
                     @php
@@ -141,16 +183,16 @@
 
                     @for($i = $pStart; $i <= $pEnd; $i++)
                         @if($i == $tabs->currentPage())
-                            <span style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #004aad;">{{ $i }}</span>
+                            <span style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border: 1px solid #1e40af; border-radius: 4px;">{{ $i }}</span>
                         @else
-                            <a href="{{ $tabs->url($i) }}" style="padding: 6px 12px; background: #fff; color: #555; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">{{ $i }}</a>
+                            <a href="{{ $tabs->url($i) }}" style="padding: 6px 12px; background: #fff; color: #64748b; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;">{{ $i }}</a>
                         @endif
                     @endfor
 
                     @if($tabs->hasMorePages())
-                        <a href="{{ $tabs->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;">Suivant</a>
+                        <a href="{{ $tabs->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;">Suivant</a>
                     @else
-                        <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;">Suivant</span>
+                        <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Suivant</span>
                     @endif
                 </div>
             </div>
