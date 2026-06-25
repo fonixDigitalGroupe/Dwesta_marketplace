@@ -176,6 +176,43 @@
                 display: none !important;
             }
 
+            /* Page "Mon compte" : menu en liste (comme l'app) sur mobile */
+            .sidebar-standard.acc-index {
+                display: block !important;
+                background: #fff;
+                border: 1px solid #e0e0e0;
+                border-radius: 6px;
+                overflow: hidden;
+            }
+            .sidebar-standard.acc-index .sidebar-item {
+                padding: 14px 16px;
+                border-bottom: 1px solid #f2f2f2;
+                font-size: 0.95rem;
+            }
+            .sidebar-standard.acc-index .inactive-link {
+                padding: 14px 16px;
+                border-bottom: 1px solid #f2f2f2;
+                font-size: 0.95rem;
+            }
+            /* Chevron à droite sur chaque lien */
+            .sidebar-standard.acc-index a.sidebar-item::after {
+                content: '\203A';
+                margin-left: auto;
+                color: #ccc;
+                font-size: 1.4rem;
+                line-height: 1;
+                padding-left: 10px;
+            }
+            .sidebar-standard.acc-index .sidebar-divider {
+                display: none;
+            }
+            .mobile-account-greeting {
+                display: block;
+                background: #f68b1e;
+                color: #fff;
+                padding: 16px;
+            }
+
             .main-content {
                 padding: 1rem;
                 border-radius: 4px;
@@ -186,6 +223,10 @@
                 display: block !important;
                 margin-top: 0;
                 padding-bottom: 2rem;
+            }
+            /* Sur la page d'accueil du compte, on remplace l'ancien menu mobile par la liste */
+            .rakuten-mobile-nav.acc-index {
+                display: none !important;
             }
 
             .rakuten-group-title {
@@ -234,11 +275,16 @@
         .rakuten-mobile-nav {
             display: none;
         }
+
+        /* L'en-tête de bienvenue n'apparaît que sur mobile */
+        .mobile-account-greeting {
+            display: none;
+        }
     </style>
 @endpush
 
 <aside class="sidebar">
-    <div class="rakuten-mobile-nav">
+    <div class="rakuten-mobile-nav {{ request()->routeIs('account.index') ? 'acc-index' : '' }}">
         @if(request()->routeIs('account.index'))
             <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0.5rem 0 1.5rem; color: #333;">Votre compte</h1>
 
@@ -387,7 +433,13 @@
         @endif
     </div>
 
-    <div class="sidebar-standard">
+    <div class="sidebar-standard {{ request()->routeIs('account.index') ? 'acc-index' : '' }}">
+        {{-- En-tête de bienvenue (mobile uniquement) --}}
+        <div class="mobile-account-greeting">
+            <div style="font-weight: 700; font-size: 1.1rem;">Bonjour, {{ $user->prenom ?? $user->name }}</div>
+            <div style="font-size: 0.85rem; opacity: 0.95; word-break: break-all;">{{ $user->email }}</div>
+        </div>
+
         <!-- Votre compte -->
         <a href="{{ route('account.index') }}"
             class="sidebar-item {{ request()->routeIs('account.index') ? 'active' : '' }}">

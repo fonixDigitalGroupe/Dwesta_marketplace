@@ -288,6 +288,11 @@
         }
 
         @media (max-width: 768px) {
+            /* Sur mobile, la page Mon compte n'affiche que le menu (comme l'app) */
+            .dashboard-container > .main-content {
+                display: none !important;
+            }
+
             .account-header {
                 flex-direction: column;
                 align-items: flex-start;
