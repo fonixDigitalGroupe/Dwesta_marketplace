@@ -47,6 +47,25 @@
         color: #1e293b;
     }
 
+    .btn-amazon-orange {
+        background: linear-gradient(180deg, #ff9900 0%, #e77600 100%);
+        border: 1px solid #c05d00;
+        color: #fff;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+    }
+    .btn-amazon-orange:hover {
+        background: linear-gradient(180deg, #f08804 0%, #d87300 100%);
+        color: #fff;
+    }
+
     .badge-amazon { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 12px; }
     .badge-amazon-success { color: #569b00; background: #f7fff0; }
     .badge-amazon-danger { color: #c40000; background: #fff5f5; }
@@ -78,28 +97,28 @@
                 <a href="{{ route('admin.highlights.index') }}" class="btn-amazon-secondary">
                     <i class="fas fa-arrow-left"></i> Retour aux Actualités
                 </a>
-                <a href="{{ route('admin.highlight-tabs.create') }}" class="btn-amazon-primary">
+                <a href="{{ route('admin.highlight-tabs.create') }}" class="btn-amazon-orange">
                     <i class="fas fa-plus"></i> Nouveau groupe
                 </a>
             </div>
         </div>
 
         {{-- Barre de filtre / recherche --}}
-        <div style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; display: flex; justify-content: flex-end; align-items: center;">
-            <form action="{{ route('admin.highlight-tabs.index') }}" method="GET" style="display: flex; align-items: center; gap: 10px; font-size: 0.8rem;">
+        <div style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; display: flex; align-items: center;">
+            <form action="{{ route('admin.highlight-tabs.index') }}" method="GET" style="display: flex; align-items: center; gap: 10px; font-size: 0.8rem; width: 100%;">
                 <span style="color: #555; flex-shrink: 0;">Rechercher :</span>
-                <div style="display: flex; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff;">
+                <div style="display: flex; flex: 1; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff;">
                     <input type="text" name="search" value="{{ request('search') }}"
                            placeholder="Nom de l'onglet..."
-                           style="padding: 8px 12px; border: none; outline: none; width: 380px; max-width: 100%; font-size: 0.85rem; background: transparent;">
+                           style="padding: 8px 12px; border: none; outline: none; flex: 1; width: auto; font-size: 0.85rem; background: transparent;">
                     <button type="submit"
-                        style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: none; color: #fff; padding: 0 16px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                        style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: none; color: #fff; padding: 0 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
                 @if(request('search'))
                     <a href="{{ route('admin.highlight-tabs.index') }}"
-                       style="color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;"
+                       style="color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap; flex-shrink: 0;"
                        onmouseover="this.style.textDecoration='underline'"
                        onmouseout="this.style.textDecoration='none'">Effacer</a>
                 @endif
