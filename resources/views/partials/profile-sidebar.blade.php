@@ -158,6 +158,11 @@
         }
 
         @media (max-width: 1024px) {
+            /* Fond tout blanc sur mobile */
+            body {
+                background-color: #fff !important;
+            }
+
             .dashboard-container {
                 grid-template-columns: 1fr;
                 padding: 1rem 0.5rem;
