@@ -61,7 +61,7 @@
                 align-items: center;
                 gap: 10px;
                 padding: 12px 14px;
-                background: #004aad;
+                background: #f68b1e;
                 color: #fff;
             }
             #unread-msg-widget .umw-icon {
