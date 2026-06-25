@@ -93,10 +93,10 @@
                                 </form>
                             </td>
                             <td style="padding: 12px 15px; text-align: right;">
-                                <form action="{{ route('admin.shipping.destroy', $rule->id) }}" method="POST" onsubmit="return confirm('Supprimer cette règle ?')" style="display:inline;">
+                                <form id="delete-rule-{{ $rule->id }}" action="{{ route('admin.shipping.destroy', $rule->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit"
+                                    <button type="button" onclick="confirmDeleteRule({{ $rule->id }})"
                                             style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
                                             onmouseover="this.style.textDecoration='underline'"
                                             onmouseout="this.style.textDecoration='none'">
@@ -174,4 +174,25 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    function confirmDeleteRule(id) {
+        Swal.fire({
+            title: 'Êtes-vous sûr ?',
+            text: "Cette action est irréversible !",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e67e00',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oui, supprimer !',
+            cancelButtonText: 'Annuler',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-rule-' + id).submit();
+            }
+        });
+    }
+</script>
+@endpush
 @endsection
