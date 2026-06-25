@@ -287,13 +287,6 @@
                     </div>
                 @endif
 
-                {{-- Promo banner --}}
-                <div class="abn-promo-banner">
-                    <strong>Karnou sélectionne pour vous tous les meilleurs plans du moment !</strong><br>
-                    Boostez la visibilité de vos annonces et accédez à nos outils vendeurs professionnels.
-                    Votre e-mail : <strong>{{ auth()->user()->email }}</strong>
-                </div>
-
                 {{-- Restricted particulier notice --}}
                 @if(auth()->user()->vendeur->estParticulier())
                     <div class="alert-info">
