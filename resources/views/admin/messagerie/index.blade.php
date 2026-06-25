@@ -131,7 +131,7 @@
         </div>
 
         {{-- Liste des conversations --}}
-        <ul class="gm-list" style="border: 1px solid #eff3f6; border-radius: 8px; overflow: hidden;">
+        <ul class="gm-list">
             @forelse($conversations as $conv)
                 @php
                     $other = $conv->user1_id == $adminId ? $conv->user2 : $conv->user1;
