@@ -193,13 +193,13 @@
                 display: none !important;
             }
 
-            /* Page "Mon compte" : menu en liste (comme l'app) sur mobile, sans cadre */
+            /* Page "Mon compte" : menu en liste (comme l'app) sur mobile, sans cadre.
+               Pas d'overflow:hidden ici sinon il rogne la marge négative du bandeau. */
             .sidebar-standard.acc-index {
                 display: block !important;
                 background: #fff;
                 border: none;
                 border-radius: 0;
-                overflow: hidden;
             }
             .sidebar-standard.acc-index .sidebar-item {
                 padding: 14px 16px;
