@@ -315,14 +315,6 @@
                             </td>
                             <td style="padding: 12px 15px; text-align: right;">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                                    <button type="button" 
-                                        onclick="showCampaignDetails('{{ addslashes($campaign->subject) }}', '{{ addslashes($campaign->message) }}')"
-                                        style="background: none; border: none; color: #0066c0; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                        onmouseover="this.style.textDecoration='underline'"
-                                        onmouseout="this.style.textDecoration='none'">
-                                        Détails
-                                    </button>
-                                    <span style="color: #eee;">|</span>
                                     <a href="{{ route('admin.campaigns.edit', $campaign) }}"
                                         style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
                                         onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
