@@ -142,16 +142,13 @@
                 </div>
 
                 <div style="display: flex; gap: 8px;">
-                    <a href="javascript:window.print()" class="btn-amazon-secondary">
-                        <i class="fas fa-print"></i> Imprimer
-                    </a>
                     <button disabled class="btn-amazon-secondary" style="opacity: 0.5; cursor: not-allowed;">
                         <i class="fas fa-sms"></i> SMS
                     </button>
                     <button disabled class="btn-amazon-secondary" style="opacity: 0.5; cursor: not-allowed;">
                         <i class="fas fa-envelope"></i> Email
                     </button>
-                    <a href="{{ route('admin.users.create') }}" class="btn-amazon-primary">
+                    <a href="{{ route('admin.users.create') }}" class="btn-amazon-primary" style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border-color: #c05d00;">
                         <i class="fas fa-plus"></i> Nouveau
                     </a>
                 </div>

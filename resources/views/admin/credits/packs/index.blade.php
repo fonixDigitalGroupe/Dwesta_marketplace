@@ -130,13 +130,10 @@
                             <i class="fas fa-plus"></i> Nouveau pack
                         </span>
                     @else
-                        <a href="{{ route('admin.credits.packs.create') }}" class="btn-amazon-primary" style="height: 32px !important; padding: 0 16px !important;">
+                        <a href="{{ route('admin.credits.packs.create') }}" class="btn-amazon-primary" style="height: 32px !important; padding: 0 16px !important; background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border-color: #c05d00;">
                             <i class="fas fa-plus"></i> Nouveau pack
                         </a>
                     @endif
-                    <a href="javascript:window.print()" class="btn-amazon-secondary" style="height: 32px !important; padding: 0 16px !important;">
-                        <i class="fas fa-print"></i> Imprimer
-                    </a>
                 </div>
             </div>
 

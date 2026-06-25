@@ -143,12 +143,8 @@
                 </div>
 
                 <div style="display: flex; gap: 8px;">
-                    <a href="javascript:window.print()" class="btn-amazon-secondary">
-                        <i class="fas fa-print"></i> Imprimer
-                    </a>
-                    
                     @if($giftCardOptions->total() < 3)
-                        <a href="{{ route('admin.gift_cards.create') }}" class="btn-amazon-primary">
+                        <a href="{{ route('admin.gift_cards.create') }}" class="btn-amazon-primary" style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border-color: #c05d00;">
                             <i class="fas fa-plus"></i> Nouvelle carte cadeau
                         </a>
                     @else
