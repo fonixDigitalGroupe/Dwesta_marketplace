@@ -75,7 +75,7 @@
                                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                             </svg>
                             @if($unreadCount > 0)
-                                <span style="position: absolute; top: -8px; right: -8px; background: #e11d48 !important; color: white !important; border-radius: 50%; min-width: 18px; height: 18px; padding: 0 4px; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 999 !important;">
+                                <span class="hdr-badge" style="position: absolute; top: -8px; right: -8px; background: #e11d48 !important; color: white !important; border-radius: 50%; min-width: 18px; height: 18px; padding: 0 4px; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 999 !important;">
                                     {{ $unreadCount > 9 ? '9+' : $unreadCount }}
                                 </span>
                             @endif
@@ -99,7 +99,7 @@
                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
                                 @if($unreadCount > 0)
-                                    <span style="position: absolute; top: -5px; left: 10px; background: #e11d48; color: white; border-radius: 50%; width: 17px; height: 17px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 10;">
+                                    <span class="hdr-badge" style="position: absolute; top: -5px; left: 10px; background: #e11d48; color: white; border-radius: 50%; width: 17px; height: 17px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 10;">
                                         {{ $unreadCount }}
                                     </span>
                                 @endif
@@ -178,7 +178,7 @@
                             </path>
                         </svg>
                         @if($cartService->getItemsCount() > 0)
-                            <span
+                            <span class="hdr-badge"
                                 style="position: absolute; top: -8px; right: -8px; background: #f68b1e !important; color: white !important; border-radius: 50%; width: 18px; height: 18px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 999 !important;">
                                 {{ $cartService->getItemsCount() }}
                             </span>

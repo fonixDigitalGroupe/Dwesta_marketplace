@@ -156,6 +156,13 @@
         flex-shrink: 0;
     }
 
+    /* Les badges compteurs restent visibles même sur mobile
+       (la règle mobile .header-link span { display:none } cache sinon les badges) */
+    .header-link .hdr-badge,
+    .header-link .umw-header-badge {
+        display: flex !important;
+    }
+
     .sell-button svg {
         width: 20px;
         height: 20px;
