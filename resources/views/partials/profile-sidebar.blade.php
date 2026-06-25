@@ -270,6 +270,32 @@
                 color: #ccc;
                 font-size: 0.8rem;
             }
+
+            /* Barre supérieure mobile (flèche retour + titre de la page) */
+            .account-mobile-topbar {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                background: #fff;
+                padding: 14px 12px;
+                border-bottom: 1px solid #eee;
+                margin: -1rem -0.5rem 1rem;
+            }
+            .account-back-btn {
+                color: #333;
+                font-size: 1.2rem;
+                line-height: 1;
+                text-decoration: none;
+            }
+            .account-topbar-title {
+                font-weight: 700;
+                font-size: 1.05rem;
+                color: #222;
+            }
+            /* Évite le doublon du titre (déjà affiché dans la barre) */
+            .hide-on-mobile-account {
+                display: none !important;
+            }
         }
         
         .rakuten-mobile-nav {
@@ -425,11 +451,24 @@
                 </a>
             </div>
         @else
-            {{-- Back to Menu Link --}}
-            <a href="{{ route('account.index') }}" style="display: flex; align-items: center; gap: 10px; padding: 12px; background: #f8f9fa; border-radius: 4px; border: 1px solid #eee; text-decoration: none; color: #333; font-weight: 600; margin-bottom: 1rem;">
-                <i class="fa-solid fa-arrow-left"></i>
-                <span>Retour au menu Mon compte</span>
-            </a>
+            {{-- Barre supérieure mobile avec flèche retour (occupe toute la largeur) --}}
+            <div class="account-mobile-topbar">
+                <a href="{{ route('account.index') }}" class="account-back-btn" aria-label="Retour">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <span class="account-topbar-title" id="accountTopbarTitle">Mon compte</span>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var titleEl = document.getElementById('accountTopbarTitle');
+                    if (!titleEl) return;
+                    var h1 = document.querySelector('.main-content h1');
+                    if (h1 && h1.textContent.trim()) {
+                        titleEl.textContent = h1.textContent.trim();
+                        h1.classList.add('hide-on-mobile-account');
+                    }
+                });
+            </script>
         @endif
     </div>
 
