@@ -209,6 +209,12 @@
                 border-bottom: 1px solid #f2f2f2;
                 font-size: 0.95rem;
             }
+            /* Liste uniforme : pas de fond actif gris (sinon le chevron #ccc devient
+               invisible sur « Votre compte Karnou »). La flèche reste visible. */
+            .sidebar-standard.acc-index .sidebar-item.active {
+                background: #fff !important;
+                font-weight: 400 !important;
+            }
             .sidebar-standard.acc-index .inactive-link {
                 padding: 14px 16px;
                 border-bottom: 1px solid #f2f2f2;
