@@ -527,9 +527,13 @@
                                     @if(!is_null($qte))
                                         <span class="count-badge"><i class="fas fa-cubes" style="color:#888; margin-right:4px;"></i>{{ $qte }} en stock</span>
                                     @endif
-                                    <span class="stock-badge" style="background: {{ $cfg['bg'] }}; color: {{ $cfg['color'] }}; border: 1px solid {{ $cfg['color'] }}33;">
-                                        <i class="fas {{ $cfg['icon'] }}"></i> {{ $cfg['label'] }}
-                                    </span>
+                                    {{-- Pas de badge vert « En stock » : la quantité l'indique déjà.
+                                         On n'affiche le badge que pour rupture / sur commande. --}}
+                                    @if($annonce->disponibilite !== \App\Models\Annonce::DISPONIBILITE_EN_STOCK)
+                                        <span class="stock-badge" style="background: {{ $cfg['bg'] }}; color: {{ $cfg['color'] }}; border: 1px solid {{ $cfg['color'] }}33;">
+                                            <i class="fas {{ $cfg['icon'] }}"></i> {{ $cfg['label'] }}
+                                        </span>
+                                    @endif
                                 </div>
                             @else
                                 <span class="stock-badge" style="background: #f5f5f5; color: #999; border: 1px solid #e5e5e5;">
@@ -541,6 +545,12 @@
                         <div style="text-align: center; padding: 2rem; color: #999;">Aucune annonce à afficher.</div>
                     @endforelse
                 </div>
+
+                @if($stockAnnonces->hasPages())
+                    <div style="margin-top: 1.5rem;">
+                        {{ $stockAnnonces->links() }}
+                    </div>
+                @endif
             </div>
         </div>
     </main>
@@ -560,5 +570,14 @@
         document.getElementById(tabName).classList.add("active");
         evt.currentTarget.classList.add("active");
     }
+
+    // Rouvre l'onglet « État du stock » après une navigation de pagination (?tab=stock)
+    document.addEventListener('DOMContentLoaded', function () {
+        var params = new URLSearchParams(window.location.search);
+        if (params.get('tab') === 'stock') {
+            var btn = document.querySelector('.tab-btn[onclick*="tab-stock"]');
+            if (btn) btn.click();
+        }
+    });
 </script>
 @endsection

@@ -573,16 +573,13 @@ class VendeurController extends Controller
             ->limit(10)
             ->get();
 
-        // 4. État du stock : annonces du vendeur avec leur disponibilité et quantité.
-        // Seuls les produits e-commerce ont un stock réel ; les ruptures en premier.
-        $stockAnnonces = \App\Models\Annonce::where('vendeur_id', $vendeur->id)
-            ->with(['category', 'produit'])
-            ->orderByRaw("FIELD(disponibilite, 'rupture_stock', 'sur_commande', 'en_stock')")
-            ->orderBy('titre')
-            ->get();
+        // 4. État du stock.
+        // Résumé (e-commerce uniquement) calculé sur l'ensemble des annonces du vendeur.
+        $allForSummary = \App\Models\Annonce::where('vendeur_id', $vendeur->id)
+            ->with('category')
+            ->get(['id', 'categorie_id', 'disponibilite']);
 
-        // Le résumé ne compte que les produits e-commerce (les seuls avec un stock).
-        $ecommerceStock = $stockAnnonces->filter(function ($a) {
+        $ecommerceStock = $allForSummary->filter(function ($a) {
             return optional($a->category)->famille === \App\Models\Category::FAMILLE_ECOMMERCE;
         });
 
@@ -591,6 +588,15 @@ class VendeurController extends Controller
             'rupture_stock' => $ecommerceStock->where('disponibilite', \App\Models\Annonce::DISPONIBILITE_RUPTURE_STOCK)->count(),
             'sur_commande'  => $ecommerceStock->where('disponibilite', \App\Models\Annonce::DISPONIBILITE_SUR_COMMANDE)->count(),
         ];
+
+        // Liste paginée des annonces (ruptures en premier). Page nommée pour ne pas
+        // entrer en conflit avec d'autres paginateurs ; conserve les filtres + l'onglet.
+        $stockAnnonces = \App\Models\Annonce::where('vendeur_id', $vendeur->id)
+            ->with(['category', 'produit'])
+            ->orderByRaw("FIELD(disponibilite, 'rupture_stock', 'sur_commande', 'en_stock')")
+            ->orderBy('titre')
+            ->paginate(12, ['*'], 'stock_page')
+            ->appends($request->except('stock_page') + ['tab' => 'stock']);
 
         return view('vendeur.stats', compact(
             'vendeur', 'stats', 'recentOrders', 'dateDebut', 'dateFin',
