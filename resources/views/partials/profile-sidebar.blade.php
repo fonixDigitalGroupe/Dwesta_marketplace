@@ -171,12 +171,18 @@
                 background-color: #fff;
             }
 
-            .sidebar {
+            .sidebar,
+            .sidebar-standard,
+            .sidebar-standard.acc-index {
                 display: block;
                 background: transparent;
-                border: none;
+                border: none !important;
+                box-shadow: none !important;
                 padding: 0;
                 margin: 0;
+            }
+            .sidebar-standard.acc-index {
+                background: #fff;
             }
             
             .sidebar-standard {
