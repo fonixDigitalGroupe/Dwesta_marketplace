@@ -159,6 +159,7 @@
 
         @media (max-width: 1024px) {
             /* Fond tout blanc sur mobile */
+            html,
             body {
                 background-color: #fff !important;
             }
@@ -167,6 +168,7 @@
                 grid-template-columns: 1fr;
                 padding: 1rem 0.5rem;
                 gap: 1rem;
+                background-color: #fff;
             }
 
             .sidebar {
