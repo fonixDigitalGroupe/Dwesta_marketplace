@@ -44,7 +44,8 @@
                     <button type="button" class="sell-button" onclick="toggleSellDropdown()">
                         <span class="sell-icon" style="display: flex; align-items: center; justify-content: center; margin-right: 6px;">
                             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M4 11l8 8a2 2 0 002.828 0l5.858-5.858a2 2 0 000-2.828L11 4H5a2 2 0 00-2 2v6z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 11l18-5v12L3 14v-3z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M11.6 16.8a3 3 0 11-5.8-1.6"></path>
                             </svg>
                         </span>
                         <span>Mettre en vente</span>
