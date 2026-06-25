@@ -8,6 +8,9 @@
     $isRejected = $user->vendeur && $user->vendeur->statut_verification === 'rejete';
     $isProWithoutPlan = $user->vendeur && $user->vendeur->estProfessionnel() && $user->vendeur->estVerifie() && !$user->vendeur->aForfaitPayantActif();
     $isInactiveForPro = $isRejected || $isProWithoutPlan;
+    // Accueil du compte (menu) = /mon-compte SANS paramètre ; avec ?vue=apercu on
+    // affiche l'aperçu du compte comme une sous-page (barre retour + contenu).
+    $isAccountMenu = request()->routeIs('account.index') && !request()->filled('vue');
 @endphp
 @push('styles')
     <style>
@@ -361,8 +364,8 @@
 @endpush
 
 <aside class="sidebar">
-    <div class="rakuten-mobile-nav {{ request()->routeIs('account.index') ? 'acc-index' : '' }}">
-        @if(request()->routeIs('account.index'))
+    <div class="rakuten-mobile-nav {{ $isAccountMenu ? 'acc-index' : '' }}">
+        @if($isAccountMenu)
             <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0.5rem 0 1.5rem; color: #333;">Votre compte</h1>
 
             {{-- Informations Personnelles (Top) --}}
@@ -536,15 +539,15 @@
         @endif
     </div>
 
-    <div class="sidebar-standard {{ request()->routeIs('account.index') ? 'acc-index' : '' }}">
+    <div class="sidebar-standard {{ $isAccountMenu ? 'acc-index' : '' }}">
         {{-- En-tête de bienvenue (mobile uniquement) --}}
         <div class="mobile-account-greeting">
             <div style="font-weight: 700; font-size: 1.1rem;">Bonjour, {{ $user->prenom ?? $user->name }}</div>
             <div style="font-size: 0.85rem; opacity: 0.95; word-break: break-all;">{{ $user->email }}</div>
         </div>
 
-        <!-- Votre compte -->
-        <a href="{{ route('account.index') }}"
+        <!-- Votre compte (mobile : ouvre l'aperçu du compte ; desktop : /mon-compte) -->
+        <a href="{{ route('account.index', ['vue' => 'apercu']) }}"
             class="sidebar-item {{ request()->routeIs('account.index') ? 'active' : '' }}">
             <i class="fa-regular fa-user"></i>
             <span>Votre compte Karnou</span>

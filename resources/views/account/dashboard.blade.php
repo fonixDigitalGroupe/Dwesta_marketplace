@@ -288,9 +288,13 @@
         }
 
         @media (max-width: 768px) {
-            /* Sur mobile, la page Mon compte n'affiche que le menu (comme l'app) */
+            /* Sur mobile, la page Mon compte n'affiche que le menu (comme l'app)...
+               sauf en mode aperçu (?vue=apercu) où l'on montre le contenu du compte. */
             .dashboard-container > .main-content {
                 display: none !important;
+            }
+            .dashboard-container > .main-content.show-overview {
+                display: block !important;
             }
 
             .account-header {
@@ -611,7 +615,7 @@
     <div class="dashboard-container">
         @include('partials.profile-sidebar')
 
-        <main class="main-content">
+        <main class="main-content {{ request()->filled('vue') ? 'show-overview' : '' }}">
             <div class="account-header">
                 <h1>Votre compte</h1>
             </div>
