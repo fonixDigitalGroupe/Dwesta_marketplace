@@ -156,19 +156,14 @@
                 </div>
 
                 <div style="margin-bottom: 20px;">
-                    <label class="field-label">Délai de livraison (ex: 2-3 jours)</label>
-                    <input type="text" name="delivery_delay" placeholder="ex: 24h, 3-5 jours...">
+                    <label class="field-label">Délai de livraison</label>
+                    <input type="text" name="delivery_delay">
                 </div>
 
                 <button type="submit" class="btn-amazon-primary" style="width: 100%; justify-content: center; background: #ff9900;">
                     AJOUTER LA RÈGLE
                 </button>
             </form>
-
-            <div style="margin-top: 30px; padding: 15px; background: #fffbe6; border: 1px solid #ffe58f; border-radius: 4px; font-size: 0.8rem; color: #856404;">
-                <i class="fas fa-info-circle"></i> <strong>Note :</strong><br>
-                Le système cherchera une règle correspondant à la région du Point Relais ou de l'utilisateur. Si aucune règle n'est trouvée, un tarif par défaut de 0 F sera appliqué.
-            </div>
         </div>
 
         </div>
