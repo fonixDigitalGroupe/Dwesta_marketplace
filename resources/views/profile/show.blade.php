@@ -48,18 +48,18 @@
             width: 100%;
         }
 
+        /* Mobile-first : 1 champ par ligne PAR DÉFAUT (prénom, nom, nationalité…). */
         .rakuten-form-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 1rem;
             margin-bottom: 1rem;
         }
 
-        /* Aligné sur le breakpoint mobile de l'espace compte (1024px) :
-           un champ par ligne (prénom, nom, nationalité, etc.) */
-        @media (max-width: 1024px) {
+        /* 2 colonnes uniquement sur grand écran (desktop). */
+        @media (min-width: 1025px) {
             .rakuten-form-grid {
-                grid-template-columns: 1fr !important;
+                grid-template-columns: 1fr 1fr;
             }
         }
 
