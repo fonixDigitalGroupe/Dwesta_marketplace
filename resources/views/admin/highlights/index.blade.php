@@ -47,6 +47,25 @@
         color: #1e293b;
     }
 
+    .btn-amazon-orange {
+        background: linear-gradient(180deg, #ff9900 0%, #e77600 100%);
+        border: 1px solid #c05d00;
+        color: #fff;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+    }
+    .btn-amazon-orange:hover {
+        background: linear-gradient(180deg, #f08804 0%, #d87300 100%);
+        color: #fff;
+    }
+
     .badge-amazon { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 12px; }
     .badge-amazon-success { color: #569b00; background: #f7fff0; }
     .badge-amazon-danger { color: #c40000; background: #fff5f5; }
@@ -63,10 +82,10 @@
 @endsection
 
 @section('content')
-<div style="max-width: 1600px; margin: -30px auto 0; width: 100%; padding-top: 0;">
+<div style="max-width: 1600px; margin: 20px auto 0; width: 100%;">
 
     {{-- Main Card --}}
-    <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+    <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
 
         {{-- Card Header --}}
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 20px;">
@@ -78,29 +97,15 @@
                 <a href="{{ route('admin.highlights.create') }}" class="btn-amazon-primary">
                     <i class="fas fa-plus"></i> Créer une actualité
                 </a>
-                <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-secondary">
+                <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-orange">
                     <i class="fas fa-layer-group"></i> Gérer les Onglets
                 </a>
             </div>
         </div>
 
         {{-- Barre de filtre / recherche --}}
-        <div style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; gap: 16px;">
-            {{-- Gauche : per_page --}}
-            <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555; flex-shrink: 0;">
-                <span>Afficher</span>
-                <select onchange="document.getElementById('filter-form').submit()"
-                        name="per_page" form="filter-form"
-                    style="padding: 6px 10px; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; font-size: 0.8rem; color: #475569; cursor: pointer; outline: none;">
-                    <option value="10"  {{ request('per_page', 10) == 10  ? 'selected' : '' }}>10</option>
-                    <option value="25"  {{ request('per_page') == 25  ? 'selected' : '' }}>25</option>
-                    <option value="50"  {{ request('per_page') == 50  ? 'selected' : '' }}>50</option>
-                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                </select>
-                <span>résultats par page</span>
-            </div>
-
-            {{-- Droite : filtre onglet + recherche --}}
+        <div style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; display: flex; justify-content: flex-end; align-items: center; gap: 16px;">
+            {{-- Filtre onglet + recherche --}}
             <form id="filter-form" action="{{ route('admin.highlights.index') }}" method="GET"
                   style="display: flex; align-items: center; gap: 10px; font-size: 0.8rem;">
 
