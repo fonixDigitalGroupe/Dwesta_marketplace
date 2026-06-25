@@ -573,9 +573,24 @@ class VendeurController extends Controller
             ->limit(10)
             ->get();
 
+        // 4. État du stock : annonces du vendeur avec leur disponibilité.
+        // Les ruptures de stock sont affichées en premier.
+        $stockAnnonces = \App\Models\Annonce::where('vendeur_id', $vendeur->id)
+            ->with('category')
+            ->orderByRaw("FIELD(disponibilite, 'rupture_stock', 'sur_commande', 'en_stock')")
+            ->orderBy('titre')
+            ->get();
+
+        $stockSummary = [
+            'en_stock'      => $stockAnnonces->where('disponibilite', \App\Models\Annonce::DISPONIBILITE_EN_STOCK)->count(),
+            'rupture_stock' => $stockAnnonces->where('disponibilite', \App\Models\Annonce::DISPONIBILITE_RUPTURE_STOCK)->count(),
+            'sur_commande'  => $stockAnnonces->where('disponibilite', \App\Models\Annonce::DISPONIBILITE_SUR_COMMANDE)->count(),
+        ];
+
         return view('vendeur.stats', compact(
-            'vendeur', 'stats', 'recentOrders', 'dateDebut', 'dateFin', 
-            'topSoldAnnonces', 'topViewedAnnonces', 'statusBreakdown'
+            'vendeur', 'stats', 'recentOrders', 'dateDebut', 'dateFin',
+            'topSoldAnnonces', 'topViewedAnnonces', 'statusBreakdown',
+            'stockAnnonces', 'stockSummary'
         ));
     }
 

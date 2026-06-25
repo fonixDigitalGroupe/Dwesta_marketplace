@@ -108,6 +108,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.4rem;
+        flex: 0 1 auto;
     }
 
     .filter-group label {
@@ -120,9 +121,16 @@
     .filter-group input {
         border: 1px solid #ddd;
         border-radius: 4px;
-        padding: 0.5rem;
-        font-size: 0.85rem;
+        padding: 0.55rem 0.65rem;
+        font-size: 0.9rem;
         outline: none;
+        width: 260px;
+        max-width: 100%;
+    }
+
+    /* Pousse les boutons Appliquer / Réinitialiser vers la droite */
+    .stats-filter-form .btn-filter {
+        margin-left: auto;
     }
 
     .btn-filter {
@@ -220,10 +228,42 @@
         font-weight: 800;
         color: #333;
     }
+    .stock-badge {
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.72rem;
+        font-weight: 800;
+        white-space: nowrap;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
 
     @media (max-width: 768px) {
         .stats-grid { grid-template-columns: 1fr; }
-        .stats-tabs { gap: 1rem; overflow-x: auto; white-space: nowrap; }
+        .stats-tabs { gap: 1rem; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+        .stats-tabs::-webkit-scrollbar { display: none; }
+        .tab-btn { flex-shrink: 0; }
+
+        /* Formulaire de filtre empilé et pleine largeur */
+        .stats-filter-form {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.75rem;
+        }
+        .filter-group { flex: 1 1 auto; }
+        .filter-group input { width: 100%; }
+        .stats-filter-form .btn-filter,
+        .stats-filter-form .btn-reset {
+            margin-left: 0;
+            width: 100%;
+            height: 42px;
+        }
+
+        .table-history { font-size: 0.82rem; }
+        .table-history th,
+        .table-history td { padding: 0.7rem 0.6rem; }
     }
 
     /* Card Variations */
@@ -333,6 +373,7 @@
                 <button class="tab-btn" onclick="showTab(event, 'tab-top-sold')">Top Ventes</button>
                 <button class="tab-btn" onclick="showTab(event, 'tab-top-viewed')">Top Vues</button>
                 <button class="tab-btn" onclick="showTab(event, 'tab-status')">États des Ventes</button>
+                <button class="tab-btn" onclick="showTab(event, 'tab-stock')">État du stock</button>
             </div>
 
             <!-- Tab: Ventes Récentes -->
@@ -435,6 +476,44 @@
                             <div style="font-size: 0.75rem; font-weight: 800; color: {{ $config['color'] }}; text-transform: uppercase;">{{ $config['label'] }}</div>
                         </div>
                     @endforeach
+                </div>
+            </div>
+
+            <!-- Tab: État du stock -->
+            <div id="tab-stock" class="tab-content">
+                @php
+                    $stockConfig = [
+                        'en_stock'      => ['label' => 'En stock',     'color' => '#059669', 'bg' => '#ecfdf5', 'icon' => 'fa-check-circle'],
+                        'rupture_stock' => ['label' => 'Rupture',      'color' => '#ef4444', 'bg' => '#fee2e2', 'icon' => 'fa-times-circle'],
+                        'sur_commande'  => ['label' => 'Sur commande', 'color' => '#f59e0b', 'bg' => '#fef3c7', 'icon' => 'fa-clock'],
+                    ];
+                @endphp
+
+                <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 1.5rem;">
+                    @foreach($stockConfig as $key => $cfg)
+                        <div style="background: {{ $cfg['bg'] }}; padding: 1.1rem; border-radius: 8px; text-align: center; border: 1px solid {{ $cfg['color'] }}22;">
+                            <div style="font-size: 1.5rem; font-weight: 900; color: {{ $cfg['color'] }}">{{ $stockSummary[$key] ?? 0 }}</div>
+                            <div style="font-size: 0.72rem; font-weight: 800; color: {{ $cfg['color'] }}; text-transform: uppercase;">{{ $cfg['label'] }}</div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div style="border: 1px solid #eee; border-radius: 8px; padding: 1rem;">
+                    @forelse($stockAnnonces as $annonce)
+                        @php $cfg = $stockConfig[$annonce->disponibilite] ?? ['label' => ucfirst(str_replace('_', ' ', $annonce->disponibilite ?? '—')), 'color' => '#777', 'bg' => '#f5f5f5', 'icon' => 'fa-box']; @endphp
+                        <div class="mini-product">
+                            <img src="{{ $annonce->photoPrincipale() ? asset('storage/' . $annonce->photoPrincipale()->chemin) : asset('images/no-image.png') }}" alt="">
+                            <div class="info">
+                                <div class="name">{{ $annonce->titre }}</div>
+                                <div class="meta">{{ $annonce->category->nom ?? 'Sans catégorie' }}</div>
+                            </div>
+                            <span class="stock-badge" style="background: {{ $cfg['bg'] }}; color: {{ $cfg['color'] }}; border: 1px solid {{ $cfg['color'] }}33;">
+                                <i class="fas {{ $cfg['icon'] }}"></i> {{ $cfg['label'] }}
+                            </span>
+                        </div>
+                    @empty
+                        <div style="text-align: center; padding: 2rem; color: #999;">Aucune annonce à afficher.</div>
+                    @endforelse
                 </div>
             </div>
         </div>
