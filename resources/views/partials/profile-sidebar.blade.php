@@ -228,6 +228,9 @@
                 background: #f68b1e;
                 color: #fff;
                 padding: 16px;
+                /* Collé au header et pleine largeur : annule le padding du
+                   .dashboard-container (1rem en haut, 0.5rem sur les côtés). */
+                margin: -1rem -0.5rem 0;
             }
 
             .main-content {
