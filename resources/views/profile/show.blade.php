@@ -56,8 +56,9 @@
         }
 
         @media (max-width: 768px) {
+            /* Un champ par ligne (prénom, nom, nationalité, etc.) */
             .rakuten-form-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
             }
         }
 
@@ -252,12 +253,14 @@
                 margin: 0 !important;
             }
 
-            /* Rangée de recherche d'adresse empilée */
+            /* Rangée de recherche d'adresse empilée + bouton Rechercher plus haut */
             .profile-search-row {
                 flex-direction: column;
             }
             .profile-search-row .btn-rakuten {
                 width: 100% !important;
+                padding: 0.85rem 1.5rem !important;
+                min-height: 46px;
             }
 
             /* Bouton "Préciser ma position sur la carte" pleine largeur */
