@@ -217,6 +217,12 @@ Route::middleware('auth')->group(function () {
             // Admin root - dashboard
             Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
+            // Messagerie admin (envoi de messages aux vendeurs / clients)
+            Route::prefix('messagerie')->name('messagerie.')->group(function () {
+                Route::get('/', [\App\Http\Controllers\Admin\MessagerieController::class, 'index'])->name('index');
+                Route::post('/send', [\App\Http\Controllers\Admin\MessagerieController::class, 'send'])->name('send');
+            });
+
 
             // Litiges
             Route::prefix('litiges')->name('litiges.')->group(function () {

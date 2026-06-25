@@ -1,0 +1,110 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\Conversation;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class MessagerieController extends Controller
+{
+    /**
+     * Page d'envoi + liste des conversations de l'admin.
+     */
+    public function index()
+    {
+        $adminId = Auth::id();
+
+        // Destinataires possibles (hors admin)
+        $users = User::where('id', '!=', $adminId)
+            ->whereDoesntHave('roles', fn ($q) => $q->where('name', 'admin'))
+            ->with('vendeur')
+            ->orderBy('prenom')
+            ->get();
+
+        // Conversations impliquant l'admin (les plus récentes d'abord)
+        $conversations = Conversation::where('user1_id', $adminId)
+            ->orWhere('user2_id', $adminId)
+            ->with([
+                'user1', 'user2',
+                'messages' => fn ($q) => $q->latest()->limit(1),
+            ])
+            ->orderByDesc('last_message_at')
+            ->paginate(10);
+
+        return view('admin.messagerie.index', compact('users', 'conversations', 'adminId'));
+    }
+
+    /**
+     * Envoie un message à un utilisateur précis, à tous les vendeurs ou à tous les clients.
+     */
+    public function send(Request $request)
+    {
+        $request->validate([
+            'mode'         => 'required|in:user,vendeurs,clients',
+            'message'      => 'required|string|max:5000',
+            'recipient_id' => 'required_if:mode,user|nullable|exists:users,id',
+        ], [
+            'message.required'      => 'Le message est obligatoire.',
+            'recipient_id.required_if' => 'Veuillez choisir un destinataire.',
+        ]);
+
+        $adminId = Auth::id();
+        $content = $request->input('message');
+
+        // Détermine la liste des destinataires selon le mode
+        if ($request->mode === 'user') {
+            $recipients = User::where('id', $request->recipient_id)->pluck('id');
+        } elseif ($request->mode === 'vendeurs') {
+            $recipients = User::has('vendeur')->where('id', '!=', $adminId)->pluck('id');
+        } else { // clients
+            $recipients = User::doesntHave('vendeur')
+                ->whereDoesntHave('roles', fn ($q) => $q->where('name', 'admin'))
+                ->where('id', '!=', $adminId)
+                ->pluck('id');
+        }
+
+        $count = 0;
+        foreach ($recipients as $userId) {
+            $this->deliver($adminId, $userId, $content);
+            $count++;
+        }
+
+        if ($count === 0) {
+            return back()->with('error', "Aucun destinataire trouvé pour cet envoi.");
+        }
+
+        $label = $request->mode === 'user' ? 'message envoyé' : ($count . ' message(s) envoyé(s)');
+
+        return back()->with('success', "✅ {$label} avec succès.");
+    }
+
+    /**
+     * Trouve (ou crée) la conversation entre l'admin et l'utilisateur, puis crée le message.
+     */
+    private function deliver(int $adminId, int $userId, string $content): void
+    {
+        $conversation = Conversation::where(function ($q) use ($adminId, $userId) {
+            $q->where('user1_id', $adminId)->where('user2_id', $userId);
+        })->orWhere(function ($q) use ($adminId, $userId) {
+            $q->where('user1_id', $userId)->where('user2_id', $adminId);
+        })->first();
+
+        if (!$conversation) {
+            $conversation = Conversation::create([
+                'user1_id'        => $adminId,
+                'user2_id'        => $userId,
+                'last_message_at' => now(),
+            ]);
+        }
+
+        $conversation->messages()->create([
+            'sender_id' => $adminId,
+            'content'   => $content,
+        ]);
+
+        $conversation->update(['last_message_at' => now()]);
+    }
+}
