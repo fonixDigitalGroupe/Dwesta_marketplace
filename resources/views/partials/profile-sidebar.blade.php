@@ -227,7 +227,7 @@
             }
 
             .main-content {
-                padding: 0.25rem 0.75rem 1rem;
+                padding: 0.1rem 0.75rem 1rem;
                 border: none !important;
                 border-radius: 0;
                 background: #fff;
@@ -312,7 +312,7 @@
             }
             /* Colle le premier contenu visible juste sous la barre retour */
             .hide-on-mobile-account + * {
-                margin-top: 0.25rem !important;
+                margin-top: 0 !important;
             }
             /* Neutralise les marges hautes des premiers éléments fréquents */
             .main-content > .jumia-tabs:first-child,
@@ -497,7 +497,7 @@
                             // Rapproche le premier élément de contenu de la barre retour
                             var next = wrapper.nextElementSibling;
                             if (next && window.matchMedia('(max-width: 1024px)').matches) {
-                                next.style.marginTop = '0.25rem';
+                                next.style.marginTop = '0';
                             }
                         } else {
                             h1.classList.add('hide-on-mobile-account');
