@@ -60,7 +60,10 @@ class RegisterController extends Controller
     public function showCompletionForm()
     {
         $user = Auth::user();
-        if ($user->is_active) {
+        // Le compte est actif dès la vérification OTP (is_active = true) ; on ne peut
+        // donc pas s'y fier pour savoir si le profil est complété. La civilité n'est
+        // renseignée qu'à la complétion → si elle existe, le profil est déjà fait.
+        if ($user->civilite) {
             return redirect()->route('account.index');
         }
 

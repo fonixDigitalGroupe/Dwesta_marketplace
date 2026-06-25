@@ -636,7 +636,7 @@
                     <h2 class="section-header" style="border-bottom: none; margin-bottom: 1.5rem;">Informations d'authentification</h2>
 
                     <p style="text-align: left; color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">
-                        Utilisez votre e-mail ou votre téléphone pour vous connecter ou créer un compte.
+                        Utilisez votre e-mail ou votre téléphone pour créer un compte.
                     </p>
 
                     <!-- Section 1: Authentication -->
