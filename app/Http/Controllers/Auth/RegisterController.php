@@ -107,7 +107,61 @@ class RegisterController extends Controller
             'email_verified_at' => $user->email_verified_at ?? now(),
         ]);
 
+        // Message de bienvenue Karnou dans la boîte de messagerie
+        $this->sendKarnouWelcomeMessage($user);
+
         return redirect()->route('account.index')->with('success', 'Votre profil a été complété avec succès ! Bienvenue chez Karnou.');
+    }
+
+    /**
+     * Envoie un message de bienvenue officiel de « Karnou » dans la messagerie
+     * du nouvel utilisateur. Tolérant aux pannes : n'interrompt jamais l'inscription.
+     */
+    private function sendKarnouWelcomeMessage(User $user): void
+    {
+        try {
+            // Expéditeur officiel : le compte admin Karnou (sinon, premier admin).
+            $karnou = User::where('email', 'admin@karnou.com')->first()
+                ?? User::role('admin')->first();
+
+            if (!$karnou || $karnou->id === $user->id) {
+                return;
+            }
+
+            // Conversation existante (bidirectionnelle) ou nouvelle.
+            $conversation = \App\Models\Conversation::where(function ($q) use ($karnou, $user) {
+                $q->where('user1_id', $karnou->id)->where('user2_id', $user->id);
+            })->orWhere(function ($q) use ($karnou, $user) {
+                $q->where('user1_id', $user->id)->where('user2_id', $karnou->id);
+            })->first();
+
+            if (!$conversation) {
+                $conversation = \App\Models\Conversation::create([
+                    'user1_id'        => $karnou->id,
+                    'user2_id'        => $user->id,
+                    'last_message_at' => now(),
+                ]);
+            }
+
+            // Évite les doublons si la méthode est rejouée.
+            if ($conversation->messages()->where('sender_id', $karnou->id)->exists()) {
+                return;
+            }
+
+            $prenom = $user->prenom ?: 'cher utilisateur';
+            $content = "Bienvenue sur Karnou, {$prenom} ! 🎉 Nous sommes ravis de vous compter parmi nous.\n\n"
+                . "Complétez votre profil ! Afin de profiter pleinement de Karnou, veuillez renseigner votre adresse et votre position géographique.";
+
+            $conversation->messages()->create([
+                'sender_id' => $karnou->id,
+                'content'   => $content,
+                'read_at'   => null,
+            ]);
+
+            $conversation->update(['last_message_at' => now()]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Karnou welcome message error: ' . $e->getMessage());
+        }
     }
 
     public function checkEmail(Request $request)
