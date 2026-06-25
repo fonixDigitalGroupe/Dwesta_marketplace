@@ -167,7 +167,7 @@
             .dashboard-container {
                 grid-template-columns: 1fr;
                 padding: 1rem 0.5rem;
-                gap: 1rem;
+                gap: 0;
                 background-color: #fff;
             }
 
@@ -227,7 +227,7 @@
             }
 
             .main-content {
-                padding: 1rem;
+                padding: 0.5rem 1rem 1rem;
                 border-radius: 4px;
                 background: #fff;
             }
@@ -292,7 +292,7 @@
                 background: #fff;
                 padding: 14px 12px;
                 border-bottom: 1px solid #eee;
-                margin: -1rem -0.5rem 1rem;
+                margin: -1rem -0.5rem 0;
             }
             .account-back-btn {
                 color: #333;
