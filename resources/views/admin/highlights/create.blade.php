@@ -176,8 +176,8 @@
 @endpush
 
 @section('content')
-<div style="max-width: 1200px; margin: 20px auto 0;">
-    <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+<div style="max-width: 1200px; margin: -30px auto 0;">
+    <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
 
         {{-- Card Header --}}
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 24px;">
@@ -220,7 +220,7 @@
                         <div style="display: flex; flex-direction: column; gap: 15px;">
                             <div>
                                 <label for="title" class="field-label">Titre principal <small style="color: red;">*</small></label>
-                                <input type="text" name="title" id="title" value="{{ old('title') }}" required placeholder="Ex: Mode Homme, Été 2025...">
+                                <input type="text" name="title" id="title" value="{{ old('title') }}" required>
                                 @error('title') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                             </div>
 
