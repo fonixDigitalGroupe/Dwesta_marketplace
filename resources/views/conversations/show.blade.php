@@ -493,9 +493,11 @@
     @media (max-width: 767px) {
         .wa-sidebar { display: none; }
         .back-btn { display: flex !important; }
-        /* Bulles de message plus larges en vue détaillée mobile */
-        .message-card { max-width: 90% !important; }
-        .messages-viewport { padding: 16px 12px !important; }
+        /* Bulles de message plus larges en vue détaillée mobile.
+           Deux contraintes à lever : le wrapper (85%) ET la carte (75%). */
+        .message-wrapper { max-width: 100% !important; width: 100% !important; }
+        .message-card { max-width: 96% !important; }
+        .messages-viewport { padding: 16px 10px !important; }
     }
     /* Product preview bar in input */
     .product-preview-bar {
