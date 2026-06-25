@@ -151,7 +151,7 @@ class RegisterController extends Controller
             $prenom = $user->prenom ?: 'cher utilisateur';
             $content = "Bienvenue sur Karnou, {$prenom} ! 🎉 Nous sommes ravis de vous compter parmi nous.\n\n"
                 . "Complétez votre profil ! Afin de profiter pleinement de Karnou, veuillez renseigner votre adresse et votre position géographique.\n\n"
-                . "👉 [Compléter mon profil](https://karnou.fr/profile)";
+                . "👉 [Compléter mon profil](/profile)";
 
             $conversation->messages()->create([
                 'sender_id' => $karnou->id,
