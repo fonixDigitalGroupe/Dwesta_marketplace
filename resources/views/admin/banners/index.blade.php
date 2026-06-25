@@ -120,24 +120,12 @@
                     @endif
                 </form>
 
-                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555; border-left: 1px solid #eff3f6; padding-left: 15px;">
-                    <span>Afficher</span>
-                    <select onchange="window.location.href = '{{ route('admin.banners.index') }}?per_page=' + this.value + '&search={{ request('search') }}'"
-                        style="padding: 6px 10px; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; font-size: 0.8rem; color: #475569; cursor: pointer; outline: none;">
-                        <option value="8"   {{ request('per_page', 8) == 8   ? 'selected' : '' }}>8</option>
-                        <option value="25"  {{ request('per_page') == 25  ? 'selected' : '' }}>25</option>
-                        <option value="50"  {{ request('per_page') == 50  ? 'selected' : '' }}>50</option>
-                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                    </select>
-                </div>
             </div>
 
             <!-- Table -->
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
                 <thead>
                     <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
-                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 60px;">Ordre</th>
-                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Visuel</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Détails de la Bannière</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 180px;">Période</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Statut</th>
@@ -149,15 +137,6 @@
                         <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             
-                            <td style="padding: 12px 15px; text-align: center; font-size: 0.85rem; font-weight: 700; color: #555; border-right: 1px solid #eff3f6;">
-                                {{ $banner->order }}
-                            </td>
-
-                            <td style="padding: 8px; text-align: center; border-right: 1px solid #eff3f6;">
-                                <img src="{{ $banner->image_url }}" alt="{{ $banner->title }}"
-                                     style="width: 80px; height: 32px; object-fit: cover; border: 1px solid #eff3f6; background: #fff; border-radius: 2px;">
-                            </td>
-
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                                 <div style="font-size: 0.88rem; font-weight: 700; color: #0066c0;">{{ $banner->title }}</div>
                                 @if($banner->link_url)
@@ -210,7 +189,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eff3f6;">
+                            <td colspan="4" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eff3f6;">
                                 Aucune bannière trouvée.
                             </td>
                         </tr>
