@@ -280,9 +280,21 @@
                     .packs-grid { grid-template-columns: repeat(2, 1fr); }
                 }
                 @media (max-width: 768px) {
-                    .balance-card { padding: 25px; min-height: 180px; }
-                    .balance-card-value { font-size: 2.5rem; }
-                    .tx-item { padding: 1rem; gap: 1rem; }
+                    .main-content { padding: 0.75rem !important; min-height: 0; }
+                    .balance-card { padding: 25px; min-height: 180px; max-width: 100%; }
+                    .balance-card-value { font-size: 2.3rem; }
+                    .packs-grid { grid-template-columns: repeat(2, 1fr); max-width: 100%; gap: 0.6rem; }
+                    .pack-card { padding: 14px; min-height: 150px; }
+                    .pack-value-large { font-size: 15px; }
+                    .pack-price-gold { font-size: 16px; }
+                    .tx-item { padding: 0.85rem 1rem; gap: 0.75rem; grid-template-columns: auto 1fr auto; }
+                    .tx-info { min-width: 0; }
+                    .tx-desc, .tx-date { overflow-wrap: anywhere; word-break: break-word; }
+                    .tx-date { font-size: 0.7rem; }
+                    .tx-amount { font-size: 0.85rem; }
+                    .section-title { margin-bottom: 0.9rem; }
+                }
+                @media (max-width: 400px) {
                     .packs-grid { grid-template-columns: 1fr; }
                 }
 

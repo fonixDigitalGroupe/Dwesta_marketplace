@@ -486,6 +486,17 @@
         .withdraw-grid { grid-template-columns: 1fr; }
         .finance-card-balance { font-size: 2rem; }
     }
+    @media (max-width: 768px) {
+        body { background-color: #fff !important; }
+        .wallet-page { padding: 0.75rem 0.75rem 3rem; max-width: 100%; }
+        .wallet-page-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.25rem; }
+        .finance-card { max-width: 100%; padding: 1.4rem 1.5rem 1.25rem; }
+        .card-balance-amount { font-size: 1.6rem; }
+        .card-number { font-size: 0.82rem; letter-spacing: 0.1em; gap: 6px; }
+        .fin-stat { padding: 1.1rem 1.25rem; }
+        .fin-stat-value { font-size: 1.3rem; }
+        .wallet-actions .btn-action { flex: 1 1 auto; justify-content: center; }
+    }
     .form-field label {
         display: block;
         font-size: 0.8rem;
