@@ -3,245 +3,245 @@
 @section('title', 'Nouvel Onglet Actualités')
 
 @push('styles')
-<style>
-    .main-content { background-color: #f8f9fa !important; }
+    <style>
+        .main-content { background-color: #f8f9fa !important; }
 
-    /* Input Amazon Style */
-    input[type="text"]:focus, input[type="number"]:focus,
-    textarea:focus, select:focus {
-        border-color: #e77600 !important;
-        
-        outline: none;
-    }
+        /* Input Amazon Style Modernisé */
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            outline: none;
+            background: #fff;
+            color: #475569;
+            transition: all 0.2s;
+        }
 
-    /* Custom Checkbox Amazon Style */
-    .checkbox-container {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        padding: 4px 0;
-        user-select: none;
-        font-size: 0.85rem;
-        color: #111;
-    }
-    .checkbox-container input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-    }
-    .checkmark {
-        height: 16px;
-        width: 16px;
-        background-color: #fff;
-        border: 1px solid #adb1b8;
-        border-radius: 0;
-        position: relative;
-        transition: all 0.1s;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.05) inset;
-        flex-shrink: 0;
-    }
-    .checkbox-container:hover input ~ .checkmark {
-        border-color: #e77600;
-        
-    }
-    .checkbox-container input:checked ~ .checkmark {
-        background-color: #fff;
-        border-color: #e77600;
-    }
-    .checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-        left: 5px;
-        top: 1px;
-        width: 4px;
-        height: 8px;
-        border: solid #e77600;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-    }
-    .checkbox-container input:checked ~ .checkmark:after { display: block; }
+        input:focus, textarea:focus, select:focus {
+            border-color: #ff9900 !important;
+        }
 
-    .amazon-card {
-        background: #fff;
-        border: 1px solid #e7e7e7;
-        border-radius: 0;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        padding: 25px;
-        margin-bottom: 20px;
-    }
+        .amazon-card {
+            background: #fff;
+            border: 1px solid #eff3f6;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
 
-    .section-title {
-        font-size: 1.1rem;
-        font-weight: 500;
-        color: #111;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #e7e7e7;
-    }
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f1f5f9;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
 
-    .form-label {
-        display: block;
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #111;
-        margin-bottom: 8px;
-    }
+        .field-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
 
-    .form-input {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #adb1b8;
-        border-radius: 0;
-        font-size: 0.85rem;
-        outline: none;
-        background: #fcfcfc;
-        box-sizing: border-box;
-    }
+        /* Buttons Alignés */
+        .btn-amazon-primary {
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+            width: 100%;
+        }
 
-    .form-group { margin-bottom: 20px; }
-    .form-group:last-child { margin-bottom: 0; }
+        .btn-amazon-primary:hover {
+            background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: #fff;
+        }
 
-    .form-error {
-        color: #bf0000;
-        font-size: 0.75rem;
-        margin-top: 6px;
-    }
+        .btn-amazon-secondary {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+            width: 100%;
+        }
 
-    .btn-amazon-primary {
-        background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #004aad; color: #fff;
-        padding: 8px 24px;
-        border-radius: 0;
-        font-size: 0.85rem;
-        font-weight: 400;
-        text-decoration: none;
-        box-shadow: 0 1px 0 rgba(255,255,255,.4) inset;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-    }
-    .btn-amazon-primary:hover {
-        background: linear-gradient(180deg, #0069d9 0%, #004494 100%);
-        border-color: #003d82;
-        color: #111;
-        text-decoration: none;
-    }
+        .btn-amazon-secondary:hover {
+            background: #f8fafc;
+            border-color: #dee2e6;
+            color: #1e293b;
+        }
 
-    .btn-amazon-secondary {
-        background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
-        border: 1px solid #adb1b8;
-        color: #111;
-        padding: 8px 24px;
-        border-radius: 0;
-        font-size: 0.85rem;
-        font-weight: 400;
-        text-decoration: none;
-        box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-    }
-    .btn-amazon-secondary:hover {
-        background: linear-gradient(to bottom, #e7eaf0, #d8dade);
-        border-color: #a2a6ac;
-        color: #111;
-        text-decoration: none;
-    }
-</style>
+        /* Custom Checkbox */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #1e293b;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 2px solid #dee2e6;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: #ff9900;
+            border-color: #ff9900;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+    </style>
 @endpush
 
 @section('content')
-<div style="max-width: 100%; margin-top: -50px;">
+<div style="max-width: 1200px; margin: -30px auto 0;">
+    <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
 
-    <div style="background: #fff; border: 1px solid #e7e7e7; border-top: none; padding: 25px;">
-        {{-- En-tête de page --}}
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-            <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">Nouvel Onglet</h1>
-            <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-secondary" style="gap: 8px;">
-                <i class="fas fa-reply" style="font-size: 0.8rem; opacity: 0.7;"></i> Retour à la liste
+        {{-- Card Header --}}
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                <i class="fas fa-plus" style="font-size: 0.8rem;"></i>
+                <span>Nouvel Onglet</span>
+            </div>
+
+            <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-secondary" style="width: auto !important; height: 32px !important; padding: 0 16px !important; font-size: 0.8rem;">
+                <i class="fas fa-list" style="color: #ff9900;"></i> Voir les onglets
             </a>
         </div>
 
+        {{-- Erreurs globales --}}
+        @if($errors->any())
+            <div style="background: #fff5f5; border: 1px solid #fecaca; padding: 15px; margin-bottom: 20px; border-radius: 6px;">
+                <div style="color: #c40000; font-weight: 700; margin-bottom: 8px; font-size: 0.85rem;">
+                    <i class="fas fa-exclamation-triangle"></i> Des erreurs sont survenues :
+                </div>
+                <ul style="margin: 0; padding-left: 20px;">
+                    @foreach($errors->all() as $error)
+                        <li style="font-size: 0.8rem; color: #bf0000;">{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form method="POST" action="{{ route('admin.highlight-tabs.store') }}">
-        @csrf
+            @csrf
 
-        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 25px; align-items: start;">
+            <div style="display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: start;">
 
-            {{-- Colonne gauche : Identité --}}
-            <div style="display: flex; flex-direction: column; gap: 25px;">
-                <div class="amazon-card">
-                    <h2 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; color: #111; border-bottom: 1px solid #eee; padding-bottom: 15px;">
-                        Informations de l'Onglet
-                    </h2>
+                {{-- Left Column --}}
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="amazon-card" style="margin: 0;">
+                        <h3 class="section-title">Informations de l'onglet</h3>
 
-                    <div class="form-group">
-                        <label for="name" class="form-label">
-                            Nom de l'onglet <span style="color: #c40000;">*</span>
-                        </label>
-                        <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                            class="form-input"
-                            placeholder="Ex: Mode, High-Tech, Immobilier...">
-                        @error('name')
-                            <p class="form-error">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-            </div>
-
-            {{-- Colonne droite : Configuration --}}
-            <div style="display: flex; flex-direction: column; gap: 25px;">
-                <div class="amazon-card">
-                    <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 15px; color: #111;">Configuration</h2>
-
-                    <div style="display: flex; flex-direction: column; gap: 20px;">
-                        <div class="form-group">
-                            <label for="position" class="form-label">
-                                Ordre d'affichage <span style="color: #c40000;">*</span>
-                            </label>
-                            <input type="number" name="position" id="position" value="{{ old('position', $nextPosition) }}" min="1" required
-                                class="form-input" style="background: #fff; height: 40px;">
-                            <p style="color: #777; font-size: 0.75rem; margin-top: 6px;">
-                                Plus la valeur est basse, plus l'onglet apparaît en premier.
-                            </p>
-                            @error('position')
-                                <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p>
-                            @enderror
-                        </div>
-
-                        <div class="form-group" style="padding-top: 5px;">
-                            <label class="checkbox-container" style="margin: 0; padding: 0;">
-                                <input type="checkbox" name="active" value="1"
-                                       {{ old('active', true) ? 'checked' : '' }}
-                                       style="width: 18px; height: 18px; cursor: pointer; accent-color: #e47911;">
-                                <span class="checkmark"></span>
-                                <div style="margin-left: 5px;">
-                                    <div style="font-size: 0.85rem; font-weight: 700; color: #111;">Activer cet onglet</div>
-                                    <div style="font-size: 0.75rem; color: #555;">Visible sur le site public.</div>
-                                </div>
-                            </label>
+                        <div>
+                            <label for="name" class="field-label">Nom de l'onglet <small style="color: red;">*</small></label>
+                            <input type="text" name="name" id="name" value="{{ old('name') }}" required>
+                            @error('name') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                         </div>
                     </div>
+                </div>
 
-                    <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 12px;">
-                        <button type="submit" class="btn-amazon-primary" style="width: 100%; height: 40px; font-weight: 700;">
-                            Enregistrer l'onglet
-                        </button>
-                        <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-secondary" style="width: 100%; height: 40px;">
-                            Annuler
-                        </a>
+                {{-- Right Column --}}
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div class="amazon-card" style="margin: 0;">
+                        <h3 class="section-title">Configuration</h3>
+
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div>
+                                <label for="position" class="field-label">Ordre d'affichage <small style="color: red;">*</small></label>
+                                <input type="number" name="position" id="position" value="{{ old('position', $nextPosition) }}" min="1" required>
+                                <p style="font-size: 0.7rem; color: #94a3b8; margin-top: 5px;">Plus bas = premier.</p>
+                                @error('position') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                            </div>
+
+                            <div style="border-top: 1px solid #f1f5f9; padding-top: 15px;">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" name="active" value="1" {{ old('active', true) ? 'checked' : '' }}>
+                                    <span class="checkmark"></span>
+                                    <span style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Activer cet onglet</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 25px; display: grid; grid-template-columns: 1fr; gap: 10px;">
+                            <button type="submit" class="btn-amazon-primary">
+                                ENREGISTRER
+                            </button>
+                            <a href="{{ route('admin.highlight-tabs.index') }}" class="btn-amazon-secondary">
+                                ANNULER
+                            </a>
+                        </div>
                     </div>
                 </div>
+
             </div>
-
-        </div>
-
         </form>
     </div>
 </div>
