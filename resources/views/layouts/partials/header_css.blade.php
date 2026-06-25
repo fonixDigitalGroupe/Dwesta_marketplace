@@ -833,9 +833,28 @@
             padding: 0 0.6rem 0.4rem 0.6rem !important;
         }
 
-        /* Hide sell button on small screens */
+        /* Bouton "Mettre en vente" affiché en icône sur mobile */
         .sell-button-container {
-            display: none !important;
+            display: flex !important;
+            align-items: center;
+        }
+        .sell-button {
+            padding: 0 !important;
+            color: #333;
+        }
+        .sell-button .sell-icon {
+            margin-right: 0 !important;
+        }
+        .sell-button .sell-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+        /* Le menu déroulant s'aligne à droite pour ne pas déborder */
+        .sell-dropdown {
+            left: auto !important;
+            right: 0 !important;
+            min-width: 240px;
+            max-width: 90vw;
         }
 
         .cat-nav-item.badge-style,
