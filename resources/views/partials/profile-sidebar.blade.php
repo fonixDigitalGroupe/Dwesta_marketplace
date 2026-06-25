@@ -227,8 +227,9 @@
             }
 
             .main-content {
-                padding: 0.5rem 1rem 1rem;
-                border-radius: 4px;
+                padding: 0.5rem 0.75rem 1rem;
+                border: none !important;
+                border-radius: 0;
                 background: #fff;
             }
 
@@ -478,7 +479,15 @@
                     var h1 = document.querySelector('.main-content h1');
                     if (h1 && h1.textContent.trim()) {
                         titleEl.textContent = h1.textContent.trim();
-                        h1.classList.add('hide-on-mobile-account');
+                        // Masque tout le conteneur d'en-tête s'il ne contient que le titre
+                        // (évite un bloc vide avec bordure/marge), sinon juste le titre.
+                        var wrapper = h1.parentElement;
+                        var mainEl = document.querySelector('.main-content');
+                        if (wrapper && wrapper !== mainEl && wrapper.children.length === 1) {
+                            wrapper.classList.add('hide-on-mobile-account');
+                        } else {
+                            h1.classList.add('hide-on-mobile-account');
+                        }
                     }
                 });
             </script>
