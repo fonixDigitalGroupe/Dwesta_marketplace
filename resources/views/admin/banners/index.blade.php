@@ -81,9 +81,6 @@
                 </div>
 
                 <div style="display: flex; gap: 8px;">
-                    <a href="javascript:window.print()" class="btn-amazon-secondary">
-                        <i class="fas fa-print"></i> Imprimer
-                    </a>
                     <a href="{{ route('admin.banners.create') }}" class="btn-amazon-primary">
                         <i class="fas fa-plus"></i> Nouvelle bannière
                     </a>

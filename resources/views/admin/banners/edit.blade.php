@@ -318,13 +318,6 @@
                         </div>
                     </div>
 
-                    <div class="amazon-card" style="padding: 15px; margin: 0; background: #f8fafc; border-color: #e2e8f0;">
-                        <div style="font-size: 0.7rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.5;">
-                            <i class="fas fa-info-circle" style="color: #3b82f6; margin-right: 5px;"></i>
-                            Dernière modification : <br>
-                            <span style="color: #475569; font-weight: 700;">{{ $banner->updated_at->format('d/m/Y H:i') }}</span>
-                        </div>
-                    </div>
                 </div>
 
             </div>
