@@ -5,170 +5,209 @@
 @push('styles')
     <style>
         .main-content { background-color: #f8f9fa !important; }
-        .amazon-card { background: #fff; border: 1px solid #eff3f6; border-radius: 8px; padding: 24px; }
-        .section-title { font-size: 0.75rem; font-weight: 700; color: #475569; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; text-transform: uppercase; letter-spacing: 0.06em; }
-        .field-label { display: block; font-size: 0.72rem; font-weight: 600; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
 
-        input, select, textarea { width: 100%; padding: 10px 14px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.85rem; outline: none; background: #fff; color: #475569; transition: all 0.2s; }
-        input:focus, select:focus, textarea:focus { border-color: #ff9900 !important; box-shadow: 0 0 0 3px rgba(255,153,0,0.15); }
+        .gm-card { background: #fff; border: 1px solid #eff3f6; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
 
-        .btn-orange { background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: 1px solid #c05d00; color: #fff; padding: 10px 16px; border-radius: 4px; font-size: 0.8rem; font-weight: 700; cursor: pointer; width: 100%; transition: all 0.2s; }
-        .btn-orange:hover { background: linear-gradient(180deg, #f08804 0%, #d87300 100%); }
+        /* Barre d'outils (façon Gmail) */
+        .gm-toolbar {
+            display: flex; align-items: center; gap: 16px;
+            padding: 14px 20px; border-bottom: 1px solid #eff3f6; background: #fff;
+        }
+        .gm-title { display: flex; align-items: center; gap: 10px; font-size: 1rem; font-weight: 700; color: #202124; }
+        .gm-title i { color: #ea4335; }
+        .gm-compose {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: #c2e7ff; color: #001d35; border: none;
+            padding: 12px 22px 12px 18px; border-radius: 999px;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12); transition: box-shadow 0.2s, background 0.2s;
+        }
+        .gm-compose:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.18); background: #b3dffc; }
 
-        .badge-amazon { font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 12px; }
-        .badge-vendeur { color: #1e40af; background: #eff6ff; }
-        .badge-client { color: #475569; background: #f1f5f9; }
+        /* Liste façon Gmail */
+        .gm-list { list-style: none; margin: 0; padding: 0; }
+        .gm-row {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 20px; border-bottom: 1px solid #f1f3f4;
+            text-decoration: none; color: inherit; cursor: pointer;
+            transition: box-shadow 0.15s, background 0.15s; background: #fff;
+        }
+        .gm-row:hover { box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px rgba(60,64,67,.2); z-index: 1; }
+        .gm-row.unread { background: #fff; }
+        .gm-row.read { background: #f6f8fc; }
 
-        .alert-ok { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; padding: 12px 16px; border-radius: 6px; margin-bottom: 20px; font-size: 0.85rem; }
-        .alert-err { background: #fff5f5; border: 1px solid #fecaca; color: #991b1b; padding: 12px 16px; border-radius: 6px; margin-bottom: 20px; font-size: 0.85rem; }
+        .gm-avatar {
+            width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 700; font-size: 0.95rem; text-transform: uppercase;
+        }
+        .gm-mid { flex: 1; min-width: 0; }
+        .gm-name { font-size: 0.88rem; color: #202124; }
+        .gm-row.unread .gm-name { font-weight: 700; }
+        .gm-snippet { font-size: 0.82rem; color: #5f6368; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .gm-row.unread .gm-snippet { color: #202124; font-weight: 600; }
+        .gm-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+        .gm-date { font-size: 0.72rem; color: #5f6368; white-space: nowrap; }
+        .gm-row.unread .gm-date { color: #202124; font-weight: 700; }
+        .gm-tag { font-size: 0.62rem; font-weight: 700; padding: 1px 7px; border-radius: 99px; text-transform: uppercase; }
+        .gm-tag-vendeur { color: #1e40af; background: #e8f0fe; }
+        .gm-tag-client { color: #475569; background: #f1f3f4; }
+        .gm-unread-dot { width: 8px; height: 8px; border-radius: 50%; background: #1a73e8; flex-shrink: 0; }
+
+        .gm-empty { padding: 60px 20px; text-align: center; color: #80868b; }
+        .gm-empty i { font-size: 3rem; color: #dadce0; display: block; margin-bottom: 14px; }
+
+        /* Pop-up de composition (façon Gmail, en bas à droite) */
+        .gm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.15); display: none; z-index: 9998; }
+        .gm-overlay.open { display: block; }
+        .gm-compose-box {
+            position: fixed; bottom: 0; right: 24px; width: 480px; max-width: calc(100vw - 24px);
+            background: #fff; border-radius: 12px 12px 0 0; box-shadow: 0 8px 30px rgba(0,0,0,0.28);
+            z-index: 9999; display: none; flex-direction: column; overflow: hidden;
+        }
+        .gm-compose-box.open { display: flex; }
+        .gm-compose-head { background: #404040; color: #fff; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 600; }
+        .gm-compose-close { background: none; border: none; color: #fff; cursor: pointer; font-size: 1rem; }
+        .gm-compose-body { padding: 16px; }
+        .gm-field { width: 100%; border: none; border-bottom: 1px solid #e0e0e0; padding: 10px 4px; font-size: 0.85rem; outline: none; color: #202124; background: #fff; }
+        .gm-field:focus { border-bottom-color: #1a73e8; }
+        .gm-textarea { width: 100%; border: none; outline: none; padding: 12px 4px; font-size: 0.9rem; min-height: 180px; resize: vertical; color: #202124; }
+        .gm-compose-foot { padding: 10px 16px 16px; }
+        .gm-send {
+            background: #1a73e8; color: #fff; border: none; border-radius: 999px;
+            padding: 10px 26px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: background 0.2s;
+        }
+        .gm-send:hover { background: #1765cc; }
+
+        .alert-ok { background: #e6f4ea; border: 1px solid #a8d5b1; color: #137333; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 0.85rem; }
+        .alert-err { background: #fce8e6; border: 1px solid #f5c6c2; color: #c5221f; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 0.85rem; }
     </style>
 @endpush
 
 @section('content')
-<div style="max-width: 1400px; margin: 20px auto 0; width: 100%;">
-    <div class="amazon-card">
+@php
+    $palette = ['#1a73e8','#ea4335','#fbbc04','#34a853','#a142f4','#f5511e','#00897b','#d81b60'];
+@endphp
+<div style="max-width: 1100px; margin: 20px auto 0; width: 100%;">
 
-        {{-- Header --}}
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 24px;">
-            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
-                <i class="fas fa-envelope" style="font-size: 0.8rem;"></i>
-                <span>Messagerie</span>
+    @if(session('success'))
+        <div class="alert-ok"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
+    @endif
+    @if(session('error'))
+        <div class="alert-err"><i class="fas fa-exclamation-circle"></i> {{ session('error') }}</div>
+    @endif
+    @if($errors->any())
+        <div class="alert-err">@foreach($errors->all() as $e)<div>{{ $e }}</div>@endforeach</div>
+    @endif
+
+    <div class="gm-card">
+        {{-- Toolbar --}}
+        <div class="gm-toolbar">
+            <button type="button" class="gm-compose" onclick="openCompose()">
+                <i class="fas fa-pen"></i> Nouveau message
+            </button>
+            <div class="gm-title" style="margin-left: auto;">
+                <i class="fas fa-inbox"></i> Boîte de réception
             </div>
         </div>
 
-        @if(session('success'))
-            <div class="alert-ok"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
-        @endif
-        @if(session('error'))
-            <div class="alert-err"><i class="fas fa-exclamation-circle"></i> {{ session('error') }}</div>
-        @endif
-        @if($errors->any())
-            <div class="alert-err">
-                @foreach($errors->all() as $error)<div>{{ $error }}</div>@endforeach
-            </div>
-        @endif
-
-        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 24px; align-items: start;">
-
-            {{-- Conversations récentes --}}
-            <div>
-                <h3 class="section-title">Conversations</h3>
-                <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; border: 1px solid #eff3f6;">
-                    <thead>
-                        <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
-                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Destinataire</th>
-                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Dernier message</th>
-                            <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Date</th>
-                            <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 90px;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($conversations as $conv)
-                            @php
-                                $other = $conv->user1_id == $adminId ? $conv->user2 : $conv->user1;
-                                $last = $conv->messages->first();
-                            @endphp
-                            <tr style="border-bottom: 1px solid #eff3f6;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
-                                <td style="padding: 12px 15px; font-size: 0.82rem; font-weight: 700; color: #111; border-right: 1px solid #eff3f6;">
-                                    {{ $other->prenom ?? '' }} {{ $other->nom ?? '' }}
-                                    <div style="font-size: 0.72rem; color: #94a3b8; font-weight: normal;">{{ $other->email ?? $other->telephone ?? '' }}</div>
-                                </td>
-                                <td style="padding: 12px 15px; font-size: 0.8rem; color: #555; border-right: 1px solid #eff3f6;">
-                                    {{ $last ? \Illuminate\Support\Str::limit(strip_tags($last->content), 70) : '—' }}
-                                </td>
-                                <td style="padding: 12px 15px; font-size: 0.75rem; color: #64748b; text-align: center; border-right: 1px solid #eff3f6;">
-                                    {{ $conv->last_message_at ? $conv->last_message_at->format('d/m/Y H:i') : '' }}
-                                </td>
-                                <td style="padding: 12px 15px; text-align: right;">
-                                    <a href="{{ route('conversations.show', $conv) }}" style="color: #0066c0; font-size: 0.8rem; text-decoration: none; font-weight: 600;">Ouvrir</a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="4" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
-                                    Aucune conversation pour le moment.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-                </div>
-
-                @if($conversations->hasPages())
-                    <div style="margin-top: 16px;">{{ $conversations->links('vendor.pagination.karnou') }}</div>
-                @endif
-            </div>
-
-            {{-- Formulaire d'envoi --}}
-            <div>
-                <h3 class="section-title">Envoyer un message</h3>
-                <form action="{{ route('admin.messagerie.send') }}" method="POST" id="send-form" onsubmit="return confirmSend()">
-                    @csrf
-
-                    <div style="margin-bottom: 18px;">
-                        <label class="field-label">Destinataire(s)</label>
-                        <select name="mode" id="mode" onchange="toggleRecipient()">
-                            <option value="user">Un utilisateur précis</option>
-                            <option value="vendeurs">Tous les vendeurs</option>
-                            <option value="clients">Tous les clients</option>
-                        </select>
+        {{-- Liste des conversations --}}
+        <ul class="gm-list">
+            @forelse($conversations as $conv)
+                @php
+                    $other = $conv->user1_id == $adminId ? $conv->user2 : $conv->user1;
+                    $last = $conv->messages->first();
+                    $isUnread = $last && $last->sender_id != $adminId && is_null($last->read_at);
+                    $name = trim(($other->prenom ?? '') . ' ' . ($other->nom ?? '')) ?: ($other->email ?? 'Utilisateur');
+                    $initial = mb_substr($other->prenom ?? ($other->nom ?? ($other->email ?? 'U')), 0, 1);
+                    $color = $palette[($other->id ?? 0) % count($palette)];
+                    $isVendeur = $other && $other->vendeur;
+                @endphp
+                <a href="{{ route('conversations.show', $conv) }}" class="gm-row {{ $isUnread ? 'unread' : 'read' }}">
+                    @if($isUnread)<span class="gm-unread-dot"></span>@else<span style="width:8px;flex-shrink:0;"></span>@endif
+                    <div class="gm-avatar" style="background: {{ $color }};">{{ $initial }}</div>
+                    <div class="gm-mid">
+                        <div class="gm-name">{{ $name }}
+                            <span class="gm-tag {{ $isVendeur ? 'gm-tag-vendeur' : 'gm-tag-client' }}">{{ $isVendeur ? 'Vendeur' : 'Client' }}</span>
+                        </div>
+                        <div class="gm-snippet">{{ $last ? \Illuminate\Support\Str::limit(strip_tags($last->content), 90) : 'Aucun message' }}</div>
                     </div>
-
-                    <div style="margin-bottom: 18px;" id="recipient-wrap">
-                        <label class="field-label">Choisir l'utilisateur</label>
-                        <select name="recipient_id" id="recipient_id">
-                            <option value="">— Sélectionner —</option>
-                            @foreach($users as $u)
-                                <option value="{{ $u->id }}">
-                                    {{ $u->prenom }} {{ $u->nom }} — {{ $u->email ?? $u->telephone }} {{ $u->vendeur ? '(Vendeur)' : '(Client)' }}
-                                </option>
-                            @endforeach
-                        </select>
+                    <div class="gm-meta">
+                        <span class="gm-date">{{ $conv->last_message_at ? $conv->last_message_at->translatedFormat('d M') : '' }}</span>
                     </div>
+                </a>
+            @empty
+                <li class="gm-empty">
+                    <i class="fas fa-inbox"></i>
+                    Aucune conversation. Cliquez sur « Nouveau message » pour écrire à un vendeur ou un client.
+                </li>
+            @endforelse
+        </ul>
 
-                    <div style="margin-bottom: 18px;">
-                        <label class="field-label">Message</label>
-                        <textarea name="message" id="message" rows="6" placeholder="Votre message..." required>{{ old('message') }}</textarea>
-                    </div>
-
-                    <button type="submit" class="btn-orange">
-                        <i class="fas fa-paper-plane"></i> ENVOYER
-                    </button>
-                </form>
-
-                <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 12px; line-height: 1.5;">
-                    Le message apparaît dans la boîte de réception du destinataire (notification + popup), envoyé par le compte Karnou.
-                </p>
-            </div>
-
-        </div>
+        @if($conversations->hasPages())
+            <div style="padding: 14px 20px;">{{ $conversations->links('vendor.pagination.karnou') }}</div>
+        @endif
     </div>
+</div>
+
+{{-- Pop-up de composition --}}
+<div class="gm-overlay" id="gm-overlay" onclick="closeCompose()"></div>
+<div class="gm-compose-box" id="gm-compose-box">
+    <div class="gm-compose-head">
+        <span>Nouveau message</span>
+        <button type="button" class="gm-compose-close" onclick="closeCompose()">&times;</button>
+    </div>
+    <form action="{{ route('admin.messagerie.send') }}" method="POST" id="send-form" onsubmit="return confirmSend()">
+        @csrf
+        <div class="gm-compose-body">
+            <select name="mode" id="mode" class="gm-field" onchange="toggleRecipient()">
+                <option value="user">À : un utilisateur précis</option>
+                <option value="vendeurs">À : tous les vendeurs</option>
+                <option value="clients">À : tous les clients</option>
+            </select>
+
+            <select name="recipient_id" id="recipient_id" class="gm-field">
+                <option value="">— Choisir le destinataire —</option>
+                @foreach($users as $u)
+                    <option value="{{ $u->id }}">{{ $u->prenom }} {{ $u->nom }} — {{ $u->email ?? $u->telephone }} {{ $u->vendeur ? '(Vendeur)' : '(Client)' }}</option>
+                @endforeach
+            </select>
+
+            <textarea name="message" id="message" class="gm-textarea" placeholder="Rédigez votre message…" required>{{ old('message') }}</textarea>
+        </div>
+        <div class="gm-compose-foot">
+            <button type="submit" class="gm-send"><i class="fas fa-paper-plane"></i> Envoyer</button>
+        </div>
+    </form>
 </div>
 
 @push('scripts')
 <script>
+    function openCompose() {
+        document.getElementById('gm-compose-box').classList.add('open');
+        document.getElementById('gm-overlay').classList.add('open');
+        toggleRecipient();
+    }
+    function closeCompose() {
+        document.getElementById('gm-compose-box').classList.remove('open');
+        document.getElementById('gm-overlay').classList.remove('open');
+    }
     function toggleRecipient() {
         var mode = document.getElementById('mode').value;
-        var wrap = document.getElementById('recipient-wrap');
         var sel = document.getElementById('recipient_id');
-        if (mode === 'user') {
-            wrap.style.display = 'block';
-            sel.setAttribute('required', 'required');
-        } else {
-            wrap.style.display = 'none';
-            sel.removeAttribute('required');
-        }
+        if (mode === 'user') { sel.style.display = 'block'; sel.setAttribute('required','required'); }
+        else { sel.style.display = 'none'; sel.removeAttribute('required'); }
     }
-
     function confirmSend() {
         var mode = document.getElementById('mode').value;
         if (mode === 'user') return true;
         var cible = mode === 'vendeurs' ? 'TOUS les vendeurs' : 'TOUS les clients';
         return window.confirm('Confirmer l\'envoi de ce message à ' + cible + ' ?');
     }
-
-    document.addEventListener('DOMContentLoaded', toggleRecipient);
+    // Ouvre automatiquement la fenêtre si des erreurs de validation existent
+    @if($errors->any() || old('message'))
+        document.addEventListener('DOMContentLoaded', openCompose);
+    @endif
 </script>
 @endpush
 @endsection
