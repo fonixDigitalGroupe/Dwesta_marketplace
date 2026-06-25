@@ -165,10 +165,14 @@
             }
 
             .dashboard-container {
-                grid-template-columns: 1fr;
+                /* minmax(0,1fr) évite le « grid blowout » : la colonne peut
+                   rétrécir sous la largeur intrinsèque du contenu (cartes, etc.) */
+                grid-template-columns: minmax(0, 1fr);
                 padding: 1rem 0.5rem;
                 gap: 0;
                 background-color: #fff;
+                max-width: 100%;
+                overflow-x: hidden;
             }
 
             .sidebar,
@@ -231,6 +235,9 @@
                 border: none !important;
                 border-radius: 0;
                 background: #fff;
+                min-width: 0;
+                max-width: 100%;
+                overflow-x: hidden;
             }
 
             .rakuten-mobile-nav {
