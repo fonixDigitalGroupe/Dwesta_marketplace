@@ -51,7 +51,7 @@
     .abn-section {
         background: #fff;
         border: 1px solid #d5d9d9;
-        border-radius: 6px;
+        border-radius: 0;
         margin-bottom: 1.25rem;
         overflow: hidden;
     }
@@ -158,21 +158,20 @@
     .badge-popular { background: #f68b1e; color: #fff; }
     .badge-locked  { background: #ccc; color: #555; }
 
-    /* ── Checkout bar (fixed) ── */
+    /* ── Checkout bar (intégrée au container) ── */
     .checkout-bar {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: #fff;
-        padding: 0.9rem 2rem;
-        box-shadow: 0 -3px 10px rgba(0,0,0,0.1);
+        background: #f7f8f8;
+        padding: 0.9rem 1.1rem;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         gap: 1.5rem;
-        z-index: 1000;
         border-top: 1px solid #d5d9d9;
+        flex-wrap: wrap;
+    }
+    @media (max-width: 600px) {
+        .checkout-bar { flex-direction: column; align-items: stretch; }
+        .checkout-bar .btn-subscribe { width: 100%; }
     }
 
     .checkout-bar-text {
@@ -383,6 +382,17 @@
                                 </div>
                             </div>
                         @endforeach
+
+                        {{-- Barre de validation intégrée au container --}}
+                        <div class="checkout-bar" id="checkout-bar" style="display: none;">
+                            <div class="checkout-bar-text">
+                                Forfait sélectionné :
+                                <strong id="selected-plan-name" style="color: #004aad;">...</strong>
+                            </div>
+                            <button type="submit" class="btn-subscribe" id="submit-btn">
+                                Continuer vers le paiement →
+                            </button>
+                        </div>
                     </div>
 
                     {{-- Abonnement actif info (si abonnement actif) --}}
@@ -404,16 +414,6 @@
                         @endif
                     @endif
 
-                    {{-- Sticky checkout bar --}}
-                    <div class="checkout-bar" id="checkout-bar" style="display: none;">
-                        <div class="checkout-bar-text">
-                            Forfait sélectionné :
-                            <strong id="selected-plan-name" style="color: #004aad;">...</strong>
-                        </div>
-                        <button type="submit" class="btn-subscribe" id="submit-btn">
-                            Continuer vers le paiement →
-                        </button>
-                    </div>
                 </form>
 
                 {{-- Help link --}}
