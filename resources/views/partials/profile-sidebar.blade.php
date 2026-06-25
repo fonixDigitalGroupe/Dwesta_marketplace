@@ -227,7 +227,7 @@
             }
 
             .main-content {
-                padding: 0.5rem 0.75rem 1rem;
+                padding: 0.25rem 0.75rem 1rem;
                 border: none !important;
                 border-radius: 0;
                 background: #fff;
@@ -485,6 +485,11 @@
                         var mainEl = document.querySelector('.main-content');
                         if (wrapper && wrapper !== mainEl && wrapper.children.length === 1) {
                             wrapper.classList.add('hide-on-mobile-account');
+                            // Rapproche le premier élément de contenu de la barre retour
+                            var next = wrapper.nextElementSibling;
+                            if (next && window.matchMedia('(max-width: 1024px)').matches) {
+                                next.style.marginTop = '0.4rem';
+                            }
                         } else {
                             h1.classList.add('hide-on-mobile-account');
                         }
