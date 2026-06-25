@@ -101,14 +101,23 @@
         padding: 1rem;
         border-radius: 8px;
         align-items: flex-end;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
 
     .filter-group {
         display: flex;
         flex-direction: column;
         gap: 0.4rem;
-        flex: 0 1 auto;
+        flex: 1 1 0;
+        min-width: 120px;
+    }
+
+    /* Les deux boutons restent ensemble, alignés à droite sur la même ligne */
+    .filter-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-end;
+        flex-shrink: 0;
     }
 
     .filter-group label {
@@ -124,13 +133,7 @@
         padding: 0.55rem 0.65rem;
         font-size: 0.9rem;
         outline: none;
-        width: 260px;
-        max-width: 100%;
-    }
-
-    /* Pousse les boutons Appliquer / Réinitialiser vers la droite */
-    .stats-filter-form .btn-filter {
-        margin-left: auto;
+        width: 100%;
     }
 
     .btn-filter {
@@ -251,13 +254,19 @@
             flex-direction: column;
             align-items: stretch;
             gap: 0.75rem;
+            flex-wrap: wrap;
         }
         .filter-group { flex: 1 1 auto; }
         .filter-group input { width: 100%; }
-        .stats-filter-form .btn-filter,
-        .stats-filter-form .btn-reset {
-            margin-left: 0;
+        .filter-actions {
+            display: flex;
+            gap: 0.75rem;
             width: 100%;
+        }
+        .filter-actions .btn-filter,
+        .filter-actions .btn-reset {
+            flex: 1;
+            width: auto;
             height: 42px;
         }
 
@@ -340,8 +349,10 @@
                     <label>Date de fin</label>
                     <input type="date" name="date_fin" value="{{ $dateFin }}">
                 </div>
-                <button type="submit" class="btn-filter">Appliquer</button>
-                <a href="{{ route('vendeur.stats') }}" class="btn-reset">Réinitialiser</a>
+                <div class="filter-actions">
+                    <button type="submit" class="btn-filter">Appliquer</button>
+                    <a href="{{ route('vendeur.stats') }}" class="btn-reset">Réinitialiser</a>
+                </div>
             </form>
 
             <h2 class="section-title">Aperçu global</h2>
@@ -500,16 +511,31 @@
 
                 <div style="border: 1px solid #eee; border-radius: 8px; padding: 1rem;">
                     @forelse($stockAnnonces as $annonce)
-                        @php $cfg = $stockConfig[$annonce->disponibilite] ?? ['label' => ucfirst(str_replace('_', ' ', $annonce->disponibilite ?? '—')), 'color' => '#777', 'bg' => '#f5f5f5', 'icon' => 'fa-box']; @endphp
+                        @php
+                            $isEcommerce = optional($annonce->category)->famille === \App\Models\Category::FAMILLE_ECOMMERCE;
+                            $cfg = $stockConfig[$annonce->disponibilite] ?? ['label' => ucfirst(str_replace('_', ' ', $annonce->disponibilite ?? '—')), 'color' => '#777', 'bg' => '#f5f5f5', 'icon' => 'fa-box'];
+                            $qte = optional($annonce->produit)->quantite;
+                        @endphp
                         <div class="mini-product">
                             <img src="{{ $annonce->photoPrincipale() ? asset('storage/' . $annonce->photoPrincipale()->chemin) : asset('images/no-image.png') }}" alt="">
                             <div class="info">
                                 <div class="name">{{ $annonce->titre }}</div>
                                 <div class="meta">{{ $annonce->category->nom ?? 'Sans catégorie' }}</div>
                             </div>
-                            <span class="stock-badge" style="background: {{ $cfg['bg'] }}; color: {{ $cfg['color'] }}; border: 1px solid {{ $cfg['color'] }}33;">
-                                <i class="fas {{ $cfg['icon'] }}"></i> {{ $cfg['label'] }}
-                            </span>
+                            @if($isEcommerce)
+                                <div style="display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0;">
+                                    @if(!is_null($qte))
+                                        <span class="count-badge"><i class="fas fa-cubes" style="color:#888; margin-right:4px;"></i>{{ $qte }} en stock</span>
+                                    @endif
+                                    <span class="stock-badge" style="background: {{ $cfg['bg'] }}; color: {{ $cfg['color'] }}; border: 1px solid {{ $cfg['color'] }}33;">
+                                        <i class="fas {{ $cfg['icon'] }}"></i> {{ $cfg['label'] }}
+                                    </span>
+                                </div>
+                            @else
+                                <span class="stock-badge" style="background: #f5f5f5; color: #999; border: 1px solid #e5e5e5;">
+                                    <i class="fas fa-minus-circle"></i> Non applicable
+                                </span>
+                            @endif
                         </div>
                     @empty
                         <div style="text-align: center; padding: 2rem; color: #999;">Aucune annonce à afficher.</div>

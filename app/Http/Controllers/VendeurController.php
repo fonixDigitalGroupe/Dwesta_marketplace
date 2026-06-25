@@ -573,18 +573,23 @@ class VendeurController extends Controller
             ->limit(10)
             ->get();
 
-        // 4. État du stock : annonces du vendeur avec leur disponibilité.
-        // Les ruptures de stock sont affichées en premier.
+        // 4. État du stock : annonces du vendeur avec leur disponibilité et quantité.
+        // Seuls les produits e-commerce ont un stock réel ; les ruptures en premier.
         $stockAnnonces = \App\Models\Annonce::where('vendeur_id', $vendeur->id)
-            ->with('category')
+            ->with(['category', 'produit'])
             ->orderByRaw("FIELD(disponibilite, 'rupture_stock', 'sur_commande', 'en_stock')")
             ->orderBy('titre')
             ->get();
 
+        // Le résumé ne compte que les produits e-commerce (les seuls avec un stock).
+        $ecommerceStock = $stockAnnonces->filter(function ($a) {
+            return optional($a->category)->famille === \App\Models\Category::FAMILLE_ECOMMERCE;
+        });
+
         $stockSummary = [
-            'en_stock'      => $stockAnnonces->where('disponibilite', \App\Models\Annonce::DISPONIBILITE_EN_STOCK)->count(),
-            'rupture_stock' => $stockAnnonces->where('disponibilite', \App\Models\Annonce::DISPONIBILITE_RUPTURE_STOCK)->count(),
-            'sur_commande'  => $stockAnnonces->where('disponibilite', \App\Models\Annonce::DISPONIBILITE_SUR_COMMANDE)->count(),
+            'en_stock'      => $ecommerceStock->where('disponibilite', \App\Models\Annonce::DISPONIBILITE_EN_STOCK)->count(),
+            'rupture_stock' => $ecommerceStock->where('disponibilite', \App\Models\Annonce::DISPONIBILITE_RUPTURE_STOCK)->count(),
+            'sur_commande'  => $ecommerceStock->where('disponibilite', \App\Models\Annonce::DISPONIBILITE_SUR_COMMANDE)->count(),
         ];
 
         return view('vendeur.stats', compact(
