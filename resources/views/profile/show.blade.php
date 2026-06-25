@@ -48,18 +48,27 @@
             width: 100%;
         }
 
-        /* Mobile-first : 1 champ par ligne PAR DÉFAUT (prénom, nom, nationalité…). */
+        /* Mobile-first : 1 champ par ligne PAR DÉFAUT.
+           display:block => les champs (.rakuten-field-group, width:100%) s'empilent
+           comme des blocs normaux, sans dépendre d'aucune grille. */
         .rakuten-form-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .rakuten-form-grid > .rakuten-field-group {
+            width: 100%;
             margin-bottom: 1rem;
         }
 
         /* 2 colonnes uniquement sur grand écran (desktop). */
         @media (min-width: 1025px) {
             .rakuten-form-grid {
+                display: grid;
                 grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            .rakuten-form-grid > .rakuten-field-group {
+                margin-bottom: 0;
             }
         }
 
