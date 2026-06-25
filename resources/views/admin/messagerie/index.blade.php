@@ -89,28 +89,32 @@
 @php
     $palette = ['#1a73e8','#ea4335','#fbbc04','#34a853','#a142f4','#f5511e','#00897b','#d81b60'];
 @endphp
-<div style="max-width: 1100px; margin: 0 auto; width: 100%;">
+<div style="max-width: 1600px; margin: -30px auto 0; width: 100%;">
+    <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px; min-height: 78vh; display: flex; flex-direction: column;">
 
-    @if(session('success'))
-        <div class="alert-ok"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
-    @endif
-    @if(session('error'))
-        <div class="alert-err"><i class="fas fa-exclamation-circle"></i> {{ session('error') }}</div>
-    @endif
-    @if($errors->any())
-        <div class="alert-err">@foreach($errors->all() as $e)<div>{{ $e }}</div>@endforeach</div>
-    @endif
+        @if(session('success'))
+            <div class="alert-ok"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
+        @endif
+        @if(session('error'))
+            <div class="alert-err"><i class="fas fa-exclamation-circle"></i> {{ session('error') }}</div>
+        @endif
+        @if($errors->any())
+            <div class="alert-err">@foreach($errors->all() as $e)<div>{{ $e }}</div>@endforeach</div>
+        @endif
 
-    <div class="gm-card">
-        {{-- Toolbar --}}
-        <div class="gm-toolbar">
-            <button type="button" class="gm-compose" style="margin-left: auto;" onclick="openCompose()">
+        {{-- Card Header (style banners) --}}
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                <i class="fas fa-envelope" style="font-size: 0.8rem;"></i>
+                <span>Messagerie</span>
+            </div>
+            <button type="button" class="gm-compose" onclick="openCompose()">
                 <i class="fas fa-pen"></i> Nouveau message
             </button>
         </div>
 
         {{-- Liste des conversations --}}
-        <ul class="gm-list">
+        <ul class="gm-list" style="border: 1px solid #eff3f6; border-radius: 8px; overflow: hidden;">
             @forelse($conversations as $conv)
                 @php
                     $other = $conv->user1_id == $adminId ? $conv->user2 : $conv->user1;
