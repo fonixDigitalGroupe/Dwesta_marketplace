@@ -65,7 +65,42 @@
             z-index: 100;
             box-shadow: 1px 0 0 rgba(255, 255, 255, 0.05);
             border-right: none;
+            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        /* ── Sidebar réduit (icônes seules) ── */
+        .sidebar-toggle-btn {
+            background: none;
+            border: none;
+            color: #475569;
+            font-size: 1.15rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+            transition: background 0.2s;
+        }
+        .sidebar-toggle-btn:hover { background: #f3f4f6; }
+
+        .admin-wrapper.sidebar-collapsed .sidebar { width: 68px; }
+        .admin-wrapper.sidebar-collapsed .sidebar-menu li a span,
+        .admin-wrapper.sidebar-collapsed .sidebar-submenu,
+        .admin-wrapper.sidebar-collapsed .sidebar-separator,
+        .admin-wrapper.sidebar-collapsed .sidebar-brand span {
+            display: none;
+        }
+        .admin-wrapper.sidebar-collapsed .sidebar-menu li a {
+            justify-content: center;
+            padding: 0.6rem;
+            gap: 0;
+        }
+        .admin-wrapper.sidebar-collapsed .sidebar-menu li a i { opacity: 1; }
+        .admin-wrapper.sidebar-collapsed .sidebar-brand img { max-width: 42px; height: 26px; }
 
         .sidebar-brand {
             padding: 0;
@@ -478,6 +513,10 @@
             <!-- Header -->
             <header class="header">
                 <div class="header-container">
+                    <button type="button" id="sidebarToggle" class="sidebar-toggle-btn" title="Réduire / agrandir le menu" aria-label="Basculer le menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
                     <div class="search-container">
                         <input type="text" class="search-input" placeholder="Rechercher...">
                     </div>
@@ -565,6 +604,19 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Toggle du sidebar (bouton hamburger)
+            const wrapper = document.querySelector('.admin-wrapper');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (wrapper && localStorage.getItem('admin_sidebar_collapsed') === '1') {
+                wrapper.classList.add('sidebar-collapsed');
+            }
+            if (wrapper && sidebarToggle) {
+                sidebarToggle.addEventListener('click', function () {
+                    wrapper.classList.toggle('sidebar-collapsed');
+                    localStorage.setItem('admin_sidebar_collapsed', wrapper.classList.contains('sidebar-collapsed') ? '1' : '0');
+                });
+            }
+
             // User Dropdown
             const trigger = document.getElementById('userMenuTrigger');
             const menu = document.getElementById('userDropdownMenu');
