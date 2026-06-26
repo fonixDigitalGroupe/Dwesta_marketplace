@@ -30,9 +30,9 @@ class UserController extends Controller
             });
         }
 
-        // Filtre par rôle
+        // Filtre par rôle (whereHas tolérant : ne plante pas si un rôle est absent)
         if ($role === 'admin') {
-            $query->role(['admin', 'point relais']);
+            $query->whereHas('roles', fn($q) => $q->whereIn('name', ['admin', 'point relais']));
         } elseif ($role === 'vendeur_pro') {
             $query->whereHas('vendeur', function($q) {
                 $q->where('type', 'professionnel');
@@ -44,9 +44,9 @@ class UserController extends Controller
         } elseif ($role === 'vendeur') {
             $query->has('vendeur');
         } elseif ($role === 'acheteur') {
-            $query->doesntHave('vendeur')->role('acheteur');
+            $query->doesntHave('vendeur')->whereHas('roles', fn($q) => $q->where('name', 'acheteur'));
         } elseif (in_array($role, ['transporteur', 'livreur', 'point relais'])) {
-            $query->role($role);
+            $query->whereHas('roles', fn($q) => $q->where('name', $role));
         }
 
         // Filtre par nationalité
