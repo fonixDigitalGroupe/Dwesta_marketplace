@@ -16,7 +16,9 @@ class RedirectStaffFromCustomer
     {
         $user = $request->user();
 
-        if ($user && $user->isStaff()) {
+        // On ne redirige pas si on est déjà dans le back-office (évite une boucle,
+        // car les routes admin sont imbriquées dans le même groupe).
+        if ($user && $user->isStaff() && !$request->is('admin', 'admin/*')) {
             return redirect()->route('admin.dashboard');
         }
 
