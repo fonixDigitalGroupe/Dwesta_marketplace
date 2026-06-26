@@ -38,7 +38,7 @@
             #aw-widget .aw-body { padding: 14px; display: block; text-decoration: none; color: inherit; }
             #aw-widget .aw-sender { font-weight: 700; font-size: 0.85rem; color: #1e293b; margin-bottom: 3px; }
             #aw-widget .aw-snippet { font-size: 0.82rem; color: #64748b; line-height: 1.4; }
-            #aw-widget .aw-cta { display: block; margin: 0 14px 14px; text-align: center; background: #004aad; color: #fff; font-weight: 700; font-size: 0.85rem; padding: 9px; border-radius: 8px; text-decoration: none; }
+            #aw-widget .aw-cta { display: block; margin: 0 14px 14px; text-align: center; background: #f68b1e; color: #fff; font-weight: 700; font-size: 0.85rem; padding: 9px; border-radius: 8px; text-decoration: none; }
         </style>
 
         <div id="aw-widget">
