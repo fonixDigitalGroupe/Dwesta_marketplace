@@ -11,11 +11,24 @@ use Illuminate\Support\Facades\Auth;
 class MessagerieController extends Controller
 {
     /**
+     * Identité de la messagerie : TOUJOURS le compte Karnou (admin principal),
+     * quel que soit le membre du staff connecté. Ainsi tout le staff voit les
+     * mêmes conversations et envoie au nom de « Karnou ».
+     */
+    private function karnouId(): int
+    {
+        $karnou = User::where('email', 'admin@karnou.com')->first()
+            ?? User::whereHas('roles', fn ($q) => $q->where('name', 'admin'))->first();
+
+        return $karnou ? $karnou->id : Auth::id();
+    }
+
+    /**
      * Page d'envoi + liste des conversations de l'admin.
      */
     public function index(Request $request)
     {
-        $adminId = Auth::id();
+        $adminId = $this->karnouId();
         $folder = $request->get('folder') === 'sent' ? 'sent' : 'inbox';
 
         // Destinataires possibles (hors admin)
@@ -55,7 +68,7 @@ class MessagerieController extends Controller
      */
     public function show(Conversation $conversation)
     {
-        $adminId = Auth::id();
+        $adminId = $this->karnouId();
 
         if ($conversation->user1_id != $adminId && $conversation->user2_id != $adminId) {
             abort(403);
@@ -79,7 +92,7 @@ class MessagerieController extends Controller
      */
     public function reply(Request $request, Conversation $conversation)
     {
-        $adminId = Auth::id();
+        $adminId = $this->karnouId();
 
         if ($conversation->user1_id != $adminId && $conversation->user2_id != $adminId) {
             abort(403);
@@ -106,7 +119,7 @@ class MessagerieController extends Controller
      */
     public function destroy(Conversation $conversation)
     {
-        $adminId = Auth::id();
+        $adminId = $this->karnouId();
 
         if ($conversation->user1_id != $adminId && $conversation->user2_id != $adminId) {
             abort(403);
@@ -133,7 +146,7 @@ class MessagerieController extends Controller
             'recipient_id.required_if' => 'Veuillez choisir un destinataire.',
         ]);
 
-        $adminId = Auth::id();
+        $adminId = $this->karnouId();
         $content = $request->input('message');
 
         // Détermine la liste des destinataires selon le mode
