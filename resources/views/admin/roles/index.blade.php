@@ -151,8 +151,9 @@
                 </thead>
                 <tbody>
                     @forelse($roles as $role)
-                        {{-- On n'affiche ni les rôles « Personnel » ni vendeur/client (rôles déjà connus) --}}
-                        @continue($role->name !== 'admin')
+                        {{-- On masque les rôles de base déjà connus (admin, vendeur, client) ;
+                             on affiche les rôles personnalisés créés par l'admin --}}
+                        @continue(in_array($role->name, ['admin', 'vendeur', 'client']))
                         <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 12px 15px; font-size: 0.8rem; border-right: 1px solid #eff3f6;">
