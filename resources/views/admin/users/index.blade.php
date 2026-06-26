@@ -14,6 +14,9 @@
             background-color: #f8f9fa !important;
         }
 
+        /* Pas de barre d'onglets sur la page utilisateurs */
+        .sub-header-slot { display: none !important; }
+
         select:focus,
         input:focus {
             border-color: #adb1b8 !important;

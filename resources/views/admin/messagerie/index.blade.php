@@ -4,7 +4,7 @@
 
 @push('styles')
     <style>
-        .main-content { background-color: #f8f9fa !important; }
+        .main-content { background-color: #fff !important; }
 
         .gm-card { background: #fff; border: 1px solid #eff3f6; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); min-height: 78vh; display: flex; flex-direction: column; }
 
