@@ -25,8 +25,8 @@
 
         <div class="sidebar-section">
             <ul class="sidebar-menu">
-                <li><a href="{{ route('admin.users.index', ['role' => 'vendeur']) }}" class="{{ request('role') == 'vendeur' ? 'active' : '' }}"><i class="fas fa-store"></i> <span>Liste Vendeurs</span></a></li>
-                <li><a href="{{ route('admin.users.index', ['role' => 'acheteur']) }}" class="{{ request('role') == 'acheteur' ? 'active' : '' }}"><i class="fas fa-users"></i> <span>Liste Clients</span></a></li>
+                <li><a href="{{ route('admin.users.index', ['role' => 'vendeur']) }}" class="{{ request('role') == 'vendeur' ? 'active' : '' }}"><i class="fas fa-store"></i> <span>Vendeurs</span></a></li>
+                <li><a href="{{ route('admin.users.index', ['role' => 'acheteur']) }}" class="{{ request('role') == 'acheteur' ? 'active' : '' }}"><i class="fas fa-users"></i> <span>Clients</span></a></li>
                 <li><a href="{{ route('admin.annonces.index') }}" class="{{ request()->routeIs('admin.annonces.*') ? 'active' : '' }}"><i class="fas fa-clipboard-list"></i> <span>Articles</span></a></li>
                 <li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i class="fas fa-shopping-basket"></i> <span>Commandes</span></a></li>
             </ul>

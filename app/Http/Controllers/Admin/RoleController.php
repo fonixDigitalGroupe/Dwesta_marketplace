@@ -14,8 +14,8 @@ class RoleController extends Controller
         // Aligné sur les menus du sidebar admin
         return [
             'view_dashboard'       => 'Tableau de bord',
-            'approve_vendors'      => 'Liste Vendeurs',
-            'manage_users'         => 'Liste Clients',
+            'approve_vendors'      => 'Vendeurs',
+            'manage_users'         => 'Clients',
             'moderate_products'    => 'Articles',
             'manage_orders'        => 'Commandes',
             'view_finances'        => 'Détails financiers',
