@@ -527,6 +527,17 @@
                             <span>Site public</span>
                         </a>
 
+                        @if(Route::has('admin.messagerie.index'))
+                        <a href="{{ route('admin.messagerie.index') }}" title="Messagerie"
+                           style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; color: #475569; text-decoration: none; transition: background 0.2s;"
+                           onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'">
+                            <i class="fas fa-envelope" style="font-size: 1.05rem;"></i>
+                            @if(($adminUnreadMessages ?? 0) > 0)
+                                <span style="position: absolute; top: 2px; right: 2px; min-width: 18px; height: 18px; padding: 0 4px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; border-radius: 999px; display: flex; align-items: center; justify-content: center; border: 2px solid #fff;">{{ $adminUnreadMessages > 9 ? '9+' : $adminUnreadMessages }}</span>
+                            @endif
+                        </a>
+                        @endif
+
                         <div class="user-dropdown-container">
                             <div class="user-dropdown-trigger" id="userMenuTrigger">
                                 <div
@@ -686,7 +697,7 @@
         };
     </script>
     @stack('scripts')
-    @include('partials.unread-messages-widget')
+    @include('partials.admin-unread-widget')
 </body>
 
 </html>
