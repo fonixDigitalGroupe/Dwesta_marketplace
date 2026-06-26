@@ -198,7 +198,7 @@
             top: 0;
             z-index: 40;
             box-sizing: border-box;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .header-container {
