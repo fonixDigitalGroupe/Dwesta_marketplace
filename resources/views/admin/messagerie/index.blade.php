@@ -252,6 +252,17 @@
         var cible = mode === 'vendeurs' ? 'TOUS les vendeurs' : 'TOUS les clients';
         return window.confirm('Confirmer l\'envoi de ce message à ' + cible + ' ?');
     }
+    // Fait disparaître automatiquement les messages de notification
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.alert-ok, .alert-err').forEach(function (el) {
+            setTimeout(function () {
+                el.style.transition = 'opacity 0.5s ease';
+                el.style.opacity = '0';
+                setTimeout(function () { el.remove(); }, 500);
+            }, 3500);
+        });
+    });
+
     // Ouvre automatiquement la fenêtre si des erreurs de validation existent
     @if($errors->any() || old('message'))
         document.addEventListener('DOMContentLoaded', openCompose);

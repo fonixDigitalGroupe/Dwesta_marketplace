@@ -105,6 +105,17 @@
         if (t) t.scrollTop = t.scrollHeight;
     });
 
+    // Disparition automatique des notifications
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.alert-ok, .alert-err').forEach(function (el) {
+            setTimeout(function () {
+                el.style.transition = 'opacity 0.5s ease';
+                el.style.opacity = '0';
+                setTimeout(function () { el.remove(); }, 500);
+            }, 3500);
+        });
+    });
+
     function confirmDeleteConv() {
         Swal.fire({
             title: 'Supprimer cette discussion ?',
