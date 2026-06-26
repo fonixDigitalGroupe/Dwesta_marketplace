@@ -223,6 +223,7 @@ Route::middleware('auth')->group(function () {
                 Route::post('/send', [\App\Http\Controllers\Admin\MessagerieController::class, 'send'])->name('send');
                 Route::get('/{conversation}', [\App\Http\Controllers\Admin\MessagerieController::class, 'show'])->name('show');
                 Route::post('/{conversation}/reply', [\App\Http\Controllers\Admin\MessagerieController::class, 'reply'])->name('reply');
+                Route::delete('/{conversation}', [\App\Http\Controllers\Admin\MessagerieController::class, 'destroy'])->name('destroy');
             });
 
 

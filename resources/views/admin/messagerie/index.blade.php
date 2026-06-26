@@ -57,7 +57,10 @@
         .gm-row.unread .gm-name { font-weight: 700; }
         .gm-snippet { font-size: 0.82rem; color: #5f6368; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .gm-row.unread .gm-snippet { color: #202124; font-weight: 600; }
-        .gm-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+        .gm-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+        .gm-del { background: none; border: none; color: #c5221f; cursor: pointer; font-size: 0.85rem; padding: 4px; opacity: 0; transition: opacity 0.15s; }
+        .gm-row:hover .gm-del { opacity: 0.75; }
+        .gm-del:hover { opacity: 1; }
         .gm-date { font-size: 0.72rem; color: #5f6368; white-space: nowrap; }
         .gm-row.unread .gm-date { color: #202124; font-weight: 700; }
         .gm-tag { font-size: 0.62rem; font-weight: 700; padding: 1px 7px; border-radius: 99px; text-transform: uppercase; }
@@ -142,19 +145,28 @@
                     $color = $palette[($other->id ?? 0) % count($palette)];
                     $isVendeur = $other && $other->vendeur;
                 @endphp
-                <a href="{{ route('admin.messagerie.show', $conv) }}" class="gm-row {{ $isUnread ? 'unread' : 'read' }}">
-                    @if($isUnread)<span class="gm-unread-dot"></span>@else<span style="width:8px;flex-shrink:0;"></span>@endif
-                    <div class="gm-avatar" style="background: {{ $color }};">{{ $initial }}</div>
-                    <div class="gm-mid">
-                        <div class="gm-name">{{ $name }}
-                            <span class="gm-tag {{ $isVendeur ? 'gm-tag-vendeur' : 'gm-tag-client' }}">{{ $isVendeur ? 'Vendeur' : 'Client' }}</span>
+                <li class="gm-row {{ $isUnread ? 'unread' : 'read' }}">
+                    <a href="{{ route('admin.messagerie.show', $conv) }}" style="display:flex; align-items:center; gap:14px; flex:1; min-width:0; text-decoration:none; color:inherit;">
+                        @if($isUnread)<span class="gm-unread-dot"></span>@else<span style="width:8px;flex-shrink:0;"></span>@endif
+                        <div class="gm-avatar" style="background: {{ $color }};">{{ $initial }}</div>
+                        <div class="gm-mid">
+                            <div class="gm-name">{{ $name }}
+                                <span class="gm-tag {{ $isVendeur ? 'gm-tag-vendeur' : 'gm-tag-client' }}">{{ $isVendeur ? 'Vendeur' : 'Client' }}</span>
+                            </div>
+                            <div class="gm-snippet">{{ $last ? \Illuminate\Support\Str::limit(strip_tags($last->content), 90) : 'Aucun message' }}</div>
                         </div>
-                        <div class="gm-snippet">{{ $last ? \Illuminate\Support\Str::limit(strip_tags($last->content), 90) : 'Aucun message' }}</div>
-                    </div>
+                    </a>
                     <div class="gm-meta">
                         <span class="gm-date">{{ $conv->last_message_at ? $conv->last_message_at->translatedFormat('d M') : '' }}</span>
+                        <form id="del-conv-{{ $conv->id }}" action="{{ route('admin.messagerie.destroy', $conv) }}" method="POST" style="display:none;">
+                            @csrf @method('DELETE')
+                            <input type="hidden" name="folder" value="{{ $folder ?? 'inbox' }}">
+                        </form>
+                        <button type="button" class="gm-del" title="Supprimer" onclick="confirmDeleteConv({{ $conv->id }})">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
-                </a>
+                </li>
             @empty
                 <li class="gm-empty">
                     <i class="fas fa-inbox"></i>
@@ -217,6 +229,23 @@
         if (mode === 'user') { sel.style.display = 'block'; sel.setAttribute('required','required'); }
         else { sel.style.display = 'none'; sel.removeAttribute('required'); }
     }
+    function confirmDeleteConv(id) {
+        Swal.fire({
+            title: 'Supprimer cette discussion ?',
+            text: "Tous les messages de cette conversation seront définitivement supprimés.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e67e00',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oui, supprimer !',
+            cancelButtonText: 'Annuler',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('del-conv-' + id).submit();
+            }
+        });
+    }
+
     function confirmSend() {
         var mode = document.getElementById('mode').value;
         if (mode === 'user') return true;

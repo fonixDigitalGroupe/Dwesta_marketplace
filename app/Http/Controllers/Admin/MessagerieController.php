@@ -102,6 +102,24 @@ class MessagerieController extends Controller
     }
 
     /**
+     * Supprime une conversation (et ses messages via cascade).
+     */
+    public function destroy(Conversation $conversation)
+    {
+        $adminId = Auth::id();
+
+        if ($conversation->user1_id != $adminId && $conversation->user2_id != $adminId) {
+            abort(403);
+        }
+
+        $conversation->messages()->delete();
+        $conversation->delete();
+
+        return redirect()->route('admin.messagerie.index', ['folder' => request('folder', 'inbox')])
+            ->with('success', 'Conversation supprimée.');
+    }
+
+    /**
      * Envoie un message à un utilisateur précis, à tous les vendeurs ou à tous les clients.
      */
     public function send(Request $request)

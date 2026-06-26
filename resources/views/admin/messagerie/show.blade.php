@@ -56,6 +56,13 @@
                 </div>
                 <div class="gm-sub">{{ $other->email ?? '' }}{{ $other->telephone ? ' · ' . $other->telephone : '' }}</div>
             </div>
+            <form id="del-conv" action="{{ route('admin.messagerie.destroy', $conversation) }}" method="POST" style="margin-left: auto;">
+                @csrf @method('DELETE')
+                <button type="button" onclick="confirmDeleteConv()" title="Supprimer la discussion"
+                        style="background: none; border: 1px solid #f5c6c2; color: #c5221f; border-radius: 999px; padding: 8px 14px; font-size: 0.8rem; font-weight: 600; cursor: pointer;">
+                    <i class="fas fa-trash"></i> Supprimer
+                </button>
+            </form>
         </div>
 
         @if(session('success'))
@@ -97,6 +104,23 @@
         var t = document.getElementById('gm-thread');
         if (t) t.scrollTop = t.scrollHeight;
     });
+
+    function confirmDeleteConv() {
+        Swal.fire({
+            title: 'Supprimer cette discussion ?',
+            text: "Tous les messages de cette conversation seront définitivement supprimés.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e67e00',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oui, supprimer !',
+            cancelButtonText: 'Annuler',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('del-conv').submit();
+            }
+        });
+    }
 </script>
 @endpush
 @endsection
