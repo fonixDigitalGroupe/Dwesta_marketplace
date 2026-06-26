@@ -11,33 +11,38 @@ class RoleController extends Controller
 {
     protected function getPermissionLabels()
     {
+        // Aligné sur les menus du sidebar admin
         return [
-            'manage_banners' => 'Gestion banniere',
-            'manage_highlights' => 'gestion actualité',
-            'manage_coupons' => 'gestion codes promo',
-            'manage_categories' => 'Gestion catégorie',
-
-            // Finance
-            'view_finances' => 'gestion finance',
-            'manage_withdrawals' => 'gestion les retraits',
-            'manage_subscriptions' => 'gestion abonnement',
-
-            // Modération du catalogue
-            'moderate_products' => 'gestion produit',
-            'moderate_reviews' => 'gestion avis',
-
-            // Gestion Utilisateurs & Vendeurs
-            'approve_vendors' => 'gestion validation vendeur',
-            'manage_users' => 'Gestion utilisateur',
-
-            // Logistique
-            'manage_carriers' => 'gestion logistique',
-            'manage_pickup_points' => 'gestion agence',
-
-            // Super Admin
-            'manage_settings' => 'Configuration générale',
-            'manage_roles' => 'gestion rôles et permissions',
+            'view_dashboard'       => 'Tableau de bord',
+            'approve_vendors'      => 'Liste Vendeurs',
+            'manage_users'         => 'Liste Clients',
+            'moderate_products'    => 'Articles',
+            'manage_orders'        => 'Commandes',
+            'view_finances'        => 'Détails financiers',
+            'manage_messagerie'    => 'Messagerie',
+            'manage_carriers'      => 'Transporteurs',
+            'manage_drivers'       => 'Livreurs',
+            'manage_pickup_points' => 'Dépôts Relais',
+            'manage_banners'       => 'Bannières',
+            'manage_coupons'       => 'Promotions',
+            'manage_highlights'    => 'Actualités',
+            'moderate_reviews'     => 'Avis',
+            'manage_subscriptions' => 'Abonnements',
+            'manage_withdrawals'   => 'Retraits',
+            'manage_categories'    => 'Catégories',
+            'manage_settings'      => 'Paramètres',
+            'manage_roles'         => 'Rôles & permissions',
         ];
+    }
+
+    /**
+     * Garantit que toutes les permissions (menus du sidebar) existent en base.
+     */
+    protected function ensurePermissions(): void
+    {
+        foreach (array_keys($this->getPermissionLabels()) as $name) {
+            Permission::findOrCreate($name, 'web');
+        }
     }
 
     public function index(Request $request)
@@ -58,6 +63,7 @@ class RoleController extends Controller
 
     public function create()
     {
+        $this->ensurePermissions();
         $permissions = Permission::all();
         $labels = $this->getPermissionLabels();
         // Group permissions by their logical prefixes if exist
@@ -94,12 +100,13 @@ class RoleController extends Controller
             // Prevent changing super-admin if necessary, but we'll just allow it with a warning in view
         }
 
+        $this->ensurePermissions();
         $permissions = Permission::all();
         $labels = $this->getPermissionLabels();
         $groupedPermissions = $permissions->groupBy(function($perm) {
             return explode('_', $perm->name)[0];
         });
-        
+
         $rolePermissions = $role->permissions->pluck('name')->toArray();
 
         return view('admin.roles.edit', compact('role', 'permissions', 'groupedPermissions', 'rolePermissions', 'labels'));

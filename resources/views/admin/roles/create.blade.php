@@ -193,8 +193,7 @@
                         
                         <div style="margin-bottom: 20px;">
                             <label for="name" class="field-label">Nom du rôle <small style="color: red;">*</small></label>
-                            <input type="text" name="name" id="name" value="{{ old('name') }}" required 
-                                   placeholder="Ex: Responsable Logistique"
+                            <input type="text" name="name" id="name" value="{{ old('name') }}" required
                                    oninput="if(this.value) this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)">
                             @error('name') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                         </div>
@@ -205,9 +204,6 @@
                                 <span class="checkmark"></span>
                                 <span style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Activer ce rôle</span>
                             </label>
-                            <p style="font-size: 0.75rem; color: #64748b; margin-left: 28px; margin-top: 6px;">
-                                Si décoché, les utilisateurs associés ne pourront plus utiliser les fonctionnalités liées à ce rôle.
-                            </p>
                         </div>
                     </div>
 
@@ -244,11 +240,11 @@
                     </div>
 
                     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px;">
-                        @foreach($permissions as $permission)
+                        @foreach($labels as $permName => $permLabel)
                             <label class="checkbox-container">
-                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" class="perm-checkbox">
+                                <input type="checkbox" name="permissions[]" value="{{ $permName }}" class="perm-checkbox">
                                 <span class="checkmark"></span>
-                                <span style="font-size: 0.8rem; color: #475569;">{{ $labels[$permission->name] ?? $permission->name }}</span>
+                                <span style="font-size: 0.8rem; color: #475569;">{{ $permLabel }}</span>
                             </label>
                         @endforeach
                     </div>
