@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
             'staff' => \App\Http\Middleware\EnsureStaff::class,
+            'customer' => \App\Http\Middleware\RedirectStaffFromCustomer::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

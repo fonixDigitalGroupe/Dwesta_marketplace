@@ -86,8 +86,8 @@ Route::middleware('auth')->group(function () {
 
 
 
-    // Routes nécessitant une vérification d'email
-    Route::middleware(['verified'])->group(function () {
+    // Routes nécessitant une vérification d'email (espace client/vendeur, interdit au staff)
+    Route::middleware(['verified', 'customer'])->group(function () {
         // Account Dashboard
         Route::get('/mon-compte', [\App\Http\Controllers\AccountController::class, 'index'])->name('account.index');
         Route::post('/mon-compte/update-location', [\App\Http\Controllers\AccountController::class, 'updateLocation'])->name('account.update-location');
