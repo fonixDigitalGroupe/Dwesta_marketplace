@@ -158,7 +158,22 @@
             <div class="filters-bar" style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 0; margin-bottom: 20px;">
                 <form action="{{ route('admin.users.index') }}" method="GET" id="filter-wrapper" style="display: flex; flex-direction: column; gap: 15px;">
                     <input type="hidden" name="role" value="{{ $role }}">
-                    
+
+                    @if(!empty($customRoles))
+                    <div style="display: flex; gap: 15px;">
+                        <div style="flex: 1; max-width: 300px;">
+                            <label class="filter-label">Filtrer par rôle personnalisé</label>
+                            <select onchange="if(this.value) window.location.href='{{ route('admin.users.index') }}?role=' + encodeURIComponent(this.value)"
+                                    class="filter-select" style="width: 100%;">
+                                <option value="">— Choisir un rôle —</option>
+                                @foreach($customRoles as $rn => $rl)
+                                    <option value="{{ $rn }}" {{ $role === $rn ? 'selected' : '' }}>{{ $rl }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    @endif
+
                     @if($role === 'vendeur')
                     <!-- Zone de filtres spécifiques -->
                     <div style="display: flex; gap: 15px;">

@@ -47,6 +47,9 @@ class UserController extends Controller
             $query->doesntHave('vendeur')->whereHas('roles', fn($q) => $q->where('name', 'acheteur'));
         } elseif (in_array($role, ['transporteur', 'livreur', 'point relais'])) {
             $query->whereHas('roles', fn($q) => $q->where('name', $role));
+        } elseif (!empty($role)) {
+            // Rôle personnalisé (créé dans /admin/roles)
+            $query->whereHas('roles', fn($q) => $q->where('name', $role));
         }
 
         // Filtre par nationalité
@@ -88,7 +91,13 @@ class UserController extends Controller
 
         $users = $query->paginate($perPage)->withQueryString();
 
-        return view('admin.users.index', compact('users', 'role', 'search', 'perPage', 'typeVendeur', 'status'));
+        // Rôles personnalisés (créés dans /admin/roles) pour le filtre
+        $customRoles = \Spatie\Permission\Models\Role::whereNotIn('name', ['admin', 'vendeur', 'client', 'acheteur', 'point relais', 'transporteur', 'livreur'])
+            ->orderBy('name')
+            ->pluck('name', 'name')
+            ->toArray();
+
+        return view('admin.users.index', compact('users', 'role', 'search', 'perPage', 'typeVendeur', 'status', 'customRoles'));
     }
 
     /**
