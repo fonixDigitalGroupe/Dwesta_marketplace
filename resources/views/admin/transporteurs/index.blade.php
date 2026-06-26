@@ -4,250 +4,180 @@
 
 @push('styles')
     <style>
-        .main-content {
-            background-color: #f8f9fa !important;
-        }
+        .main-content { background-color: #f8f9fa !important; }
 
-        select:focus,
-        input:focus {
-            border-color: #adb1b8 !important;
-            outline: none;
-        }
+        select:focus, input:focus { border-color: #ff9900 !important; outline: none; }
 
-        .filter-label {
-            font-size: 0.8rem;
-            color: #555;
-            font-weight: 500;
-            margin-bottom: 4px;
-            display: block;
+        .btn-amazon-primary {
+            background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
+            border: 1px solid #1e40af; color: #fff; padding: 6px 14px; border-radius: 4px;
+            font-size: 0.8rem; font-weight: 500; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;
         }
+        .btn-amazon-primary:hover { background: linear-gradient(180deg, #1d4ed8 0%, #1e3a8a 100%); box-shadow: 0 1px 3px rgba(0,0,0,0.1); color: #fff; }
 
-        .amazon-btn-secondary {
-            background: linear-gradient(to bottom, #f7f8fa, #e7e9ec);
-            border: 1px solid #adb1b8;
-            color: #111;
-            padding: 6px 14px;
-            border-radius: 0;
-            font-size: 0.8rem;
-            font-weight: 400;
-            text-decoration: none;
-            box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .btn-amazon-secondary {
+            background: #fff; border: 1px solid #e2e8f0; color: #475569; padding: 6px 14px; border-radius: 4px;
+            font-size: 0.8rem; font-weight: 500; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s; cursor: pointer;
         }
+        .btn-amazon-secondary:hover { background: #f8fafc; border-color: #cbd5e1; color: #1e293b; }
 
-        .amazon-btn-secondary:hover {
-            background: linear-gradient(to bottom, #e7e9ec, #d8dade);
-            border-color: #a2a6ac;
-        }
-        
-        .amazon-btn-primary {
-            background: linear-gradient(to bottom, #f7dfa5, #f0c14b);
-            border: 1px solid #a88734;
-            color: #111;
-            padding: 6px 14px;
-            border-radius: 2px;
-            font-size: 0.8rem;
-            font-weight: 400;
-            text-decoration: none;
-            box-shadow: 0 1px 0 rgba(255,255,255,.4) inset;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .badge-amazon { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 12px; }
+        .badge-amazon-success { color: #569b00; background: #f7fff0; }
+        .badge-amazon-danger { color: #c40000; background: #fff5f5; }
+        .badge-amazon-warning { color: #c45500; background: #fff8e1; border: 1px solid #ffecb3; }
 
-        .amazon-btn-primary:hover {
-            background: linear-gradient(to bottom, #f5d381, #eeb933);
-            border-color: #9c7e31;
-        }
-
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #c40000;
-            font-size: 0.8rem;
-            cursor: pointer;
-            padding: 0;
-            text-decoration: none;
-        }
-
-        .delete-btn:hover {
-            text-decoration: underline;
-            color: #af0000;
+        @media print {
+            .sidebar, .navbar, .settings-tabs, .filters-bar, .actions-column, .pagination-container, .btn-amazon-primary, .btn-amazon-secondary, header, footer { display: none !important; }
+            .main-content { margin: 0 !important; padding: 0 !important; background: #fff !important; }
         }
     </style>
 @endpush
 
 @section('content')
-    <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="max-width: 1600px; margin: 0 auto; width: 100%; padding-top: 0;">
+        <!-- Main Card -->
+        <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px; margin-top: -20px;">
 
-        <!-- Main Conteneur style Amazon Card -->
-        <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px; margin-top: -50px;">
-
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e7e7e7;">
-                <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">
-                    Gestion des Transporteurs
-                </h1>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                    <i class="fas fa-truck" style="font-size: 0.8rem;"></i>
+                    <span style="line-height: 1;">Transporteurs</span>
+                </div>
 
                 <div style="display: flex; gap: 8px; align-items: center;">
                     @if($pendingCount > 0)
-                        <div style="background: #fff8f3; border: 1px solid #fbd8b4; padding: 4px 12px; border-radius: 2px; display: flex; align-items: center; gap: 8px; margin-right: 10px;">
-                            <span style="font-size: 0.75rem; font-weight: 700; color: #c45500;">{{ $pendingCount }} EN ATTENTE</span>
-                        </div>
+                        <span class="badge-amazon badge-amazon-warning">{{ $pendingCount }} en attente</span>
                     @endif
-
-                    <button onclick="window.print()" class="amazon-btn-secondary">
+                    <a href="javascript:window.print()" class="btn-amazon-secondary">
                         <i class="fas fa-print"></i> Imprimer
-                    </button>
+                    </a>
                 </div>
             </div>
 
-            <!-- Barre de filtres grise Harmonisée -->
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px 20px; border-radius: 0; margin-bottom: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-                    
-                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #555;">
-                        <span>Afficher</span>
-                        <select onchange="window.location.href = '{{ request()->url() }}?per_page=' + this.value" 
-                            style="padding: 3px 6px; border: 1px solid #ddd; border-radius: 4px; background: #fcfcfc; font-size: 0.8rem; color: #111; cursor: pointer; outline: none;">
-                            <option value="8" {{ request('per_page', 8) == 8 ? 'selected' : '' }}>8</option>
-                            <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
-                            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                            <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                        </select>
-                        <span>résultats</span>
+            <!-- Barre de filtre -->
+            <div class="filters-bar"
+                style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
+                <form action="{{ route('admin.transporteurs.index') }}" method="GET" style="display: flex; align-items: center; flex: 1; position: relative;">
+                    <div style="display: flex; width: 100%; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher un transporteur par nom, email, véhicule..."
+                            style="padding: 10px 16px; border: none; outline: none; flex: 1; font-size: 0.9rem; background: transparent;"
+                            onfocus="document.getElementById('search-container').style.borderColor='#ff9900'; document.getElementById('search-container').style.boxShadow='0 0 0 3px rgba(255, 153, 0, 0.15)'"
+                            onblur="document.getElementById('search-container').style.borderColor='#dee2e6'; document.getElementById('search-container').style.boxShadow='none'">
+                        <button type="submit"
+                            style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: none; color: #fff; padding: 0 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
+                            onmouseover="this.style.background='linear-gradient(180deg, #f08804 0%, #d87300 100%)'"
+                            onmouseout="this.style.background='linear-gradient(180deg, #ff9900 0%, #e77600 100%)'">
+                            <i class="fas fa-search" style="font-size: 1.1rem; text-shadow: 0 1px 1px rgba(0,0,0,0.1);"></i>
+                        </button>
                     </div>
-
-                    <form action="{{ request()->url() }}" method="GET" style="display: flex; gap: 8px; align-items: center;">
-                        <span style="font-size: 0.8rem; color: #555; font-weight: 500;">Rechercher :</span>
-                        <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Nom, email, véhicule..."
-                            style="padding: 6px 12px; border: 1px solid #ddd; border-radius: 4px; outline: none; font-size: 0.85rem; width: 250px;">
-                    </form>
-                </div>
+                    @if(request('search'))
+                        <a href="{{ route('admin.transporteurs.index') }}"
+                           style="margin-left: 15px; color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;"
+                           onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Effacer</a>
+                    @endif
+                </form>
             </div>
 
             <!-- Table Amazon Design -->
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #e7e7e7;">
+            <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
                 <thead>
-                    <tr style="background: #f6f6f6; border-bottom: 1px solid #e7e7e7;">
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">
-                            Transporteur
-                        </th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">
-                            Téléphone
-                        </th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">
-                            Véhicule
-                        </th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">
-                            Immatriculation
-                        </th>
-                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 120px;">
-                            Statut
-                        </th>
-                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 140px;">
-                            Actions
-                        </th>
+                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Transporteur</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Téléphone</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Véhicule</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Immatriculation</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Statut</th>
+                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 140px;" class="actions-column">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($transporteurs as $transporteur)
-                        <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.1s;"
+                        <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
-                            <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
-                                <div style="font-size: 0.85rem; color: #0066c0; font-weight: 500;">
-                                    {{ $transporteur->user->prenom }} {{ $transporteur->user->nom }}
-                                </div>
-                                <div style="font-size: 0.75rem; color: #666;">
-                                    {{ $transporteur->user->email }}
-                                </div>
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
+                                <div style="font-size: 0.85rem; color: #0066c0; font-weight: 700;">{{ $transporteur->user->prenom }} {{ $transporteur->user->nom }}</div>
+                                <div style="font-size: 0.75rem; color: #666;">{{ $transporteur->user->email }}</div>
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #e7e7e7;">
-                                {{ $transporteur->user->telephone ?? '-' }}
-                            </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #e7e7e7;">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">{{ $transporteur->user->telephone ?? '-' }}</td>
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">
                                 <div style="font-weight: 600; color: #111;">{{ $transporteur->type_vehicule }}</div>
                                 <div style="font-size: 0.75rem; color: #888;">{{ $transporteur->marque_vehicule }}</div>
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #e7e7e7;">
-                                <code style="font-family: monospace; background: #f8fafc; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; color: #475569; border: 1px solid #e2e8f0;">
-                                    {{ $transporteur->immatriculation ?? 'N/A' }}
-                                </code>
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">
+                                <code style="font-family: monospace; background: #f8fafc; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; color: #475569; border: 1px solid #e2e8f0;">{{ $transporteur->immatriculation ?? 'N/A' }}</code>
                             </td>
-                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                                 @php
-                                    $status = match($transporteur->statut_verification) {
-                                        'verifie' => ['bg' => '#f0fdf4', 'text' => '#166534', 'label' => 'Vérifié'],
-                                        'rejete' => ['bg' => '#fef2f2', 'text' => '#991b1b', 'label' => 'Rejeté'],
-                                        default => ['bg' => '#fff8f3', 'text' => '#c45500', 'label' => 'Attente']
+                                    $cls = match($transporteur->statut_verification) {
+                                        'verifie' => 'badge-amazon-success',
+                                        'rejete'  => 'badge-amazon-danger',
+                                        default   => 'badge-amazon-warning',
+                                    };
+                                    $lbl = match($transporteur->statut_verification) {
+                                        'verifie' => 'Vérifié',
+                                        'rejete'  => 'Rejeté',
+                                        default   => 'En attente',
                                     };
                                 @endphp
-                                <span style="font-size: 0.7rem; color: {{ $status['text'] }}; background: {{ $status['bg'] }}; padding: 3px 8px; border-radius: 12px; font-weight: 700; text-transform: uppercase;">
-                                    {{ $status['label'] }}
-                                </span>
+                                <span class="badge-amazon {{ $cls }}">{{ $lbl }}</span>
                             </td>
-                            <td style="padding: 12px 15px; text-align: right;">
+                            <td style="padding: 12px 15px; text-align: right;" class="actions-column">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
                                     <a href="{{ route('admin.transporteurs.edit', $transporteur) }}"
                                         style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
                                         onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
-                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
-                                        Modifier
-                                    </a>
+                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">Modifier</a>
                                     <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.transporteurs.destroy', $transporteur) }}" method="POST" style="display:inline;">
+                                    <form action="{{ route('admin.transporteurs.destroy', $transporteur) }}" method="POST" style="display:inline;"
+                                        onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce transporteur ?')">
                                         @csrf @method('DELETE')
-                                        <button type="submit" 
-                                            class="delete-btn"
-                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce transporteur ?')">
-                                            Supprimer
-                                        </button>
+                                        <button type="submit"
+                                            style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                            onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Supprimer</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="padding: 3rem; text-align: center; color: #999; font-size: 0.85rem;">
+                            <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
                                 Aucun transporteur trouvé.
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
+            </div>
 
-            <!-- Pagination Info & Links Harmonisée -->
+            <!-- Pagination -->
             @if($transporteurs->total() > 0)
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0; margin-top: 10px;">
+                <div class="pagination-container"
+                    style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #eff3f6; border-radius: 4px; margin-top: 20px;">
                     <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
-                        Affichage de {{ $transporteurs->firstItem() }} à {{ $transporteurs->lastItem() }} sur {{ $transporteurs->total() }} résultats
+                        Affichage de {{ $transporteurs->firstItem() ?? 0 }} à {{ $transporteurs->lastItem() ?? 0 }} sur {{ $transporteurs->total() }} résultats
                     </div>
-                    <div style="display: flex; border: 1px solid #adb1b8; border-radius: 0; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: #fff;">
-                        @if ($transporteurs->onFirstPage())
-                            <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;">Précédent</span>
+                    <div style="display: flex; gap: 4px;">
+                        @if($transporteurs->onFirstPage())
+                            <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Précédent</span>
                         @else
-                            <a href="{{ $transporteurs->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">Précédent</a>
+                            <a href="{{ $transporteurs->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;">Précédent</a>
                         @endif
 
-                        @php
-                            $startPage = max(1, $transporteurs->currentPage() - 2);
-                            $endPage = min($transporteurs->lastPage(), $startPage + 4);
-                        @endphp
-
-                        @for ($i = $startPage; $i <= $endPage; $i++)
-                            @if ($i == $transporteurs->currentPage())
-                                <span style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border-right: 1px solid #004aad;">{{ $i }}</span>
+                        @foreach(range(max(1, $transporteurs->currentPage() - 2), min($transporteurs->lastPage(), $transporteurs->currentPage() + 2)) as $i)
+                            @if($i == $transporteurs->currentPage())
+                                <span style="padding: 6px 12px; background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); color: #fff; font-weight: 700; font-size: 0.8rem; border: 1px solid #1e40af; border-radius: 4px;">{{ $i }}</span>
                             @else
-                                <a href="{{ $transporteurs->url($i) }}" style="padding: 6px 12px; background: #fff; color: #555; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">{{ $i }}</a>
+                                <a href="{{ $transporteurs->url($i) }}" style="padding: 6px 12px; background: #fff; color: #64748b; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;">{{ $i }}</a>
                             @endif
-                        @endfor
+                        @endforeach
 
-                        @if ($transporteurs->hasMorePages())
-                            <a href="{{ $transporteurs->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;">Suivant</a>
+                        @if($transporteurs->hasMorePages())
+                            <a href="{{ $transporteurs->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;">Suivant</a>
                         @else
-                            <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;">Suivant</span>
+                            <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Suivant</span>
                         @endif
                     </div>
                 </div>
