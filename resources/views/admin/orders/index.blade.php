@@ -23,18 +23,16 @@
 @endpush
 
 @section('content')
-<div style="max-width: 1200px; margin: 0 auto;">
-    
-    <!-- Main Conteneur style Amazon Card -->
-    <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px; margin-top: -50px;">
-        
-        <!-- Top Action Bar -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e7e7e7;">
-            <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">Gestion des Commandes</h1>
-            <div style="display: flex; gap: 8px;">
-                <button onclick="window.print()" style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 6px;">
-                    <i class="fas fa-print"></i> Imprimer
-                </button>
+<div style="max-width: 1600px; margin: -30px auto 0; width: 100%;">
+
+    <!-- Main Card (style banners) -->
+    <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+
+        <!-- Card Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eff3f6;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                <i class="fas fa-shopping-basket" style="font-size: 0.8rem;"></i>
+                <span style="line-height: 1;">Gestion des Commandes</span>
             </div>
         </div>
 
@@ -70,72 +68,70 @@
             </a>
         </div>
 
-        <!-- Filter Bar -->
-        <form method="GET" action="{{ route('admin.orders.index') }}" style="border: 1px solid #e7e7e7; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: flex; gap: 20px;">
-            <input type="hidden" name="status" value="{{ $status }}">
-            
-            <div style="flex: 1;">
-                <label style="display: block; font-size: 0.8rem; color: #555; font-weight: 500; margin-bottom: 5px;">Rechercher une commande</label>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" name="search" value="{{ $search }}" placeholder="Référence, nom du client ou vendeur..." 
-                        style="flex: 1; padding: 6px 10px; border: 1px solid #adb1b8; border-radius: 0; outline: none; font-size: 0.85rem;">
-                    <button type="submit" style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 20px; border-radius: 0; font-size: 0.85rem; font-weight: 400; cursor: pointer; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;">
-                        Filtrer
+        <!-- Barre de filtre / recherche (style banners) -->
+        <div style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 4px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
+            <form method="GET" action="{{ route('admin.orders.index') }}" style="display: flex; align-items: center; flex: 1; gap: 12px;">
+                <input type="hidden" name="status" value="{{ $status }}">
+                <div style="display: flex; flex: 1; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff;" id="search-container">
+                    <input type="text" name="search" value="{{ $search }}" placeholder="Référence, nom du client ou vendeur..."
+                        style="padding: 10px 16px; border: none; outline: none; flex: 1; font-size: 0.9rem; background: transparent;"
+                        onfocus="document.getElementById('search-container').style.borderColor='#ff9900'; document.getElementById('search-container').style.boxShadow='0 0 0 3px rgba(255,153,0,0.15)'"
+                        onblur="document.getElementById('search-container').style.borderColor='#dee2e6'; document.getElementById('search-container').style.boxShadow='none'">
+                    <button type="submit"
+                        style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: none; color: #fff; padding: 0 22px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-search" style="font-size: 1.1rem;"></i>
                     </button>
-                    @if($search || $status)
-                        <a href="{{ route('admin.orders.index') }}" style="display: flex; align-items: center; padding: 0 10px; color: #0066c0; font-size: 0.8rem; text-decoration: none;">Effacer</a>
-                    @endif
                 </div>
-            </div>
-
-            <div style="width: 150px;">
-                <label style="display: block; font-size: 0.8rem; color: #555; font-weight: 500; margin-bottom: 5px;">Par page</label>
-                <select name="per_page" onchange="this.form.submit()" class="filter-select" style="width: 100%;">
+                <select name="per_page" onchange="this.form.submit()"
+                    style="padding: 10px 12px; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; font-size: 0.85rem; color: #475569; cursor: pointer; outline: none;">
                     <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10</option>
                     <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25</option>
                     <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
                 </select>
-            </div>
-        </form>
+                @if($search || $status)
+                    <a href="{{ route('admin.orders.index') }}" style="color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;">Effacer</a>
+                @endif
+            </form>
+        </div>
 
         <!-- Orders Table -->
-        <div style="border: 1px solid #e7e7e7; border-radius: 0; overflow: hidden;">
-            <table style="width: 100%; border-collapse: collapse; min-width: 1000px;">
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; min-width: 1000px; border: 1px solid #eff3f6;">
                 <thead>
-                    <tr style="background: #f6f6f6; border-bottom: 1px solid #e7e7e7;">
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Référence / Date</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Client</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Vendeur</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Mode & Livraison</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Total</th>
-                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 150px;">Statut</th>
+                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Référence / Date</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Client</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Vendeur</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Mode & Livraison</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Total</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 150px;">Statut</th>
                         <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 120px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($orders as $order)
-                    <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
-                        <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
+                    <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                        <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                             <div style="font-weight: 500; color: #0066c0; font-size: 0.85rem;">{{ $order->reference }}</div>
                             <div style="font-size: 0.75rem; color: #555; margin-top: 2px;">{{ $order->created_at->format('d/m/Y H:i') }}</div>
                         </td>
-                        <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
+                        <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                             <div style="font-weight: 500; font-size: 0.85rem; color: #111;">{{ $order->buyer->prenom }} {{ $order->buyer->nom }}</div>
                             <div style="font-size: 0.75rem; color: #888;">{{ $order->buyer->email }}</div>
                         </td>
-                        <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
+                        <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                             <div style="font-weight: 500; font-size: 0.85rem; color: #111;">{{ $order->seller->user->prenom }} {{ $order->seller->user->nom }}</div>
                             <div style="font-size: 0.75rem; color: #888; margin-top: 2px;">{{ ucfirst($order->seller->type) }}</div>
                         </td>
-                        <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
+                        <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                             <div style="font-size: 0.85rem; color: #222;">{{ ucfirst($order->mode_livraison) }}</div>
                             <div style="font-size: 0.75rem; color: #666; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $order->adresse_livraison }}</div>
                         </td>
-                        <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
+                        <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                             <div style="font-weight: 700; font-size: 0.9rem; color: #111;">{{ number_format($order->total_final, 0, ',', ' ') }} <small style="font-size: 0.7rem; font-weight: 400;">FCFA</small></div>
                             <div style="font-size: 0.7rem; color: #999;">{{ $order->items->count() }} article(s)</div>
                         </td>
-                        <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
+                        <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                             @php
                                 $statusLabel = $order->statut_label;
                                 $statusColor = '#555';
@@ -183,23 +179,23 @@
         </div>
 
         <!-- Pagination -->
-        @if($orders->total() > 0)
-        <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0;">
+        @if($orders->hasPages())
+        <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #eff3f6; border-radius: 4px;">
             <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
                 Affichage de {{ $orders->firstItem() ?? 0 }} à {{ $orders->lastItem() ?? 0 }} sur {{ $orders->total() }} commandes
             </div>
-            
-            <div style="display: flex; border: 1px solid #adb1b8; border-radius: 0; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: #fff;">
+
+            <div style="display: flex; gap: 6px; align-items: center;">
                 @if ($orders->onFirstPage())
-                    <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;">Précédent</span>
+                    <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Précédent</span>
                 @else
-                    <a href="{{ $orders->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">Précédent</a>
+                    <a href="{{ $orders->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;">Précédent</a>
                 @endif
 
                 @if ($orders->hasMorePages())
-                    <a href="{{ $orders->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;">Suivant</a>
+                    <a href="{{ $orders->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #475569; font-size: 0.8rem; text-decoration: none; border: 1px solid #eff3f6; border-radius: 4px;">Suivant</a>
                 @else
-                    <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;">Suivant</span>
+                    <span style="padding: 6px 12px; background: #f8fafc; color: #94a3b8; font-size: 0.8rem; border: 1px solid #eff3f6; border-radius: 4px; cursor: not-allowed;">Suivant</span>
                 @endif
             </div>
         </div>
