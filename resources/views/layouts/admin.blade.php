@@ -487,17 +487,6 @@
                             <span>Site public</span>
                         </a>
 
-                        <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
-                            @csrf
-                            <button type="submit" title="Se déconnecter"
-                                style="display: inline-flex; align-items: center; gap: 8px; background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; padding: 8px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.2s;"
-                                onmouseover="this.style.background='#fecaca'"
-                                onmouseout="this.style.background='#fee2e2'">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <span>Déconnexion</span>
-                            </button>
-                        </form>
-
                         <div class="user-dropdown-container">
                             <div class="user-dropdown-trigger" id="userMenuTrigger">
                                 <div
