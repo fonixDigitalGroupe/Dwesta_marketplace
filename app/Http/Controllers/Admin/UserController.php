@@ -99,11 +99,19 @@ class UserController extends Controller
      */
     public function create()
     {
-        // Rôles spécifiques demandés
+        // Rôles de base
         $roles = [
             'admin' => 'Administrateur',
             'point relais' => 'Point Relais',
         ];
+
+        // + rôles personnalisés enregistrés dans /admin/roles
+        $customRoles = \Spatie\Permission\Models\Role::whereNotIn('name', ['admin', 'vendeur', 'client', 'point relais'])
+            ->orderBy('name')
+            ->pluck('name', 'name')
+            ->toArray();
+
+        $roles = $roles + $customRoles;
 
         return view('admin.users.create', compact('roles'));
     }
