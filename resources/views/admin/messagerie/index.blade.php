@@ -307,8 +307,8 @@
         });
     });
 
-    // Ouvre automatiquement la fenêtre si des erreurs de validation existent
-    @if($errors->any() || old('message'))
+    // Ouvre automatiquement la fenêtre (erreurs de validation ou ?compose=1)
+    @if($errors->any() || old('message') || request('compose'))
         document.addEventListener('DOMContentLoaded', openCompose);
     @endif
 </script>

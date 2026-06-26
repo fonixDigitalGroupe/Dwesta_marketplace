@@ -56,13 +56,19 @@
                 </div>
                 <div class="gm-sub">{{ $other->email ?? '' }}{{ $other->telephone ? ' · ' . $other->telephone : '' }}</div>
             </div>
-            <form id="del-conv" action="{{ route('admin.messagerie.destroy', $conversation) }}" method="POST" style="margin-left: auto;">
-                @csrf @method('DELETE')
-                <button type="button" onclick="confirmDeleteConv()" title="Supprimer la discussion"
-                        style="background: none; border: 1px solid #f5c6c2; color: #c5221f; border-radius: 999px; padding: 8px 14px; font-size: 0.8rem; font-weight: 600; cursor: pointer;">
-                    <i class="fas fa-trash"></i> Supprimer
-                </button>
-            </form>
+            <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
+                <a href="{{ route('admin.messagerie.index', ['compose' => 1]) }}"
+                   style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); color: #fff; border-radius: 999px; padding: 8px 16px; font-size: 0.8rem; font-weight: 700; text-decoration: none;">
+                    <i class="fas fa-pen"></i> Nouveau message
+                </a>
+                <form id="del-conv" action="{{ route('admin.messagerie.destroy', $conversation) }}" method="POST" style="margin: 0;">
+                    @csrf @method('DELETE')
+                    <button type="button" onclick="confirmDeleteConv()" title="Supprimer la discussion"
+                            style="background: none; border: 1px solid #f5c6c2; color: #c5221f; border-radius: 999px; padding: 8px 14px; font-size: 0.8rem; font-weight: 600; cursor: pointer;">
+                        <i class="fas fa-trash"></i> Supprimer
+                    </button>
+                </form>
+            </div>
         </div>
 
         @if(session('success'))
