@@ -158,9 +158,9 @@ class MessagerieController extends Controller
             return back()->with('error', "Aucun destinataire trouvé pour cet envoi.");
         }
 
-        $label = $request->mode === 'user' ? 'message envoyé' : ($count . ' message(s) envoyé(s)');
+        $label = $request->mode === 'user' ? 'Message envoyé' : ($count . ' message(s) envoyé(s)');
 
-        return back()->with('success', "✅ {$label} avec succès.");
+        return back()->with('success', "{$label} avec succès.");
     }
 
     /**

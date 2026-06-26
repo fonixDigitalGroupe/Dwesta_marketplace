@@ -34,6 +34,16 @@
         .gm-tabbtn:hover { background: #e8eaed; color: #202124; }
         .gm-tabbtn.active { background: #e8f0fe; color: #1a73e8; border-color: #d2e3fc; }
 
+        /* Navigation verticale (façon Gmail) */
+        .gm-navitem {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 16px; border-radius: 0 999px 999px 0; margin-left: -16px;
+            font-size: 0.88rem; font-weight: 600; text-decoration: none; color: #5f6368; transition: all 0.15s;
+        }
+        .gm-navitem i { width: 18px; text-align: center; }
+        .gm-navitem:hover { background: #f1f3f4; color: #202124; }
+        .gm-navitem.active { background: #fce8e6; color: #d93025; }
+
         /* Liste façon Gmail */
         .gm-list { list-style: none; margin: 0; padding: 0; }
         .gm-row {
@@ -106,34 +116,37 @@
     <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px; min-height: 78vh; display: flex; flex-direction: column;">
 
         @if(session('success'))
-            <div class="alert-ok"><i class="fas fa-check-circle"></i> {{ session('success') }}</div>
+            <div class="alert-ok">{{ session('success') }}</div>
         @endif
         @if(session('error'))
-            <div class="alert-err"><i class="fas fa-exclamation-circle"></i> {{ session('error') }}</div>
+            <div class="alert-err">{{ session('error') }}</div>
         @endif
         @if($errors->any())
             <div class="alert-err">@foreach($errors->all() as $e)<div>{{ $e }}</div>@endforeach</div>
         @endif
 
-        {{-- Card Header (style banners) --}}
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 16px; gap: 16px; flex-wrap: wrap;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                @php $isSent = ($folder ?? 'inbox') === 'sent'; @endphp
-                <a href="{{ route('admin.messagerie.index', ['folder' => 'inbox']) }}"
-                   class="gm-tabbtn {{ !$isSent ? 'active' : '' }}">
-                    <i class="fas fa-inbox"></i> Réception
-                </a>
-                <a href="{{ route('admin.messagerie.index', ['folder' => 'sent']) }}"
-                   class="gm-tabbtn {{ $isSent ? 'active' : '' }}">
-                    <i class="fas fa-paper-plane"></i> Envoyés
-                </a>
-            </div>
-            <button type="button" class="gm-compose" onclick="openCompose()">
-                <i class="fas fa-pen"></i> Nouveau message
-            </button>
-        </div>
+        @php $isSent = ($folder ?? 'inbox') === 'sent'; @endphp
 
-        {{-- Liste des conversations --}}
+        {{-- Corps : navigation verticale (gauche) + liste (droite), façon Gmail --}}
+        <div style="display: flex; gap: 0; flex: 1; align-items: stretch;">
+
+            {{-- Navigation gauche --}}
+            <div style="width: 220px; flex-shrink: 0; border-right: 1px solid #eff3f6; padding-right: 16px;">
+                <button type="button" class="gm-compose" style="width: 100%; justify-content: center; margin-bottom: 18px;" onclick="openCompose()">
+                    <i class="fas fa-pen"></i> Nouveau message
+                </button>
+                <nav style="display: flex; flex-direction: column; gap: 6px;">
+                    <a href="{{ route('admin.messagerie.index', ['folder' => 'inbox']) }}" class="gm-navitem {{ !$isSent ? 'active' : '' }}">
+                        <i class="fas fa-inbox"></i> Réception
+                    </a>
+                    <a href="{{ route('admin.messagerie.index', ['folder' => 'sent']) }}" class="gm-navitem {{ $isSent ? 'active' : '' }}">
+                        <i class="fas fa-paper-plane"></i> Envoyés
+                    </a>
+                </nav>
+            </div>
+
+            {{-- Liste des conversations --}}
+            <div style="flex: 1; min-width: 0; padding-left: 16px;">
         <ul class="gm-list">
             @forelse($conversations as $conv)
                 @php
@@ -178,6 +191,8 @@
         @if($conversations->hasPages())
             <div style="padding: 14px 20px;">{{ $conversations->links('vendor.pagination.karnou') }}</div>
         @endif
+            </div>{{-- /colonne droite --}}
+        </div>{{-- /corps --}}
     </div>
 </div>
 
