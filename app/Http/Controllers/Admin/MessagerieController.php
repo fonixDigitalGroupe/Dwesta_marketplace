@@ -20,7 +20,7 @@ class MessagerieController extends Controller
         $karnou = User::where('email', 'admin@karnou.com')->first()
             ?? User::whereHas('roles', fn ($q) => $q->where('name', 'admin'))->first();
 
-        return $karnou ? $karnou->id : Auth::id();
+        return $karnou ? $karnou->id : (int) Auth::id();
     }
 
     /**

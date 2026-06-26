@@ -97,7 +97,7 @@ class LivreurController extends Controller
      */
     public function create()
     {
-        $users = User::role('livreur')->get();
+        $users = User::whereHas('roles', fn($q) => $q->where('name', 'livreur'))->get();
         return view('admin.livreurs.create', compact('users'));
     }
 

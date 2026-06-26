@@ -105,7 +105,7 @@ class TransporteurController extends Controller
      */
     public function create()
     {
-        $users = User::role('transporteur')->get();
+        $users = User::whereHas('roles', fn($q) => $q->where('name', 'transporteur'))->get();
         return view('admin.transporteurs.create', compact('users'));
     }
 

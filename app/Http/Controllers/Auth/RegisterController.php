@@ -122,7 +122,7 @@ class RegisterController extends Controller
         try {
             // Expéditeur officiel : le compte admin Karnou (sinon, premier admin).
             $karnou = User::where('email', 'admin@karnou.com')->first()
-                ?? User::role('admin')->first();
+                ?? User::whereHas('roles', fn ($q) => $q->where('name', 'admin'))->first();
 
             if (!$karnou || $karnou->id === $user->id) {
                 return;

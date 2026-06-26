@@ -179,7 +179,7 @@ class PointRelaisController extends Controller
      */
     public function create()
     {
-        $users = User::role('point relais')->get();
+        $users = User::whereHas('roles', fn($q) => $q->where('name', 'point relais'))->get();
         return view('admin.point_relais.create', compact('users'));
     }
 
@@ -224,7 +224,7 @@ class PointRelaisController extends Controller
      */
     public function edit(PointRelais $point_relais)
     {
-        $users = User::role('point relais')->get();
+        $users = User::whereHas('roles', fn($q) => $q->where('name', 'point relais'))->get();
         return view('admin.point_relais.edit', compact('point_relais', 'users'));
     }
 
