@@ -114,6 +114,18 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Utilisateur "staff" (back-office) : possède un rôle admin ou un rôle
+     * personnalisé (créé dans /admin/roles), donc ni client/acheteur, ni vendeur,
+     * ni rôle logistique (transporteur, livreur, point relais).
+     */
+    public function isStaff(): bool
+    {
+        $nonStaff = ['vendeur', 'client', 'acheteur', 'transporteur', 'livreur', 'point relais', 'point_relais'];
+
+        return $this->roles->filter(fn ($r) => !in_array($r->name, $nonStaff))->isNotEmpty();
+    }
+
+    /**
      * Vérifier si l'utilisateur est vendeur vérifié
      */
     public function estVendeurVerifie(): bool

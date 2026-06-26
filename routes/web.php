@@ -170,7 +170,7 @@ Route::middleware('auth')->group(function () {
         });
 
         // Admin - Vérification vendeurs
-        Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
+        Route::prefix('admin')->name('admin.')->middleware('staff')->group(function () {
             Route::prefix('vendeurs')->name('vendeurs.')->group(function () {
                 // Route::get('/verification', [VendeurVerificationController::class, 'index'])->name('verification.index');
                 Route::get('/verification/{vendeur}', [VendeurVerificationController::class, 'show'])->name('verification.show');

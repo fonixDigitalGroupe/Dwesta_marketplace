@@ -31,14 +31,15 @@ class LoginController extends Controller
 
             $user = Auth::user();
 
-            if ($user->hasRole('admin')) {
-                return redirect()->intended(route('admin.dashboard'));
-            } elseif ($user->hasRole('transporteur')) {
+            if ($user->hasRole('transporteur')) {
                 return redirect()->intended(route('transporteur.dashboard'));
             } elseif ($user->hasRole('livreur')) {
                 return redirect()->intended(route('livreur.dashboard'));
             } elseif ($user->hasRole('point_relais')) {
                 return redirect()->intended(route('relais.dashboard'));
+            } elseif ($user->isStaff()) {
+                // Admin ou rôle personnalisé (back-office)
+                return redirect()->intended(route('admin.dashboard'));
             }
 
             return redirect()->intended(route('account.index'));
