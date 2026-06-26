@@ -11,14 +11,16 @@ class RoleController extends Controller
 {
     protected function getPermissionLabels()
     {
-        // Aligné sur les menus du sidebar admin
+        // Aligné sur les menus du sidebar admin + sous-pages des Paramètres
         return [
+            // Menus principaux
             'view_dashboard'       => 'Tableau de bord',
             'approve_vendors'      => 'Vendeurs',
             'manage_users'         => 'Clients',
             'moderate_products'    => 'Articles',
             'manage_orders'        => 'Commandes',
             'view_finances'        => 'Détails financiers',
+            'manage_withdrawals'   => 'Retraits',
             'manage_messagerie'    => 'Messagerie',
             'manage_carriers'      => 'Transporteurs',
             'manage_drivers'       => 'Livreurs',
@@ -27,11 +29,18 @@ class RoleController extends Controller
             'manage_coupons'       => 'Promotions',
             'manage_highlights'    => 'Actualités',
             'moderate_reviews'     => 'Avis',
-            'manage_subscriptions' => 'Abonnements',
-            'manage_withdrawals'   => 'Retraits',
-            'manage_categories'    => 'Catégories',
-            'manage_settings'      => 'Paramètres',
-            'manage_roles'         => 'Rôles & permissions',
+
+            // Paramètres (sous-pages)
+            'manage_categories'    => 'Paramètres · Catégories',
+            'manage_filters'       => 'Paramètres · Filtres',
+            'manage_visibility'    => 'Paramètres · Visibilité',
+            'manage_gift_cards'    => 'Paramètres · Cartes Cadeaux',
+            'manage_credits'       => 'Paramètres · Crédits',
+            'manage_subscriptions' => 'Paramètres · Abonnements',
+            'manage_countries'     => 'Paramètres · Pays',
+            'manage_shipping'      => 'Paramètres · Expédition',
+            'manage_settings'      => 'Paramètres · Configuration',
+            'manage_roles'         => 'Paramètres · Rôles & permissions',
         ];
     }
 
