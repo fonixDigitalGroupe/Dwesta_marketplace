@@ -311,7 +311,7 @@
 
         .user-dropdown-menu {
             position: absolute;
-            top: calc(100% + 8px);
+            top: 100%;
             right: 0;
             width: 220px;
             background: #fff;
@@ -319,12 +319,13 @@
             border-radius: 12px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             display: none;
-            z-index: 100;
+            z-index: 1000;
             overflow: hidden;
-            animation: slideIn 0.2s ease-out;
         }
 
-        .user-dropdown-menu.show {
+        /* Ouverture au clic (JS) ET au survol (fallback fiable sans JS) */
+        .user-dropdown-menu.show,
+        .user-dropdown-container:hover .user-dropdown-menu {
             display: block;
         }
 
