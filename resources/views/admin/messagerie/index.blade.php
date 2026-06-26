@@ -85,23 +85,41 @@
         .gm-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.15); display: none; z-index: 9998; }
         .gm-overlay.open { display: block; }
         .gm-compose-box {
-            position: fixed; bottom: 0; right: 24px; width: 480px; max-width: calc(100vw - 24px);
-            background: #fff; border-radius: 12px 12px 0 0; box-shadow: 0 8px 30px rgba(0,0,0,0.28);
+            position: fixed; bottom: 0; right: 24px; width: 500px; max-width: calc(100vw - 24px);
+            background: #fff; border-radius: 14px 14px 0 0; box-shadow: 0 12px 40px rgba(0,0,0,0.30);
             z-index: 9999; display: none; flex-direction: column; overflow: hidden;
         }
-        .gm-compose-box.open { display: flex; }
-        .gm-compose-head { background: #404040; color: #fff; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; font-weight: 600; }
-        .gm-compose-close { background: none; border: none; color: #fff; cursor: pointer; font-size: 1rem; }
-        .gm-compose-body { padding: 16px; }
-        .gm-field { width: 100%; border: none; border-bottom: 1px solid #e0e0e0; padding: 10px 4px; font-size: 0.85rem; outline: none; color: #202124; background: #fff; }
-        .gm-field:focus { border-bottom-color: #1a73e8; }
-        .gm-textarea { width: 100%; border: none; outline: none; padding: 12px 4px; font-size: 0.9rem; min-height: 180px; resize: vertical; color: #202124; }
-        .gm-compose-foot { padding: 10px 16px 16px; }
-        .gm-send {
-            background: #1a73e8; color: #fff; border: none; border-radius: 999px;
-            padding: 10px 26px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: background 0.2s;
+        .gm-compose-box.open { display: flex; animation: gmRise 0.25s ease; }
+        @keyframes gmRise { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .gm-compose-head {
+            background: linear-gradient(180deg, #ff9900 0%, #e77600 100%);
+            color: #fff; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.92rem; font-weight: 700; letter-spacing: 0.01em;
         }
-        .gm-send:hover { background: #1765cc; }
+        .gm-compose-head .gm-head-title { display: flex; align-items: center; gap: 9px; }
+        .gm-compose-close { background: rgba(255,255,255,0.2); border: none; color: #fff; cursor: pointer; font-size: 1rem; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .gm-compose-close:hover { background: rgba(255,255,255,0.35); }
+
+        .gm-compose-body { padding: 18px; }
+        .gm-flabel { display: block; font-size: 0.68rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 6px; }
+        .gm-field {
+            width: 100%; border: 1px solid #e2e8f0; border-radius: 8px; padding: 11px 12px;
+            font-size: 0.85rem; outline: none; color: #202124; background: #fafbfc; margin-bottom: 16px; transition: all 0.18s;
+        }
+        .gm-field:focus { border-color: #ff9900; background: #fff; box-shadow: 0 0 0 3px rgba(255,153,0,0.15); }
+        .gm-textarea {
+            width: 100%; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; padding: 12px;
+            font-size: 0.9rem; min-height: 170px; resize: vertical; color: #202124; background: #fafbfc; transition: all 0.18s;
+        }
+        .gm-textarea:focus { border-color: #ff9900; background: #fff; box-shadow: 0 0 0 3px rgba(255,153,0,0.15); }
+        .gm-compose-foot { padding: 0 18px 18px; display: flex; align-items: center; gap: 12px; }
+        .gm-send {
+            background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); color: #fff; border: none; border-radius: 999px;
+            padding: 11px 30px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(231,118,0,0.35);
+        }
+        .gm-send:hover { background: linear-gradient(180deg, #f08804 0%, #d87300 100%); box-shadow: 0 3px 10px rgba(231,118,0,0.45); }
 
         .alert-ok { background: #e6f4ea; border: 1px solid #a8d5b1; color: #137333; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 0.85rem; }
         .alert-err { background: #fce8e6; border: 1px solid #f5c6c2; color: #c5221f; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: 0.85rem; }
@@ -200,24 +218,30 @@
 <div class="gm-overlay" id="gm-overlay" onclick="closeCompose()"></div>
 <div class="gm-compose-box" id="gm-compose-box">
     <div class="gm-compose-head">
-        <span>Nouveau message</span>
+        <span class="gm-head-title"><i class="fas fa-pen"></i> Nouveau message</span>
         <button type="button" class="gm-compose-close" onclick="closeCompose()">&times;</button>
     </div>
     <form action="{{ route('admin.messagerie.send') }}" method="POST" id="send-form" onsubmit="return confirmSend()">
         @csrf
         <div class="gm-compose-body">
+            <label class="gm-flabel">Destinataire(s)</label>
             <select name="mode" id="mode" class="gm-field" onchange="toggleRecipient()">
                 <option value="user">À : un utilisateur précis</option>
                 <option value="vendeurs">À : tous les vendeurs</option>
                 <option value="clients">À : tous les clients</option>
             </select>
 
-            <select name="recipient_id" id="recipient_id" class="gm-field">
-                <option value="">— Choisir le destinataire —</option>
-                @foreach($users as $u)
-                    <option value="{{ $u->id }}">{{ $u->prenom }} {{ $u->nom }} — {{ $u->email ?? $u->telephone }} {{ $u->vendeur ? '(Vendeur)' : '(Client)' }}</option>
-                @endforeach
-            </select>
+            <div id="recipient-wrap">
+                <label class="gm-flabel">Choisir le destinataire</label>
+                <select name="recipient_id" id="recipient_id" class="gm-field">
+                    <option value="">— Sélectionner —</option>
+                    @foreach($users as $u)
+                        <option value="{{ $u->id }}">{{ $u->prenom }} {{ $u->nom }} — {{ $u->email ?? $u->telephone }} {{ $u->vendeur ? '(Vendeur)' : '(Client)' }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <label class="gm-flabel">Message</label>
 
             <textarea name="message" id="message" class="gm-textarea" placeholder="Rédigez votre message…" required>{{ old('message') }}</textarea>
         </div>
@@ -240,9 +264,10 @@
     }
     function toggleRecipient() {
         var mode = document.getElementById('mode').value;
+        var wrap = document.getElementById('recipient-wrap');
         var sel = document.getElementById('recipient_id');
-        if (mode === 'user') { sel.style.display = 'block'; sel.setAttribute('required','required'); }
-        else { sel.style.display = 'none'; sel.removeAttribute('required'); }
+        if (mode === 'user') { wrap.style.display = 'block'; sel.setAttribute('required','required'); }
+        else { wrap.style.display = 'none'; sel.removeAttribute('required'); }
     }
     function confirmDeleteConv(id) {
         Swal.fire({
