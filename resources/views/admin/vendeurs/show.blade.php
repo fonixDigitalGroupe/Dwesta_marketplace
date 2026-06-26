@@ -8,32 +8,32 @@
             background-color: #f8f9fa !important;
         }
 
-        /* Input Amazon Style */
+        /* Input Amazon Style Modernisé */
         input[type="text"]:focus,
         input[type="email"]:focus,
-        textarea:focus {
-            border-color: #e77600 !important;
+        textarea:focus,
+        select:focus {
+            border-color: #ff9900 !important;
             outline: none;
         }
 
         .amazon-card {
             background: #fff;
-            border: 1px solid #f0f0f0;
-            border-radius: 4px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-            padding: 15px 25px 25px 25px;
+            border: 1px solid #eff3f6;
+            border-radius: 8px;
+            padding: 24px;
             margin-bottom: 20px;
         }
 
         .section-title {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 700;
-            color: #111;
-            margin-bottom: 20px;
+            color: #475569;
+            margin-bottom: 16px;
             padding-bottom: 10px;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f1f5f9;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.06em;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -44,15 +44,14 @@
         }
 
         .btn-amazon-primary {
-            background: linear-gradient(180deg, #007bff 0%, #0056b3 100%);
-            border: 1px solid #004aad;
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
             color: #fff;
             padding: 8px 24px;
             border-radius: 4px;
             font-size: 0.85rem;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
-            box-shadow: 0 1px 0 rgba(255, 255, 255, .4) inset;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -83,8 +82,8 @@
         }
 
         .btn-amazon-primary:hover {
-            background: linear-gradient(180deg, #0069d9 0%, #004494 100%);
-            border-color: #003d82;
+            background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .btn-amazon-secondary {
@@ -139,7 +138,7 @@
         .table-amazon {
             width: 100%;
             border-collapse: collapse;
-            border: 1px solid #e7e7e7;
+            border: 1px solid #eff3f6;
         }
 
         .table-amazon th {
@@ -150,32 +149,33 @@
             font-weight: 700;
             color: #111;
             text-transform: uppercase;
-            border-bottom: 1px solid #e7e7e7;
-            border-right: 1px solid #e7e7e7;
+            border-bottom: 1px solid #eff3f6;
+            border-right: 1px solid #eff3f6;
         }
 
         .table-amazon td {
             padding: 12px 15px;
             font-size: 0.85rem;
-            border-bottom: 1px solid #e7e7e7;
-            border-right: 1px solid #e7e7e7;
+            border-bottom: 1px solid #eff3f6;
+            border-right: 1px solid #eff3f6;
         }
     </style>
 @endpush
 
 @section('content')
-<div style="max-width: 1200px; margin: 0 auto; margin-top: -50px;">
-    <div style="background: #fff; border: 1px solid #e7e7e7; padding: 25px;">
-        <!-- Top Action Bar -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
-            <div style="display: flex; align-items: center; gap: 15px;">
+<div style="max-width: 1200px; margin: -30px auto 0;">
+    <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+        <!-- Card Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 15px; border-bottom: 1px solid #eff3f6;">
+            <div style="display: flex; align-items: center; gap: 12px;">
                 <a href="{{ route('admin.users.index', ['role' => 'vendeur']) }}" class="btn-amazon-secondary"
                     style="padding: 6px 12px;">
                     <i class="fas fa-chevron-left"></i> Retour
                 </a>
-                <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">
-                    Dossier de Vérification : {{ $vendeur->user->prenom }} {{ $vendeur->user->nom }}
-                </h1>
+                <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                    <i class="fas fa-id-card" style="font-size: 0.8rem;"></i>
+                    <span>Dossier de Vérification — {{ $vendeur->user->prenom }} {{ $vendeur->user->nom }}</span>
+                </div>
             </div>
 
             <div>
@@ -350,7 +350,7 @@
                                 this.reason = base;
                             }
                         }">
-                            <div style="display: flex; gap: 20px; margin-bottom: 25px; padding: 10px; background: #fff; border: 1px solid #e7e7e7; border-radius: 4px;">
+                            <div style="display: flex; gap: 20px; margin-bottom: 25px; padding: 10px; background: #fff; border: 1px solid #eff3f6; border-radius: 4px;">
                                 <label style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; cursor: pointer; flex: 1; padding: 5px;">
                                     <input type="radio" x-model="decision" value="approve" name="decision_type">
                                     <span style="font-weight: 600; color: #16a34a;">Approuver</span>
@@ -377,7 +377,7 @@
                                 @csrf
                                 <div style="margin-bottom: 20px;">
                                     <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; color: #111;">Précisez les champs à revoir :</label>
-                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #fff; padding: 15px; border: 1px solid #e7e7e7; border-radius: 4px;">
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #fff; padding: 15px; border: 1px solid #eff3f6; border-radius: 4px;">
                                         @php
                                             $fields = [
                                                 'Pièce d\'identité (CNI/Passeport)',
