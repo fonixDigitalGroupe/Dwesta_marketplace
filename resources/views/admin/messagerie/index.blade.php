@@ -145,14 +145,18 @@
 
         @php $isSent = ($folder ?? 'inbox') === 'sent'; @endphp
 
+        {{-- Barre du haut : bouton Nouveau message à droite --}}
+        <div style="display: flex; justify-content: flex-end; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 16px;">
+            <button type="button" class="gm-compose" onclick="openCompose()">
+                <i class="fas fa-pen"></i> Nouveau message
+            </button>
+        </div>
+
         {{-- Corps : navigation verticale (gauche) + liste (droite), façon Gmail --}}
         <div style="display: flex; gap: 0; flex: 1; align-items: stretch;">
 
             {{-- Navigation gauche --}}
             <div style="width: 220px; flex-shrink: 0; border-right: 1px solid #eff3f6; padding-right: 16px;">
-                <button type="button" class="gm-compose" style="width: 100%; justify-content: center; margin-bottom: 18px;" onclick="openCompose()">
-                    <i class="fas fa-pen"></i> Nouveau message
-                </button>
                 <nav style="display: flex; flex-direction: column; gap: 6px;">
                     <a href="{{ route('admin.messagerie.index', ['folder' => 'inbox']) }}" class="gm-navitem {{ !$isSent ? 'active' : '' }}">
                         <i class="fas fa-inbox"></i> Réception
