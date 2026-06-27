@@ -156,7 +156,7 @@
                 <form action="{{ route('admin.users.index') }}" method="GET" id="filter-wrapper" style="display: flex; flex-direction: column; gap: 15px;">
                     <input type="hidden" name="role" value="{{ $role }}">
 
-                    @if(!empty($customRoles))
+                    @if(!empty($customRoles) && !in_array($role, ['vendeur', 'acheteur']))
                     <div style="display: flex; gap: 15px;">
                         <div style="flex: 1; max-width: 300px;">
                             <label class="filter-label">Filtrer par rôle personnalisé</label>
