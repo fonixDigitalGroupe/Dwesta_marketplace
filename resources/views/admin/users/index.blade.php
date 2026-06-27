@@ -145,9 +145,11 @@
                 </div>
 
                 <div style="display: flex; gap: 8px;">
+                    @if(!in_array($role, ['vendeur', 'acheteur']))
                     <a href="{{ route('admin.users.create') }}" class="btn-amazon-primary" style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border-color: #c05d00;">
                         <i class="fas fa-plus"></i> Nouveau
                     </a>
+                    @endif
                 </div>
             </div>
 
@@ -226,9 +228,6 @@
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
                 <thead>
                     <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
-                        <th style="padding: 10px 15px; text-align: center; border-right: 1px solid #eff3f6; width: 40px;">
-                            <input type="checkbox" id="select-all" style="cursor: pointer;">
-                        </th>
                         <th
                             style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">
                             Prénom / Nom</th>
@@ -253,9 +252,6 @@
                     @forelse($users as $user)
                         <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
-                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
-                                <input type="checkbox" class="user-checkbox" value="{{ $user->id }}" style="cursor: pointer;">
-                            </td>
                             <td
                                 style="padding: 12px 15px; font-size: 0.85rem; color: #0066c0; font-weight: 500; border-right: 1px solid #eff3f6;">
                                 {{ $user->prenom }} {{ $user->nom }}
@@ -345,7 +341,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" style="padding: 3rem; text-align: center; color: #999; font-size: 0.85rem;">
+                            <td colspan="6" style="padding: 3rem; text-align: center; color: #999; font-size: 0.85rem;">
                                 Aucun utilisateur trouvé.
                             </td>
                         </tr>
@@ -400,11 +396,5 @@
                 document.getElementById('delete-form-' + id).submit();
             }
         }
-
-        // Script pour tout sélectionner
-        document.getElementById('select-all').addEventListener('change', function() {
-            const checkboxes = document.querySelectorAll('.user-checkbox');
-            checkboxes.forEach(cb => cb.checked = this.checked);
-        });
     </script>
 @endpush
