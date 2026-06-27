@@ -83,6 +83,10 @@ Route::prefix('partenaire')->name('partenaire.')->group(function () {
         Route::post('/position', [\App\Http\Controllers\Partenaire\DashboardController::class, 'updatePosition'])->name('position');
         Route::get('/missions', [\App\Http\Controllers\Partenaire\DashboardController::class, 'missions'])->name('missions');
 
+        // Profil & gains
+        Route::get('/profil', [\App\Http\Controllers\Partenaire\ProfilController::class, 'profil'])->name('profil');
+        Route::get('/gains', [\App\Http\Controllers\Partenaire\ProfilController::class, 'gains'])->name('gains');
+
         // Courses : acceptation + cycle de vie
         Route::get('/course/active', [\App\Http\Controllers\Partenaire\CourseController::class, 'active'])->name('course.active');
         Route::post('/course/{order}/accepter', [\App\Http\Controllers\Partenaire\CourseController::class, 'accept'])->name('course.accept');
