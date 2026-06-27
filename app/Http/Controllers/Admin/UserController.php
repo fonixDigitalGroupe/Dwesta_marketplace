@@ -42,7 +42,8 @@ class UserController extends Controller
                 $q->where('type', 'particulier');
             });
         } elseif ($role === 'vendeur') {
-            $query->has('vendeur');
+            // Uniquement les vendeurs (particulier/professionnel), pas les admins
+            $query->has('vendeur')->whereDoesntHave('roles', fn($q) => $q->where('name', 'admin'));
         } elseif ($role === 'acheteur') {
             $query->doesntHave('vendeur')->whereHas('roles', fn($q) => $q->where('name', 'acheteur'));
         } elseif (in_array($role, ['transporteur', 'livreur', 'point relais'])) {
