@@ -1,4 +1,4 @@
-@extends('layouts.partenaire')
+@extends('partenaire::layouts.partenaire')
 
 @section('title', 'Connexion — Karnou Partenaire')
 

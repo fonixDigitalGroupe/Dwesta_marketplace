@@ -1,4 +1,4 @@
-@extends('layouts.partenaire')
+@extends('partenaire::layouts.partenaire')
 
 @section('title', 'Profil Transporteur — Karnou Partenaire')
 
@@ -60,8 +60,8 @@
                     <div class="pt-divider"></div>
                     <div class="pt-field"><span class="ic">#️⃣</span><input class="pt-input" name="numero_cni" placeholder="N° CNI" value="{{ old('numero_cni') }}"></div>
                 </div>
-                @include('partenaire.partials.upload', ['name' => 'permis_recto', 'label' => 'Photo du permis'])
-                @include('partenaire.partials.upload', ['name' => 'carte_grise', 'label' => 'Carte grise'])
+                @include('partenaire::partials.upload', ['name' => 'permis_recto', 'label' => 'Photo du permis'])
+                @include('partenaire::partials.upload', ['name' => 'carte_grise', 'label' => 'Carte grise'])
             </div>
         </div>
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Partenaire;
+namespace Karnou\Pwa\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
@@ -18,7 +18,7 @@ class ProfilController extends Controller
             return redirect()->route('partenaire.permissions');
         }
 
-        return view('partenaire.profil', [
+        return view('partenaire::profil', [
             'user'    => $user,
             'profil'  => $profil,
             'type'    => $user->estLivreur() ? 'livreur' : 'transporteur',
@@ -50,7 +50,7 @@ class ProfilController extends Controller
             ->limit(25)
             ->get(['id', 'reference', $champCom . ' as commission', 'updated_at']);
 
-        return view('partenaire.gains', [
+        return view('partenaire::gains', [
             'soldeTotal' => (int) $total,
             'gainsJour'  => (int) $jour,
             'courses'    => $courses,

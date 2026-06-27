@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Partenaire;
+namespace Karnou\Pwa\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -24,7 +24,7 @@ class AuthController extends Controller
     /** Écran « Quel est votre numéro ? ». */
     public function showPhone()
     {
-        return view('partenaire.auth.phone', ['pays' => self::PAYS]);
+        return view('partenaire::auth.phone', ['pays' => self::PAYS]);
     }
 
     /** Génère et envoie un code OTP au numéro saisi. */
@@ -63,7 +63,7 @@ class AuthController extends Controller
             return redirect()->route('partenaire.login');
         }
 
-        return view('partenaire.auth.otp', ['phone' => $auth['phone']]);
+        return view('partenaire::auth.otp', ['phone' => $auth['phone']]);
     }
 
     /** Vérifie le code OTP, connecte (ou crée) l'utilisateur. */

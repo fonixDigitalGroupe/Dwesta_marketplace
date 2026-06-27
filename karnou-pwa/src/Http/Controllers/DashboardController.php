@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Partenaire;
+namespace Karnou\Pwa\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
@@ -28,7 +28,7 @@ class DashboardController extends Controller
             ->whereDate('updated_at', today())
             ->sum($commission);
 
-        return view('partenaire.home', [
+        return view('partenaire::home', [
             'user'        => $user,
             'type'        => $user->estLivreur() ? 'livreur' : 'transporteur',
             'enLigne'     => (bool) $profil->en_ligne,

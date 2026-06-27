@@ -1,4 +1,4 @@
-@extends('layouts.partenaire')
+@extends('partenaire::layouts.partenaire')
 
 @section('title', 'Profil Livreur — Karnou Partenaire')
 
@@ -58,8 +58,8 @@
                 <div class="pt-card">
                     <div class="pt-field"><span class="ic">#️⃣</span><input class="pt-input" name="numero_document" placeholder="Numéro du document" value="{{ old('numero_document') }}"></div>
                 </div>
-                @include('partenaire.partials.upload', ['name' => 'document_recto', 'label' => 'Recto du document'])
-                @include('partenaire.partials.upload', ['name' => 'document_verso', 'label' => 'Verso du document'])
+                @include('partenaire::partials.upload', ['name' => 'document_recto', 'label' => 'Recto du document'])
+                @include('partenaire::partials.upload', ['name' => 'document_verso', 'label' => 'Verso du document'])
             </div>
         </div>
 

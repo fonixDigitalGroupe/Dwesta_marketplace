@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Partenaire;
+namespace Karnou\Pwa\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Livreur;
@@ -18,7 +18,7 @@ class OnboardingController extends Controller
             return redirect()->route('partenaire.home');
         }
 
-        return view('partenaire.permissions');
+        return view('partenaire::permissions');
     }
 
     /** Choix du métier : livreur ou transporteur. */
@@ -28,7 +28,7 @@ class OnboardingController extends Controller
             return redirect()->route('partenaire.home');
         }
 
-        return view('partenaire.metier');
+        return view('partenaire::metier');
     }
 
     /* ---------------------------------------------------------------- Livreur */
@@ -39,7 +39,7 @@ class OnboardingController extends Controller
             return redirect()->route('partenaire.home');
         }
 
-        return view('partenaire.inscription.livreur', ['user' => Auth::user()]);
+        return view('partenaire::inscription.livreur', ['user' => Auth::user()]);
     }
 
     public function storeLivreur(Request $request)
@@ -90,7 +90,7 @@ class OnboardingController extends Controller
             return redirect()->route('partenaire.home');
         }
 
-        return view('partenaire.inscription.transporteur', ['user' => Auth::user()]);
+        return view('partenaire::inscription.transporteur', ['user' => Auth::user()]);
     }
 
     public function storeTransporteur(Request $request)

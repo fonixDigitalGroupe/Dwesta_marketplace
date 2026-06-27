@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Partenaire;
+namespace Karnou\Pwa\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;

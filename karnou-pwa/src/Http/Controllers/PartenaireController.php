@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Partenaire;
+namespace Karnou\Pwa\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +28,7 @@ class PartenaireController extends Controller
             $next = route('partenaire.permissions');
         }
 
-        return view('partenaire.splash', [
+        return view('partenaire::splash', [
             'next' => $next,
         ]);
     }
@@ -38,7 +38,7 @@ class PartenaireController extends Controller
      */
     public function home()
     {
-        return view('partenaire.placeholder', [
+        return view('partenaire::placeholder', [
             'titre' => 'Accueil chauffeur',
             'message' => 'Le tableau de bord (carte + missions) arrive en Phase 3.',
         ]);

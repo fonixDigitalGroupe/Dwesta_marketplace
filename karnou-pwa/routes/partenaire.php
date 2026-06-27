@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\Partenaire\AuthController;
-use App\Http\Controllers\Partenaire\CourseController;
-use App\Http\Controllers\Partenaire\DashboardController;
-use App\Http\Controllers\Partenaire\OnboardingController;
-use App\Http\Controllers\Partenaire\PartenaireController;
-use App\Http\Controllers\Partenaire\ProfilController;
+use Karnou\Pwa\Http\Controllers\AuthController;
+use Karnou\Pwa\Http\Controllers\CourseController;
+use Karnou\Pwa\Http\Controllers\DashboardController;
+use Karnou\Pwa\Http\Controllers\OnboardingController;
+use Karnou\Pwa\Http\Controllers\PartenaireController;
+use Karnou\Pwa\Http\Controllers\ProfilController;
 use Illuminate\Support\Facades\Route;
 
 /*
