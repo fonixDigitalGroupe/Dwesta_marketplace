@@ -77,8 +77,11 @@ Route::prefix('partenaire')->name('partenaire.')->group(function () {
         Route::get('/inscription/transporteur', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'showTransporteur'])->name('inscription.transporteur');
         Route::post('/inscription/transporteur', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'storeTransporteur'])->name('inscription.transporteur.store');
 
-        // Tableau de bord chauffeur (Phase 3)
-        Route::get('/accueil', [PartenaireController::class, 'home'])->name('home');
+        // Tableau de bord chauffeur (carte + missions)
+        Route::get('/accueil', [\App\Http\Controllers\Partenaire\DashboardController::class, 'home'])->name('home');
+        Route::post('/en-ligne', [\App\Http\Controllers\Partenaire\DashboardController::class, 'toggleOnline'])->name('toggle-online');
+        Route::post('/position', [\App\Http\Controllers\Partenaire\DashboardController::class, 'updatePosition'])->name('position');
+        Route::get('/missions', [\App\Http\Controllers\Partenaire\DashboardController::class, 'missions'])->name('missions');
     });
 });
 

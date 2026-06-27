@@ -28,10 +28,12 @@ class Transporteur extends Model
         'statut_verification',
         'raison_rejet',
         'actif',
+        'en_ligne',
     ];
 
     protected $casts = [
         'actif' => 'boolean',
+        'en_ligne' => 'boolean',
     ];
 
     /**
