@@ -44,6 +44,20 @@
     .mission-accept { margin-top: auto; width: 100%; height: 88px; background: #fff; border: 0; border-radius: 26px; display: flex; align-items: center; justify-content: center; gap: 18px; cursor: pointer; font-family: inherit; }
     .mission-timer { width: 50px; height: 50px; border-radius: 50%; border: 4px solid #eee; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; color: #111; }
     .mission-accept b { font-size: 23px; font-weight: 900; letter-spacing: 1px; color: #111; }
+
+    /* Carte de course active */
+    .trip { background: #0F0F0F; border: 1px solid #1e1e1e; border-radius: 28px; padding: 22px; box-shadow: 0 12px 30px rgba(0,0,0,.45); text-align: left; }
+    .trip-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .trip-ind { width: 10px; height: 10px; border-radius: 50%; background: var(--karnou-orange); }
+    .trip-status { color: var(--karnou-orange); font-size: 12px; font-weight: 900; letter-spacing: 1px; }
+    .trip-addr { color: #fff; font-size: 23px; font-weight: 900; line-height: 1.15; }
+    .trip-client { color: #94A3B8; font-size: 13px; margin-top: 4px; }
+    .trip-code { margin-top: 16px; }
+    .trip-code label { display: block; color: #94A3B8; font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+    .trip-code input { width: 100%; background: #1a1a1a; border: 1.5px solid #2a2a2a; border-radius: 14px; color: #fff; font-size: 22px; font-weight: 800; letter-spacing: 8px; text-align: center; padding: 12px; outline: none; font-family: inherit; }
+    .trip-code small { display: block; color: #64748B; font-size: 12px; margin-top: 6px; }
+    .trip-code small b { color: #10B981; letter-spacing: 2px; }
+    .trip-btn { margin-top: 18px; width: 100%; height: 62px; background: var(--karnou-orange); color: #fff; border: 0; border-radius: 18px; font-size: 17px; font-weight: 900; letter-spacing: .5px; cursor: pointer; font-family: inherit; }
 </style>
 @endpush
 
@@ -54,10 +68,13 @@
         gains: {{ $gainsJour }},
         lat: {{ $position['lat'] ?? 'null' }},
         lng: {{ $position['lng'] ?? 'null' }},
+        type: '{{ $type }}',
         urls: {
             toggle: '{{ route('partenaire.toggle-online') }}',
             position: '{{ route('partenaire.position') }}',
-            missions: '{{ route('partenaire.missions') }}'
+            missions: '{{ route('partenaire.missions') }}',
+            courseActive: '{{ route('partenaire.course.active') }}',
+            courseBase: '{{ url('partenaire/course') }}'
         }
     })" x-init="init()">
 
@@ -82,17 +99,45 @@
         ⏳ Votre profil est en cours de vérification. Vous pourrez recevoir des courses une fois validé.
     </div>
 
-    {{-- Zone basse : bouton EN LIGNE / HORS LIGNE --}}
+    {{-- Zone basse : course active OU bouton EN LIGNE / HORS LIGNE --}}
     <div class="home-bottom" x-show="!mission" x-cloak>
-        <button class="go-btn" :class="enLigne ? 'go-btn--on' : 'go-btn--off'" @click="toggle()" x-text="enLigne ? 'HORS LIGNE' : 'EN LIGNE'"></button>
-        <div class="home-status" x-show="enLigne">
-            <span class="pulse"></span>
-            <span>Recherche de courses à proximité…</span>
-        </div>
+        {{-- Carte de course active --}}
+        <template x-if="course">
+            <div class="trip">
+                <div class="trip-head">
+                    <span class="trip-ind"></span>
+                    <span class="trip-status" x-text="tripStatus()"></span>
+                </div>
+                <div class="trip-addr" x-text="tripAddr()"></div>
+                <div class="trip-client">Course <span x-text="course.reference"></span> · <span x-text="course.montant.toLocaleString('fr-FR')"></span> FCFA</div>
+
+                {{-- Saisie du code de livraison (livreur, étape finale) --}}
+                <template x-if="step === 'destination' && course.type === 'livreur'">
+                    <div class="trip-code">
+                        <label>Code de livraison du client</label>
+                        <input type="tel" inputmode="numeric" maxlength="4" x-model="codeInput" placeholder="0000">
+                        <small x-show="course.code_livraison">Démo — code client : <b x-text="course.code_livraison"></b></small>
+                    </div>
+                </template>
+
+                <button class="trip-btn" @click="advance()" x-text="tripAction()"></button>
+            </div>
+        </template>
+
+        {{-- Bouton En ligne / Hors ligne --}}
+        <template x-if="!course">
+            <div>
+                <button class="go-btn" :class="enLigne ? 'go-btn--on' : 'go-btn--off'" @click="toggle()" x-text="enLigne ? 'HORS LIGNE' : 'EN LIGNE'"></button>
+                <div class="home-status" x-show="enLigne">
+                    <span class="pulse"></span>
+                    <span>Recherche de courses à proximité…</span>
+                </div>
+            </div>
+        </template>
     </div>
 
     {{-- Overlay mission entrante --}}
-    <template x-if="mission">
+    <template x-if="mission && !course">
         <div class="mission">
             <button class="mission-close" @click="decline()">✕</button>
             <div class="mission-title">Nouvelle commande</div>
@@ -140,6 +185,10 @@
             declined: new Set(),
             countdown: 15,
             countdownTimer: null,
+            type: cfg.type,
+            course: null,
+            step: 'pickup',
+            codeInput: '',
 
             init() {
                 const start = (cfg.lat && cfg.lng) ? [cfg.lat, cfg.lng] : [5.3484, -4.0305];
@@ -148,7 +197,71 @@
                 if (cfg.lat && cfg.lng) this.setMarker(cfg.lat, cfg.lng);
 
                 this.watchGps();
+                this.loadActive();
                 if (this.enLigne) this.startPolling();
+            },
+
+            /* ----- Course active : reprise après rechargement ----- */
+            loadActive() {
+                fetch(this.urls.courseActive, { headers: { 'Accept': 'application/json' } })
+                    .then(r => r.json())
+                    .then(d => {
+                        if (d.course) {
+                            this.course = d.course;
+                            this.step = localStorage.getItem('karnou_step_' + d.course.id) || 'pickup';
+                            this.stopPolling();
+                        }
+                    })
+                    .catch(() => {});
+            },
+
+            tripStatus() {
+                return {
+                    pickup: 'ALLER AU POINT DE COLLECTE',
+                    on_site: 'COLIS RÉCUPÉRÉ',
+                    destination: 'LIVRAISON EN COURS',
+                }[this.step];
+            },
+            tripAddr() {
+                return this.step === 'pickup' ? this.course.ramassage : this.course.destination;
+            },
+            tripAction() {
+                return {
+                    pickup: 'ARRIVÉ AU POINT',
+                    on_site: 'DÉMARRER LA COURSE',
+                    destination: this.type === 'livreur' ? 'TERMINER LA MISSION' : 'DÉPOSER AU RELAIS',
+                }[this.step];
+            },
+            advance() {
+                if (this.step === 'pickup') { this.setStep('on_site'); }
+                else if (this.step === 'on_site') { this.setStep('destination'); }
+                else if (this.step === 'destination') { this.complete(); }
+            },
+            setStep(s) {
+                this.step = s;
+                if (this.course) localStorage.setItem('karnou_step_' + this.course.id, s);
+            },
+
+            complete() {
+                const body = {};
+                if (this.type === 'livreur') {
+                    if (!/^\d{4}$/.test(this.codeInput)) { alert('Saisissez le code à 4 chiffres du client.'); return; }
+                    body.code = this.codeInput;
+                }
+                fetch(this.urls.courseBase + '/' + this.course.id + '/terminer', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': this.csrf() },
+                    body: JSON.stringify(body)
+                })
+                .then(async r => ({ ok: r.ok, data: await r.json() }))
+                .then(({ ok, data }) => {
+                    if (!ok) { alert(data.message || 'Erreur.'); return; }
+                    localStorage.removeItem('karnou_step_' + this.course.id);
+                    alert(data.message || 'Course terminée !');
+                    this.course = null; this.step = 'pickup'; this.codeInput = '';
+                    if (this.enLigne) this.startPolling();
+                })
+                .catch(() => alert('Connexion impossible.'));
             },
 
             csrf() { return document.querySelector('meta[name=csrf-token]').content; },
@@ -242,9 +355,26 @@
             },
 
             accept() {
-                // La prise en charge réelle + cycle de vie de la course arrivent en Phase 4.
-                alert('Mission #' + this.mission.reference + ' — la prise en charge sera disponible en Phase 4.');
-                this.clearMission();
+                const id = this.mission.id;
+                fetch(this.urls.courseBase + '/' + id + '/accepter', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': this.csrf() }
+                })
+                .then(async r => ({ ok: r.ok, data: await r.json() }))
+                .then(({ ok, data }) => {
+                    if (!ok) {
+                        alert(data.message || 'Course indisponible.');
+                        this.decline();
+                        return;
+                    }
+                    if (this.countdownTimer) clearInterval(this.countdownTimer);
+                    this.countdownTimer = null;
+                    this.mission = null;
+                    this.stopPolling();
+                    this.course = data.course;
+                    this.setStep('pickup');
+                })
+                .catch(() => alert('Connexion impossible.'));
             },
         };
     }

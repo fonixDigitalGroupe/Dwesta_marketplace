@@ -82,6 +82,11 @@ Route::prefix('partenaire')->name('partenaire.')->group(function () {
         Route::post('/en-ligne', [\App\Http\Controllers\Partenaire\DashboardController::class, 'toggleOnline'])->name('toggle-online');
         Route::post('/position', [\App\Http\Controllers\Partenaire\DashboardController::class, 'updatePosition'])->name('position');
         Route::get('/missions', [\App\Http\Controllers\Partenaire\DashboardController::class, 'missions'])->name('missions');
+
+        // Courses : acceptation + cycle de vie
+        Route::get('/course/active', [\App\Http\Controllers\Partenaire\CourseController::class, 'active'])->name('course.active');
+        Route::post('/course/{order}/accepter', [\App\Http\Controllers\Partenaire\CourseController::class, 'accept'])->name('course.accept');
+        Route::post('/course/{order}/terminer', [\App\Http\Controllers\Partenaire\CourseController::class, 'complete'])->name('course.complete');
     });
 });
 
