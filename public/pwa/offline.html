@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Hors ligne — Karnou Partenaire</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #004AAD;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+        }
+        .box { max-width: 320px; }
+        .dot {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: rgba(255,255,255,.12);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 24px; font-size: 34px;
+        }
+        h1 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+        p { font-size: 15px; opacity: .8; line-height: 1.5; margin-bottom: 28px; }
+        button {
+            background: #FF6B00; color: #fff; border: 0;
+            padding: 14px 28px; border-radius: 999px;
+            font-size: 16px; font-weight: 600; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="dot">📡</div>
+        <h1>Connexion perdue</h1>
+        <p>Vous êtes hors ligne. Vérifiez votre connexion internet pour continuer à recevoir des courses.</p>
+        <button onclick="location.reload()">Réessayer</button>
+    </div>
+</body>
+</html>

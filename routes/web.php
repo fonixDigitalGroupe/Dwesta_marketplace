@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\Partenaire\PartenaireController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/offres/{slug}', [\App\Http\Controllers\BannerLandingController::class, 'show'])->name('banner.landing');
@@ -48,6 +49,26 @@ Route::get('/le-choix', [PageController::class, 'leChoix'])->name('le-choix');
 Route::get('/la-securite', [PageController::class, 'laSecurite'])->name('la-securite');
 Route::get('/service-clients', [PageController::class, 'serviceClients'])->name('service-clients');
 Route::get('/expedition', [PageController::class, 'expedition'])->name('expedition');
+
+// ============================================================
+// Espace Partenaire — PWA mobile (livreurs & transporteurs)
+// Approche additive : coexiste avec les dashboards /logistique/*.
+// ============================================================
+Route::prefix('partenaire')->name('partenaire.')->group(function () {
+    // Splash / point d'entrée (public, redirige selon l'état de connexion)
+    Route::get('/', [PartenaireController::class, 'entry'])->name('entry');
+
+    // Connexion OTP (placeholder Phase 1 — remplacé en Phase 2)
+    Route::get('/connexion', fn () => view('partenaire.placeholder', [
+        'titre' => 'Connexion',
+        'message' => "L'écran de connexion par téléphone + OTP arrive en Phase 2.",
+    ]))->name('login');
+
+    // Espace authentifié
+    Route::middleware('auth')->group(function () {
+        Route::get('/accueil', [PartenaireController::class, 'home'])->name('home');
+    });
+});
 
 
 
