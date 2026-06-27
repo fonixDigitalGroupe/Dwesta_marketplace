@@ -24,7 +24,8 @@ class PartenaireController extends Controller
         } elseif ($user->estLivreur() || $user->estTransporteur()) {
             $next = route('partenaire.home');
         } else {
-            $next = route('partenaire.login');
+            // Connecté mais profil logistique non finalisé : reprendre l'onboarding.
+            $next = route('partenaire.permissions');
         }
 
         return view('partenaire.splash', [

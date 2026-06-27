@@ -58,14 +58,26 @@ Route::prefix('partenaire')->name('partenaire.')->group(function () {
     // Splash / point d'entrée (public, redirige selon l'état de connexion)
     Route::get('/', [PartenaireController::class, 'entry'])->name('entry');
 
-    // Connexion OTP (placeholder Phase 1 — remplacé en Phase 2)
-    Route::get('/connexion', fn () => view('partenaire.placeholder', [
-        'titre' => 'Connexion',
-        'message' => "L'écran de connexion par téléphone + OTP arrive en Phase 2.",
-    ]))->name('login');
+    // Connexion par téléphone + OTP
+    Route::get('/connexion', [\App\Http\Controllers\Partenaire\AuthController::class, 'showPhone'])->name('login');
+    Route::post('/connexion/otp', [\App\Http\Controllers\Partenaire\AuthController::class, 'sendOtp'])->name('otp.send');
+    Route::get('/verification', [\App\Http\Controllers\Partenaire\AuthController::class, 'showOtp'])->name('otp');
+    Route::post('/verification', [\App\Http\Controllers\Partenaire\AuthController::class, 'verifyOtp'])->name('otp.verify');
+    Route::post('/verification/renvoyer', [\App\Http\Controllers\Partenaire\AuthController::class, 'resendOtp'])->name('otp.resend');
 
     // Espace authentifié
     Route::middleware('auth')->group(function () {
+        Route::post('/deconnexion', [\App\Http\Controllers\Partenaire\AuthController::class, 'logout'])->name('logout');
+
+        // Onboarding : autorisations, choix du métier, formulaires KYC
+        Route::get('/permissions', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'permissions'])->name('permissions');
+        Route::get('/metier', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'metier'])->name('metier');
+        Route::get('/inscription/livreur', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'showLivreur'])->name('inscription.livreur');
+        Route::post('/inscription/livreur', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'storeLivreur'])->name('inscription.livreur.store');
+        Route::get('/inscription/transporteur', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'showTransporteur'])->name('inscription.transporteur');
+        Route::post('/inscription/transporteur', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'storeTransporteur'])->name('inscription.transporteur.store');
+
+        // Tableau de bord chauffeur (Phase 3)
         Route::get('/accueil', [PartenaireController::class, 'home'])->name('home');
     });
 });
