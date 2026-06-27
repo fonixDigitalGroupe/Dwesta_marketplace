@@ -31,7 +31,6 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\Partenaire\PartenaireController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/offres/{slug}', [\App\Http\Controllers\BannerLandingController::class, 'show'])->name('banner.landing');
@@ -50,50 +49,7 @@ Route::get('/la-securite', [PageController::class, 'laSecurite'])->name('la-secu
 Route::get('/service-clients', [PageController::class, 'serviceClients'])->name('service-clients');
 Route::get('/expedition', [PageController::class, 'expedition'])->name('expedition');
 
-// ============================================================
-// Espace Partenaire — PWA mobile (livreurs & transporteurs)
-// Approche additive : coexiste avec les dashboards /logistique/*.
-// ============================================================
-Route::prefix('partenaire')->name('partenaire.')->group(function () {
-    // Splash / point d'entrée (public, redirige selon l'état de connexion)
-    Route::get('/', [PartenaireController::class, 'entry'])->name('entry');
-
-    // Connexion par téléphone + OTP
-    Route::get('/connexion', [\App\Http\Controllers\Partenaire\AuthController::class, 'showPhone'])->name('login');
-    Route::post('/connexion/otp', [\App\Http\Controllers\Partenaire\AuthController::class, 'sendOtp'])->name('otp.send');
-    Route::get('/verification', [\App\Http\Controllers\Partenaire\AuthController::class, 'showOtp'])->name('otp');
-    Route::post('/verification', [\App\Http\Controllers\Partenaire\AuthController::class, 'verifyOtp'])->name('otp.verify');
-    Route::post('/verification/renvoyer', [\App\Http\Controllers\Partenaire\AuthController::class, 'resendOtp'])->name('otp.resend');
-
-    // Espace authentifié
-    Route::middleware('auth')->group(function () {
-        Route::post('/deconnexion', [\App\Http\Controllers\Partenaire\AuthController::class, 'logout'])->name('logout');
-
-        // Onboarding : autorisations, choix du métier, formulaires KYC
-        Route::get('/permissions', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'permissions'])->name('permissions');
-        Route::get('/metier', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'metier'])->name('metier');
-        Route::get('/inscription/livreur', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'showLivreur'])->name('inscription.livreur');
-        Route::post('/inscription/livreur', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'storeLivreur'])->name('inscription.livreur.store');
-        Route::get('/inscription/transporteur', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'showTransporteur'])->name('inscription.transporteur');
-        Route::post('/inscription/transporteur', [\App\Http\Controllers\Partenaire\OnboardingController::class, 'storeTransporteur'])->name('inscription.transporteur.store');
-
-        // Tableau de bord chauffeur (carte + missions)
-        Route::get('/accueil', [\App\Http\Controllers\Partenaire\DashboardController::class, 'home'])->name('home');
-        Route::post('/en-ligne', [\App\Http\Controllers\Partenaire\DashboardController::class, 'toggleOnline'])->name('toggle-online');
-        Route::post('/position', [\App\Http\Controllers\Partenaire\DashboardController::class, 'updatePosition'])->name('position');
-        Route::get('/missions', [\App\Http\Controllers\Partenaire\DashboardController::class, 'missions'])->name('missions');
-
-        // Profil & gains
-        Route::get('/profil', [\App\Http\Controllers\Partenaire\ProfilController::class, 'profil'])->name('profil');
-        Route::get('/gains', [\App\Http\Controllers\Partenaire\ProfilController::class, 'gains'])->name('gains');
-
-        // Courses : acceptation + cycle de vie
-        Route::get('/course/active', [\App\Http\Controllers\Partenaire\CourseController::class, 'active'])->name('course.active');
-        Route::post('/course/{order}/accepter', [\App\Http\Controllers\Partenaire\CourseController::class, 'accept'])->name('course.accept');
-        Route::post('/course/{order}/terminer', [\App\Http\Controllers\Partenaire\CourseController::class, 'complete'])->name('course.complete');
-    });
-});
-
+// Espace Partenaire (PWA livreurs & transporteurs) : voir routes/partenaire.php
 
 
 
