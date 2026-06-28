@@ -339,12 +339,10 @@ Route::middleware('auth')->group(function () {
 
             // Gestion des Pays
             Route::patch('countries/{country}/toggle-status', [\App\Http\Controllers\Admin\CountryController::class, 'toggleStatus'])->name('countries.toggle-status');
-            // Régions & villes d'un pays
+            // Régions d'un pays
             Route::post('countries/{country}/import-geography', [\App\Http\Controllers\Admin\CountryController::class, 'importGeography'])->name('countries.import-geography');
             Route::post('countries/{country}/regions', [\App\Http\Controllers\Admin\CountryController::class, 'storeRegion'])->name('countries.regions.store');
             Route::delete('regions/{region}', [\App\Http\Controllers\Admin\CountryController::class, 'destroyRegion'])->name('countries.regions.destroy');
-            Route::post('regions/{region}/villes', [\App\Http\Controllers\Admin\CountryController::class, 'storeVille'])->name('countries.villes.store');
-            Route::delete('villes/{ville}', [\App\Http\Controllers\Admin\CountryController::class, 'destroyVille'])->name('countries.villes.destroy');
             Route::resource('countries', \App\Http\Controllers\Admin\CountryController::class);
 
             // Système de crédits

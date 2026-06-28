@@ -22,9 +22,4 @@ class Region extends Model
     {
         return $this->belongsTo(Country::class);
     }
-
-    public function villes()
-    {
-        return $this->hasMany(Ville::class);
-    }
 }

@@ -53,13 +53,6 @@
             background: #f6f6f6; padding: 12px 16px; display: flex; justify-content: space-between;
             align-items: center; border-bottom: 1px solid #eff3f6;
         }
-        .ville-chip {
-            display: inline-flex; align-items: center; gap: 6px; background: #f8fafc;
-            border: 1px solid #e2e8f0; border-radius: 16px; padding: 4px 10px;
-            font-size: 0.78rem; color: #334155; margin: 4px 4px 0 0;
-        }
-        .ville-chip form { display: inline; }
-        .ville-chip button { background: none; border: none; color: #c40000; cursor: pointer; padding: 0; font-size: 0.85rem; line-height: 1; }
         .inline-add { display: inline-flex; gap: 6px; margin-top: 8px; }
         .inline-add input {
             border: 1px solid #cbd5e1; border-radius: 4px; padding: 4px 8px; font-size: 0.78rem; min-width: 160px;
@@ -122,10 +115,6 @@
                     <div class="num">{{ $regionsCount }}</div>
                     <div class="lbl">Régions</div>
                 </div>
-                <div class="stat-card">
-                    <div class="num">{{ $villesCount }}</div>
-                    <div class="lbl">Villes</div>
-                </div>
                 @if($country->map)
                     <div style="flex: 2; min-width: 220px; border: 1px solid #eff3f6; border-radius: 8px; overflow: hidden;">
                         <img src="{{ asset('storage/' . $country->map) }}" alt="Carte {{ $country->name }}"
@@ -137,14 +126,14 @@
             <!-- Barre d'import -->
             <div style="display: flex; justify-content: space-between; align-items: center; background: #fffaf3; border: 1px solid #ffe2c2; border-radius: 8px; padding: 16px; margin-bottom: 24px; gap: 16px; flex-wrap: wrap;">
                 <div style="font-size: 0.85rem; color: #7c4a00;">
-                    <strong>Import automatique</strong> — récupère les régions et grandes villes de {{ $country->name }} depuis OpenStreetMap.
+                    <strong>Import automatique</strong> — récupère les régions de {{ $country->name }} depuis OpenStreetMap.
                     <div style="font-size: 0.75rem; color: #a16207; margin-top: 4px;">L'opération peut prendre quelques secondes. Réexécutable sans créer de doublons.</div>
                 </div>
                 <form action="{{ route('admin.countries.import-geography', $country) }}" method="POST"
                       onsubmit="this.querySelector('button').disabled = true; this.querySelector('button').innerHTML = '<i class=\'fas fa-spinner fa-spin\'></i> Import en cours…';">
                     @csrf
                     <button type="submit" class="btn-amazon-primary">
-                        <i class="fas fa-cloud-download-alt"></i> Importer régions &amp; villes
+                        <i class="fas fa-cloud-download-alt"></i> Importer les régions
                     </button>
                 </form>
             </div>
@@ -156,48 +145,27 @@
                 <button type="submit"><i class="fas fa-plus"></i> Ajouter la région</button>
             </form>
 
-            <!-- Liste des régions et villes -->
+            <!-- Liste des régions -->
             @forelse($country->regions as $region)
                 <div class="region-card">
                     <div class="region-head">
                         <div style="font-weight: 700; color: #111; font-size: 0.9rem;">
                             <i class="fas fa-map-marker-alt" style="color: #e77600;"></i>
                             {{ $region->name }}
-                            <span style="font-weight: 500; color: #94a3b8; font-size: 0.78rem;">({{ $region->villes->count() }} villes)</span>
                         </div>
                         <form action="{{ route('admin.countries.regions.destroy', $region) }}" method="POST"
-                              onsubmit="return confirm('Supprimer la région « {{ $region->name }} » et ses villes ?')">
+                              onsubmit="return confirm('Supprimer la région « {{ $region->name }} » ?')">
                             @csrf @method('DELETE')
                             <button type="submit" style="background: none; border: none; color: #c40000; cursor: pointer; font-size: 0.78rem;">
                                 Supprimer
                             </button>
                         </form>
                     </div>
-                    <div style="padding: 12px 16px;">
-                        @forelse($region->villes as $ville)
-                            <span class="ville-chip">
-                                {{ $ville->name }}
-                                <form action="{{ route('admin.countries.villes.destroy', $ville) }}" method="POST"
-                                      onsubmit="return confirm('Supprimer {{ $ville->name }} ?')">
-                                    @csrf @method('DELETE')
-                                    <button type="submit" title="Supprimer">&times;</button>
-                                </form>
-                            </span>
-                        @empty
-                            <span style="color: #94a3b8; font-size: 0.8rem;">Aucune ville pour cette région.</span>
-                        @endforelse
-
-                        <form action="{{ route('admin.countries.villes.store', $region) }}" method="POST" class="inline-add">
-                            @csrf
-                            <input type="text" name="name" placeholder="Ajouter une ville…" required>
-                            <button type="submit"><i class="fas fa-plus"></i></button>
-                        </form>
-                    </div>
                 </div>
             @empty
                 <div style="padding: 3rem; text-align: center; color: #999; font-size: 0.9rem; border: 1px dashed #e2e8f0; border-radius: 8px;">
                     Aucune région enregistrée pour ce pays.<br>
-                    Cliquez sur <strong>« Importer régions &amp; villes »</strong> pour les récupérer automatiquement, ou ajoutez-les manuellement.
+                    Cliquez sur <strong>« Importer les régions »</strong> pour les récupérer automatiquement, ou ajoutez-les manuellement.
                 </div>
             @endforelse
 
