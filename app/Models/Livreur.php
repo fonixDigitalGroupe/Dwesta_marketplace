@@ -26,6 +26,18 @@ class Livreur extends Model
     ];
 
     /**
+     * Tout livreur inscrit est activé automatiquement :
+     * statut "vérifié" + actif, quel que soit le canal d'inscription.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (Livreur $livreur) {
+            $livreur->statut_verification = 'verifie';
+            $livreur->actif = true;
+        });
+    }
+
+    /**
      * Relation avec l'utilisateur
      */
     public function user()
