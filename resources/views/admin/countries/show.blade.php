@@ -130,22 +130,6 @@
             border-radius: 4px;
         }
 
-        .region-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 12px;
-            border: 1px solid #eff3f6;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            font-size: 0.82rem;
-            color: #1e293b;
-        }
-        .region-row:hover { background: #f8fafc; }
-        .region-row .del {
-            background: none; border: none; color: #c40000; cursor: pointer; font-size: 0.75rem; font-weight: 600;
-        }
-
         .inline-add { display: flex; gap: 8px; margin-bottom: 16px; }
         .inline-add input { flex: 1; }
         .inline-add button { width: auto; white-space: nowrap; }
@@ -246,20 +230,46 @@
                         <button type="submit" class="btn-amazon-secondary"><i class="fas fa-plus"></i> Ajouter</button>
                     </form>
 
-                    @forelse($country->regions as $region)
-                        <div class="region-row">
-                            <span><i class="fas fa-map-marker-alt" style="color: #ff9900;"></i> &nbsp;{{ $region->name }}</span>
-                            <form action="{{ route('admin.countries.regions.destroy', $region) }}" method="POST"
-                                  onsubmit="return confirm('Supprimer la région « {{ $region->name }} » ?')">
-                                @csrf @method('DELETE')
-                                <button type="submit" class="del">Supprimer</button>
-                            </form>
-                        </div>
-                    @empty
-                        <div style="padding: 2rem; text-align: center; color: #999; font-size: 0.82rem; border: 1px dashed #e2e8f0; border-radius: 8px;">
-                            Aucune région.<br>Importez-les depuis OpenStreetMap ou ajoutez-les manuellement.
-                        </div>
-                    @endforelse
+                    <table style="width: 100%; border-collapse: collapse; border: 1px solid #eff3f6;">
+                        <thead>
+                            <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                                <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 50px;">#</th>
+                                <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Région</th>
+                                <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 120px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($country->regions as $region)
+                                <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
+                                    onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                                    <td style="padding: 12px 15px; text-align: center; font-size: 0.8rem; color: #94a3b8; border-right: 1px solid #eff3f6;">
+                                        {{ $loop->iteration }}
+                                    </td>
+                                    <td style="padding: 12px 15px; font-size: 0.82rem; color: #111; font-weight: 600; border-right: 1px solid #eff3f6;">
+                                        <i class="fas fa-map-marker-alt" style="color: #ff9900;"></i> &nbsp;{{ $region->name }}
+                                    </td>
+                                    <td style="padding: 12px 15px; text-align: right;">
+                                        <form action="{{ route('admin.countries.regions.destroy', $region) }}" method="POST"
+                                              onsubmit="return confirm('Supprimer la région « {{ $region->name }} » ?')" style="display: inline;">
+                                            @csrf @method('DELETE')
+                                            <button type="submit"
+                                                style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                                onmouseover="this.style.textDecoration='underline'"
+                                                onmouseout="this.style.textDecoration='none'">
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" style="padding: 2rem; text-align: center; color: #999; font-size: 0.82rem;">
+                                        Aucune région. Importez-les depuis OpenStreetMap ou ajoutez-les manuellement.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
 
             </div>
