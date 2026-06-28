@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Country;
+use App\Models\Region;
+use App\Models\Ville;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CountryController extends Controller
 {
@@ -193,5 +197,239 @@ class CountryController extends Controller
         $country->save();
 
         return back()->with('success', 'Statut du pays mis à jour.');
+    }
+
+    /**
+     * Détail d'un pays : ses régions et villes.
+     */
+    public function show(Country $country)
+    {
+        $country->load([
+            'regions' => fn($q) => $q->orderBy('name'),
+            'regions.villes' => fn($q) => $q->orderBy('name'),
+        ]);
+
+        $regionsCount = $country->regions->count();
+        $villesCount = $country->villes()->count();
+
+        return view('admin.countries.show', compact('country', 'regionsCount', 'villesCount'));
+    }
+
+    /**
+     * Importe automatiquement les régions et grandes villes du pays
+     * depuis OpenStreetMap (API Overpass), en se basant sur le code ISO.
+     */
+    public function importGeography(Country $country)
+    {
+        $code = strtoupper($country->code);
+
+        try {
+            $regions = $this->fetchRegions($code);
+
+            if (empty($regions)) {
+                return back()->with('error', "Aucune région trouvée pour {$country->name} via OpenStreetMap. Vous pouvez les ajouter manuellement.");
+            }
+
+            $savedRegions = [];
+            foreach ($regions as $r) {
+                $savedRegions[] = Region::updateOrCreate(
+                    ['country_id' => $country->id, 'name' => $r['name']],
+                    ['latitude' => $r['lat'], 'longitude' => $r['lng']]
+                );
+            }
+
+            $cities = $this->fetchCities($code);
+            $cityCount = 0;
+            foreach ($cities as $c) {
+                $region = $this->nearestRegion($savedRegions, $c['lat'], $c['lng']);
+                Ville::updateOrCreate(
+                    ['country_id' => $country->id, 'name' => $c['name']],
+                    ['region_id' => $region?->id, 'latitude' => $c['lat'], 'longitude' => $c['lng']]
+                );
+                $cityCount++;
+            }
+
+            return back()->with('success', count($savedRegions) . " régions et {$cityCount} villes importées depuis OpenStreetMap.");
+        } catch (\Throwable $e) {
+            Log::error('Import géographie pays ' . $code . ' : ' . $e->getMessage());
+            return back()->with('error', "Erreur lors de l'import OpenStreetMap. Réessayez dans un instant ou ajoutez les régions manuellement.");
+        }
+    }
+
+    /**
+     * Ajout manuel d'une région.
+     */
+    public function storeRegion(Request $request, Country $country)
+    {
+        $request->validate(['name' => 'required|string|max:255']);
+
+        Region::firstOrCreate([
+            'country_id' => $country->id,
+            'name' => trim($request->name),
+        ]);
+
+        return back()->with('success', 'Région ajoutée.');
+    }
+
+    public function destroyRegion(Region $region)
+    {
+        $region->delete();
+        return back()->with('success', 'Région supprimée.');
+    }
+
+    /**
+     * Ajout manuel d'une ville rattachée à une région.
+     */
+    public function storeVille(Request $request, Region $region)
+    {
+        $request->validate(['name' => 'required|string|max:255']);
+
+        Ville::firstOrCreate(
+            ['country_id' => $region->country_id, 'name' => trim($request->name)],
+            ['region_id' => $region->id]
+        );
+
+        return back()->with('success', 'Ville ajoutée.');
+    }
+
+    public function destroyVille(Ville $ville)
+    {
+        $ville->delete();
+        return back()->with('success', 'Ville supprimée.');
+    }
+
+    /**
+     * Interroge l'API Overpass d'OpenStreetMap.
+     */
+    protected function overpass(string $query): array
+    {
+        $response = Http::timeout(120)
+            ->withHeaders([
+                'User-Agent' => 'KarnouAdmin/1.0 (admin geography import)',
+                'Accept' => 'application/json',
+            ])
+            ->asForm()
+            ->post('https://overpass-api.de/api/interpreter', ['data' => $query]);
+
+        if (!$response->ok()) {
+            throw new \RuntimeException('Overpass HTTP ' . $response->status());
+        }
+
+        return $response->json('elements', []) ?? [];
+    }
+
+    /**
+     * Récupère les régions (subdivisions administratives) d'un pays.
+     * Essaie plusieurs niveaux administratifs selon les conventions OSM du pays.
+     */
+    protected function fetchRegions(string $code): array
+    {
+        foreach (['4', '3', '5'] as $level) {
+            $query = "[out:json][timeout:120];"
+                . "area[\"ISO3166-1\"=\"{$code}\"][\"admin_level\"=\"2\"]->.c;"
+                . "relation(area.c)[\"boundary\"=\"administrative\"][\"admin_level\"=\"{$level}\"];"
+                . "out tags center;";
+
+            $regions = [];
+            foreach ($this->overpass($query) as $el) {
+                $tags = $el['tags'] ?? [];
+                $name = $tags['name'] ?? null;
+                if (!$name) {
+                    continue;
+                }
+
+                // Écarte les régions frontalières des pays voisins :
+                // si le code ISO 3166-2 est présent, il doit appartenir au pays.
+                $iso = $tags['ISO3166-2'] ?? null;
+                if ($iso && stripos($iso, $code . '-') !== 0) {
+                    continue;
+                }
+
+                $name = $this->cleanRegionName($name);
+                $regions[$name] = [
+                    'name' => $name,
+                    'lat' => $el['center']['lat'] ?? null,
+                    'lng' => $el['center']['lon'] ?? null,
+                ];
+            }
+
+            if (!empty($regions)) {
+                return array_values($regions);
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * Nettoie un nom de région (retire les préfixes type "Région de ").
+     */
+    protected function cleanRegionName(string $name): string
+    {
+        return trim(preg_replace('/^(R[ée]gion|Province|Wilaya|State)\s+(de\s+|du\s+|des\s+|d\'|de\s+l\')?/iu', '', $name));
+    }
+
+    /**
+     * Récupère les grandes villes (place=city|town) d'un pays.
+     */
+    protected function fetchCities(string $code): array
+    {
+        $query = "[out:json][timeout:120];"
+            . "area[\"ISO3166-1\"=\"{$code}\"][\"admin_level\"=\"2\"]->.c;"
+            . "(node(area.c)[\"place\"=\"city\"];node(area.c)[\"place\"=\"town\"];);"
+            . "out body;";
+
+        $cities = [];
+        foreach ($this->overpass($query) as $el) {
+            $name = $el['tags']['name'] ?? null;
+            if (!$name) {
+                continue;
+            }
+            $cities[$name] = [
+                'name' => $name,
+                'lat' => $el['lat'] ?? null,
+                'lng' => $el['lon'] ?? null,
+            ];
+        }
+
+        return array_values($cities);
+    }
+
+    /**
+     * Trouve la région la plus proche d'un point (rattachement des villes).
+     */
+    protected function nearestRegion(array $regions, $lat, $lng): ?Region
+    {
+        if ($lat === null || $lng === null) {
+            return null;
+        }
+
+        $best = null;
+        $bestDist = INF;
+        foreach ($regions as $region) {
+            if ($region->latitude === null || $region->longitude === null) {
+                continue;
+            }
+            $d = $this->haversine($lat, $lng, (float) $region->latitude, (float) $region->longitude);
+            if ($d < $bestDist) {
+                $bestDist = $d;
+                $best = $region;
+            }
+        }
+
+        return $best;
+    }
+
+    /**
+     * Distance approximative (km) entre deux points géographiques.
+     */
+    protected function haversine(float $lat1, float $lon1, float $lat2, float $lon2): float
+    {
+        $r = 6371;
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+        $a = sin($dLat / 2) ** 2 + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($dLon / 2) ** 2;
+
+        return $r * 2 * atan2(sqrt($a), sqrt(1 - $a));
     }
 }

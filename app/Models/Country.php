@@ -28,4 +28,14 @@ class Country extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function regions()
+    {
+        return $this->hasMany(Region::class);
+    }
+
+    public function villes()
+    {
+        return $this->hasMany(Ville::class);
+    }
 }
