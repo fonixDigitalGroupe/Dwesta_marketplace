@@ -194,10 +194,10 @@
                                         </button>
                                     </form>
                                     <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.countries.destroy', $country) }}" method="POST"
-                                        onsubmit="return confirm('Supprimer ce pays ?')" style="display: inline;">
+                                    <form id="delete-country-form-{{ $country->id }}" action="{{ route('admin.countries.destroy', $country) }}" method="POST" style="display: inline;">
                                         @csrf @method('DELETE')
-                                        <button type="submit"
+                                        <button type="button"
+                                            onclick="confirmDeleteCountry({{ $country->id }})"
                                             style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
                                             onmouseover="this.style.textDecoration='underline'"
                                             onmouseout="this.style.textDecoration='none'">
@@ -258,4 +258,25 @@
             @endif
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        function confirmDeleteCountry(id) {
+            Swal.fire({
+                title: 'Êtes-vous sûr ?',
+                text: "Cette action est irréversible !",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#e67e00',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Oui, supprimer !',
+                cancelButtonText: 'Annuler',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-country-form-' + id).submit();
+                }
+            });
+        }
+    </script>
+    @endpush
 @endsection
