@@ -46,14 +46,6 @@
                     <span style="line-height: 1;">Livreurs</span>
                 </div>
 
-                <div style="display: flex; gap: 8px; align-items: center;">
-                    @if($pendingCount > 0)
-                        <span class="badge-amazon badge-amazon-warning">{{ $pendingCount }} en attente</span>
-                    @endif
-                    <a href="javascript:window.print()" class="btn-amazon-secondary">
-                        <i class="fas fa-print"></i> Imprimer
-                    </a>
-                </div>
             </div>
 
             <!-- Barre de filtre -->
