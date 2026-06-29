@@ -35,11 +35,15 @@
         .sec-h .num { color: #0f172a; font-weight: 800; }
 
         /* Lignes d'information (liste de définitions) */
-        .dl { margin: 0; }
-        .dl-row { display: grid; grid-template-columns: 200px 1fr; gap: 16px; padding: 10px 2px; border-bottom: 1px solid #f1f5f9; font-size: 0.88rem; }
-        .dl-row dt { color: #64748b; font-weight: 500; margin: 0; }
-        .dl-row dd { color: #0f172a; font-weight: 600; margin: 0; }
-        @media (max-width: 520px) { .dl-row { grid-template-columns: 1fr; gap: 2px; } }
+        .dl { margin: 14px 0 0; border: 1px solid #e6e9ee; border-radius: 8px; overflow: hidden; }
+        .dl-row { display: grid; grid-template-columns: 220px 1fr; font-size: 0.88rem; border-bottom: 1px solid #e6e9ee; }
+        .dl-row:last-child { border-bottom: none; }
+        .dl-row dt { color: #475569; font-weight: 600; margin: 0; padding: 11px 14px; background: #f8fafc; border-right: 1px solid #e6e9ee; }
+        .dl-row dd { color: #0f172a; font-weight: 600; margin: 0; padding: 11px 14px; }
+        @media (max-width: 520px) {
+            .dl-row { grid-template-columns: 1fr; }
+            .dl-row dt { border-right: none; border-bottom: 1px solid #e6e9ee; }
+        }
 
         /* Pièces jointes */
         .doc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
