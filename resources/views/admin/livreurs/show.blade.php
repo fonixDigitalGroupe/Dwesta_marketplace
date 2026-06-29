@@ -186,7 +186,7 @@
         <h2 class="sec-h"><span class="num">4.</span> Décision administrative</h2>
 
         @if($livreur->statut_verification === 'en_attente')
-            <div class="panel" style="border: 2px solid #fbd8b4; background: #fffcf9;"
+            <div class="panel" style="border: 2px solid #0f172a; background: #fff;"
                  x-data="{
                     decision: 'approve',
                     reason: 'Votre demande de compte livreur n\'a pas pu être approuvée en l\'état sur Karnou. Veuillez vérifier que les informations fournies sont correctes, puis soumettez à nouveau votre dossier.',
