@@ -6,7 +6,13 @@
     <style>
         .main-content { background-color: #f8f9fa !important; }
         .ship-section { background: transparent; border: none; padding: 0; }
-        .section-title { font-size: 0.75rem; font-weight: 700; color: #475569; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f1f5f9; text-transform: uppercase; letter-spacing: 0.06em; }
+        /* Panneau formulaire en carte (côté droit) */
+        .ship-aside { background: #f9fafb; border: 1px solid #eef2f6; border-radius: 8px; padding: 18px; }
+        .form-row { margin-bottom: 14px; }
+        /* Bloc englobant chaque grande section */
+        .ship-block { border: 1px solid #eff3f6; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .ship-block-title { display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 18px; }
+        .section-title { font-size: 0.75rem; font-weight: 700; color: #475569; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9; text-transform: uppercase; letter-spacing: 0.06em; }
         .field-label { display: block; font-size: 0.72rem; font-weight: 600; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
         
         .btn-amazon-primary { background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%); border: none; color: #fff; padding: 8px 16px; border-radius: 4px; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
@@ -41,11 +47,16 @@
             </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 350px; gap: 24px; align-items: start;">
+        <div class="ship-block">
+        <div class="ship-block-title">
+            <i class="fas fa-globe-africa"></i>
+            <span>Tarifs Marketplace (pays → pays)</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 350px; gap: 20px; align-items: start;">
 
         <!-- Liste des Règles -->
         <div class="ship-section">
-            <h3 class="section-title">Tarifs Actuels (Marketplace Standard)</h3>
+            <h3 class="section-title">Tarifs actuels</h3>
             <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
                 <thead>
@@ -118,11 +129,11 @@
         </div>
 
         <!-- Formulaire d'ajout -->
-        <div class="ship-section">
-            <h3 class="section-title">Nouvelle Règle</h3>
+        <div class="ship-section ship-aside">
+            <h3 class="section-title">Nouvelle règle</h3>
             <form action="{{ route('admin.shipping.store') }}" method="POST">
                 @csrf
-                <div style="margin-bottom: 20px;">
+                <div class="form-row">
                     <label class="field-label">Pays Source (Vendeur)</label>
                     <select name="source_country_id" required>
                         <option value="">Sélectionner un pays</option>
@@ -132,7 +143,7 @@
                     </select>
                 </div>
 
-                <div style="margin-bottom: 20px;">
+                <div class="form-row">
                     <label class="field-label">Pays Destination (Acheteur)</label>
                     <select name="destination_country_id" required>
                         <option value="">Sélectionner un pays</option>
@@ -142,7 +153,7 @@
                     </select>
                 </div>
 
-                <div style="margin-bottom: 20px;">
+                <div class="form-row">
                     <label class="field-label">Mode de Livraison</label>
                     <select name="delivery_type" required>
                         <option value="livraison_domicile">Livraison à domicile</option>
@@ -150,12 +161,12 @@
                     </select>
                 </div>
 
-                <div style="margin-bottom: 20px;">
+                <div class="form-row">
                     <label class="field-label">Frais (FCFA)</label>
                     <input type="number" name="price" value="0" min="0" required>
                 </div>
 
-                <div style="margin-bottom: 20px;">
+                <div class="form-row">
                     <label class="field-label">Délai de livraison</label>
                     <input type="text" name="delivery_delay">
                 </div>
@@ -167,15 +178,16 @@
         </div>
 
         </div>
+        </div>
 
         {{-- ===================== TARIFS INTER-RÉGIONS ===================== --}}
-        <div style="border-top: 1px solid #eff3f6; margin-top: 32px; padding-top: 24px;">
-            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 24px;">
-                <i class="fas fa-map-signs" style="font-size: 0.8rem;"></i>
+        <div class="ship-block">
+            <div class="ship-block-title">
+                <i class="fas fa-map-signs"></i>
                 <span>Tarifs Inter-régions (livraison nationale par pays)</span>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 350px; gap: 24px; align-items: start;">
+            <div style="display: grid; grid-template-columns: 1fr 350px; gap: 20px; align-items: start;">
 
                 <!-- Liste des tarifs inter-régions -->
                 <div class="ship-section">
@@ -239,11 +251,11 @@
                 </div>
 
                 <!-- Formulaire tarif inter-régions -->
-                <div class="ship-section">
-                    <h3 class="section-title">Définir un Tarif</h3>
+                <div class="ship-section ship-aside">
+                    <h3 class="section-title">Définir un tarif</h3>
                     <form action="{{ route('admin.shipping.inter-region.store') }}" method="POST">
                         @csrf
-                        <div style="margin-bottom: 20px;">
+                        <div class="form-row">
                             <label class="field-label">Pays</label>
                             <select name="country_id" required>
                                 <option value="">Sélectionner un pays</option>
@@ -253,17 +265,17 @@
                             </select>
                         </div>
 
-                        <div style="margin-bottom: 20px;">
+                        <div class="form-row">
                             <label class="field-label">Prix même région (FCFA)</label>
                             <input type="number" name="same_region_price" value="0" min="0" required>
                         </div>
 
-                        <div style="margin-bottom: 20px;">
+                        <div class="form-row">
                             <label class="field-label">Prix régions différentes (FCFA)</label>
                             <input type="number" name="inter_region_price" value="0" min="0" required>
                         </div>
 
-                        <div style="margin-bottom: 20px;">
+                        <div class="form-row">
                             <label class="field-label">Délai de livraison</label>
                             <input type="text" name="delivery_delay" placeholder="Ex: 2-3 jours">
                         </div>
