@@ -167,11 +167,139 @@
         </div>
 
         </div>
+
+        {{-- ===================== TARIFS INTER-RÉGIONS ===================== --}}
+        <div style="border-top: 1px solid #eff3f6; margin-top: 32px; padding-top: 24px;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 24px;">
+                <i class="fas fa-map-signs" style="font-size: 0.8rem;"></i>
+                <span>Tarifs Inter-régions (livraison nationale par pays)</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 350px; gap: 24px; align-items: start;">
+
+                <!-- Liste des tarifs inter-régions -->
+                <div class="ship-section">
+                    <h3 class="section-title">Tarifs par Pays</h3>
+                    <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
+                        <thead>
+                            <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                                <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Pays</th>
+                                <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Même région</th>
+                                <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Régions différentes</th>
+                                <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Délai</th>
+                                <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 90px;">Statut</th>
+                                <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 90px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($interRegionTariffs as $tarif)
+                                <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
+                                    onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                                    <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #111; border-right: 1px solid #eff3f6;">
+                                        {{ $tarif->country->flag ?? '🌍' }} {{ $tarif->country->name ?? '—' }}
+                                    </td>
+                                    <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #1e293b; text-align: center; border-right: 1px solid #eff3f6;">{{ number_format($tarif->same_region_price, 0, ',', ' ') }} F</td>
+                                    <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #1e293b; text-align: center; border-right: 1px solid #eff3f6;">{{ number_format($tarif->inter_region_price, 0, ',', ' ') }} F</td>
+                                    <td style="padding: 12px 15px; font-size: 0.8rem; color: #64748b; text-align: center; border-right: 1px solid #eff3f6;">{{ $tarif->delivery_delay ?? '-' }}</td>
+                                    <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
+                                        <form action="{{ route('admin.shipping.inter-region.toggle', $tarif->id) }}" method="POST">
+                                            @csrf @method('PATCH')
+                                            <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;" title="{{ $tarif->is_active ? 'Désactiver' : 'Activer' }}">
+                                                @if($tarif->is_active)
+                                                    <span class="badge-amazon badge-amazon-success">Active</span>
+                                                @else
+                                                    <span class="badge-amazon badge-amazon-danger">Inactive</span>
+                                                @endif
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td style="padding: 12px 15px; text-align: right;">
+                                        <form id="delete-inter-{{ $tarif->id }}" action="{{ route('admin.shipping.inter-region.destroy', $tarif->id) }}" method="POST" style="display:inline;">
+                                            @csrf @method('DELETE')
+                                            <button type="button" onclick="confirmDeleteInterRegion({{ $tarif->id }})"
+                                                    style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
+                                                    onmouseover="this.style.textDecoration='underline'"
+                                                    onmouseout="this.style.textDecoration='none'">
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
+                                        Aucun tarif inter-régions configuré.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+
+                <!-- Formulaire tarif inter-régions -->
+                <div class="ship-section">
+                    <h3 class="section-title">Définir un Tarif</h3>
+                    <form action="{{ route('admin.shipping.inter-region.store') }}" method="POST">
+                        @csrf
+                        <div style="margin-bottom: 20px;">
+                            <label class="field-label">Pays</label>
+                            <select name="country_id" required>
+                                <option value="">Sélectionner un pays</option>
+                                @foreach($countries as $country)
+                                    <option value="{{ $country->id }}">{{ $country->flag }} {{ $country->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label class="field-label">Prix même région (FCFA)</label>
+                            <input type="number" name="same_region_price" value="0" min="0" required>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label class="field-label">Prix régions différentes (FCFA)</label>
+                            <input type="number" name="inter_region_price" value="0" min="0" required>
+                        </div>
+
+                        <div style="margin-bottom: 20px;">
+                            <label class="field-label">Délai de livraison</label>
+                            <input type="text" name="delivery_delay" placeholder="Ex: 2-3 jours">
+                        </div>
+
+                        <button type="submit" class="btn-amazon-primary" style="width: 100%; justify-content: center; background: #ff9900;">
+                            ENREGISTRER LE TARIF
+                        </button>
+                        <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 10px;">Un seul tarif par pays. Ré-enregistrer un pays met à jour son tarif.</p>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </div>
 
 @push('scripts')
 <script>
+    function confirmDeleteInterRegion(id) {
+        Swal.fire({
+            title: 'Êtes-vous sûr ?',
+            text: "Cette action est irréversible !",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e67e00',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oui, supprimer !',
+            cancelButtonText: 'Annuler',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-inter-' + id).submit();
+            }
+        });
+    }
+
     function confirmDeleteRule(id) {
         Swal.fire({
             title: 'Êtes-vous sûr ?',

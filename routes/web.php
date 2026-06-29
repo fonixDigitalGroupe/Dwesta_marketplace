@@ -335,6 +335,11 @@ Route::middleware('auth')->group(function () {
                 Route::put('/{shippingRule}', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'update'])->name('update');
                 Route::delete('/{shippingRule}', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'destroy'])->name('destroy');
                 Route::patch('/{shippingRule}/toggle', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'toggle'])->name('toggle');
+
+                // Tarifs inter-régions (par pays)
+                Route::post('/inter-region', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'storeInterRegion'])->name('inter-region.store');
+                Route::patch('/inter-region/{interRegionTariff}/toggle', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'toggleInterRegion'])->name('inter-region.toggle');
+                Route::delete('/inter-region/{interRegionTariff}', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'destroyInterRegion'])->name('inter-region.destroy');
             });
 
             // Gestion des Pays
