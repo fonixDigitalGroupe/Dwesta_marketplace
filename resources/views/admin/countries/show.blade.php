@@ -152,9 +152,8 @@
             <div class="flash flash-error">{{ session('error') }}</div>
         @endif
 
-        <div style="display: grid; grid-template-columns: 1fr 380px; gap: 20px; align-items: start;">
+        <div style="display: flex; flex-direction: column; gap: 20px;">
 
-            <!-- Colonne gauche -->
             <div style="display: flex; flex-direction: column; gap: 20px;">
 
                 <div class="amazon-card" style="margin: 0;">
@@ -214,24 +213,6 @@
 
             </div>
 
-            <!-- Colonne droite -->
-            <div style="display: flex; flex-direction: column; gap: 20px;">
-
-                <div class="amazon-card" style="margin: 0;">
-                    <h3 class="section-title">Résumé</h3>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                        <span class="field-label" style="margin: 0;">Statut</span>
-                        <span class="badge-amazon {{ $country->is_active ? 'badge-amazon-success' : 'badge-amazon-danger' }}">
-                            {{ $country->is_active ? 'Actif' : 'Inactif' }}
-                        </span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span class="field-label" style="margin: 0;">Régions enregistrées</span>
-                        <span style="font-weight: 800; color: #111; font-size: 1.1rem;">{{ $regionsCount }}</span>
-                    </div>
-                </div>
-
-            </div>
         </div>
     </div>
 </div>
