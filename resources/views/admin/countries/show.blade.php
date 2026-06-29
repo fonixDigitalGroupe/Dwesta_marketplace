@@ -202,10 +202,10 @@
                                         </form>
                                     </td>
                                     <td style="padding: 12px 15px; text-align: right;">
-                                        <form action="{{ route('admin.countries.regions.destroy', $region) }}" method="POST"
-                                              onsubmit="return confirm('Supprimer la région « {{ $region->name }} » ?')" style="display: inline;">
+                                        <form id="delete-region-form-{{ $region->id }}" action="{{ route('admin.countries.regions.destroy', $region) }}" method="POST" style="display: inline;">
                                             @csrf @method('DELETE')
-                                            <button type="submit"
+                                            <button type="button"
+                                                onclick="confirmDeleteRegion({{ $region->id }})"
                                                 style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
                                                 onmouseover="this.style.textDecoration='underline'"
                                                 onmouseout="this.style.textDecoration='none'">
@@ -230,4 +230,25 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    function confirmDeleteRegion(id) {
+        Swal.fire({
+            title: 'Êtes-vous sûr ?',
+            text: "Cette action est irréversible !",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e67e00',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Oui, supprimer !',
+            cancelButtonText: 'Annuler',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-region-form-' + id).submit();
+            }
+        });
+    }
+</script>
+@endpush
 @endsection
