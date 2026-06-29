@@ -42,17 +42,44 @@ class TransporteurController extends Controller
     {
         $transporteur->load('user');
 
-        // Préparation des URLs sécurisées pour les documents
+        // Préparation des URLs des documents (hub = disque privé, PWA = disque public)
         $documents = [
-            'permis_recto' => $this->documentUploadService->getDocumentUrl($transporteur->permis_recto),
-            'permis_verso' => $this->documentUploadService->getDocumentUrl($transporteur->permis_verso),
-            'cni_recto' => $this->documentUploadService->getDocumentUrl($transporteur->cni_recto),
-            'cni_verso' => $this->documentUploadService->getDocumentUrl($transporteur->cni_verso),
-            'carte_grise' => $this->documentUploadService->getDocumentUrl($transporteur->carte_grise),
-            'assurance' => $this->documentUploadService->getDocumentUrl($transporteur->assurance),
+            'piece_identite' => $this->resolveDocumentUrl($transporteur->document_piece),
+            'permis_recto' => $this->resolveDocumentUrl($transporteur->permis_recto),
+            'permis_verso' => $this->resolveDocumentUrl($transporteur->permis_verso),
+            'cni_recto' => $this->resolveDocumentUrl($transporteur->cni_recto),
+            'cni_verso' => $this->resolveDocumentUrl($transporteur->cni_verso),
+            'carte_grise' => $this->resolveDocumentUrl($transporteur->carte_grise),
+            'assurance' => $this->resolveDocumentUrl($transporteur->assurance),
         ];
 
-        return view('admin.transporteurs.show', compact('transporteur', 'documents'));
+        $photoVehicule = $this->resolveDocumentUrl($transporteur->photo_vehicule);
+
+        return view('admin.transporteurs.show', compact('transporteur', 'documents', 'photoVehicule'));
+    }
+
+    /**
+     * Résout l'URL d'un document selon son origine.
+     *
+     * Les fichiers téléversés via la PWA partenaire (karnou-pwa) vivent sur son
+     * disque "public" et sont préfixés par "partenaire/" : on les sert depuis
+     * l'URL publique de la PWA (config services.partenaire.url), car le hub
+     * partage la base mais pas le storage. Les documents créés côté admin
+     * restent sur le disque privé et passent par la route sécurisée habituelle.
+     */
+    private function resolveDocumentUrl(?string $path): ?string
+    {
+        if (!$path) {
+            return null;
+        }
+
+        if (str_starts_with($path, 'partenaire/')) {
+            $base = rtrim((string) config('services.partenaire.url'), '/');
+
+            return $base . '/storage/' . ltrim($path, '/');
+        }
+
+        return $this->documentUploadService->getDocumentUrl($path);
     }
 
     /**

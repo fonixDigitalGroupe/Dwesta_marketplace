@@ -17,6 +17,18 @@ class Transporteur extends Model
         'modele_vehicule',
         'photo_vehicule',
         'immatriculation',
+        // Champs renseignés via la PWA partenaire (karnou-pwa) — base partagée
+        'portee',
+        'type_national',
+        'pays_source',
+        'pays_destination',
+        'region_source',
+        'region_destination',
+        'numero_chassis',
+        'type_piece',
+        'numero_piece',
+        'document_piece',
+        // Pièces « hub » (transporteur créé côté admin)
         'numero_permis',
         'numero_cni',
         'permis_recto',

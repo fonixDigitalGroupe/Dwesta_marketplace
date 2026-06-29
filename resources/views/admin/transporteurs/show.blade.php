@@ -68,11 +68,11 @@
                                 <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Téléphone</label>
                                 <div style="font-size: 0.95rem; color: #333;">{{ $transporteur->user->telephone ?? '-' }}</div>
                             </div>
-                            @if($transporteur->photo_vehicule)
+                            @if($photoVehicule)
                             <div style="margin-top: 10px;">
                                 <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 8px;">Photo du véhicule</label>
-                                <a href="{{ route('documents.show', ['path' => base64_encode($transporteur->photo_vehicule)]) }}" target="_blank" style="display: block; width: 100%; max-width: 200px; border-radius: 8px; overflow: hidden; border: 1px solid #eee;">
-                                    <img src="{{ route('documents.show', ['path' => base64_encode($transporteur->photo_vehicule)]) }}" style="width: 100%; height: auto; object-fit: cover;">
+                                <a href="{{ $photoVehicule }}" target="_blank" style="display: block; width: 100%; max-width: 200px; border-radius: 8px; overflow: hidden; border: 1px solid #eee;">
+                                    <img src="{{ $photoVehicule }}" style="width: 100%; height: auto; object-fit: cover;">
                                 </a>
                             </div>
                             @endif
@@ -96,6 +96,47 @@
                     </div>
                 </div>
             </div>
+
+            @if($transporteur->portee || $transporteur->type_piece || $transporteur->numero_chassis)
+            <!-- Zone de transport & Identité (renseignées via la PWA partenaire) -->
+            <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
+                <h2 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
+                    <svg width="18" height="18" fill="none" stroke="#666" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+                    Zone de transport & Identité
+                </h2>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div>
+                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Portée</label>
+                            <div style="font-size: 0.95rem; color: #333; font-weight: 500; text-transform: capitalize;">{{ $transporteur->portee ?? '-' }}{{ $transporteur->type_national ? ' — ' . $transporteur->type_national : '' }}</div>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Pays (source → destination)</label>
+                            <div style="font-size: 0.95rem; color: #333;">{{ $transporteur->pays_source ?? '-' }}{{ $transporteur->pays_destination ? ' → ' . $transporteur->pays_destination : '' }}</div>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Région (source → destination)</label>
+                            <div style="font-size: 0.95rem; color: #333;">{{ $transporteur->region_source ?? '-' }}{{ $transporteur->region_destination ? ' → ' . $transporteur->region_destination : '' }}</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 15px;">
+                        <div>
+                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">N° de châssis</label>
+                            <div style="font-size: 0.95rem; color: #333;">{{ $transporteur->numero_chassis ?? '-' }}</div>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Type de pièce</label>
+                            <div style="font-size: 0.95rem; color: #333; text-transform: uppercase;">{{ $transporteur->type_piece ?? '-' }}</div>
+                        </div>
+                        <div>
+                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">N° de pièce</label>
+                            <div style="font-size: 0.95rem; color: #333;">{{ $transporteur->numero_piece ?? '-' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
 
             <!-- Documents -->
             <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
