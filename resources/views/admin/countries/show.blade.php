@@ -180,12 +180,6 @@
                         </button>
                     </form>
 
-                    <form action="{{ route('admin.countries.regions.store', $country) }}" method="POST" class="inline-add">
-                        @csrf
-                        <input type="text" name="name" placeholder="Ajouter une région…" required>
-                        <button type="submit" class="btn-amazon-secondary"><i class="fas fa-plus"></i> Ajouter</button>
-                    </form>
-
                     <table style="width: 100%; border-collapse: collapse; border: 1px solid #eff3f6;">
                         <thead>
                             <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
