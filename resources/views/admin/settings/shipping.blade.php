@@ -57,11 +57,6 @@
 
         {{-- ===================== FORMULAIRES (côte à côte) ===================== --}}
         <div class="ship-block">
-            <div class="ship-block-title">
-                <i class="fas fa-plus"></i>
-                <span>Ajouter / définir un tarif</span>
-            </div>
-
             <div class="forms-grid">
 
                 <!-- Formulaire règle Marketplace -->
@@ -160,7 +155,6 @@
         {{-- ===================== TABLEAU MARKETPLACE ===================== --}}
         <div class="ship-block">
             <div class="ship-block-title">
-                <i class="fas fa-globe-africa"></i>
                 <span>Tarifs interpays</span>
             </div>
             <div style="overflow-x: auto;">
@@ -237,7 +231,6 @@
         {{-- ===================== TABLEAU INTER-RÉGIONS ===================== --}}
         <div class="ship-block">
             <div class="ship-block-title">
-                <i class="fas fa-map-signs"></i>
                 <span>Tarifs Inter-régions (livraison nationale par pays)</span>
             </div>
             <div style="overflow-x: auto;">
