@@ -216,7 +216,7 @@
                     @csrf
                     <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 6px;">Commentaire (optionnel)</label>
                     <textarea name="commentaire" rows="4" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; font-size: 0.85rem; border-radius: 6px; box-sizing: border-box;">Félicitations ! Votre dossier de livreur a été validé. Vous pouvez désormais recevoir des commandes de livraison sur Karnou.</textarea>
-                    <button type="submit" style="width: 100%; margin-top: 14px; height: 46px; background: #16a34a; color: #fff; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 700; cursor: pointer;">Approuver le dossier ✓</button>
+                    <button type="submit" style="width: 100%; margin-top: 14px; height: 46px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 700; cursor: pointer;">Approuver le dossier</button>
                 </form>
 
                 <form x-show="decision === 'reject'" method="POST" action="{{ route('admin.livreurs.reject', $livreur) }}">
@@ -235,7 +235,7 @@
                     </div>
                     <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 6px;">Motif détaillé (obligatoire)</label>
                     <textarea name="raison_rejet" x-model="reason" required rows="6" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; font-size: 0.85rem; border-radius: 6px; box-sizing: border-box;"></textarea>
-                    <button type="submit" style="width: 100%; margin-top: 14px; height: 46px; background: #dc2626; color: #fff; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 700; cursor: pointer;">Rejeter le dossier ✕</button>
+                    <button type="submit" style="width: 100%; margin-top: 14px; height: 46px; background: #dc2626; color: #fff; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 700; cursor: pointer;">Rejeter le dossier</button>
                 </form>
             </div>
         @elseif($livreur->statut_verification === 'verifie')
