@@ -130,7 +130,7 @@
                         ['label' => "Pièce d'identité (" . $pieceLabel . ')', 'path' => $livreur->document_piece, 'url' => $documents['document_piece']],
                         ['label' => 'Pièce — Recto', 'path' => $livreur->document_recto, 'url' => $documents['document_recto']],
                         ['label' => 'Pièce — Verso', 'path' => $livreur->document_verso, 'url' => $documents['document_verso']],
-                        ['label' => 'Photo du véhicule', 'path' => $livreur->photo_vehicule, 'url' => $documents['photo_vehicule']],
+                        ['label' => 'Pièce véhicule', 'path' => $livreur->photo_vehicule, 'url' => $documents['photo_vehicule']],
                     ], fn ($d) => !empty($d['path'])));
                 @endphp
 
