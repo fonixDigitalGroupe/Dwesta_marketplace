@@ -199,7 +199,7 @@
                                 <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                                     onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                                     <td style="padding: 12px 15px; font-size: 0.82rem; color: #111; font-weight: 600; border-right: 1px solid #eff3f6;">
-                                        <i class="fas fa-map-marker-alt" style="color: #ff9900;"></i> &nbsp;{{ $region->name }}
+                                        {{ $region->name }}
                                     </td>
                                     <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                                         <form action="{{ route('admin.countries.regions.toggle', $region) }}" method="POST" style="display: inline;">
