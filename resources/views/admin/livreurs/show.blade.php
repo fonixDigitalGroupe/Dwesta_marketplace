@@ -94,13 +94,14 @@
                 Dossier n° {{ $livreur->id }} · Ouvert le {{ $livreur->created_at->format('d/m/Y') }} · {{ $livreur->en_ligne ? 'En ligne' : 'Hors ligne' }}
             </div>
         </div>
-        <div style="text-align: right;">
+        <div style="text-align: right; font-size: 0.95rem; font-weight: 700;">
+            <span style="color: #64748b; font-weight: 600;">Statut :</span>
             @if ($livreur->statut_verification === 'en_attente')
-                <span class="status-badge st-pending">EN ATTENTE</span>
+                <span style="color: #0f172a;">en attente</span>
             @elseif ($livreur->statut_verification === 'verifie')
-                <span class="status-badge st-ok">VÉRIFIÉ</span>
+                <span style="color: #569b00;">vérifié</span>
             @else
-                <span class="status-badge st-ko">REJETÉ</span>
+                <span style="color: #c40000;">rejeté</span>
             @endif
         </div>
     </div>
