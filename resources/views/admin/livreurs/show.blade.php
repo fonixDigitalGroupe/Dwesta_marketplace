@@ -311,6 +311,31 @@
             </div>
         </div>
 
+        <!-- Données complètes de la table livreur -->
+        <div class="amazon-card">
+            <h2 class="section-title">Données complètes (table livreur)</h2>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; border: 1px solid #eff3f6;">
+                    <tbody>
+                        @foreach($livreur->getAttributes() as $colonne => $valeur)
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 10px 14px; font-size: 0.78rem; font-weight: 700; color: #475569; background: #f8fafc; border-right: 1px solid #eff3f6; width: 220px; text-transform: uppercase; letter-spacing: 0.03em; vertical-align: top;">
+                                    {{ $colonne }}
+                                </td>
+                                <td style="padding: 10px 14px; font-size: 0.85rem; color: #111; word-break: break-word;">
+                                    @if(is_null($valeur) || $valeur === '')
+                                        <span style="color: #cbd5e1;">—</span>
+                                    @else
+                                        {{ $valeur }}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- Danger Zone -->
         <div class="amazon-card" style="border: 1px solid #f9c2c2; background: #fffcfc;">
             <h3 style="font-size: 0.95rem; color: #c40000; font-weight: 700; margin: 0 0 15px 0; display: flex; align-items: center; gap: 10px;">
