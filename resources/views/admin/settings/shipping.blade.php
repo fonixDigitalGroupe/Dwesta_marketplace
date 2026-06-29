@@ -161,7 +161,7 @@
         <div class="ship-block">
             <div class="ship-block-title">
                 <i class="fas fa-globe-africa"></i>
-                <span>Tarifs Marketplace (pays → pays)</span>
+                <span>Tarifs interpays</span>
             </div>
             <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse; border: 1px solid #eff3f6;">
