@@ -33,8 +33,8 @@
         .forms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
         .forms-grid .ship-aside { display: flex; flex-direction: column; }
         .forms-grid .ship-aside form { display: flex; flex-direction: column; flex: 1; }
-        /* pousse le bouton (et la note) vers le bas pour aligner les deux formulaires */
-        .forms-grid .ship-aside form button[type="submit"] { margin-top: auto; }
+        /* le pied de formulaire (note + bouton) se cale en bas => boutons au meme niveau */
+        .forms-grid .ship-aside form .form-footer { margin-top: auto; }
         @media (max-width: 900px) { .forms-grid { grid-template-columns: 1fr; } }
     </style>
 @endpush
@@ -107,9 +107,11 @@
                             <input type="text" name="delivery_delay">
                         </div>
 
-                        <button type="submit" class="btn-amazon-primary" style="width: 100%; justify-content: center; background: #ff9900;">
-                            AJOUTER LA RÈGLE
-                        </button>
+                        <div class="form-footer">
+                            <button type="submit" class="btn-amazon-primary" style="width: 100%; justify-content: center; background: #ff9900;">
+                                AJOUTER LA RÈGLE
+                            </button>
+                        </div>
                     </form>
                 </div>
 
@@ -143,10 +145,12 @@
                             <input type="text" name="delivery_delay" placeholder="Ex: 2-3 jours">
                         </div>
 
-                        <button type="submit" class="btn-amazon-primary" style="width: 100%; justify-content: center; background: #ff9900;">
-                            ENREGISTRER LE TARIF
-                        </button>
-                        <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 10px;">Un seul tarif par pays. Ré-enregistrer un pays met à jour son tarif.</p>
+                        <div class="form-footer">
+                            <p style="font-size: 0.72rem; color: #94a3b8; margin: 0 0 10px;">Un seul tarif par pays. Ré-enregistrer un pays met à jour son tarif.</p>
+                            <button type="submit" class="btn-amazon-primary" style="width: 100%; justify-content: center; background: #ff9900;">
+                                ENREGISTRER LE TARIF
+                            </button>
+                        </div>
                     </form>
                 </div>
 
