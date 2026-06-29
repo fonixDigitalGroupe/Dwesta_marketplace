@@ -256,6 +256,14 @@ class CountryController extends Controller
         return back()->with('success', 'Région ajoutée.');
     }
 
+    public function toggleRegion(Region $region)
+    {
+        $region->is_active = !$region->is_active;
+        $region->save();
+
+        return back()->with('success', 'Statut de la région mis à jour.');
+    }
+
     public function destroyRegion(Region $region)
     {
         $region->delete();

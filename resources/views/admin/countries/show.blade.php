@@ -106,6 +106,19 @@
         }
 
         .inline-add { display: flex; gap: 8px; margin-bottom: 16px; }
+
+        /* Interrupteur Actif/Inactif */
+        .region-switch { position: relative; display: inline-block; width: 40px; height: 22px; cursor: pointer; }
+        .region-switch input { opacity: 0; width: 0; height: 0; }
+        .region-slider {
+            position: absolute; inset: 0; background: #cbd5e1; border-radius: 22px; transition: 0.2s;
+        }
+        .region-slider:before {
+            content: ""; position: absolute; height: 16px; width: 16px; left: 3px; bottom: 3px;
+            background: #fff; border-radius: 50%; transition: 0.2s;
+        }
+        .region-switch input:checked + .region-slider { background: #569b00; }
+        .region-switch input:checked + .region-slider:before { transform: translateX(18px); }
         .inline-add input { flex: 1; }
         .inline-add button { width: auto; white-space: nowrap; }
 
@@ -177,6 +190,7 @@
                         <thead>
                             <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
                                 <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Région</th>
+                                <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 90px;">Actif</th>
                                 <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 120px;">Actions</th>
                             </tr>
                         </thead>
@@ -186,6 +200,15 @@
                                     onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                                     <td style="padding: 12px 15px; font-size: 0.82rem; color: #111; font-weight: 600; border-right: 1px solid #eff3f6;">
                                         <i class="fas fa-map-marker-alt" style="color: #ff9900;"></i> &nbsp;{{ $region->name }}
+                                    </td>
+                                    <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
+                                        <form action="{{ route('admin.countries.regions.toggle', $region) }}" method="POST" style="display: inline;">
+                                            @csrf @method('PATCH')
+                                            <label class="region-switch" title="{{ $region->is_active ? 'Désactiver' : 'Activer' }}">
+                                                <input type="checkbox" onchange="this.form.submit()" {{ $region->is_active ? 'checked' : '' }}>
+                                                <span class="region-slider"></span>
+                                            </label>
+                                        </form>
                                     </td>
                                     <td style="padding: 12px 15px; text-align: right;">
                                         <form action="{{ route('admin.countries.regions.destroy', $region) }}" method="POST"
@@ -202,7 +225,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="2" style="padding: 2rem; text-align: center; color: #999; font-size: 0.82rem;">
+                                    <td colspan="3" style="padding: 2rem; text-align: center; color: #999; font-size: 0.82rem;">
                                         Aucune région. Importez-les depuis OpenStreetMap ou ajoutez-les manuellement.
                                     </td>
                                 </tr>

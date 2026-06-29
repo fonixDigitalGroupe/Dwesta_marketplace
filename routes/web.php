@@ -342,6 +342,7 @@ Route::middleware('auth')->group(function () {
             // Régions d'un pays
             Route::post('countries/{country}/import-geography', [\App\Http\Controllers\Admin\CountryController::class, 'importGeography'])->name('countries.import-geography');
             Route::post('countries/{country}/regions', [\App\Http\Controllers\Admin\CountryController::class, 'storeRegion'])->name('countries.regions.store');
+            Route::patch('regions/{region}/toggle', [\App\Http\Controllers\Admin\CountryController::class, 'toggleRegion'])->name('countries.regions.toggle');
             Route::delete('regions/{region}', [\App\Http\Controllers\Admin\CountryController::class, 'destroyRegion'])->name('countries.regions.destroy');
             Route::resource('countries', \App\Http\Controllers\Admin\CountryController::class);
 
