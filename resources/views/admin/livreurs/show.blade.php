@@ -80,8 +80,9 @@
 <div class="sheet">
 
     {{-- Barre d'actions (non imprimée) --}}
-    <div class="no-print" style="margin-bottom: 24px;">
-        <a href="{{ route('admin.livreurs.index') }}" class="btn-secondary"><i class="fas fa-chevron-left"></i> Retour à la liste</a>
+    <div class="no-print" style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
+        <a href="{{ route('admin.livreurs.index') }}" class="btn-secondary" title="Fermer"
+           style="width: 36px; height: 36px; padding: 0; font-size: 1.2rem; line-height: 1;">&times;</a>
     </div>
 
     {{-- En-tête du dossier --}}
@@ -90,7 +91,7 @@
             <div class="sheet-eyebrow">Dossier de vérification — Livreur</div>
             <h1 class="sheet-title">{{ $livreur->user->prenom }} {{ $livreur->user->nom }}</h1>
             <div class="sheet-meta">
-                Dossier n° {{ $livreur->id }} · Ouvert le {{ $livreur->created_at->format('d/m/Y') }} · {{ $livreur->en_ligne ? 'En ligne' : 'Hors ligne' }}
+                Dossier n° {{ $livreur->id }} · Ouvert le {{ $livreur->created_at->format('d/m/Y') }}
             </div>
         </div>
         <div style="text-align: right; font-size: 0.95rem; font-weight: 700;">
