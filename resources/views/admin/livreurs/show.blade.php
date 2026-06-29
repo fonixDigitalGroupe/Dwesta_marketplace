@@ -31,7 +31,7 @@
 
         /* Titres de section façon document */
         .sec { margin-top: 38px; }
-        .sec-h { font-size: 0.95rem; font-weight: 800; color: #0f172a; padding-bottom: 8px; border-bottom: 2px solid #0f172a; margin-bottom: 4px; display: flex; align-items: baseline; gap: 10px; }
+        .sec-h { font-size: 0.95rem; font-weight: 800; color: #0f172a; padding-bottom: 8px; border-bottom: 1px solid #e6e9ee; margin-bottom: 4px; display: flex; align-items: baseline; gap: 10px; }
         .sec-h .num { color: #0f172a; font-weight: 800; }
 
         /* Lignes d'information (liste de définitions) */
@@ -86,7 +86,7 @@
     </div>
 
     {{-- En-tête du dossier --}}
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; padding-bottom: 22px; border-bottom: 3px double #0f172a;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; padding-bottom: 22px; border-bottom: 1px solid #e6e9ee;">
         <div>
             <div class="sheet-eyebrow">Dossier de vérification — Livreur</div>
             <h1 class="sheet-title">{{ $livreur->user->prenom }} {{ $livreur->user->nom }}</h1>
@@ -186,7 +186,7 @@
         <h2 class="sec-h"><span class="num">4.</span> Décision administrative</h2>
 
         @if($livreur->statut_verification === 'en_attente')
-            <div class="panel" style="border: 2px solid #0f172a; background: #fff;"
+            <div class="panel" style="border: 1px solid #e6e9ee; background: #fff;"
                  x-data="{
                     decision: 'approve',
                     reason: 'Votre demande de compte livreur n\'a pas pu être approuvée en l\'état sur Karnou. Veuillez vérifier que les informations fournies sont correctes, puis soumettez à nouveau votre dossier.',
