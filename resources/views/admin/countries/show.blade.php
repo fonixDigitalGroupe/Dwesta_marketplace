@@ -3,7 +3,6 @@
 @section('title', 'Détail du pays · ' . $country->name)
 
 @push('styles')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         .main-content {
             background-color: #f8f9fa !important;
@@ -26,12 +25,6 @@
 
         input:focus, textarea:focus, select:focus {
             border-color: #ff9900 !important;
-        }
-
-        input[readonly] {
-            background: #f8fafc;
-            color: #1e293b;
-            cursor: default;
         }
 
         .amazon-card {
@@ -112,24 +105,6 @@
             color: #1e293b !important;
         }
 
-        #interactive-map {
-            width: 100%;
-            height: 400px;
-            border: 1px solid #eff3f6;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .map-status {
-            font-size: 0.75rem;
-            color: #64748b;
-            font-style: italic;
-            margin-top: 5px;
-            padding: 8px;
-            background: #f8fafc;
-            border-radius: 4px;
-        }
-
         .inline-add { display: flex; gap: 8px; margin-bottom: 16px; }
         .inline-add input { flex: 1; }
         .inline-add button { width: auto; white-space: nowrap; }
@@ -181,37 +156,6 @@
 
             <!-- Colonne gauche -->
             <div style="display: flex; flex-direction: column; gap: 20px;">
-
-                <div class="amazon-card" style="margin: 0;">
-                    <h3 class="section-title">Détails Administratifs</h3>
-
-                    <div style="margin-bottom: 15px;">
-                        <label class="field-label">Nom officiel du pays</label>
-                        <input type="text" value="{{ $country->name }}" readonly>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div>
-                            <label class="field-label">Code ISO</label>
-                            <input type="text" value="{{ $country->code }}" readonly>
-                        </div>
-                        <div>
-                            <label class="field-label">Indicatif International</label>
-                            <input type="text" value="{{ $country->phone_code ?? '—' }}" readonly>
-                        </div>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
-                        <div>
-                            <label class="field-label">Devise locale</label>
-                            <input type="text" value="{{ $country->currency ?? 'FCFA' }}" readonly>
-                        </div>
-                        <div>
-                            <label class="field-label">Format de téléphone</label>
-                            <input type="text" value="{{ $country->phone_format ?? '—' }}" readonly>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="amazon-card" style="margin: 0;">
                     <h3 class="section-title">Régions ({{ $regionsCount }})</h3>
@@ -274,12 +218,6 @@
             <div style="display: flex; flex-direction: column; gap: 20px;">
 
                 <div class="amazon-card" style="margin: 0;">
-                    <h3 class="section-title">Cartographie</h3>
-                    <div id="interactive-map"></div>
-                    <div id="map-status" class="map-status">Chargement de la carte…</div>
-                </div>
-
-                <div class="amazon-card" style="margin: 0;">
                     <h3 class="section-title">Résumé</h3>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
                         <span class="field-label" style="margin: 0;">Statut</span>
@@ -297,40 +235,4 @@
         </div>
     </div>
 </div>
-
-@push('scripts')
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const countryName = @json($country->name);
-        const map = L.map('interactive-map').setView([10, 0], 2);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
-
-        const statusEl = document.getElementById('map-status');
-        statusEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Délimitation des frontières : ${countryName}...`;
-
-        fetch(`https://nominatim.openstreetmap.org/search?country=${encodeURIComponent(countryName)}&polygon_geojson=1&format=json`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.length > 0 && data[0].geojson) {
-                    const layer = L.geoJSON(data[0].geojson, {
-                        style: { color: '#ff9900', weight: 2, fillOpacity: 0.1 }
-                    }).addTo(map);
-                    map.fitBounds(layer.getBounds());
-                    statusEl.innerHTML = `<i class="fas fa-check-circle" style="color: #569b00"></i> Frontières de ${countryName} identifiées.`;
-                } else if (data.length > 0) {
-                    map.setView([parseFloat(data[0].lat), parseFloat(data[0].lon)], 5);
-                    statusEl.innerHTML = `<i class="fas fa-info-circle"></i> Localisation trouvée pour ${countryName}.`;
-                } else {
-                    statusEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> Carte indisponible pour ${countryName}.`;
-                }
-            })
-            .catch(() => {
-                statusEl.innerHTML = `<i class="fas fa-exclamation-circle"></i> Impossible de charger la carte.`;
-            });
-    });
-</script>
-@endpush
 @endsection
