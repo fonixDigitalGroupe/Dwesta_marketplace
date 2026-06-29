@@ -1,231 +1,310 @@
 @extends('layouts.admin')
 
-@section('title', 'Dossier Transporteur : ' . $transporteur->user->prenom)
+@section('title', 'Dossier Transporteur - ' . ($transporteur->user->prenom ?? 'Utilisateur'))
 
-@section('breadcrumbs')
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <a href="{{ route('admin.transporteurs.index') }}" style="color: #666; text-decoration: none;">Transporteurs</a>
-    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="opacity: 0.4;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path>
-    </svg>
-    <span style="color: #333; font-weight: 500;">Dossier KYC</span>
-@endsection
+@push('styles')
+    <style>
+        .main-content { background-color: #eef1f4 !important; }
+        input:focus, textarea:focus, select:focus { border-color: #ff9900 !important; outline: none; }
+
+        .sheet {
+            max-width: 860px;
+            margin: -20px auto 40px;
+            background: #fff;
+            border: 1px solid #e6e9ee;
+            border-radius: 6px;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+            padding: 48px 56px;
+            color: #1f2937;
+        }
+        @media (max-width: 640px) { .sheet { padding: 28px 22px; } }
+
+        .sheet-eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a; }
+        .sheet-title { font-size: 1.7rem; font-weight: 800; color: #0f172a; margin: 6px 0 10px; line-height: 1.15; }
+        .sheet-meta { font-size: 0.85rem; color: #64748b; }
+
+        .sec { margin-top: 38px; }
+        .sec-h { font-size: 0.95rem; font-weight: 800; color: #0f172a; padding-bottom: 8px; border-bottom: 1px solid #e6e9ee; margin-bottom: 4px; display: flex; align-items: baseline; gap: 10px; }
+        .sec-h .num { color: #0f172a; font-weight: 800; }
+
+        .dl { margin: 14px 0 0; border: 1px solid #e6e9ee; border-radius: 8px; overflow: hidden; }
+        .dl-row { display: grid; grid-template-columns: 220px 1fr; font-size: 0.88rem; border-bottom: 1px solid #e6e9ee; }
+        .dl-row:last-child { border-bottom: none; }
+        .dl-row dt { color: #475569; font-weight: 600; margin: 0; padding: 11px 14px; background: #f8fafc; border-right: 1px solid #e6e9ee; }
+        .dl-row dd { color: #0f172a; font-weight: 600; margin: 0; padding: 11px 14px; }
+        @media (max-width: 520px) {
+            .dl-row { grid-template-columns: 1fr; }
+            .dl-row dt { border-right: none; border-bottom: 1px solid #e6e9ee; }
+        }
+
+        .doc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 14px; }
+        @media (max-width: 600px) { .doc-grid { grid-template-columns: 1fr 1fr; } }
+        .doc-label { display: block; font-size: 0.72rem; color: #94a3b8; margin-bottom: 6px; font-weight: 600; }
+        .doc-box { display: block; border-radius: 8px; overflow: hidden; border: 1px solid #e6e9ee; transition: border-color .15s; }
+        .doc-box:hover { border-color: #f68b1e; }
+        .doc-box img { width: 100%; height: 150px; object-fit: cover; display: block; }
+        .doc-pdf { padding: 30px 10px; text-align: center; background: #f8fafc; }
+        .doc-empty { padding: 20px; background: #f9fafb; border: 1px dashed #e2e8f0; border-radius: 8px; text-align: center; color: #94a3b8; font-size: 0.82rem; }
+
+        .btn-secondary { background: #fff; border: 1px solid #ddd; color: #475569; padding: 7px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 600; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
+        .btn-secondary:hover { background: #f7f7f7; border-color: #ccc; color: #111; }
+
+        .panel { margin-top: 16px; padding: 20px; border-radius: 8px; }
+
+        @media print {
+            .main-content { background: #fff !important; }
+            .sheet { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+            .no-print { display: none !important; }
+        }
+    </style>
+@endpush
 
 @section('content')
-<div style="max-width: 1200px;">
+@php
+    $pieceLabel = $transporteur->type_piece ? strtoupper($transporteur->type_piece) : 'Pièce';
+    $idDocs = array_values(array_filter([
+        ['label' => $pieceLabel,   'path' => $transporteur->document_piece, 'url' => $documents['piece_identite']],
+        ['label' => 'CNI — Recto', 'path' => $transporteur->cni_recto,      'url' => $documents['cni_recto']],
+        ['label' => 'CNI — Verso', 'path' => $transporteur->cni_verso,      'url' => $documents['cni_verso']],
+    ], fn ($d) => !empty($d['path'])));
+    $permisDocs = array_values(array_filter([
+        ['label' => 'Permis — Recto', 'path' => $transporteur->permis_recto, 'url' => $documents['permis_recto']],
+        ['label' => 'Permis — Verso', 'path' => $transporteur->permis_verso, 'url' => $documents['permis_verso']],
+    ], fn ($d) => !empty($d['path'])));
+    $vehDocs = array_values(array_filter([
+        ['label' => 'Carte grise',    'path' => $transporteur->carte_grise,    'url' => $documents['carte_grise']],
+        ['label' => 'Assurance',      'path' => $transporteur->assurance,      'url' => $documents['assurance']],
+        ['label' => 'Photo véhicule', 'path' => $transporteur->photo_vehicule, 'url' => $photoVehicule],
+    ], fn ($d) => !empty($d['path'])));
+@endphp
 
-    <!-- Header -->
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+<div class="sheet">
+
+    <div class="no-print" style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+        <a href="{{ route('admin.transporteurs.index') }}" class="btn-secondary" title="Fermer"
+           style="width: 36px; height: 36px; padding: 0; font-size: 1.2rem; line-height: 1;">&times;</a>
+    </div>
+    <hr class="no-print" style="border: none; border-top: 1px solid #e6e9ee; margin: 0 0 24px;">
+
+    {{-- En-tête du dossier --}}
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; padding-bottom: 22px; border-bottom: 1px solid #e6e9ee;">
         <div>
-            <h1 style="font-size: 1.375rem; color: #333; font-weight: 600;">
-                Dossier : {{ $transporteur->user->prenom }} {{ $transporteur->user->nom }}
-            </h1>
-            <p style="font-size: 0.85rem; color: #666; margin-top: 4px;">Vérification des documents et conformité du véhicule</p>
+            <div class="sheet-eyebrow">Dossier de vérification — Transporteur</div>
+            <h1 class="sheet-title">{{ $transporteur->user->prenom }} {{ $transporteur->user->nom }}</h1>
+            <div class="sheet-meta">Dossier n° {{ $transporteur->id }} · Ouvert le {{ $transporteur->created_at->format('d/m/Y') }}</div>
         </div>
-        
-        <div>
-            @if($transporteur->statut_verification === 'verifie')
-                <div style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-                    <div style="width: 6px; height: 6px; background: #22c55e; border-radius: 50%;"></div>
-                    Vérifié le {{ $transporteur->updated_at->format('d/m/Y') }}
-                </div>
-            @elseif($transporteur->statut_verification === 'rejete')
-                <div style="background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-                    <div style="width: 6px; height: 6px; background: #ef4444; border-radius: 50%;"></div>
-                    Dossier Rejeté
-                </div>
+        <div style="text-align: right; font-size: 0.95rem; font-weight: 700;">
+            <span style="color: #64748b; font-weight: 600;">Statut :</span>
+            @if ($transporteur->statut_verification === 'en_attente')
+                <span style="color: #f68b1e;">En attente</span>
+            @elseif ($transporteur->statut_verification === 'verifie')
+                <span style="color: #569b00;">Vérifié</span>
             @else
-                <div style="background: #fffbeb; border: 1px solid #fef3c7; color: #92400e; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-                    <div style="width: 6px; height: 6px; background: #f59e0b; border-radius: 50%;"></div>
-                    En attente de vérification
-                </div>
+                <span style="color: #c40000;">Rejeté</span>
             @endif
         </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 320px; gap: 1.5rem; align-items: start;">
-        
-        <!-- Colonne Principale -->
-        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-            
-            <!-- Informations de Base -->
-            <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
-                <h2 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
-                    <svg width="18" height="18" fill="none" stroke="#666" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    Détails du Profil
-                </h2>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+    {{-- 1. Identité & coordonnées --}}
+    <div class="sec">
+        <h2 class="sec-h"><span class="num">1.</span> Identité &amp; coordonnées</h2>
+        <dl class="dl">
+            <div class="dl-row"><dt>Nom complet</dt><dd>{{ $transporteur->user->prenom }} {{ $transporteur->user->nom }}</dd></div>
+            <div class="dl-row"><dt>Email</dt><dd>{{ $transporteur->user->email ?: '—' }}</dd></div>
+            <div class="dl-row"><dt>Téléphone</dt><dd>{{ $transporteur->user->telephone ?? '—' }}</dd></div>
+            <div class="dl-row"><dt>Pays</dt><dd>{{ $pays ?? '—' }}</dd></div>
+        </dl>
+    </div>
+
+    {{-- 2. Zone de couverture --}}
+    <div class="sec">
+        <h2 class="sec-h"><span class="num">2.</span> Zone de couverture</h2>
+        <dl class="dl">
+            <div class="dl-row"><dt>Portée</dt><dd>{{ ucfirst($transporteur->portee ?? '—') }}</dd></div>
+            <div class="dl-row"><dt>Type (national)</dt><dd>{{ ucfirst($transporteur->type_national ?? '—') }}</dd></div>
+            <div class="dl-row"><dt>Pays source</dt><dd>{{ $transporteur->pays_source ?? '—' }}</dd></div>
+            <div class="dl-row"><dt>Pays destination</dt><dd>{{ $transporteur->pays_destination ?? '—' }}</dd></div>
+            <div class="dl-row"><dt>Région source</dt><dd>{{ $transporteur->region_source ?? '—' }}</dd></div>
+            <div class="dl-row"><dt>Région destination</dt><dd>{{ $transporteur->region_destination ?? '—' }}</dd></div>
+        </dl>
+    </div>
+
+    {{-- 3. Pièce d'identité --}}
+    <div class="sec">
+        <h2 class="sec-h"><span class="num">3.</span> Pièce d'identité</h2>
+        <dl class="dl">
+            <div class="dl-row"><dt>Type de pièce</dt><dd>{{ strtoupper($transporteur->type_piece ?? '—') }}</dd></div>
+            <div class="dl-row"><dt>N° de pièce</dt><dd>{{ $transporteur->numero_piece ?? '—' }}</dd></div>
+            <div class="dl-row"><dt>N° CNI</dt><dd>{{ $transporteur->numero_cni ?? '—' }}</dd></div>
+        </dl>
+        @if(count($idDocs) === 0)
+            <div class="doc-empty" style="margin-top: 14px;">Aucun document d'identité fourni</div>
+        @else
+            <div class="doc-grid">
+                @foreach($idDocs as $doc)
                     <div>
-                        <div style="display: flex; flex-direction: column; gap: 15px;">
-                            <div>
-                                <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Nom complet</label>
-                                <div style="font-size: 0.95rem; color: #333; font-weight: 500;">{{ $transporteur->user->prenom }} {{ $transporteur->user->nom }}</div>
-                            </div>
-                            <div>
-                                <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Téléphone</label>
-                                <div style="font-size: 0.95rem; color: #333;">{{ $transporteur->user->telephone ?? '-' }}</div>
-                            </div>
-                            @if($photoVehicule)
-                            <div style="margin-top: 10px;">
-                                <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 8px;">Photo du véhicule</label>
-                                <a href="{{ $photoVehicule }}" target="_blank" style="display: block; width: 100%; max-width: 200px; border-radius: 8px; overflow: hidden; border: 1px solid #eee;">
-                                    <img src="{{ $photoVehicule }}" style="width: 100%; height: auto; object-fit: cover;">
-                                </a>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                    <div>
-                        <div style="display: flex; flex-direction: column; gap: 15px;">
-                            <div>
-                                <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Type de véhicule</label>
-                                <div style="font-size: 0.95rem; color: #333; font-weight: 500;">{{ $transporteur->type_vehicule }}</div>
-                            </div>
-                            <div>
-                                <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Marque & Modèle</label>
-                                <div style="font-size: 0.95rem; color: #333;">{{ $transporteur->marque_vehicule }} {{ $transporteur->modele_vehicule }}</div>
-                            </div>
-                            <div>
-                                <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Immatriculation</label>
-                                <div style="font-size: 0.95rem; color: #333; font-weight: 600; color: #ff750f;">{{ $transporteur->immatriculation ?? '-' }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            @if($transporteur->portee || $transporteur->type_piece || $transporteur->numero_chassis)
-            <!-- Zone de transport & Identité (renseignées via la PWA partenaire) -->
-            <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
-                <h2 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
-                    <svg width="18" height="18" fill="none" stroke="#666" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
-                    Zone de transport & Identité
-                </h2>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                    <div style="display: flex; flex-direction: column; gap: 15px;">
-                        <div>
-                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Portée</label>
-                            <div style="font-size: 0.95rem; color: #333; font-weight: 500; text-transform: capitalize;">{{ $transporteur->portee ?? '-' }}{{ $transporteur->type_national ? ' — ' . $transporteur->type_national : '' }}</div>
-                        </div>
-                        <div>
-                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Pays (source → destination)</label>
-                            <div style="font-size: 0.95rem; color: #333;">{{ $transporteur->pays_source ?? '-' }}{{ $transporteur->pays_destination ? ' → ' . $transporteur->pays_destination : '' }}</div>
-                        </div>
-                        <div>
-                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Région (source → destination)</label>
-                            <div style="font-size: 0.95rem; color: #333;">{{ $transporteur->region_source ?? '-' }}{{ $transporteur->region_destination ? ' → ' . $transporteur->region_destination : '' }}</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 15px;">
-                        <div>
-                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">N° de châssis</label>
-                            <div style="font-size: 0.95rem; color: #333;">{{ $transporteur->numero_chassis ?? '-' }}</div>
-                        </div>
-                        <div>
-                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">Type de pièce</label>
-                            <div style="font-size: 0.95rem; color: #333; text-transform: uppercase;">{{ $transporteur->type_piece ?? '-' }}</div>
-                        </div>
-                        <div>
-                            <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 4px;">N° de pièce</label>
-                            <div style="font-size: 0.95rem; color: #333;">{{ $transporteur->numero_piece ?? '-' }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            <!-- Documents -->
-            <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem;">
-                <h2 style="font-size: 1rem; color: #333; font-weight: 600; margin-bottom: 1.5rem;">Pièces Justificatives</h2>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;">
-                    @foreach($documents as $label => $url)
-                        <div style="border: 1px solid #f0f0f0; border-radius: 8px; padding: 1rem; background: #fafafa;">
-                            <div style="font-size: 0.75rem; font-weight: 600; color: #666; margin-bottom: 1rem; text-transform: uppercase;">
-                                {{ str_replace('_', ' ', $label) }}
-                            </div>
-                            
-                            @if($url)
-                                @php $ext = pathinfo($url, PATHINFO_EXTENSION); @endphp
-                                @if(in_array(strtolower($ext), ['jpg', 'jpeg', 'png']))
-                                    <a href="{{ $url }}" target="_blank" style="display: block; width: 100%; height: 180px; border-radius: 4px; overflow: hidden; position: relative; border: 1px solid #eee;">
-                                        <img src="{{ $url }}" style="width: 100%; height: 100%; object-fit: cover;">
-                                        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
-                                            <span style="background: #fff; padding: 6px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; color: #000;">Cliquez pour agrandir</span>
-                                        </div>
-                                    </a>
-                                @else
-                                    <a href="{{ $url }}" target="_blank" style="display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid #e0e0e0; padding: 12px; border-radius: 6px; color: #333; text-decoration: none; font-weight: 500; font-size: 0.85rem;">
-                                        <svg width="20" height="20" fill="none" stroke="#ff750f" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                        Voir le document (PDF)
-                                    </a>
-                                @endif
+                        <span class="doc-label">{{ $doc['label'] }}</span>
+                        <a href="{{ $doc['url'] }}" target="_blank" class="doc-box">
+                            @if(Str::endsWith(strtolower($doc['path']), '.pdf'))
+                                <div class="doc-pdf"><i class="far fa-file-pdf" style="font-size: 1.8rem; color: #ef4444;"></i><div style="font-size: 0.78rem; color: #475569; margin-top: 6px;">Voir le PDF</div></div>
                             @else
-                                <div style="height: 180px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #999; font-size: 0.8rem; background: #fff; border: 1px dashed #ddd; border-radius: 4px;">
-                                    Absence de document
-                                </div>
+                                <img src="{{ $doc['url'] }}" alt="{{ $doc['label'] }}">
                             @endif
-                        </div>
-                    @endforeach
-                </div>
+                        </a>
+                    </div>
+                @endforeach
             </div>
+        @endif
+    </div>
+
+    {{-- 4. Permis de conduire --}}
+    <div class="sec">
+        <h2 class="sec-h"><span class="num">4.</span> Permis de conduire</h2>
+        <dl class="dl">
+            <div class="dl-row"><dt>N° de permis</dt><dd>{{ $transporteur->numero_permis ?? '—' }}</dd></div>
+        </dl>
+        @if(count($permisDocs) === 0)
+            <div class="doc-empty" style="margin-top: 14px;">Aucun permis fourni</div>
+        @else
+            <div class="doc-grid">
+                @foreach($permisDocs as $doc)
+                    <div>
+                        <span class="doc-label">{{ $doc['label'] }}</span>
+                        <a href="{{ $doc['url'] }}" target="_blank" class="doc-box">
+                            @if(Str::endsWith(strtolower($doc['path']), '.pdf'))
+                                <div class="doc-pdf"><i class="far fa-file-pdf" style="font-size: 1.8rem; color: #ef4444;"></i><div style="font-size: 0.78rem; color: #475569; margin-top: 6px;">Voir le PDF</div></div>
+                            @else
+                                <img src="{{ $doc['url'] }}" alt="{{ $doc['label'] }}">
+                            @endif
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+
+    {{-- 5. Véhicule --}}
+    <div class="sec">
+        <h2 class="sec-h"><span class="num">5.</span> Véhicule</h2>
+        <dl class="dl">
+            <div class="dl-row"><dt>Type de véhicule</dt><dd>{{ $transporteur->type_vehicule ?? '—' }}</dd></div>
+            <div class="dl-row"><dt>Marque</dt><dd>{{ $transporteur->marque_vehicule ?? '—' }}</dd></div>
+            <div class="dl-row"><dt>Modèle</dt><dd>{{ $transporteur->modele_vehicule ?? '—' }}</dd></div>
+            <div class="dl-row"><dt>N° de châssis</dt><dd>{{ $transporteur->numero_chassis ?? '—' }}</dd></div>
+            <div class="dl-row"><dt>Immatriculation</dt><dd>{{ $transporteur->immatriculation ?? '—' }}</dd></div>
+        </dl>
+        @if(count($vehDocs) === 0)
+            <div class="doc-empty" style="margin-top: 14px;">Aucune pièce véhicule fournie</div>
+        @else
+            <div class="doc-grid">
+                @foreach($vehDocs as $doc)
+                    <div>
+                        <span class="doc-label">{{ $doc['label'] }}</span>
+                        <a href="{{ $doc['url'] }}" target="_blank" class="doc-box">
+                            @if(Str::endsWith(strtolower($doc['path']), '.pdf'))
+                                <div class="doc-pdf"><i class="far fa-file-pdf" style="font-size: 1.8rem; color: #ef4444;"></i><div style="font-size: 0.78rem; color: #475569; margin-top: 6px;">Voir le PDF</div></div>
+                            @else
+                                <img src="{{ $doc['url'] }}" alt="{{ $doc['label'] }}">
+                            @endif
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+
+    @if($transporteur->statut_verification === 'rejete' && $transporteur->raison_rejet)
+        <div class="sec">
+            <h2 class="sec-h" style="border-bottom-color: #c40000; color: #c40000;"><i class="fas fa-times-circle"></i> Motif du rejet</h2>
+            <p style="font-size: 0.88rem; color: #555; white-space: pre-line; margin: 12px 0 0;">{{ $transporteur->raison_rejet }}</p>
         </div>
+    @endif
 
-        <!-- Colonne Latérale: Actions -->
-        <div style="display: flex; flex-direction: column; gap: 1.5rem; position: sticky; top: 1.5rem;">
-            
-            <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.25rem;">
-                <h3 style="font-size: 0.9rem; color: #333; font-weight: 600; margin-bottom: 1rem;">Action requise</h3>
-                
-                @if($transporteur->statut_verification === 'en_attente')
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <form action="{{ route('admin.transporteurs.approve', $transporteur) }}" method="POST">
-                            @csrf
-                            <button type="submit" style="width: 100%; border: none; background: #000; color: #fff; padding: 12px; border-radius: 4px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem;">
-                                Approuver
-                            </button>
-                        </form>
+    {{-- 6. Décision administrative --}}
+    <div class="sec no-print">
+        <h2 class="sec-h"><span class="num">6.</span> Décision administrative</h2>
 
-                        <div style="border-top: 1px solid #f0f0f0; padding-top: 12px; margin-top: 4px;">
-                            <form action="{{ route('admin.transporteurs.reject', $transporteur) }}" method="POST">
-                                @csrf
-                                <div style="margin-bottom: 12px;">
-                                    <textarea name="raison_rejet" rows="3" required 
-                                              style="width: 100%; padding: 10px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 0.85rem; resize: none; outline: none; transition: border 0.2s;" 
-                                              onfocus="this.style.borderColor='#ff750f'" onblur="this.style.borderColor='#e0e0e0'"
-                                              placeholder="Motif du rejet..."></textarea>
-                                </div>
-                                <button type="submit" style="width: 100%; border: none; background: #fef2f2; color: #dc2626; padding: 10px; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 0.85rem; border: 1px solid #fee2e2;">
-                                    Rejeter le dossier
-                                </button>
-                            </form>
-                        </div>
+        @if($transporteur->statut_verification === 'en_attente')
+            <div class="panel" style="border: 1px solid #e6e9ee; background: #fff;"
+                 x-data="{
+                    decision: 'approve',
+                    reason: 'Votre demande de compte transporteur n\'a pas pu être approuvée en l\'état sur Karnou. Veuillez vérifier que les informations fournies sont correctes, puis soumettez à nouveau votre dossier.',
+                    selectedFields: [],
+                    updateReason() {
+                        let base = 'Votre demande de compte transporteur n\'a pas pu être approuvée en l\'état sur Karnou. Veuillez vérifier que les informations fournies sont correctes, puis soumettez à nouveau votre dossier.';
+                        if (this.selectedFields.length > 0) { base += '\n\nChamps à revoir :\n' + this.selectedFields.map(f => ' - ' + f).join('\n'); }
+                        this.reason = base;
+                    }
+                 }">
+                <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; cursor: pointer; padding: 10px; background: #fff; border: 1px solid #eff3f6; border-radius: 6px;">
+                        <input type="radio" x-model="decision" value="approve" name="decision_type">
+                        <span style="font-weight: 700; color: #2563eb;">Approuver</span>
+                    </label>
+                    <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; cursor: pointer; padding: 10px; background: #fff; border: 1px solid #eff3f6; border-radius: 6px;">
+                        <input type="radio" x-model="decision" value="reject" name="decision_type">
+                        <span style="font-weight: 700; color: #b91c1c;">Rejeter</span>
+                    </label>
+                </div>
+
+                <form x-show="decision === 'approve'" method="POST" action="{{ route('admin.transporteurs.approve', $transporteur) }}">
+                    @csrf
+                    <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 6px;">Commentaire (optionnel)</label>
+                    <textarea name="commentaire" rows="4" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; font-size: 0.85rem; border-radius: 6px; box-sizing: border-box;">Félicitations ! Votre dossier de transporteur a été validé. Vous pouvez désormais recevoir des demandes de transport sur Karnou.</textarea>
+                    <button type="submit" style="width: 100%; margin-top: 14px; height: 46px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 700; cursor: pointer;">Approuver le dossier</button>
+                </form>
+
+                <form x-show="decision === 'reject'" method="POST" action="{{ route('admin.transporteurs.reject', $transporteur) }}">
+                    @csrf
+                    <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 10px;">Champs à revoir</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #fff; border: 1px solid #eff3f6; border-radius: 6px; padding: 15px; margin-bottom: 14px;">
+                        @php
+                            $fields = ['Pièce d\'identité', 'Permis de conduire', 'Carte grise', 'Assurance', 'Photo véhicule', 'Immatriculation', 'Document illisible', 'Document expiré'];
+                        @endphp
+                        @foreach($fields as $field)
+                            <label style="display: flex; align-items: start; gap: 8px; font-size: 0.8rem; cursor: pointer; line-height: 1.3;">
+                                <input type="checkbox" value="{{ $field }}" x-model="selectedFields" @change="updateReason()" style="margin-top: 2px;">
+                                <span>{{ $field }}</span>
+                            </label>
+                        @endforeach
                     </div>
-                @elseif($transporteur->statut_verification === 'rejete')
-                    <div style="background: #fef2f2; border: 1px solid #fee2e2; padding: 12px; border-radius: 4px;">
-                        <div style="font-size: 0.75rem; font-weight: 600; color: #dc2626; margin-bottom: 6px; text-transform: uppercase;">Motif du rejet</div>
-                        <div style="font-size: 0.85rem; color: #991b1b; line-height: 1.4;">{{ $transporteur->raison_rejet }}</div>
-                    </div>
-                @else
-                    <div style="padding: 1rem; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 4px; text-align: center;">
-                        <svg width="32" height="32" fill="none" stroke="#16a34a" viewBox="0 0 24 24" style="margin-bottom: 8px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <div style="font-weight: 600; color: #166534; font-size: 0.9rem;">Profil Vérifié</div>
-                        <div style="font-size: 0.75rem; color: #166534; margin-top: 2px;">Tout est en ordre.</div>
-                    </div>
-                @endif
+                    <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 6px;">Motif détaillé (obligatoire)</label>
+                    <textarea name="raison_rejet" x-model="reason" required rows="6" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; font-size: 0.85rem; border-radius: 6px; box-sizing: border-box;"></textarea>
+                    <button type="submit" style="width: 100%; margin-top: 14px; height: 46px; background: #dc2626; color: #fff; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 700; cursor: pointer;">Rejeter le dossier</button>
+                </form>
             </div>
+        @elseif($transporteur->statut_verification === 'verifie')
+            <div class="panel" style="background: #f7fff0; border: 1px solid #c7e5a1;">
+                <p style="font-size: 0.88rem; color: #569b00; font-weight: 600; margin: 0 0 14px;"><i class="fas fa-check-circle"></i> Ce dossier a été vérifié et approuvé.</p>
+                <form action="{{ route('admin.transporteurs.reject', $transporteur) }}" method="POST" onsubmit="return confirm('Rejeter ce dossier déjà vérifié ?')">
+                    @csrf
+                    <input type="hidden" name="raison_rejet" value="Dossier réexaminé puis rejeté par l'administration.">
+                    <button type="submit" class="btn-secondary" style="color: #c40000; border-color: #f9c2c2;">Rejeter ce dossier</button>
+                </form>
+            </div>
+        @else
+            <div class="panel" style="background: #fff5f5; border: 1px solid #f9c2c2;">
+                <p style="font-size: 0.88rem; color: #c40000; font-weight: 600; margin: 0 0 14px;"><i class="fas fa-times-circle"></i> Ce dossier a été rejeté.</p>
+                <form action="{{ route('admin.transporteurs.approve', $transporteur) }}" method="POST">
+                    @csrf
+                    <button type="submit" style="height: 42px; padding: 0 22px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-weight: 700; cursor: pointer;">Approuver finalement</button>
+                </form>
+            </div>
+        @endif
+    </div>
 
-            <a href="{{ route('admin.transporteurs.index') }}" 
-               style="display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 0; background: transparent; color: #666; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: opacity 0.2s;" 
-               onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
-                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                Retour
-            </a>
+    {{-- Zone de danger --}}
+    <div class="sec no-print">
+        <h2 class="sec-h" style="border-bottom-color: #c40000; color: #c40000;"><i class="fas fa-exclamation-triangle"></i> Zone de danger</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 14px;">
+            <p style="font-size: 0.83rem; color: #666; margin: 0;">Supprime la fiche transporteur et ses documents. Cette action est irréversible.</p>
+            <form action="{{ route('admin.transporteurs.destroy', $transporteur) }}" method="POST" onsubmit="return confirm('Êtes-vous certain de vouloir supprimer ce transporteur ?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-secondary" style="color: #c40000; border-color: #f9c2c2;">Supprimer définitivement</button>
+            </form>
         </div>
     </div>
+
 </div>
 @endsection

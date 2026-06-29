@@ -55,7 +55,27 @@ class TransporteurController extends Controller
 
         $photoVehicule = $this->resolveDocumentUrl($transporteur->photo_vehicule);
 
-        return view('admin.transporteurs.show', compact('transporteur', 'documents', 'photoVehicule'));
+        // Le pays n'est pas stocké : on le déduit de l'indicatif téléphonique.
+        $pays = $this->paysDepuisTelephone($transporteur->user->telephone ?? null);
+
+        return view('admin.transporteurs.show', compact('transporteur', 'documents', 'photoVehicule', 'pays'));
+    }
+
+    /**
+     * Déduit le pays d'un numéro de téléphone via l'indicatif (phone_code).
+     */
+    private function paysDepuisTelephone(?string $telephone): ?string
+    {
+        if (!$telephone) {
+            return null;
+        }
+
+        return \App\Models\Country::query()
+            ->whereNotNull('phone_code')
+            ->get(['name', 'phone_code'])
+            ->sortByDesc(fn ($c) => strlen($c->phone_code))
+            ->first(fn ($c) => $c->phone_code && str_starts_with($telephone, $c->phone_code))
+            ?->name;
     }
 
     /**
