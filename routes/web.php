@@ -267,8 +267,6 @@ Route::middleware('auth')->group(function () {
                 Route::get('/create', [\App\Http\Controllers\Admin\TransporteurController::class, 'create'])->name('create');
                 Route::post('/', [\App\Http\Controllers\Admin\TransporteurController::class, 'store'])->name('store');
                 Route::get('/{transporteur}', [\App\Http\Controllers\Admin\TransporteurController::class, 'show'])->name('show');
-                Route::get('/{transporteur}/edit', [\App\Http\Controllers\Admin\TransporteurController::class, 'edit'])->name('edit');
-                Route::put('/{transporteur}', [\App\Http\Controllers\Admin\TransporteurController::class, 'update'])->name('update');
                 Route::delete('/{transporteur}', [\App\Http\Controllers\Admin\TransporteurController::class, 'destroy'])->name('destroy');
                 Route::post('/{transporteur}/approve', [\App\Http\Controllers\Admin\TransporteurController::class, 'approve'])->name('approve');
                 Route::post('/{transporteur}/reject', [\App\Http\Controllers\Admin\TransporteurController::class, 'reject'])->name('reject');

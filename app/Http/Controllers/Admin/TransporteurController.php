@@ -200,59 +200,6 @@ class TransporteurController extends Controller
     }
 
     /**
-     * Show the form for editing.
-     */
-    public function edit(Transporteur $transporteur)
-    {
-        return view('admin.transporteurs.edit', compact('transporteur'));
-    }
-
-    /**
-     * Update the transporteur.
-     */
-    public function update(Request $request, Transporteur $transporteur)
-    {
-        $validated = $request->validate([
-            'type_vehicule' => 'required|string|max:255',
-            'marque_vehicule' => 'required|string|max:255',
-            'modele_vehicule' => 'required|string|max:255',
-            'immatriculation' => 'required|string|max:255|unique:transporteurs,immatriculation,' . $transporteur->id,
-            'numero_permis' => 'nullable|string|max:255',
-            'photo_vehicule' => 'nullable|image|max:5120',
-            'permis_recto' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-        ]);
-
-        $data = $validated;
-
-        // Upload des fichiers
-        if ($request->hasFile('photo_vehicule')) {
-            // Optionnel : supprimer l'ancienne photo
-            if ($transporteur->photo_vehicule) {
-                $this->documentUploadService->deleteDocument($transporteur->photo_vehicule);
-            }
-            $data['photo_vehicule'] = $this->documentUploadService->uploadTransporteurDocument(
-                $request->file('photo_vehicule'), 'vehicule', $transporteur->user_id
-            );
-        }
-
-        if ($request->hasFile('permis_recto')) {
-            // Optionnel : supprimer l'ancien permis
-            if ($transporteur->permis_recto) {
-                $this->documentUploadService->deleteDocument($transporteur->permis_recto);
-            }
-            $data['permis_recto'] = $this->documentUploadService->uploadTransporteurDocument(
-                $request->file('permis_recto'), 'permis', $transporteur->user_id
-            );
-        }
-
-        $transporteur->update(array_merge($data, [
-            'actif' => $request->has('actif')
-        ]));
-
-        return redirect()->route('admin.transporteurs.index')->with('success', 'Transporteur mis à jour avec succès.');
-    }
-
-    /**
      * Remove the transporteur.
      */
     public function destroy(Transporteur $transporteur)
