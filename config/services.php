@@ -76,6 +76,10 @@ return [
     */
     'partenaire' => [
         'url' => env('KARNOU_PWA_URL', env('APP_URL')),
+        // Chemin absolu vers le disque public de karnou-pwa (storage/app/public).
+        // Permet au hub de servir les documents partenaire depuis le disque
+        // partagé du serveur. Défaut : projet karnou-pwa frère du hub.
+        'path' => env('KARNOU_PWA_PATH'),
     ],
 
 ];

@@ -88,9 +88,8 @@ class LivreurController extends Controller
             return null;
         }
 
-        $base = rtrim((string) config('services.partenaire.url'), '/');
-
-        return $base . '/storage/' . ltrim($path, '/');
+        // Servi par le hub depuis le disque partagé (route admin authentifiée).
+        return route('admin.partenaire-document', ['path' => ltrim($path, '/')]);
     }
 
     /**

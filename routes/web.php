@@ -274,6 +274,10 @@ Route::middleware('auth')->group(function () {
                 Route::post('/{transporteur}/reject', [\App\Http\Controllers\Admin\TransporteurController::class, 'reject'])->name('reject');
             });
 
+            // Service des documents PWA partenaire (lecture sur disque partagé, accès admin)
+            Route::get('partenaire-document/{path}', [\App\Http\Controllers\Admin\PartenaireDocumentController::class, 'show'])
+                ->where('path', '.*')->name('partenaire-document');
+
             Route::prefix('livreurs')->name('livreurs.')->group(function () {
                 Route::get('/', [\App\Http\Controllers\Admin\LivreurController::class, 'index'])->name('index');
                 Route::get('/create', [\App\Http\Controllers\Admin\LivreurController::class, 'create'])->name('create');

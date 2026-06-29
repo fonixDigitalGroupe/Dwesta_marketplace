@@ -74,9 +74,8 @@ class TransporteurController extends Controller
         }
 
         if (str_starts_with($path, 'partenaire/')) {
-            $base = rtrim((string) config('services.partenaire.url'), '/');
-
-            return $base . '/storage/' . ltrim($path, '/');
+            // Servi par le hub depuis le disque partagé (route admin authentifiée).
+            return route('admin.partenaire-document', ['path' => ltrim($path, '/')]);
         }
 
         return $this->documentUploadService->getDocumentUrl($path);
