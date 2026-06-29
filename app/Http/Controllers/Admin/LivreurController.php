@@ -41,11 +41,33 @@ class LivreurController extends Controller
         $livreur->load('user');
 
         $documents = [
+            // Documents « hub » (livreur créé côté admin) → disque privé
             'document_recto' => $this->documentUploadService->getDocumentUrl($livreur->document_recto),
             'document_verso' => $this->documentUploadService->getDocumentUrl($livreur->document_verso),
+            // Documents renseignés via la PWA partenaire → disque public de karnou-pwa
+            'document_piece' => $this->pwaPublicUrl($livreur->document_piece),
+            'photo_vehicule' => $this->pwaPublicUrl($livreur->photo_vehicule),
         ];
 
         return view('admin.livreurs.show', compact('livreur', 'documents'));
+    }
+
+    /**
+     * Construit l'URL publique d'un document téléversé via la PWA partenaire.
+     *
+     * karnou-pwa stocke ces fichiers sur son disque "public" (partenaire/...).
+     * Le hub partage la base mais pas le storage : on préfixe donc le chemin
+     * relatif par l'URL publique de la PWA (config services.partenaire.url).
+     */
+    private function pwaPublicUrl(?string $path): ?string
+    {
+        if (!$path) {
+            return null;
+        }
+
+        $base = rtrim((string) config('services.partenaire.url'), '/');
+
+        return $base . '/storage/' . ltrim($path, '/');
     }
 
     /**

@@ -119,45 +119,46 @@
                 </div>
             </div>
 
-            <!-- Card: Documents d'identité -->
+            <!-- Card: Documents fournis (PWA partenaire ou hub) -->
             <div class="amazon-card" style="display: flex; flex-direction: column; margin-bottom: 0;">
-                <h2 class="section-title">Pièce Justificative ({{ $livreur->type_document }})</h2>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div>
-                        <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 8px;">Recto</label>
-                        @if($livreur->document_recto)
-                            <a href="{{ $documents['document_recto'] }}" target="_blank" class="doc-box">
-                                @if(Str::endsWith($livreur->document_recto, '.pdf'))
-                                    <div style="padding: 20px; text-align: center; background: #f8fafc;">
-                                        <i class="far fa-file-pdf" style="font-size: 2rem; color: #ef4444;"></i>
-                                        <div style="font-size: 0.8rem; color: #475569; margin-top: 8px;">Voir le PDF</div>
-                                    </div>
+                <h2 class="section-title">Documents Fournis</h2>
+                @php
+                    $pieceLabel = $livreur->type_piece
+                        ? strtoupper($livreur->type_piece)
+                        : ($livreur->type_document ?? 'Pièce');
+                    $docs = array_values(array_filter([
+                        ['label' => "Pièce d'identité (" . $pieceLabel . ')', 'path' => $livreur->document_piece, 'url' => $documents['document_piece']],
+                        ['label' => 'Pièce — Recto', 'path' => $livreur->document_recto, 'url' => $documents['document_recto']],
+                        ['label' => 'Pièce — Verso', 'path' => $livreur->document_verso, 'url' => $documents['document_verso']],
+                        ['label' => 'Photo du véhicule', 'path' => $livreur->photo_vehicule, 'url' => $documents['photo_vehicule']],
+                    ], fn ($d) => !empty($d['path'])));
+                @endphp
+
+                @if(count($docs) === 0)
+                    <div class="doc-empty">Aucun document fourni</div>
+                @else
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        @foreach($docs as $doc)
+                            <div>
+                                <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 8px;">{{ $doc['label'] }}</label>
+                                @if($doc['url'])
+                                    <a href="{{ $doc['url'] }}" target="_blank" class="doc-box">
+                                        @if(Str::endsWith(strtolower($doc['path']), '.pdf'))
+                                            <div style="padding: 20px; text-align: center; background: #f8fafc;">
+                                                <i class="far fa-file-pdf" style="font-size: 2rem; color: #ef4444;"></i>
+                                                <div style="font-size: 0.8rem; color: #475569; margin-top: 8px;">Voir le PDF</div>
+                                            </div>
+                                        @else
+                                            <img src="{{ $doc['url'] }}" style="width: 100%; height: 170px; object-fit: cover;">
+                                        @endif
+                                    </a>
                                 @else
-                                    <img src="{{ $documents['document_recto'] }}" style="width: 100%; height: 170px; object-fit: cover;">
+                                    <div class="doc-empty">Fichier introuvable</div>
                                 @endif
-                            </a>
-                        @else
-                            <div class="doc-empty">Non fourni</div>
-                        @endif
+                            </div>
+                        @endforeach
                     </div>
-                    <div>
-                        <label style="display: block; font-size: 0.75rem; color: #999; margin-bottom: 8px;">Verso</label>
-                        @if($livreur->document_verso)
-                            <a href="{{ $documents['document_verso'] }}" target="_blank" class="doc-box">
-                                @if(Str::endsWith($livreur->document_verso, '.pdf'))
-                                    <div style="padding: 20px; text-align: center; background: #f8fafc;">
-                                        <i class="far fa-file-pdf" style="font-size: 2rem; color: #ef4444;"></i>
-                                        <div style="font-size: 0.8rem; color: #475569; margin-top: 8px;">Voir le PDF</div>
-                                    </div>
-                                @else
-                                    <img src="{{ $documents['document_verso'] }}" style="width: 100%; height: 170px; object-fit: cover;">
-                                @endif
-                            </a>
-                        @else
-                            <div class="doc-empty">Non fourni</div>
-                        @endif
-                    </div>
-                </div>
+                @endif
             </div>
         </div>
 
@@ -169,16 +170,28 @@
                 <div class="amazon-card" style="margin-bottom: 0;">
                     <h2 class="section-title">Pièce d'Identité & Véhicule</h2>
                     <div class="info-row">
-                        <span class="info-label">Type de Document</span>
-                        <span class="info-value">{{ strtoupper($livreur->type_document ?? 'N/A') }}</span>
+                        <span class="info-label">Région</span>
+                        <span class="info-value">{{ $livreur->region ?? '-' }}</span>
                     </div>
                     <div class="info-row">
-                        <span class="info-label">Numéro</span>
-                        <span class="info-value">{{ $livreur->numero_document ?? '-' }}</span>
+                        <span class="info-label">Type de Pièce</span>
+                        <span class="info-value">{{ strtoupper($livreur->type_piece ?? $livreur->type_document ?? 'N/A') }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">N° de Pièce</span>
+                        <span class="info-value">{{ $livreur->numero_piece ?? $livreur->numero_document ?? '-' }}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Type de Véhicule</span>
-                        <span class="info-value">{{ $livreur->type_vehicule }}</span>
+                        <span class="info-value">{{ $livreur->type_vehicule ?? '-' }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">N° de Châssis</span>
+                        <span class="info-value">{{ $livreur->numero_chassis ?? '-' }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Immatriculation</span>
+                        <span class="info-value">{{ $livreur->immatriculation ?? '-' }}</span>
                     </div>
                 </div>
 

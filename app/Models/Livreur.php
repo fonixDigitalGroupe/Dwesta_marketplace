@@ -10,6 +10,15 @@ class Livreur extends Model
         'user_id',
         'matricule',
         'type_vehicule',
+        // Champs renseignés via la PWA partenaire (karnou-pwa) — base partagée
+        'region',
+        'photo_vehicule',
+        'numero_chassis',
+        'immatriculation',
+        'type_piece',
+        'numero_piece',
+        'document_piece',
+        // Pièce d'identité « hub » (livreur créé côté admin)
         'type_document',
         'numero_document',
         'document_recto',

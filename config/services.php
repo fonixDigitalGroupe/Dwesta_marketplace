@@ -68,4 +68,14 @@ return [
         'sender_name'   => env('ORANGE_SMS_SENDER_NAME', 'Karnou'),
     ],
 
+    /*
+    | URL publique de la PWA partenaire (karnou-pwa). Les livreurs/transporteurs
+    | y téléversent leurs documents sur le disque "public" (partenaire/...).
+    | Le hub partage la base mais pas le storage : on construit donc les URLs
+    | des documents PWA à partir de cette base. Défaut : l'URL du hub lui-même.
+    */
+    'partenaire' => [
+        'url' => env('KARNOU_PWA_URL', env('APP_URL')),
+    ],
+
 ];
