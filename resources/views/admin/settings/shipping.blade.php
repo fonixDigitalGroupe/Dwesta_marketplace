@@ -31,6 +31,10 @@
 
         /* align-items: stretch => les deux cartes prennent la hauteur de la plus grande */
         .forms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+        .forms-grid .ship-aside { display: flex; flex-direction: column; }
+        .forms-grid .ship-aside form { display: flex; flex-direction: column; flex: 1; }
+        /* pousse le bouton (et la note) vers le bas pour aligner les deux formulaires */
+        .forms-grid .ship-aside form button[type="submit"] { margin-top: auto; }
         @media (max-width: 900px) { .forms-grid { grid-template-columns: 1fr; } }
     </style>
 @endpush
