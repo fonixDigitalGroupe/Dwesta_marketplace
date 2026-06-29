@@ -49,7 +49,30 @@ class LivreurController extends Controller
             'photo_vehicule' => $this->pwaPublicUrl($livreur->photo_vehicule),
         ];
 
-        return view('admin.livreurs.show', compact('livreur', 'documents'));
+        // Le pays n'est pas stocké : comme dans karnou-pwa, on le déduit de
+        // l'indicatif téléphonique du livreur (phone_code du pays).
+        $pays = $this->paysDepuisTelephone($livreur->user->telephone ?? null)
+            ?? $livreur->user->pays;
+
+        return view('admin.livreurs.show', compact('livreur', 'documents', 'pays'));
+    }
+
+    /**
+     * Déduit le pays d'un numéro de téléphone via l'indicatif (phone_code),
+     * en privilégiant l'indicatif le plus long.
+     */
+    private function paysDepuisTelephone(?string $telephone): ?string
+    {
+        if (!$telephone) {
+            return null;
+        }
+
+        return \App\Models\Country::query()
+            ->whereNotNull('phone_code')
+            ->get(['name', 'phone_code'])
+            ->sortByDesc(fn ($c) => strlen($c->phone_code))
+            ->first(fn ($c) => $c->phone_code && str_starts_with($telephone, $c->phone_code))
+            ?->name;
     }
 
     /**

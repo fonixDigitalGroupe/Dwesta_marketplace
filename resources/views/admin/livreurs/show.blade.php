@@ -111,7 +111,7 @@
                 </div>
                 <div class="info-row">
                     <span class="info-label">Pays</span>
-                    <span class="info-value">{{ $livreur->user->pays ?? '-' }}</span>
+                    <span class="info-value">{{ $pays ?? '-' }}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Ville</span>
