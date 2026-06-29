@@ -84,10 +84,11 @@
 <div class="sheet">
 
     {{-- Barre d'actions (non imprimée) --}}
-    <div class="no-print" style="display: flex; justify-content: flex-end; margin-bottom: 24px;">
+    <div class="no-print" style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
         <a href="{{ route('admin.livreurs.index') }}" class="btn-secondary" title="Fermer"
            style="width: 36px; height: 36px; padding: 0; font-size: 1.2rem; line-height: 1;">&times;</a>
     </div>
+    <hr class="no-print" style="border: none; border-top: 1px solid #e6e9ee; margin: 0 0 24px;">
 
     {{-- En-tête du dossier --}}
     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; padding-bottom: 22px; border-bottom: 1px solid #e6e9ee;">
