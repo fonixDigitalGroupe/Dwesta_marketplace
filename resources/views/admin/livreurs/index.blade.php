@@ -182,6 +182,13 @@
                             </td>
                             <td style="padding: 12px 15px; text-align: right;">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                                    <a href="{{ route('admin.livreurs.show', $livreur) }}"
+                                        style="color: #c45500; font-size: 0.8rem; text-decoration: none; font-weight: 600;"
+                                        onmouseover="this.style.textDecoration='underline'"
+                                        onmouseout="this.style.textDecoration='none'">
+                                        Examiner
+                                    </a>
+                                    <span style="color: #ddd;">|</span>
                                     <a href="{{ route('admin.livreurs.edit', $livreur) }}"
                                         style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
                                         onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
