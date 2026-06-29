@@ -97,11 +97,11 @@
         <div style="text-align: right; font-size: 0.95rem; font-weight: 700;">
             <span style="color: #64748b; font-weight: 600;">Statut :</span>
             @if ($livreur->statut_verification === 'en_attente')
-                <span style="color: #f68b1e;">en attente</span>
+                <span style="color: #f68b1e;">En attente</span>
             @elseif ($livreur->statut_verification === 'verifie')
-                <span style="color: #569b00;">vérifié</span>
+                <span style="color: #569b00;">Vérifié</span>
             @else
-                <span style="color: #c40000;">rejeté</span>
+                <span style="color: #c40000;">Rejeté</span>
             @endif
         </div>
     </div>
