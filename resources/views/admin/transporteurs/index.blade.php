@@ -122,14 +122,6 @@
                                         style="color: #c45500; font-size: 0.8rem; text-decoration: none; font-weight: 600;"
                                         onmouseover="this.style.textDecoration='underline'"
                                         onmouseout="this.style.textDecoration='none'">Examiner</a>
-                                    <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.transporteurs.destroy', $transporteur) }}" method="POST" style="display:inline;"
-                                        onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce transporteur ?')">
-                                        @csrf @method('DELETE')
-                                        <button type="submit"
-                                            style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                            onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Supprimer</button>
-                                    </form>
                                 </div>
                             </td>
                         </tr>
