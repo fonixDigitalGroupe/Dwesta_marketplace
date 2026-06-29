@@ -20,7 +20,7 @@
         }
         @media (max-width: 640px) { .sheet { padding: 28px 22px; } }
 
-        .sheet-eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #ea580c; }
+        .sheet-eyebrow { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #0f172a; }
         .sheet-title { font-size: 1.7rem; font-weight: 800; color: #0f172a; margin: 6px 0 10px; line-height: 1.15; }
         .sheet-meta { font-size: 0.85rem; color: #64748b; }
 
@@ -32,7 +32,7 @@
         /* Titres de section façon document */
         .sec { margin-top: 38px; }
         .sec-h { font-size: 0.95rem; font-weight: 800; color: #0f172a; padding-bottom: 8px; border-bottom: 2px solid #0f172a; margin-bottom: 4px; display: flex; align-items: baseline; gap: 10px; }
-        .sec-h .num { color: #ea580c; font-weight: 800; }
+        .sec-h .num { color: #0f172a; font-weight: 800; }
 
         /* Lignes d'information (liste de définitions) */
         .dl { margin: 0; }
