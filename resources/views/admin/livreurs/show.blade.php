@@ -80,9 +80,8 @@
 <div class="sheet">
 
     {{-- Barre d'actions (non imprimée) --}}
-    <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <div class="no-print" style="margin-bottom: 24px;">
         <a href="{{ route('admin.livreurs.index') }}" class="btn-secondary"><i class="fas fa-chevron-left"></i> Retour à la liste</a>
-        <button onclick="window.print()" class="btn-secondary"><i class="fas fa-print"></i> Imprimer</button>
     </div>
 
     {{-- En-tête du dossier --}}
@@ -97,7 +96,7 @@
         <div style="text-align: right; font-size: 0.95rem; font-weight: 700;">
             <span style="color: #64748b; font-weight: 600;">Statut :</span>
             @if ($livreur->statut_verification === 'en_attente')
-                <span style="color: #0f172a;">en attente</span>
+                <span style="color: #f68b1e;">en attente</span>
             @elseif ($livreur->statut_verification === 'verifie')
                 <span style="color: #569b00;">vérifié</span>
             @else
@@ -115,7 +114,6 @@
             <div class="dl-row"><dt>Téléphone</dt><dd>{{ $livreur->user->telephone ?? '—' }}</dd></div>
             <div class="dl-row"><dt>Pays</dt><dd>{{ $pays ?? '—' }}</dd></div>
             <div class="dl-row"><dt>Région</dt><dd>{{ $livreur->region ?? '—' }}</dd></div>
-            <div class="dl-row"><dt>Ville</dt><dd>{{ $livreur->user->ville ?? '—' }}</dd></div>
         </dl>
     </div>
 
