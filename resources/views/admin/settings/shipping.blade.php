@@ -29,7 +29,8 @@
         input, select { width: 100%; padding: 8px 12px; border: 1px solid #dee2e6; border-radius: 4px; font-size: 0.85rem; outline: none; transition: all 0.2s; }
         input:focus, select:focus { border-color: #ff9900 !important; box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.15); }
 
-        .forms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+        /* align-items: stretch => les deux cartes prennent la hauteur de la plus grande */
+        .forms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
         @media (max-width: 900px) { .forms-grid { grid-template-columns: 1fr; } }
     </style>
 @endpush
