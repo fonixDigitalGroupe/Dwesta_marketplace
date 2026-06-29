@@ -70,13 +70,14 @@ class ShippingRuleController extends Controller
     {
         $validated = $request->validate([
             'country_id' => 'required|exists:countries,id',
+            'delivery_type' => 'required|in:livraison_domicile,retrait_point_relais',
             'same_region_price' => 'required|numeric|min:0',
             'inter_region_price' => 'required|numeric|min:0',
             'delivery_delay' => 'nullable|string|max:100',
         ]);
 
         InterRegionTariff::updateOrCreate(
-            ['country_id' => $validated['country_id']],
+            ['country_id' => $validated['country_id'], 'delivery_type' => $validated['delivery_type']],
             [
                 'same_region_price' => $validated['same_region_price'],
                 'inter_region_price' => $validated['inter_region_price'],

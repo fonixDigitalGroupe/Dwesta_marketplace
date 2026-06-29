@@ -126,6 +126,14 @@
                         </div>
 
                         <div class="form-row">
+                            <label class="field-label">Mode de Livraison</label>
+                            <select name="delivery_type" required>
+                                <option value="livraison_domicile">Livraison à domicile</option>
+                                <option value="retrait_point_relais">Point Relais</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
                             <label class="field-label">Prix même région (FCFA)</label>
                             <input type="number" name="same_region_price" value="0" min="0" required>
                         </div>
@@ -237,7 +245,8 @@
             <table style="width: 100%; border-collapse: collapse; border: 1px solid #eff3f6; table-layout: fixed;">
                 <thead>
                     <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 180px;">Pays</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 160px;">Pays</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Type</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Même région</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Régions différentes</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Délai</th>
@@ -251,6 +260,11 @@
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #111; border-right: 1px solid #eff3f6;">
                                 {{ $tarif->country->flag ?? '🌍' }} {{ $tarif->country->name ?? '—' }}
+                            </td>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
+                                <span class="badge {{ $tarif->delivery_type == 'livraison_domicile' ? 'badge-domicile' : 'badge-relais' }}">
+                                    {{ $tarif->delivery_type == 'livraison_domicile' ? 'À Domicile' : 'Point Relais' }}
+                                </span>
                             </td>
                             <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #1e293b; text-align: center; border-right: 1px solid #eff3f6;">{{ number_format($tarif->same_region_price, 0, ',', ' ') }} F</td>
                             <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #1e293b; text-align: center; border-right: 1px solid #eff3f6;">{{ number_format($tarif->inter_region_price, 0, ',', ' ') }} F</td>
@@ -281,7 +295,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
+                            <td colspan="7" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
                                 Aucun tarif inter-régions configuré.
                             </td>
                         </tr>
