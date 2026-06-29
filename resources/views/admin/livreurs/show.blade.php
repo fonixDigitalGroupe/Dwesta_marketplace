@@ -110,8 +110,12 @@
                     <span class="info-value">{{ $livreur->user->telephone ?? '-' }}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Pays / Ville</span>
-                    <span class="info-value">{{ $livreur->user->nationalite ?? '-' }} / {{ $livreur->user->ville ?? '-' }}</span>
+                    <span class="info-label">Pays</span>
+                    <span class="info-value">{{ $livreur->user->pays ?? '-' }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Ville</span>
+                    <span class="info-value">{{ $livreur->user->ville ?? '-' }}</span>
                 </div>
                 <div class="info-row">
                     <span class="info-label">Inscrit le</span>
