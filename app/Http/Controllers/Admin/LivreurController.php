@@ -186,54 +186,6 @@ class LivreurController extends Controller
     }
 
     /**
-     * Show the form for editing.
-     */
-    public function edit(Livreur $livreur)
-    {
-        return view('admin.livreurs.edit', compact('livreur'));
-    }
-
-    /**
-     * Update the livreur.
-     */
-    public function update(Request $request, Livreur $livreur)
-    {
-        $validated = $request->validate([
-            'type_vehicule' => 'required|in:Moto,Voiture',
-            'type_document' => 'required|in:CNI,Passport,Titre de séjour',
-            'numero_document' => 'nullable|string|max:255',
-            'document_recto' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-            'document_verso' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:5120',
-        ]);
-
-        $data = $validated;
-
-        if ($request->hasFile('document_recto')) {
-            if ($livreur->document_recto) {
-                $this->documentUploadService->deleteDocument($livreur->document_recto);
-            }
-            $data['document_recto'] = $this->documentUploadService->uploadLivreurDocument(
-                $request->file('document_recto'), 'kyc', $livreur->user_id
-            );
-        }
-
-        if ($request->hasFile('document_verso')) {
-            if ($livreur->document_verso) {
-                $this->documentUploadService->deleteDocument($livreur->document_verso);
-            }
-            $data['document_verso'] = $this->documentUploadService->uploadLivreurDocument(
-                $request->file('document_verso'), 'kyc', $livreur->user_id
-            );
-        }
-
-        $livreur->update(array_merge($data, [
-            'actif' => $request->has('actif')
-        ]));
-
-        return redirect()->route('admin.livreurs.index')->with('success', 'Livreur mis à jour avec succès.');
-    }
-
-    /**
      * Remove the livreur.
      */
     public function destroy(Livreur $livreur)

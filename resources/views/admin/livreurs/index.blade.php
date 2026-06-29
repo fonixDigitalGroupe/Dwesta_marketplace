@@ -123,11 +123,6 @@
                                         onmouseover="this.style.textDecoration='underline'"
                                         onmouseout="this.style.textDecoration='none'">Examiner</a>
                                     <span style="color: #ddd;">|</span>
-                                    <a href="{{ route('admin.livreurs.edit', $livreur) }}"
-                                        style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
-                                        onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
-                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">Modifier</a>
-                                    <span style="color: #ddd;">|</span>
                                     <form action="{{ route('admin.livreurs.destroy', $livreur) }}" method="POST" style="display:inline;"
                                         onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce livreur ?')">
                                         @csrf @method('DELETE')

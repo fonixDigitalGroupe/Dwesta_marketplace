@@ -283,8 +283,6 @@ Route::middleware('auth')->group(function () {
                 Route::get('/create', [\App\Http\Controllers\Admin\LivreurController::class, 'create'])->name('create');
                 Route::post('/', [\App\Http\Controllers\Admin\LivreurController::class, 'store'])->name('store');
                 Route::get('/{livreur}', [\App\Http\Controllers\Admin\LivreurController::class, 'show'])->name('show');
-                Route::get('/{livreur}/edit', [\App\Http\Controllers\Admin\LivreurController::class, 'edit'])->name('edit');
-                Route::put('/{livreur}', [\App\Http\Controllers\Admin\LivreurController::class, 'update'])->name('update');
                 Route::delete('/{livreur}', [\App\Http\Controllers\Admin\LivreurController::class, 'destroy'])->name('destroy');
                 Route::post('/{livreur}/approve', [\App\Http\Controllers\Admin\LivreurController::class, 'approve'])->name('approve');
                 Route::post('/{livreur}/reject', [\App\Http\Controllers\Admin\LivreurController::class, 'reject'])->name('reject');
