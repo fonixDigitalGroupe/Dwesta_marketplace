@@ -92,8 +92,7 @@ class VendeurController extends Controller
                 $vendeur = Vendeur::create([
                     'user_id' => $user->id,
                     'type' => 'particulier',
-                    'statut_verification' => 'verifie', // Auto-activé comme demandé
-                    'verifie_le' => now(),
+                    'statut_verification' => 'en_attente', // Examiné et vérifié par l'admin
                     'actif' => true,
                 ]);
                 $this->assignDefaultSubscription($vendeur);
@@ -191,8 +190,7 @@ class VendeurController extends Controller
                 $vendeur = Vendeur::create([
                     'user_id' => $user->id,
                     'type' => 'professionnel',
-                    'statut_verification' => 'verifie', // Auto-activé comme demandé
-                    'verifie_le' => now(),
+                    'statut_verification' => 'en_attente', // Examiné et vérifié par l'admin
                     'actif' => true,
                 ]);
                 $this->assignDefaultSubscription($vendeur);
