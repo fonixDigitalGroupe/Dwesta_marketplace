@@ -303,6 +303,13 @@
                 .gc-status-active { background: rgba(255,255,255,0.92); color: #16a34a; }
                 .gc-status-used { background: rgba(255,255,255,0.92); color: #dc2626; }
                 .gc-status-expired { background: rgba(255,255,255,0.85); color: #6b7280; }
+                /* Carte grisée (aucun code saisi) */
+                .gift-card-visual.gc-placeholder { background: linear-gradient(135deg, #e9edf2 0%, #dfe4ea 100%); box-shadow: none; color: #9aa3b0; }
+                .gc-placeholder .gc-brand { color: #b6bdc8; }
+                .gc-placeholder .gc-label { color: #aab2bd; }
+                .gc-placeholder .gc-amount { color: #aab2bd; letter-spacing: 2px; }
+                .gc-placeholder .gc-code { background: rgba(255,255,255,0.7); color: #aab2bd; }
+                .gc-placeholder::after { color: rgba(255,255,255,0.35); }
             </style>
 
             <div class="account-header">
@@ -367,7 +374,14 @@
                         Vérifier
                     </button>
                 </div>
-                <div id="balance-result" style="display: none; margin-top: 1.5rem;"></div>
+                <div id="balance-result" style="margin-top: 1.5rem;">
+                    <div class="gift-card-visual gc-placeholder">
+                        <div class="gc-brand">KARNOU</div>
+                        <div class="gc-label">Solde disponible</div>
+                        <div class="gc-amount">•••• FCFA</div>
+                        <div class="gc-code">XXXX-XXXX-XXXX</div>
+                    </div>
+                </div>
             </div>
 
             {{-- 📜 Historique des cartes --}}
