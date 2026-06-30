@@ -51,20 +51,31 @@ class OtpController extends Controller
             return back()->withErrors(['otp' => 'Le code a expiré. Veuillez en demander un nouveau.']);
         }
 
-        // 3. Création RÉELLE de l'utilisateur
-        $user = User::create([
-            'prenom'       => 'Utilisateur',
-            'nom'          => 'Karnou',
-            'email'        => $regInfo['email'],
-            'telephone'    => $regInfo['telephone'],
-            'password'     => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(12)),
-            'is_active'    => true, // Activé par défaut comme demandé par le client
-            'email_verified_at' => now(), 
-        ]);
+        // 3. Création (ou récupération) de l'utilisateur — idempotent :
+        //    si une tentative précédente a déjà créé le compte, on le réutilise
+        //    au lieu de planter sur l'email/téléphone déjà existant.
+        $user = User::query()
+            ->when(!empty($regInfo['email']), fn($q) => $q->orWhere('email', $regInfo['email']))
+            ->when(!empty($regInfo['telephone']), fn($q) => $q->orWhere('telephone', $regInfo['telephone']))
+            ->first();
+
+        if (!$user) {
+            $user = User::create([
+                'prenom'       => 'Utilisateur',
+                'nom'          => 'Karnou',
+                'email'        => $regInfo['email'],
+                'telephone'    => $regInfo['telephone'],
+                'password'     => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(12)),
+                'is_active'    => true, // Activé par défaut comme demandé par le client
+                'email_verified_at' => now(),
+            ]);
+        }
 
         // S'assure que le rôle existe (évite une erreur si non encore seedé en prod)
         \Spatie\Permission\Models\Role::findOrCreate('acheteur', 'web');
-        $user->assignRole('acheteur');
+        if (!$user->hasRole('acheteur')) {
+            $user->assignRole('acheteur');
+        }
 
         // Nettoyer la session
         session()->forget('reg_info');
