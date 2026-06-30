@@ -857,6 +857,7 @@
                         <input type="hidden" name="adresse_livraison" value="{{ $user->adresse }}">
                         <input type="hidden" name="gestion_paiement" id="gestion_paiement" value="livraison_buyer">
                         <input type="hidden" name="moyen_paiement" id="moyen_paiement" value="">
+                        <input type="hidden" name="phone_number" id="phone_number" value="{{ $user->telephone }}">
                         <input type="hidden" name="applied_gift_card_code" id="applied_gift_card_code" value="">
 
                         <!-- Bouton Confirmer le mode de livraison -->
