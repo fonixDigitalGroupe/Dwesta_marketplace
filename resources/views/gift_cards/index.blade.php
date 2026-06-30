@@ -401,11 +401,15 @@
             <h2 class="section-title">Vérifier le solde</h2>
             <div style="background: #fff; padding: 1.5rem; border-radius: 12px; margin-bottom: 3rem; border: 1px solid #f0f0f0;">
                 <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">Entrez le code de votre carte pour consulter son solde et son état.</p>
-                <div style="display: flex; gap: 0.75rem; max-width: 500px;">
-                    <input type="text" id="balance-code-input"
-                        placeholder="XXXX-XXXX-XXXX-XXXX"
-                        oninput="this.value = this.value.toUpperCase()"
-                        style="flex: 1; padding: 0.75rem 1rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 0.9rem; outline: none; background: #f9fafb; font-family: monospace; font-weight: 700; letter-spacing: 1px;">
+                <div style="display: flex; gap: 0.75rem; max-width: 560px; align-items: center; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        @php $segStyle = 'width: 5.2rem; text-align: center; padding: 0.75rem 0.5rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1rem; outline: none; background: #f9fafb; font-family: monospace; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;'; @endphp
+                        <input type="text" class="gc-seg" data-index="0" maxlength="4" placeholder="XXXX" autocomplete="off" style="{{ $segStyle }}">
+                        <span style="color: #9ca3af; font-weight: 700;">-</span>
+                        <input type="text" class="gc-seg" data-index="1" maxlength="4" placeholder="XXXX" autocomplete="off" style="{{ $segStyle }}">
+                        <span style="color: #9ca3af; font-weight: 700;">-</span>
+                        <input type="text" class="gc-seg" data-index="2" maxlength="4" placeholder="XXXX" autocomplete="off" style="{{ $segStyle }}">
+                    </div>
                     <button type="button" onclick="checkGiftCardBalance()"
                         style="background: #004aad; color: white; border: none; border-radius: 8px; padding: 0.75rem 1.5rem; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: background 0.2s;">
                         Vérifier
@@ -454,10 +458,40 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+function getGiftCardCode() {
+    return Array.from(document.querySelectorAll('.gc-seg'))
+        .map(i => i.value.trim().toUpperCase())
+        .join('-');
+}
+
+// Comportement des cases : majuscules, passage auto, retour arrière, collage.
+document.addEventListener('DOMContentLoaded', function () {
+    const segs = Array.from(document.querySelectorAll('.gc-seg'));
+    segs.forEach((seg, idx) => {
+        seg.addEventListener('input', function () {
+            this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (this.value.length >= 4 && idx < segs.length - 1) segs[idx + 1].focus();
+        });
+        seg.addEventListener('keydown', function (e) {
+            if (e.key === 'Backspace' && this.value.length === 0 && idx > 0) segs[idx - 1].focus();
+        });
+        seg.addEventListener('paste', function (e) {
+            e.preventDefault();
+            const parts = (e.clipboardData.getData('text') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').match(/.{1,4}/g) || [];
+            segs.forEach((s, i) => s.value = parts[i] || '');
+            (segs[parts.length - 1] || segs[segs.length - 1]).focus();
+        });
+    });
+});
+
 async function checkGiftCardBalance() {
-    const code = document.getElementById('balance-code-input').value.trim();
+    const code = getGiftCardCode();
     const resultBox = document.getElementById('balance-result');
-    if (!code) return;
+    if (code.replace(/-/g, '').length < 12) {
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = '<div style="text-align:center; padding:1rem; color:#c40000;">Veuillez saisir les 3 groupes du code.</div>';
+        return;
+    }
 
     resultBox.style.display = 'block';
     resultBox.innerHTML = '<div style="text-align:center; padding:1rem; color:#666;"><i class="fas fa-spinner fa-spin"></i> Vérification...</div>';
