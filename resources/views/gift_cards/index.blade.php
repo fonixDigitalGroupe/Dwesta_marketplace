@@ -353,9 +353,9 @@
             <h2 class="section-title">Vérifier le solde</h2>
             <div style="background: #fff; padding: 1.5rem; border-radius: 12px; margin-bottom: 3rem; border: 1px solid #f0f0f0;">
                 <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">Entrez le code de votre carte pour consulter son solde et son état.</p>
-                <div style="display: flex; gap: 0.75rem; max-width: 560px; align-items: center; flex-wrap: wrap;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        @php $segStyle = 'width: 5.2rem; text-align: center; padding: 0.75rem 0.5rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1rem; outline: none; background: #f9fafb; font-family: monospace; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;'; @endphp
+                <div style="display: flex; gap: 0.75rem; max-width: 780px; align-items: center; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 240px;">
+                        @php $segStyle = 'flex: 1; min-width: 0; text-align: center; padding: 0.85rem 0.5rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1.05rem; outline: none; background: #f9fafb; font-family: monospace; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;'; @endphp
                         <input type="text" class="gc-seg" data-index="0" maxlength="4" placeholder="XXXX" autocomplete="off" style="{{ $segStyle }}">
                         <span style="color: #9ca3af; font-weight: 700;">-</span>
                         <input type="text" class="gc-seg" data-index="1" maxlength="4" placeholder="XXXX" autocomplete="off" style="{{ $segStyle }}">
