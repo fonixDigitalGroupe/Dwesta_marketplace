@@ -498,8 +498,11 @@
         .message-wrapper { max-width: 100% !important; width: 100% !important; }
         .message-card { max-width: 96% !important; }
         .messages-viewport { padding: 16px 10px !important; }
-        /* Champ de saisie plus large en mobile (réduit le padding du composer) */
-        .chat-input-box { padding-left: 10px !important; padding-right: 10px !important; }
+        /* Zone de discussion quasi pleine largeur en mobile :
+           on réduit le padding des conteneurs parents et du composer. */
+        .dashboard-container { padding-left: 0 !important; padding-right: 0 !important; }
+        .main-content { padding-left: 6px !important; padding-right: 6px !important; }
+        .chat-input-box { padding-left: 8px !important; padding-right: 8px !important; }
     }
     /* Product preview bar in input */
     .product-preview-bar {
