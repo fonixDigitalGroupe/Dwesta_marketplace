@@ -119,18 +119,21 @@ class VendeurController extends Controller
                 ]
             );
 
-            // S'assurer que l'utilisateur a le rôle Vendeur Particulier
+            // S'assurer que le rôle existe (évite RoleDoesNotExist si non seedé en prod)
+            \Spatie\Permission\Models\Role::findOrCreate('Vendeur Particulier', 'web');
             if (!$user->hasRole('Vendeur Particulier')) {
                 $user->assignRole('Vendeur Particulier');
             }
 
-            // Notification Admin
-            Mail::to(config('mail.from.address'))->send(new NewVendorNotification($vendeur));
-            
-            // Notification Utilisateur
-            Mail::to($user->email)->send(new VendorApplicationConfirmation($vendeur));
-
             DB::commit();
+
+            // Notifications e-mail : ne doivent pas faire échouer la création
+            try {
+                Mail::to(config('mail.from.address'))->send(new NewVendorNotification($vendeur));
+                Mail::to($user->email)->send(new VendorApplicationConfirmation($vendeur));
+            } catch (\Throwable $mailE) {
+                Log::error('Email vendeur particulier échoué: ' . $mailE->getMessage());
+            }
 
             return redirect()->route('vendeur.show')->with('success', 'Votre demande de compte vendeur a été soumise avec succès ! Un e-mail de confirmation a été envoyé à ' . $user->email . '.');
         } catch (\Exception $e) {
@@ -219,16 +222,21 @@ class VendeurController extends Controller
                 ]
             );
 
-            // Assigner le rôle Vendeur Professionnel
-            $user->assignRole('Vendeur Professionnel');
-
-            // Notification Admin
-            Mail::to(config('mail.from.address'))->send(new NewVendorNotification($vendeur));
-
-            // Notification Utilisateur
-            Mail::to($user->email)->send(new VendorApplicationConfirmation($vendeur));
+            // Assigner le rôle Vendeur Professionnel (créé s'il n'existe pas)
+            \Spatie\Permission\Models\Role::findOrCreate('Vendeur Professionnel', 'web');
+            if (!$user->hasRole('Vendeur Professionnel')) {
+                $user->assignRole('Vendeur Professionnel');
+            }
 
             DB::commit();
+
+            // Notifications e-mail : ne doivent pas faire échouer la création
+            try {
+                Mail::to(config('mail.from.address'))->send(new NewVendorNotification($vendeur));
+                Mail::to($user->email)->send(new VendorApplicationConfirmation($vendeur));
+            } catch (\Throwable $mailE) {
+                Log::error('Email vendeur professionnel échoué: ' . $mailE->getMessage());
+            }
 
             return redirect()->route('vendeur.show')->with('success', 'Votre demande de compte vendeur professionnel a été soumise avec succès ! Un e-mail de confirmation a été envoyé à ' . $user->email . '.');
         } catch (\Exception $e) {
