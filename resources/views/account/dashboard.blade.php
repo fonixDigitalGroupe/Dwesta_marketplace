@@ -622,20 +622,6 @@
 
             @php $u = auth()->user(); @endphp
 
-            {{-- Alerte complétion profil si info manquante --}}
-            @if(!$u->adresse || !$u->latitude || !$u->longitude)
-                <div class="profile-completion-alert">
-                    <i class="fa-solid fa-circle-user"></i>
-                    <div class="alert-content">
-                        <h4>Complétez votre profil !</h4>
-                        <p>Afin de profiter pleinement de Karnou, veuillez renseigner votre adresse et votre position géographique.</p>
-                    </div>
-                    <a href="{{ route('profile.show') }}#profile-geolocation-section" class="btn-complete">
-                        Compléter mon profil
-                    </a>
-                </div>
-            @endif
-
             <div class="jumia-grid">
                 <!-- Informations personnelles -->
                 <div class="jumia-card">
