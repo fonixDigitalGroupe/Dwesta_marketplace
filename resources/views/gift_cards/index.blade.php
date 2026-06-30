@@ -430,6 +430,31 @@ function getGiftCardCode() {
         .join('-');
 }
 
+const GC_PLACEHOLDER_HTML = `
+    <div class="gift-card-visual gc-placeholder">
+        <div class="gc-brand">KARNOU</div>
+        <div class="gc-label">Solde disponible</div>
+        <div class="gc-amount">•••• FCFA</div>
+        <div class="gc-code">XXXX-XXXX-XXXX</div>
+    </div>`;
+
+function showPlaceholderCard() {
+    const box = document.getElementById('balance-result');
+    if (box) box.innerHTML = GC_PLACEHOLDER_HTML;
+}
+
+// Vérifie automatiquement dès que le code est complet, sinon affiche le placeholder.
+let gcCheckTimer = null;
+function maybeAutoCheck() {
+    const full = getGiftCardCode().replace(/-/g, '');
+    clearTimeout(gcCheckTimer);
+    if (full.length === 12) {
+        gcCheckTimer = setTimeout(checkGiftCardBalance, 250);
+    } else {
+        showPlaceholderCard();
+    }
+}
+
 // Comportement des cases : majuscules, passage auto, retour arrière, collage.
 document.addEventListener('DOMContentLoaded', function () {
     const segs = Array.from(document.querySelectorAll('.gc-seg'));
@@ -437,6 +462,7 @@ document.addEventListener('DOMContentLoaded', function () {
         seg.addEventListener('input', function () {
             this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
             if (this.value.length >= 4 && idx < segs.length - 1) segs[idx + 1].focus();
+            maybeAutoCheck();
         });
         seg.addEventListener('keydown', function (e) {
             if (e.key === 'Backspace' && this.value.length === 0 && idx > 0) segs[idx - 1].focus();
@@ -446,6 +472,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const parts = (e.clipboardData.getData('text') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').match(/.{1,4}/g) || [];
             segs.forEach((s, i) => s.value = parts[i] || '');
             (segs[parts.length - 1] || segs[segs.length - 1]).focus();
+            maybeAutoCheck();
         });
     });
 });
@@ -454,8 +481,7 @@ async function checkGiftCardBalance() {
     const code = getGiftCardCode();
     const resultBox = document.getElementById('balance-result');
     if (code.replace(/-/g, '').length < 12) {
-        resultBox.style.display = 'block';
-        resultBox.innerHTML = '<div style="text-align:center; padding:1rem; color:#c40000;">Veuillez saisir les 3 groupes du code.</div>';
+        showPlaceholderCard();
         return;
     }
 
