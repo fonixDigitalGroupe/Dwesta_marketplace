@@ -442,7 +442,7 @@
                                 </p>
                                 
                                 <div class="profile-search-row" style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                                    <input type="text" id="profile-address-search" placeholder="Tapez votre quartier ou adresse (ex: Rufisque Arafat 2)" style="flex: 1; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; min-width: 0;">
+                                    <input type="text" id="profile-address-search" placeholder="Tapez votre quartier ou adresse" style="flex: 1; padding: 0.75rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.9rem; min-width: 0;">
                                     <button type="button" id="btn-profile-search" class="btn-rakuten" style="width: auto; margin: 0; padding: 0 1.5rem;">
                                         <i class="fa-solid fa-magnifying-glass"></i> Rechercher
                                     </button>
