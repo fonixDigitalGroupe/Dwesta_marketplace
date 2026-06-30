@@ -54,13 +54,26 @@ class CheckoutController extends Controller
 
         // Préparer les origines des vendeurs pour le calcul JS
         $sellerOrigins = [];
+        $sellerRegions = [];
         foreach ($cartGrouped as $vendeurId => $items) {
             $vendeur = \App\Models\Vendeur::find($vendeurId);
             $sellerOrigins[$vendeurId] = $this->resolveCountryId($vendeur->user->pays ?? 'Sénégal');
+            $sellerRegions[$vendeurId] = $vendeur->user->region ?? null;
         }
         $userCountryId = $this->resolveCountryId($user->pays ?? 'Sénégal');
+        $userRegion = $user->region ?: $user->ville;
 
-        return view('checkout.step1', compact('cartGrouped', 'subtotal', 'user', 'requiresPointRelais', 'pointRelais', 'shippingRules', 'sellerOrigins', 'userCountryId'));
+        // Tarifs inter-régions (même pays) indexés par country_id, pour le calcul JS
+        $interRegionTariffs = \App\Models\InterRegionTariff::where('is_active', true)
+            ->get()
+            ->keyBy('country_id')
+            ->map(fn ($t) => [
+                'same' => (float) $t->same_region_price,
+                'inter' => (float) $t->inter_region_price,
+                'delay' => $t->delivery_delay,
+            ]);
+
+        return view('checkout.step1', compact('cartGrouped', 'subtotal', 'user', 'requiresPointRelais', 'pointRelais', 'shippingRules', 'sellerOrigins', 'userCountryId', 'sellerRegions', 'userRegion', 'interRegionTariffs'));
     }
 
     private function resolveCountryId(?string $countryName)

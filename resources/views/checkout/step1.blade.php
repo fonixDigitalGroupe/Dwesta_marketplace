@@ -1141,9 +1141,11 @@
     */
         const subtotal = {{ $subtotal }};
         const sellerOrigins = @json($sellerOrigins);
+        const sellerRegions = @json($sellerRegions ?? []);
         const userCountryId = {{ $userCountryId ?? 'null' }};
         const rules = @json($shippingRules);
-        const userRegion = "{{ $user->ville ?? 'Dakar' }}";
+        const interRegionTariffs = @json($interRegionTariffs ?? []);
+        const userRegion = @json($userRegion ?? '');
         let selectedPRRegion = null;
         const CHECKOUT_STATE_KEY = 'dwesta_checkout_state';
 
@@ -1224,6 +1226,23 @@
             return rule;
         }
 
+        // Frais d'un vendeur : même pays -> tarif inter-régions, sinon règle pays -> pays.
+        function getSellerShipping(type, sellerId, region = null) {
+            const sellerCountryId = sellerOrigins[sellerId];
+            const irt = (sellerCountryId && userCountryId && sellerCountryId == userCountryId)
+                ? interRegionTariffs[sellerCountryId] : null;
+
+            if (irt) {
+                const destRegion = (region || userRegion || '').toString().trim().toLowerCase();
+                const sellerRegion = (sellerRegions[sellerId] || '').toString().trim().toLowerCase();
+                const same = destRegion && sellerRegion && destRegion === sellerRegion;
+                return { fee: parseFloat(same ? irt.same : irt.inter) || 0, delay: irt.delay || null };
+            }
+
+            const rule = getRule(type, sellerId, region);
+            return { fee: rule ? parseFloat(rule.price) : 0, delay: rule && rule.delivery_delay ? rule.delivery_delay : null };
+        }
+
         function formatDelay(delay) {
             if (!delay) return null;
             const now = new Date();
@@ -1259,9 +1278,9 @@
             const delayDisplays = document.querySelectorAll('.shipment-delay-value');
 
             sellers.forEach(sellerId => {
-                const rule = getRule(type, sellerId, prRegion);
-                const fee = rule ? parseFloat(rule.price) : 0;
-                const delayRaw = rule && rule.delivery_delay ? rule.delivery_delay : (type === 'domicile' ? '2-4' : '3-5');
+                const shp = getSellerShipping(type, sellerId, prRegion);
+                const fee = shp.fee;
+                const delayRaw = shp.delay || (type === 'domicile' ? '2-4' : '3-5');
                 const delay = formatDelay(delayRaw) || (type === 'domicile' ? '2 à 4 jours' : '3 à 5 jours');
 
                 if (!commonDelay) commonDelay = delay;
@@ -1349,8 +1368,7 @@
                 const region = el.getAttribute('data-region');
                 let totalFee = 0;
                 Object.keys(sellerOrigins).forEach(sellerId => {
-                    const rule = getRule('retrait_point_relais', sellerId, region);
-                    totalFee += rule ? parseFloat(rule.price) : 0;
+                    totalFee += getSellerShipping('retrait_point_relais', sellerId, region).fee;
                 });
                 el.innerText = totalFee.toLocaleString() + ' FCFA';
             });
