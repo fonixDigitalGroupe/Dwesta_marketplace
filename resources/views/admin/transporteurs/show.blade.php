@@ -259,7 +259,7 @@
                     <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 10px;">Champs à revoir</label>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #fff; border: 1px solid #eff3f6; border-radius: 6px; padding: 15px; margin-bottom: 14px;">
                         @php
-                            $fields = ['Pièce d\'identité', 'Permis de conduire', 'Carte grise', 'Assurance', 'Photo véhicule', 'Immatriculation', 'Document illisible', 'Document expiré'];
+                            $fields = ['Prénom / Nom', 'Téléphone', 'Type de pièce', 'Numéro de pièce', 'Type de véhicule', 'Numéro de châssis', 'Immatriculation', 'Portée', 'Pays de départ', 'Pays de destination', 'Pièce justificative', 'Document du véhicule'];
                         @endphp
                         @foreach($fields as $field)
                             <label style="display: flex; align-items: start; gap: 8px; font-size: 0.8rem; cursor: pointer; line-height: 1.3;">
