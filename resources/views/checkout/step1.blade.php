@@ -1191,7 +1191,8 @@
                     toggleDeliveryOptions();
                 }
 
-                if (state.voucherCode) document.getElementById('voucher_code').value = state.voucherCode;
+                // Le champ code promo reste toujours vide au chargement.
+                document.getElementById('voucher_code').value = '';
 
                 if (state.step >= 2) confirmDelivery(true);
                 if (state.step >= 3 && state.paymentMode) {
