@@ -387,6 +387,9 @@ class CheckoutController extends Controller
                 'last_gestion_paiement' => $gestionPaiement,
             ]);
 
+            // La commande est créée : on vide le panier dès maintenant (toutes méthodes).
+            $this->cartService->clear();
+
             if ($gestionPaiement === 'commande' && in_array($moyenPaiement, ['cb', 'om', 'wave', 'free', 'wallet', 'gift_card'])) {
                 $totalCombined = collect($orders)->sum('total_final');
                 

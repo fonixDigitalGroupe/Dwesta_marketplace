@@ -453,14 +453,25 @@ class VendeurController extends Controller
 
         $vendeur = $user->vendeur;
 
-        // Récupérer toutes les commandes passées chez ce vendeur
+        // Une commande payée en ligne (mobile money, CB…) non encore confirmée
+        // reste "en_attente" : elle ne doit PAS apparaître chez le vendeur tant
+        // qu'elle n'est pas payée. On garde les "en_attente" uniquement pour le
+        // paiement à la livraison (gestion_paiement != 'commande').
         $orders = $vendeur->orders()
+            ->where(function ($w) {
+                $w->where('statut', '!=', 'en_attente')
+                    ->orWhere('gestion_paiement', '!=', 'commande');
+            })
             ->with(['buyer', 'items.annonce'])
             ->latest()
             ->paginate(20);
 
-        // Stats rapides (sur toutes les commandes, pas seulement la page)
-        $allOrders = $vendeur->orders();
+        // Stats rapides (sur toutes les commandes visibles, pas seulement la page)
+        $allOrders = $vendeur->orders()
+            ->where(function ($w) {
+                $w->where('statut', '!=', 'en_attente')
+                    ->orWhere('gestion_paiement', '!=', 'commande');
+            });
         $stats = [
             'total'     => (clone $allOrders)->count(),
             'revenue'   => (clone $allOrders)->sum('total_produits'),
