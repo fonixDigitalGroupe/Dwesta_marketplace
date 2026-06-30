@@ -323,9 +323,9 @@
                     position: absolute; bottom: -24px; left: -8px; font-size: 72px;
                     color: rgba(255,153,0,0.07); transform: rotate(-16deg); pointer-events: none;
                 }
-                .gc-brand { position: absolute; top: 18px; right: 22px; font-size: 16px; font-weight: 900; color: #ff9900; letter-spacing: -0.5px; }
+                .gc-brand { position: absolute; top: 18px; right: 22px; font-size: 16px; font-weight: 900; color: #cbd5e1; letter-spacing: -0.5px; }
                 .gc-label { font-size: 10px; color: #94a3b8; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
-                .gc-code { font-size: 22px; font-weight: 800; letter-spacing: 5px; color: #0f172a; font-family: 'Courier New', monospace; margin: 6px 0 18px 0; }
+                .gc-code { font-size: 22px; font-weight: 800; letter-spacing: 5px; color: #0f172a; font-family: 'Courier New', monospace; margin: 6px 0 18px 0; background: #f1f5f9; padding: 8px 14px; border-radius: 8px; display: inline-block; }
                 .gc-row { display: flex; gap: 40px; align-items: flex-end; }
                 .gc-amount { font-size: 28px; font-weight: 800; color: #ff7a00; }
                 .gc-expiry { font-size: 12px; color: #94a3b8; }
@@ -517,8 +517,7 @@ async function checkGiftCardBalance() {
                             <div style="font-size:16px; color:#64748b; font-weight:600;">${data.amount.toLocaleString('fr-FR')} FCFA</div>
                         </div>` : ''}
                     </div>
-                    ${data.amount > 0 ? `<div class="gc-balance-bar-wrap" style="margin-top:14px;"><div class="gc-balance-bar" style="width:${pct}%;"></div></div>` : ''}
-                    <div>
+                    <div style="margin-top:14px;">
                         <span class="gc-status-badge ${statusClass}">${statusLabel}</span>
                         ${expiryText ? `<span style="font-size:11px; color:#94a3b8; margin-left:10px;">${expiryText}</span>` : ''}
                     </div>
