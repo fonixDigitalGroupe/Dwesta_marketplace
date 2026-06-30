@@ -369,10 +369,6 @@
                         <span style="color: #9ca3af; font-weight: 700;">-</span>
                         <input type="text" class="gc-seg" data-index="2" maxlength="4" placeholder="XXXX" autocomplete="off" style="{{ $segStyle }}">
                     </div>
-                    <button type="button" onclick="checkGiftCardBalance()"
-                        style="background: #004aad; color: white; border: none; border-radius: 8px; padding: 0.75rem 1.5rem; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: background 0.2s;">
-                        Vérifier
-                    </button>
                 </div>
                 <div id="balance-result" style="margin-top: 1.5rem;">
                     <div class="gift-card-visual gc-placeholder">
