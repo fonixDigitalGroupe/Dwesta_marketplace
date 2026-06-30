@@ -63,14 +63,15 @@ class CheckoutController extends Controller
         $userCountryId = $this->resolveCountryId($user->pays ?? 'Sénégal');
         $userRegion = $user->region ?: $user->ville;
 
-        // Tarifs inter-régions (même pays) indexés par country_id, pour le calcul JS
+        // Tarifs inter-régions (même pays) indexés par "country_id|delivery_type"
         $interRegionTariffs = \App\Models\InterRegionTariff::where('is_active', true)
             ->get()
-            ->keyBy('country_id')
-            ->map(fn ($t) => [
-                'same' => (float) $t->same_region_price,
-                'inter' => (float) $t->inter_region_price,
-                'delay' => $t->delivery_delay,
+            ->mapWithKeys(fn ($t) => [
+                $t->country_id . '|' . $t->delivery_type => [
+                    'same' => (float) $t->same_region_price,
+                    'inter' => (float) $t->inter_region_price,
+                    'delay' => $t->delivery_delay,
+                ],
             ]);
 
         return view('checkout.step1', compact('cartGrouped', 'subtotal', 'user', 'requiresPointRelais', 'pointRelais', 'shippingRules', 'sellerOrigins', 'userCountryId', 'sellerRegions', 'userRegion', 'interRegionTariffs'));
@@ -100,6 +101,7 @@ class CheckoutController extends Controller
         // Même pays → on s'appuie sur le tarif inter-régions configuré par l'admin.
         if ($destCountryId && $sourceCountryId && (int) $destCountryId === (int) $sourceCountryId) {
             $tarif = \App\Models\InterRegionTariff::where('country_id', $destCountryId)
+                ->where('delivery_type', $mode)
                 ->where('is_active', true)
                 ->first();
 

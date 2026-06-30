@@ -1230,7 +1230,7 @@
         function getSellerShipping(type, sellerId, region = null) {
             const sellerCountryId = sellerOrigins[sellerId];
             const irt = (sellerCountryId && userCountryId && sellerCountryId == userCountryId)
-                ? interRegionTariffs[sellerCountryId] : null;
+                ? interRegionTariffs[sellerCountryId + '|' + type] : null;
 
             if (irt) {
                 const destRegion = (region || userRegion || '').toString().trim().toLowerCase();
