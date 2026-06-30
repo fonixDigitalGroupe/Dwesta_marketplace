@@ -285,6 +285,21 @@
             background-color: #e67e00;
             color: #fff !important;
         }
+
+        /* ===== Mobile ===== */
+        @media (max-width: 767px) {
+            /* PAIEMENT au-dessus de LIVRAISON (une seule colonne) */
+            .summary-grid-pro { grid-template-columns: 1fr; gap: 1rem; }
+
+            /* Carte article : image + infos sur une ligne, actions en dessous */
+            .article-flex-pro { flex-wrap: wrap; gap: 1rem; }
+            .article-img-pro { width: 70px; height: 70px; }
+            .article-info-pro { flex: 1 1 calc(100% - 86px); min-width: 0; }
+            .article-info-pro h4 { font-size: 0.92rem; }
+            .article-actions-pro { flex-basis: 100%; min-width: 0; width: 100%; }
+            .article-actions-pro .btn-jumia-orange,
+            .article-actions-pro .btn-jumia-text { width: 100%; box-sizing: border-box; }
+        }
     </style>
 @endpush
 
