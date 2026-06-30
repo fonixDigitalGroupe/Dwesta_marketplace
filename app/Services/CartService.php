@@ -108,7 +108,8 @@ class CartService
         $items = $cart->items()->with(['annonce', 'variante'])->get();
 
         return $items->sum(function ($item) {
-            $prixBase = $item->annonce->prix;
+            // prix_affiche = prix remisé si la promo/campagne est active, sinon prix initial.
+            $prixBase = $item->annonce->prix_affiche;
             $prixExtra = $item->variante ? $item->variante->prix_supplementaire : 0;
             return ($prixBase + $prixExtra) * $item->quantite;
         });
