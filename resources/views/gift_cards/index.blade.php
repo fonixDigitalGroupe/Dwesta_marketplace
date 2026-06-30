@@ -303,6 +303,13 @@
                 .gc-status-active { background: rgba(255,255,255,0.92); color: #16a34a; }
                 .gc-status-used { background: rgba(255,255,255,0.92); color: #dc2626; }
                 .gc-status-expired { background: rgba(255,255,255,0.85); color: #6b7280; }
+                /* Carte grisée (aucun code saisi) */
+                .gift-card-visual.gc-placeholder { background: linear-gradient(135deg, #e9edf2 0%, #dfe4ea 100%); box-shadow: none; color: #9aa3b0; }
+                .gc-placeholder .gc-brand { color: #b6bdc8; }
+                .gc-placeholder .gc-label { color: #aab2bd; }
+                .gc-placeholder .gc-amount { color: #aab2bd; letter-spacing: 2px; }
+                .gc-placeholder .gc-code { background: rgba(255,255,255,0.7); color: #aab2bd; }
+                .gc-placeholder::after { color: rgba(255,255,255,0.35); }
             </style>
 
             <div class="account-header">
@@ -355,7 +362,7 @@
                 <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;">Entrez le code de votre carte pour consulter son solde et son état.</p>
                 <div style="display: flex; gap: 0.75rem; max-width: 780px; align-items: center; flex-wrap: wrap;">
                     <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 240px;">
-                        @php $segStyle = 'flex: 1; min-width: 0; text-align: center; padding: 0.85rem 0.5rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1.05rem; outline: none; background: #f9fafb; font-family: monospace; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;'; @endphp
+                        @php $segStyle = 'flex: 1; min-width: 0; text-align: center; padding: 0.45rem 0.5rem; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 1.05rem; outline: none; background: #f9fafb; font-family: monospace; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;'; @endphp
                         <input type="text" class="gc-seg" data-index="0" maxlength="4" placeholder="XXXX" autocomplete="off" style="{{ $segStyle }}">
                         <span style="color: #9ca3af; font-weight: 700;">-</span>
                         <input type="text" class="gc-seg" data-index="1" maxlength="4" placeholder="XXXX" autocomplete="off" style="{{ $segStyle }}">
@@ -368,7 +375,7 @@
                     </button>
                 </div>
                 <div id="balance-result" style="margin-top: 1.5rem;">
-                    <div class="gift-card-visual">
+                    <div class="gift-card-visual gc-placeholder">
                         <div class="gc-brand">KARNOU</div>
                         <div class="gc-label">Solde disponible</div>
                         <div class="gc-amount">•••• FCFA</div>
