@@ -300,19 +300,16 @@
 
                 /* 🎫 Gift Card Visual Visualizing */
                 .gift-card-visual {
-                    background:
-                        radial-gradient(circle at 88% 18%, rgba(255,153,0,0.10), transparent 42%),
-                        radial-gradient(circle at 12% 92%, rgba(255,153,0,0.08), transparent 45%),
-                        #ffffff;
-                    border: 1px solid #ffe6c7;
-                    border-top: 4px solid #ff9900;
-                    border-radius: 18px;
+                    background: #ffffff;
+                    border: 1px solid #eef0f3;
+                    border-top: 3px solid #ff9900;
+                    border-radius: 14px;
                     padding: 26px 30px;
                     color: #1f2937;
                     position: relative;
                     overflow: hidden;
                     margin-top: 1rem;
-                    box-shadow: 0 12px 30px rgba(255, 153, 0, 0.12);
+                    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
                     max-width: 450px;
                 }
                 /* Cadeaux en filigrane dans le fond */
