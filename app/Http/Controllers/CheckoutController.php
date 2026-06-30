@@ -74,6 +74,48 @@ class CheckoutController extends Controller
     }
 
     /**
+     * Calcule les frais de livraison pour un vendeur donné, selon les paramètres
+     * de /admin/shipping :
+     *  - même pays  : tarif inter-régions (même région vs régions différentes)
+     *  - pays diff. : règle pays → pays (ShippingRule)
+     */
+    private function computeShippingFeeForVendeur($vendeur, string $mode, ?int $destCountryId, ?string $destRegion): float
+    {
+        $sourceCountryId = $this->resolveCountryId($vendeur->user->pays ?? 'Sénégal');
+        $sourceRegion = $vendeur->user->region ?? null;
+
+        // Même pays → on s'appuie sur le tarif inter-régions configuré par l'admin.
+        if ($destCountryId && $sourceCountryId && (int) $destCountryId === (int) $sourceCountryId) {
+            $tarif = \App\Models\InterRegionTariff::where('country_id', $destCountryId)
+                ->where('is_active', true)
+                ->first();
+
+            if ($tarif) {
+                $sameRegion = $sourceRegion && $destRegion
+                    && mb_strtolower(trim($sourceRegion)) === mb_strtolower(trim($destRegion));
+
+                return (float) ($sameRegion ? $tarif->same_region_price : $tarif->inter_region_price);
+            }
+            // Pas de tarif inter-régions défini → on retombe sur la règle pays → pays.
+        }
+
+        // Pays différents (ou pas de tarif national) → règle pays → pays.
+        $rule = \App\Models\ShippingRule::active()
+            ->where('delivery_type', $mode)
+            ->where('source_country_id', $sourceCountryId)
+            ->where('destination_country_id', $destCountryId)
+            ->where(function ($q) use ($destRegion) {
+                $q->where('zone_name', $destRegion)
+                    ->orWhereNull('zone_name')
+                    ->orWhere('zone_name', '');
+            })
+            ->orderByRaw("CASE WHEN zone_name = ? THEN 0 ELSE 1 END", [$destRegion])
+            ->first();
+
+        return $rule ? (float) $rule->price : 0;
+    }
+
+    /**
      * Valider l'étape 1 et passer au paiement
      */
     public function postStep1(Request $request)
@@ -98,7 +140,8 @@ class CheckoutController extends Controller
                 $adresse = "Point Relais : " . $pr->nom . " - " . $pr->adresse . " (" . $ville . ")";
             }
         } else {
-            $region = Auth::user()->ville;
+            // Région de l'acheteur (pour le calcul inter-régions national)
+            $region = Auth::user()->region ?: Auth::user()->ville;
         }
 
         $destCountryId = $this->resolveCountryId($destCountryName);
@@ -109,21 +152,10 @@ class CheckoutController extends Controller
 
         foreach ($cartGrouped as $vendeurId => $items) {
             $vendeur = \App\Models\Vendeur::find($vendeurId);
-            $sourceCountryId = $this->resolveCountryId($vendeur->user->pays ?? 'Sénégal');
-
-            $rule = \App\Models\ShippingRule::active()
-                ->where('delivery_type', $request->mode_livraison)
-                ->where('source_country_id', $sourceCountryId)
-                ->where('destination_country_id', $destCountryId)
-                ->where(function ($q) use ($region) {
-                    $q->where('zone_name', $region)
-                        ->orWhereNull('zone_name')
-                        ->orWhere('zone_name', '');
-                })
-                ->orderByRaw("CASE WHEN zone_name = ? THEN 0 ELSE 1 END", [$region])
-                ->first();
-
-            $shippingFee += $rule ? $rule->price : 0;
+            if (!$vendeur) {
+                continue;
+            }
+            $shippingFee += $this->computeShippingFeeForVendeur($vendeur, $request->mode_livraison, $destCountryId, $region);
         }
 
         session([
@@ -284,24 +316,19 @@ class CheckoutController extends Controller
                 });
 
                 $vendeurModel = \App\Models\Vendeur::find($vendeurId);
-                $sourceCountryId = $this->resolveCountryId($vendeurModel->user->pays ?? 'Sénégal');
 
-                // Destination country
+                // Destination country + région
                 if ($mode === 'retrait_point_relais' && isset($pr)) {
                     $destCountryName = $pr->pays ?? 'Sénégal';
+                    $destRegion = $pr->region;
                 } else {
                     $destCountryName = Auth::user()->pays ?? 'Sénégal';
+                    $destRegion = Auth::user()->region ?: Auth::user()->ville;
                 }
                 $destCountryId = $this->resolveCountryId($destCountryName);
 
-                // On cherche la règle spécifique pour ce couple pays source / pays destination
-                $rule = \App\Models\ShippingRule::active()
-                    ->where('delivery_type', $mode)
-                    ->where('source_country_id', $sourceCountryId)
-                    ->where('destination_country_id', $destCountryId)
-                    ->first();
-
-                $fraisPort = $rule ? $rule->price : 0;
+                // Frais selon /admin/shipping : inter-régions (même pays) ou pays → pays.
+                $fraisPort = $this->computeShippingFeeForVendeur($vendeurModel, $mode, $destCountryId, $destRegion);
                 $totalFinal = $totalProduits + $fraisPort;
 
                 $tauxCommission = $vendeurModel && $vendeurModel->abonnementActuel ? $vendeurModel->abonnementActuel->commission : 15;
