@@ -451,7 +451,7 @@
                                 </div>
                                 <div class="price-row-pro">
                                     <span>Frais de livraison</span>
-                                    <span>{{ number_format($order->frais_livraison ?? 0, 0, ',', ' ') }} FCFA</span>
+                                    <span>{{ number_format($order->frais_port ?? 0, 0, ',', ' ') }} FCFA</span>
                                 </div>
                                 <div class="price-row-total-pro">
                                     <span>Total</span>
