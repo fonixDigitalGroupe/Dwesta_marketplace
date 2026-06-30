@@ -67,7 +67,10 @@ class RegisterController extends Controller
             return redirect()->route('account.index');
         }
 
-        $countries = \App\Models\Country::active()->orderBy('name')->get();
+        $countries = \App\Models\Country::active()
+            ->with(['regions' => fn($q) => $q->where('is_active', true)->orderBy('name')])
+            ->orderBy('name')
+            ->get();
         return view('auth.register-complete', compact('countries', 'user'));
     }
 
@@ -78,6 +81,7 @@ class RegisterController extends Controller
             'prenom'   => ['required', 'string', 'max:255'],
             'nom'      => ['required', 'string', 'max:255'],
             'nationalite' => ['required', 'string', 'max:100'],
+            'region'   => ['nullable', 'string', 'max:100'],
             'adresse'  => ['required', 'string', 'max:500'],
             'birth_day'   => ['required', 'numeric', 'between:1,31'],
             'birth_month' => ['required', 'numeric', 'between:1,12'],
@@ -101,6 +105,7 @@ class RegisterController extends Controller
             'nom'          => $request->nom,
             'date_de_naissance' => $date_de_naissance,
             'nationalite'  => $request->nationalite,
+            'region'       => $request->region,
             'adresse'      => $request->adresse,
             'password'     => Hash::make($request->password),
             'is_active'    => true,

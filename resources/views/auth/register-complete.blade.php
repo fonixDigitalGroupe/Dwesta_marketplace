@@ -325,6 +325,34 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="region" class="floating-label" style="position:static; transform:none; display:block; margin-bottom: 0.5rem; font-weight: 600; color: #000;">Région</label>
+                        <select name="region" id="region" class="floating-input" style="padding: 0.75rem;">
+                            <option value="">Sélectionnez d'abord un pays</option>
+                        </select>
+                        @error('region') <div class="error-msg">{{ $message }}</div> @enderror
+                    </div>
+
+                    <script>
+                        const regionsParPays = @json($countries->mapWithKeys(fn($c) => [$c->name => $c->regions->pluck('name')]));
+                        const regionActuelle = @json(old('region'));
+                        function majRegions() {
+                            const pays = document.getElementById('nationalite').value;
+                            const sel = document.getElementById('region');
+                            const regions = regionsParPays[pays] || [];
+                            sel.innerHTML = '<option value="">' + (regions.length ? 'Sélectionnez votre région' : 'Aucune région disponible') + '</option>';
+                            regions.forEach(function (r) {
+                                const opt = document.createElement('option');
+                                opt.value = r;
+                                opt.textContent = r;
+                                if (r === regionActuelle) opt.selected = true;
+                                sel.appendChild(opt);
+                            });
+                        }
+                        document.getElementById('nationalite').addEventListener('change', majRegions);
+                        document.addEventListener('DOMContentLoaded', majRegions);
+                    </script>
+
+                    <div class="form-group">
                         <textarea name="adresse" id="adresse" class="floating-input" placeholder=" " style="height: 80px; padding-top: 1.15rem;" required>{{ old('adresse') }}</textarea>
                         <label for="adresse" class="floating-label">Adresse complète</label>
                         @error('adresse') <div class="error-msg">{{ $message }}</div> @enderror
