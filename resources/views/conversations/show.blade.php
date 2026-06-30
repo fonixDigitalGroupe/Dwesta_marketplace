@@ -498,6 +498,8 @@
         .message-wrapper { max-width: 100% !important; width: 100% !important; }
         .message-card { max-width: 96% !important; }
         .messages-viewport { padding: 16px 10px !important; }
+        /* Champ de saisie plus large en mobile (réduit le padding du composer) */
+        .chat-input-box { padding-left: 10px !important; padding-right: 10px !important; }
     }
     /* Product preview bar in input */
     .product-preview-bar {
