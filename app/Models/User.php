@@ -120,9 +120,15 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function isStaff(): bool
     {
-        $nonStaff = ['vendeur', 'client', 'acheteur', 'transporteur', 'livreur', 'point relais', 'point_relais'];
+        $nonStaff = [
+            'vendeur', 'vendeur particulier', 'vendeur professionnel',
+            'client', 'acheteur', 'transporteur', 'livreur',
+            'point relais', 'point_relais',
+        ];
 
-        return $this->roles->filter(fn ($r) => !in_array($r->name, $nonStaff))->isNotEmpty();
+        return $this->roles
+            ->filter(fn ($r) => !in_array(strtolower($r->name), $nonStaff, true))
+            ->isNotEmpty();
     }
 
     /**
