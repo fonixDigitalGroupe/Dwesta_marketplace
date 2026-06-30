@@ -280,6 +280,9 @@ class PayDunyaCallbackController extends Controller
                     } catch (\Exception $mailException) {
                         Log::error('Gift card email failed: ' . $mailException->getMessage());
                     }
+
+                    // Message interne (messagerie) avec le code de la carte
+                    $this->sendGiftCardMessage($user, $giftCard);
                 }
             }
 
@@ -287,6 +290,53 @@ class PayDunyaCallbackController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
+        }
+    }
+
+    /**
+     * Envoie un message interne (messagerie) à l'acheteur d'une carte cadeau,
+     * depuis le compte officiel Karnou, avec le code et le solde de la carte.
+     * Tolérant aux pannes : n'interrompt jamais le traitement du paiement.
+     */
+    private function sendGiftCardMessage($user, $giftCard): void
+    {
+        try {
+            $karnou = \App\Models\User::where('email', 'admin@karnou.com')->first()
+                ?? \App\Models\User::whereHas('roles', fn ($q) => $q->where('name', 'admin'))->first();
+
+            if (!$karnou || $karnou->id === $user->id) {
+                return;
+            }
+
+            $conversation = \App\Models\Conversation::where(function ($q) use ($karnou, $user) {
+                $q->where('user1_id', $karnou->id)->where('user2_id', $user->id);
+            })->orWhere(function ($q) use ($karnou, $user) {
+                $q->where('user1_id', $user->id)->where('user2_id', $karnou->id);
+            })->first();
+
+            if (!$conversation) {
+                $conversation = \App\Models\Conversation::create([
+                    'user1_id'        => $karnou->id,
+                    'user2_id'        => $user->id,
+                    'last_message_at' => now(),
+                ]);
+            }
+
+            $montant = number_format($giftCard->amount, 0, ',', ' ');
+            $content = "🎁 Votre carte cadeau Karnou de {$montant} FCFA a bien été achetée !\n\n"
+                . "Code de la carte : {$giftCard->code}\n"
+                . "Solde disponible : {$montant} FCFA\n\n"
+                . "Vous pouvez consulter son solde à tout moment depuis la page Cartes cadeaux. Merci de votre confiance !";
+
+            $conversation->messages()->create([
+                'sender_id' => $karnou->id,
+                'content'   => $content,
+                'read_at'   => null,
+            ]);
+
+            $conversation->update(['last_message_at' => now()]);
+        } catch (\Throwable $e) {
+            Log::error('Gift card internal message error: ' . $e->getMessage());
         }
     }
 }
