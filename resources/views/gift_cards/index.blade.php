@@ -307,7 +307,7 @@
                     position: relative;
                     overflow: hidden;
                     margin-top: 1rem;
-                    box-shadow: 0 8px 22px rgba(244, 132, 95, 0.25);
+                    box-shadow: 0 2px 8px rgba(244, 132, 95, 0.15);
                     max-width: 450px;
                 }
                 .gift-card-visual::after {
@@ -499,7 +499,6 @@ async function checkGiftCardBalance() {
                     <div class="gc-amount">${data.balance.toLocaleString('fr-FR')} FCFA</div>
                     <div class="gc-code">${data.code}</div>
                     <div class="gc-foot">
-                        <span class="gc-status-badge ${statusClass}">${statusLabel}</span>
                         ${expiryText ? `<span class="gc-expiry">${expiryText}</span>` : ''}
                         ${data.amount !== data.balance ? `<span class="gc-init">Valeur initiale : ${data.amount.toLocaleString('fr-FR')} FCFA</span>` : ''}
                     </div>
