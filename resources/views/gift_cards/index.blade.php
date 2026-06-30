@@ -300,50 +300,44 @@
 
                 /* 🎫 Gift Card Visual Visualizing */
                 .gift-card-visual {
-                    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-                    border-radius: 16px;
-                    padding: 28px 30px;
-                    color: #fff;
+                    background:
+                        radial-gradient(circle at 88% 18%, rgba(255,153,0,0.10), transparent 42%),
+                        radial-gradient(circle at 12% 92%, rgba(255,153,0,0.08), transparent 45%),
+                        #ffffff;
+                    border: 1px solid #ffe6c7;
+                    border-top: 4px solid #ff9900;
+                    border-radius: 18px;
+                    padding: 26px 30px;
+                    color: #1f2937;
                     position: relative;
                     overflow: hidden;
                     margin-top: 1rem;
-                    box-shadow: 0 4px 16px rgba(15, 52, 96, 0.15);
+                    box-shadow: 0 12px 30px rgba(255, 153, 0, 0.12);
                     max-width: 450px;
                 }
+                /* Cadeaux en filigrane dans le fond */
                 .gift-card-visual::before {
-                    content: '\f06b';
-                    font-family: 'Font Awesome 5 Free';
-                    font-weight: 900;
-                    position: absolute;
-                    top: -20px; right: 20px;
-                    font-size: 80px;
-                    color: rgba(255,255,255,0.03);
-                    transform: rotate(15deg);
-                    pointer-events: none;
+                    content: '\f06b'; font-family: 'Font Awesome 5 Free'; font-weight: 900;
+                    position: absolute; top: -10px; right: 22px; font-size: 90px;
+                    color: rgba(255,153,0,0.10); transform: rotate(14deg); pointer-events: none;
                 }
                 .gift-card-visual::after {
-                    content: '\f06b';
-                    font-family: 'Font Awesome 5 Free';
-                    font-weight: 900;
-                    position: absolute;
-                    bottom: -20px; left: 20px;
-                    font-size: 60px;
-                    color: rgba(255,255,255,0.02);
-                    transform: rotate(-15deg);
-                    pointer-events: none;
+                    content: '\f06b'; font-family: 'Font Awesome 5 Free'; font-weight: 900;
+                    position: absolute; bottom: -24px; left: -8px; font-size: 72px;
+                    color: rgba(255,153,0,0.07); transform: rotate(-16deg); pointer-events: none;
                 }
-                .gc-brand { position: absolute; top: 20px; right: 24px; font-size: 16px; font-weight: 900; color: rgba(255,255,255,0.25); letter-spacing: -1px; }
-                .gc-label { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
-                .gc-code { font-size: 22px; font-weight: 800; letter-spacing: 5px; color: #fff; font-family: 'Courier New', monospace; margin: 6px 0 18px 0; }
+                .gc-brand { position: absolute; top: 18px; right: 22px; font-size: 16px; font-weight: 900; color: #ff9900; letter-spacing: -0.5px; }
+                .gc-label { font-size: 10px; color: #94a3b8; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+                .gc-code { font-size: 22px; font-weight: 800; letter-spacing: 5px; color: #0f172a; font-family: 'Courier New', monospace; margin: 6px 0 18px 0; }
                 .gc-row { display: flex; gap: 40px; align-items: flex-end; }
-                .gc-amount { font-size: 28px; font-weight: 800; color: #3b82f6; }
-                .gc-expiry { font-size: 12px; color: rgba(255,255,255,0.6); }
+                .gc-amount { font-size: 28px; font-weight: 800; color: #ff7a00; }
+                .gc-expiry { font-size: 12px; color: #94a3b8; }
                 .gc-status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-top: 14px; }
-                .gc-status-active { background: rgba(76,175,80,0.25); color: #81C784; border: 1px solid rgba(76,175,80,0.4); }
-                .gc-status-used { background: rgba(244,67,54,0.2); color: #EF9A9A; border: 1px solid rgba(244,67,54,0.3); }
-                .gc-status-expired { background: rgba(158,158,158,0.2); color: #BDBDBD; border: 1px solid rgba(158,158,158,0.3); }
-                .gc-balance-bar-wrap { margin-top: 16px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; height: 6px; }
-                .gc-balance-bar { height: 6px; background: linear-gradient(90deg, #3b82f6, #2563eb); border-radius: 20px; transition: width 0.6s ease; }
+                .gc-status-active { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+                .gc-status-used { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+                .gc-status-expired { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
+                .gc-balance-bar-wrap { margin-top: 16px; background: #fff1e0; border-radius: 20px; overflow: hidden; height: 6px; }
+                .gc-balance-bar { height: 6px; background: linear-gradient(90deg, #ffb347, #ff9900); border-radius: 20px; transition: width 0.6s ease; }
             </style>
 
             <div class="account-header">
@@ -516,20 +510,20 @@ async function checkGiftCardBalance() {
                     <div class="gc-label">Code de la carte</div>
                     <div class="gc-code">${data.code}</div>
                     <div class="gc-row">
-                        <i class="fas fa-gift" style="position: absolute; bottom: 40px; right: 30px; font-size: 40px; color: rgba(255,255,255,0.05); pointer-events: none;"></i>
+                        <i class="fas fa-gift" style="position: absolute; bottom: 40px; right: 30px; font-size: 40px; color: rgba(255,153,0,0.14); pointer-events: none;"></i>
                         <div>
                             <div class="gc-label">Solde disponible</div>
                             <div class="gc-amount">${data.balance.toLocaleString('fr-FR')} FCFA</div>
                         </div>
                         ${data.amount !== data.balance ? `<div>
                             <div class="gc-label">Valeur initiale</div>
-                            <div style="font-size:16px; color:rgba(255,255,255,0.6); font-weight:600;">${data.amount.toLocaleString('fr-FR')} FCFA</div>
+                            <div style="font-size:16px; color:#64748b; font-weight:600;">${data.amount.toLocaleString('fr-FR')} FCFA</div>
                         </div>` : ''}
                     </div>
                     ${data.amount > 0 ? `<div class="gc-balance-bar-wrap" style="margin-top:14px;"><div class="gc-balance-bar" style="width:${pct}%;"></div></div>` : ''}
                     <div>
                         <span class="gc-status-badge ${statusClass}">${statusLabel}</span>
-                        ${expiryText ? `<span style="font-size:11px; color:rgba(255,255,255,0.5); margin-left:10px;">${expiryText}</span>` : ''}
+                        ${expiryText ? `<span style="font-size:11px; color:#94a3b8; margin-left:10px;">${expiryText}</span>` : ''}
                     </div>
                 </div>`;
         } else {
