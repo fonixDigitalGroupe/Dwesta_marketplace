@@ -228,7 +228,7 @@
                     justify-content: center;
                     font-size: 0.9rem;
                 }
-                .tx-icon.in { background: #f0fdf4; color: #16a34a; }
+                .tx-icon.in { background: #f3f4f6; color: #6b7280; }
                 .tx-icon.out { background: #fef2f2; color: #dc2626; }
 
                 .tx-info {
@@ -250,7 +250,7 @@
                     font-weight: 700;
                     text-align: right;
                 }
-                .tx-amount.plus { color: #059669; }
+                .tx-amount.plus { color: #111827; }
                 .tx-amount.minus { color: #111827; }
 
                 @media (max-width: 991px) {
