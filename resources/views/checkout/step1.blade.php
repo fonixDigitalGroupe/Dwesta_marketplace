@@ -716,6 +716,12 @@
 @endpush
 
 @section('content')
+    @if(session('error') || $errors->any())
+        <div style="max-width: 1200px; margin: 16px auto 0; background: #fff5f5; border: 1px solid #f9c2c2; color: #c40000; border-radius: 8px; padding: 12px 16px; font-size: 0.9rem;">
+            <i class="fas fa-exclamation-triangle"></i>
+            {{ session('error') ?? $errors->first() }}
+        </div>
+    @endif
     <div class="checkout-wrapper">
         <div class="checkout-left">
             <!-- 1. ADRESSE CLIENT -->
