@@ -781,6 +781,11 @@
                                         {{-- Actions under message text --}}
                                         <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; padding: {{ $message->annonce ? '8px 16px 12px' : '8px 0 0' }}; margin-top: {{ $message->annonce ? '0' : '4px' }};">
                                             <div style="display: flex; gap: 15px; font-size: 0.72rem; font-weight: 500; color: #64748b;">
+                                                @if($message->content)
+                                                <button type="button" data-share="{{ $message->content }}" onclick="shareMessage(this)" style="background: transparent; border: none; color: inherit; cursor: pointer; padding: 0; font-family: inherit; font-size: inherit; font-weight: inherit; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
+                                                    <i class="fas fa-share-nodes"></i> Partager
+                                                </button>
+                                                @endif
                                                 @if($isMine)
                                                 <form action="{{ route('conversations.messages.destroy', [$conversation, $message, 'layout' => request('layout')]) }}" method="POST" onsubmit="return confirm('Souhaitez-vous vraiment supprimer ce message ?');" style="margin: 0;">
                                                     @csrf
@@ -893,6 +898,17 @@
 </form>
 
 <script>
+    // Partage d'un message vers une app externe (WhatsApp, etc.)
+    function shareMessage(btn) {
+        const text = (btn.getAttribute('data-share') || '').trim();
+        if (!text) return;
+        if (navigator.share) {
+            navigator.share({ text: text }).catch(function () {});
+        } else {
+            window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+        }
+    }
+
     let deleteUrl = null;
     let isDeletingAnnonce = false;
 
