@@ -692,9 +692,6 @@
                 <h1>Mon Portefeuille</h1>
                 <p>Gérez vos revenus et effectuez vos virements en toute sécurité.</p>
             </div>
-            <div style="font-size: 0.78rem; color: #007185; font-weight: 500; display: flex; align-items: center; gap: 5px; cursor: pointer;">
-                <i class="far fa-question-circle"></i> Comment ça marche ?
-            </div>
         </div>
 
         {{-- Alerts --}}

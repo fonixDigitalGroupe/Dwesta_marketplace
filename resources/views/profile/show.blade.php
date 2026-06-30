@@ -350,7 +350,7 @@
                         <div class="rakuten-field-group">
                             <div class="rakuten-field">
                                 <label class="rakuten-label">Nationalité</label>
-                                <select name="nationalite" class="rakuten-input" style="appearance: none; -webkit-appearance: none; cursor: pointer;">
+                                <select name="nationalite" id="profile-nationalite" class="rakuten-input" style="appearance: none; -webkit-appearance: none; cursor: pointer;">
                                     <option value="">Choisir un pays</option>
                                     @php
                                         $currentNationalite = old('nationalite', $user->nationalite);
@@ -363,6 +363,37 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="rakuten-field-group">
+                            <div class="rakuten-field">
+                                <label class="rakuten-label">Région</label>
+                                <select name="region" id="profile-region" class="rakuten-input" style="appearance: none; -webkit-appearance: none; cursor: pointer;">
+                                    <option value="">Choisir d'abord un pays</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <script>
+                            (function () {
+                                const regionsParPays = @json($countries->mapWithKeys(fn($c) => [$c->name => $c->regions->pluck('name')]));
+                                const regionActuelle = @json(old('region', $user->region));
+                                const paysSel = document.getElementById('profile-nationalite');
+                                const regionSel = document.getElementById('profile-region');
+                                function majRegions() {
+                                    const regions = regionsParPays[paysSel.value] || [];
+                                    regionSel.innerHTML = '<option value="">' + (regions.length ? 'Choisir une région' : 'Aucune région disponible') + '</option>';
+                                    regions.forEach(function (r) {
+                                        const opt = document.createElement('option');
+                                        opt.value = r;
+                                        opt.textContent = r;
+                                        if (r === regionActuelle) opt.selected = true;
+                                        regionSel.appendChild(opt);
+                                    });
+                                }
+                                paysSel.addEventListener('change', majRegions);
+                                majRegions();
+                            })();
+                        </script>
 
                         <div class="rakuten-field-group">
                             <div class="rakuten-field">

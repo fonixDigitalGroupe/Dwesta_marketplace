@@ -11,7 +11,10 @@ class ProfileController extends Controller
 {
     public function show()
     {
-        $countries = \App\Models\Country::active()->orderBy('name')->get();
+        $countries = \App\Models\Country::active()
+            ->with(['regions' => fn($q) => $q->where('is_active', true)->orderBy('name')])
+            ->orderBy('name')
+            ->get();
         return view('profile.show', [
             'user' => Auth::user(),
             'countries' => $countries
