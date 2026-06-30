@@ -68,6 +68,7 @@ class OtpController extends Controller
                 'password'     => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(12)),
                 'is_active'    => true, // Activé par défaut comme demandé par le client
                 'email_verified_at' => now(),
+                'credit_balance' => 0, // Solde de départ à 0 à l'inscription
             ]);
         }
 
