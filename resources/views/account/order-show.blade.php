@@ -316,20 +316,20 @@
                     <i class="fas fa-arrow-left"></i>
                     <h2>Détails de la commande</h2>
                 </a>
-                <div class="order-meta-pro" style="display: flex; justify-content: space-between; align-items: flex-end;">
+                <div class="order-meta-pro">
                     <div>
                         <span class="order-ref-pro">Commande n° {{ $order->reference }}</span>
                         {{ $order->items->count() }} @if($order->items->count() > 1) articles @else article @endif<br>
                         Effectuée le {{ $order->created_at->format('d-m-Y') }}<br>
                         Total : {{ number_format($order->total_final ?? $order->total_produits, 0, ',', ' ') }} FCFA
                     </div>
-                    @if(in_array($order->statut, ['en_attente', 'paye', 'pret_expedition']))
-                        <form action="{{ route('account.orders.cancel', $order->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette commande ?')">
-                            @csrf
-                            <button type="submit" class="btn-cancel-pro">Annuler la commande</button>
-                        </form>
-                    @endif
                 </div>
+                @if(in_array($order->statut, ['en_attente', 'paye', 'pret_expedition']))
+                    <form action="{{ route('account.orders.cancel', $order->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir annuler cette commande ?')" style="margin-top: 1.25rem;">
+                        @csrf
+                        <button type="submit" class="btn-cancel-pro">Annuler la commande</button>
+                    </form>
+                @endif
             </div>
 
             <div style="padding: 0 1.5rem 2rem 1.5rem; background: #fff;">
