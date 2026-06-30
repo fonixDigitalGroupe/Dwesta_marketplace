@@ -122,97 +122,74 @@
                     max-width: 800px;
                 }
                 .pack-card {
-                    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-                    border-radius: 14px;
-                    padding: 18px 20px;
+                    background: linear-gradient(135deg, #f9b572 0%, #f79d5c 50%, #f4845f 100%);
+                    border-radius: 16px;
+                    padding: 20px 22px;
                     color: #fff;
                     position: relative;
                     overflow: hidden;
                     display: flex;
                     flex-direction: column;
                     min-height: 180px;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                    box-shadow: 0 2px 8px rgba(244, 132, 95, 0.15);
                     text-align: left;
                 }
-                .pack-card::before {
-                    content: '';
-                    position: absolute;
-                    top: -40px; right: -40px;
-                    width: 150px; height: 150px;
-                    background: rgba(255,255,255,0.04);
-                    border-radius: 50%;
-                    pointer-events: none;
-                }
                 .pack-card::after {
-                    content: '';
-                    position: absolute;
-                    bottom: -50px; left: -20px;
-                    width: 180px; height: 180px;
-                    background: rgba(255,255,255,0.03);
-                    border-radius: 50%;
-                    pointer-events: none;
+                    content: '\f06b'; font-family: 'Font Awesome 5 Free'; font-weight: 900;
+                    position: absolute; bottom: -20px; right: -6px; font-size: 80px;
+                    color: rgba(255,255,255,0.12); transform: rotate(-14deg); pointer-events: none;
                 }
                 .pack-brand {
                     position: absolute;
                     top: 15px;
                     right: 18px;
-                    font-size: 11px;
+                    font-size: 12px;
                     font-weight: 900;
-                    color: rgba(255,255,255,0.25);
-                    letter-spacing: -0.5px;
+                    color: rgba(255,255,255,0.7);
+                    letter-spacing: 0.5px;
                 }
                 .pack-label {
-                    font-size: 8px;
-                    color: rgba(255,255,255,0.55);
+                    font-size: 9px;
+                    color: rgba(255,255,255,0.8);
                     letter-spacing: 1.2px;
                     text-transform: uppercase;
-                    margin-bottom: 3px;
+                    margin-bottom: 4px;
                     font-weight: 700;
                 }
                 .pack-value-large {
-                    font-size: 18px;
+                    font-size: 26px;
                     font-weight: 800;
-                    letter-spacing: 1.5px;
                     color: #fff;
-                    font-family: 'Courier New', monospace;
                     margin: 2px 0 10px 0;
-                }
-                .pack-price-gold {
-                    font-size: 20px;
-                    font-weight: 800;
-                    color: #004aad;
-                    margin-top: auto;
+                    line-height: 1;
                 }
                 .pack-bonus-badge {
                     display: inline-block;
-                    padding: 2px 8px;
+                    padding: 3px 10px;
                     border-radius: 20px;
                     font-size: 9px;
                     font-weight: 700;
-                    margin-top: 8px;
-                    background: rgba(246, 139, 30, 0.15);
-                    color: #f68b1e;
-                    border: 1px solid rgba(246, 139, 30, 0.3);
+                    background: rgba(255,255,255,0.92);
+                    color: #b4530a;
                 }
                 .btn-buy-card {
-                    margin-top: 15px;
+                    margin-top: auto;
                     width: 100%;
-                    padding: 0.65rem;
-                    border-radius: 8px;
+                    padding: 0.7rem;
+                    border-radius: 10px;
                     border: none;
-                    background: rgba(255,255,255,0.1);
-                    color: #fff;
-                    font-weight: 700;
-                    font-size: 0.8rem;
+                    background: rgba(255,255,255,0.92);
+                    color: #b4530a;
+                    font-weight: 800;
+                    font-size: 0.82rem;
                     cursor: pointer;
                     transition: all 0.2s;
-                    border: 1px solid rgba(255,255,255,0.2);
                     position: relative;
                     z-index: 5;
                 }
                 .btn-buy-card:hover {
                     background: #fff;
-                    color: #111827;
+                    color: #9a4308;
                 }
 
                 /* 📝 Transactions List */
@@ -350,28 +327,21 @@
                     @foreach($giftCardOptions as $option)
                         <div class="pack-card">
                             <div class="pack-brand">KARNOU</div>
-                            
-                            <div class="pack-label">Type de carte</div>
-                            <div style="font-size: 13px; font-weight: 700; margin-bottom: 8px; color: rgba(255,255,255,0.9);">
-                                Carte Cadeau Premium
-                            </div>
 
-                            <div class="pack-label">Valeur faciale</div>
+                            <div class="pack-label">Carte cadeau</div>
                             <div class="pack-value-large">{{ number_format($option->amount, 0, ',', ' ') }} FCFA</div>
 
-                            <div class="pack-price-gold">{{ number_format($option->amount, 0, ',', ' ') }} FCFA</div>
-
                             @if($option->is_popular)
-                                <div>
+                                <div style="margin-bottom: 10px;">
                                     <span class="pack-bonus-badge">POPULAIRE</span>
                                 </div>
                             @endif
 
-                            <form action="{{ route('gift-cards.buy') }}" method="POST" style="width: 100%;">
+                            <form action="{{ route('gift-cards.buy') }}" method="POST" style="width: 100%; margin-top: auto;">
                                 @csrf
                                 <input type="hidden" name="amount" value="{{ $option->amount }}">
                                 <button type="submit" class="btn-buy-card">
-                                    Offrir ce pack
+                                    Offrir cette carte
                                 </button>
                             </form>
                         </div>
