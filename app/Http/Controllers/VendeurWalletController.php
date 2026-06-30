@@ -29,8 +29,13 @@ class VendeurWalletController extends Controller
         //     return redirect()->route('vendeur.create')->with('info', 'Vous devez être vendeur pour accéder au wallet.');
         // }
 
-        // Revenus disponibles (déjà libérés)
-        $availableBalance = $user->credit_balance;
+        // Revenus disponibles = ventes libérées (escrow) moins retraits.
+        // Basé uniquement sur les transactions : 0 si aucune vente.
+        $availableBalance = (float) Transaction::where('user_id', $user->id)
+            ->where('statut', 'succes')
+            ->whereIn('wallet_status', [Transaction::STATUS_AVAILABLE, Transaction::STATUS_WITHDRAWN])
+            ->sum('montant');
+        $availableBalance = max(0, $availableBalance);
 
         // Revenus en attente (séquestre)
         $pendingTransactions = Transaction::where('user_id', $user->id)
@@ -62,7 +67,13 @@ class VendeurWalletController extends Controller
 
         $user = Auth::user();
 
-        if ($request->montant > $user->credit_balance) {
+        // Solde réellement disponible = ventes libérées moins retraits.
+        $availableBalance = max(0, (float) Transaction::where('user_id', $user->id)
+            ->where('statut', 'succes')
+            ->whereIn('wallet_status', [Transaction::STATUS_AVAILABLE, Transaction::STATUS_WITHDRAWN])
+            ->sum('montant'));
+
+        if ($request->montant > $availableBalance) {
             return back()->with('error', 'Solde insuffisant.');
         }
 
@@ -74,8 +85,8 @@ class VendeurWalletController extends Controller
             ]);
 
             if (isset($response['response_code']) && $response['response_code'] === '00') {
-                // Débit du solde
-                $user->decrement('credit_balance', $request->montant);
+                // Le débit est matérialisé par la transaction de retrait ci-dessous
+                // (montant négatif, wallet_status = withdrawn) qui réduit le solde calculé.
 
                 // Création de la transaction
                 Transaction::create([
