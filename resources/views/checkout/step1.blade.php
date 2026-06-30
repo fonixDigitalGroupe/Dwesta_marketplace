@@ -1228,19 +1228,24 @@
 
         // Frais d'un vendeur : même pays -> tarif inter-régions, sinon règle pays -> pays.
         function getSellerShipping(type, sellerId, region = null) {
-            const sellerCountryId = sellerOrigins[sellerId];
-            const irt = (sellerCountryId && userCountryId && sellerCountryId == userCountryId)
-                ? interRegionTariffs[sellerCountryId + '|' + type] : null;
+            try {
+                const sellerCountryId = sellerOrigins[sellerId];
+                const irt = (sellerCountryId && userCountryId && sellerCountryId == userCountryId)
+                    ? interRegionTariffs[sellerCountryId + '|' + type] : null;
 
-            if (irt) {
-                const destRegion = (region || userRegion || '').toString().trim().toLowerCase();
-                const sellerRegion = (sellerRegions[sellerId] || '').toString().trim().toLowerCase();
-                const same = destRegion && sellerRegion && destRegion === sellerRegion;
-                return { fee: parseFloat(same ? irt.same : irt.inter) || 0, delay: irt.delay || null };
+                if (irt) {
+                    const destRegion = (region || userRegion || '').toString().trim().toLowerCase();
+                    const sellerRegion = (sellerRegions[sellerId] || '').toString().trim().toLowerCase();
+                    const same = destRegion && sellerRegion && destRegion === sellerRegion;
+                    return { fee: parseFloat(same ? irt.same : irt.inter) || 0, delay: irt.delay || null };
+                }
+
+                const rule = getRule(type, sellerId, region);
+                return { fee: rule ? parseFloat(rule.price) : 0, delay: rule && rule.delivery_delay ? rule.delivery_delay : null };
+            } catch (e) {
+                console.error('shipping calc error', e);
+                return { fee: 0, delay: null };
             }
-
-            const rule = getRule(type, sellerId, region);
-            return { fee: rule ? parseFloat(rule.price) : 0, delay: rule && rule.delivery_delay ? rule.delivery_delay : null };
         }
 
         function formatDelay(delay) {

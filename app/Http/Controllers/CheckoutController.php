@@ -95,8 +95,11 @@ class CheckoutController extends Controller
      */
     private function computeShippingFeeForVendeur($vendeur, string $mode, ?int $destCountryId, ?string $destRegion): float
     {
-        $sourceCountryId = $this->resolveCountryId($vendeur->user->pays ?? 'Sénégal');
-        $sourceRegion = $vendeur->user->region ?? null;
+        if (!$vendeur) {
+            return 0;
+        }
+        $sourceCountryId = $this->resolveCountryId(optional($vendeur->user)->pays ?? 'Sénégal');
+        $sourceRegion = optional($vendeur->user)->region;
 
         // Même pays → on s'appuie sur le tarif inter-régions configuré par l'admin.
         if ($destCountryId && $sourceCountryId && (int) $destCountryId === (int) $sourceCountryId) {
