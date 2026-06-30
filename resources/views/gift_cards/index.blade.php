@@ -300,41 +300,32 @@
 
                 /* 🎫 Gift Card Visual Visualizing */
                 .gift-card-visual {
-                    background: #ffffff;
-                    border: 1px solid #eef0f3;
-                    border-top: 3px solid #ff9900;
-                    border-radius: 14px;
-                    padding: 26px 30px;
-                    color: #1f2937;
+                    background: linear-gradient(135deg, #f9b572 0%, #f79d5c 50%, #f4845f 100%);
+                    border-radius: 16px;
+                    padding: 26px 28px;
+                    color: #fff;
                     position: relative;
                     overflow: hidden;
                     margin-top: 1rem;
-                    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+                    box-shadow: 0 8px 22px rgba(244, 132, 95, 0.25);
                     max-width: 450px;
-                }
-                /* Cadeaux en filigrane dans le fond */
-                .gift-card-visual::before {
-                    content: '\f06b'; font-family: 'Font Awesome 5 Free'; font-weight: 900;
-                    position: absolute; top: -10px; right: 22px; font-size: 90px;
-                    color: rgba(255,153,0,0.10); transform: rotate(14deg); pointer-events: none;
                 }
                 .gift-card-visual::after {
                     content: '\f06b'; font-family: 'Font Awesome 5 Free'; font-weight: 900;
-                    position: absolute; bottom: -24px; left: -8px; font-size: 72px;
-                    color: rgba(255,153,0,0.07); transform: rotate(-16deg); pointer-events: none;
+                    position: absolute; bottom: -22px; right: -6px; font-size: 90px;
+                    color: rgba(255,255,255,0.12); transform: rotate(-14deg); pointer-events: none;
                 }
-                .gc-brand { position: absolute; top: 18px; right: 22px; font-size: 16px; font-weight: 900; color: #cbd5e1; letter-spacing: -0.5px; }
-                .gc-label { font-size: 10px; color: #94a3b8; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
-                .gc-code { font-size: 22px; font-weight: 800; letter-spacing: 5px; color: #0f172a; font-family: 'Courier New', monospace; margin: 6px 0 18px 0; background: #f1f5f9; padding: 8px 14px; border-radius: 8px; display: inline-block; }
-                .gc-row { display: flex; gap: 40px; align-items: flex-end; }
-                .gc-amount { font-size: 28px; font-weight: 800; color: #ff7a00; }
-                .gc-expiry { font-size: 12px; color: #94a3b8; }
-                .gc-status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; margin-top: 14px; }
-                .gc-status-active { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
-                .gc-status-used { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
-                .gc-status-expired { background: #f3f4f6; color: #6b7280; border: 1px solid #e5e7eb; }
-                .gc-balance-bar-wrap { margin-top: 16px; background: #fff1e0; border-radius: 20px; overflow: hidden; height: 6px; }
-                .gc-balance-bar { height: 6px; background: linear-gradient(90deg, #ffb347, #ff9900); border-radius: 20px; transition: width 0.6s ease; }
+                .gc-brand { position: absolute; top: 18px; right: 22px; font-size: 14px; font-weight: 900; color: rgba(255,255,255,0.7); letter-spacing: 0.5px; }
+                .gc-label { font-size: 10px; color: rgba(255,255,255,0.8); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+                .gc-amount { font-size: 32px; font-weight: 800; color: #fff; line-height: 1; }
+                .gc-code { font-size: 16px; font-weight: 800; letter-spacing: 3px; color: #b4530a; font-family: 'Courier New', monospace; background: rgba(255,255,255,0.92); padding: 9px 14px; border-radius: 8px; display: inline-block; margin-top: 14px; }
+                .gc-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 16px; }
+                .gc-expiry { font-size: 11px; color: rgba(255,255,255,0.85); }
+                .gc-init { font-size: 11px; color: rgba(255,255,255,0.85); }
+                .gc-status-badge { display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+                .gc-status-active { background: rgba(255,255,255,0.92); color: #16a34a; }
+                .gc-status-used { background: rgba(255,255,255,0.92); color: #dc2626; }
+                .gc-status-expired { background: rgba(255,255,255,0.85); color: #6b7280; }
             </style>
 
             <div class="account-header">
@@ -504,22 +495,13 @@ async function checkGiftCardBalance() {
             resultBox.innerHTML = `
                 <div class="gift-card-visual">
                     <div class="gc-brand">KARNOU</div>
-                    <div class="gc-label">Code de la carte</div>
+                    <div class="gc-label">Solde disponible</div>
+                    <div class="gc-amount">${data.balance.toLocaleString('fr-FR')} FCFA</div>
                     <div class="gc-code">${data.code}</div>
-                    <div class="gc-row">
-                        <i class="fas fa-gift" style="position: absolute; bottom: 40px; right: 30px; font-size: 40px; color: rgba(255,153,0,0.14); pointer-events: none;"></i>
-                        <div>
-                            <div class="gc-label">Solde disponible</div>
-                            <div class="gc-amount">${data.balance.toLocaleString('fr-FR')} FCFA</div>
-                        </div>
-                        ${data.amount !== data.balance ? `<div>
-                            <div class="gc-label">Valeur initiale</div>
-                            <div style="font-size:16px; color:#64748b; font-weight:600;">${data.amount.toLocaleString('fr-FR')} FCFA</div>
-                        </div>` : ''}
-                    </div>
-                    <div style="margin-top:14px;">
+                    <div class="gc-foot">
                         <span class="gc-status-badge ${statusClass}">${statusLabel}</span>
-                        ${expiryText ? `<span style="font-size:11px; color:#94a3b8; margin-left:10px;">${expiryText}</span>` : ''}
+                        ${expiryText ? `<span class="gc-expiry">${expiryText}</span>` : ''}
+                        ${data.amount !== data.balance ? `<span class="gc-init">Valeur initiale : ${data.amount.toLocaleString('fr-FR')} FCFA</span>` : ''}
                     </div>
                 </div>`;
         } else {
