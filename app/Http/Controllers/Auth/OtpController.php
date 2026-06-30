@@ -62,6 +62,8 @@ class OtpController extends Controller
             'email_verified_at' => now(), 
         ]);
 
+        // S'assure que le rôle existe (évite une erreur si non encore seedé en prod)
+        \Spatie\Permission\Models\Role::findOrCreate('acheteur', 'web');
         $user->assignRole('acheteur');
 
         // Nettoyer la session
