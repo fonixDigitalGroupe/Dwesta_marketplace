@@ -375,7 +375,20 @@
                         </div>
                     </div>
                 @endif
-                <h1>Merci {{ Auth::user()->prenom ?? 'Client' }} ! Votre commande est confirmée.</h1>
+                @if(!empty($paymentPending))
+                    <div class="success-alert-amazon" style="border-color: var(--jumia-orange); background: #fff3e0; margin-bottom: 24px;">
+                        <div class="hero-icon" style="color: var(--jumia-orange); background: #fff;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 8px 0; color: var(--jumia-orange);">Paiement en cours de confirmation</h2>
+                            <p style="color: #333; font-size: 15px; line-height: 1.5;">
+                                Votre commande a bien été enregistrée. La confirmation du paiement peut prendre quelques instants — vous serez notifié dès sa validation.
+                            </p>
+                        </div>
+                    </div>
+                @endif
+                <h1>Merci {{ Auth::user()->prenom ?? 'Client' }} ! Votre commande {{ !empty($paymentPending) ? 'a bien été enregistrée' : 'est confirmée' }}.</h1>
                 <p>
                     @if(count($orders) > 1)
                         Nous avons créé <strong>{{ count($orders) }} commandes</strong> distinctes car vos articles proviennent

@@ -34,8 +34,11 @@ class PayDunyaCallbackController extends Controller
         }
 
         $paymentData = $this->payDunyaService->verifyPayment($token);
+        $status = $paymentData['status'] ?? null;
+        $customData = $paymentData['custom_data'] ?? [];
+        $type = $customData['type'] ?? 'marketplace_order';
 
-        if ($paymentData && $paymentData['status'] === 'completed') {
+        if ($paymentData && $status === 'completed') {
             // Traiter le paiement s'il ne l'est pas encore (cas du local ou IPN lent)
             try {
                 $this->handlePaymentSuccess($token, $paymentData);
@@ -43,13 +46,10 @@ class PayDunyaCallbackController extends Controller
                 Log::error('PayDunya Success Redirect Processing Failed: ' . $e->getMessage());
             }
 
-            $customData = $paymentData['custom_data'] ?? [];
-            $type = $customData['type'] ?? 'marketplace_order';
-
             if ($type === 'marketplace_order') {
                 $orderId = $customData['order_id'] ?? null;
                 $orderIds = $customData['order_ids'] ?? [];
-                
+
                 $orders = Order::where('paydunya_token', $token)->get();
                 if ($orders->isEmpty()) {
                     if (!empty($orderIds)) {
@@ -78,7 +78,26 @@ class PayDunyaCallbackController extends Controller
             }
         }
 
-        return redirect()->route('home')->with('error', 'Paiement non confirmé.');
+        // Paiement pas encore "completed" : pour le mobile money, la confirmation
+        // arrive de façon asynchrone via l'IPN. Si la commande existe déjà, on
+        // affiche une page « en cours de confirmation » plutôt qu'une erreur.
+        if ($status !== 'cancelled') {
+            $orders = Order::where('paydunya_token', $token)->get();
+            if ($orders->isNotEmpty()) {
+                app(\App\Services\CartService::class)->clear();
+                return view('checkout.success', [
+                    'orders' => $orders->load(['seller', 'items.annonce', 'items.variante']),
+                    'gestionPaiement' => 'commande',
+                    'paymentPending' => true,
+                ]);
+            }
+            if (in_array($type, ['credit_pack_purchase', 'gift_card_purchase', 'seller_subscription'])) {
+                return redirect()->route('home')
+                    ->with('info', "Votre paiement est en cours de confirmation. Vous serez notifié dès sa validation.");
+            }
+        }
+
+        return redirect()->route('home')->with('error', 'Le paiement a été annulé ou n\'a pas abouti.');
     }
 
     /**
