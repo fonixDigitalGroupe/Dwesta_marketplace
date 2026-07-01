@@ -422,9 +422,6 @@
                     <span style="font-weight: 700;">{{ number_format($subtotal, 0, ',', ' ') }} FCFA</span>
                 </div>
 
-                <div class="shipping-info">
-                    Vos articles sont éligibles à la livraison <span class="express-text">KARNOU <span>EXPRESS</span></span>. Recevez votre commande en un temps record !
-                </div>
 
                 <a href="{{ route('checkout.step1') }}" style="text-decoration: none;">
                     <button class="btn-order">

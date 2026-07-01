@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conversation;
+use App\Models\Message;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Services\CartService;
 use App\Services\LogisticsService;
 use Illuminate\Http\Request;
@@ -66,7 +69,7 @@ class CheckoutController extends Controller
         // Tarifs inter-régions (même pays) indexés par "country_id|delivery_type"
         $interRegionTariffs = \App\Models\InterRegionTariff::where('is_active', true)
             ->get()
-            ->mapWithKeys(fn ($t) => [
+            ->mapWithKeys(fn($t) => [
                 $t->country_id . '|' . $t->delivery_type => [
                     'same' => (float) $t->same_region_price,
                     'inter' => (float) $t->inter_region_price,
@@ -379,6 +382,62 @@ class CheckoutController extends Controller
                 }
 
                 $orders[] = $order;
+
+                // --- Notification vendeur dans la boîte de réception ---
+                try {
+                    $karnouUser = User::where('email', 'karnou@karnou.fr')->first()
+                        ?? User::find(1);
+
+                    if ($karnouUser && $vendeurModel && $vendeurModel->user_id) {
+                        $vendeurUserId = $vendeurModel->user_id;
+
+                        // Trouver ou créer une conversation Karnou <-> Vendeur
+                        $conversation = Conversation::where(function ($q) use ($karnouUser, $vendeurUserId) {
+                            $q->where('user1_id', $karnouUser->id)->where('user2_id', $vendeurUserId);
+                        })->orWhere(function ($q) use ($karnouUser, $vendeurUserId) {
+                            $q->where('user1_id', $vendeurUserId)->where('user2_id', $karnouUser->id);
+                        })->first();
+
+                        if (!$conversation) {
+                            $conversation = Conversation::create([
+                                'user1_id' => $karnouUser->id,
+                                'user2_id' => $vendeurUserId,
+                                'annonce_id' => null,
+                                'last_message_at' => now(),
+                            ]);
+                        } else {
+                            $conversation->update(['last_message_at' => now()]);
+                        }
+
+                        // Construire le message de notification
+                        $buyer = Auth::user();
+                        $buyerName = trim(($buyer->prenom ?? '') . ' ' . ($buyer->nom ?? '')) ?: $buyer->name;
+                        $itemsList = $items->map(fn($i) => '• ' . $i->annonce->titre . ' (x' . $i->quantite . ')')->implode("\n");
+                        $modePaiementLabel = match ($moyenPaiement) {
+                            'om' => 'Orange Money',
+                            'wave' => 'Wave',
+                            'free' => 'Free Money',
+                            'cod' => 'Paiement à la livraison',
+                            default => 'Carte / Autre',
+                        };
+                        $content = "🛍️ Nouvelle commande reçue !\n"
+                            . "Référence : #{$order->reference}\n"
+                            . "Client : {$buyerName}\n"
+                            . "Articles commandés :\n{$itemsList}\n"
+                            . "Total : " . number_format($order->total_final, 0, ',', ' ') . " FCFA\n"
+                            . "Mode de paiement : {$modePaiementLabel}\n"
+                            . "Adresse de livraison : {$order->adresse_livraison}";
+
+                        Message::create([
+                            'conversation_id' => $conversation->id,
+                            'sender_id' => $karnouUser->id,
+                            'content' => $content,
+                        ]);
+                    }
+                } catch (\Exception $notifEx) {
+                    // Ne jamais bloquer la commande à cause de la notification
+                    \Illuminate\Support\Facades\Log::warning('Notification vendeur échouée', ['error' => $notifEx->getMessage()]);
+                }
             }
 
             // Store order refs and payment type in session for success page
@@ -392,7 +451,7 @@ class CheckoutController extends Controller
 
             if ($gestionPaiement === 'commande' && in_array($moyenPaiement, ['cb', 'om', 'wave', 'free', 'wallet', 'gift_card'])) {
                 $totalCombined = collect($orders)->sum('total_final');
-                
+
                 // Calculate deduction from the resolved gift card (from POST data)
                 $deduction = 0;
                 if ($resolvedGiftCard) {
@@ -416,7 +475,7 @@ class CheckoutController extends Controller
                     // If it's cb (hosted card), we pass null to allow all methods on hosted page, 
                     // unless we specifically want to restrict to card.
                     $payDunyaMethod = ($paymentMethod === 'cb') ? null : $paymentMethod;
-                    
+
                     $phone = $request->phone_number;
 
                     $session = $this->payDunyaService->createCheckoutSession(
@@ -425,7 +484,7 @@ class CheckoutController extends Controller
                         route('paydunya.success'),
                         route('paydunya.cancel'),
                         [
-                            'order_ids' => collect($orders)->pluck('id')->toArray(), 
+                            'order_ids' => collect($orders)->pluck('id')->toArray(),
                             'type' => 'marketplace_order',
                             'gift_card_id' => $resolvedGiftCard?->id,
                             'gift_card_amount' => $deduction
@@ -436,8 +495,8 @@ class CheckoutController extends Controller
                             'first_name' => Auth::user()->prenom,
                             'last_name' => Auth::user()->nom,
                             'email' => Auth::user()->email,
-                            'phone' => preg_match('/^\+?221/', Auth::user()->telephone) 
-                                ? (str_starts_with(Auth::user()->telephone, '+') ? Auth::user()->telephone : '+' . Auth::user()->telephone) 
+                            'phone' => preg_match('/^\+?221/', Auth::user()->telephone)
+                                ? (str_starts_with(Auth::user()->telephone, '+') ? Auth::user()->telephone : '+' . Auth::user()->telephone)
                                 : '+221' . ltrim(Auth::user()->telephone, '0'),
                             'address' => Auth::user()->adresse,
                             'city' => Auth::user()->ville,
@@ -454,7 +513,7 @@ class CheckoutController extends Controller
                     DB::commit();
 
                     $redirectUrl = $session->url;
-                    
+
                     // Si c'est du Mobile Money, on redirige vers notre page de paiement personnalisée
                     if ($phone && in_array($moyenPaiement, ['om', 'wave', 'free'])) {
                         $redirectUrl = route('checkout.pay', ['token' => $session->token]);
@@ -514,7 +573,7 @@ class CheckoutController extends Controller
     public function showPaymentPage($token)
     {
         $orders = Order::where('paydunya_token', $token)->get();
-        
+
         if ($orders->isNotEmpty()) {
             $order = $orders->first();
             $total = $orders->sum('total_final');
@@ -526,33 +585,36 @@ class CheckoutController extends Controller
             if (!$paymentData) {
                 return redirect()->route('home')->with('error', 'Session de paiement invalide ou expirée.');
             }
-            
+
             // On essaie de trouver le montant dans différents champs possibles
-            $total = $paymentData['invoice']['total_amount'] 
-                  ?? $paymentData['invoice']['total'] 
-                  ?? $paymentData['total_amount'] 
-                  ?? session('gift_card_amount') 
-                  ?? 0;
+            $total = $paymentData['invoice']['total_amount']
+                ?? $paymentData['invoice']['total']
+                ?? $paymentData['total_amount']
+                ?? session('gift_card_amount')
+                ?? 0;
 
             $customData = $paymentData['custom_data'] ?? [];
-            
+
             // On essaie de retrouver le moyen de paiement via la session PayDunya
             $moyenPaiement = 'unknown';
             if (isset($paymentData['invoice']['channels'])) {
                 $channels = $paymentData['invoice']['channels'];
-                if (in_array('wave-senegal', $channels)) $moyenPaiement = 'wave';
-                elseif (in_array('orange-money-senegal', $channels)) $moyenPaiement = 'om';
-                elseif (in_array('free-money-senegal', $channels)) $moyenPaiement = 'free';
+                if (in_array('wave-senegal', $channels))
+                    $moyenPaiement = 'wave';
+                elseif (in_array('orange-money-senegal', $channels))
+                    $moyenPaiement = 'om';
+                elseif (in_array('free-money-senegal', $channels))
+                    $moyenPaiement = 'free';
             }
-            
+
             // Fallback pour le moyen si session cadeau
             if ($moyenPaiement === 'unknown') {
                 $moyenPaiement = 'wave';
             }
-            
-            $description = $paymentData['invoice']['description'] 
-                        ?? $paymentData['description'] 
-                        ?? "Achat Karnou";
+
+            $description = $paymentData['invoice']['description']
+                ?? $paymentData['description']
+                ?? "Achat Karnou";
         }
 
         return view('checkout.pay', compact('total', 'moyenPaiement', 'token', 'description'));
@@ -564,7 +626,7 @@ class CheckoutController extends Controller
     public function processSoftPay(Request $request, $token)
     {
         $orders = Order::where('paydunya_token', $token)->get();
-        
+
         if ($orders->isNotEmpty()) {
             $order = $orders->first();
             $moyenPaiement = $order->moyen_paiement;
@@ -574,15 +636,18 @@ class CheckoutController extends Controller
             if (!$paymentData) {
                 return response()->json(['success' => false, 'message' => 'Session invalide']);
             }
-            
+
             $moyenPaiement = 'unknown';
             if (isset($paymentData['invoice']['channels'])) {
                 $channels = $paymentData['invoice']['channels'];
-                if (in_array('wave-senegal', $channels)) $moyenPaiement = 'wave';
-                elseif (in_array('orange-money-senegal', $channels)) $moyenPaiement = 'om';
-                elseif (in_array('free-money-senegal', $channels)) $moyenPaiement = 'free';
+                if (in_array('wave-senegal', $channels))
+                    $moyenPaiement = 'wave';
+                elseif (in_array('orange-money-senegal', $channels))
+                    $moyenPaiement = 'om';
+                elseif (in_array('free-money-senegal', $channels))
+                    $moyenPaiement = 'free';
             }
-            
+
             $buyer = Auth::user();
         }
 
@@ -596,7 +661,7 @@ class CheckoutController extends Controller
                 'redirect_url' => "https://paydunya.com/checkout/invoice/{$token}"
             ]);
         }
-        
+
         $customerData = [
             'name' => trim($buyer?->name ?: ($buyer?->prenom . ' ' . $buyer?->nom)),
             'email' => $request->email ?: $buyer?->email,
@@ -605,7 +670,7 @@ class CheckoutController extends Controller
 
         try {
             $softPayResponse = $this->payDunyaService->softPay($token, $moyenPaiement, $customerData);
-            
+
             if (isset($softPayResponse['success']) && $softPayResponse['success'] === true) {
                 // Pour Wave et Orange Money, on donne l'URL de redirection
                 if (isset($softPayResponse['url'])) {
@@ -617,7 +682,7 @@ class CheckoutController extends Controller
 
                 // Pour Free Money (Push USSD)
                 $successUrl = route('checkout.success', ['info' => $softPayResponse['message'] ?? 'Demande envoyée']);
-                
+
                 // Si c'est une carte cadeau, on redirige vers gift-cards.index avec succès
                 $paymentData = $paymentData ?? $this->payDunyaService->verifyPayment($token);
                 if ($paymentData && ($paymentData['custom_data']['type'] ?? '') === 'gift_card_purchase') {
