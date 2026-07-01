@@ -270,10 +270,16 @@ class PayDunyaService
             return $response->json();
         }
 
-        Log::error('PayDunya Disbursement Error: ' . $response->body());
+        Log::error('PayDunya Disbursement Error: ' . $response->status() . ' - ' . $response->body());
+
+        $errorDetail = $response->json('response_text')
+            ?? $response->json('message')
+            ?? $response->body()
+            ?? 'Erreur de connexion';
+
         return [
             'response_code' => 'failure',
-            'response_text' => $response->json('response_text') ?? 'Erreur lors du virement PayDunya'
+            'response_text' => 'PayDunya API Error (' . $response->status() . '): ' . substr($errorDetail, 0, 200)
         ];
     }
 
