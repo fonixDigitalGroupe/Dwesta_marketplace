@@ -23,7 +23,7 @@ class VendeurWalletController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         // On s'assure qu'il est vendeur (Supprimé pour permettre l'accès à tous les utilisateurs selon la demande)
         // if (!$user->vendeur) {
         //     return redirect()->route('vendeur.create')->with('info', 'Vous devez être vendeur pour accéder au wallet.');
@@ -60,7 +60,7 @@ class VendeurWalletController extends Controller
     public function requestWithdrawal(Request $request, PayDunyaService $payDunya)
     {
         $request->validate([
-            'montant' => 'required|numeric|min:1000',
+            'montant' => 'required|numeric|min:1',
             'moyen' => 'required|in:om,wave',
             'telephone' => 'required|string|min:7' // Format flexible pour les pays limitrophes ou local
         ]);
