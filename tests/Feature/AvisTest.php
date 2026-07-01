@@ -26,6 +26,11 @@ class AvisTest extends TestCase
     {
         parent::setUp();
 
+        // Créer le rôle Administrateur si nécessaire
+        if (!\Spatie\Permission\Models\Role::where('name', 'Administrateur')->exists()) {
+            \Spatie\Permission\Models\Role::create(['name' => 'Administrateur']);
+        }
+
         $this->user = User::factory()->create();
         $this->acheteur = User::factory()->create();
         $this->vendeur = Vendeur::factory()->create([
@@ -33,13 +38,33 @@ class AvisTest extends TestCase
             'statut_verification' => 'verifie',
         ]);
         $this->category = Category::factory()->create();
-        
+
         $this->annonce = Annonce::factory()->create([
             'vendeur_id' => $this->vendeur->id,
             'categorie_id' => $this->category->id,
             'type' => Annonce::TYPE_PRODUIT,
             'statut' => Annonce::STATUT_PUBLIEE,
             'publiee_le' => now(),
+        ]);
+
+        // Créer une commande livrée pour l'acheteur contenant l'annonce
+        $order = \App\Models\Order::create([
+            'user_id' => $this->acheteur->id,
+            'vendeur_id' => $this->annonce->vendeur_id,
+            'reference' => 'CMD-' . uniqid(),
+            'total_produits' => $this->annonce->prix,
+            'total_final' => $this->annonce->prix,
+            'statut' => \App\Models\Order::STATUT_LIVRE, // livre
+            'moyen_paiement' => 'wave',
+            'mode_livraison' => 'point_relais',
+            'frais_port' => 0,
+            'commission_plateforme' => 0,
+        ]);
+
+        $order->items()->create([
+            'annonce_id' => $this->annonce->id,
+            'quantite' => 1,
+            'prix_unitaire' => $this->annonce->prix,
         ]);
     }
 
@@ -109,7 +134,7 @@ class AvisTest extends TestCase
         $avis = Avis::where('annonce_id', $this->annonce->id)
             ->where('user_id', $this->acheteur->id)
             ->first();
-        
+
         $this->assertNotNull($avis->photos);
         $this->assertCount(1, $avis->photos);
     }

@@ -7,9 +7,11 @@ use App\Models\Avis;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AvisController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Affiche les avis laissés par l'utilisateur connecté
      */
@@ -57,8 +59,18 @@ class AvisController extends Controller
                 ->with('error', 'Vous avez déjà laissé un avis pour cette annonce.');
         }
 
-        // TODO: Vérifier que l'utilisateur a acheté cette annonce (Phase 7)
-        // Pour l'instant, on permet à tous les utilisateurs connectés de laisser un avis
+        // Vérifier que l'utilisateur a acheté cette annonce et que la commande est livrée
+        $hasDeliveredOrder = \App\Models\Order::where('user_id', Auth::id())
+            ->where('statut', \App\Models\Order::STATUT_LIVRE)
+            ->whereHas('items', function ($query) use ($annonce) {
+                $query->where('annonce_id', $annonce->id);
+            })
+            ->exists();
+
+        if (!$hasDeliveredOrder) {
+            return redirect()->route('annonces.show', $annonce)
+                ->with('error', 'Vous ne pouvez laisser un avis que sur un produit que vous avez acheté et qui a été livré.');
+        }
 
         return view('avis.create', compact('annonce'));
     }
@@ -82,6 +94,19 @@ class AvisController extends Controller
         if ($existingAvis) {
             return back()->withInput()
                 ->with('error', 'Vous avez déjà laissé un avis pour cette annonce.');
+        }
+
+        // Vérifier que l'utilisateur a acheté cette annonce et que la commande est livrée
+        $hasDeliveredOrder = \App\Models\Order::where('user_id', Auth::id())
+            ->where('statut', \App\Models\Order::STATUT_LIVRE)
+            ->whereHas('items', function ($query) use ($annonce) {
+                $query->where('annonce_id', $annonce->id);
+            })
+            ->exists();
+
+        if (!$hasDeliveredOrder) {
+            return redirect()->route('annonces.show', $annonce)
+                ->with('error', 'Vous ne pouvez laisser un avis que sur un produit que vous avez acheté et qui a été livré.');
         }
 
         // Validation

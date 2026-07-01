@@ -404,6 +404,23 @@
                             <div class="article-actions-pro">
                                 @if($item->annonce)
                                     <a href="{{ route('annonces.show', $item->annonce->slug) }}" class="btn-jumia-orange">Commander à nouveau</a>
+                                    @if($order->statut === 'livre')
+                                        @php
+                                            $avis = \App\Models\Avis::where('annonce_id', $item->annonce->id)
+                                                ->where('user_id', Auth::id())
+                                                ->first();
+                                        @endphp
+                                        @if($avis)
+                                            <div style="font-size: 0.85rem; color: #2e7d32; font-weight: 600; display: flex; align-items: center; gap: 4px; justify-content: center; margin-top: 5px;">
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Votre note : {{ $avis->note }}/5</span>
+                                            </div>
+                                        @else
+                                            <a href="{{ route('avis.create', $item->annonce->slug) }}" class="btn-jumia-orange" style="background-color: #2e7d32; border-color: #2e7d32; color: #fff; margin-top: 5px;">
+                                                Noter le produit
+                                            </a>
+                                        @endif
+                                    @endif
                                 @endif
                                 <a href="{{ route('account.orders.tracking', $order->id) }}" class="btn-jumia-text">Historique du colis</a>
                             </div>
