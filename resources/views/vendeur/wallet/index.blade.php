@@ -1100,18 +1100,10 @@
                 </div>
             </div>
 
-            {{-- Action buttons --}}
             <div class="wallet-actions">
                 <button class="btn-action btn-w-primary"
                     onclick="window.location.href='{{ route('vendeur.wallet.withdraw.show') }}'">
                     <i class="fas fa-paper-plane"></i> Effectuer un retrait
-                </button>
-                <button class="btn-action btn-w-red" onclick="window.print()">
-                    <i class="fas fa-file-pdf"></i> Relevé PDF
-                </button>
-                <button class="btn-action btn-w-purple"
-                    onclick="document.getElementById('tx-section').scrollIntoView({behavior:'smooth'})">
-                    <i class="fas fa-list-ul"></i> Voir l'historique
                 </button>
             </div>
 
@@ -1131,14 +1123,10 @@
             @endif
 
             {{-- ══ TRANSACTIONS TABLE ══ --}}
-            <div class="w-card" id="tx-section">
-                <div class="w-card-header">
-                    <h2><i class="fas fa-list-ul"></i> Historique des transactions</h2>
-                    <span style="font-size: 0.78rem; color: #6b7280;">
-                        {{ $recentTransactions->total() }} transaction(s)
-                    </span>
-                </div>
-                <div style="overflow-x: auto;">
+            <h2 style="font-size: 1rem; font-weight: 700; color: #374151; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-list-ul"></i> Historique des transactions
+            </h2>
+            <div id="tx-section" style="overflow-x: auto; border-radius: 0; box-shadow: none; background: white; border: 1px solid #e5e7eb;">
                     <table class="tx-table">
                         <thead>
                             <tr>
