@@ -756,24 +756,40 @@
         /* payment method chips */
         .pay-chips {
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            margin-top: 5px;
         }
 
         .pay-chip {
             flex: 1;
             border: 1.5px solid #e5e7eb;
-            border-radius: 10px;
-            padding: 0.65rem 1rem;
+            border-radius: 12px;
+            padding: 0.6rem 0.8rem;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
+            justify-content: flex-start;
+            gap: 10px;
             cursor: pointer;
-            transition: all 0.18s;
+            transition: all 0.18s ease;
             background: #fafafa;
-            font-size: 0.82rem;
-            font-weight: 500;
+            font-size: 0.85rem;
+            font-weight: 600;
             color: #374151;
+        }
+
+        .pay-chip img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid #e5e7eb;
+            transition: transform 0.2s ease;
+            display: block;
+        }
+
+        .pay-chip:hover img {
+            transform: scale(1.08);
         }
 
         .pay-chip:hover {
@@ -786,7 +802,7 @@
             background: #eef3ff;
             box-shadow: 0 0 0 2px rgba(0, 74, 173, 0.15);
             color: #004aad;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .withdraw-notice {
@@ -1158,11 +1174,11 @@
                                     <label>Réseau</label>
                                     <div class="pay-chips">
                                         <div class="pay-chip active" onclick="selectPay('om', this)" id="chip-om">
-                                            <img src="{{ asset('images/logoOM.png') }}" alt="Orange Money" height="18">
+                                            <img src="{{ asset('images/logoOM.png') }}" alt="Orange Money">
                                             Orange Money
                                         </div>
                                         <div class="pay-chip" onclick="selectPay('wave', this)" id="chip-wave">
-                                            <img src="{{ asset('images/logowave.png') }}" alt="Wave" height="18">
+                                            <img src="{{ asset('images/logowave.png') }}" alt="Wave">
                                             Wave
                                         </div>
                                     </div>
@@ -1170,11 +1186,7 @@
                                 </div>
                             </div>
 
-                            <div class="withdraw-notice">
-                                <i class="fas fa-clock"></i>
-                                <span>Les fonds seront transférés sur votre compte mobile dans un délai moyen de <strong>24h
-                                        ouvrées</strong> via PayDunya.</span>
-                            </div>
+
 
                             <button type="submit" class="btn-submit-withdraw">
                                 <i class="fas fa-paper-plane"></i> Valider le virement
