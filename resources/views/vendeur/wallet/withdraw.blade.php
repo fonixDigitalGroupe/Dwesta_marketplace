@@ -250,9 +250,12 @@
                         <div class="phone-input-wrapper" style="margin-top: 0;">
                             <label class="phone-label">Préciser le montant à retirer (FCFA)</label>
                             <div class="input-group-jumia">
-                                <input type="number" id="montant" name="montant" class="jumia-input" min="1"
-                                    max="{{ $availableBalance }}" required placeholder="0"
+                                <input type="number" id="montant" name="montant" class="jumia-input" min="200"
+                                    max="{{ $availableBalance }}" required placeholder="200"
                                     style="font-size: 16px; font-weight: 700;" oninput="updateButtonText(this.value)">
+                                <small id="amount-hint"
+                                    style="display:none; color:#c0392b; font-size:12px; padding: 4px 12px;">Minimum : 200
+                                    FCFA</small>
                                 <span style="font-weight: 700; color: #777; padding-right: 15px;">FCFA</span>
                             </div>
                         </div>
@@ -337,25 +340,34 @@
 
     @push('scripts')
         <script>
-            function updateOperatorIcon(value) {
-                const icon = document.getElementById('operator-icon');
-                const logos = {
-                    'om': '{{ asset("images/logoOM.png") }}',
-                    'wave': '{{ asset("images/logowave.png") }}'
-                };
-                icon.src = logos[value] || '';
-            }
+                    function updateOperatorIcon(value) {
+                        const icon = document.getElementById('operator-icon');
+                        const logos = {
+                            'om': '{{ asset("images/logoOM.png") }}',
+                            'wave': '{{ asset("images/logowave.png") }}'
+                        };
+                        icon.src = logos[value] || '';
+                    }
 
-            function updateButtonText(val) {
-                const btn = document.getElementById('btn-submit');
-                if (!btn) return;
-                const amount = parseFloat(val);
-                if (amount > 0) {
-                    btn.textContent = 'RETIRER MAINTENANT : FCFA ' + amount.toLocaleString('fr-FR');
-                } else {
-                    btn.textContent = 'VALIDER LE RETRAIT';
-                }
-            }
+                    function updateButtonText(val) {
+                        const btn = document.getElementById('btn-submit');
+                        const hint = document.getElementById('amount-hint');
+                        if (!btn) return;
+                        const amount = parseFloat(val);
+                        if (amount >= 200) {
+                 btn.textContent = 'RETIRER MAINTENANT : FCFA ' + amount.toLocaleString('fr-FR');
+                            btn.disabled = false;
+                            if (hint) hint.style.display = 'none';
+                        } else if (amount > 0) {
+                            btn.textContent = 'VALIDER LE RETRAIT';
+                            btn.disabled = true;
+                            if (hint) hint.style.display = 'inline';
+                        } else {
+                            btn.textContent = 'VALIDER LE RETRAIT';
+                            btn.disabled = true;
+                            if (hint) hint.style.display = 'none';
+                        }
+                    }
         </script>
     @endpush
 @endsection

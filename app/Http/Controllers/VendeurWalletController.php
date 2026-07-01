@@ -77,9 +77,11 @@ class VendeurWalletController extends Controller
     public function requestWithdrawal(Request $request, PayDunyaService $payDunya)
     {
         $request->validate([
-            'montant' => 'required|numeric|min:1',
+            'montant' => 'required|numeric|min:200', // PayDunya exige un minimum de 200 FCFA
             'moyen' => 'required|in:om,wave',
             'telephone' => 'required|string|min:7' // Format flexible pour les pays limitrophes ou local
+        ], [
+            'montant.min' => 'Le montant minimum de retrait est de 200 FCFA (exigence PayDunya).'
         ]);
 
         $user = Auth::user();
