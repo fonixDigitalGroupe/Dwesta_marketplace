@@ -119,7 +119,7 @@ class AvisController extends Controller
                 'note' => $validated['note'],
                 'commentaire' => $validated['commentaire'],
                 'photos' => !empty($photos) ? $photos : null,
-                'statut' => Avis::STATUT_EN_ATTENTE, // En attente de modération
+                'statut' => Avis::STATUT_APPROUVE, // Publié directement
             ]);
 
             return redirect()->route('annonces.show', $annonce)
