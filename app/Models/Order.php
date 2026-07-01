@@ -22,6 +22,7 @@ class Order extends Model
         'destination_point_relais_id',
         'paydunya_token',
         'tracking_token',
+        'code_livraison',
         'qr_code_token',
         'qr_code_path',
         'notes_vendeur',
@@ -39,7 +40,7 @@ class Order extends Model
 
     public function getStatutLabelAttribute()
     {
-        return match($this->statut) {
+        return match ($this->statut) {
             self::STATUT_EN_ATTENTE => 'En attente de paiement',
             self::STATUT_PAYE => 'Payé (A préparer)',
             self::STATUT_PRET => 'Prêt pour expédition',

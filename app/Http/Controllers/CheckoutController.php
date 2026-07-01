@@ -438,6 +438,53 @@ class CheckoutController extends Controller
                     // Ne jamais bloquer la commande à cause de la notification
                     \Illuminate\Support\Facades\Log::warning('Notification vendeur échouée', ['error' => $notifEx->getMessage()]);
                 }
+
+                // --- Code de validation livraison domicile (4 chiffres) ---
+                if ($mode === 'livraison_domicile') {
+                    try {
+                        $codeLivraison = str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+                        $order->update(['code_livraison' => $codeLivraison]);
+
+                        $karnouUser = $karnouUser ?? (User::where('email', 'karnou@karnou.fr')->first() ?? User::find(1));
+                        $buyerUser = Auth::user();
+
+                        if ($karnouUser && $buyerUser) {
+                            // Trouver ou créer une conversation Karnou <-> Acheteur
+                            $buyerConv = Conversation::where(function ($q) use ($karnouUser, $buyerUser) {
+                                $q->where('user1_id', $karnouUser->id)->where('user2_id', $buyerUser->id);
+                            })->orWhere(function ($q) use ($karnouUser, $buyerUser) {
+                                $q->where('user1_id', $buyerUser->id)->where('user2_id', $karnouUser->id);
+                            })->first();
+
+                            if (!$buyerConv) {
+                                $buyerConv = Conversation::create([
+                                    'user1_id' => $karnouUser->id,
+                                    'user2_id' => $buyerUser->id,
+                                    'annonce_id' => null,
+                                    'last_message_at' => now(),
+                                ]);
+                            } else {
+                                $buyerConv->update(['last_message_at' => now()]);
+                            }
+
+                            $msgClient = "📦 Votre commande #{$order->reference} a bien été enregistrée !\n\n"
+                                . "🔑 Votre code de confirmation de livraison : **{$codeLivraison}**\n\n"
+                                . "Communiquez ce code au livreur uniquement au moment de la remise de votre colis. "
+                                . "Il servira à valider la livraison.\n\n"
+                                . "Adresse de livraison : {$order->adresse_livraison}\n"
+                                . "Total : " . number_format($order->total_final, 0, ',', ' ') . " FCFA\n\n"
+                                . "Merci pour votre confiance — L'équipe Karnou";
+
+                            Message::create([
+                                'conversation_id' => $buyerConv->id,
+                                'sender_id' => $karnouUser->id,
+                                'content' => $msgClient,
+                            ]);
+                        }
+                    } catch (\Exception $codeEx) {
+                        \Illuminate\Support\Facades\Log::warning('Code livraison échoué', ['error' => $codeEx->getMessage()]);
+                    }
+                }
             }
 
             // Store order refs and payment type in session for success page
