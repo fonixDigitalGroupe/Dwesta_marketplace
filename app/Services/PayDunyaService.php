@@ -236,6 +236,8 @@ class PayDunyaService
 
     /**
      * Effectuer un virement (Disbursement) vers un compte Mobile Money
+     * Utilise l'API v2 de PayDunya (get-invoice → submit-invoice)
+     * Docs: https://developers.paydunya.com/doc/FR/api_deboursement
      */
     public function disburse($amount, $phone, $method, $customData = [])
     {
@@ -244,44 +246,79 @@ class PayDunyaService
             throw new \Exception("Méthode de retrait non supportée : " . $method);
         }
 
-        // Nettoyer et formater au format international sans le '+' (ex: 221771234567)
+        // L'API v2 demande le numéro SANS indicatif pays (ex: 771234567 et non 221771234567)
         $cleanPhone = str_replace(['+', ' ', '-'], '', $phone);
-        if (!str_starts_with($cleanPhone, '221') && strlen($cleanPhone) === 9) {
-            $cleanPhone = '221' . $cleanPhone;
+        // Retirer le préfixe 221 si présent (9 premiers chiffres après country code)
+        if (str_starts_with($cleanPhone, '221') && strlen($cleanPhone) === 12) {
+            $cleanPhone = substr($cleanPhone, 3);
         }
 
-        $payload = [
-            'account_alias' => $cleanPhone,
-            'amount' => $amount,
-            'withdraw_mode' => $channel[0], // ex: orange-money-senegal
-        ];
+        // URL de base v2 (la v1 ne dispose pas de l'endpoint de déboursement)
+        $baseUrlV2 = $this->mode === 'live'
+            ? 'https://app.paydunya.com/api/v2'
+            : 'https://app.paydunya.com/sandbox-api/v2';
 
-        if (!empty($customData)) {
-            $payload['custom_data'] = $customData;
-        }
-
-        $response = Http::withHeaders([
+        $headers = [
             'PAYDUNYA-MASTER-KEY' => $this->masterKey,
             'PAYDUNYA-PRIVATE-KEY' => $this->privateKey,
             'PAYDUNYA-TOKEN' => $this->token,
-        ])->post($this->baseUrl . '/disbursement/disburse', $payload);
+            'Content-Type' => 'application/json',
+        ];
 
-        if ($response->successful()) {
-            return $response->json();
+        // Étape 1 : Initiation — get-invoice
+        $payload = [
+            'account_alias' => $cleanPhone,
+            'amount' => (int) $amount,
+            'withdraw_mode' => $channel[0], // ex: orange-money-senegal
+            'callback_url' => route('paydunya.callback'), // obligatoire selon la doc PayDunya
+        ];
+
+        Log::info('PayDunya Disbursement get-invoice payload: ' . json_encode($payload));
+
+        $invoiceResponse = Http::withHeaders($headers)->post($baseUrlV2 . '/disburse/get-invoice', $payload);
+
+        Log::info('PayDunya Disbursement get-invoice response: ' . $invoiceResponse->status() . ' - ' . $invoiceResponse->body());
+
+        if (!$invoiceResponse->successful() || ($invoiceResponse->json('response_code') !== '00')) {
+            $errorDetail = $invoiceResponse->json('response_text')
+                ?? $invoiceResponse->json('message')
+                ?? $invoiceResponse->body()
+                ?? 'Erreur connexion étape 1';
+
+            Log::error('PayDunya get-invoice FAILED: ' . $invoiceResponse->status() . ' - ' . $invoiceResponse->body());
+
+            return [
+                'response_code' => 'failure',
+                'response_text' => 'Erreur initiation retrait (' . $invoiceResponse->status() . '): ' . substr($errorDetail, 0, 200),
+            ];
         }
 
-        Log::error('PayDunya Disbursement Error: ' . $response->status() . ' - ' . $response->body());
+        $disburseToken = $invoiceResponse->json('disburse_token');
 
-        $errorDetail = $response->json('response_text')
-            ?? $response->json('message')
-            ?? $response->body()
-            ?? 'Erreur de connexion';
+        // Étape 2 : Soumission — submit-invoice
+        $submitResponse = Http::withHeaders($headers)->post($baseUrlV2 . '/disburse/submit-invoice', [
+            'disburse_invoice' => $disburseToken,
+        ]);
+
+        Log::info('PayDunya Disbursement submit-invoice response: ' . $submitResponse->status() . ' - ' . $submitResponse->body());
+
+        if ($submitResponse->successful()) {
+            return $submitResponse->json();
+        }
+
+        $errorDetail = $submitResponse->json('response_text')
+            ?? $submitResponse->json('message')
+            ?? $submitResponse->body()
+            ?? 'Erreur connexion étape 2';
+
+        Log::error('PayDunya submit-invoice FAILED: ' . $submitResponse->status() . ' - ' . $submitResponse->body());
 
         return [
             'response_code' => 'failure',
-            'response_text' => 'PayDunya API Error (' . $response->status() . '): ' . substr($errorDetail, 0, 200)
+            'response_text' => 'Erreur soumission retrait (' . $submitResponse->status() . '): ' . substr($errorDetail, 0, 200),
         ];
     }
+
 
     /**
      * Mapper les méthodes internes vers les canaux PayDunya
