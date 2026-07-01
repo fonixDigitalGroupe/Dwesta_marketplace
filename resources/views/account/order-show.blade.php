@@ -416,7 +416,7 @@
                                                 <span>Votre note : {{ $avis->note }}/5</span>
                                             </div>
                                         @else
-                                            <a href="{{ route('avis.create', $item->annonce->slug) }}" class="btn-jumia-orange" style="background-color: #2e7d32; border-color: #2e7d32; color: #fff; margin-top: 5px;">
+                                            <a href="{{ route('avis.create', $item->annonce) }}" class="btn-jumia-orange" style="background-color: #2e7d32; border-color: #2e7d32; color: #fff; margin-top: 5px;">
                                                 Noter le produit
                                             </a>
                                         @endif

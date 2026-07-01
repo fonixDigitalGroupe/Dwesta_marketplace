@@ -43,7 +43,7 @@ class AvisController extends Controller
      */
     public function create(Annonce $annonce)
     {
-        // Vérifier que l'utilisateur est connecté
+        // Vérifier que l'utilisateur est connecté (géré par middleware mais double-contrôle)
         if (!Auth::check()) {
             return redirect()->route('login')
                 ->with('error', 'Vous devez être connecté pour laisser un avis.');
@@ -57,19 +57,6 @@ class AvisController extends Controller
         if ($existingAvis) {
             return redirect()->route('annonces.show', $annonce)
                 ->with('error', 'Vous avez déjà laissé un avis pour cette annonce.');
-        }
-
-        // Vérifier que l'utilisateur a acheté cette annonce et que la commande est livrée
-        $hasDeliveredOrder = \App\Models\Order::where('user_id', Auth::id())
-            ->where('statut', \App\Models\Order::STATUT_LIVRE)
-            ->whereHas('items', function ($query) use ($annonce) {
-                $query->where('annonce_id', $annonce->id);
-            })
-            ->exists();
-
-        if (!$hasDeliveredOrder) {
-            return redirect()->route('annonces.show', $annonce)
-                ->with('error', 'Vous ne pouvez laisser un avis que sur un produit que vous avez acheté et qui a été livré.');
         }
 
         return view('avis.create', compact('annonce'));
