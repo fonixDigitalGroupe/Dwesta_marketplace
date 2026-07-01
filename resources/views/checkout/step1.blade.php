@@ -717,7 +717,8 @@
 
 @section('content')
     @if(session('error') || $errors->any())
-        <div style="max-width: 1200px; margin: 16px auto 0; background: #fff5f5; border: 1px solid #f9c2c2; color: #c40000; border-radius: 8px; padding: 12px 16px; font-size: 0.9rem;">
+        <div
+            style="max-width: 1200px; margin: 16px auto 0; background: #fff5f5; border: 1px solid #f9c2c2; color: #c40000; border-radius: 8px; padding: 12px 16px; font-size: 0.9rem;">
             <i class="fas fa-exclamation-triangle"></i>
             {{ session('error') ?? $errors->first() }}
         </div>
@@ -870,30 +871,31 @@
                         </div>
                         {{-- Form stays OPEN - closes after the final Confirm button in sidebar --}}
 
-                    <!-- Résumé livraison (caché par défaut, visible après confirmation) -->
-                    <div id="delivery-summary" style="display: none;">
-                        <!-- Domicile Block -->
-                        <div id="summary-domicile-block" class="summary-shipment-card"
-                            style="display: none; margin-bottom: 8px;">
-                            <div class="summary-shipment-header-row">
-                                <strong class="summary-mode-title">Livraison à domicile</strong>
+                        <!-- Résumé livraison (caché par défaut, visible après confirmation) -->
+                        <div id="delivery-summary" style="display: none;">
+                            <!-- Domicile Block -->
+                            <div id="summary-domicile-block" class="summary-shipment-card"
+                                style="display: none; margin-bottom: 8px;">
+                                <div class="summary-shipment-header-row">
+                                    <strong class="summary-mode-title">Livraison à domicile</strong>
+                                </div>
+                                <div id="summary-date-dom" class="summary-date-text"></div>
                             </div>
-                            <div id="summary-date-dom" class="summary-date-text"></div>
-                        </div>
 
-                        <!-- Point Relais Block -->
-                        <div id="summary-pr-block" class="summary-shipment-card" style="display: none; margin-bottom: 8px;">
-                            <div class="summary-shipment-header-row">
-                                <strong class="summary-mode-title">Point Relais</strong>
+                            <!-- Point Relais Block -->
+                            <div id="summary-pr-block" class="summary-shipment-card"
+                                style="display: none; margin-bottom: 8px;">
+                                <div class="summary-shipment-header-row">
+                                    <strong class="summary-mode-title">Point Relais</strong>
+                                </div>
+                                <div id="summary-pr-name"
+                                    style="font-size: 13px; font-weight: 700; color: #313133; margin-bottom: 2px;"></div>
+                                <div id="summary-pr-addr"
+                                    style="font-size: 12px; color: #666; line-height: 1.4; margin-bottom: 6px;"></div>
+                                <div id="summary-date-pr" class="summary-date-text"></div>
                             </div>
-                            <div id="summary-pr-name"
-                                style="font-size: 13px; font-weight: 700; color: #313133; margin-bottom: 2px;"></div>
-                            <div id="summary-pr-addr"
-                                style="font-size: 12px; color: #666; line-height: 1.4; margin-bottom: 6px;"></div>
-                            <div id="summary-date-pr" class="summary-date-text"></div>
+                            <a href="{{ route('cart.index') }}" class="modify-cart-link">Modifier le panier</a>
                         </div>
-                        <a href="{{ route('cart.index') }}" class="modify-cart-link">Modifier le panier</a>
-                    </div>
                 </div>
             </div>
 
@@ -993,26 +995,6 @@
                             </div>
                         </label>
 
-                        <!-- Free Money -->
-                        <div class="payment-section-title">Carte Bancaire / International</div>
-
-                        <!-- Card -->
-                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'commande', 'cb')">
-                            <input type="radio" name="ui_payment" value="cb">
-                            <span class="radio-custom"></span>
-                            <div class="payment-info-wrapper">
-                                <div class="payment-title-row">
-                                    <span class="payment-name">Visa, Mastercard, etc.</span>
-                                    <div style="margin-left: auto; display: flex; gap: 4px;">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" class="method-logo" style="height: 12px;">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" class="method-logo" style="height: 18px;">
-                                    </div>
-                                </div>
-                                <div style="font-size: 13px; color: #666; margin-top: 4px;">Paiement sécurisé par carte bancaire.</div>
-                            </div>
-                        </label>
-
-
 
                         <div class="payment-section-title">Paiement à la livraison</div>
 
@@ -1090,8 +1072,7 @@
                     Vous pourrez ajouter un bon d'achat lors de la sélection de votre mode de paiement.
                 </p>
 
-                <button type="submit" class="btn-confirm" id="btn-submit"
-                    style="opacity: 1; pointer-events: auto;">
+                <button type="submit" class="btn-confirm" id="btn-submit" style="opacity: 1; pointer-events: auto;">
                     Confirmer la commande
                 </button>
                 </form> {{-- Entire form ends here, includes all hidden fields --}}
@@ -1137,15 +1118,16 @@
     </div>
 
     {{-- PayDunya PSR SDK REMOVED - Reverting to Standard Redirection --}}
-    {{-- <script src="https://paydunya.com/assets/psr/js/psr.paydunya.min.js"></script> --}}
+    {{--
+    <script src="https://paydunya.com/assets/psr/js/psr.paydunya.min.js"></script> --}}
 
     <script>
-    const PAYDUNYA_TOKEN_URL = "{{ route('checkout.paydunya.token') }}";
+        const PAYDUNYA_TOKEN_URL = "{{ route('checkout.paydunya.token') }}";
 
-    /* 
-       REMOVED REDUNDANT SETUP AT START (Line 1128-1152) 
-       Logic moved to a single DOMContentLoaded block at the end of the file.
-    */
+        /* 
+           REMOVED REDUNDANT SETUP AT START (Line 1128-1152) 
+           Logic moved to a single DOMContentLoaded block at the end of the file.
+        */
         const subtotal = {{ $subtotal }};
         const sellerOrigins = @json($sellerOrigins);
         const sellerRegions = @json($sellerRegions ?? []);
