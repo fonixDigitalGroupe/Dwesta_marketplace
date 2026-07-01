@@ -353,6 +353,58 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        @media (max-width: 767px) {
+            .tracker-box {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+                padding: 10px 10px 10px 20px;
+                margin: 15px 0;
+            }
+
+            .tracker-box::before {
+                top: 27px;
+                bottom: 27px;
+                left: 35px;
+                right: auto;
+                width: 4px;
+                height: auto;
+            }
+
+            .tracker-box.active-2::before {
+                background: linear-gradient(to bottom, var(--jumia-orange) 20%, #e0e0e0 20%);
+            }
+
+            .tracker-box.active-3::before {
+                background: linear-gradient(to bottom, var(--jumia-orange) 40%, #e0e0e0 40%);
+            }
+
+            .tracker-box.active-4::before {
+                background: linear-gradient(to bottom, var(--jumia-orange) 60%, #e0e0e0 60%);
+            }
+
+            .tracker-box.active-5::before {
+                background: linear-gradient(to bottom, var(--jumia-orange) 80%, #e0e0e0 80%);
+            }
+
+            .tracker-step {
+                flex-direction: row;
+                gap: 16px;
+                text-align: left;
+                align-items: center;
+                width: 100%;
+            }
+
+            .step-dot {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+
+            .step-label {
+                font-size: 12px;
+            }
+        }
     </style>
 @endpush
 
@@ -363,12 +415,14 @@
         <div class="hero-success">
             <div class="hero-text">
                 @if(request('info') || session('info'))
-                    <div class="success-alert-amazon" style="border-color: var(--jumia-orange); background: #fff3e0; margin-bottom: 24px;">
+                    <div class="success-alert-amazon"
+                        style="border-color: var(--jumia-orange); background: #fff3e0; margin-bottom: 24px;">
                         <div class="hero-icon" style="color: var(--jumia-orange); background: #fff;">
                             <i class="fas fa-mobile-alt"></i>
                         </div>
                         <div>
-                            <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 8px 0; color: var(--jumia-orange);">Action requise sur votre téléphone</h2>
+                            <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 8px 0; color: var(--jumia-orange);">Action
+                                requise sur votre téléphone</h2>
                             <p style="color: #333; font-size: 15px; line-height: 1.5;">
                                 {{ request('info') ?? session('info') }}
                             </p>
@@ -376,19 +430,23 @@
                     </div>
                 @endif
                 @if(!empty($paymentPending))
-                    <div class="success-alert-amazon" style="border-color: var(--jumia-orange); background: #fff3e0; margin-bottom: 24px;">
+                    <div class="success-alert-amazon"
+                        style="border-color: var(--jumia-orange); background: #fff3e0; margin-bottom: 24px;">
                         <div class="hero-icon" style="color: var(--jumia-orange); background: #fff;">
                             <i class="fas fa-clock"></i>
                         </div>
                         <div>
-                            <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 8px 0; color: var(--jumia-orange);">Paiement en cours de confirmation</h2>
+                            <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 8px 0; color: var(--jumia-orange);">
+                                Paiement en cours de confirmation</h2>
                             <p style="color: #333; font-size: 15px; line-height: 1.5;">
-                                Votre commande a bien été enregistrée. La confirmation du paiement peut prendre quelques instants — vous serez notifié dès sa validation.
+                                Votre commande a bien été enregistrée. La confirmation du paiement peut prendre quelques
+                                instants — vous serez notifié dès sa validation.
                             </p>
                         </div>
                     </div>
                 @endif
-                <h1>Merci {{ Auth::user()->prenom ?? 'Client' }} ! Votre commande {{ !empty($paymentPending) ? 'a bien été enregistrée' : 'est confirmée' }}.</h1>
+                <h1>Merci {{ Auth::user()->prenom ?? 'Client' }} ! Votre commande
+                    {{ !empty($paymentPending) ? 'a bien été enregistrée' : 'est confirmée' }}.</h1>
                 <p>
                     @if(count($orders) > 1)
                         Nous avons créé <strong>{{ count($orders) }} commandes</strong> distinctes car vos articles proviennent
