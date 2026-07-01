@@ -21,9 +21,9 @@ class PayDunyaService
         $this->privateKey = config('services.paydunya.private_key');
         $this->token = config('services.paydunya.token');
         $this->mode = config('services.paydunya.mode', 'test');
-        
-        $this->baseUrl = $this->mode === 'live' 
-            ? 'https://app.paydunya.com/api/v1' 
+
+        $this->baseUrl = $this->mode === 'live'
+            ? 'https://app.paydunya.com/api/v1'
             : 'https://app.paydunya.com/sandbox-api/v1';
     }
 
@@ -37,7 +37,7 @@ class PayDunyaService
 
         $payload = [
             'invoice' => [
-                'invoice_number'  => 'KRN-' . strtoupper(uniqid()) . '-' . time(),
+                'invoice_number' => 'KRN-' . strtoupper(uniqid()) . '-' . time(),
                 'total_amount' => $total,
                 'description' => $description,
                 'customer_name' => $customer['name'] ?? '',
@@ -50,7 +50,7 @@ class PayDunyaService
             'actions' => [
                 'cancel_url' => $cancelUrl,
                 'return_url' => $successUrl,
-                'callback_url' => route('paydunya.callback'), 
+                'callback_url' => route('paydunya.callback'),
             ],
             'custom_data' => array_merge($customData, [
                 'customer_name' => $customer['name'] ?? '',
@@ -72,13 +72,13 @@ class PayDunyaService
                 'state' => $customer['state'] ?? '',
                 'zip_code' => $customer['zip_code'] ?? '',
             ];
-            
+
             // Format legacy/alternatif pour maximiser les chances de pré-remplissage
             $payload['customer_name'] = $customer['name'] ?? '';
             $payload['customer_email'] = $customer['email'] ?? '';
             $payload['customer_phone'] = $cleanPhone;
             $payload['customer_phonenumber'] = $cleanPhone;
-            
+
             // Root level fields sometimes used by older versions or specific SDKs
             $payload['name'] = $customer['name'] ?? '';
             $payload['email'] = $customer['email'] ?? '';
@@ -185,7 +185,7 @@ class PayDunyaService
         $name = $customer['name'] ?? '';
         $email = $customer['email'] ?? '';
 
-        $endpoint = match($method) {
+        $endpoint = match ($method) {
             'om' => '/softpay/new-orange-money-senegal',
             'wave' => '/softpay/wave-senegal',
             'free' => '/softpay/free-money-senegal',
@@ -197,7 +197,7 @@ class PayDunyaService
         }
 
         // Adapter le payload selon les exigences spécifiques de chaque endpoint PayDunya
-        $payload = match($method) {
+        $payload = match ($method) {
             'om' => [
                 'customer_name' => $name,
                 'customer_email' => $email,
@@ -244,10 +244,16 @@ class PayDunyaService
             throw new \Exception("Méthode de retrait non supportée : " . $method);
         }
 
+        // Nettoyer et formater au format international sans le '+' (ex: 221771234567)
+        $cleanPhone = str_replace(['+', ' ', '-'], '', $phone);
+        if (!str_starts_with($cleanPhone, '221') && strlen($cleanPhone) === 9) {
+            $cleanPhone = '221' . $cleanPhone;
+        }
+
         $payload = [
-            'account_alias' => $phone,
+            'account_alias' => $cleanPhone,
             'amount' => $amount,
-            'withdraw_mode' => $channel[0], // ex: orange-money-sn
+            'withdraw_mode' => $channel[0], // ex: orange-money-senegal
         ];
 
         if (!empty($customData)) {
@@ -258,7 +264,7 @@ class PayDunyaService
             'PAYDUNYA-MASTER-KEY' => $this->masterKey,
             'PAYDUNYA-PRIVATE-KEY' => $this->privateKey,
             'PAYDUNYA-TOKEN' => $this->token,
-        ])->post($this->baseUrl . '/disbursement/disburse' , $payload);
+        ])->post($this->baseUrl . '/disbursement/disburse', $payload);
 
         if ($response->successful()) {
             return $response->json();
@@ -276,7 +282,7 @@ class PayDunyaService
      */
     protected function getChannelsForMethod($method)
     {
-        return match($method) {
+        return match ($method) {
             'om' => ['orange-money-senegal'],
             'wave' => ['wave-senegal'],
             'free' => ['freemoney-senegal'],
