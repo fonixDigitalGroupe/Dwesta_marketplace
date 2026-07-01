@@ -55,6 +55,23 @@ class VendeurWalletController extends Controller
     }
 
     /**
+     * Formulaire de retrait dédié (style SoftPay)
+     */
+    public function showWithdrawForm()
+    {
+        $user = Auth::user();
+
+        $availableBalance = (float) Transaction::where('user_id', $user->id)
+            ->where('statut', 'succes')
+            ->whereIn('wallet_status', [Transaction::STATUS_AVAILABLE, Transaction::STATUS_WITHDRAWN])
+            ->sum('montant');
+        $availableBalance = max(0, $availableBalance);
+
+        return view('vendeur.wallet.withdraw', compact('user', 'availableBalance'));
+    }
+
+
+    /**
      * Demande de retrait via PayDunya
      */
     public function requestWithdrawal(Request $request, PayDunyaService $payDunya)
@@ -104,7 +121,7 @@ class VendeurWalletController extends Controller
                     ]
                 ]);
 
-                return back()->with('success', 'Votre retrait de ' . number_format($request->montant) . ' FCFA a été traité avec succès via PayDunya.');
+                return redirect()->route('vendeur.wallet.index')->with('success', 'Votre retrait de ' . number_format($request->montant) . ' FCFA a été traité avec succès via PayDunya.');
             } else {
                 $errorMsg = $response['response_text'] ?? 'Une erreur est survenue lors du retrait via PayDunya.';
                 return back()->with('error', 'Erreur : ' . $errorMsg);

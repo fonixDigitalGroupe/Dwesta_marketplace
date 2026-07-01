@@ -130,6 +130,7 @@ Route::middleware('auth')->group(function () {
 
             // Wallet & Escrow
             Route::get('/wallet', [VendeurWalletController::class, 'index'])->name('wallet.index');
+            Route::get('/wallet/withdraw', [VendeurWalletController::class, 'showWithdrawForm'])->name('wallet.withdraw.show');
             Route::post('/wallet/withdraw', [VendeurWalletController::class, 'requestWithdrawal'])->name('wallet.withdraw');
         });
 

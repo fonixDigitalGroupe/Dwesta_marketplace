@@ -1103,7 +1103,7 @@
             {{-- Action buttons --}}
             <div class="wallet-actions">
                 <button class="btn-action btn-w-primary"
-                    onclick="document.getElementById('withdraw-section').scrollIntoView({behavior:'smooth'})">
+                    onclick="window.location.href='{{ route('vendeur.wallet.withdraw.show') }}'">
                     <i class="fas fa-paper-plane"></i> Effectuer un retrait
                 </button>
                 <button class="btn-action btn-w-red" onclick="window.print()">
@@ -1129,82 +1129,6 @@
                     </div>
                 </div>
             @endif
-
-            {{-- ══ WITHDRAWAL SECTION ══ --}}
-            <div class="w-card" id="withdraw-section">
-                <div class="w-card-header">
-                    <h2><i class="fas fa-paper-plane"></i> Service de retrait</h2>
-                    <span
-                        style="font-size: 0.75rem; color: #007600; font-weight: 600; display: flex; align-items: center; gap: 5px;">
-                        <i class="fas fa-lock"></i> Transaction sécurisée
-                    </span>
-                </div>
-                <div class="w-card-body">
-                    @if($availableBalance > 0)
-                        <form action="{{ route('vendeur.wallet.withdraw') }}" method="POST">
-                            @csrf
-                            <div class="withdraw-grid">
-                                {{-- Montant --}}
-                                <div class="form-field">
-                                    <label>Montant à virer</label>
-                                    <div class="amount-wrapper">
-                                        <input type="number" name="montant" class="form-input" min="1"
-                                            max="{{ $availableBalance }}" required placeholder="0" value="{{ old('montant') }}">
-                                        <span class="amount-suffix">FCFA</span>
-                                    </div>
-                                    <div class="available-hint">
-                                        <span>Disponible : <strong>{{ number_format($availableBalance, 0, ',', ' ') }}
-                                                FCFA</strong></span>
-                                    </div>
-                                </div>
-
-                                {{-- Destination --}}
-                                <div class="form-field">
-                                    <label>Numéro Mobile Money</label>
-                                    <div style="position: relative;">
-                                        <i class="fas fa-phone-alt"
-                                            style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#9ca3af;font-size:0.85rem;"></i>
-                                        <input type="text" name="telephone" class="form-input" style="padding-left: 36px;"
-                                            required value="{{ old('telephone', $user->telephone) }}"
-                                            placeholder="Ex : 77 000 00 00">
-                                    </div>
-                                    <p style="font-size: 0.73rem; color: #9ca3af; margin:5px 0 1rem;">Vérifiez votre numéro
-                                        avant de valider.</p>
-
-                                    <label>Réseau</label>
-                                    <div class="pay-chips">
-                                        <div class="pay-chip active" onclick="selectPay('om', this)" id="chip-om">
-                                            <img src="{{ asset('images/logoOM.png') }}" alt="Orange Money">
-                                            Orange Money
-                                        </div>
-                                        <div class="pay-chip" onclick="selectPay('wave', this)" id="chip-wave">
-                                            <img src="{{ asset('images/logowave.png') }}" alt="Wave">
-                                            Wave
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="moyen" id="pay_method" value="om">
-                                </div>
-                            </div>
-
-
-
-                            <button type="submit" class="btn-submit-withdraw">
-                                <i class="fas fa-paper-plane"></i> Valider le virement
-                            </button>
-                        </form>
-                    @else
-                        <div class="locked-state">
-                            <div><i class="fas fa-lock"></i></div>
-                            <p>
-                                Solde insuffisant.<br>
-                                Le montant minimum pour effectuer un retrait est de <strong>1 000 FCFA</strong>.<br>
-                                <span style="font-size: 0.82rem; color: #9ca3af;">Votre solde actuel :
-                                    {{ number_format($availableBalance, 0, ',', ' ') }} FCFA</span>
-                            </p>
-                        </div>
-                    @endif
-                </div>
-            </div>
 
             {{-- ══ TRANSACTIONS TABLE ══ --}}
             <div class="w-card" id="tx-section">
