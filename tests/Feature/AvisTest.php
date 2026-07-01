@@ -83,7 +83,7 @@ class AvisTest extends TestCase
             'annonce_id' => $this->annonce->id,
             'user_id' => $this->acheteur->id,
             'note' => 5,
-            'statut' => Avis::STATUT_EN_ATTENTE,
+            'statut' => Avis::STATUT_APPROUVE,
         ]);
     }
 

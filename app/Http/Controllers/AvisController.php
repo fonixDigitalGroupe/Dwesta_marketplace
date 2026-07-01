@@ -123,7 +123,7 @@ class AvisController extends Controller
             ]);
 
             return redirect()->route('annonces.show', $annonce)
-                ->with('success', 'Votre avis a été soumis et sera publié après modération.');
+                ->with('success', 'Votre avis a été publié avec succès.');
         } catch (\Exception $e) {
             Log::error('Erreur lors de la création de l\'avis: ' . $e->getMessage());
             return back()->withInput()
