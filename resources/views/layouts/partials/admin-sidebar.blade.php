@@ -47,8 +47,8 @@
 
         <div class="sidebar-section">
             <ul class="sidebar-menu">
-                @can('manage_carriers')<li><a href="{{ route('admin.transporteurs.index') }}" class="{{ request()->routeIs('admin.transporteurs.*') ? 'active' : '' }}"><i class="fas fa-truck"></i> <span>Transporteurs</span></a></li>@endcan
-                @can('manage_drivers')<li><a href="{{ route('admin.livreurs.index') }}" class="{{ request()->routeIs('admin.livreurs.*') ? 'active' : '' }}"><i class="fas fa-motorcycle"></i> <span>Livreurs</span></a></li>@endcan
+                @can('manage_carriers')<li><a href="{{ route('admin.transporteurs.index') }}" class="{{ request()->routeIs('admin.transporteurs.*') ? 'active' : '' }}"><i class="fas fa-truck"></i> <span>Transporteurs</span>@if(($pendingTransporteursCount ?? 0) > 0)<span class="sidebar-badge">{{ $pendingTransporteursCount > 9 ? '9+' : $pendingTransporteursCount }}</span>@endif</a></li>@endcan
+                @can('manage_drivers')<li><a href="{{ route('admin.livreurs.index') }}" class="{{ request()->routeIs('admin.livreurs.*') ? 'active' : '' }}"><i class="fas fa-motorcycle"></i> <span>Livreurs</span>@if(($pendingLivreursCount ?? 0) > 0)<span class="sidebar-badge">{{ $pendingLivreursCount > 9 ? '9+' : $pendingLivreursCount }}</span>@endif</a></li>@endcan
                 @can('manage_pickup_points')<li><a href="{{ route('admin.point-relais.index') }}" class="{{ request()->routeIs('admin.point-relais.*') ? 'active' : '' }}"><i class="fas fa-map-marker-alt"></i> <span>Dépôts Relais</span></a></li>@endcan
             </ul>
         </div>

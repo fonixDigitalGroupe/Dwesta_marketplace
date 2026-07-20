@@ -40,6 +40,8 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.admin', function ($view) {
             $pendingVendorsCount = Vendeur::where('statut_verification', 'en_attente')->count();
+            $pendingLivreursCount = \App\Models\Livreur::where('statut_verification', 'en_attente')->count();
+            $pendingTransporteursCount = \App\Models\Transporteur::where('statut_verification', 'en_attente')->count();
 
             // Messages non lus du compte Karnou (la messagerie admin agit en son nom)
             $karnou = \App\Models\User::where('email', 'admin@karnou.com')->first()
@@ -55,6 +57,8 @@ class AppServiceProvider extends ServiceProvider
             }
 
             $view->with('pendingVendorsCount', $pendingVendorsCount)
+                 ->with('pendingLivreursCount', $pendingLivreursCount)
+                 ->with('pendingTransporteursCount', $pendingTransporteursCount)
                  ->with('adminUnreadMessages', $adminUnreadMessages);
         });
     }

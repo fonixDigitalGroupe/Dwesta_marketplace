@@ -191,6 +191,24 @@
             color: var(--sidebar-accent);
         }
 
+        .sidebar-badge {
+            margin-left: auto;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            background: #ef4444;
+            color: #fff;
+            font-size: 0.68rem;
+            font-weight: 800;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .admin-wrapper.sidebar-collapsed .sidebar-badge { display: none; }
+
         .sidebar-submenu {
             margin-top: 4px;
             border-left: 1px solid #e5e7eb;
