@@ -108,7 +108,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 70px;
+            height: 56px;
             background: var(--sidebar-brand-bg);
             /* Header (logo) garde le style bleu */
             border-bottom: 1px solid #e5e7eb;
@@ -224,9 +224,9 @@
         .header {
             background-color: #ffffff;
             border-bottom: 1px solid #e5e7eb;
-            height: 70px !important;
-            min-height: 70px !important;
-            max-height: 70px !important;
+            height: 56px !important;
+            min-height: 56px !important;
+            max-height: 56px !important;
             display: flex;
             align-items: center;
             padding: 0 1.5rem;
@@ -239,7 +239,7 @@
 
         .header-container {
             width: 100%;
-            height: 70px !important;
+            height: 56px !important;
             display: flex;
             align-items: center;
             justify-content: space-between;
