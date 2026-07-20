@@ -31,13 +31,9 @@ class TransporteurController extends Controller
             $query->where('statut_verification', $request->statut);
         }
 
-        // Filtre par pays (déduit de l'indicatif téléphonique)
+        // Filtre par pays (colonne users.pays)
         if ($request->filled('pays')) {
-            $country = \App\Models\Country::where('name', $request->pays)
-                ->whereNotNull('phone_code')->first();
-            if ($country) {
-                $query->whereHas('user', fn ($q) => $q->where('telephone', 'like', $country->phone_code . '%'));
-            }
+            $query->whereHas('user', fn ($q) => $q->where('pays', $request->pays));
         }
 
         // Recherche libre (nom, email, téléphone, véhicule)
@@ -58,32 +54,10 @@ class TransporteurController extends Controller
         // On compte les transporteurs en attente
         $pendingCount = Transporteur::where('statut_verification', 'en_attente')->count();
 
-        // Pays disponibles (déduits des téléphones des transporteurs existants)
-        $paysDisponibles = $this->paysDisponibles(
-            Transporteur::with('user:id,telephone')->get()->pluck('user.telephone')
-        );
+        // Liste des pays (table countries)
+        $paysDisponibles = \App\Models\Country::orderBy('name')->pluck('name')->all();
 
         return view('admin.transporteurs.index', compact('transporteurs', 'pendingCount', 'paysDisponibles'));
-    }
-
-    /**
-     * Liste des pays présents parmi une collection de téléphones,
-     * déduits via l'indicatif (phone_code), triés alphabétiquement.
-     */
-    private function paysDisponibles($telephones): array
-    {
-        $countries = \App\Models\Country::whereNotNull('phone_code')
-            ->get(['name', 'phone_code'])
-            ->sortByDesc(fn ($c) => strlen($c->phone_code));
-
-        return collect($telephones)
-            ->filter()
-            ->map(fn ($tel) => $countries->first(fn ($c) => $c->phone_code && str_starts_with($tel, $c->phone_code))?->name)
-            ->filter()
-            ->unique()
-            ->sort()
-            ->values()
-            ->all();
     }
 
     /**
