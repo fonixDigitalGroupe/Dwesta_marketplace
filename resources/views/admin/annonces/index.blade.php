@@ -44,7 +44,7 @@
                 </div>
                 <div>
                     <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $totalAnnonces }}</div>
-                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Total des annonces</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Annonces</div>
                 </div>
             </div>
             <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
