@@ -12,7 +12,7 @@
         {{-- CHIFFRE D'AFFAIRES --}}
         <div style="background: #fff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #edf2f7; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 2px 6px rgba(37,99,235,0.35);">
+                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-wallet"></i>
                 </div>
                 <span style="font-size: 0.65rem; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 2px 6px; border-radius: 4px;">TOTAL CA</span>
@@ -26,7 +26,7 @@
         {{-- COMMISSIONS --}}
         <div style="background: #fff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #edf2f7; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 2px 6px rgba(124,58,237,0.35);">
+                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-percentage"></i>
                 </div>
                 <span style="font-size: 0.65rem; font-weight: 700; color: #7c3aed; background: #f5f3ff; padding: 2px 6px; border-radius: 4px;">PLATEFORME</span>
@@ -40,7 +40,7 @@
         {{-- COMMANDES --}}
         <div style="background: #fff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #edf2f7; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #059669, #047857); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 2px 6px rgba(5,150,105,0.35);">
+                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #059669, #047857); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-shopping-bag"></i>
                 </div>
                 <div style="text-align: right;">
@@ -56,7 +56,7 @@
         {{-- ANNONCES --}}
         <div style="background: #fff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #edf2f7; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #ea580c, #c2410c); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; box-shadow: 0 2px 6px rgba(234,88,12,0.35);">
+                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #ea580c, #c2410c); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-tags"></i>
                 </div>
                 @if($stats['annoncesPending'] > 0)
