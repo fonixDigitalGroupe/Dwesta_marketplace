@@ -214,7 +214,10 @@
                                     </form>
                                     <span style="color: #ddd;">|</span>
                                 @elseif($annonce->statut === 'publiee')
-                                    <a href="{{ route('annonces.show', $annonce) }}" target="_blank" style="color: #0066c0; font-size: 0.8rem; text-decoration: none;">Voir</a>
+                                    <a href="{{ route('annonces.show', $annonce) }}" target="_blank" title="Voir"
+                                        style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
+                                        onmouseover="this.style.background='#f3f4f6'"
+                                        onmouseout="this.style.background='transparent'"><i class="fas fa-eye" style="font-size: 0.95rem;"></i></a>
                                     <span style="color: #ddd;">|</span>
                                 @endif
 
