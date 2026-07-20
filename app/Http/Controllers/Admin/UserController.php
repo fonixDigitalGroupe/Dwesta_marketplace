@@ -92,7 +92,8 @@ class UserController extends Controller
 
         $users = $query->paginate($perPage)->withQueryString();
 
-        // Statistiques vendeurs (particulier / professionnel)
+        // Statistiques vendeurs (total / professionnel / particulier)
+        $vendeurTotalCount = \App\Models\Vendeur::count();
         $vendeurProCount = \App\Models\Vendeur::where('type', 'professionnel')->count();
         $vendeurParticulierCount = \App\Models\Vendeur::where('type', 'particulier')->count();
 
@@ -102,7 +103,7 @@ class UserController extends Controller
             ->pluck('name', 'name')
             ->toArray();
 
-        return view('admin.users.index', compact('users', 'role', 'search', 'perPage', 'typeVendeur', 'status', 'customRoles', 'vendeurProCount', 'vendeurParticulierCount'));
+        return view('admin.users.index', compact('users', 'role', 'search', 'perPage', 'typeVendeur', 'status', 'customRoles', 'vendeurTotalCount', 'vendeurProCount', 'vendeurParticulierCount'));
     }
 
     /**

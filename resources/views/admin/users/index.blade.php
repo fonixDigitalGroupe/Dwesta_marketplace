@@ -157,6 +157,15 @@
             <!-- Statistiques vendeurs -->
             <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff4e6; color: #e77600; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $vendeurTotalCount }}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Total des vendeurs</div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
                     <div style="width: 40px; height: 40px; border-radius: 8px; background: #eef4ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                         <i class="fas fa-briefcase"></i>
                     </div>
