@@ -55,7 +55,7 @@
 
         /* Sidebar Refined */
         .sidebar {
-            width: 220px;
+            width: 260px;
             /* More compact width */
             background: var(--sidebar-bg);
             color: var(--sidebar-text);

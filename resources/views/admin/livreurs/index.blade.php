@@ -90,16 +90,16 @@
                         <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
-                                <div style="font-size: 0.85rem; color: #0066c0; font-weight: 700;">{{ $livreur->user->prenom }} {{ $livreur->user->nom }}</div>
-                                <div style="font-size: 0.75rem; color: #666;">{{ $livreur->user->email }}</div>
+                                <div style="font-size: 0.85rem; color: #111; font-weight: 700;">{{ $livreur->user->prenom }} {{ $livreur->user->nom }}</div>
+                                <div style="font-size: 0.75rem; color: #111;">{{ $livreur->user->email }}</div>
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">{{ $livreur->user->telephone ?? '-' }}</td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; border-right: 1px solid #eff3f6;">{{ $livreur->user->telephone ?? '-' }}</td>
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; border-right: 1px solid #eff3f6;">
                                 <div style="font-weight: 600; color: #111;">{{ $livreur->type_vehicule ?? '-' }}</div>
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; border-right: 1px solid #eff3f6;">
                                 <div style="font-weight: 500; color: #111;">{{ strtoupper($livreur->type_piece ?? $livreur->type_document ?? '-') }}</div>
-                                <code style="font-family: monospace; background: #f8fafc; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; color: #475569; border: 1px solid #e2e8f0;">{{ $livreur->numero_piece ?? $livreur->numero_document ?? 'N/A' }}</code>
+                                <code style="font-family: monospace; background: #f8fafc; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; color: #111; border: 1px solid #e2e8f0;">{{ $livreur->numero_piece ?? $livreur->numero_document ?? 'N/A' }}</code>
                             </td>
                             <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                                 @php
@@ -118,10 +118,10 @@
                             </td>
                             <td style="padding: 12px 15px; text-align: right;" class="actions-column">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                                    <a href="{{ route('admin.livreurs.show', $livreur) }}"
-                                        style="color: #c45500; font-size: 0.8rem; text-decoration: none; font-weight: 600;"
-                                        onmouseover="this.style.textDecoration='underline'"
-                                        onmouseout="this.style.textDecoration='none'">Examiner</a>
+                                    <a href="{{ route('admin.livreurs.show', $livreur) }}" title="Examiner"
+                                        style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
+                                        onmouseover="this.style.background='#f3f4f6'"
+                                        onmouseout="this.style.background='transparent'"><i class="fas fa-eye" style="font-size: 0.95rem;"></i></a>
                                 </div>
                             </td>
                         </tr>
