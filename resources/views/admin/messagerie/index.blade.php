@@ -228,6 +228,25 @@
     <form action="{{ route('admin.messagerie.send') }}" method="POST" id="send-form" onsubmit="return confirmSend()">
         @csrf
         <div class="gm-compose-body">
+            @if($pinnedAnnonce)
+                <label class="gm-flabel">Article épinglé</label>
+                <div style="display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #e6e9ee; border-left: 3px solid #ff9900; border-radius: 8px; padding: 10px 12px; margin-bottom: 14px;">
+                    <div style="width: 44px; height: 44px; background: #f0f0f0; border: 1px solid #eee; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        @if($pinnedAnnonce->photoPrincipale())
+                            <img src="{{ $pinnedAnnonce->photoPrincipale()->url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        @else
+                            <i class="fas fa-image" style="color: #ccc;"></i>
+                        @endif
+                    </div>
+                    <div style="flex: 1; min-width: 0;">
+                        <div style="font-weight: 700; font-size: 0.85rem; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            <i class="fas fa-thumbtack" style="color: #ff9900; font-size: 0.75rem; margin-right: 6px;"></i>{{ $pinnedAnnonce->titre }}
+                        </div>
+                        <div style="font-size: 0.72rem; color: #64748b; margin-top: 2px;">Réf #{{ $pinnedAnnonce->id }} · {{ number_format($pinnedAnnonce->prix, 0, ',', ' ') }} FCFA</div>
+                    </div>
+                </div>
+            @endif
+
             <label class="gm-flabel">Destinataire(s)</label>
             <select name="mode" id="mode" class="gm-field" onchange="toggleRecipient()">
                 <option value="user">À : un utilisateur précis</option>
@@ -247,7 +266,7 @@
 
             <label class="gm-flabel">Message</label>
 
-            <textarea name="message" id="message" class="gm-textarea" placeholder="Rédigez votre message…" required>{{ old('message') }}</textarea>
+            <textarea name="message" id="message" class="gm-textarea" placeholder="Rédigez votre message…" required>{{ old('message', $pinnedAnnonce ? 'Bonjour, concernant votre article « '.$pinnedAnnonce->titre.' » (Réf #'.$pinnedAnnonce->id.') : ' : '') }}</textarea>
         </div>
         <div class="gm-compose-foot">
             <button type="submit" class="gm-send"><i class="fas fa-paper-plane"></i> Envoyer</button>

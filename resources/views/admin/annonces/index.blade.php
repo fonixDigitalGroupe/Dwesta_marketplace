@@ -190,7 +190,7 @@
                         </td>
                         <td style="padding: 12px 15px; text-align: right;">
                             <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                                <a href="{{ route('admin.messagerie.index', ['compose' => 1, 'to' => $annonce->vendeur->user->id]) }}" title="Envoyer un message au vendeur"
+                                <a href="{{ route('admin.messagerie.index', ['compose' => 1, 'to' => $annonce->vendeur->user->id, 'article' => $annonce->id]) }}" title="Envoyer un message au vendeur"
                                     style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
                                     onmouseover="this.style.background='#f3f4f6'"
                                     onmouseout="this.style.background='transparent'"><i class="fas fa-paper-plane" style="font-size: 0.9rem;"></i></a>

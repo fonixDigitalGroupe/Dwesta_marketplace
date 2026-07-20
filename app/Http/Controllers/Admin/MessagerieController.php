@@ -60,7 +60,12 @@ class MessagerieController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('admin.messagerie.index', compact('users', 'conversations', 'adminId', 'folder'));
+        // Article épinglé (depuis la page Annonces) : carte + message pré-rempli
+        $pinnedAnnonce = $request->filled('article')
+            ? \App\Models\Annonce::with('vendeur.user')->find($request->get('article'))
+            : null;
+
+        return view('admin.messagerie.index', compact('users', 'conversations', 'adminId', 'folder', 'pinnedAnnonce'));
     }
 
     /**
