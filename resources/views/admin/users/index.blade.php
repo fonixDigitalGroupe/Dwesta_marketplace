@@ -153,6 +153,30 @@
                 </div>
             </div>
 
+            @if($role === 'vendeur')
+            <!-- Statistiques vendeurs -->
+            <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #eef4ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $vendeurProCount }}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Vendeurs professionnels</div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #e6f6f9; color: #0891b2; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $vendeurParticulierCount }}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Vendeurs particuliers</div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <!-- Formulaire Global pour la recherche et les filtres -->
             <div class="filters-bar" style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 0; margin-bottom: 20px;">
                 <form action="{{ route('admin.users.index') }}" method="GET" id="filter-wrapper" style="display: flex; flex-direction: column; gap: 15px;">

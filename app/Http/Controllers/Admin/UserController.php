@@ -92,13 +92,17 @@ class UserController extends Controller
 
         $users = $query->paginate($perPage)->withQueryString();
 
+        // Statistiques vendeurs (particulier / professionnel)
+        $vendeurProCount = \App\Models\Vendeur::where('type', 'professionnel')->count();
+        $vendeurParticulierCount = \App\Models\Vendeur::where('type', 'particulier')->count();
+
         // Rôles personnalisés (créés dans /admin/roles) pour le filtre
         $customRoles = \Spatie\Permission\Models\Role::whereNotIn('name', ['admin', 'vendeur', 'client', 'acheteur', 'point relais', 'transporteur', 'livreur'])
             ->orderBy('name')
             ->pluck('name', 'name')
             ->toArray();
 
-        return view('admin.users.index', compact('users', 'role', 'search', 'perPage', 'typeVendeur', 'status', 'customRoles'));
+        return view('admin.users.index', compact('users', 'role', 'search', 'perPage', 'typeVendeur', 'status', 'customRoles', 'vendeurProCount', 'vendeurParticulierCount'));
     }
 
     /**
