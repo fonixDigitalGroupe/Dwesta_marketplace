@@ -186,6 +186,39 @@
             </div>
             @endif
 
+            @if($role === 'acheteur')
+            <!-- Statistiques clients -->
+            <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #eef4ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $clientTotalCount }}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Total des clients</div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #f7fff0; color: #569b00; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $clientActifCount }}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Clients actifs</div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff5f5; color: #c40000; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $clientSuspenduCount }}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Clients suspendus</div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <!-- Formulaire Global pour la recherche et les filtres -->
             <div class="filters-bar" style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 0; margin-bottom: 20px;">
                 <form action="{{ route('admin.users.index') }}" method="GET" id="filter-wrapper" style="display: flex; flex-direction: column; gap: 15px;">
@@ -218,6 +251,13 @@
                             <option value="">Tous les statuts</option>
                             <option value="actif" {{ request('status') === 'actif' ? 'selected' : '' }}>Actif</option>
                             <option value="attente" {{ request('status') === 'attente' ? 'selected' : '' }}>En attente</option>
+                            <option value="suspendu" {{ request('status') === 'suspendu' ? 'selected' : '' }}>Suspendu</option>
+                        </select>
+                        @endif
+                        @if($role === 'acheteur')
+                        <select name="status" onchange="this.form.submit()" class="filter-select" style="min-width: 150px;">
+                            <option value="">Tous les statuts</option>
+                            <option value="actif" {{ request('status') === 'actif' ? 'selected' : '' }}>Actif</option>
                             <option value="suspendu" {{ request('status') === 'suspendu' ? 'selected' : '' }}>Suspendu</option>
                         </select>
                         @endif

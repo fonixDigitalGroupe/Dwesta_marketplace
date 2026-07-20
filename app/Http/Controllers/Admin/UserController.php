@@ -97,13 +97,20 @@ class UserController extends Controller
         $vendeurProCount = \App\Models\Vendeur::where('type', 'professionnel')->count();
         $vendeurParticulierCount = \App\Models\Vendeur::where('type', 'particulier')->count();
 
+        // Statistiques clients (total / actifs / suspendus)
+        $clientBase = fn () => User::doesntHave('vendeur')
+            ->whereHas('roles', fn ($q) => $q->where('name', 'acheteur'));
+        $clientTotalCount = $clientBase()->count();
+        $clientActifCount = $clientBase()->where('is_active', true)->count();
+        $clientSuspenduCount = $clientBase()->where('is_active', false)->count();
+
         // Rôles personnalisés (créés dans /admin/roles) pour le filtre
         $customRoles = \Spatie\Permission\Models\Role::whereNotIn('name', ['admin', 'vendeur', 'client', 'acheteur', 'point relais', 'transporteur', 'livreur'])
             ->orderBy('name')
             ->pluck('name', 'name')
             ->toArray();
 
-        return view('admin.users.index', compact('users', 'role', 'search', 'perPage', 'typeVendeur', 'status', 'customRoles', 'vendeurTotalCount', 'vendeurProCount', 'vendeurParticulierCount'));
+        return view('admin.users.index', compact('users', 'role', 'search', 'perPage', 'typeVendeur', 'status', 'customRoles', 'vendeurTotalCount', 'vendeurProCount', 'vendeurParticulierCount', 'clientTotalCount', 'clientActifCount', 'clientSuspenduCount'));
     }
 
     /**
