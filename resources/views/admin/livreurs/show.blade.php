@@ -205,11 +205,11 @@
                 <div style="display: flex; gap: 10px; margin-bottom: 20px;">
                     <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; cursor: pointer; padding: 10px; background: #fff; border: 1px solid #eff3f6; border-radius: 6px;">
                         <input type="radio" x-model="decision" value="approve" name="decision_type">
-                        <span style="font-weight: 700; color: #16a34a;">Approuver</span>
+                        <span style="font-weight: 700; color: #111;">Approuver</span>
                     </label>
                     <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; cursor: pointer; padding: 10px; background: #fff; border: 1px solid #eff3f6; border-radius: 6px;">
                         <input type="radio" x-model="decision" value="reject" name="decision_type">
-                        <span style="font-weight: 700; color: #b91c1c;">Rejeter</span>
+                        <span style="font-weight: 700; color: #111;">Rejeter</span>
                     </label>
                 </div>
 
