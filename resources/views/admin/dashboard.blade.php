@@ -7,7 +7,7 @@
 
 
     {{-- ROW 1: KEY PERFORMANCE INDICATORS --}}
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
         
         {{-- CHIFFRE D'AFFAIRES --}}
         <div style="background: #fff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #edf2f7; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
