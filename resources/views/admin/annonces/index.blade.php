@@ -20,11 +20,14 @@
 <div style="max-width: 1200px; margin: 0 auto;">
     
     <!-- Main Conteneur style Amazon Card -->
-    <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px; margin-top: -50px;">
-        
+    <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px; margin-top: -50px;">
+
         <!-- Top Action Bar -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e7e7e7;">
-            <h1 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">Gestion des Articles</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eff3f6;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                <i class="fas fa-clipboard-list" style="font-size: 0.8rem;"></i>
+                <span style="line-height: 1;">Articles</span>
+            </div>
 
             <div style="display: flex; gap: 8px;">
                 <button disabled
@@ -92,7 +95,7 @@
         <div style="border: 1px solid #e7e7e7; border-radius: 0; overflow: hidden;">
             <table style="width: 100%; border-collapse: collapse;">
                 <thead>
-                    <tr style="background: #f6f6f6; border-bottom: 1px solid #e7e7e7;">
+                    <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Article</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 200px;">Vendeur</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 150px;">Prix</th>
@@ -113,14 +116,14 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <div style="font-weight: 500; font-size: 0.85rem; color: #0066c0; margin-bottom: 2px;">{{ $annonce->titre }}</div>
-                                    <div style="font-size: 0.75rem; color: #555;">Réf: #{{ $annonce->id }}</div>
+                                    <div style="font-weight: 700; font-size: 0.85rem; color: #111; margin-bottom: 2px;">{{ $annonce->titre }}</div>
+                                    <div style="font-size: 0.75rem; color: #111;">Réf: #{{ $annonce->id }}</div>
                                 </div>
                             </div>
                         </td>
                         <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
-                            <div style="font-weight: 500; font-size: 0.85rem; color: #111;">{{ $annonce->vendeur->user->prenom }} {{ $annonce->vendeur->user->nom }}</div>
-                            <div style="font-size: 0.75rem; color: #888; margin-top: 2px;">{{ ucfirst($annonce->vendeur->type) }}</div>
+                            <div style="font-weight: 700; font-size: 0.85rem; color: #111;">{{ $annonce->vendeur->user->prenom }} {{ $annonce->vendeur->user->nom }}</div>
+                            <div style="font-size: 0.75rem; color: #111; margin-top: 2px;">{{ ucfirst($annonce->vendeur->type) }}</div>
                         </td>
                         <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
                             <div style="font-weight: 700; color: #111; font-size: 0.9rem;">{{ number_format($annonce->prix, 0, ',', ' ') }} <small style="font-size: 0.7rem; font-weight: 400;">FCFA</small></div>
