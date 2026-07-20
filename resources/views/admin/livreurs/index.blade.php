@@ -80,7 +80,6 @@
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Livreur</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Téléphone</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Véhicule</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Document</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Statut</th>
                         <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 140px;" class="actions-column">Actions</th>
                     </tr>
@@ -96,10 +95,6 @@
                             <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; border-right: 1px solid #eff3f6;">{{ $livreur->user->telephone ?? '-' }}</td>
                             <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; border-right: 1px solid #eff3f6;">
                                 <div style="font-weight: 600; color: #111;">{{ $livreur->type_vehicule ?? '-' }}</div>
-                            </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; border-right: 1px solid #eff3f6;">
-                                <div style="font-weight: 500; color: #111;">{{ strtoupper($livreur->type_piece ?? $livreur->type_document ?? '-') }}</div>
-                                <code style="font-family: monospace; background: #f8fafc; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; color: #111; border: 1px solid #e2e8f0;">{{ $livreur->numero_piece ?? $livreur->numero_document ?? 'N/A' }}</code>
                             </td>
                             <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                                 @php
@@ -127,7 +122,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
+                            <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
                                 Aucun livreur trouvé.
                             </td>
                         </tr>
