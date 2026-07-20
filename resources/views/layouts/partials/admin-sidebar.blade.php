@@ -27,7 +27,7 @@
 
         <div class="sidebar-section">
             <ul class="sidebar-menu">
-                @can('approve_vendors')<li><a href="{{ route('admin.users.index', ['role' => 'vendeur']) }}" class="{{ request('role') == 'vendeur' ? 'active' : '' }}"><i class="fas fa-store"></i> <span>Vendeurs</span></a></li>@endcan
+                @can('approve_vendors')<li><a href="{{ route('admin.users.index', ['role' => 'vendeur']) }}" class="{{ request('role') == 'vendeur' ? 'active' : '' }}"><i class="fas fa-store"></i> <span>Vendeurs</span>@if(($pendingVendorsCount ?? 0) > 0)<span class="sidebar-badge">{{ $pendingVendorsCount > 9 ? '9+' : $pendingVendorsCount }}</span>@endif</a></li>@endcan
                 @can('manage_users')<li><a href="{{ route('admin.users.index', ['role' => 'acheteur']) }}" class="{{ request('role') == 'acheteur' ? 'active' : '' }}"><i class="fas fa-users"></i> <span>Clients</span></a></li>@endcan
                 @can('moderate_products')<li><a href="{{ route('admin.annonces.index') }}" class="{{ request()->routeIs('admin.annonces.*') ? 'active' : '' }}"><i class="fas fa-clipboard-list"></i> <span>Articles</span></a></li>@endcan
                 @can('manage_orders')<li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i class="fas fa-shopping-basket"></i> <span>Commandes</span></a></li>@endcan
