@@ -76,14 +76,14 @@
         
         {{-- DERNIÈRES COMMANDES --}}
         <div style="background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #edf2f7;">
-            <div style="padding: 0.75rem 1rem; background: #fbfcfd; border-bottom: 1px solid #edf2f7; display: flex; justify-content: space-between; align-items: center;">
+            <div style="padding: 0.75rem 1rem; background: #fff; border-bottom: 1px solid #edf2f7; display: flex; justify-content: space-between; align-items: center;">
                 <h3 style="font-size: 0.85rem; font-weight: 700; color: #2d3748;">Dernières Flux Commandes</h3>
                 <a href="{{ route('admin.orders.index') }}" style="font-size: 0.75rem; font-weight: 600; color: #3182ce; text-decoration: none;">Voir tout</a>
             </div>
             <div style="overflow-x: auto;">
                 <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem;">
                     <thead>
-                        <tr style="background: #f8fafc; text-align: left;">
+                        <tr style="background: #fff; text-align: left;">
                             <th style="padding: 0.5rem 0.75rem; color: #718096; font-weight: 600;">Flux / Date</th>
                             <th style="padding: 0.5rem 0.75rem; color: #718096; font-weight: 600;">Client</th>
                             <th style="padding: 0.5rem 0.75rem; color: #718096; font-weight: 600;">Montant</th>
@@ -116,7 +116,7 @@
 
         {{-- NOUVEAUX VENDEURS --}}
         <div style="background: #fff; border-radius: 8px; overflow: hidden; border: 1px solid #edf2f7;">
-            <div style="padding: 0.75rem 1rem; background: #fbfcfd; border-bottom: 1px solid #edf2f7;">
+            <div style="padding: 0.75rem 1rem; background: #fff; border-bottom: 1px solid #edf2f7;">
                 <h3 style="font-size: 0.85rem; font-weight: 700; color: #2d3748;">Nouveaux Partenaires</h3>
             </div>
             <div style="padding: 0.25rem 0;">
