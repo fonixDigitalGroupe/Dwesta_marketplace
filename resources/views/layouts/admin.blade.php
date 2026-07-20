@@ -15,10 +15,11 @@
             --mady-red: #bf0000;
             --mady-red-hover: #a00000;
             --mady-blue: #3b82f6; /* Vibrant Blue Kelasi Style */
-            --sidebar-bg: linear-gradient(180deg, #1e40af 0%, #1e3a8a 100%); /* Royal Blue Kelasi Gradient */
-            --sidebar-text: rgba(255, 255, 255, 0.7);
-            --sidebar-text-hover: #ffffff;
-            --sidebar-hover: rgba(255, 255, 255, 0.08);
+            --sidebar-bg: #ffffff; /* Corps de la sidebar en blanc */
+            --sidebar-brand-bg: linear-gradient(180deg, #1e40af 0%, #1e3a8a 100%); /* Header (logo) reste bleu */
+            --sidebar-text: #475569;
+            --sidebar-text-hover: #111827;
+            --sidebar-hover: #f3f4f6;
             --sidebar-active: rgba(255, 153, 0, 0.12); /* Vibrant Orange active tint */
             --sidebar-text-active: #ff9900; /* Vibrant Orange active text */
             --sidebar-accent: #ff9900; /* Vibrant Orange accent marker */
@@ -63,8 +64,8 @@
             overflow: hidden;
             flex-shrink: 0;
             z-index: 100;
-            box-shadow: 1px 0 0 rgba(255, 255, 255, 0.05);
-            border-right: none;
+            box-shadow: none;
+            border-right: 1px solid #e5e7eb;
             transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -108,9 +109,9 @@
             align-items: center;
             justify-content: center;
             height: 70px;
-            background: var(--sidebar-bg);
-            /* Logo area follows sidebar style */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--sidebar-brand-bg);
+            /* Header (logo) garde le style bleu */
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .sidebar-brand img {
@@ -123,7 +124,7 @@
         .sidebar-separator {
             margin: 0.6rem 1.25rem 0.1rem;
             height: 1px;
-            background: rgba(255, 255, 255, 0.08);
+            background: #e5e7eb;
         }
 
         .sidebar-container {
@@ -192,7 +193,7 @@
 
         .sidebar-submenu {
             margin-top: 4px;
-            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 1px solid #e5e7eb;
             margin-left: 1.6rem;
             display: flex;
             flex-direction: column;
