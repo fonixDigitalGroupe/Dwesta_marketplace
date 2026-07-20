@@ -66,30 +66,28 @@
         </div>
 
         <!-- Filter Bar -->
-        <form action="{{ route('admin.annonces.index') }}" method="GET" style="border: 1px solid #e7e7e7; padding: 15px; border-radius: 4px; margin-bottom: 20px; display: flex; gap: 20px;">
-            <input type="hidden" name="status" value="{{ $status }}">
-            <div style="flex: 1;">
-                <label style="display: block; font-size: 0.8rem; color: #555; font-weight: 500; margin-bottom: 5px;">Rechercher un article ou vendeur</label>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" name="search" value="{{ $search }}" placeholder="Titre, nom du vendeur..." 
-                        style="flex: 1; padding: 6px 10px; border: 1px solid #adb1b8; border-radius: 0; font-size: 0.85rem; outline: none;">
-                    <button type="submit" style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 20px; border-radius: 0; font-size: 0.85rem; font-weight: 400; cursor: pointer; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;">
-                        Filtrer
+        <div class="filters-bar" style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 0; margin-bottom: 20px;">
+            <form action="{{ route('admin.annonces.index') }}" method="GET" style="display: flex; align-items: center; width: 100%; gap: 12px;">
+                <input type="hidden" name="status" value="{{ $status }}">
+                <div style="display: flex; flex: 1; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
+                    <input type="text" name="search" value="{{ $search }}" placeholder="Rechercher un article, un vendeur..."
+                        style="padding: 10px 16px; border: none; outline: none; flex: 1; font-size: 0.9rem; background: transparent;"
+                        onfocus="document.getElementById('search-container').style.borderColor='#ff9900'; document.getElementById('search-container').style.boxShadow='0 0 0 3px rgba(255, 153, 0, 0.15)'"
+                        onblur="document.getElementById('search-container').style.borderColor='#dee2e6'; document.getElementById('search-container').style.boxShadow='none'">
+                    <button type="submit"
+                        style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: none; color: #fff; padding: 0 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;"
+                        onmouseover="this.style.background='linear-gradient(180deg, #f08804 0%, #d87300 100%)'"
+                        onmouseout="this.style.background='linear-gradient(180deg, #ff9900 0%, #e77600 100%)'">
+                        <i class="fas fa-search" style="font-size: 1.1rem; text-shadow: 0 1px 1px rgba(0,0,0,0.1);"></i>
                     </button>
-                    @if($search || $status)
-                        <a href="{{ route('admin.annonces.index') }}" style="display: flex; align-items: center; padding: 0 10px; color: #0066c0; font-size: 0.8rem; text-decoration: none;">Effacer</a>
-                    @endif
                 </div>
-            </div>
-            <div style="width: 150px;">
-                <label style="display: block; font-size: 0.8rem; color: #555; font-weight: 500; margin-bottom: 5px;">Par page</label>
-                <select name="per_page" onchange="this.form.submit()" class="filter-select" style="width: 100%;">
-                    <option value="8" {{ $perPage == 8 ? 'selected' : '' }}>8</option>
-                    <option value="20" {{ $perPage == 20 ? 'selected' : '' }}>20</option>
-                    <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
-                </select>
-            </div>
-        </form>
+                @if($search || $status)
+                    <a href="{{ route('admin.annonces.index') }}"
+                       style="color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;"
+                       onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Effacer</a>
+                @endif
+            </form>
+        </div>
 
         <!-- Articles Table -->
         <div style="border: 1px solid #e7e7e7; border-radius: 0; overflow: hidden;">
