@@ -25,14 +25,60 @@
 @section('content')
 <div style="max-width: 1600px; margin: -30px auto 0; width: 100%;">
 
-    <!-- Main Card (style banners) -->
-    <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+    <!-- Main Card -->
+    <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
 
         <!-- Card Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eff3f6;">
             <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
                 <i class="fas fa-shopping-basket" style="font-size: 0.8rem;"></i>
-                <span style="line-height: 1;">Gestion des Commandes</span>
+                <span style="line-height: 1;">Commandes</span>
+            </div>
+        </div>
+
+        @php
+            $totalOrders = \App\Models\Order::count();
+            $enCoursOrders = \App\Models\Order::whereIn('statut', ['paye', 'pret_expedition', 'en_route', 'disponible'])->count();
+            $livreesOrders = \App\Models\Order::where('statut', 'livre')->count();
+            $litigesOrders = \App\Models\Order::whereIn('statut', ['litige', 'annule'])->count();
+        @endphp
+        <!-- Statistiques commandes -->
+        <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #f5f3ff; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    <i class="fas fa-shopping-basket"></i>
+                </div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $totalOrders }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Total des commandes</div>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #eff6ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    <i class="fas fa-truck-fast"></i>
+                </div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $enCoursOrders }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">En cours</div>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #ecfdf5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    <i class="fas fa-circle-check"></i>
+                </div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $livreesOrders }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Livrées</div>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff1f2; color: #f43f5e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    <i class="fas fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $litigesOrders }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Litiges / annulées</div>
+                </div>
             </div>
         </div>
 
@@ -82,12 +128,6 @@
                         <i class="fas fa-search" style="font-size: 1.1rem;"></i>
                     </button>
                 </div>
-                <select name="per_page" onchange="this.form.submit()"
-                    style="padding: 10px 12px; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; font-size: 0.85rem; color: #475569; cursor: pointer; outline: none;">
-                    <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10</option>
-                    <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25</option>
-                    <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
-                </select>
                 @if($search || $status)
                     <a href="{{ route('admin.orders.index') }}" style="color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;">Effacer</a>
                 @endif
@@ -98,7 +138,7 @@
         <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse; min-width: 1000px; border: 1px solid #eff3f6;">
                 <thead>
-                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                    <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Référence / Date</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Client</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Vendeur</th>
@@ -112,16 +152,16 @@
                     @forelse($orders as $order)
                     <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                         <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
-                            <div style="font-weight: 500; color: #0066c0; font-size: 0.85rem;">{{ $order->reference }}</div>
-                            <div style="font-size: 0.75rem; color: #555; margin-top: 2px;">{{ $order->created_at->format('d/m/Y H:i') }}</div>
+                            <div style="font-weight: 700; color: #111; font-size: 0.85rem;">{{ $order->reference }}</div>
+                            <div style="font-size: 0.75rem; color: #111; margin-top: 2px;">{{ $order->created_at->format('d/m/Y H:i') }}</div>
                         </td>
                         <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
-                            <div style="font-weight: 500; font-size: 0.85rem; color: #111;">{{ $order->buyer->prenom }} {{ $order->buyer->nom }}</div>
-                            <div style="font-size: 0.75rem; color: #888;">{{ $order->buyer->email }}</div>
+                            <div style="font-weight: 700; font-size: 0.85rem; color: #111;">{{ $order->buyer->prenom }} {{ $order->buyer->nom }}</div>
+                            <div style="font-size: 0.75rem; color: #111;">{{ $order->buyer->email }}</div>
                         </td>
                         <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
-                            <div style="font-weight: 500; font-size: 0.85rem; color: #111;">{{ $order->seller->user->prenom }} {{ $order->seller->user->nom }}</div>
-                            <div style="font-size: 0.75rem; color: #888; margin-top: 2px;">{{ ucfirst($order->seller->type) }}</div>
+                            <div style="font-weight: 700; font-size: 0.85rem; color: #111;">{{ $order->seller->user->prenom }} {{ $order->seller->user->nom }}</div>
+                            <div style="font-size: 0.75rem; color: #111; margin-top: 2px;">{{ ucfirst($order->seller->type) }}</div>
                         </td>
                         <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
                             <div style="font-size: 0.85rem; color: #222;">{{ ucfirst($order->mode_livraison) }}</div>
@@ -162,7 +202,10 @@
                         </td>
                         <td style="padding: 12px 15px; text-align: right;">
                             <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                                <a href="{{ route('admin.orders.show', $order) }}" style="color: #0066c0; font-size: 0.8rem; text-decoration: none; font-weight: 500; background: #f0f7ff; padding: 2px 10px; border-radius: 2px;">Détails</a>
+                                <a href="{{ route('admin.orders.show', $order) }}" title="Détails"
+                                    style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
+                                    onmouseover="this.style.background='#f3f4f6'"
+                                    onmouseout="this.style.background='transparent'"><i class="fas fa-eye" style="font-size: 0.95rem;"></i></a>
                             </div>
                         </td>
                     </tr>

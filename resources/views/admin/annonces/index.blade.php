@@ -39,7 +39,7 @@
         <!-- Statistiques annonces -->
         <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: #eef4ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #f5f3ff; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-clipboard-list"></i>
                 </div>
                 <div>
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff8f3; color: #f68b1e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fffbeb; color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-clock"></i>
                 </div>
                 <div>
@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: #f7fff0; color: #569b00; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #ecfdf5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div>
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff5f5; color: #c40000; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff1f2; color: #f43f5e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-times-circle"></i>
                 </div>
                 <div>
