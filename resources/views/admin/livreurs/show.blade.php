@@ -39,7 +39,7 @@
         .dl { margin: 14px 0 0; border: 1px solid #e6e9ee; border-radius: 8px; overflow: hidden; }
         .dl-row { display: grid; grid-template-columns: 220px 1fr; font-size: 0.88rem; border-bottom: 1px solid #e6e9ee; }
         .dl-row:last-child { border-bottom: none; }
-        .dl-row dt { color: #475569; font-weight: 600; margin: 0; padding: 11px 14px; background: #f8fafc; border-right: 1px solid #e6e9ee; }
+        .dl-row dt { color: #374151; font-weight: 600; margin: 0; padding: 11px 14px; background: #d1d5db; border-right: 1px solid #e6e9ee; }
         .dl-row dd { color: #0f172a; font-weight: 600; margin: 0; padding: 11px 14px; }
         @media (max-width: 520px) {
             .dl-row { grid-template-columns: 1fr; }
@@ -86,8 +86,9 @@
 
     {{-- Barre d'actions (non imprimée) --}}
     <div class="no-print" style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
-        <a href="{{ route('admin.livreurs.index') }}" class="btn-secondary" title="Fermer"
-           style="width: 36px; height: 36px; padding: 0; font-size: 1.2rem; line-height: 1;">&times;</a>
+        <a href="{{ route('admin.livreurs.index') }}" title="Fermer"
+           style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; font-size: 1.2rem; line-height: 1; background: #dc2626; color: #fff; border: 1px solid #dc2626; border-radius: 6px; text-decoration: none; transition: background 0.2s;"
+           onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">&times;</a>
     </div>
     <hr class="no-print" style="border: none; border-top: 1px solid #e6e9ee; margin: 0 0 24px;">
 
@@ -117,7 +118,6 @@
         <h2 class="sec-h"><span class="num">1.</span> Identité &amp; coordonnées</h2>
         <dl class="dl">
             <div class="dl-row"><dt>Nom complet</dt><dd>{{ $livreur->user->prenom }} {{ $livreur->user->nom }}</dd></div>
-            <div class="dl-row"><dt>Email</dt><dd>{{ $livreur->user->email ?: '—' }}</dd></div>
             <div class="dl-row"><dt>Téléphone</dt><dd>{{ $livreur->user->telephone ?? '—' }}</dd></div>
             <div class="dl-row"><dt>Pays</dt><dd>{{ $pays ?? '—' }}</dd></div>
             <div class="dl-row"><dt>Région</dt><dd>{{ $livreur->region ?? '—' }}</dd></div>
