@@ -45,6 +45,52 @@
             </div>
         </div>
 
+        @php
+            $totalAnnonces = \App\Models\Annonce::count();
+            $enAttenteAnnonces = \App\Models\Annonce::where('statut', 'en_attente')->count();
+            $publieesAnnonces = \App\Models\Annonce::where('statut', 'publiee')->count();
+            $rejeteesAnnonces = \App\Models\Annonce::where('statut', 'rejetee')->count();
+        @endphp
+        <!-- Statistiques annonces -->
+        <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 160px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #eef4ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $totalAnnonces }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Total des annonces</div>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 160px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff8f3; color: #f68b1e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $enAttenteAnnonces }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">En attente</div>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 160px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #f7fff0; color: #569b00; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $publieesAnnonces }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Publiées</div>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 160px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff5f5; color: #c40000; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $rejeteesAnnonces }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Rejetées</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Status Filter Tabs (Amazon Style) -->
         <div style="display: flex; gap: 20px; border-bottom: 1px solid #f0f0f0; margin-bottom: 20px; padding-bottom: 0;">
             <a href="{{ route('admin.annonces.index') }}" 
