@@ -28,21 +28,6 @@
                 <i class="fas fa-clipboard-list" style="font-size: 0.8rem;"></i>
                 <span style="line-height: 1;">Articles</span>
             </div>
-
-            <div style="display: flex; gap: 8px;">
-                <button disabled
-                    style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 6px; opacity: 0.5; cursor: not-allowed;">
-                    <i class="fas fa-print"></i> Imprimer
-                </button>
-                <button disabled
-                    style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 6px; opacity: 0.5; cursor: not-allowed;">
-                    <i class="fas fa-sms"></i> SMS
-                </button>
-                <button disabled
-                    style="background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; color: #111; padding: 6px 14px; border-radius: 0; font-size: 0.8rem; font-weight: 400; text-decoration: none; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset; display: flex; align-items: center; gap: 6px; opacity: 0.5; cursor: not-allowed;">
-                    <i class="fas fa-envelope"></i> Email
-                </button>
-            </div>
         </div>
 
         @php
@@ -170,7 +155,7 @@
                             <div style="font-size: 0.75rem; color: #111; margin-top: 2px;">{{ ucfirst($annonce->vendeur->type) }}</div>
                         </td>
                         <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
-                            <div style="font-weight: 700; color: #111; font-size: 0.9rem;">{{ number_format($annonce->prix, 0, ',', ' ') }} <small style="font-size: 0.7rem; font-weight: 400;">FCFA</small></div>
+                            <div style="font-weight: 700; color: #111; font-size: 0.9rem;">{{ number_format($annonce->prix, 0, ',', ' ') }}</div>
                         </td>
                         <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7;">
                             @php
@@ -205,6 +190,11 @@
                         </td>
                         <td style="padding: 12px 15px; text-align: right;">
                             <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                                <a href="{{ route('admin.messagerie.index', ['compose' => 1, 'to' => $annonce->vendeur->user->id]) }}" title="Envoyer un message au vendeur"
+                                    style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
+                                    onmouseover="this.style.background='#f3f4f6'"
+                                    onmouseout="this.style.background='transparent'"><i class="fas fa-paper-plane" style="font-size: 0.9rem;"></i></a>
+                                <span style="color: #ddd;">|</span>
                                 @if($annonce->statut === 'en_attente')
                                     <form action="{{ route('admin.annonces.moderation.approve', $annonce) }}" method="POST" style="display: inline;">
                                         @csrf

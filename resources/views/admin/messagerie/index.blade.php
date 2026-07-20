@@ -240,7 +240,7 @@
                 <select name="recipient_id" id="recipient_id" class="gm-field">
                     <option value="">— Sélectionner —</option>
                     @foreach($users as $u)
-                        <option value="{{ $u->id }}">{{ $u->prenom }} {{ $u->nom }} — {{ $u->email ?? $u->telephone }} {{ $u->vendeur ? '(Vendeur)' : '(Client)' }}</option>
+                        <option value="{{ $u->id }}" {{ request('to') == $u->id ? 'selected' : '' }}>{{ $u->prenom }} {{ $u->nom }} — {{ $u->email ?? $u->telephone }} {{ $u->vendeur ? '(Vendeur)' : '(Client)' }}</option>
                     @endforeach
                 </select>
             </div>
