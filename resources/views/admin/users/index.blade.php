@@ -173,32 +173,22 @@
                     </div>
                     @endif
 
-                    @if($role === 'vendeur')
-                    <!-- Zone de filtres spécifiques -->
-                    <div style="display: flex; gap: 15px;">
-                        <div style="flex: 1; max-width: 300px;">
-                            <label class="filter-label">Type de Vendeur</label>
-                            <select name="type_vendeur" onchange="this.form.submit()" class="filter-select" style="width: 100%;">
-                                <option value="">Tous les types</option>
-                                <option value="professionnel" {{ request('type_vendeur') === 'professionnel' ? 'selected' : '' }}>Professionnel</option>
-                                <option value="particulier" {{ request('type_vendeur') === 'particulier' ? 'selected' : '' }}>Particulier</option>
-                            </select>
-                        </div>
-                        <div style="flex: 1; max-width: 300px;">
-                            <label class="filter-label">Statut</label>
-                            <select name="status" onchange="this.form.submit()" class="filter-select" style="width: 100%;">
-                                <option value="">Tous les statuts</option>
-                                <option value="actif" {{ request('status') === 'actif' ? 'selected' : '' }}>Actif</option>
-                                <option value="attente" {{ request('status') === 'attente' ? 'selected' : '' }}>En attente</option>
-                                <option value="suspendu" {{ request('status') === 'suspendu' ? 'selected' : '' }}>Suspendu</option>
-                            </select>
-                        </div>
-                    </div>
-                    @endif
-                    
-                    <!-- Recherche (Type amazon Search Bar) -->
-                    <div style="display: flex; align-items: center; width: 100%; position: relative;">
-                        <div style="display: flex; width: 100%; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
+                    <!-- Recherche + filtres inline (Type amazon Search Bar) -->
+                    <div style="display: flex; align-items: center; width: 100%; gap: 12px;">
+                        @if($role === 'vendeur')
+                        <select name="type_vendeur" onchange="this.form.submit()" class="filter-select" style="min-width: 150px;">
+                            <option value="">Tous les types</option>
+                            <option value="professionnel" {{ request('type_vendeur') === 'professionnel' ? 'selected' : '' }}>Professionnel</option>
+                            <option value="particulier" {{ request('type_vendeur') === 'particulier' ? 'selected' : '' }}>Particulier</option>
+                        </select>
+                        <select name="status" onchange="this.form.submit()" class="filter-select" style="min-width: 150px;">
+                            <option value="">Tous les statuts</option>
+                            <option value="actif" {{ request('status') === 'actif' ? 'selected' : '' }}>Actif</option>
+                            <option value="attente" {{ request('status') === 'attente' ? 'selected' : '' }}>En attente</option>
+                            <option value="suspendu" {{ request('status') === 'suspendu' ? 'selected' : '' }}>Suspendu</option>
+                        </select>
+                        @endif
+                        <div style="display: flex; flex: 1; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
                             <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Rechercher par nom, email, tel..."
                                 style="padding: 10px 16px; border: none; outline: none; flex: 1; font-size: 0.9rem; background: transparent;"
                                 onfocus="document.getElementById('search-container').style.borderColor='#ff9900'; document.getElementById('search-container').style.boxShadow='0 0 0 3px rgba(255, 153, 0, 0.15)'"
