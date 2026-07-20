@@ -38,7 +38,7 @@
         @endphp
         <!-- Statistiques annonces -->
         <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 160px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
                 <div style="width: 40px; height: 40px; border-radius: 8px; background: #eef4ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-clipboard-list"></i>
                 </div>
@@ -47,7 +47,7 @@
                     <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Total des annonces</div>
                 </div>
             </div>
-            <div style="flex: 1; min-width: 160px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
                 <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff8f3; color: #f68b1e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-clock"></i>
                 </div>
@@ -56,7 +56,7 @@
                     <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">En attente</div>
                 </div>
             </div>
-            <div style="flex: 1; min-width: 160px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
                 <div style="width: 40px; height: 40px; border-radius: 8px; background: #f7fff0; color: #569b00; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-check-circle"></i>
                 </div>
@@ -65,7 +65,7 @@
                     <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Publiées</div>
                 </div>
             </div>
-            <div style="flex: 1; min-width: 160px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
                 <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff5f5; color: #c40000; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-times-circle"></i>
                 </div>
@@ -98,9 +98,28 @@
 
         <!-- Filter Bar -->
         <div class="filters-bar" style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 0; margin-bottom: 20px;">
-            <form action="{{ route('admin.annonces.index') }}" method="GET" style="display: flex; align-items: center; width: 100%; gap: 12px;">
+            <form action="{{ route('admin.annonces.index') }}" method="GET" style="display: flex; align-items: center; width: 100%; gap: 12px; flex-wrap: wrap;">
                 <input type="hidden" name="status" value="{{ $status }}">
-                <div style="display: flex; flex: 1; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
+                @php $catSelectStyle = 'padding: 9px 12px; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; font-size: 0.85rem; color: #111; cursor: pointer; min-width: 150px;'; @endphp
+                <select name="cat1" id="cat1" onchange="document.getElementById('cat2').value='';document.getElementById('cat3').value='';this.form.submit()" style="{{ $catSelectStyle }}">
+                    <option value="">Catégorie (niv. 1)</option>
+                    @foreach($categoriesN1 as $c)
+                        <option value="{{ $c->id }}" {{ (string) $cat1 === (string) $c->id ? 'selected' : '' }}>{{ $c->nom }}</option>
+                    @endforeach
+                </select>
+                <select name="cat2" id="cat2" onchange="document.getElementById('cat3').value='';this.form.submit()" style="{{ $catSelectStyle }}" {{ $categoriesN2->isEmpty() ? 'disabled' : '' }}>
+                    <option value="">Catégorie (niv. 2)</option>
+                    @foreach($categoriesN2 as $c)
+                        <option value="{{ $c->id }}" {{ (string) $cat2 === (string) $c->id ? 'selected' : '' }}>{{ $c->nom }}</option>
+                    @endforeach
+                </select>
+                <select name="cat3" id="cat3" onchange="this.form.submit()" style="{{ $catSelectStyle }}" {{ $categoriesN3->isEmpty() ? 'disabled' : '' }}>
+                    <option value="">Catégorie (niv. 3)</option>
+                    @foreach($categoriesN3 as $c)
+                        <option value="{{ $c->id }}" {{ (string) $cat3 === (string) $c->id ? 'selected' : '' }}>{{ $c->nom }}</option>
+                    @endforeach
+                </select>
+                <div style="display: flex; flex: 1; min-width: 220px; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
                     <input type="text" name="search" value="{{ $search }}" placeholder="Rechercher un article, un vendeur..."
                         style="padding: 10px 16px; border: none; outline: none; flex: 1; font-size: 0.9rem; background: transparent;"
                         onfocus="document.getElementById('search-container').style.borderColor='#ff9900'; document.getElementById('search-container').style.boxShadow='0 0 0 3px rgba(255, 153, 0, 0.15)'"
@@ -112,7 +131,7 @@
                         <i class="fas fa-search" style="font-size: 1.1rem; text-shadow: 0 1px 1px rgba(0,0,0,0.1);"></i>
                     </button>
                 </div>
-                @if($search || $status)
+                @if($search || $status || $cat1 || $cat2 || $cat3)
                     <a href="{{ route('admin.annonces.index') }}"
                        style="color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;"
                        onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Effacer</a>
