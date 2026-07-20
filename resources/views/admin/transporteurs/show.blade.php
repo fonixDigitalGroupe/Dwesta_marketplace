@@ -6,6 +6,7 @@
     <style>
         .main-content { background-color: #eef1f4 !important; }
         input:focus, textarea:focus, select:focus { border-color: #ff9900 !important; outline: none; }
+        .sheet textarea, .sheet input, .sheet select, .sheet button { font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif; }
 
         .sheet {
             max-width: 860px;
@@ -13,7 +14,7 @@
             background: #fff;
             border: 1px solid #e6e9ee;
             border-radius: 6px;
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
             padding: 48px 56px;
             color: #1f2937;
         }
@@ -30,7 +31,7 @@
         .dl { margin: 14px 0 0; border: 1px solid #e6e9ee; border-radius: 8px; overflow: hidden; }
         .dl-row { display: grid; grid-template-columns: 220px 1fr; font-size: 0.88rem; border-bottom: 1px solid #e6e9ee; }
         .dl-row:last-child { border-bottom: none; }
-        .dl-row dt { color: #475569; font-weight: 600; margin: 0; padding: 11px 14px; background: #f8fafc; border-right: 1px solid #e6e9ee; }
+        .dl-row dt { color: #374151; font-weight: 600; margin: 0; padding: 11px 14px; background: #d1d5db; border-right: 1px solid #e6e9ee; }
         .dl-row dd { color: #0f172a; font-weight: 600; margin: 0; padding: 11px 14px; }
         @media (max-width: 520px) {
             .dl-row { grid-template-columns: 1fr; }
@@ -81,8 +82,9 @@
 <div class="sheet">
 
     <div class="no-print" style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
-        <a href="{{ route('admin.transporteurs.index') }}" class="btn-secondary" title="Fermer"
-           style="width: 36px; height: 36px; padding: 0; font-size: 1.2rem; line-height: 1;">&times;</a>
+        <a href="{{ route('admin.transporteurs.index') }}" title="Fermer"
+           style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; font-size: 1.2rem; line-height: 1; background: #dc2626; color: #fff; border: 1px solid #dc2626; border-radius: 6px; text-decoration: none; transition: background 0.2s;"
+           onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">&times;</a>
     </div>
     <hr class="no-print" style="border: none; border-top: 1px solid #e6e9ee; margin: 0 0 24px;">
 
@@ -110,7 +112,6 @@
         <h2 class="sec-h"><span class="num">1.</span> Identité &amp; coordonnées</h2>
         <dl class="dl">
             <div class="dl-row"><dt>Nom complet</dt><dd>{{ $transporteur->user->prenom }} {{ $transporteur->user->nom }}</dd></div>
-            <div class="dl-row"><dt>Email</dt><dd>{{ $transporteur->user->email ?: '—' }}</dd></div>
             <div class="dl-row"><dt>Téléphone</dt><dd>{{ $transporteur->user->telephone ?? '—' }}</dd></div>
             <div class="dl-row"><dt>Pays</dt><dd>{{ $pays ?? '—' }}</dd></div>
         </dl>
@@ -239,11 +240,11 @@
                 <div style="display: flex; gap: 10px; margin-bottom: 20px;">
                     <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; cursor: pointer; padding: 10px; background: #fff; border: 1px solid #eff3f6; border-radius: 6px;">
                         <input type="radio" x-model="decision" value="approve" name="decision_type">
-                        <span style="font-weight: 700; color: #2563eb;">Approuver</span>
+                        <span style="font-weight: 700; color: #111;">Approuver</span>
                     </label>
                     <label style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; cursor: pointer; padding: 10px; background: #fff; border: 1px solid #eff3f6; border-radius: 6px;">
                         <input type="radio" x-model="decision" value="reject" name="decision_type">
-                        <span style="font-weight: 700; color: #b91c1c;">Rejeter</span>
+                        <span style="font-weight: 700; color: #111;">Rejeter</span>
                     </label>
                 </div>
 
@@ -251,7 +252,7 @@
                     @csrf
                     <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 6px;">Commentaire (optionnel)</label>
                     <textarea name="commentaire" rows="4" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; font-size: 0.85rem; border-radius: 6px; box-sizing: border-box;">Félicitations ! Votre dossier de transporteur a été validé. Vous pouvez désormais recevoir des demandes de transport sur Karnou.</textarea>
-                    <button type="submit" style="width: 100%; margin-top: 14px; height: 46px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 700; cursor: pointer;">Approuver le dossier</button>
+                    <button type="submit" style="display: block; margin: 14px 0 0 auto; height: 42px; padding: 0 24px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 700; cursor: pointer;">Approuver le dossier</button>
                 </form>
 
                 <form x-show="decision === 'reject'" method="POST" action="{{ route('admin.transporteurs.reject', $transporteur) }}">
@@ -270,7 +271,7 @@
                     </div>
                     <label style="display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 6px;">Motif détaillé (obligatoire)</label>
                     <textarea name="raison_rejet" x-model="reason" required rows="6" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; font-size: 0.85rem; border-radius: 6px; box-sizing: border-box;"></textarea>
-                    <button type="submit" style="width: 100%; margin-top: 14px; height: 46px; background: #dc2626; color: #fff; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 700; cursor: pointer;">Rejeter le dossier</button>
+                    <button type="submit" style="display: block; margin: 14px 0 0 auto; height: 42px; padding: 0 24px; background: #dc2626; color: #fff; border: none; border-radius: 6px; font-size: 0.9rem; font-weight: 700; cursor: pointer;">Rejeter le dossier</button>
                 </form>
             </div>
         @elseif($transporteur->statut_verification === 'verifie')
