@@ -76,11 +76,10 @@
             <div style="overflow-x: auto;">
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
                 <thead>
-                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                    <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Transporteur</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Téléphone</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Véhicule</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Immatriculation</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Statut</th>
                         <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 140px;" class="actions-column">Actions</th>
                     </tr>
@@ -90,16 +89,13 @@
                         <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
-                                <div style="font-size: 0.85rem; color: #0066c0; font-weight: 700;">{{ $transporteur->user->prenom }} {{ $transporteur->user->nom }}</div>
-                                <div style="font-size: 0.75rem; color: #666;">{{ $transporteur->user->email }}</div>
+                                <div style="font-size: 0.85rem; color: #111; font-weight: 700;">{{ $transporteur->user->prenom }} {{ $transporteur->user->nom }}</div>
+                                <div style="font-size: 0.75rem; color: #111;">{{ $transporteur->user->email }}</div>
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">{{ $transporteur->user->telephone ?? '-' }}</td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; border-right: 1px solid #eff3f6;">{{ $transporteur->user->telephone ?? '-' }}</td>
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; border-right: 1px solid #eff3f6;">
                                 <div style="font-weight: 600; color: #111;">{{ $transporteur->type_vehicule }}</div>
-                                <div style="font-size: 0.75rem; color: #888;">{{ $transporteur->marque_vehicule }}</div>
-                            </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">
-                                <code style="font-family: monospace; background: #f8fafc; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; color: #475569; border: 1px solid #e2e8f0;">{{ $transporteur->immatriculation ?? 'N/A' }}</code>
+                                <div style="font-size: 0.75rem; color: #111;">{{ $transporteur->marque_vehicule }}</div>
                             </td>
                             <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                                 @php
@@ -118,16 +114,16 @@
                             </td>
                             <td style="padding: 12px 15px; text-align: right;" class="actions-column">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                                    <a href="{{ route('admin.transporteurs.show', $transporteur) }}"
-                                        style="color: #c45500; font-size: 0.8rem; text-decoration: none; font-weight: 600;"
-                                        onmouseover="this.style.textDecoration='underline'"
-                                        onmouseout="this.style.textDecoration='none'">Examiner</a>
+                                    <a href="{{ route('admin.transporteurs.show', $transporteur) }}" title="Examiner"
+                                        style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
+                                        onmouseover="this.style.background='#f3f4f6'"
+                                        onmouseout="this.style.background='transparent'"><i class="fas fa-eye" style="font-size: 0.95rem;"></i></a>
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
+                            <td colspan="5" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
                                 Aucun transporteur trouvé.
                             </td>
                         </tr>
