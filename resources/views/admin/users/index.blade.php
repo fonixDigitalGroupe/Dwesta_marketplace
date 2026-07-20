@@ -227,7 +227,7 @@
             <!-- Table Amazon Design -->
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
                 <thead>
-                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                    <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                         <th
                             style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">
                             Prénom / Nom</th>
@@ -237,9 +237,6 @@
                         <th
                             style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">
                             Téléphone</th>
-                        <th
-                            style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 140px;">
-                            Rôle</th>
                         <th
                             style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">
                             Statut</th>
@@ -253,45 +250,14 @@
                         <tr style="border-bottom: 1px solid #eff3f6; transition: background 0.1s;"
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             <td
-                                style="padding: 12px 15px; font-size: 0.85rem; color: #0066c0; font-weight: 500; border-right: 1px solid #eff3f6;">
+                                style="padding: 12px 15px; font-size: 0.85rem; color: #111; font-weight: 700; border-right: 1px solid #eff3f6;">
                                 {{ $user->prenom }} {{ $user->nom }}
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; border-right: 1px solid #eff3f6;">
                                 {{ $user->email }}
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #555; border-right: 1px solid #eff3f6;">
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; border-right: 1px solid #eff3f6;">
                                 {{ $user->telephone ?? '-' }}
-                            </td>
-
-                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
-                                @php
-                                    $roleName = 'Acheteur';
-                                    $textColor = '#555';
-                                    $bgColor = 'transparent';
-
-                                    if ($user->hasRole('admin')) {
-                                        $roleName = 'Admin';
-                                        $textColor = '#c45500';
-                                        $bgColor = '#fff8f3';
-                                    } elseif ($user->vendeur) {
-                                        if ($user->vendeur->type === 'professionnel') {
-                                            $roleName = 'Vendeur Pro';
-                                            $textColor = '#0066c0';
-                                            $bgColor = '#f0f7ff';
-                                        } else {
-                                            $roleName = 'Vendeur Part';
-                                            $textColor = '#0066c0';
-                                            $bgColor = '#e6f6f9';
-                                        }
-                                    } elseif ($user->roles->first()) {
-                                        $roleName = ucfirst($user->roles->first()->name);
-                                        $bgColor = '#f6f6f6';
-                                    }
-                                @endphp
-                                <span
-                                    style="font-size: 0.85rem; color: {{ $textColor }}; font-weight: 600; text-transform: none; display: inline-block;">
-                                    {{ $roleName }}
-                                </span>
                             </td>
                             <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                                 @if (!$user->is_active)
@@ -305,12 +271,10 @@
                             <td style="padding: 12px 15px; text-align: right;" class="actions-column">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
                                     @if ($user->vendeur)
-                                        <a href="{{ route('admin.vendeurs.verification.show', $user->vendeur) }}"
-                                            style="color: #c45500; font-size: 0.8rem; text-decoration: none; font-weight: 600;"
-                                            onmouseover="this.style.textDecoration='underline'"
-                                            onmouseout="this.style.textDecoration='none'">
-                                            Examiner
-                                        </a>
+                                        <a href="{{ route('admin.vendeurs.verification.show', $user->vendeur) }}" title="Examiner"
+                                            style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
+                                            onmouseover="this.style.background='#f3f4f6'"
+                                            onmouseout="this.style.background='transparent'"><i class="fas fa-eye" style="font-size: 0.95rem;"></i></a>
                                         @if ($role !== 'vendeur')
                                             <span style="color: #ddd;">|</span>
                                         @endif
@@ -341,7 +305,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" style="padding: 3rem; text-align: center; color: #999; font-size: 0.85rem;">
+                            <td colspan="5" style="padding: 3rem; text-align: center; color: #999; font-size: 0.85rem;">
                                 Aucun utilisateur trouvé.
                             </td>
                         </tr>
