@@ -51,8 +51,22 @@
             <!-- Barre de filtre -->
             <div class="filters-bar"
                 style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
-                <form action="{{ route('admin.livreurs.index') }}" method="GET" style="display: flex; align-items: center; flex: 1; position: relative;">
-                    <div style="display: flex; width: 100%; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
+                <form action="{{ route('admin.livreurs.index') }}" method="GET" style="display: flex; align-items: center; flex: 1; gap: 12px;">
+                    <select name="statut" onchange="this.form.submit()"
+                        style="padding: 9px 12px; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; font-size: 0.85rem; color: #111; cursor: pointer; min-width: 150px;">
+                        <option value="">Tous les statuts</option>
+                        <option value="en_attente" {{ request('statut') === 'en_attente' ? 'selected' : '' }}>En attente</option>
+                        <option value="verifie" {{ request('statut') === 'verifie' ? 'selected' : '' }}>Vérifié</option>
+                        <option value="rejete" {{ request('statut') === 'rejete' ? 'selected' : '' }}>Rejeté</option>
+                    </select>
+                    <select name="pays" onchange="this.form.submit()"
+                        style="padding: 9px 12px; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; font-size: 0.85rem; color: #111; cursor: pointer; min-width: 150px;">
+                        <option value="">Tous les pays</option>
+                        @foreach($paysDisponibles as $pays)
+                            <option value="{{ $pays }}" {{ request('pays') === $pays ? 'selected' : '' }}>{{ $pays }}</option>
+                        @endforeach
+                    </select>
+                    <div style="display: flex; flex: 1; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher un livreur par nom, email, véhicule..."
                             style="padding: 10px 16px; border: none; outline: none; flex: 1; font-size: 0.9rem; background: transparent;"
                             onfocus="document.getElementById('search-container').style.borderColor='#ff9900'; document.getElementById('search-container').style.boxShadow='0 0 0 3px rgba(255, 153, 0, 0.15)'"
@@ -64,9 +78,9 @@
                             <i class="fas fa-search" style="font-size: 1.1rem; text-shadow: 0 1px 1px rgba(0,0,0,0.1);"></i>
                         </button>
                     </div>
-                    @if(request('search'))
+                    @if(request('search') || request('statut') || request('pays'))
                         <a href="{{ route('admin.livreurs.index') }}"
-                           style="margin-left: 15px; color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;"
+                           style="color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;"
                            onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Effacer</a>
                     @endif
                 </form>

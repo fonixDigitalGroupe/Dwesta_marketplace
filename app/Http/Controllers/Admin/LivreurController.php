@@ -22,15 +22,66 @@ class LivreurController extends Controller
     /**
      * Liste de tous les livreurs
      */
-    public function index()
+    public function index(Request $request)
     {
-        $livreurs = Livreur::with('user')
-            ->orderBy('created_at', 'desc')
-            ->paginate(8);
+        $query = Livreur::with('user');
+
+        // Filtre par statut de vérification
+        if ($request->filled('statut') && in_array($request->statut, ['en_attente', 'verifie', 'rejete'])) {
+            $query->where('statut_verification', $request->statut);
+        }
+
+        // Filtre par pays (déduit de l'indicatif téléphonique)
+        if ($request->filled('pays')) {
+            $country = \App\Models\Country::where('name', $request->pays)
+                ->whereNotNull('phone_code')->first();
+            if ($country) {
+                $query->whereHas('user', fn ($q) => $q->where('telephone', 'like', $country->phone_code . '%'));
+            }
+        }
+
+        // Recherche libre (nom, email, téléphone, véhicule)
+        if ($request->filled('search')) {
+            $s = $request->search;
+            $query->where(function ($q) use ($s) {
+                $q->whereHas('user', fn ($u) => $u->where('prenom', 'like', "%{$s}%")
+                        ->orWhere('nom', 'like', "%{$s}%")
+                        ->orWhere('email', 'like', "%{$s}%")
+                        ->orWhere('telephone', 'like', "%{$s}%"))
+                  ->orWhere('type_vehicule', 'like', "%{$s}%");
+            });
+        }
+
+        $livreurs = $query->orderBy('created_at', 'desc')->paginate(8)->withQueryString();
 
         $pendingCount = Livreur::where('statut_verification', 'en_attente')->count();
 
-        return view('admin.livreurs.index', compact('livreurs', 'pendingCount'));
+        // Pays disponibles (déduits des téléphones des livreurs existants)
+        $paysDisponibles = $this->paysDisponibles(
+            Livreur::with('user:id,telephone')->get()->pluck('user.telephone')
+        );
+
+        return view('admin.livreurs.index', compact('livreurs', 'pendingCount', 'paysDisponibles'));
+    }
+
+    /**
+     * Liste des pays présents parmi une collection de téléphones,
+     * déduits via l'indicatif (phone_code), triés alphabétiquement.
+     */
+    private function paysDisponibles($telephones): array
+    {
+        $countries = \App\Models\Country::whereNotNull('phone_code')
+            ->get(['name', 'phone_code'])
+            ->sortByDesc(fn ($c) => strlen($c->phone_code));
+
+        return collect($telephones)
+            ->filter()
+            ->map(fn ($tel) => $countries->first(fn ($c) => $c->phone_code && str_starts_with($tel, $c->phone_code))?->name)
+            ->filter()
+            ->unique()
+            ->sort()
+            ->values()
+            ->all();
     }
 
     /**
