@@ -42,6 +42,8 @@ class AppServiceProvider extends ServiceProvider
             $pendingVendorsCount = Vendeur::where('statut_verification', 'en_attente')->count();
             $pendingLivreursCount = \App\Models\Livreur::where('statut_verification', 'en_attente')->count();
             $pendingTransporteursCount = \App\Models\Transporteur::where('statut_verification', 'en_attente')->count();
+            // Commandes ni annulées ni livrées (en cours de traitement)
+            $activeOrdersCount = \App\Models\Order::whereNotIn('statut', ['annule', 'livre'])->count();
 
             // Messages non lus du compte Karnou (la messagerie admin agit en son nom)
             $karnou = \App\Models\User::where('email', 'admin@karnou.com')->first()
@@ -59,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('pendingVendorsCount', $pendingVendorsCount)
                  ->with('pendingLivreursCount', $pendingLivreursCount)
                  ->with('pendingTransporteursCount', $pendingTransporteursCount)
+                 ->with('activeOrdersCount', $activeOrdersCount)
                  ->with('adminUnreadMessages', $adminUnreadMessages);
         });
     }
