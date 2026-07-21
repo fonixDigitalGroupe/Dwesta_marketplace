@@ -224,6 +224,11 @@
                         </div>
                     </div>
 
+                </div>
+
+                <!-- Right Column -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+
                     <div class="amazon-card" style="margin: 0;">
                         <h3 class="section-title">Localisation Administrative</h3>
 
@@ -256,11 +261,6 @@
                             @error('adresse') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                         </div>
                     </div>
-
-                </div>
-
-                <!-- Right Column -->
-                <div style="display: flex; flex-direction: column; gap: 20px;">
 
                     <div class="amazon-card" style="margin: 0;">
                         <h3 class="section-title">Statut & Publication</h3>
@@ -360,6 +360,7 @@
         const iti = window.intlTelInput(phoneInput, {
             initialCountry: "cf",
             separateDialCode: true,
+            onlyCountries: Object.values(countryMap),
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
         });
 
