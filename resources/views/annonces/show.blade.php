@@ -920,7 +920,7 @@
     <div style="background: #fff; padding-bottom: 2rem; padding-top: 4rem;">
         <div class="rk-section-header" style="margin-top: 0; background: #fff;">
             <span class="rk-sponsor-label">Sponsorisée</span>
-            <h2 class="rk-offers-title" style="margin-top: 0;">Meilleures offres Pros</h2>
+            <h2 class="rk-offers-title" style="margin-top: 0; font-size: 1rem;">Meilleures offres Pros</h2>
         </div>
         <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px;">
         <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-pro', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
@@ -938,7 +938,7 @@
     @if(isset($recommandations['aussi_vus']) && $recommandations['aussi_vus']->count() > 0)
     <div style="background: #fff; padding-bottom: 3rem; padding-top: 2rem;">
         <div class="rk-section-header" style="background: #fff; margin-top: 0;">
-            <h2 class="rk-offers-title">Articles également vus</h2>
+            <h2 class="rk-offers-title" style="font-size: 1rem;">Articles également vus</h2>
         </div>
         <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px;">
             <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-seen', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
