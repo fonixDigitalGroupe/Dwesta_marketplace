@@ -73,7 +73,7 @@
         .sidebar-toggle-btn {
             background: none;
             border: none;
-            color: #475569;
+            color: #ffffff;
             font-size: 1.15rem;
             cursor: pointer;
             width: 40px;
@@ -86,7 +86,7 @@
             flex-shrink: 0;
             transition: background 0.2s;
         }
-        .sidebar-toggle-btn:hover { background: #f3f4f6; }
+        .sidebar-toggle-btn:hover { background: rgba(255,255,255,0.15); }
 
         .admin-wrapper.sidebar-collapsed .sidebar { width: 68px; }
         .admin-wrapper.sidebar-collapsed .sidebar-menu li a span,
@@ -240,8 +240,8 @@
         }
 
         .header {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
+            background-color: #004aad;
+            border-bottom: 1px solid #003d8f;
             height: 56px !important;
             min-height: 56px !important;
             max-height: 56px !important;
@@ -294,7 +294,7 @@
         }
 
         .header-link {
-            color: #4b5563;
+            color: #ffffff;
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -304,7 +304,7 @@
         }
 
         .header-link:hover {
-            color: #111827;
+            color: #dbeafe;
         }
 
         .sub-header-slot {
@@ -357,10 +357,11 @@
             padding: 0.5rem;
             border-radius: 8px;
             transition: background 0.2s;
+            color: #ffffff;
         }
 
         .user-dropdown-trigger:hover {
-            background-color: #f3f4f6;
+            background-color: rgba(255,255,255,0.15);
         }
 
         .user-dropdown-menu {
@@ -536,9 +537,7 @@
                         <i class="fas fa-bars"></i>
                     </button>
 
-                    <div class="search-container">
-                        <input type="text" class="search-input" placeholder="Rechercher...">
-                    </div>
+                    <div style="flex: 1;"></div>
 
                     <div class="header-actions">
                         <a href="{{ route('home') }}" class="header-link" title="Aller sur le site">
@@ -548,8 +547,8 @@
 
                         @if(Route::has('admin.messagerie.index'))
                         <a href="{{ route('admin.messagerie.index') }}" title="Messagerie"
-                           style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; color: #475569; text-decoration: none; transition: background 0.2s;"
-                           onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'">
+                           style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; color: #ffffff; text-decoration: none; transition: background 0.2s;"
+                           onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='transparent'">
                             <i class="fas fa-envelope" style="font-size: 1.05rem;"></i>
                             @if(($adminUnreadMessages ?? 0) > 0)
                                 <span style="position: absolute; top: 2px; right: 2px; min-width: 18px; height: 18px; padding: 0 4px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; border-radius: 999px; display: flex; align-items: center; justify-content: center; border: 2px solid #fff;">{{ $adminUnreadMessages > 9 ? '9+' : $adminUnreadMessages }}</span>
@@ -564,8 +563,8 @@
                                     <i class="fas fa-user text-sm"></i>
                                 </div>
                                 <span
-                                    style="font-size: 0.875rem; font-weight: 600; color: #111827;">{{ auth()->user()->prenom }}</span>
-                                <i class="fas fa-chevron-down" style="font-size: 0.75rem; opacity: 0.4;"></i>
+                                    style="font-size: 0.875rem; font-weight: 600; color: #ffffff;">{{ auth()->user()->prenom }}</span>
+                                <i class="fas fa-chevron-down" style="font-size: 0.75rem; opacity: 0.7; color: #ffffff;"></i>
                             </div>
                             <div class="user-dropdown-menu" id="userDropdownMenu">
                                 <a href="{{ route('profile.show') }}" class="user-dropdown-item">
