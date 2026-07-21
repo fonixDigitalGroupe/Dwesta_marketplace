@@ -707,7 +707,8 @@
                         @csrf
                         <input type="hidden" name="annonce_id" value="{{ $annonce->id }}">
                         <input type="hidden" name="quantite" value="1">
-                        <button type="submit" class="rk-btn-cart" style="padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem;">
+                        <button type="submit" class="rk-btn-cart" style="padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem; background: #111;"
+                            onmouseover="this.style.background='#000'" onmouseout="this.style.background='#111'">
                             <i class="fas fa-shopping-cart" style="margin-right: 0.75rem;"></i> Ajouter au panier
                         </button>
                     </form>
