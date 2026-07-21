@@ -113,8 +113,15 @@
             <!-- Barre de filtre -->
             <div class="filters-bar"
                 style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
-                <form action="{{ route('admin.point-relais.index') }}" method="GET" style="display: flex; align-items: center; flex: 1; position: relative;">
-                    <div style="display: flex; width: 100%; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
+                <form action="{{ route('admin.point-relais.index') }}" method="GET" style="display: flex; align-items: center; flex: 1; gap: 12px; flex-wrap: wrap;">
+                    <select name="responsable" onchange="this.form.submit()"
+                        style="padding: 9px 12px; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; font-size: 0.85rem; color: #111; cursor: pointer; min-width: 180px;">
+                        <option value="">Tous les responsables</option>
+                        @foreach($responsables as $r)
+                            <option value="{{ $r->id }}" {{ (string) request('responsable') === (string) $r->id ? 'selected' : '' }}>{{ $r->prenom }} {{ $r->nom }}</option>
+                        @endforeach
+                    </select>
+                    <div style="display: flex; flex: 1; min-width: 220px; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff; transition: all 0.2s;" id="search-container">
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher un point relais par nom, ville, adresse..."
                             style="padding: 10px 16px; border: none; outline: none; flex: 1; font-size: 0.9rem; background: transparent;"
                             onfocus="document.getElementById('search-container').style.borderColor='#ff9900'; document.getElementById('search-container').style.boxShadow='0 0 0 3px rgba(255, 153, 0, 0.15)'"
@@ -128,9 +135,9 @@
                         </button>
                     </div>
 
-                    @if(request('search'))
+                    @if(request('search') || request('responsable'))
                         <a href="{{ route('admin.point-relais.index') }}"
-                           style="margin-left: 15px; color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;"
+                           style="color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;"
                            onmouseover="this.style.textDecoration='underline'"
                            onmouseout="this.style.textDecoration='none'">
                            Effacer

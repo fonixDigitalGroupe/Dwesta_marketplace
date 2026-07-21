@@ -168,10 +168,34 @@ class PointRelaisController extends Controller
     /**
      * Display a listing of pickup points (Admin).
      */
-    public function index()
+    public function index(Request $request)
     {
-        $points = PointRelais::with('users')->paginate(8);
-        return view('admin.point_relais.index', compact('points'));
+        $query = PointRelais::with('users');
+
+        // Recherche libre (nom, région, pays, adresse)
+        if ($request->filled('search')) {
+            $s = $request->search;
+            $query->where(function ($q) use ($s) {
+                $q->where('nom', 'like', "%{$s}%")
+                  ->orWhere('region', 'like', "%{$s}%")
+                  ->orWhere('pays', 'like', "%{$s}%")
+                  ->orWhere('adresse', 'like', "%{$s}%");
+            });
+        }
+
+        // Filtre par responsable (gérant du point relais)
+        if ($request->filled('responsable')) {
+            $query->whereHas('users', fn ($q) => $q->where('users.id', $request->responsable));
+        }
+
+        $points = $query->paginate(8)->withQueryString();
+
+        // Responsables = utilisateurs rattachés à au moins un point relais
+        $responsables = User::whereHas('pointRelais')
+            ->orderBy('prenom')->orderBy('nom')
+            ->get(['id', 'prenom', 'nom']);
+
+        return view('admin.point_relais.index', compact('points', 'responsables'));
     }
 
     /**
