@@ -10,9 +10,9 @@
     <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
         
         {{-- CHIFFRE D'AFFAIRES --}}
-        <div style="background: #fff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #edf2f7; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+        <div style="background: #eff6ff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #dbeafe;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                <div style="width: 38px; height: 38px; background: #fff; color: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-wallet"></i>
                 </div>
                 <span style="font-size: 0.65rem; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 2px 6px; border-radius: 4px;">TOTAL CA</span>
@@ -24,9 +24,9 @@
         </div>
 
         {{-- COMMISSIONS --}}
-        <div style="background: #fff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #edf2f7; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+        <div style="background: #f5f3ff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #e9e5ff;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                <div style="width: 38px; height: 38px; background: #fff; color: #7c3aed; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-percentage"></i>
                 </div>
                 <span style="font-size: 0.65rem; font-weight: 700; color: #7c3aed; background: #f5f3ff; padding: 2px 6px; border-radius: 4px;">PLATEFORME</span>
@@ -38,9 +38,9 @@
         </div>
 
         {{-- COMMANDES --}}
-        <div style="background: #fff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #edf2f7; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+        <div style="background: #ecfdf5; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #d1fae5;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #059669, #047857); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                <div style="width: 38px; height: 38px; background: #fff; color: #059669; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-shopping-bag"></i>
                 </div>
                 <div style="text-align: right;">
@@ -54,9 +54,9 @@
         </div>
 
         {{-- ANNONCES --}}
-        <div style="background: #fff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #edf2f7; box-shadow: 0 1px 3px rgba(0,0,0,0.04);">
+        <div style="background: #fff7ed; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #ffedd5;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #ea580c, #c2410c); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                <div style="width: 38px; height: 38px; background: #fff; color: #ea580c; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-tags"></i>
                 </div>
                 @if($stats['annoncesPending'] > 0)
