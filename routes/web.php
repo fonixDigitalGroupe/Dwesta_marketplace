@@ -504,6 +504,9 @@ Route::middleware('auth')->group(function () {
 // Annonces publiques (accessible sans authentification) - DOIT être APRÈS les routes authentifiées
 Route::get('/annonces/{annonce}', [AnnonceController::class, 'show'])->name('annonces.show');
 
+// Signalement d'une annonce (accessible sans authentification)
+Route::post('/annonces/{annonce}/signaler', [\App\Http\Controllers\SignalementController::class, 'store'])->name('signalements.store');
+
 // Page Pro publique (accessible sans authentification) - DOIT être APRÈS les routes authentifiées pour éviter les conflits
 Route::get('/page-pro/{slug}', [PageProController::class, 'show'])->name('page-pro.show');
 

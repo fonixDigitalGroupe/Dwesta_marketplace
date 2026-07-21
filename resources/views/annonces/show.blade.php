@@ -771,6 +771,86 @@
             </div>
             @endif
 
+            <!-- Signaler l'annonce -->
+            <div class="rk-report" x-data="{ open: {{ $errors->hasAny(['motif','description','email']) ? 'true' : 'false' }} }" style="margin-top: 1rem; text-align: right;">
+                <button type="button" @click="open = true"
+                    style="background: none; border: none; cursor: pointer; color: #9ca3af; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0; transition: color 0.2s;"
+                    onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#9ca3af'">
+                    <i class="fas fa-flag"></i> Signaler l'annonce
+                </button>
+
+                <!-- Overlay + Modal -->
+                <div x-show="open" x-cloak x-transition.opacity
+                    @keydown.escape.window="open = false"
+                    style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 1rem;">
+                    <div @click.outside="open = false"
+                        style="background: #fff; border-radius: 12px; width: 100%; max-width: 460px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); overflow: hidden; text-align: left;">
+
+                        <!-- Header -->
+                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 1.1rem 1.5rem; border-bottom: 1px solid #f0f0f0;">
+                            <h3 style="margin: 0; font-family: 'Outfit','Inter',sans-serif; font-size: 1.1rem; font-weight: 700; color: #1a1a1a; display: flex; align-items: center; gap: 0.6rem;">
+                                <i class="fas fa-flag" style="color: #dc2626;"></i> Signaler cette annonce
+                            </h3>
+                            <button type="button" @click="open = false"
+                                style="background: none; border: none; cursor: pointer; color: #9ca3af; font-size: 1.1rem; line-height: 1;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <form method="POST" action="{{ route('signalements.store', $annonce) }}">
+                            @csrf
+                            <div style="padding: 1.25rem 1.5rem;">
+                                <p style="margin: 0 0 1.1rem; font-family: 'Inter',sans-serif; font-size: 0.85rem; color: #6b7280; line-height: 1.5;">
+                                    Aidez-nous à garder la marketplace sûre. Indiquez pourquoi cette annonce vous semble abusive ; notre équipe de modération l'examinera.
+                                </p>
+
+                                @if($errors->hasAny(['motif','description','email']))
+                                    <div style="background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; padding: 0.6rem 0.8rem; border-radius: 8px; font-size: 0.8rem; margin-bottom: 1rem;">
+                                        @foreach($errors->only(['motif','description','email']) as $messages)
+                                            @foreach((array) $messages as $message)
+                                                <div>{{ $message }}</div>
+                                            @endforeach
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                                <label style="display: block; font-family: 'Inter',sans-serif; font-size: 0.8rem; font-weight: 600; color: #374151; margin-bottom: 0.35rem;">Motif *</label>
+                                <select name="motif" required
+                                    style="width: 100%; padding: 0.6rem 0.7rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.85rem; color: #1a1a1a; background: #fff; margin-bottom: 1rem;">
+                                    <option value="" disabled {{ old('motif') ? '' : 'selected' }}>— Choisir un motif —</option>
+                                    @foreach(\App\Models\Signalement::MOTIFS as $value => $label)
+                                        <option value="{{ $value }}" {{ old('motif') === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                    @endforeach
+                                </select>
+
+                                <label style="display: block; font-family: 'Inter',sans-serif; font-size: 0.8rem; font-weight: 600; color: #374151; margin-bottom: 0.35rem;">Détails (facultatif)</label>
+                                <textarea name="description" rows="3" maxlength="2000" placeholder="Précisez le problème…"
+                                    style="width: 100%; padding: 0.6rem 0.7rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.85rem; color: #1a1a1a; resize: vertical; margin-bottom: 1rem;">{{ old('description') }}</textarea>
+
+                                @guest
+                                <label style="display: block; font-family: 'Inter',sans-serif; font-size: 0.8rem; font-weight: 600; color: #374151; margin-bottom: 0.35rem;">Votre email (facultatif)</label>
+                                <input type="email" name="email" value="{{ old('email') }}" placeholder="pour vous recontacter si besoin"
+                                    style="width: 100%; padding: 0.6rem 0.7rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.85rem; color: #1a1a1a;">
+                                @endguest
+                            </div>
+
+                            <!-- Footer -->
+                            <div style="display: flex; justify-content: flex-end; gap: 0.6rem; padding: 1rem 1.5rem; border-top: 1px solid #f0f0f0; background: #fafafa;">
+                                <button type="button" @click="open = false"
+                                    style="padding: 0.55rem 1.1rem; border: 1px solid #d1d5db; background: #fff; color: #374151; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                                    Annuler
+                                </button>
+                                <button type="submit"
+                                    style="padding: 0.55rem 1.3rem; border: none; background: #dc2626; color: #fff; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: background 0.2s;"
+                                    onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">
+                                    Envoyer le signalement
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
