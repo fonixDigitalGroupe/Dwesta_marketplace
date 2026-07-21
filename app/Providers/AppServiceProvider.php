@@ -6,6 +6,7 @@ use App\Models\Avis;
 use App\Models\Vendeur;
 use App\Policies\AvisPolicy;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -46,8 +47,11 @@ class AppServiceProvider extends ServiceProvider
             $activeOrdersCount = \App\Models\Order::whereNotIn('statut', ['annule', 'livre'])->count();
 
             // Modération : avis en attente + annonces signalées non traitées
-            $pendingModerationCount = \App\Models\Avis::where('statut', 'en_attente')->count()
-                + \App\Models\Signalement::where('statut', 'nouveau')->count();
+            // (défensif : la table signalements peut ne pas encore exister en prod avant migration)
+            $pendingModerationCount = \App\Models\Avis::where('statut', 'en_attente')->count();
+            if (Schema::hasTable('signalements')) {
+                $pendingModerationCount += \App\Models\Signalement::where('statut', 'nouveau')->count();
+            }
 
             // Messages non lus du compte Karnou (la messagerie admin agit en son nom)
             $karnou = \App\Models\User::where('email', 'admin@karnou.com')->first()
