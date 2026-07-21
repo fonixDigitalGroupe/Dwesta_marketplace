@@ -104,9 +104,6 @@
                 </div>
 
                 <div style="display: flex; gap: 8px;">
-                    <a href="javascript:window.print()" class="btn-amazon-secondary">
-                        <i class="fas fa-print"></i> Imprimer
-                    </a>
                     <a href="{{ route('admin.point-relais.create') }}" class="btn-amazon-primary">
                         <i class="fas fa-plus"></i> Nouveau Point Relais
                     </a>
@@ -182,7 +179,7 @@
                                     <a href="{{ route('admin.point-relais.edit', $point) }}" title="Modifier"
                                         style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
                                         onmouseover="this.style.background='#f3f4f6'"
-                                        onmouseout="this.style.background='transparent'"><i class="fas fa-pen" style="font-size: 0.9rem;"></i></a>
+                                        onmouseout="this.style.background='transparent'"><i class="fas fa-pen-to-square" style="font-size: 0.95rem;"></i></a>
                                     <form action="{{ route('admin.point-relais.destroy', $point) }}" method="POST"
                                         onsubmit="return confirm('Supprimer ce point relais ?')" style="display: inline;">
                                         @csrf @method('DELETE')
