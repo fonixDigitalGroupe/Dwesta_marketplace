@@ -38,8 +38,8 @@
         @endphp
         <!-- Statistiques annonces -->
         <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: #f5f3ff; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f5f3ff; border: 1px solid #e9e5ff; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-clipboard-list"></i>
                 </div>
                 <div>
@@ -47,8 +47,8 @@
                     <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Annonces</div>
                 </div>
             </div>
-            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fffbeb; color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-clock"></i>
                 </div>
                 <div>
@@ -56,8 +56,8 @@
                     <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">En attente</div>
                 </div>
             </div>
-            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: #ecfdf5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div>
@@ -65,8 +65,8 @@
                     <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Publiées</div>
                 </div>
             </div>
-            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff1f2; color: #f43f5e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #fff1f2; border: 1px solid #ffe4e6; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #f43f5e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                     <i class="fas fa-times-circle"></i>
                 </div>
                 <div>

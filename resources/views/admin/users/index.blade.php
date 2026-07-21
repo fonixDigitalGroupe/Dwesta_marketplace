@@ -156,8 +156,8 @@
             @if($role === 'vendeur')
             <!-- Statistiques vendeurs -->
             <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff4e6; color: #e77600; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #fff7ed; border: 1px solid #ffedd5; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #e77600; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                         <i class="fas fa-store"></i>
                     </div>
                     <div>
@@ -165,8 +165,8 @@
                         <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Total des vendeurs</div>
                     </div>
                 </div>
-                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #eef4ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #eff6ff; border: 1px solid #dbeafe; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                         <i class="fas fa-briefcase"></i>
                     </div>
                     <div>
@@ -174,8 +174,8 @@
                         <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Vendeurs professionnels</div>
                     </div>
                 </div>
-                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #e6f6f9; color: #0891b2; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #ecfeff; border: 1px solid #cffafe; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #0891b2; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                         <i class="fas fa-user"></i>
                     </div>
                     <div>
@@ -189,8 +189,8 @@
             @if($role === 'acheteur')
             <!-- Statistiques clients -->
             <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #eef4ff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #eff6ff; border: 1px solid #dbeafe; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #2563eb; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                         <i class="fas fa-users"></i>
                     </div>
                     <div>
@@ -198,8 +198,8 @@
                         <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Total des clients</div>
                     </div>
                 </div>
-                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #f7fff0; color: #569b00; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #569b00; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                         <i class="fas fa-check-circle"></i>
                     </div>
                     <div>
@@ -207,8 +207,8 @@
                         <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Clients actifs</div>
                     </div>
                 </div>
-                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
-                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff5f5; color: #c40000; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #fff1f2; border: 1px solid #ffe4e6; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #c40000; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
                         <i class="fas fa-ban"></i>
                     </div>
                     <div>
