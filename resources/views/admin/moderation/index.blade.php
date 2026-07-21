@@ -314,43 +314,55 @@
     {{-- Modal Détail signalement --}}
     <template x-teleport="body">
         <div x-show="detailOpen" x-cloak x-transition.opacity @keydown.escape.window="detailOpen = false"
-            style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 1rem;">
-            <div @click.outside="detailOpen = false"
-                style="background:#fff; border-radius:12px; width:100%; max-width:520px; box-shadow:0 20px 50px rgba(0,0,0,0.25); overflow:hidden;">
-                <div style="display:flex; align-items:center; justify-content:space-between; padding:1.1rem 1.5rem; border-bottom:1px solid #f0f0f0;">
-                    <h3 style="margin:0; font-size:1.05rem; font-weight:700; color:#111; display:flex; align-items:center; gap:0.5rem;">
-                        <i class="fas fa-flag" style="color:#dc2626;"></i> Détail du signalement
-                    </h3>
-                    <button type="button" @click="detailOpen=false" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:1.1rem;"><i class="fas fa-times"></i></button>
+            style="position: fixed; inset: 0; background: rgba(15,23,42,0.55); backdrop-filter: blur(2px); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 1.5rem;">
+            <div @click.outside="detailOpen = false" x-transition
+                style="background:#fff; border-radius:16px; width:100%; max-width:680px; max-height:90vh; display:flex; flex-direction:column; box-shadow:0 25px 70px rgba(0,0,0,0.35); overflow:hidden;">
+
+                {{-- Header --}}
+                <div style="display:flex; align-items:center; gap:14px; padding:1.5rem 1.75rem; border-bottom:1px solid #f1f5f9;">
+                    <div style="width:44px; height:44px; border-radius:12px; background:#fee2e2; color:#dc2626; display:flex; align-items:center; justify-content:center; font-size:1.15rem; flex-shrink:0;">
+                        <i class="fas fa-flag"></i>
+                    </div>
+                    <div style="flex:1;">
+                        <h3 style="margin:0; font-size:1.2rem; font-weight:800; color:#0f172a;">Détail du signalement</h3>
+                        <p style="margin:2px 0 0; font-size:0.82rem; color:#94a3b8;">Signalement d'une annonce par un utilisateur</p>
+                    </div>
+                    <button type="button" @click="detailOpen=false" style="width:36px; height:36px; border-radius:9px; background:#f8fafc; border:1px solid #eef2f6; cursor:pointer; color:#64748b; font-size:1rem; flex-shrink:0;"><i class="fas fa-times"></i></button>
                 </div>
-                <div style="padding:1.25rem 1.5rem;">
-                    <div style="margin-bottom:14px;">
-                        <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#94a3b8; font-weight:700; margin-bottom:3px;">Produit signalé</div>
-                        <a x-show="detail.url" :href="detail.url" target="_blank" x-text="detail.titre" style="color:#0066c0; text-decoration:none; font-weight:700; font-size:0.95rem;"></a>
-                        <span x-show="!detail.url" x-text="detail.titre" style="color:#94a3b8; font-weight:700;"></span>
-                    </div>
-                    <div style="margin-bottom:14px;">
-                        <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#94a3b8; font-weight:700; margin-bottom:3px;">Motif</div>
-                        <span x-text="detail.motif" style="font-size:0.72rem; color:#b91c1c; background:#fee2e2; padding:2px 8px; border-radius:12px; font-weight:700;"></span>
-                    </div>
-                    <div style="margin-bottom:14px;">
-                        <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#94a3b8; font-weight:700; margin-bottom:3px;">Message</div>
-                        <p x-text="detail.message" style="margin:0; background:#f8fafc; border:1px solid #eef2f6; border-radius:8px; padding:10px 12px; color:#374151; font-size:0.88rem; line-height:1.6; white-space:pre-wrap;"></p>
-                    </div>
-                    <div style="display:flex; gap:24px;">
-                        <div>
-                            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#94a3b8; font-weight:700; margin-bottom:3px;">Signalé par</div>
-                            <div x-text="detail.reporter" style="font-size:0.85rem; color:#374151;"></div>
+
+                {{-- Body --}}
+                <div style="padding:1.75rem; overflow-y:auto;">
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px 28px; margin-bottom:22px;">
+                        <div style="grid-column:1 / -1;">
+                            <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:5px;">Produit signalé</div>
+                            <a x-show="detail.url" :href="detail.url" target="_blank" x-text="detail.titre" style="color:#0066c0; text-decoration:none; font-weight:700; font-size:1.05rem;"></a>
+                            <span x-show="!detail.url" x-text="detail.titre" style="color:#94a3b8; font-weight:700; font-size:1.05rem;"></span>
                         </div>
                         <div>
-                            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#94a3b8; font-weight:700; margin-bottom:3px;">Date</div>
-                            <div x-text="detail.date" style="font-size:0.85rem; color:#374151;"></div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:6px;">Motif</div>
+                            <span x-text="detail.motif" style="display:inline-block; font-size:0.8rem; color:#b91c1c; background:#fee2e2; padding:4px 12px; border-radius:999px; font-weight:700;"></span>
+                        </div>
+                        <div>
+                            <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:6px;">Date</div>
+                            <div x-text="detail.date" style="font-size:0.9rem; color:#334155; font-weight:600;"></div>
                         </div>
                     </div>
+
+                    <div style="margin-bottom:22px;">
+                        <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:8px;">Message du signalement</div>
+                        <p x-text="detail.message" style="margin:0; background:#f8fafc; border:1px solid #eef2f6; border-left:4px solid #dc2626; border-radius:10px; padding:16px 18px; color:#334155; font-size:0.95rem; line-height:1.7; white-space:pre-wrap; min-height:60px;"></p>
+                    </div>
+
+                    <div>
+                        <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:6px;">Signalé par</div>
+                        <div x-text="detail.reporter" style="font-size:0.95rem; color:#334155; font-weight:600;"></div>
+                    </div>
                 </div>
-                <div style="display:flex; justify-content:flex-end; gap:0.6rem; padding:1rem 1.5rem; border-top:1px solid #f0f0f0; background:#fafafa;">
-                    <a x-show="detail.url" :href="detail.url" target="_blank" style="color:#fff; background:#111; padding:8px 14px; border-radius:6px; font-size:0.85rem; font-weight:600; text-decoration:none;"><i class="fas fa-eye"></i> Voir le produit</a>
-                    <button type="button" @click="detailOpen=false" style="padding:8px 14px; border:1px solid #d1d5db; background:#fff; color:#374151; border-radius:6px; font-size:0.85rem; font-weight:600; cursor:pointer;">Fermer</button>
+
+                {{-- Footer --}}
+                <div style="display:flex; justify-content:flex-end; gap:0.75rem; padding:1.25rem 1.75rem; border-top:1px solid #f1f5f9; background:#f8fafc;">
+                    <button type="button" @click="detailOpen=false" style="padding:10px 20px; border:1px solid #d1d5db; background:#fff; color:#374151; border-radius:8px; font-size:0.9rem; font-weight:600; cursor:pointer;">Fermer</button>
+                    <a x-show="detail.url" :href="detail.url" target="_blank" style="color:#fff; background:#111; padding:10px 20px; border-radius:8px; font-size:0.9rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:8px;"><i class="fas fa-eye"></i> Voir le produit</a>
                 </div>
             </div>
         </div>
