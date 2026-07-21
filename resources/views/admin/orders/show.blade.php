@@ -71,7 +71,7 @@
         width: 100%; border-collapse: collapse; border: 1px solid #e7e7e7; margin-top: 10px;
     }
     .table-articles th {
-        background: #f6f6f6; padding: 10px 15px; text-align: left; font-size: 0.72rem; font-weight: 800; color: #111; text-transform: uppercase; border-bottom: 1px solid #e7e7e7; border-right: 1px solid #e7e7e7;
+        background: #d1d5db; padding: 10px 15px; text-align: left; font-size: 0.72rem; font-weight: 800; color: #111; text-transform: uppercase; border-bottom: 1px solid #e7e7e7; border-right: 1px solid #e7e7e7;
     }
     .table-articles td {
         padding: 12px 15px; font-size: 0.85rem; border-bottom: 1px solid #e7e7e7; border-right: 1px solid #e7e7e7; vertical-align: middle;

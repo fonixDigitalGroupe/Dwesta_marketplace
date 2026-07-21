@@ -39,7 +39,7 @@
 
     <div class="card-amazon">
         <table class="table mb-0">
-            <thead style="background: #f6f6f6;">
+            <thead style="background: #d1d5db;">
                 <tr>
                     <th style="border-top: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Date</th>
                     <th style="border-top: none; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">Coupon</th>

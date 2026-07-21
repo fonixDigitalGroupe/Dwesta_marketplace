@@ -40,7 +40,7 @@
             @if($litiges->count() > 0)
                 <table style="width: 100%; border-collapse: collapse; text-align: left;">
                     <thead>
-                        <tr style="background: #f6f6f6; border-bottom: 1px solid #e7e7e7;">
+                        <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                             <th style="padding: 12px 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #111; letter-spacing: 0.03em; border-right: 1px solid #e7e7e7; width: 80px;">ID</th>
                             <th style="padding: 12px 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #111; letter-spacing: 0.03em; border-right: 1px solid #e7e7e7;">Signalé par / Contre</th>
                             <th style="padding: 12px 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #111; letter-spacing: 0.03em; border-right: 1px solid #e7e7e7;">Motif</th>

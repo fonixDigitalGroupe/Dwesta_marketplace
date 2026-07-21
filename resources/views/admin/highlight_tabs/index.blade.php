@@ -128,7 +128,7 @@
         {{-- Table --}}
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
             <thead>
-                <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                     <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 80px;">Ordre</th>
                     <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Nom de l'onglet</th>
                     <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Statut</th>

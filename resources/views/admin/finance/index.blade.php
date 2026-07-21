@@ -127,7 +127,7 @@
         border: 1px solid #e7e7e7;
     }
     .table-amazon th {
-        background: #f6f6f6;
+        background: #d1d5db;
         padding: 10px 15px;
         text-align: left;
         font-size: 0.75rem;
