@@ -249,6 +249,7 @@
                                     $detailData = [
                                         'titre'   => $signalement->annonce->titre ?? '(annonce supprimée)',
                                         'url'     => $signalement->annonce ? route('annonces.show', $signalement->annonce) : '',
+                                        'image'   => $signalement->annonce?->photoPrincipale()?->url ?? '',
                                         'motif'   => $signalement->motif_libelle,
                                         'message' => $signalement->description ?: '(aucun message fourni)',
                                         'reporter'=> $repLabel,
@@ -335,8 +336,9 @@
 
                     {{-- Produit signalé (bloc en évidence) --}}
                     <div style="display:flex; align-items:center; gap:14px; background:#f8fafc; border:1px solid #eef2f6; border-radius:12px; padding:14px 16px; margin-bottom:20px;">
-                        <div style="width:42px; height:42px; border-radius:10px; background:#fff; border:1px solid #eef2f6; color:#0066c0; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0;">
-                            <i class="fas fa-box"></i>
+                        <div style="width:56px; height:56px; border-radius:10px; background:#fff; border:1px solid #eef2f6; display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0;">
+                            <img x-show="detail.image" :src="detail.image" alt="" style="width:100%; height:100%; object-fit:cover;">
+                            <i x-show="!detail.image" class="fas fa-box" style="color:#cbd5e1; font-size:1.1rem;"></i>
                         </div>
                         <div style="min-width:0;">
                             <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:2px;">Produit signalé</div>
@@ -364,7 +366,7 @@
                     {{-- Message --}}
                     <div>
                         <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:8px;">Message du signalement</div>
-                        <p x-text="detail.message" style="margin:0; background:#fff; border:1px solid #eef2f6; border-left:4px solid #dc2626; border-radius:10px; padding:16px 18px; color:#334155; font-size:0.95rem; line-height:1.7; white-space:pre-wrap; min-height:56px;"></p>
+                        <p x-text="detail.message" style="margin:0; background:#fff; border:1px solid #eef2f6; border-radius:10px; padding:16px 18px; color:#334155; font-size:0.95rem; line-height:1.7; white-space:pre-wrap; min-height:56px;"></p>
                     </div>
                 </div>
 
