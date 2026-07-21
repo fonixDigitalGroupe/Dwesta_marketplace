@@ -170,19 +170,12 @@
                             </td>
                             <td style="padding: 12px 15px; text-align: right;" class="actions-column">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                                    <a href="{{ route('admin.countries.show', $country) }}"
-                                        style="color: #0066c0; font-size: 0.8rem; text-decoration: none; font-weight: 600;"
-                                        onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
-                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
-                                        Détail
-                                    </a>
-                                    <span style="color: #ddd;">|</span>
-                                    <a href="{{ route('admin.countries.edit', $country) }}"
-                                        style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
-                                        onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
-                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
-                                        Modifier
-                                    </a>
+                                    <a href="{{ route('admin.countries.show', $country) }}" title="Détail"
+                                        style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
+                                        onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'"><i class="fas fa-eye" style="font-size: 0.95rem;"></i></a>
+                                    <a href="{{ route('admin.countries.edit', $country) }}" title="Modifier"
+                                        style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
+                                        onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'"><i class="fas fa-pen-to-square" style="font-size: 0.95rem;"></i></a>
                                     <span style="color: #ddd;">|</span>
                                     <form action="{{ route('admin.countries.toggle-status', $country) }}" method="POST" style="display: inline;">
                                         @csrf @method('PATCH')
@@ -197,12 +190,9 @@
                                     <form id="delete-country-form-{{ $country->id }}" action="{{ route('admin.countries.destroy', $country) }}" method="POST" style="display: inline;">
                                         @csrf @method('DELETE')
                                         <button type="button"
-                                            onclick="confirmDeleteCountry({{ $country->id }})"
-                                            style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                            onmouseover="this.style.textDecoration='underline'"
-                                            onmouseout="this.style.textDecoration='none'">
-                                            Supprimer
-                                        </button>
+                                            onclick="confirmDeleteCountry({{ $country->id }})" title="Supprimer"
+                                            style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; background: none; border: none; color: #c40000; cursor: pointer; transition: background 0.2s;"
+                                            onmouseover="this.style.background='#fff5f5'" onmouseout="this.style.background='transparent'"><i class="fas fa-trash" style="font-size: 0.9rem;"></i></button>
                                     </form>
                                 </div>
                             </td>

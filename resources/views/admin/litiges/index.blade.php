@@ -80,12 +80,9 @@
                                 @endif
                             </td>
                             <td style="padding: 15px 20px; text-align: right;">
-                                <a href="{{ route('admin.litiges.show', $litige) }}" 
-                                   style="display: inline-block; color: #111; font-size: 0.8rem; text-decoration: none; padding: 6px 15px; background: linear-gradient(to bottom, #f7f8fa, #e7e9ec); border: 1px solid #adb1b8; border-radius: 3px; font-weight: 500; box-shadow: 0 1px 0 rgba(255,255,255,.6) inset;"
-                                   onmouseover="this.style.background='linear-gradient(to bottom, #e7eaf0, #d8dade)'; this.style.borderColor='#a2a6ac'"
-                                   onmouseout="this.style.background='linear-gradient(to bottom, #f7f8fa, #e7e9ec)'; this.style.borderColor='#adb1b8'">
-                                    Détails
-                                </a>
+                                <a href="{{ route('admin.litiges.show', $litige) }}" title="Détails"
+                                   style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
+                                   onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'"><i class="fas fa-eye" style="font-size: 0.95rem;"></i></a>
                             </td>
                         </tr>
                         @endforeach
