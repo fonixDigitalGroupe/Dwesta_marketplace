@@ -28,7 +28,7 @@ class ModerationController extends Controller
         $signalementsTraiteCount = 0;
 
         if ($signalementsTablePresente) {
-            $signalements = Signalement::with(['annonce', 'reporter'])
+            $signalements = Signalement::with(['annonce.vendeur.user', 'reporter'])
                 ->where('statut', 'nouveau')
                 ->latest()
                 ->paginate(10, ['*'], 'sig_page');

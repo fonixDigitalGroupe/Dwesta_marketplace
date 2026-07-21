@@ -35,7 +35,7 @@
 
 @section('content')
 <div style="max-width: 1200px; margin: 0 auto;"
-     x-data="{ tab: '{{ $avisEnAttente->count() || !$signalements->count() ? 'avis' : 'signalements' }}' }">
+     x-data="{ tab: '{{ $avisEnAttente->count() || !$signalements->count() ? 'avis' : 'signalements' }}', detailOpen: false, detail: {} }">
 
     <!-- Main Conteneur style Amazon Card -->
     <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px; margin-top: -50px;">
@@ -199,8 +199,9 @@
                     <thead>
                         <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                             <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Annonce / Motif</th>
-                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 240px;">Signalé par</th>
-                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 130px;">Date</th>
+                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 180px;">Vendeur</th>
+                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 210px;">Signalé par</th>
+                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 110px;">Date</th>
                             <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 200px;">Actions</th>
                         </tr>
                     </thead>
@@ -216,8 +217,14 @@
                                 @else
                                     <span style="color: #94a3b8; font-size: 0.85rem;">(annonce supprimée)</span>
                                 @endif
-                                @if($signalement->description)
-                                    <div style="font-size: 0.8rem; color: #555; line-height: 1.4; margin-top: 4px;">{{ \Illuminate\Support\Str::limit($signalement->description, 140) }}</div>
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7; font-size: 0.82rem; color: #333;">
+                                @php $vendeurUser = $signalement->annonce?->vendeur?->user; @endphp
+                                @if($vendeurUser)
+                                    <div style="font-weight: 700; color: #111;">{{ $vendeurUser->prenom }} {{ $vendeurUser->nom ?? '' }}</div>
+                                    <div style="color: #555;">{{ ucfirst($signalement->annonce->vendeur->type ?? '') }}</div>
+                                @else
+                                    <span style="color: #94a3b8;">—</span>
                                 @endif
                             </td>
                             <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7; font-size: 0.82rem; color: #333;">
@@ -235,11 +242,26 @@
                                 {{ $signalement->created_at->format('d/m/Y') }}
                             </td>
                             <td style="padding: 12px 15px; text-align: right;">
+                                @php
+                                    $repLabel = $signalement->reporter
+                                        ? trim($signalement->reporter->prenom . ' ' . ($signalement->reporter->nom ?? '')) . ' (' . $signalement->reporter->email . ')'
+                                        : ($signalement->email ? $signalement->email . ' (visiteur)' : 'Visiteur anonyme');
+                                    $detailData = [
+                                        'titre'   => $signalement->annonce->titre ?? '(annonce supprimée)',
+                                        'url'     => $signalement->annonce ? route('annonces.show', $signalement->annonce) : '',
+                                        'motif'   => $signalement->motif_libelle,
+                                        'message' => $signalement->description ?: '(aucun message fourni)',
+                                        'reporter'=> $repLabel,
+                                        'date'    => $signalement->created_at->format('d/m/Y à H:i'),
+                                    ];
+                                @endphp
                                 <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
-                                    @if($signalement->annonce)
-                                        <a href="{{ route('annonces.show', $signalement->annonce) }}" target="_blank" title="Voir l'annonce" class="mod-icon-btn"><i class="fas fa-eye" style="font-size: 0.95rem;"></i></a>
-                                        <span style="color: #ddd;">|</span>
+                                    <button type="button" title="Détail" class="mod-icon-btn"
+                                        @click="detail = @js($detailData); detailOpen = true"><i class="fas fa-eye" style="font-size: 0.95rem;"></i></button>
+                                    @if($vendeurUser)
+                                        <a href="{{ route('admin.messagerie.index', ['compose' => 1, 'to' => $vendeurUser->id, 'article' => $signalement->annonce->id]) }}" title="Envoyer un message au vendeur" class="mod-icon-btn"><i class="fas fa-paper-plane" style="font-size: 0.9rem;"></i></a>
                                     @endif
+                                    <span style="color: #ddd;">|</span>
                                     <form action="{{ route('admin.moderation.signalements.traiter', $signalement) }}" method="POST" style="display: inline;">
                                         @csrf
                                         <button type="submit" class="mod-action-btn" style="color: #569b00; background: #f7fff0;">Traité</button>
@@ -254,7 +276,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" style="padding: 60px; text-align: center; color: #888;">
+                            <td colspan="5" style="padding: 60px; text-align: center; color: #888;">
                                 <i class="fas fa-flag" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.2;"></i>
                                 <p>Aucune annonce signalée.</p>
                             </td>
@@ -288,6 +310,51 @@
         </div>
 
     </div>
+
+    {{-- Modal Détail signalement --}}
+    <template x-teleport="body">
+        <div x-show="detailOpen" x-cloak x-transition.opacity @keydown.escape.window="detailOpen = false"
+            style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 1rem;">
+            <div @click.outside="detailOpen = false"
+                style="background:#fff; border-radius:12px; width:100%; max-width:520px; box-shadow:0 20px 50px rgba(0,0,0,0.25); overflow:hidden;">
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:1.1rem 1.5rem; border-bottom:1px solid #f0f0f0;">
+                    <h3 style="margin:0; font-size:1.05rem; font-weight:700; color:#111; display:flex; align-items:center; gap:0.5rem;">
+                        <i class="fas fa-flag" style="color:#dc2626;"></i> Détail du signalement
+                    </h3>
+                    <button type="button" @click="detailOpen=false" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:1.1rem;"><i class="fas fa-times"></i></button>
+                </div>
+                <div style="padding:1.25rem 1.5rem;">
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#94a3b8; font-weight:700; margin-bottom:3px;">Produit signalé</div>
+                        <a x-show="detail.url" :href="detail.url" target="_blank" x-text="detail.titre" style="color:#0066c0; text-decoration:none; font-weight:700; font-size:0.95rem;"></a>
+                        <span x-show="!detail.url" x-text="detail.titre" style="color:#94a3b8; font-weight:700;"></span>
+                    </div>
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#94a3b8; font-weight:700; margin-bottom:3px;">Motif</div>
+                        <span x-text="detail.motif" style="font-size:0.72rem; color:#b91c1c; background:#fee2e2; padding:2px 8px; border-radius:12px; font-weight:700;"></span>
+                    </div>
+                    <div style="margin-bottom:14px;">
+                        <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#94a3b8; font-weight:700; margin-bottom:3px;">Message</div>
+                        <p x-text="detail.message" style="margin:0; background:#f8fafc; border:1px solid #eef2f6; border-radius:8px; padding:10px 12px; color:#374151; font-size:0.88rem; line-height:1.6; white-space:pre-wrap;"></p>
+                    </div>
+                    <div style="display:flex; gap:24px;">
+                        <div>
+                            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#94a3b8; font-weight:700; margin-bottom:3px;">Signalé par</div>
+                            <div x-text="detail.reporter" style="font-size:0.85rem; color:#374151;"></div>
+                        </div>
+                        <div>
+                            <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.03em; color:#94a3b8; font-weight:700; margin-bottom:3px;">Date</div>
+                            <div x-text="detail.date" style="font-size:0.85rem; color:#374151;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.6rem; padding:1rem 1.5rem; border-top:1px solid #f0f0f0; background:#fafafa;">
+                    <a x-show="detail.url" :href="detail.url" target="_blank" style="color:#fff; background:#111; padding:8px 14px; border-radius:6px; font-size:0.85rem; font-weight:600; text-decoration:none;"><i class="fas fa-eye"></i> Voir le produit</a>
+                    <button type="button" @click="detailOpen=false" style="padding:8px 14px; border:1px solid #d1d5db; background:#fff; color:#374151; border-radius:6px; font-size:0.85rem; font-weight:600; cursor:pointer;">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </template>
 </div>
 
 @push('scripts')
