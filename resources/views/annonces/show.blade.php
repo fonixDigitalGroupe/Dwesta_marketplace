@@ -680,7 +680,8 @@
                         <i class="fas fa-flag"></i> Signaler l'annonce
                     </button>
 
-                    <!-- Overlay + Modal -->
+                    <!-- Overlay + Modal (téléporté dans le body pour un centrage plein écran fiable) -->
+                    <template x-teleport="body">
                     <div x-show="open" x-cloak x-transition.opacity
                         @keydown.escape.window="open = false"
                         style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 1rem;">
@@ -750,6 +751,7 @@
                             </form>
                         </div>
                     </div>
+                    </template>
                 </div>
                 </div>
             </div>
