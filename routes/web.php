@@ -216,6 +216,13 @@ Route::middleware('auth')->group(function () {
                 Route::post('/{avis}/reject', [AvisController::class, 'reject'])->name('reject');
             });
 
+            // Modération (page regroupant avis + annonces signalées)
+            Route::prefix('moderation')->name('moderation.')->group(function () {
+                Route::get('/', [\App\Http\Controllers\Admin\ModerationController::class, 'index'])->name('index');
+                Route::post('/signalements/{signalement}/traiter', [\App\Http\Controllers\Admin\ModerationController::class, 'traiterSignalement'])->name('signalements.traiter');
+                Route::post('/signalements/{signalement}/rejeter', [\App\Http\Controllers\Admin\ModerationController::class, 'rejeterSignalement'])->name('signalements.rejeter');
+            });
+
             // Admin root - dashboard
             Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 

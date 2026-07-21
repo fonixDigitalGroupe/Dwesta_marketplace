@@ -31,6 +31,7 @@
                 @can('manage_users')<li><a href="{{ route('admin.users.index', ['role' => 'acheteur']) }}" class="{{ request('role') == 'acheteur' ? 'active' : '' }}"><i class="fas fa-users"></i> <span>Clients</span></a></li>@endcan
                 @can('moderate_products')<li><a href="{{ route('admin.annonces.index') }}" class="{{ request()->routeIs('admin.annonces.*') ? 'active' : '' }}"><i class="fas fa-clipboard-list"></i> <span>Articles</span></a></li>@endcan
                 @can('manage_orders')<li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i class="fas fa-shopping-basket"></i> <span>Commandes</span>@if(($activeOrdersCount ?? 0) > 0)<span class="sidebar-badge">{{ $activeOrdersCount > 9 ? '9+' : $activeOrdersCount }}</span>@endif</a></li>@endcan
+                @can('moderate_products')<li><a href="{{ route('admin.moderation.index') }}" class="{{ request()->routeIs('admin.moderation.*') ? 'active' : '' }}"><i class="fas fa-shield-alt"></i> <span>Modération</span>@if(($pendingModerationCount ?? 0) > 0)<span class="sidebar-badge">{{ $pendingModerationCount > 9 ? '9+' : $pendingModerationCount }}</span>@endif</a></li>@endcan
             </ul>
         </div>
 

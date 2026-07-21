@@ -45,6 +45,10 @@ class AppServiceProvider extends ServiceProvider
             // Commandes ni annulées ni livrées (en cours de traitement)
             $activeOrdersCount = \App\Models\Order::whereNotIn('statut', ['annule', 'livre'])->count();
 
+            // Modération : avis en attente + annonces signalées non traitées
+            $pendingModerationCount = \App\Models\Avis::where('statut', 'en_attente')->count()
+                + \App\Models\Signalement::where('statut', 'nouveau')->count();
+
             // Messages non lus du compte Karnou (la messagerie admin agit en son nom)
             $karnou = \App\Models\User::where('email', 'admin@karnou.com')->first()
                 ?? \App\Models\User::whereHas('roles', fn ($q) => $q->where('name', 'admin'))->first();
@@ -62,6 +66,7 @@ class AppServiceProvider extends ServiceProvider
                  ->with('pendingLivreursCount', $pendingLivreursCount)
                  ->with('pendingTransporteursCount', $pendingTransporteursCount)
                  ->with('activeOrdersCount', $activeOrdersCount)
+                 ->with('pendingModerationCount', $pendingModerationCount)
                  ->with('adminUnreadMessages', $adminUnreadMessages);
         });
     }
