@@ -129,7 +129,7 @@
 
                 <div style="display: flex; gap: 8px;">
 
-                    <a href="{{ route('admin.categories.create', ['level' => $level]) }}" class="btn-amazon-primary" style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border-color: #c05d00;">
+                    <a href="{{ route('admin.categories.create', ['level' => $level]) }}" class="btn-amazon-primary">
                         <i class="fas fa-plus"></i> Nouvelle catégorie
                     </a>
                 </div>

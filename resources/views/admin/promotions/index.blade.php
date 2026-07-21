@@ -99,7 +99,7 @@
                     <i class="fas fa-bullhorn"></i> Nouvelle Campagne
                 </a>
 
-                <a href="{{ route('admin.coupons.create') }}" class="btn-coupon-orange">
+                <a href="{{ route('admin.coupons.create') }}" class="btn-amazon-primary">
                     <i class="fas fa-plus"></i> Nouveau code promo
                 </a>
             </div>

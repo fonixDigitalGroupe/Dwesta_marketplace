@@ -97,7 +97,7 @@
                 <a href="{{ route('admin.highlights.index') }}" class="btn-amazon-secondary">
                     <i class="fas fa-arrow-left"></i> Retour aux Actualités
                 </a>
-                <a href="{{ route('admin.highlight-tabs.create') }}" class="btn-amazon-orange">
+                <a href="{{ route('admin.highlight-tabs.create') }}" class="btn-amazon-primary">
                     <i class="fas fa-plus"></i> Nouveau groupe
                 </a>
             </div>

@@ -32,7 +32,7 @@
             <h1 style="font-size: 1.5rem; font-weight: 700; color: #111; margin: 0;">📢 Historique des Campagnes</h1>
             <p style="font-size: 0.85rem; color: #666; margin-top: 4px;">Retrouvez l'historique des notifications envoyées aux vendeurs.</p>
         </div>
-        <a href="{{ route('admin.campaigns.create') }}" class="btn btn-primary" style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: 1px solid #a88734; color: #111; font-weight: 600;">
+        <a href="{{ route('admin.campaigns.create') }}" class="btn btn-primary" style="background: linear-gradient(180deg, #007bff 0%, #0056b3 100%); border: 1px solid #1e40af; color: #fff; font-weight: 600;">
             <i class="fas fa-plus"></i> Nouvelle Campagne
         </a>
     </div>

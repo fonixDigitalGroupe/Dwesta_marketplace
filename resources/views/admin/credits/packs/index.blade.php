@@ -130,7 +130,7 @@
                             <i class="fas fa-plus"></i> Nouveau pack
                         </span>
                     @else
-                        <a href="{{ route('admin.credits.packs.create') }}" class="btn-amazon-primary" style="height: 32px !important; padding: 0 16px !important; background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border-color: #c05d00;">
+                        <a href="{{ route('admin.credits.packs.create') }}" class="btn-amazon-primary" style="height: 32px !important; padding: 0 16px !important;">
                             <i class="fas fa-plus"></i> Nouveau pack
                         </a>
                     @endif
