@@ -145,7 +145,7 @@
             <!-- Table Amazon Design -->
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
                 <thead>
-                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                    <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Point Relais</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Localisation</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Statut</th>
@@ -158,7 +158,7 @@
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 12px 15px; font-size: 0.8rem; border-right: 1px solid #eff3f6;">
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="color: #0066c0; font-weight: 700;">{{ $point->nom }}</span>
+                                    <span style="color: #111; font-weight: 700;">{{ $point->nom }}</span>
                                     @if($point->est_point_special)
                                         <span class="badge-amazon badge-amazon-warning" title="Point Spécial Karnou">
                                             <i class="fas fa-star" style="font-size: 0.6rem;"></i> SPÉCIAL
@@ -166,9 +166,9 @@
                                     @endif
                                 </div>
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.8rem; color: #555; border-right: 1px solid #eff3f6;">
+                            <td style="padding: 12px 15px; font-size: 0.8rem; color: #111; border-right: 1px solid #eff3f6;">
                                 <div style="font-weight: 600; color: #111; margin-bottom: 2px;">{{ $point->region }}, {{ $point->pays }}</div>
-                                <div style="font-size: 0.75rem; color: #666; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $point->adresse }}">
+                                <div style="font-size: 0.75rem; color: #111; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $point->adresse }}">
                                     {{ $point->adresse }}
                                 </div>
                             </td>
@@ -178,23 +178,18 @@
                                 </span>
                             </td>
                             <td style="padding: 12px 15px; text-align: right;" class="actions-column">
-                                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                                    <a href="{{ route('admin.point-relais.edit', $point) }}"
-                                        style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
-                                        onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
-                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
-                                        Modifier
-                                    </a>
-                                    <span style="color: #ddd;">|</span>
+                                <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
+                                    <a href="{{ route('admin.point-relais.edit', $point) }}" title="Modifier"
+                                        style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
+                                        onmouseover="this.style.background='#f3f4f6'"
+                                        onmouseout="this.style.background='transparent'"><i class="fas fa-pen" style="font-size: 0.9rem;"></i></a>
                                     <form action="{{ route('admin.point-relais.destroy', $point) }}" method="POST"
                                         onsubmit="return confirm('Supprimer ce point relais ?')" style="display: inline;">
                                         @csrf @method('DELETE')
-                                        <button type="submit"
-                                            style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                            onmouseover="this.style.textDecoration='underline'"
-                                            onmouseout="this.style.textDecoration='none'">
-                                            Supprimer
-                                        </button>
+                                        <button type="submit" title="Supprimer"
+                                            style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; background: none; border: none; color: #c40000; cursor: pointer; transition: background 0.2s;"
+                                            onmouseover="this.style.background='#fff5f5'"
+                                            onmouseout="this.style.background='transparent'"><i class="fas fa-trash" style="font-size: 0.9rem;"></i></button>
                                     </form>
                                 </div>
                             </td>
