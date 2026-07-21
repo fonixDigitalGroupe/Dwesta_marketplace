@@ -10,12 +10,12 @@
     <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
         
         {{-- CHIFFRE D'AFFAIRES --}}
-        <div style="background: #eff6ff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #dbeafe;">
+        <div style="background: #f5f3ff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #e9e5ff;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: #fff; color: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                <div style="width: 38px; height: 38px; background: #fff; color: #7c3aed; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-wallet"></i>
                 </div>
-                <span style="font-size: 0.65rem; font-weight: 700; color: #2563eb; background: #eff6ff; padding: 2px 6px; border-radius: 4px;">TOTAL CA</span>
+                <span style="font-size: 0.65rem; font-weight: 700; color: #7c3aed; background: #f5f3ff; padding: 2px 6px; border-radius: 4px;">TOTAL CA</span>
             </div>
             <div>
                 <h3 style="font-size: 0.75rem; color: #718096; font-weight: 600; margin: 0;">Volume d'affaires</h3>
@@ -24,12 +24,12 @@
         </div>
 
         {{-- COMMISSIONS --}}
-        <div style="background: #f5f3ff; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #e9e5ff;">
+        <div style="background: #fffbeb; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #fef3c7;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: #fff; color: #7c3aed; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                <div style="width: 38px; height: 38px; background: #fff; color: #f59e0b; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-percentage"></i>
                 </div>
-                <span style="font-size: 0.65rem; font-weight: 700; color: #7c3aed; background: #f5f3ff; padding: 2px 6px; border-radius: 4px;">PLATEFORME</span>
+                <span style="font-size: 0.65rem; font-weight: 700; color: #f59e0b; background: #fffbeb; padding: 2px 6px; border-radius: 4px;">PLATEFORME</span>
             </div>
             <div>
                 <h3 style="font-size: 0.75rem; color: #718096; font-weight: 600; margin: 0;">Commissions nettes</h3>
@@ -40,7 +40,7 @@
         {{-- COMMANDES --}}
         <div style="background: #ecfdf5; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #d1fae5;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: #fff; color: #059669; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                <div style="width: 38px; height: 38px; background: #fff; color: #10b981; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-shopping-bag"></i>
                 </div>
                 <div style="text-align: right;">
@@ -54,9 +54,9 @@
         </div>
 
         {{-- ANNONCES --}}
-        <div style="background: #fff7ed; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #ffedd5;">
+        <div style="background: #fff1f2; border-radius: 10px; padding: 0.85rem 1rem; border: 1px solid #ffe4e6;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <div style="width: 38px; height: 38px; background: #fff; color: #ea580c; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                <div style="width: 38px; height: 38px; background: #fff; color: #f43f5e; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
                     <i class="fas fa-tags"></i>
                 </div>
                 @if($stats['annoncesPending'] > 0)
