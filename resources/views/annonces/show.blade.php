@@ -774,8 +774,8 @@
             <!-- Signaler l'annonce -->
             <div class="rk-report" x-data="{ open: {{ $errors->hasAny(['motif','description','email']) ? 'true' : 'false' }} }" style="margin-top: 1rem; text-align: right;">
                 <button type="button" @click="open = true"
-                    style="background: none; border: none; cursor: pointer; color: #9ca3af; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0; transition: color 0.2s;"
-                    onmouseover="this.style.color='#dc2626'" onmouseout="this.style.color='#9ca3af'">
+                    style="background: none; border: none; cursor: pointer; color: #dc2626; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0; transition: color 0.2s;"
+                    onmouseover="this.style.color='#991b1b'" onmouseout="this.style.color='#dc2626'">
                     <i class="fas fa-flag"></i> Signaler l'annonce
                 </button>
 
