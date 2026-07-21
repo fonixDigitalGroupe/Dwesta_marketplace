@@ -671,11 +671,10 @@
                             <span class="rk-spec-value" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
                         </div>
                     @endif
-                </div>
 
-                <!-- Signaler l'annonce -->
-                <div class="rk-report" x-data="{ open: {{ $errors->hasAny(['motif','description','email']) ? 'true' : 'false' }} }" style="margin-top: 0.75rem; text-align: left;">
-                    <button type="button" @click="open = true"
+                    <!-- Signaler l'annonce -->
+                    <div class="rk-report" x-data="{ open: {{ $errors->hasAny(['motif','description','email']) ? 'true' : 'false' }} }" style="margin-left: auto;">
+                        <button type="button" @click="open = true"
                         style="background: none; border: none; cursor: pointer; color: #dc2626; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0; transition: color 0.2s;"
                         onmouseover="this.style.color='#991b1b'" onmouseout="this.style.color='#dc2626'">
                         <i class="fas fa-flag"></i> Signaler l'annonce
@@ -751,6 +750,7 @@
                             </form>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
 
