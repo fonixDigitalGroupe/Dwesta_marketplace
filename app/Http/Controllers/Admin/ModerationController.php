@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Avis;
 use App\Models\Signalement;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Schema;
 
 class ModerationController extends Controller
 {
@@ -19,14 +21,22 @@ class ModerationController extends Controller
             ->latest()
             ->paginate(10, ['*'], 'avis_page');
 
-        $signalements = Signalement::with(['annonce', 'reporter'])
-            ->where('statut', 'nouveau')
-            ->latest()
-            ->paginate(10, ['*'], 'sig_page');
+        // Défensif : la table signalements peut ne pas encore exister (migration non lancée en prod).
+        $signalementsTablePresente = Schema::hasTable('signalements');
 
-        $signalementsCount = Signalement::where('statut', 'nouveau')->count();
+        if ($signalementsTablePresente) {
+            $signalements = Signalement::with(['annonce', 'reporter'])
+                ->where('statut', 'nouveau')
+                ->latest()
+                ->paginate(10, ['*'], 'sig_page');
+        } else {
+            $signalements = new LengthAwarePaginator([], 0, 10, 1, [
+                'path' => request()->url(),
+                'pageName' => 'sig_page',
+            ]);
+        }
 
-        return view('admin.moderation.index', compact('avisEnAttente', 'signalements', 'signalementsCount'));
+        return view('admin.moderation.index', compact('avisEnAttente', 'signalements', 'signalementsTablePresente'));
     }
 
     /**

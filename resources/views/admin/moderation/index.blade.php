@@ -131,6 +131,13 @@
 
             {{-- ================= SIGNALEMENTS ================= --}}
             <div x-show="tab === 'signalements'" x-cloak>
+                @if(!($signalementsTablePresente ?? true))
+                    <div style="background: #fffbeb; color: #92400e; border: 1px solid #fde68a; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 0.85rem;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        La table des signalements n'est pas encore créée en base. Lancez la migration
+                        (<code>php artisan migrate --force</code>) sur le serveur pour activer cette section.
+                    </div>
+                @endif
                 @forelse($signalements as $signalement)
                     <div style="padding: 18px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #dc2626; margin-bottom: 14px;">
                         <div style="display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start;">
