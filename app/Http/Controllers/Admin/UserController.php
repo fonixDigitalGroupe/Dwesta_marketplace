@@ -121,6 +121,11 @@ class UserController extends Controller
      */
     public function create()
     {
+        // Garantit l'existence des rôles système essentiels (idempotent).
+        foreach (['admin', 'point relais', 'transporteur', 'livreur'] as $essential) {
+            \Spatie\Permission\Models\Role::firstOrCreate(['name' => $essential, 'guard_name' => 'web']);
+        }
+
         // Rôles gérés automatiquement ailleurs (vendeurs/clients) : non proposés ici.
         $excluded = ['vendeur', 'Vendeur', 'Vendeur Particulier', 'Vendeur Professionnel', 'client', 'acheteur', 'Acheteur'];
 
