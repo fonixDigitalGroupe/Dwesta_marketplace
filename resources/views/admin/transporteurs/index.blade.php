@@ -48,6 +48,44 @@
 
             </div>
 
+            @php
+                $totalTransporteurs = \App\Models\Transporteur::count();
+                $attenteTransporteurs = \App\Models\Transporteur::where('statut_verification', 'en_attente')->count();
+                $verifieTransporteurs = \App\Models\Transporteur::where('statut_verification', 'verifie')->count();
+                $rejeteTransporteurs = \App\Models\Transporteur::where('statut_verification', 'rejete')->count();
+            @endphp
+            <!-- Statistiques transporteurs -->
+            <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f5f3ff; border: 1px solid #e9e5ff; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fas fa-truck"></i></div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $totalTransporteurs }}</div>
+                        <div style="font-size: 0.75rem; color: #6b21a8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Transporteurs</div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fas fa-clock"></i></div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $attenteTransporteurs }}</div>
+                        <div style="font-size: 0.75rem; color: #b45309; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">En attente</div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fas fa-circle-check"></i></div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $verifieTransporteurs }}</div>
+                        <div style="font-size: 0.75rem; color: #047857; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Vérifiés</div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #fff1f2; border: 1px solid #ffe4e6; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #f43f5e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fas fa-times-circle"></i></div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $rejeteTransporteurs }}</div>
+                        <div style="font-size: 0.75rem; color: #be123c; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Rejetés</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Barre de filtre -->
             <div class="filters-bar"
                 style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
