@@ -372,7 +372,8 @@
 
                 {{-- Footer --}}
                 <div style="display:flex; justify-content:flex-end; gap:0.75rem; padding:1.25rem 1.75rem; border-top:1px solid #f1f5f9; background:#f8fafc;">
-                    <button type="button" @click="detailOpen=false" style="padding:10px 20px; border:1px solid #d1d5db; background:#fff; color:#374151; border-radius:8px; font-size:0.9rem; font-weight:600; cursor:pointer;">Fermer</button>
+                    <button type="button" @click="detailOpen=false" style="padding:10px 20px; border:none; background:#dc2626; color:#fff; border-radius:8px; font-size:0.9rem; font-weight:700; cursor:pointer;"
+                        onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">Fermer</button>
                     <a x-show="detail.url" :href="detail.url" target="_blank" style="color:#fff; background:#111; padding:10px 20px; border-radius:8px; font-size:0.9rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:8px;"><i class="fas fa-eye"></i> Voir le produit</a>
                 </div>
             </div>
