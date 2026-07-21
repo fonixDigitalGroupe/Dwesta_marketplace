@@ -670,20 +670,7 @@
                             <span class="rk-spec-label"><i class="fas fa-tag" style="margin-right: 5px;"></i> État :</span>
                             <span class="rk-spec-value" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
                         </div>
-                        <div class="rk-spec-separator" style="margin: 0 10px;">|</div>
                     @endif
-                    <div class="rk-spec-item">
-                        <span class="rk-spec-label"><i class="fas fa-check-circle" style="margin-right: 5px;"></i> Disponibilité :</span>
-                        <span class="rk-spec-value" style="color: #28a745;">{{ ucfirst(str_replace('_', ' ', $annonce->disponibilite)) }}</span>
-                    </div>
-                     @if($annonce->category)
-                    <div class="rk-spec-separator" style="margin: 0 10px;">|</div>
-                    <div class="rk-spec-item">
-                        <span class="rk-spec-label"><i class="fas fa-th-large" style="margin-right: 5px;"></i> Catégorie :</span>
-                        <span class="rk-spec-value">{{ $annonce->category->nom }}</span>
-                    </div>
-                    @endif
-
                 </div>
             </div>
 
