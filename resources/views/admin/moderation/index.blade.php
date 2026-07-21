@@ -332,30 +332,39 @@
 
                 {{-- Body --}}
                 <div style="padding:1.75rem; overflow-y:auto;">
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px 28px; margin-bottom:22px;">
-                        <div style="grid-column:1 / -1;">
-                            <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:5px;">Produit signalé</div>
+
+                    {{-- Produit signalé (bloc en évidence) --}}
+                    <div style="display:flex; align-items:center; gap:14px; background:#f8fafc; border:1px solid #eef2f6; border-radius:12px; padding:14px 16px; margin-bottom:20px;">
+                        <div style="width:42px; height:42px; border-radius:10px; background:#fff; border:1px solid #eef2f6; color:#0066c0; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0;">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div style="min-width:0;">
+                            <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:2px;">Produit signalé</div>
                             <a x-show="detail.url" :href="detail.url" target="_blank" x-text="detail.titre" style="color:#0066c0; text-decoration:none; font-weight:700; font-size:1.05rem;"></a>
                             <span x-show="!detail.url" x-text="detail.titre" style="color:#94a3b8; font-weight:700; font-size:1.05rem;"></span>
                         </div>
-                        <div>
-                            <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:6px;">Motif</div>
-                            <span x-text="detail.motif" style="display:inline-block; font-size:0.8rem; color:#b91c1c; background:#fee2e2; padding:4px 12px; border-radius:999px; font-weight:700;"></span>
+                    </div>
+
+                    {{-- Rangée d'infos : Motif · Date · Signalé par --}}
+                    <div style="display:grid; grid-template-columns:repeat(3, 1fr); border:1px solid #eef2f6; border-radius:12px; overflow:hidden; margin-bottom:20px;">
+                        <div style="padding:14px 16px; border-right:1px solid #eef2f6;">
+                            <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:8px;">Motif</div>
+                            <span x-text="detail.motif" style="display:inline-block; font-size:0.78rem; color:#b91c1c; background:#fee2e2; padding:4px 12px; border-radius:999px; font-weight:700;"></span>
                         </div>
-                        <div>
-                            <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:6px;">Date</div>
-                            <div x-text="detail.date" style="font-size:0.9rem; color:#334155; font-weight:600;"></div>
+                        <div style="padding:14px 16px; border-right:1px solid #eef2f6;">
+                            <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:8px;">Date</div>
+                            <div x-text="detail.date" style="font-size:0.88rem; color:#334155; font-weight:600;"></div>
+                        </div>
+                        <div style="padding:14px 16px;">
+                            <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:8px;">Signalé par</div>
+                            <div x-text="detail.reporter" style="font-size:0.88rem; color:#334155; font-weight:600; word-break:break-word;"></div>
                         </div>
                     </div>
 
-                    <div style="margin-bottom:22px;">
-                        <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:8px;">Message du signalement</div>
-                        <p x-text="detail.message" style="margin:0; background:#f8fafc; border:1px solid #eef2f6; border-left:4px solid #dc2626; border-radius:10px; padding:16px 18px; color:#334155; font-size:0.95rem; line-height:1.7; white-space:pre-wrap; min-height:60px;"></p>
-                    </div>
-
+                    {{-- Message --}}
                     <div>
-                        <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:6px;">Signalé par</div>
-                        <div x-text="detail.reporter" style="font-size:0.95rem; color:#334155; font-weight:600;"></div>
+                        <div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.05em; color:#94a3b8; font-weight:700; margin-bottom:8px;">Message du signalement</div>
+                        <p x-text="detail.message" style="margin:0; background:#fff; border:1px solid #eef2f6; border-left:4px solid #dc2626; border-radius:10px; padding:16px 18px; color:#334155; font-size:0.95rem; line-height:1.7; white-space:pre-wrap; min-height:56px;"></p>
                     </div>
                 </div>
 
