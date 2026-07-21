@@ -624,7 +624,7 @@
             <button class="rk-wishlist-btn" 
                     id="wishlist-btn" 
                     data-annonce-slug="{{ $annonce->slug }}"
-                    style="position: absolute; top: 15px; right: 15px; background: #ffffff; border: none; border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #e11d48; box-shadow: 0 2px 6px rgba(0,0,0,0.12); transition: all 0.3s ease; z-index: 20;">
+                    style="position: absolute; top: 15px; right: 15px; background: #ffffff; border: none; border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #e11d48; box-shadow: none; transition: all 0.3s ease; z-index: 20;">
                 <i class="{{ auth()->check() && auth()->user()->favorites()->where('annonce_id', $annonce->id)->exists() ? 'fas' : 'far' }} fa-heart"
                    style="font-size: 1.3rem; color: #e11d48;"></i>
             </button>
