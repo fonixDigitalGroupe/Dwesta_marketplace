@@ -72,7 +72,7 @@
 @section('content')
     <div style="max-width: 1600px; margin: -30px auto 0; width: 100%; padding-top: 0;">
         <!-- Main Card -->
-        <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+        <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
             
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 20px;">
                 <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
@@ -122,7 +122,7 @@
             <!-- Table -->
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #eff3f6;">
                 <thead>
-                    <tr style="background: #f6f6f6; border-bottom: 1px solid #eff3f6;">
+                    <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Détails de la Bannière</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 180px;">Période</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Statut</th>
@@ -135,7 +135,7 @@
                             onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
-                                <div style="font-size: 0.88rem; font-weight: 700; color: #0066c0;">{{ $banner->title }}</div>
+                                <div style="font-size: 0.88rem; font-weight: 700; color: #111;">{{ $banner->title }}</div>
                                 @if($banner->link_url)
                                     <div style="font-size: 0.72rem; color: #94a3b8; font-family: monospace; margin-top: 4px;">
                                         {{ Str::limit(str_replace(['/categories/e-commerce', '/categories/immobilier'], '', $banner->link_url), 60) }}
@@ -143,7 +143,7 @@
                                 @endif
                             </td>
 
-                            <td style="padding: 12px 15px; font-size: 0.82rem; color: #475569; border-right: 1px solid #eff3f6;">
+                            <td style="padding: 12px 15px; font-size: 0.82rem; color: #111; border-right: 1px solid #eff3f6;">
                                 @if($banner->start_date || $banner->end_date)
                                     <div style="display: flex; flex-direction: column; gap: 2px;">
                                         <span>Du : <span style="font-weight: 600;">{{ $banner->start_date ? $banner->start_date->format('d/m/Y') : '∞' }}</span></span>
@@ -164,22 +164,17 @@
                             </td>
 
                             <td style="padding: 12px 15px; text-align: right;">
-                                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-                                    <a href="{{ route('admin.banners.edit', $banner) }}"
-                                        style="color: #0066c0; font-size: 0.8rem; text-decoration: none;"
-                                        onmouseover="this.style.color='#c45500'; this.style.textDecoration='underline'"
-                                        onmouseout="this.style.color='#0066c0'; this.style.textDecoration='none'">
-                                        Modifier
-                                    </a>
-                                    <span style="color: #ddd;">|</span>
+                                <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
+                                    <a href="{{ route('admin.banners.edit', $banner) }}" title="Modifier"
+                                        style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
+                                        onmouseover="this.style.background='#f3f4f6'"
+                                        onmouseout="this.style.background='transparent'"><i class="fas fa-pen-to-square" style="font-size: 0.95rem;"></i></a>
                                     <form id="delete-form-{{ $banner->id }}" action="{{ route('admin.banners.destroy', $banner) }}" method="POST" style="display:inline;">
                                         @csrf @method('DELETE')
-                                        <button type="button" onclick="confirmDelete({{ $banner->id }})"
-                                            style="background: none; border: none; color: #c40000; font-size: 0.8rem; cursor: pointer; padding: 0;"
-                                            onmouseover="this.style.textDecoration='underline'"
-                                            onmouseout="this.style.textDecoration='none'">
-                                            Supprimer
-                                        </button>
+                                        <button type="button" onclick="confirmDelete({{ $banner->id }})" title="Supprimer"
+                                            style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; background: none; border: none; color: #c40000; cursor: pointer; transition: background 0.2s;"
+                                            onmouseover="this.style.background='#fff5f5'"
+                                            onmouseout="this.style.background='transparent'"><i class="fas fa-trash" style="font-size: 0.9rem;"></i></button>
                                     </form>
                                 </div>
                             </td>
