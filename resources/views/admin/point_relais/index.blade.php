@@ -110,6 +110,42 @@
                 </div>
             </div>
 
+            @php
+                $totalPR = \App\Models\PointRelais::count();
+                $actifsPR = \App\Models\PointRelais::where('is_active', true)->count();
+                $inactifsPR = \App\Models\PointRelais::where('is_active', false)->count();
+            @endphp
+            <!-- Statistiques points relais -->
+            <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #f5f3ff; color: #7c3aed; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $totalPR }}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Points relais</div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #ecfdf5; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                        <i class="fas fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $actifsPR }}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Actifs</div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 14px 18px;">
+                    <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff1f2; color: #f43f5e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $inactifsPR }}</div>
+                        <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Inactifs</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Barre de filtre -->
             <div class="filters-bar"
                 style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; border-radius: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
@@ -151,7 +187,7 @@
                 <thead>
                     <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Point Relais</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Localisation</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Téléphone</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Statut</th>
                         <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 150px;" class="actions-column">Actions</th>
                     </tr>
@@ -170,11 +206,8 @@
                                     @endif
                                 </div>
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.8rem; color: #111; border-right: 1px solid #eff3f6;">
-                                <div style="font-weight: 600; color: #111; margin-bottom: 2px;">{{ $point->region }}, {{ $point->pays }}</div>
-                                <div style="font-size: 0.75rem; color: #111; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $point->adresse }}">
-                                    {{ $point->adresse }}
-                                </div>
+                            <td style="padding: 12px 15px; font-size: 0.85rem; color: #111; border-right: 1px solid #eff3f6;">
+                                {{ $point->telephone ?? '-' }}
                             </td>
                             <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                                 <span class="badge-amazon {{ $point->is_active ? 'badge-amazon-success' : 'badge-amazon-danger' }}">
