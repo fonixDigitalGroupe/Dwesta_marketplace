@@ -24,11 +24,17 @@ class ModerationController extends Controller
         // Défensif : la table signalements peut ne pas encore exister (migration non lancée en prod).
         $signalementsTablePresente = Schema::hasTable('signalements');
 
+        $signalementsNouveauCount = 0;
+        $signalementsTraiteCount = 0;
+
         if ($signalementsTablePresente) {
             $signalements = Signalement::with(['annonce', 'reporter'])
                 ->where('statut', 'nouveau')
                 ->latest()
                 ->paginate(10, ['*'], 'sig_page');
+
+            $signalementsNouveauCount = Signalement::where('statut', 'nouveau')->count();
+            $signalementsTraiteCount = Signalement::where('statut', 'traite')->count();
         } else {
             $signalements = new LengthAwarePaginator([], 0, 10, 1, [
                 'path' => request()->url(),
@@ -36,7 +42,16 @@ class ModerationController extends Controller
             ]);
         }
 
-        return view('admin.moderation.index', compact('avisEnAttente', 'signalements', 'signalementsTablePresente'));
+        $avisEnAttenteCount = $avisEnAttente->total();
+
+        return view('admin.moderation.index', compact(
+            'avisEnAttente',
+            'signalements',
+            'signalementsTablePresente',
+            'avisEnAttenteCount',
+            'signalementsNouveauCount',
+            'signalementsTraiteCount'
+        ));
     }
 
     /**

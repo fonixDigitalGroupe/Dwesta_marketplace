@@ -6,201 +6,319 @@
     <style>
         .main-content { background-color: #f8f9fa !important; }
 
+        select:focus, input:focus, textarea:focus { border-color: #adb1b8 !important; outline: none; }
+
         .mod-tab {
+            padding: 10px 5px; text-decoration: none; font-size: 0.85rem; color: #555;
+            font-weight: 400; border-bottom: 2px solid transparent; background: none;
+            border-top: none; border-left: none; border-right: none; cursor: pointer;
             display: inline-flex; align-items: center; gap: 8px;
-            padding: 10px 18px; font-size: 0.85rem; font-weight: 600;
-            color: #64748b; background: transparent; border: none; cursor: pointer;
-            border-bottom: 2px solid transparent; transition: all 0.2s;
         }
-        .mod-tab:hover { color: #1e293b; }
-        .mod-tab.active { color: #111; border-bottom-color: #dc2626; }
-        .mod-count {
-            font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border-radius: 10px;
-            background: #fee2e2; color: #b91c1c;
+        .mod-tab.active { color: #c45500; font-weight: 700; border-bottom-color: #c45500; }
+        .mod-tab .mod-pill {
+            background: #fff8f3; border: 1px solid #fbd8b4; color: #c45500;
+            padding: 0 6px; border-radius: 10px; font-size: 0.75rem;
         }
-        .mod-badge {
-            font-size: 0.72rem; font-weight: 700; padding: 2px 9px; border-radius: 12px;
-            display: inline-block;
+
+        .mod-action-btn {
+            font-size: 0.8rem; text-decoration: none; font-weight: 600; border: none;
+            padding: 2px 8px; border-radius: 2px; cursor: pointer;
         }
-        .mod-btn {
-            border: none; padding: 7px 14px; border-radius: 6px; font-size: 0.8rem;
-            font-weight: 600; cursor: pointer; color: #fff; display: inline-flex;
-            align-items: center; gap: 6px; text-decoration: none; transition: opacity 0.2s;
+        .mod-icon-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 34px; height: 34px; border-radius: 6px; color: #111;
+            text-decoration: none; transition: background 0.2s;
         }
-        .mod-btn:hover { opacity: 0.9; }
+        .mod-icon-btn:hover { background: #f3f4f6; }
     </style>
 @endpush
 
 @section('content')
-    <div style="max-width: 1200px; margin: 0 auto; width: 100%;"
-         x-data="{ tab: '{{ $avisEnAttente->count() || !$signalements->count() ? 'avis' : 'signalements' }}' }">
+<div style="max-width: 1200px; margin: 0 auto;"
+     x-data="{ tab: '{{ $avisEnAttente->count() || !$signalements->count() ? 'avis' : 'signalements' }}' }">
 
-        <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+    <!-- Main Conteneur style Amazon Card -->
+    <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px; margin-top: -50px;">
 
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
-                <i class="fas fa-shield-alt" style="color: #dc2626;"></i>
-                <h1 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: #111;">Modération</h1>
+        <!-- Top Action Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eff3f6;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                <i class="fas fa-shield-alt" style="font-size: 0.8rem;"></i>
+                <span style="line-height: 1;">Modération</span>
             </div>
-            <p style="color: #64748b; font-size: 0.85rem; margin: 0 0 16px;">
-                Gérez les avis clients en attente et les annonces signalées par les utilisateurs.
-            </p>
-
-            @if(session('success'))
-                <div style="background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 0.85rem;">
-                    {{ session('success') }}
-                </div>
-            @endif
-            @if(session('error'))
-                <div style="background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 0.85rem;">
-                    {{ session('error') }}
-                </div>
-            @endif
-
-            <!-- Tabs -->
-            <div style="display: flex; gap: 8px; border-bottom: 1px solid #eff3f6; margin-bottom: 20px;">
-                <button class="mod-tab" :class="{ 'active': tab === 'avis' }" @click="tab = 'avis'">
-                    <i class="fas fa-star"></i> Avis en attente
-                    @if($avisEnAttente->total() > 0)<span class="mod-count">{{ $avisEnAttente->total() }}</span>@endif
-                </button>
-                <button class="mod-tab" :class="{ 'active': tab === 'signalements' }" @click="tab = 'signalements'">
-                    <i class="fas fa-flag"></i> Annonces signalées
-                    @if($signalements->total() > 0)<span class="mod-count">{{ $signalements->total() }}</span>@endif
-                </button>
-            </div>
-
-            {{-- ===================== AVIS ===================== --}}
-            <div x-show="tab === 'avis'" x-cloak>
-                @forelse($avisEnAttente as $avis)
-                    <div style="padding: 18px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #f59e0b; margin-bottom: 14px;">
-                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start;">
-                            <div>
-                                <div style="font-weight: 700; color: #111; font-size: 0.9rem;">{{ $avis->user->prenom }} {{ $avis->user->nom ?? '' }}</div>
-                                <div style="color: #64748b; font-size: 0.8rem; margin-bottom: 8px;">
-                                    Avis pour :
-                                    <a href="{{ route('annonces.show', $avis->annonce) }}" target="_blank" style="color: #2563eb; text-decoration: none;">{{ $avis->annonce->titre }}</a>
-                                </div>
-                                <div style="margin-bottom: 8px;">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        <span style="color: {{ $i <= $avis->note ? '#f59e0b' : '#d1d5db' }}; font-size: 1.05rem;">★</span>
-                                    @endfor
-                                    <span style="color: #64748b; font-size: 0.8rem; margin-left: 6px;">{{ $avis->note }}/5</span>
-                                </div>
-                                <p style="color: #374151; line-height: 1.6; margin: 0 0 8px; background: #fff; padding: 10px 12px; border-radius: 6px; font-size: 0.85rem;">{{ $avis->commentaire }}</p>
-                                @if($avis->photos && count($avis->photos) > 0)
-                                    <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
-                                        @foreach($avis->photos as $photoPath)
-                                            <img src="{{ asset('storage/' . $photoPath) }}" alt="Photo" style="width: 72px; height: 72px; object-fit: cover; border-radius: 6px;">
-                                        @endforeach
-                                    </div>
-                                @endif
-                                <div style="color: #94a3b8; font-size: 0.78rem;">Soumis le {{ $avis->created_at->format('d/m/Y à H:i') }}</div>
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 8px; min-width: 160px;">
-                                <form method="POST" action="{{ route('admin.avis.approve', $avis) }}">
-                                    @csrf
-                                    <button type="submit" class="mod-btn" style="background: #16a34a; width: 100%; justify-content: center;">
-                                        <i class="fas fa-check"></i> Approuver
-                                    </button>
-                                </form>
-                                <button type="button" class="mod-btn" style="background: #dc2626; width: 100%; justify-content: center;"
-                                    onclick="document.getElementById('reject-avis-{{ $avis->id }}').style.display='block'">
-                                    <i class="fas fa-times"></i> Rejeter
-                                </button>
-                                <form id="reject-avis-{{ $avis->id }}" method="POST" action="{{ route('admin.avis.reject', $avis) }}"
-                                    style="display: none; margin-top: 6px; padding: 10px; background: #fff; border-radius: 6px; border: 1px solid #e5e7eb;">
-                                    @csrf
-                                    <label style="display: block; font-size: 0.78rem; font-weight: 600; color: #374151; margin-bottom: 4px;">Raison du rejet *</label>
-                                    <textarea name="raison_rejet" required rows="2" placeholder="Expliquez…"
-                                        style="width: 100%; padding: 6px 8px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.8rem; resize: vertical;"></textarea>
-                                    <button type="submit" class="mod-btn" style="background: #dc2626; margin-top: 6px; width: 100%; justify-content: center;">Confirmer le rejet</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div style="text-align: center; padding: 40px; color: #94a3b8;">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">✅</div>
-                        <p style="margin: 0; font-size: 0.9rem;">Aucun avis en attente de modération.</p>
-                    </div>
-                @endforelse
-
-                @if($avisEnAttente->hasPages())
-                    <div style="margin-top: 16px;">{{ $avisEnAttente->links() }}</div>
-                @endif
-            </div>
-
-            {{-- ================= SIGNALEMENTS ================= --}}
-            <div x-show="tab === 'signalements'" x-cloak>
-                @if(!($signalementsTablePresente ?? true))
-                    <div style="background: #fffbeb; color: #92400e; border: 1px solid #fde68a; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 0.85rem;">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        La table des signalements n'est pas encore créée en base. Lancez la migration
-                        (<code>php artisan migrate --force</code>) sur le serveur pour activer cette section.
-                    </div>
-                @endif
-                @forelse($signalements as $signalement)
-                    <div style="padding: 18px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #dc2626; margin-bottom: 14px;">
-                        <div style="display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start;">
-                            <div>
-                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
-                                    <span class="mod-badge" style="background: #fee2e2; color: #b91c1c;">{{ $signalement->motif_libelle }}</span>
-                                    <span style="color: #94a3b8; font-size: 0.78rem;">{{ $signalement->created_at->format('d/m/Y à H:i') }}</span>
-                                </div>
-                                <div style="color: #64748b; font-size: 0.8rem; margin-bottom: 8px;">
-                                    Annonce :
-                                    @if($signalement->annonce)
-                                        <a href="{{ route('annonces.show', $signalement->annonce) }}" target="_blank" style="color: #2563eb; text-decoration: none;">{{ $signalement->annonce->titre }}</a>
-                                    @else
-                                        <span style="color: #94a3b8;">(annonce supprimée)</span>
-                                    @endif
-                                </div>
-                                <div style="color: #64748b; font-size: 0.8rem; margin-bottom: 8px;">
-                                    Signalé par :
-                                    @if($signalement->reporter)
-                                        {{ $signalement->reporter->prenom }} {{ $signalement->reporter->nom ?? '' }} ({{ $signalement->reporter->email }})
-                                    @elseif($signalement->email)
-                                        {{ $signalement->email }} <span style="color: #94a3b8;">(visiteur)</span>
-                                    @else
-                                        <span style="color: #94a3b8;">Visiteur anonyme</span>
-                                    @endif
-                                </div>
-                                @if($signalement->description)
-                                    <p style="color: #374151; line-height: 1.6; margin: 0; background: #fff; padding: 10px 12px; border-radius: 6px; font-size: 0.85rem;">{{ $signalement->description }}</p>
-                                @endif
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 8px; min-width: 160px;">
-                                @if($signalement->annonce)
-                                    <a href="{{ route('annonces.show', $signalement->annonce) }}" target="_blank" class="mod-btn" style="background: #475569; justify-content: center;">
-                                        <i class="fas fa-eye"></i> Voir l'annonce
-                                    </a>
-                                @endif
-                                <form method="POST" action="{{ route('admin.moderation.signalements.traiter', $signalement) }}">
-                                    @csrf
-                                    <button type="submit" class="mod-btn" style="background: #16a34a; width: 100%; justify-content: center;">
-                                        <i class="fas fa-check"></i> Marquer traité
-                                    </button>
-                                </form>
-                                <form method="POST" action="{{ route('admin.moderation.signalements.rejeter', $signalement) }}">
-                                    @csrf
-                                    <button type="submit" class="mod-btn" style="background: #94a3b8; width: 100%; justify-content: center;">
-                                        <i class="fas fa-ban"></i> Ignorer
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div style="text-align: center; padding: 40px; color: #94a3b8;">
-                        <div style="font-size: 2rem; margin-bottom: 8px;">✅</div>
-                        <p style="margin: 0; font-size: 0.9rem;">Aucune annonce signalée.</p>
-                    </div>
-                @endforelse
-
-                @if($signalements->hasPages())
-                    <div style="margin-top: 16px;">{{ $signalements->links() }}</div>
-                @endif
-            </div>
-
         </div>
+
+        @if(session('success'))
+            <div style="background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 0.85rem;">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div style="background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 0.85rem;">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <!-- Statistiques -->
+        <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $avisEnAttenteCount }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Avis en attente</div>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #fff1f2; border: 1px solid #ffe4e6; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #f43f5e; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    <i class="fas fa-flag"></i>
+                </div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $signalementsNouveauCount }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Annonces signalées</div>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #ecfdf5; border: 1px solid #d1fae5; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $signalementsTraiteCount }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Signalements traités</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs (Amazon Style) -->
+        <div style="display: flex; gap: 20px; border-bottom: 1px solid #f0f0f0; margin-bottom: 20px;">
+            <button class="mod-tab" :class="{ 'active': tab === 'avis' }" @click="tab = 'avis'">
+                Avis en attente
+                @if($avisEnAttenteCount > 0)<span class="mod-pill">{{ $avisEnAttenteCount }}</span>@endif
+            </button>
+            <button class="mod-tab" :class="{ 'active': tab === 'signalements' }" @click="tab = 'signalements'">
+                Annonces signalées
+                @if($signalementsNouveauCount > 0)<span class="mod-pill">{{ $signalementsNouveauCount }}</span>@endif
+            </button>
+        </div>
+
+        {{-- ===================== AVIS ===================== --}}
+        <div x-show="tab === 'avis'" x-cloak>
+            <div style="border: 1px solid #e7e7e7; overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
+                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Client / Avis</th>
+                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 220px;">Annonce</th>
+                            <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 110px;">Note</th>
+                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 130px;">Date</th>
+                            <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 180px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($avisEnAttente as $avis)
+                        <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
+                                <div style="font-weight: 700; font-size: 0.85rem; color: #111; margin-bottom: 2px;">{{ $avis->user->prenom }} {{ $avis->user->nom ?? '' }}</div>
+                                <div style="font-size: 0.8rem; color: #555; line-height: 1.4;">{{ \Illuminate\Support\Str::limit($avis->commentaire, 120) }}</div>
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
+                                <a href="{{ route('annonces.show', $avis->annonce) }}" target="_blank" style="color: #0066c0; text-decoration: none; font-size: 0.85rem;">{{ $avis->annonce->titre }}</a>
+                            </td>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #e7e7e7; white-space: nowrap;">
+                                <span style="color: #f59e0b; font-size: 0.9rem;">
+                                    @for($i = 1; $i <= 5; $i++){{ $i <= $avis->note ? '★' : '☆' }}@endfor
+                                </span>
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7; font-size: 0.8rem; color: #555;">
+                                {{ $avis->created_at->format('d/m/Y') }}
+                            </td>
+                            <td style="padding: 12px 15px; text-align: right;">
+                                <div style="display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+                                    <form action="{{ route('admin.avis.approve', $avis) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <button type="submit" class="mod-action-btn" style="color: #569b00; background: #f7fff0;">Approuver</button>
+                                    </form>
+                                    <span style="color: #ddd;">|</span>
+                                    <form action="{{ route('admin.avis.reject', $avis) }}" method="POST" style="display: inline;" class="avis-reject-form">
+                                        @csrf
+                                        <input type="hidden" name="raison_rejet" class="avis-reject-reason">
+                                        <button type="button" class="mod-action-btn" style="color: #c40000; background: #fff5f5;"
+                                            onclick="confirmAvisRejection(this)">Rejeter</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" style="padding: 60px; text-align: center; color: #888;">
+                                <i class="fas fa-star" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.2;"></i>
+                                <p>Aucun avis en attente de modération.</p>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            @if($avisEnAttente->total() > 0)
+            <div style="margin-top: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
+                        Affichage de {{ $avisEnAttente->firstItem() ?? 0 }} à {{ $avisEnAttente->lastItem() ?? 0 }} sur {{ $avisEnAttente->total() }} résultats
+                    </div>
+                    <div style="display: flex; border: 1px solid #adb1b8; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: #fff;">
+                        @if ($avisEnAttente->onFirstPage())
+                            <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;">Précédent</span>
+                        @else
+                            <a href="{{ $avisEnAttente->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">Précédent</a>
+                        @endif
+                        @if ($avisEnAttente->hasMorePages())
+                            <a href="{{ $avisEnAttente->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;">Suivant</a>
+                        @else
+                            <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;">Suivant</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @endif
+        </div>
+
+        {{-- ================= SIGNALEMENTS ================= --}}
+        <div x-show="tab === 'signalements'" x-cloak>
+            @if(!($signalementsTablePresente ?? true))
+                <div style="background: #fffbeb; color: #92400e; border: 1px solid #fde68a; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 0.85rem;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    La table des signalements n'est pas encore créée en base. Lancez la migration
+                    (<code>php artisan migrate --force</code>) sur le serveur pour activer cette section.
+                </div>
+            @endif
+
+            <div style="border: 1px solid #e7e7e7; overflow: hidden;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
+                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Annonce / Motif</th>
+                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 240px;">Signalé par</th>
+                            <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 130px;">Date</th>
+                            <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 200px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($signalements as $signalement)
+                        <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.1s;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
+                                <div style="margin-bottom: 4px;">
+                                    <span style="font-size: 0.72rem; color: #b91c1c; background: #fee2e2; padding: 2px 8px; border-radius: 12px; font-weight: 700;">{{ $signalement->motif_libelle }}</span>
+                                </div>
+                                @if($signalement->annonce)
+                                    <a href="{{ route('annonces.show', $signalement->annonce) }}" target="_blank" style="color: #0066c0; text-decoration: none; font-size: 0.85rem; font-weight: 700;">{{ $signalement->annonce->titre }}</a>
+                                @else
+                                    <span style="color: #94a3b8; font-size: 0.85rem;">(annonce supprimée)</span>
+                                @endif
+                                @if($signalement->description)
+                                    <div style="font-size: 0.8rem; color: #555; line-height: 1.4; margin-top: 4px;">{{ \Illuminate\Support\Str::limit($signalement->description, 140) }}</div>
+                                @endif
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7; font-size: 0.82rem; color: #333;">
+                                @if($signalement->reporter)
+                                    <div style="font-weight: 700; color: #111;">{{ $signalement->reporter->prenom }} {{ $signalement->reporter->nom ?? '' }}</div>
+                                    <div style="color: #555;">{{ $signalement->reporter->email }}</div>
+                                @elseif($signalement->email)
+                                    <div>{{ $signalement->email }}</div>
+                                    <div style="color: #94a3b8;">Visiteur</div>
+                                @else
+                                    <span style="color: #94a3b8;">Visiteur anonyme</span>
+                                @endif
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7; font-size: 0.8rem; color: #555;">
+                                {{ $signalement->created_at->format('d/m/Y') }}
+                            </td>
+                            <td style="padding: 12px 15px; text-align: right;">
+                                <div style="display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
+                                    @if($signalement->annonce)
+                                        <a href="{{ route('annonces.show', $signalement->annonce) }}" target="_blank" title="Voir l'annonce" class="mod-icon-btn"><i class="fas fa-eye" style="font-size: 0.95rem;"></i></a>
+                                        <span style="color: #ddd;">|</span>
+                                    @endif
+                                    <form action="{{ route('admin.moderation.signalements.traiter', $signalement) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <button type="submit" class="mod-action-btn" style="color: #569b00; background: #f7fff0;">Traité</button>
+                                    </form>
+                                    <span style="color: #ddd;">|</span>
+                                    <form action="{{ route('admin.moderation.signalements.rejeter', $signalement) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <button type="submit" class="mod-action-btn" style="color: #555; background: #f1f5f9;">Ignorer</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" style="padding: 60px; text-align: center; color: #888;">
+                                <i class="fas fa-flag" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.2;"></i>
+                                <p>Aucune annonce signalée.</p>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            @if($signalements->total() > 0)
+            <div style="margin-top: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: #ffffff; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 0.8rem; color: #64748b; font-weight: 500;">
+                        Affichage de {{ $signalements->firstItem() ?? 0 }} à {{ $signalements->lastItem() ?? 0 }} sur {{ $signalements->total() }} résultats
+                    </div>
+                    <div style="display: flex; border: 1px solid #adb1b8; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); background: #fff;">
+                        @if ($signalements->onFirstPage())
+                            <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem; border-right: 1px solid #adb1b8;">Précédent</span>
+                        @else
+                            <a href="{{ $signalements->previousPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none; border-right: 1px solid #adb1b8;">Précédent</a>
+                        @endif
+                        @if ($signalements->hasMorePages())
+                            <a href="{{ $signalements->nextPageUrl() }}" style="padding: 6px 12px; background: #fff; color: #111; font-size: 0.8rem; text-decoration: none;">Suivant</a>
+                        @else
+                            <span style="padding: 6px 12px; background: #f7f8fa; color: #999; font-size: 0.8rem;">Suivant</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @endif
+        </div>
+
     </div>
+</div>
+
+@push('scripts')
+<script>
+    function confirmAvisRejection(btn) {
+        const form = btn.closest('form');
+        Swal.fire({
+            title: 'Rejeter cet avis',
+            input: 'textarea',
+            inputPlaceholder: 'Motif du rejet (obligatoire)...',
+            inputAttributes: { style: 'height: 100px;' },
+            showCancelButton: true,
+            confirmButtonText: 'Confirmer le rejet',
+            cancelButtonText: 'Annuler',
+            reverseButtons: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6c757d',
+            preConfirm: (value) => {
+                if (!value || value.trim() === '') {
+                    Swal.showValidationMessage('Veuillez indiquer un motif de rejet.');
+                    return false;
+                }
+                return value;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.querySelector('.avis-reject-reason').value = result.value;
+                form.submit();
+            }
+        });
+    }
+</script>
+@endpush
 @endsection
