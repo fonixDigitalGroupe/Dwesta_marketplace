@@ -4,7 +4,6 @@
 
 @push('styles')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         /* Input Amazon Style Modernisé (Coherent with Filters) */
         input[type="text"], 
@@ -169,14 +168,10 @@
     </style>
 @endpush
 
-@section('sub_header')
-    @include('admin.partials.settings-tabs')
-@endsection
-
 @section('content')
 <div style="max-width: 1200px; margin: 0 auto;">
-    
-    <div style="background: #fff; border: 1px solid #eff3f6; border-top: none; border-radius: 0 0 8px 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+
+    <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eff3f6; padding-bottom: 15px; margin-bottom: 24px;">
             <div style="display: flex; align-items: center; gap: 12px;">
                 <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
@@ -266,29 +261,6 @@
 
                 <!-- Right Column -->
                 <div style="display: flex; flex-direction: column; gap: 20px;">
-                    
-                    <div class="amazon-card" style="margin: 0;">
-                        <h3 class="section-title">Position Géo-Exacte</h3>
-                        
-                        <div id="map"></div>
-
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
-                            <div>
-                                <label for="latitude" class="field-label">Latitude</label>
-                                <input type="text" name="latitude" id="latitude" value="{{ old('latitude') }}"
-                                       placeholder="0.000000" oninput="syncMapFromInputs()">
-                            </div>
-                            <div>
-                                <label for="longitude" class="field-label">Longitude</label>
-                                <input type="text" name="longitude" id="longitude" value="{{ old('longitude') }}"
-                                       placeholder="0.000000" oninput="syncMapFromInputs()">
-                            </div>
-                        </div>
-
-                        <button type="button" id="btn-geolocation" class="btn-amazon-secondary" style="font-size: 0.72rem; padding: 6px 12px;">
-                            <i class="fas fa-crosshairs"></i> Ma position actuelle
-                        </button>
-                    </div>
 
                     <div class="amazon-card" style="margin: 0;">
                         <h3 class="section-title">Statut & Publication</h3>
@@ -298,17 +270,7 @@
                                 <span class="checkmark"></span>
                                 <span style="font-size: 0.75rem; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em;">Point Relais Actif</span>
                             </label>
-                            
-                            <label class="checkbox-container">
-                                <input type="checkbox" name="est_point_special" value="1" {{ old('est_point_special', false) ? 'checked' : '' }}>
-                                <span class="checkmark"></span>
-                                <span style="font-size: 0.75rem; font-weight: 700; color: #ff9900; text-transform: uppercase; letter-spacing: 0.05em;">Point Spécial (Karnou)</span>
-                            </label>
                         </div>
-                        
-                        <p style="font-size: 0.75rem; color: #64748b; margin-left: 28px; margin-top: 10px; line-height: 1.4;">
-                            Un <strong>Point Spécial</strong> est un lieu de retrait spécifique géré par Karnou.
-                        </p>
                     </div>
 
                 </div>
@@ -331,45 +293,8 @@
 
 @push('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    let map, marker;
-
-    function initMap() {
-        const defaultLat = 4.361220, defaultLng = 18.558200;
-        const initialLat = parseFloat(document.getElementById('latitude').value) || defaultLat;
-        const initialLng = parseFloat(document.getElementById('longitude').value) || defaultLng;
-
-        map = L.map('map').setView([initialLat, initialLng], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-        marker = L.marker([initialLat, initialLng], {draggable: true}).addTo(map);
-
-        marker.on('dragend', function() {
-            const pos = marker.getLatLng();
-            document.getElementById('latitude').value = pos.lat.toFixed(6);
-            document.getElementById('longitude').value = pos.lng.toFixed(6);
-        });
-
-        map.on('click', function(e) {
-            marker.setLatLng(e.latlng);
-            document.getElementById('latitude').value = e.latlng.lat.toFixed(6);
-            document.getElementById('longitude').value = e.latlng.lng.toFixed(6);
-        });
-    }
-
-    function syncMapFromInputs() {
-        const lat = parseFloat(document.getElementById('latitude').value);
-        const lng = parseFloat(document.getElementById('longitude').value);
-        if (!isNaN(lat) && !isNaN(lng)) {
-            const pos = [lat, lng];
-            marker.setLatLng(pos);
-            map.panTo(pos);
-        }
-    }
-
     document.addEventListener('DOMContentLoaded', function () {
-        initMap();
-
         const phoneInput = document.querySelector("#telephone");
         const countrySelect = document.querySelector("#pays");
         const regionSelect = document.querySelector("#region");
@@ -442,33 +367,9 @@
             updateRegions(this.value);
             const code = countryMap[this.value];
             if (code) iti.setCountry(code);
-            const coords = countryCoordinates[this.value];
-            if (coords) map.setView(coords, 6);
-        });
-
-        regionSelect.addEventListener('change', function () {
-            const coords = regionCoordinates[this.value];
-            if (coords) {
-                map.setView(coords, 12);
-                marker.setLatLng(coords);
-                document.getElementById('latitude').value = coords[0].toFixed(6);
-                document.getElementById('longitude').value = coords[1].toFixed(6);
-            }
         });
 
         updateRegions(countrySelect.value || 'Centrafrique');
-
-        document.getElementById('btn-geolocation').onclick = () => {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(p => {
-                    const lat = p.coords.latitude, lng = p.coords.longitude;
-                    document.getElementById('latitude').value = lat.toFixed(6);
-                    document.getElementById('longitude').value = lng.toFixed(6);
-                    marker.setLatLng([lat, lng]);
-                    map.setView([lat, lng], 15);
-                });
-            }
-        };
 
         phoneInput.addEventListener('blur', () => {
             document.querySelector("#full_telephone").value = iti.getNumber();
