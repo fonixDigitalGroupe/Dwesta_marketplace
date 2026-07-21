@@ -121,19 +121,28 @@ class UserController extends Controller
      */
     public function create()
     {
-        // Rôles de base
-        $roles = [
+        // Rôles gérés automatiquement ailleurs (vendeurs/clients) : non proposés ici.
+        $excluded = ['vendeur', 'Vendeur', 'Vendeur Particulier', 'Vendeur Professionnel', 'client', 'acheteur', 'Acheteur'];
+
+        // Libellés lisibles pour les rôles connus (fallback : nom capitalisé).
+        $niceLabels = [
             'admin' => 'Administrateur',
+            'Administrateur' => 'Administrateur',
             'point relais' => 'Point Relais',
+            'point_relais' => 'Point Relais',
+            'Depot Relais' => 'Dépôt Relais',
+            'transporteur' => 'Transporteur',
+            'Transporteur' => 'Transporteur',
+            'livreur' => 'Livreur',
         ];
 
-        // + rôles personnalisés enregistrés dans /admin/roles
-        $customRoles = \Spatie\Permission\Models\Role::whereNotIn('name', ['admin', 'vendeur', 'client', 'point relais'])
+        // Liste construite depuis la base : chaque option correspond à un rôle
+        // réellement existant, ce qui garantit la validation exists:roles,name.
+        $roles = \Spatie\Permission\Models\Role::whereNotIn('name', $excluded)
             ->orderBy('name')
-            ->pluck('name', 'name')
+            ->pluck('name')
+            ->mapWithKeys(fn ($name) => [$name => $niceLabels[$name] ?? ucfirst($name)])
             ->toArray();
-
-        $roles = $roles + $customRoles;
 
         return view('admin.users.create', compact('roles'));
     }
