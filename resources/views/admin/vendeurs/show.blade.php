@@ -114,8 +114,16 @@
             <div class="dl-row"><dt>Téléphone</dt><dd>{{ $vendeur->user->telephone ?? '—' }}</dd></div>
             <div class="dl-row"><dt>Adresse</dt><dd>{{ $vendeur->user->adresse ?: '—' }}</dd></div>
             <div class="dl-row"><dt>Ville</dt><dd>{{ $vendeur->user->ville ?: '—' }}</dd></div>
+            <div class="dl-row"><dt>Région</dt><dd>{{ $vendeur->user->region ?: '—' }}</dd></div>
             <div class="dl-row"><dt>Code postal</dt><dd>{{ $vendeur->user->code_postal ?: '—' }}</dd></div>
             <div class="dl-row"><dt>Pays</dt><dd>{{ $pays ?: '—' }}</dd></div>
+            @if($vendeur->user->latitude && $vendeur->user->longitude)
+                <div class="dl-row"><dt>Localisation GPS</dt><dd>
+                    <a href="https://www.google.com/maps?q={{ $vendeur->user->latitude }},{{ $vendeur->user->longitude }}" target="_blank" style="color:#2563eb; text-decoration:none;">
+                        <i class="fas fa-map-marker-alt"></i> {{ $vendeur->user->latitude }}, {{ $vendeur->user->longitude }}
+                    </a>
+                </dd></div>
+            @endif
         </dl>
     </div>
 
@@ -126,6 +134,9 @@
             <dl class="dl">
                 <div class="dl-row"><dt>Raison sociale</dt><dd>{{ $vendeur->professionnel->nom_entreprise ?? '—' }}</dd></div>
                 <div class="dl-row"><dt>N° RCCM</dt><dd>{{ $vendeur->professionnel->numero_registre_commerce ?? '—' }}</dd></div>
+                <div class="dl-row"><dt>Adresse entreprise</dt><dd>{{ $vendeur->professionnel->adresse_entreprise ?: '—' }}</dd></div>
+                <div class="dl-row"><dt>Téléphone entreprise</dt><dd>{{ $vendeur->professionnel->telephone_entreprise ?: '—' }}</dd></div>
+                <div class="dl-row"><dt>Email entreprise</dt><dd>{{ $vendeur->professionnel->email_entreprise ?: '—' }}</dd></div>
                 <div class="dl-row"><dt>Émission</dt><dd>{{ optional($vendeur->professionnel?->date_emission_registre)->format('d/m/Y') ?? '—' }}</dd></div>
                 <div class="dl-row"><dt>Expiration</dt><dd>{{ optional($vendeur->professionnel?->date_expiration_registre)->format('d/m/Y') ?? '—' }}</dd></div>
             </dl>

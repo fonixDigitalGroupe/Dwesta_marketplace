@@ -4,7 +4,8 @@
       "Bash(git commit -m ' *)",
       "Bash(php -l app/Models/Abonnement.php)",
       "Bash(php -l app/Http/Controllers/Admin/AbonnementController.php)",
-      "Bash(php -l app/Http/Controllers/Admin/VendeurVerificationController.php)"
+      "Bash(php -l app/Http/Controllers/Admin/VendeurVerificationController.php)",
+      "Bash(grep -nE 'protected \\\\$fillable|'\\\\''.*'\\\\''' app/Models/Vendeur.php)"
     ]
   }
 }
