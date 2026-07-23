@@ -127,9 +127,9 @@
 
     /* Tier 1: Réassurance */
     .footer-reinsurance {
-        background: #fff;
+        background: #f3f4f6;
         padding: 2rem 0;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #e5e7eb;
     }
 
     .reinsurance-grid {
