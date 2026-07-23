@@ -79,10 +79,8 @@
                 <div class="social-box">
                     <a href="#" class="soc-link linkedin"><i class="fab fa-linkedin-in"></i></a>
                     <a href="#" class="soc-link facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="soc-link x-twitter"><i class="fab fa-x-twitter"></i></a>
                     <a href="#" class="soc-link instagram"><i class="fab fa-instagram"></i></a>
                     <a href="#" class="soc-link youtube"><i class="fab fa-youtube"></i></a>
-                    <a href="#" class="soc-link pinterest"><i class="fab fa-pinterest-p"></i></a>
                     <a href="#" class="soc-link tiktok"><i class="fab fa-tiktok"></i></a>
                 </div>
 
@@ -176,7 +174,7 @@
 
     /* Tier 2: Main Links */
     .footer-main {
-        background: #fdfdfd;
+        background: #f9fafb;
         padding: 5rem 0;
         border-bottom: 1px solid #eee;
     }
