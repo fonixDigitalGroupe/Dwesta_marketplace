@@ -117,7 +117,7 @@
 
             {{-- Onglets par famille --}}
             @php
-                $famTabStyle = fn ($actif) => 'padding:8px 16px; text-decoration:none; font-size:0.82rem; border-radius:999px; font-weight:'.($actif ? '700' : '500').'; color:'.($actif ? '#fff' : '#475569').'; background:'.($actif ? '#2563eb' : '#f1f5f9').';';
+                $famTabStyle = fn ($actif) => 'padding:8px 16px; text-decoration:none; font-size:0.82rem; border-radius:999px; font-weight:'.($actif ? '700' : '500').'; color:'.($actif ? '#fff' : '#475569').'; background:'.($actif ? '#dc2626' : '#f1f5f9').';';
             @endphp
             <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
                 @foreach(\App\Models\Abonnement::familles() as $f)
