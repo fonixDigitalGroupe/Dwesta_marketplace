@@ -3,7 +3,8 @@
     "allow": [
       "Bash(git commit -m ' *)",
       "Bash(php -l app/Models/Abonnement.php)",
-      "Bash(php -l app/Http/Controllers/Admin/AbonnementController.php)"
+      "Bash(php -l app/Http/Controllers/Admin/AbonnementController.php)",
+      "Bash(php -l app/Http/Controllers/Admin/VendeurVerificationController.php)"
     ]
   }
 }
