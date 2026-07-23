@@ -79,7 +79,7 @@
 
         .btn-primary {
             width: 100%;
-            background: #004aad;
+            background: #111;
             color: white;
             border: none;
             padding: 0.75rem 2rem;
@@ -91,8 +91,8 @@
         }
 
         .btn-primary:hover {
-            background: #003a8a;
-            box-shadow: 0 4px 12px rgba(0,74,173,0.15);
+            background: #000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .success-message {
