@@ -16,15 +16,12 @@ class AbonnementController extends Controller
     {
         $perPage = $request->get('per_page', 20);
         $search = $request->get('search');
+        // Une famille est toujours sélectionnée (E-commerce par défaut) : plus d'onglet « Toutes »
         $famille = in_array($request->get('famille'), Abonnement::familles())
             ? $request->get('famille')
-            : null;
+            : Abonnement::FAMILLE_ECOMMERCE;
 
-        $query = Abonnement::orderBy('famille')->orderBy('ordre');
-
-        if ($famille) {
-            $query->where('famille', $famille);
-        }
+        $query = Abonnement::where('famille', $famille)->orderBy('ordre');
 
         if ($search) {
             $query->where(function ($q) use ($search) {

@@ -120,7 +120,6 @@
                 $famTabStyle = fn ($actif) => 'padding:8px 16px; text-decoration:none; font-size:0.82rem; border-radius:999px; font-weight:'.($actif ? '700' : '500').'; color:'.($actif ? '#fff' : '#475569').'; background:'.($actif ? '#2563eb' : '#f1f5f9').';';
             @endphp
             <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;">
-                <a href="{{ route('admin.abonnements.index') }}" style="{{ $famTabStyle(!$famille) }}">Toutes</a>
                 @foreach(\App\Models\Abonnement::familles() as $f)
                     <a href="{{ route('admin.abonnements.index', ['famille' => $f]) }}" style="{{ $famTabStyle($famille === $f) }}">{{ $f }} ({{ $counts[$f] ?? 0 }})</a>
                 @endforeach
