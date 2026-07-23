@@ -383,9 +383,9 @@ Route::middleware('auth')->group(function () {
             });
         });
 
-        // Documents sécurisés (accessibles uniquement aux admins)
+        // Documents sécurisés (accessibles au personnel back-office / staff)
         Route::get('/documents/{path}', [DocumentController::class, 'show'])
-            ->middleware('role:admin')
+            ->middleware('staff')
             ->name('documents.show');
 
         // Annonces (routes spécifiques AVANT la route publique)

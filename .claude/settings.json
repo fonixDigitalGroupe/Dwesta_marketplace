@@ -5,7 +5,11 @@
       "Bash(php -l app/Models/Abonnement.php)",
       "Bash(php -l app/Http/Controllers/Admin/AbonnementController.php)",
       "Bash(php -l app/Http/Controllers/Admin/VendeurVerificationController.php)",
-      "Bash(grep -nE 'protected \\\\$fillable|'\\\\''.*'\\\\''' app/Models/Vendeur.php)"
+      "Bash(grep -nE 'protected \\\\$fillable|'\\\\''.*'\\\\''' app/Models/Vendeur.php)",
+      "Bash(php -l app/Http/Controllers/DocumentController.php)",
+      "Bash(php -l app/Services/DocumentUploadService.php)",
+      "Bash(php -r ' *)",
+      "Bash(php /tmp/claude-1000/-home-fonix-sa-Bureau-Fonix-projects-Marketplace-Dwesta-marketplace-karnou/117c64c6-cbef-4348-a3e5-7004c285b4aa/scratchpad/b64.php)"
     ]
   }
 }

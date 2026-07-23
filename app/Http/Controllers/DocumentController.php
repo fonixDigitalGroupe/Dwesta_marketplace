@@ -14,15 +14,18 @@ class DocumentController extends Controller
      */
     public function show(Request $request, string $path)
     {
-        // Décoder le chemin
-        $decodedPath = base64_decode($path);
-        
+        // Décoder le chemin (base64 URL-safe, avec repli sur base64 standard)
+        $decodedPath = base64_decode(strtr($path, '-_', '+/'), true);
+        if ($decodedPath === false) {
+            $decodedPath = base64_decode($path);
+        }
+
         if (!$decodedPath) {
             abort(404);
         }
 
-        // Vérifier que l'utilisateur est authentifié et est admin
-        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+        // Vérifier que l'utilisateur est authentifié et fait partie du staff (back-office)
+        if (!auth()->check() || !auth()->user()->isStaff()) {
             abort(403, 'Accès non autorisé.');
         }
 

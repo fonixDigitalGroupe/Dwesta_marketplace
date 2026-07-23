@@ -127,9 +127,10 @@ class DocumentUploadService
             return null;
         }
 
-        // Pour un disque local, utiliser une route sécurisée
-        // L'URL sera générée par le contrôleur DocumentController
-        return route('documents.show', ['path' => base64_encode($path)]);
+        // Pour un disque local, utiliser une route sécurisée.
+        // base64 URL-safe (sans +, /, =) pour ne pas casser le segment d'URL.
+        $encoded = rtrim(strtr(base64_encode($path), '+/', '-_'), '=');
+        return route('documents.show', ['path' => $encoded]);
     }
 
     /**
