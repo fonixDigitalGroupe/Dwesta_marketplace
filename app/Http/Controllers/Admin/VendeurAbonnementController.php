@@ -14,7 +14,8 @@ class VendeurAbonnementController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-        $statut = $request->get('statut'); // actif | expire | aucun
+        $statut = in_array($request->get('statut'), ['actif', 'expire', 'aucun']) ? $request->get('statut') : null;
+        $type = in_array($request->get('type'), ['professionnel', 'particulier']) ? $request->get('type') : null;
 
         $query = Vendeur::with(['user', 'abonnements.abonnement'])
             ->whereHas('user', fn ($q) => $q->whereDoesntHave('roles', fn ($r) => $r->where('name', 'admin')));
@@ -27,6 +28,21 @@ class VendeurAbonnementController extends Controller
             });
         }
 
+        if ($type) {
+            $query->where('type', $type);
+        }
+
+        // Filtre par statut d'abonnement
+        $actifCond = fn ($q) => $q->where('actif', true)->where('date_fin', '>=', now());
+        if ($statut === 'actif') {
+            $query->whereHas('abonnements', $actifCond);
+        } elseif ($statut === 'expire') {
+            // A eu des abonnements mais aucun actif actuellement
+            $query->has('abonnements')->whereDoesntHave('abonnements', $actifCond);
+        } elseif ($statut === 'aucun') {
+            $query->doesntHave('abonnements');
+        }
+
         $vendeurs = $query->latest()->paginate(20)->withQueryString();
 
         // Statistiques
@@ -35,7 +51,7 @@ class VendeurAbonnementController extends Controller
         $sansAbonnement = $totalVendeurs - $avecAbonnementActif;
 
         return view('admin.vendeurs.abonnements', compact(
-            'vendeurs', 'search', 'statut',
+            'vendeurs', 'search', 'statut', 'type',
             'totalVendeurs', 'avecAbonnementActif', 'sansAbonnement'
         ));
     }

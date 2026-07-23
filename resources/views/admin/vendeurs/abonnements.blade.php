@@ -51,14 +51,26 @@
 
         <!-- Recherche -->
         <div class="filters-bar" style="background: #f8fafc; border: 1px solid #eff3f6; padding: 10px 16px; margin-bottom: 20px;">
-            <form action="{{ route('admin.vendeurs.abonnements') }}" method="GET" style="display: flex; align-items: center; width: 100%; gap: 12px;">
-                <div style="display: flex; flex: 1; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff;">
+            <form action="{{ route('admin.vendeurs.abonnements') }}" method="GET" style="display: flex; align-items: center; width: 100%; gap: 12px; flex-wrap: wrap;">
+                @php $selStyle = 'padding: 9px 12px; border: 1px solid #dee2e6; border-radius: 4px; background: #fff; font-size: 0.85rem; color: #111; cursor: pointer; min-width: 150px;'; @endphp
+                <select name="statut" onchange="this.form.submit()" style="{{ $selStyle }}">
+                    <option value="">Tous les statuts</option>
+                    <option value="actif" {{ $statut === 'actif' ? 'selected' : '' }}>Actif</option>
+                    <option value="expire" {{ $statut === 'expire' ? 'selected' : '' }}>Expiré</option>
+                    <option value="aucun" {{ $statut === 'aucun' ? 'selected' : '' }}>Aucun</option>
+                </select>
+                <select name="type" onchange="this.form.submit()" style="{{ $selStyle }}">
+                    <option value="">Tous les types</option>
+                    <option value="professionnel" {{ $type === 'professionnel' ? 'selected' : '' }}>Professionnel</option>
+                    <option value="particulier" {{ $type === 'particulier' ? 'selected' : '' }}>Particulier</option>
+                </select>
+                <div style="display: flex; flex: 1; min-width: 220px; border: 1px solid #dee2e6; border-radius: 4px; overflow: hidden; background: #fff;">
                     <input type="text" name="search" value="{{ $search }}" placeholder="Rechercher un vendeur (nom, email)..."
                         style="padding: 10px 16px; border: none; outline: none; flex: 1; font-size: 0.9rem; background: transparent;">
                     <button type="submit" style="background: linear-gradient(180deg, #ff9900 0%, #e77600 100%); border: none; color: #fff; padding: 0 22px; cursor: pointer;"><i class="fas fa-search" style="font-size: 1.1rem;"></i></button>
                 </div>
-                @if($search)
-                    <a href="{{ route('admin.vendeurs.abonnements') }}" style="color: #0066c0; font-size: 0.85rem; text-decoration: none;">Effacer</a>
+                @if($search || $statut || $type)
+                    <a href="{{ route('admin.vendeurs.abonnements') }}" style="color: #0066c0; font-size: 0.85rem; text-decoration: none; white-space: nowrap;">Effacer</a>
                 @endif
             </form>
         </div>
