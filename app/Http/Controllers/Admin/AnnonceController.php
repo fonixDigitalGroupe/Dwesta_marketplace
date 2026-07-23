@@ -106,6 +106,61 @@ class AnnonceController extends Controller
             \Illuminate\Support\Facades\Log::error("Erreur lors de l'envoi de l'email de rejet d'annonce : " . $e->getMessage());
         }
 
+        // Envoyer aussi un message in-app au vendeur (avec la carte de l'annonce épinglée)
+        try {
+            $this->notifierVendeurParMessage($annonce, $request->raison_rejet);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Erreur lors de l'envoi du message de rejet d'annonce : " . $e->getMessage());
+        }
+
         return back()->with('info', 'L\'annonce a été rejetée et le vendeur a été notifié.');
+    }
+
+    /**
+     * Envoie un message in-app (messagerie) au vendeur au nom de Karnou,
+     * avec l'annonce liée pour afficher sa carte (image + titre).
+     */
+    private function notifierVendeurParMessage(Annonce $annonce, ?string $raison): void
+    {
+        $vendeurUser = $annonce->vendeur?->user;
+        if (!$vendeurUser) {
+            return;
+        }
+
+        $karnou = \App\Models\User::where('email', 'admin@karnou.com')->first()
+            ?? \App\Models\User::whereHas('roles', fn ($q) => $q->where('name', 'admin'))->first();
+        if (!$karnou) {
+            return;
+        }
+
+        $adminId = $karnou->id;
+        $userId = $vendeurUser->id;
+
+        $conversation = \App\Models\Conversation::where(function ($q) use ($adminId, $userId) {
+            $q->where('user1_id', $adminId)->where('user2_id', $userId);
+        })->orWhere(function ($q) use ($adminId, $userId) {
+            $q->where('user1_id', $userId)->where('user2_id', $adminId);
+        })->first();
+
+        if (!$conversation) {
+            $conversation = \App\Models\Conversation::create([
+                'user1_id'        => $adminId,
+                'user2_id'        => $userId,
+                'last_message_at' => now(),
+            ]);
+        }
+
+        $content = "Bonjour, votre annonce « {$annonce->titre} » (Réf #{$annonce->id}) a été rejetée par notre équipe de modération.";
+        if ($raison) {
+            $content .= "\n\nMotif du rejet : {$raison}";
+        }
+
+        $conversation->messages()->create([
+            'sender_id'  => $adminId,
+            'content'    => $content,
+            'annonce_id' => $annonce->id,
+        ]);
+
+        $conversation->update(['last_message_at' => now()]);
     }
 }
