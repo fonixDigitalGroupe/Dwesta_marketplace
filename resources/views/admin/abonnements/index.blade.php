@@ -161,7 +161,6 @@
                     <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Nom du Pack</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Famille</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Description</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 80px;">Com.</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 80px;">Annonces</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Limite CA</th>
@@ -180,7 +179,6 @@
                             <td style="padding: 12px 15px; font-size: 0.8rem; border-right: 1px solid #eff3f6;">
                                 <span class="badge-amazon" style="background:#eef2ff; color:#4338ca;">{{ $abonnement->famille }}</span>
                             </td>
-                            <td style="padding: 12px 15px; font-size: 0.8rem; color: #555; border-right: 1px solid #eff3f6;">{{ Str::limit($abonnement->description, 60) }}</td>
                             <td style="padding: 12px 15px; font-size: 0.8rem; color: #555; text-align: center; border-right: 1px solid #eff3f6;">{{ $abonnement->commission }}%</td>
                             <td style="padding: 12px 15px; font-size: 0.8rem; color: #555; text-align: center; border-right: 1px solid #eff3f6;">
                                 @if($abonnement->nombre_annonces > 0)
@@ -221,7 +219,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
+                            <td colspan="7" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
                                 Aucun pack d'abonnement trouvé.
                             </td>
                         </tr>
