@@ -51,11 +51,7 @@ class AbonnementController extends Controller
             ? $request->get('famille')
             : Abonnement::FAMILLE_ECOMMERCE;
 
-        // Les types gratuit/basic/expert ne concernent que l'E-commerce (unicité par famille)
-        $takenTypes = Abonnement::where('famille', Abonnement::FAMILLE_ECOMMERCE)->pluck('type')->filter()->toArray();
-        $availableTypes = array_diff(['gratuit', 'basic', 'expert'], $takenTypes);
-
-        return view('admin.abonnements.create', compact('availableTypes', 'famille'));
+        return view('admin.abonnements.create', compact('famille'));
     }
 
     public function store(Request $request)
@@ -80,13 +76,9 @@ class AbonnementController extends Controller
 
     public function edit(Abonnement $abonnement)
     {
-        $takenTypes = Abonnement::where('famille', Abonnement::FAMILLE_ECOMMERCE)
-            ->where('id', '!=', $abonnement->id)
-            ->pluck('type')->filter()->toArray();
-        $availableTypes = array_diff(['gratuit', 'basic', 'expert'], $takenTypes);
         $famille = $abonnement->famille;
 
-        return view('admin.abonnements.edit', compact('abonnement', 'availableTypes', 'famille'));
+        return view('admin.abonnements.edit', compact('abonnement', 'famille'));
     }
 
     public function update(Request $request, Abonnement $abonnement)
@@ -124,15 +116,35 @@ class AbonnementController extends Controller
     }
 
     /**
+     * Paliers disponibles selon la famille.
+     * - E-commerce : gratuit / basic / expert
+     * - Autres familles (Services, Immobilier, Véhicules) : basic / expert
+     */
+    public static function paliersPourFamille(?string $famille): array
+    {
+        return $famille === Abonnement::FAMILLE_ECOMMERCE
+            ? ['gratuit', 'basic', 'expert']
+            : ['basic', 'expert'];
+    }
+
+    /**
      * Règles de validation communes create/update.
-     * - Pour l'E-commerce : type (gratuit/basic/expert) requis et unique par famille.
-     * - Pour les autres familles : plans libres (type ignoré / null).
+     * Le type (palier) est requis pour toutes les familles et unique par (type, famille).
+     * Le nom est dérivé du type.
      */
     private function validateData(Request $request, ?Abonnement $abonnement = null): array
     {
+        $famille = $request->get('famille');
+        $paliers = self::paliersPourFamille($famille);
+
+        $uniqueType = Rule::unique('abonnements', 'type')->where('famille', $famille);
+        if ($abonnement) {
+            $uniqueType->ignore($abonnement->id);
+        }
+
         $rules = [
             'famille' => ['required', Rule::in(Abonnement::familles())],
-            'nom' => 'required|string|max:255',
+            'type' => ['required', Rule::in($paliers), $uniqueType],
             'description' => 'required|string',
             'prix_mensuel' => 'required|numeric|min:0',
             'duree_jours' => 'required|integer|min:1',
@@ -143,21 +155,13 @@ class AbonnementController extends Controller
             'page_pro' => 'boolean',
         ];
 
-        $isEcommerce = $request->get('famille') === Abonnement::FAMILLE_ECOMMERCE;
+        $messages = [
+            'type.unique' => 'Ce palier existe déjà pour cette famille.',
+            'type.in' => 'Palier invalide pour cette famille.',
+        ];
 
-        if ($isEcommerce) {
-            $uniqueType = Rule::unique('abonnements', 'type')->where('famille', Abonnement::FAMILLE_ECOMMERCE);
-            if ($abonnement) {
-                $uniqueType->ignore($abonnement->id);
-            }
-            $rules['type'] = ['required', Rule::in(['gratuit', 'basic', 'expert']), $uniqueType];
-        }
-
-        $validated = $request->validate($rules);
-
-        if (!$isEcommerce) {
-            $validated['type'] = null;
-        }
+        $validated = $request->validate($rules, $messages);
+        $validated['nom'] = ucfirst($validated['type']);
 
         return $validated;
     }

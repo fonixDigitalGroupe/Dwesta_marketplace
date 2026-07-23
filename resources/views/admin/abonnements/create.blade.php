@@ -191,7 +191,7 @@
                         <label for="famille" class="field-label">
                             Famille <small style="color: red;">*</small>
                         </label>
-                        <select name="famille" id="famille" required onchange="toggleTypeField()">
+                        <select name="famille" id="famille" required onchange="updatePaliers()">
                             @foreach(\App\Models\Abonnement::familles() as $f)
                                 <option value="{{ $f }}" {{ old('famille', $famille) === $f ? 'selected' : '' }}>{{ $f }}</option>
                             @endforeach
@@ -200,24 +200,15 @@
                     </div>
 
                     <div style="margin-bottom: 20px;">
-                        <label for="nom" class="field-label">
-                            Nom du pack <small style="color: red;">*</small>
-                        </label>
-                        <input type="text" name="nom" id="nom" value="{{ old('nom') }}" required placeholder="Ex. Starter, Pro, Premium...">
-                        @error('nom') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div id="type-field" style="margin-bottom: 20px;">
                         <label for="type" class="field-label">
-                            Type (E-commerce) <small style="color: red;">*</small>
+                            Palier <small style="color: red;">*</small>
                         </label>
-                        <select name="type" id="type">
-                            <option value="">— Choisir —</option>
-                            @foreach($availableTypes as $type)
-                                <option value="{{ $type }}" {{ old('type') == $type ? 'selected' : '' }}>{{ ucfirst($type) }}</option>
-                            @endforeach
+                        <select name="type" id="type" required>
+                            <option value="gratuit" data-ecommerce="1" {{ old('type') === 'gratuit' ? 'selected' : '' }}>Gratuit</option>
+                            <option value="basic" {{ old('type') === 'basic' ? 'selected' : '' }}>Basic</option>
+                            <option value="expert" {{ old('type') === 'expert' ? 'selected' : '' }}>Expert</option>
                         </select>
-                        <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 6px;">Réservé à l'E-commerce (gratuit/basic/expert). Ignoré pour les autres familles.</p>
+                        <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 6px;">Le nom du pack correspond au palier. « Gratuit » n'est disponible que pour l'E-commerce.</p>
                         @error('type') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                     </div>
 
@@ -320,20 +311,20 @@
 
 @push('scripts')
 <script>
-    function toggleTypeField() {
+    function updatePaliers() {
         var famille = document.getElementById('famille').value;
-        var typeField = document.getElementById('type-field');
         var typeSelect = document.getElementById('type');
-        if (famille === 'E-commerce') {
-            typeField.style.display = 'block';
-            typeSelect.setAttribute('required', 'required');
-        } else {
-            typeField.style.display = 'none';
-            typeSelect.removeAttribute('required');
-            typeSelect.value = '';
+        var gratuitOpt = typeSelect.querySelector('option[value="gratuit"]');
+        var isEcom = (famille === 'E-commerce');
+
+        // « Gratuit » réservé à l'E-commerce
+        gratuitOpt.hidden = !isEcom;
+        gratuitOpt.disabled = !isEcom;
+        if (!isEcom && typeSelect.value === 'gratuit') {
+            typeSelect.value = 'basic';
         }
     }
-    document.addEventListener('DOMContentLoaded', toggleTypeField);
+    document.addEventListener('DOMContentLoaded', updatePaliers);
 </script>
 @endpush
 @endsection
