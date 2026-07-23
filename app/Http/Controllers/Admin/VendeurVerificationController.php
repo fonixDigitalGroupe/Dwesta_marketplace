@@ -64,11 +64,23 @@ class VendeurVerificationController extends Controller
             return null;
         }
 
+        // Normalisation : on retire espaces, points, tirets, parenthèses.
+        $tel = preg_replace('/[\s.\-()]/', '', $telephone);
+
         return \App\Models\Country::query()
             ->whereNotNull('phone_code')
             ->get(['name', 'phone_code'])
             ->sortByDesc(fn ($c) => strlen($c->phone_code))
-            ->first(fn ($c) => $c->phone_code && str_starts_with($telephone, $c->phone_code))
+            ->first(function ($c) use ($tel) {
+                if (!$c->phone_code) {
+                    return false;
+                }
+                $code = ltrim($c->phone_code, '+'); // ex. "221"
+                // On accepte "+221…", "221…", "00221…"
+                return str_starts_with($tel, '+' . $code)
+                    || str_starts_with($tel, '00' . $code)
+                    || str_starts_with($tel, $code);
+            })
             ?->name;
     }
 
