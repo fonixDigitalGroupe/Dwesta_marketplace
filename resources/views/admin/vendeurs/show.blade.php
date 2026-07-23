@@ -114,9 +114,7 @@
             <div class="dl-row"><dt>Téléphone</dt><dd>{{ $vendeur->user->telephone ?? '—' }}</dd></div>
             <div class="dl-row"><dt>Nationalité</dt><dd>{{ $vendeur->user->nationalite ?: '—' }}</dd></div>
             <div class="dl-row"><dt>Adresse</dt><dd>{{ $vendeur->user->adresse ?: '—' }}</dd></div>
-            <div class="dl-row"><dt>Ville</dt><dd>{{ $vendeur->user->ville ?: '—' }}</dd></div>
             <div class="dl-row"><dt>Région</dt><dd>{{ $vendeur->user->region ?: '—' }}</dd></div>
-            <div class="dl-row"><dt>Code postal</dt><dd>{{ $vendeur->user->code_postal ?: '—' }}</dd></div>
             <div class="dl-row"><dt>Pays</dt><dd>{{ $pays ?: '—' }}</dd></div>
             @if($vendeur->user->latitude && $vendeur->user->longitude)
                 <div class="dl-row"><dt>Localisation GPS</dt><dd>
