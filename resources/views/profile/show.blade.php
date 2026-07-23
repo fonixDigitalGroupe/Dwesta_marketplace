@@ -738,33 +738,74 @@
                         btnGeo.disabled = true;
                         btnGeo.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Localisation en cours...';
 
-                        navigator.geolocation.getCurrentPosition(
-                            (position) => {
-                                const lat = position.coords.latitude;
-                                const lng = position.coords.longitude;
-                                
+                        // On surveille la position pendant quelques secondes et on garde
+                        // la lecture la plus précise. Le 1er point renvoyé est souvent une
+                        // estimation réseau/WiFi grossière ; le GPS l'affine ensuite.
+                        let bestPos = null;
+                        let watchId = null;
+                        let done = false;
+
+                        function finishGeo(success) {
+                            if (done) return;
+                            done = true;
+                            if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+                            btnGeo.disabled = false;
+                            btnGeo.innerHTML = originalContent;
+
+                            if (success && bestPos) {
+                                const lat = bestPos.coords.latitude;
+                                const lng = bestPos.coords.longitude;
+                                const acc = Math.round(bestPos.coords.accuracy);
                                 map.setView([lat, lng], 17);
                                 marker.setLatLng([lat, lng]);
-                                
-                                btnGeo.disabled = false;
-                                btnGeo.innerHTML = originalContent;
                                 if (btnSave) btnSave.style.display = 'block';
-                                showStatus('<strong>Succès :</strong> Votre position exacte a été trouvée.', 'info');
+                                if (acc > 100) {
+                                    showStatus('<strong>Position approximative</strong> (précision ~' + acc + ' m). Déplacez le marqueur pour ajuster votre emplacement exact.', 'error');
+                                } else {
+                                    showStatus('<strong>Succès :</strong> Position trouvée (précision ~' + acc + ' m). Ajustez le marqueur si besoin.', 'info');
+                                }
+                            } else {
+                                showStatus('<strong>Erreur :</strong> Impossible de récupérer une position précise. Placez le marqueur manuellement sur la carte.', 'error');
+                            }
+                        }
+
+                        watchId = navigator.geolocation.watchPosition(
+                            (position) => {
+                                // Garder la position la plus précise (accuracy la plus faible)
+                                if (!bestPos || position.coords.accuracy < bestPos.coords.accuracy) {
+                                    bestPos = position;
+                                    map.setView([position.coords.latitude, position.coords.longitude], 17);
+                                    marker.setLatLng([position.coords.latitude, position.coords.longitude]);
+                                }
+                                // Précision suffisante → on arrête tout de suite
+                                if (position.coords.accuracy <= 25) {
+                                    finishGeo(true);
+                                }
                             },
                             (error) => {
-                                btnGeo.disabled = false;
-                                btnGeo.innerHTML = originalContent;
-                                let errorMsg = 'Impossible de récupérer votre position.';
-                                if (error.code === 1) errorMsg = 'Géolocalisation refusée par l\'utilisateur.';
-                                else if (error.code === 2) errorMsg = 'Position indisponible.';
-                                showStatus('<strong>Erreur :</strong> ' + errorMsg, 'error');
+                                if (bestPos) {
+                                    finishGeo(true);
+                                } else {
+                                    done = true;
+                                    if (watchId !== null) navigator.geolocation.clearWatch(watchId);
+                                    btnGeo.disabled = false;
+                                    btnGeo.innerHTML = originalContent;
+                                    let errorMsg = 'Impossible de récupérer votre position.';
+                                    if (error.code === 1) errorMsg = 'Géolocalisation refusée. Autorisez l\'accès à la localisation dans votre navigateur.';
+                                    else if (error.code === 2) errorMsg = 'Position indisponible.';
+                                    else if (error.code === 3) errorMsg = 'Délai dépassé, réessayez.';
+                                    showStatus('<strong>Erreur :</strong> ' + errorMsg, 'error');
+                                }
                             },
                             {
                                 enableHighAccuracy: true,
-                                timeout: 10000,
+                                timeout: 20000,
                                 maximumAge: 0
                             }
                         );
+
+                        // Après 15s, on s'arrête et on utilise la meilleure position obtenue
+                        setTimeout(() => finishGeo(!!bestPos), 15000);
                     });
                 }
             }
