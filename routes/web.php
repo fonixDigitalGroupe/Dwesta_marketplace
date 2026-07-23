@@ -175,6 +175,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('admin')->name('admin.')->middleware('staff')->group(function () {
             Route::prefix('vendeurs')->name('vendeurs.')->group(function () {
                 // Route::get('/verification', [VendeurVerificationController::class, 'index'])->name('verification.index');
+                Route::get('/abonnements', [\App\Http\Controllers\Admin\VendeurAbonnementController::class, 'index'])->name('abonnements');
                 Route::get('/verification/{vendeur}', [VendeurVerificationController::class, 'show'])->name('verification.show');
                 Route::post('/verification/{vendeur}/approve', [VendeurVerificationController::class, 'approve'])->name('verification.approve');
                 Route::post('/verification/{vendeur}/reject', [VendeurVerificationController::class, 'reject'])->name('verification.reject');

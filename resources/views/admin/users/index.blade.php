@@ -151,6 +151,14 @@
             </div>
 
             @if($role === 'vendeur')
+            <!-- Onglets vendeurs -->
+            <div style="display: flex; gap: 20px; border-bottom: 1px solid #f0f0f0; margin-bottom: 20px;">
+                <a href="{{ route('admin.users.index', ['role' => 'vendeur']) }}" style="padding: 10px 5px; text-decoration: none; font-size: 0.85rem; color: #c45500; font-weight: 700; border-bottom: 2px solid #c45500;">Liste des vendeurs</a>
+                <a href="{{ route('admin.vendeurs.abonnements') }}" style="padding: 10px 5px; text-decoration: none; font-size: 0.85rem; color: #555; font-weight: 400; border-bottom: 2px solid transparent;">Abonnements</a>
+            </div>
+            @endif
+
+            @if($role === 'vendeur')
             <!-- Statistiques vendeurs -->
             <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #fff7ed; border: 1px solid #ffedd5; border-radius: 8px; padding: 14px 18px;">
