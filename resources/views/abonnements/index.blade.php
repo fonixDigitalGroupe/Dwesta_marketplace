@@ -303,96 +303,119 @@
                     @csrf
                     <input type="hidden" name="abonnement_id" id="selected-abonnement-id" value="">
 
-                    {{-- Section: abonnements vendeur --}}
-                    <div class="abn-section">
-                        <div class="abn-section-heading">Abonnements Vendeur</div>
-                        <p class="abn-section-intro">Je souhaite m'abonner au forfait :</p>
+                    {{-- Sections par famille --}}
+                    @php
+                        $grouped = $abonnements->groupBy('famille');
+                        $familleOrder = \App\Models\Abonnement::familles();
+                        $familleMeta = [
+                            'E-commerce' => ['label' => 'Abonnements Vendeur (E-commerce)', 'intro' => 'Je souhaite m\'abonner au forfait :', 'icon' => 'fa-store'],
+                            'Services'   => ['label' => 'Abonnements Services', 'intro' => 'Requis pour publier une annonce de service :', 'icon' => 'fa-briefcase'],
+                            'Immobilier' => ['label' => 'Abonnements Immobilier', 'intro' => 'Requis pour publier une annonce immobilière :', 'icon' => 'fa-house'],
+                            'Véhicules'  => ['label' => 'Abonnements Véhicules', 'intro' => 'Requis pour publier une annonce de véhicule :', 'icon' => 'fa-car'],
+                        ];
+                    @endphp
 
-                        @foreach($abonnements as $abonnement)
-                            @php
-                                $isSubscribed     = $abonnementActif && $abonnementActif->abonnement_id === $abonnement->id;
-                                $isLockedPart     = auth()->user()->vendeur->estParticulier() && $abonnement->prix_mensuel > 0;
-                                $isLockedPro      = auth()->user()->vendeur->estProfessionnel() && $abonnement->prix_mensuel == 0;
-                                $isLocked         = $isLockedPart || $isLockedPro;
-                                $isPopular        = in_array($abonnement->nom, ['Pack Business', 'Vendeur Pro', 'Business', 'Pro']);
-                            @endphp
+                    @foreach($familleOrder as $fam)
+                        @php $plansFam = $grouped->get($fam); @endphp
+                        @if($plansFam && $plansFam->count())
+                        <div class="abn-section">
+                            <div class="abn-section-heading">
+                                <i class="fa-solid {{ $familleMeta[$fam]['icon'] ?? 'fa-tag' }}" style="margin-right: 6px; color: #004aad;"></i>
+                                {{ $familleMeta[$fam]['label'] ?? $fam }}
+                            </div>
+                            <p class="abn-section-intro">{{ $familleMeta[$fam]['intro'] ?? 'Je souhaite m\'abonner au forfait :' }}</p>
 
-                            <div class="abn-plan-row {{ $isSubscribed ? 'is-active-plan' : '' }} {{ $isLocked ? 'is-locked' : '' }}"
-                                 id="row-{{ $abonnement->id }}"
-                                 @if(!$isSubscribed && !$isLocked) onclick="selectPlan({{ $abonnement->id }}, '{{ addslashes($abonnement->nom) }}')" @endif>
+                            @foreach($plansFam as $abonnement)
+                                @php
+                                    $isEcom           = $abonnement->famille === \App\Models\Abonnement::FAMILLE_ECOMMERCE;
+                                    $isSubscribed     = $abonnementActif && $abonnementActif->abonnement_id === $abonnement->id;
+                                    // Le verrouillage particulier/pro ne concerne que l'E-commerce (paliers vendeur)
+                                    $isLockedPart     = $isEcom && auth()->user()->vendeur->estParticulier() && $abonnement->prix_mensuel > 0;
+                                    $isLockedPro      = $isEcom && auth()->user()->vendeur->estProfessionnel() && $abonnement->prix_mensuel == 0;
+                                    $isLocked         = $isLockedPart || $isLockedPro;
+                                    $isPopular        = in_array($abonnement->nom, ['Pack Business', 'Vendeur Pro', 'Business', 'Pro']);
+                                    $dureeJours       = $abonnement->duree_jours ?? 30;
+                                    $dureeLabel       = $dureeJours % 30 === 0 ? (($dureeJours / 30) . ' mois') : ($dureeJours . ' jours');
+                                @endphp
 
-                                <input
-                                    type="radio"
-                                    class="abn-check"
-                                    name="_ui_plan_select"
-                                    id="plan-{{ $abonnement->id }}"
-                                    value="{{ $abonnement->id }}"
-                                    {{ $isSubscribed ? 'checked' : '' }}
-                                    {{ $isLocked ? 'disabled' : '' }}
-                                    onclick="event.stopPropagation(); selectPlan({{ $abonnement->id }}, '{{ addslashes($abonnement->nom) }}')"
-                                >
+                                <div class="abn-plan-row {{ $isSubscribed ? 'is-active-plan' : '' }} {{ $isLocked ? 'is-locked' : '' }}"
+                                     id="row-{{ $abonnement->id }}"
+                                     @if(!$isSubscribed && !$isLocked) onclick="selectPlan({{ $abonnement->id }}, '{{ addslashes($abonnement->nom) }}')" @endif>
 
-                                <div class="abn-plan-info">
-                                    <div class="abn-plan-name">
-                                        <label for="plan-{{ $abonnement->id }}" style="cursor: inherit; margin: 0;">
-                                            {{ $abonnement->nom }}
-                                        </label>
+                                    <input
+                                        type="radio"
+                                        class="abn-check"
+                                        name="_ui_plan_select"
+                                        id="plan-{{ $abonnement->id }}"
+                                        value="{{ $abonnement->id }}"
+                                        {{ $isSubscribed ? 'checked' : '' }}
+                                        {{ $isLocked ? 'disabled' : '' }}
+                                        onclick="event.stopPropagation(); selectPlan({{ $abonnement->id }}, '{{ addslashes($abonnement->nom) }}')"
+                                    >
 
-                                        @if($isSubscribed)
-                                            <span class="badge badge-actif">Actif</span>
-                                        @endif
-                                        @if($isPopular && !$isSubscribed)
-                                            <span class="badge badge-popular">Populaire</span>
-                                        @endif
-                                        @if($abonnement->prix_mensuel > 0 && !$isPopular)
-                                            <span class="badge badge-pro">Pro</span>
-                                        @endif
-                                        @if($isLocked)
-                                            <span class="badge badge-locked">Indisponible</span>
-                                        @endif
+                                    <div class="abn-plan-info">
+                                        <div class="abn-plan-name">
+                                            <label for="plan-{{ $abonnement->id }}" style="cursor: inherit; margin: 0;">
+                                                {{ $abonnement->nom }}
+                                            </label>
+
+                                            @if($isSubscribed)
+                                                <span class="badge badge-actif">Actif</span>
+                                            @endif
+                                            @if($isPopular && !$isSubscribed)
+                                                <span class="badge badge-popular">Populaire</span>
+                                            @endif
+                                            @if($abonnement->prix_mensuel > 0 && !$isPopular)
+                                                <span class="badge badge-pro">Pro</span>
+                                            @endif
+                                            @if($isLocked)
+                                                <span class="badge badge-locked">Indisponible</span>
+                                            @endif
+                                        </div>
+
+                                        <div class="abn-plan-desc">
+                                            @if($abonnement->description)
+                                                {{ $abonnement->description }} —
+                                            @endif
+                                            {{ $abonnement->nombre_annonces == 0 ? 'Annonces illimitées' : $abonnement->nombre_annonces . ' annonces' }},
+                                            commission {{ number_format($abonnement->commission, 0) }}%
+                                            @if($abonnement->page_pro)
+                                                , Page Boutique Pro incluse
+                                            @endif
+                                            · <span style="color: #007185;">Durée : {{ $dureeLabel }}</span>
+
+                                            @if($isSubscribed && $abonnementActif)
+                                                <span style="color: #007600; font-weight: 500; display: block; margin-top: 3px;">
+                                                    ✓ Expire le {{ $abonnementActif->date_fin->format('d/m/Y') }}
+                                                    @if($abonnementActif->renouvellement_automatique) · Renouvellement automatique activé @endif
+                                                </span>
+                                            @endif
+                                        </div>
                                     </div>
 
-                                    <div class="abn-plan-desc">
-                                        @if($abonnement->description)
-                                            {{ $abonnement->description }} —
-                                        @endif
-                                        {{ $abonnement->nombre_annonces == 0 ? 'Annonces illimitées' : $abonnement->nombre_annonces . ' annonces/mois' }},
-                                        commission {{ number_format($abonnement->commission, 0) }}%
-                                        @if($abonnement->page_pro)
-                                            , Page Boutique Pro incluse
-                                        @endif
-                                        · <span style="color: #007185;">Durée : 1 mois</span>
-
-                                        @if($isSubscribed && $abonnementActif)
-                                            <span style="color: #007600; font-weight: 500; display: block; margin-top: 3px;">
-                                                ✓ Expire le {{ $abonnementActif->date_fin->format('d/m/Y') }}
-                                                @if($abonnementActif->renouvellement_automatique) · Renouvellement automatique activé @endif
-                                            </span>
+                                    <div class="abn-plan-price">
+                                        @if($abonnement->prix_mensuel > 0)
+                                            <div class="price-value">{{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} FCFA</div>
+                                            <div class="price-sub">/ {{ $dureeLabel }}</div>
+                                        @else
+                                            <div class="price-value" style="color: #007600;">Gratuit</div>
                                         @endif
                                     </div>
                                 </div>
-
-                                <div class="abn-plan-price">
-                                    @if($abonnement->prix_mensuel > 0)
-                                        <div class="price-value">{{ number_format($abonnement->prix_mensuel, 0, ',', ' ') }} FCFA</div>
-                                        <div class="price-sub">par mois</div>
-                                    @else
-                                        <div class="price-value" style="color: #007600;">Gratuit</div>
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach
-
-                        {{-- Barre de validation intégrée au container --}}
-                        <div class="checkout-bar" id="checkout-bar" style="display: none;">
-                            <div class="checkout-bar-text">
-                                Forfait sélectionné :
-                                <strong id="selected-plan-name" style="color: #004aad;">...</strong>
-                            </div>
-                            <button type="submit" class="btn-subscribe" id="submit-btn">
-                                Continuer vers le paiement →
-                            </button>
+                            @endforeach
                         </div>
+                        @endif
+                    @endforeach
+
+                    {{-- Barre de validation globale --}}
+                    <div class="checkout-bar" id="checkout-bar" style="display: none; border: 1px solid #d5d9d9; border-radius: 6px; margin-bottom: 1.25rem;">
+                        <div class="checkout-bar-text">
+                            Forfait sélectionné :
+                            <strong id="selected-plan-name" style="color: #004aad;">...</strong>
+                        </div>
+                        <button type="submit" class="btn-subscribe" id="submit-btn">
+                            Continuer vers le paiement →
+                        </button>
                     </div>
 
                     {{-- Abonnement actif info (si abonnement actif) --}}
