@@ -47,10 +47,11 @@ class VendeurVerificationController extends Controller
             );
         }
 
-        // Pays : on privilégie le pays déclaré par le vendeur (profil),
-        // avec repli sur la déduction depuis l'indicatif téléphonique.
+        // Pays : pays déclaré, sinon déduction via indicatif téléphonique,
+        // sinon nationalité (souvent utilisée comme pays par les vendeurs).
         $pays = ($vendeur->user->pays ?: null)
-            ?? $this->paysDepuisTelephone($vendeur->user->telephone ?? null);
+            ?? $this->paysDepuisTelephone($vendeur->user->telephone ?? null)
+            ?? ($vendeur->user->nationalite ?: null);
 
         return view('admin.vendeurs.show', compact('vendeur', 'pays'));
     }

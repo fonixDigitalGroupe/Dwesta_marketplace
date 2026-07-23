@@ -112,6 +112,7 @@
         <dl class="dl">
             <div class="dl-row"><dt>Nom complet</dt><dd>{{ $vendeur->user->prenom }} {{ $vendeur->user->nom }}</dd></div>
             <div class="dl-row"><dt>Téléphone</dt><dd>{{ $vendeur->user->telephone ?? '—' }}</dd></div>
+            <div class="dl-row"><dt>Nationalité</dt><dd>{{ $vendeur->user->nationalite ?: '—' }}</dd></div>
             <div class="dl-row"><dt>Adresse</dt><dd>{{ $vendeur->user->adresse ?: '—' }}</dd></div>
             <div class="dl-row"><dt>Ville</dt><dd>{{ $vendeur->user->ville ?: '—' }}</dd></div>
             <div class="dl-row"><dt>Région</dt><dd>{{ $vendeur->user->region ?: '—' }}</dd></div>
