@@ -28,6 +28,7 @@
             display: inline-flex; align-items: center; justify-content: center;
             width: 34px; height: 34px; border-radius: 6px; color: #111;
             text-decoration: none; transition: background 0.2s;
+            background: none; border: none; cursor: pointer;
         }
         .mod-icon-btn:hover { background: #f3f4f6; }
     </style>
