@@ -98,6 +98,7 @@
                             <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
                                 <div style="font-weight: 700; font-size: 0.85rem; color: #111;">{{ $vendeur->user->prenom ?? '' }} {{ $vendeur->user->nom ?? '' }}</div>
                                 <div style="font-size: 0.78rem; color: #64748b;">{{ $vendeur->user->email ?? '—' }}</div>
+                                <div style="font-size: 0.78rem; color: #64748b;"><i class="fas fa-phone" style="font-size: 0.7rem;"></i> {{ $vendeur->user->telephone ?: '—' }}</div>
                             </td>
                             <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7; font-size: 0.82rem; color: #333;">{{ ucfirst($vendeur->type ?? '—') }}</td>
                             <td style="padding: 12px 15px; border-right: 1px solid #e7e7e7;">
