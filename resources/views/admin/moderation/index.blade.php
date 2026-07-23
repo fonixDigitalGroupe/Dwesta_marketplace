@@ -36,7 +36,7 @@
 
 @section('content')
 <div style="max-width: 1200px; margin: 0 auto;"
-     x-data="{ tab: '{{ $avisEnAttente->count() || !$signalements->count() ? 'avis' : 'signalements' }}', detailOpen: false, detail: {} }">
+     x-data="{ tab: '{{ request()->has('sig_statut') ? 'signalements' : ($avisEnAttente->count() || !$signalements->count() ? 'avis' : 'signalements') }}', detailOpen: false, detail: {} }">
 
     <!-- Main Conteneur style Amazon Card -->
     <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px; margin-top: -50px;">
@@ -195,6 +195,16 @@
                 </div>
             @endif
 
+            @php
+                $sigTabStyle = fn ($actif) => 'padding:8px 14px; text-decoration:none; font-size:0.82rem; border-radius:999px; font-weight:'.($actif ? '700' : '500').'; color:'.($actif ? '#fff' : '#475569').'; background:'.($actif ? '#dc2626' : '#f1f5f9').';';
+            @endphp
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;">
+                <a href="{{ route('admin.moderation.index', ['sig_statut' => 'nouveau']) }}" style="{{ $sigTabStyle($sigStatut === 'nouveau') }}">Nouveaux ({{ $signalementsNouveauCount }})</a>
+                <a href="{{ route('admin.moderation.index', ['sig_statut' => 'traite']) }}" style="{{ $sigTabStyle($sigStatut === 'traite') }}">Traités ({{ $signalementsTraiteCount }})</a>
+                <a href="{{ route('admin.moderation.index', ['sig_statut' => 'rejete']) }}" style="{{ $sigTabStyle($sigStatut === 'rejete') }}">Rejetés ({{ $signalementsRejeteCount }})</a>
+                <a href="{{ route('admin.moderation.index', ['sig_statut' => 'tous']) }}" style="{{ $sigTabStyle($sigStatut === 'tous') }}">Tous</a>
+            </div>
+
             <div style="border: 1px solid #e7e7e7; overflow: hidden;">
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead>
@@ -263,25 +273,33 @@
                                     @if($vendeurUser)
                                         <a href="{{ route('admin.messagerie.index', ['compose' => 1, 'to' => $vendeurUser->id, 'article' => $signalement->annonce->id]) }}" title="Envoyer un message au vendeur" class="mod-icon-btn"><i class="fas fa-paper-plane" style="font-size: 0.9rem;"></i></a>
                                     @endif
-                                    <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.moderation.signalements.traiter', $signalement) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        <button type="submit" class="mod-action-btn" style="color: #569b00; background: #f7fff0;">Traité</button>
-                                    </form>
-                                    @if($signalement->annonce && $signalement->annonce->statut !== 'rejetee')
-                                    <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.annonces.moderation.reject', $signalement->annonce) }}" method="POST" style="display: inline;" class="annonce-reject-form">
-                                        @csrf
-                                        <input type="hidden" name="raison_rejet" class="annonce-reject-reason">
-                                        <button type="button" class="mod-action-btn" style="color: #c40000; background: #fff5f5;"
-                                            onclick="confirmAnnonceRejection(this, '{{ addslashes($signalement->annonce->titre) }}')">Rejeter</button>
-                                    </form>
+                                    @if($signalement->statut === 'nouveau')
+                                        <span style="color: #ddd;">|</span>
+                                        <form action="{{ route('admin.moderation.signalements.traiter', $signalement) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="mod-action-btn" style="color: #569b00; background: #f7fff0;">Traité</button>
+                                        </form>
+                                        @if($signalement->annonce && $signalement->annonce->statut !== 'rejetee')
+                                        <span style="color: #ddd;">|</span>
+                                        <form action="{{ route('admin.annonces.moderation.reject', $signalement->annonce) }}" method="POST" style="display: inline;" class="annonce-reject-form">
+                                            @csrf
+                                            <input type="hidden" name="raison_rejet" class="annonce-reject-reason">
+                                            <button type="button" class="mod-action-btn" style="color: #c40000; background: #fff5f5;"
+                                                onclick="confirmAnnonceRejection(this, '{{ addslashes($signalement->annonce->titre) }}')">Rejeter</button>
+                                        </form>
+                                        @endif
+                                        <span style="color: #ddd;">|</span>
+                                        <form action="{{ route('admin.moderation.signalements.rejeter', $signalement) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="mod-action-btn" style="color: #555; background: #f1f5f9;">Ignorer</button>
+                                        </form>
+                                    @elseif($signalement->statut === 'traite')
+                                        <span style="color: #ddd;">|</span>
+                                        <span class="mod-action-btn" style="color: #166534; background: #dcfce7;">Traité</span>
+                                    @else
+                                        <span style="color: #ddd;">|</span>
+                                        <span class="mod-action-btn" style="color: #475569; background: #f1f5f9;">Rejeté</span>
                                     @endif
-                                    <span style="color: #ddd;">|</span>
-                                    <form action="{{ route('admin.moderation.signalements.rejeter', $signalement) }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        <button type="submit" class="mod-action-btn" style="color: #555; background: #f1f5f9;">Ignorer</button>
-                                    </form>
                                 </div>
                             </td>
                         </tr>

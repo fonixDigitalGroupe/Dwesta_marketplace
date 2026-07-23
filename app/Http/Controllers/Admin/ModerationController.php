@@ -24,17 +24,25 @@ class ModerationController extends Controller
         // Défensif : la table signalements peut ne pas encore exister (migration non lancée en prod).
         $signalementsTablePresente = Schema::hasTable('signalements');
 
+        // Filtre de statut des signalements (par défaut : nouveaux)
+        $sigStatut = in_array(request('sig_statut'), ['nouveau', 'traite', 'rejete', 'tous'])
+            ? request('sig_statut')
+            : 'nouveau';
+
         $signalementsNouveauCount = 0;
         $signalementsTraiteCount = 0;
+        $signalementsRejeteCount = 0;
 
         if ($signalementsTablePresente) {
-            $signalements = Signalement::with(['annonce.vendeur.user', 'reporter'])
-                ->where('statut', 'nouveau')
-                ->latest()
-                ->paginate(10, ['*'], 'sig_page');
+            $query = Signalement::with(['annonce.vendeur.user', 'reporter'])->latest();
+            if ($sigStatut !== 'tous') {
+                $query->where('statut', $sigStatut);
+            }
+            $signalements = $query->paginate(10, ['*'], 'sig_page')->withQueryString();
 
             $signalementsNouveauCount = Signalement::where('statut', 'nouveau')->count();
             $signalementsTraiteCount = Signalement::where('statut', 'traite')->count();
+            $signalementsRejeteCount = Signalement::where('statut', 'rejete')->count();
         } else {
             $signalements = new LengthAwarePaginator([], 0, 10, 1, [
                 'path' => request()->url(),
@@ -50,7 +58,9 @@ class ModerationController extends Controller
             'signalementsTablePresente',
             'avisEnAttenteCount',
             'signalementsNouveauCount',
-            'signalementsTraiteCount'
+            'signalementsTraiteCount',
+            'signalementsRejeteCount',
+            'sigStatut'
         ));
     }
 
