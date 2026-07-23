@@ -57,7 +57,7 @@
 
         .otp-digit {
             width: 56px;
-            height: 68px;
+            height: 50px;
             font-size: 1.75rem;
             font-weight: 700;
             text-align: center;
