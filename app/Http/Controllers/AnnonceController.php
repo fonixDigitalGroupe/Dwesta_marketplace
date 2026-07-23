@@ -157,6 +157,21 @@ class AnnonceController extends Controller
         try {
             // 1. Vérification du solde pour la catégorie (si payante)
             $categorie = Category::findOrFail($validated['categorie_id']);
+
+            // 1bis. Certaines familles (Immobilier, Véhicules, Services) exigent un abonnement actif pour cette famille
+            $familleCat = $categorie->famille;
+            if (in_array($familleCat, \App\Models\Abonnement::famillesRequierentAbonnement(), true)) {
+                $aAbonnementFamille = $vendeur->abonnements()
+                    ->where('actif', true)
+                    ->where('date_fin', '>=', now())
+                    ->whereHas('abonnement', fn ($q) => $q->where('famille', $familleCat))
+                    ->exists();
+
+                if (!$aAbonnementFamille) {
+                    return back()->withInput()->with('error', "Pour publier une annonce dans la famille « {$familleCat} », vous devez d'abord souscrire à un abonnement {$familleCat}. Rendez-vous dans « Mon abonnement » pour choisir une formule.");
+                }
+            }
+
             if (!$this->paymentService->canAffordPublication($user, $categorie)) {
                 return back()->withInput()->with('error', "Solde insuffisant pour publier dans cette catégorie ({$categorie->nom}). Coût : " . number_format($categorie->listing_price, 0) . " FCFA. Rechargez vos crédits.");
             }

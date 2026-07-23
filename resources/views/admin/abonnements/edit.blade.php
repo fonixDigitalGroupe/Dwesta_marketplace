@@ -189,14 +189,36 @@
                     <h3 class="section-title">Identité du Pack</h3>
                     
                     <div style="margin-bottom: 20px;">
-                        <label for="type" class="field-label">
-                            Type de pack <small style="color: red;">*</small>
+                        <label for="famille" class="field-label">
+                            Famille <small style="color: red;">*</small>
                         </label>
-                        <select name="type" id="type" required>
+                        <select name="famille" id="famille" required onchange="toggleTypeField()">
+                            @foreach(\App\Models\Abonnement::familles() as $f)
+                                <option value="{{ $f }}" {{ old('famille', $abonnement->famille) === $f ? 'selected' : '' }}>{{ $f }}</option>
+                            @endforeach
+                        </select>
+                        @error('famille') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label for="nom" class="field-label">
+                            Nom du pack <small style="color: red;">*</small>
+                        </label>
+                        <input type="text" name="nom" id="nom" value="{{ old('nom', $abonnement->nom) }}" required placeholder="Ex. Starter, Pro, Premium...">
+                        @error('nom') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                    </div>
+
+                    <div id="type-field" style="margin-bottom: 20px;">
+                        <label for="type" class="field-label">
+                            Type (E-commerce) <small style="color: red;">*</small>
+                        </label>
+                        <select name="type" id="type">
+                            <option value="">— Choisir —</option>
                             @foreach($availableTypes as $type)
                                 <option value="{{ $type }}" {{ old('type', $abonnement->type) == $type ? 'selected' : '' }}>{{ ucfirst($type) }}</option>
                             @endforeach
                         </select>
+                        <p style="font-size: 0.72rem; color: #94a3b8; margin-top: 6px;">Réservé à l'E-commerce (gratuit/basic/expert). Ignoré pour les autres familles.</p>
                         @error('type') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                     </div>
 
@@ -217,13 +239,20 @@
                     <h3 class="section-title">Configuration & Tarification</h3>
                     
                     <div style="flex: 1;">
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
                             <div>
                                 <label for="prix_mensuel" class="field-label">
-                                    Prix mensuel (FCFA) <small style="color: red;">*</small>
+                                    Prix (FCFA) <small style="color: red;">*</small>
                                 </label>
                                 <input type="number" name="prix_mensuel" id="prix_mensuel" value="{{ old('prix_mensuel', $abonnement->prix_mensuel) }}" min="0" required>
                                 @error('prix_mensuel') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <label for="duree_jours" class="field-label">
+                                    Durée (jours) <small style="color: red;">*</small>
+                                </label>
+                                <input type="number" name="duree_jours" id="duree_jours" value="{{ old('duree_jours', $abonnement->duree_jours ?? 30) }}" min="1" required>
+                                @error('duree_jours') <p style="color: #bf0000; font-size: 0.75rem; margin-top: 6px;">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
@@ -289,4 +318,22 @@
         </form>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    function toggleTypeField() {
+        var famille = document.getElementById('famille').value;
+        var typeField = document.getElementById('type-field');
+        var typeSelect = document.getElementById('type');
+        if (famille === 'E-commerce') {
+            typeField.style.display = 'block';
+            typeSelect.setAttribute('required', 'required');
+        } else {
+            typeField.style.display = 'none';
+            typeSelect.removeAttribute('required');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', toggleTypeField);
+</script>
+@endpush
 @endsection
