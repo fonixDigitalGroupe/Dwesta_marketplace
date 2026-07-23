@@ -83,6 +83,21 @@
             @forelse($messages as $msg)
                 @php $mine = $msg->sender_id == $adminId; @endphp
                 <div class="gm-msg {{ $mine ? 'mine' : 'theirs' }}">
+                    @if($msg->annonce)
+                        <a href="{{ route('annonces.show', $msg->annonce) }}" target="_blank" style="display:flex; gap:10px; align-items:center; text-decoration:none; background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:8px; margin-bottom:8px; max-width:280px;">
+                            <div style="width:52px; height:52px; border-radius:8px; overflow:hidden; background:#f0f0f0; flex-shrink:0; display:flex; align-items:center; justify-content:center;">
+                                @if($msg->annonce->photoPrincipale())
+                                    <img src="{{ $msg->annonce->photoPrincipale()->url }}" style="width:100%; height:100%; object-fit:cover;">
+                                @else
+                                    <i class="fas fa-image" style="color:#cbd5e1;"></i>
+                                @endif
+                            </div>
+                            <div style="min-width:0;">
+                                <div style="font-weight:700; font-size:0.82rem; color:#111; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ $msg->annonce->titre }}</div>
+                                <div style="font-size:0.75rem; color:#64748b; margin-top:2px;">Réf #{{ $msg->annonce->id }} · {{ number_format($msg->annonce->prix, 0, ',', ' ') }} FCFA</div>
+                            </div>
+                        </a>
+                    @endif
                     {!! nl2br(e($msg->content)) !!}
                     <div class="gm-msg-meta">{{ $mine ? 'Karnou' : $name }} · {{ $msg->created_at->translatedFormat('d M Y H:i') }}</div>
                 </div>

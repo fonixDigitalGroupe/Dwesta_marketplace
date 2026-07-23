@@ -227,6 +227,7 @@
     </div>
     <form action="{{ route('admin.messagerie.send') }}" method="POST" id="send-form" onsubmit="return confirmSend()">
         @csrf
+        @if($pinnedAnnonce)<input type="hidden" name="article" value="{{ $pinnedAnnonce->id }}">@endif
         <div class="gm-compose-body">
             @if($pinnedAnnonce)
                 <label class="gm-flabel">Article épinglé</label>

@@ -87,7 +87,7 @@ class MessagerieController extends Controller
             ->whereNull('read_at')
             ->update(['read_at' => now()]);
 
-        $messages = $conversation->messages()->with('sender')->orderBy('created_at')->get();
+        $messages = $conversation->messages()->with(['sender', 'annonce'])->orderBy('created_at')->get();
 
         return view('admin.messagerie.show', compact('conversation', 'other', 'messages', 'adminId'));
     }
@@ -146,6 +146,7 @@ class MessagerieController extends Controller
             'mode'         => 'required|in:user,vendeurs,clients',
             'message'      => 'required|string|max:5000',
             'recipient_id' => 'required_if:mode,user|nullable|exists:users,id',
+            'article'      => 'nullable|exists:annonces,id',
         ], [
             'message.required'      => 'Le message est obligatoire.',
             'recipient_id.required_if' => 'Veuillez choisir un destinataire.',
@@ -153,6 +154,7 @@ class MessagerieController extends Controller
 
         $adminId = $this->karnouId();
         $content = $request->input('message');
+        $annonceId = $request->input('article');
 
         // Détermine la liste des destinataires selon le mode
         if ($request->mode === 'user') {
@@ -168,7 +170,7 @@ class MessagerieController extends Controller
 
         $count = 0;
         foreach ($recipients as $userId) {
-            $this->deliver($adminId, $userId, $content);
+            $this->deliver($adminId, $userId, $content, $annonceId);
             $count++;
         }
 
@@ -184,7 +186,7 @@ class MessagerieController extends Controller
     /**
      * Trouve (ou crée) la conversation entre l'admin et l'utilisateur, puis crée le message.
      */
-    private function deliver(int $adminId, int $userId, string $content): void
+    private function deliver(int $adminId, int $userId, string $content, ?int $annonceId = null): void
     {
         $conversation = Conversation::where(function ($q) use ($adminId, $userId) {
             $q->where('user1_id', $adminId)->where('user2_id', $userId);
@@ -201,8 +203,9 @@ class MessagerieController extends Controller
         }
 
         $conversation->messages()->create([
-            'sender_id' => $adminId,
-            'content'   => $content,
+            'sender_id'  => $adminId,
+            'content'    => $content,
+            'annonce_id' => $annonceId,
         ]);
 
         $conversation->update(['last_message_at' => now()]);
