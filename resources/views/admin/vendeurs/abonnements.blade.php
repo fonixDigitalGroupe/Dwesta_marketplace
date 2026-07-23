@@ -93,9 +93,9 @@
                                     <div style="display: flex; flex-direction: column; gap: 4px;">
                                         @foreach($actifs as $va)
                                             <span style="font-size: 0.8rem; color: #333;">
-                                                <span class="va-badge" style="background:#eef2ff; color:#4338ca;">{{ $va->abonnement->famille ?? '—' }}</span>
-                                                {{ ucfirst($va->abonnement->nom ?? $va->abonnement->type ?? '—') }}
-                                                <span style="color:#64748b;">— {{ number_format($va->abonnement->prix_mensuel ?? 0, 0, ',', ' ') }} F</span>
+                                                <span class="va-badge" style="background:#eef2ff; color:#4338ca;">{{ $va->abonnement?->famille ?? '—' }}</span>
+                                                {{ ucfirst($va->abonnement?->nom ?? $va->abonnement?->type ?? '—') }}
+                                                <span style="color:#64748b;">— {{ number_format($va->abonnement?->prix_mensuel ?? 0, 0, ',', ' ') }} F</span>
                                             </span>
                                         @endforeach
                                     </div>
