@@ -267,6 +267,15 @@
                                         @csrf
                                         <button type="submit" class="mod-action-btn" style="color: #569b00; background: #f7fff0;">Traité</button>
                                     </form>
+                                    @if($signalement->annonce && $signalement->annonce->statut !== 'rejetee')
+                                    <span style="color: #ddd;">|</span>
+                                    <form action="{{ route('admin.annonces.moderation.reject', $signalement->annonce) }}" method="POST" style="display: inline;" class="annonce-reject-form">
+                                        @csrf
+                                        <input type="hidden" name="raison_rejet" class="annonce-reject-reason">
+                                        <button type="button" class="mod-action-btn" style="color: #c40000; background: #fff5f5;"
+                                            onclick="confirmAnnonceRejection(this, '{{ addslashes($signalement->annonce->titre) }}')">Rejeter</button>
+                                    </form>
+                                    @endif
                                     <span style="color: #ddd;">|</span>
                                     <form action="{{ route('admin.moderation.signalements.rejeter', $signalement) }}" method="POST" style="display: inline;">
                                         @csrf
@@ -406,6 +415,35 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 form.querySelector('.avis-reject-reason').value = result.value;
+                form.submit();
+            }
+        });
+    }
+
+    function confirmAnnonceRejection(btn, titre) {
+        const form = btn.closest('form');
+        Swal.fire({
+            title: 'Rejeter cette annonce',
+            html: `<div style="text-align:left; font-size:0.9rem; color:#555; margin-bottom:10px;">Annonce : <strong style="color:#111;">${titre}</strong></div>`,
+            input: 'textarea',
+            inputPlaceholder: 'Motif du rejet (communiqué au vendeur par email)...',
+            inputAttributes: { style: 'height: 100px;' },
+            showCancelButton: true,
+            confirmButtonText: 'Rejeter l\'annonce',
+            cancelButtonText: 'Annuler',
+            reverseButtons: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6c757d',
+            preConfirm: (value) => {
+                if (!value || value.trim() === '') {
+                    Swal.showValidationMessage('Veuillez indiquer un motif de rejet.');
+                    return false;
+                }
+                return value;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.querySelector('.annonce-reject-reason').value = result.value;
                 form.submit();
             }
         });
