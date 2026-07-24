@@ -123,7 +123,7 @@ class GiftCardController extends Controller
                     'amount'  => $amount,
                     'type'    => 'gift_card_purchase'
                 ],
-                'wave' // opérateur par défaut, changeable sur la pay page
+                null // aucun canal forcé → tous les moyens (Mobile Money + carte) sur la page PayDunya
             );
 
             session(['gift_card_amount' => $amount]);

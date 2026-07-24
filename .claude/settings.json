@@ -18,7 +18,8 @@
       "Bash(php -l app/Http/Controllers/CheckoutController.php)",
       "Bash(php -l app/Http/Controllers/Admin/ShippingRuleController.php)",
       "Bash(grep -n 'function computeShippingFeeForVendeur\\\\|ShippingRule::active\\\\|->where\\('\\\\''zone_name'\\\\''\\\\|orderByRaw\\\\|return $rule\\\\|foreach \\($cartGrouped\\\\|computeShippingFeeForVendeur\\(\\\\|$supplements\\\\|poidsSupplements\\\\|poids_palier' app/Http/Controllers/CheckoutController.php)",
-      "Bash(php -l app/Models/User.php)"
+      "Bash(php -l app/Models/User.php)",
+      "WebSearch"
     ]
   }
 }

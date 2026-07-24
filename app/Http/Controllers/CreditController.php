@@ -52,7 +52,7 @@ class CreditController extends Controller
                     'pack_id' => $pack->id,
                     'type'    => 'credit_pack_purchase'
                 ],
-                'wave' // opérateur par défaut, changeable sur la pay page
+                null // aucun canal forcé → tous les moyens (Mobile Money + carte) sur la page PayDunya
             );
 
             return redirect()->route('checkout.pay', ['token' => $session->token]);
