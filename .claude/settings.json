@@ -11,7 +11,8 @@
       "Bash(php -r ' *)",
       "Bash(php /tmp/claude-1000/-home-fonix-sa-Bureau-Fonix-projects-Marketplace-Dwesta-marketplace-karnou/117c64c6-cbef-4348-a3e5-7004c285b4aa/scratchpad/b64.php)",
       "Bash(php -l app/Http/Controllers/Admin/VendeurAbonnementController.php)",
-      "Bash(grep -n 'compact\\\\|$role' app/Http/Controllers/Admin/UserController.php)"
+      "Bash(grep -n 'compact\\\\|$role' app/Http/Controllers/Admin/UserController.php)",
+      "Bash(php -l app/Http/Controllers/Auth/SocialAuthController.php)"
     ]
   }
 }

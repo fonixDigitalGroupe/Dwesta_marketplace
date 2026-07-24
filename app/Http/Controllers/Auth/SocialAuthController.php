@@ -15,7 +15,7 @@ class SocialAuthController extends Controller
     {
         // Valider que le provider est supporté
         if (!in_array($provider, ['facebook', 'google'])) {
-            return redirect()->route('login')->with('error', 'Provider non supporté');
+            return redirect()->route('login')->with('social_error', 'Provider non supporté');
         }
 
         // Sauvegarder l'intention (login ou register) dans la session
@@ -65,7 +65,7 @@ class SocialAuthController extends Controller
                     // Si on est en mode "login" uniquement, on refuse la création
                     if ($action === 'login') {
                         \Log::info('User not found in login mode. Aborting.');
-                        return redirect()->route('login')->with('error', 'Aucun compte trouvé avec cet e-mail. Veuillez d\'abord créer un compte.');
+                        return redirect()->route('login')->with('social_error', 'Aucun compte trouvé avec cet e-mail. Veuillez d\'abord créer un compte.');
                     }
 
                     \Log::info('No user found. Creating new user (Register mode).');
@@ -133,7 +133,7 @@ class SocialAuthController extends Controller
                 $errorMessage = 'URL de redirection incorrecte.';
             }
 
-            return redirect()->route('login')->with('error', $errorMessage);
+            return redirect()->route('login')->with('social_error', $errorMessage);
         }
     }
 }
