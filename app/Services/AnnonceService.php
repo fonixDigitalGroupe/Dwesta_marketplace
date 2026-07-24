@@ -135,6 +135,7 @@ class AnnonceService
                 'promo_expires_at' => $data['promo_expires_at'] ?? $annonce->promo_expires_at,
                 'description'  => $data['description'] ?? $annonce->description,
                 'type_livraison' => $data['type_livraison'] ?? $annonce->type_livraison,
+                'poids_palier'   => $data['poids_palier'] ?? $annonce->poids_palier,
                 'disponibilite'  => $data['disponibilite'] ?? $annonce->disponibilite,
                 'statut'         => $newStatut,
                 'publiee_le'     => $publiee_le,

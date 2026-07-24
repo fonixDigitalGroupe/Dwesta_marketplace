@@ -1212,6 +1212,17 @@
                             <label for="quantite" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Quantité</label>
                             <input type="number" id="quantite" name="quantite" class="form-input" placeholder="Ex: 1" min="1" required value="{{ old('quantite', $annonce->produit->quantite ?? 1) }}">
                         </div>
+
+                        <div class="form-group">
+                            <label for="poids_palier" class="form-label" style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Poids / encombrement du produit</label>
+                            <select id="poids_palier" name="poids_palier" class="form-input" required>
+                                <option value="">— Choisir —</option>
+                                @foreach(\App\Models\Annonce::POIDS_PALIERS as $val => $label)
+                                    <option value="{{ $val }}" {{ old('poids_palier', $annonce->poids_palier) === $val ? 'selected' : '' }}>{{ $label }}</option>
+                                @endforeach
+                            </select>
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 0.4rem;">Sert à calculer les frais de livraison.</p>
+                        </div>
                     </div>
 
                     <div class="form-actions">
