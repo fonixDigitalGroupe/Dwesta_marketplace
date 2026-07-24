@@ -58,10 +58,21 @@ class CheckoutController extends Controller
         // Préparer les origines des vendeurs pour le calcul JS
         $sellerOrigins = [];
         $sellerRegions = [];
+        $sellerSupplements = [];
+        $supplements = \App\Http\Controllers\Admin\ShippingRuleController::poidsSupplements();
         foreach ($cartGrouped as $vendeurId => $items) {
             $vendeur = \App\Models\Vendeur::find($vendeurId);
             $sellerOrigins[$vendeurId] = $this->resolveCountryId($vendeur->user->pays ?? 'Sénégal');
             $sellerRegions[$vendeurId] = $vendeur->user->region ?? null;
+            // Supplément poids = somme des suppléments de chaque article e-commerce du vendeur (choix B)
+            $supp = 0;
+            foreach ($items as $item) {
+                $palier = $item->annonce->poids_palier ?? null;
+                if ($palier && isset($supplements[$palier])) {
+                    $supp += $supplements[$palier] * (int) ($item->quantite ?? 1);
+                }
+            }
+            $sellerSupplements[$vendeurId] = $supp;
         }
         $userCountryId = $this->resolveCountryId($user->pays ?? 'Sénégal');
         $userRegion = $user->region ?: $user->ville;
@@ -77,7 +88,7 @@ class CheckoutController extends Controller
                 ],
             ]);
 
-        return view('checkout.step1', compact('cartGrouped', 'subtotal', 'user', 'requiresPointRelais', 'pointRelais', 'shippingRules', 'sellerOrigins', 'userCountryId', 'sellerRegions', 'userRegion', 'interRegionTariffs'));
+        return view('checkout.step1', compact('cartGrouped', 'subtotal', 'user', 'requiresPointRelais', 'pointRelais', 'shippingRules', 'sellerOrigins', 'userCountryId', 'sellerRegions', 'userRegion', 'interRegionTariffs', 'sellerSupplements'));
     }
 
     private function resolveCountryId(?string $countryName)
@@ -171,12 +182,22 @@ class CheckoutController extends Controller
         $cartGrouped = $this->cartService->getContentGroupedBySeller();
         $shippingFee = 0;
 
+        $supplements = \App\Http\Controllers\Admin\ShippingRuleController::poidsSupplements();
+
         foreach ($cartGrouped as $vendeurId => $items) {
             $vendeur = \App\Models\Vendeur::find($vendeurId);
             if (!$vendeur) {
                 continue;
             }
             $shippingFee += $this->computeShippingFeeForVendeur($vendeur, $request->mode_livraison, $destCountryId, $region);
+
+            // Supplément poids (choix B : somme des suppléments de chaque article e-commerce)
+            foreach ($items as $item) {
+                $palier = $item->annonce->poids_palier ?? null;
+                if ($palier && isset($supplements[$palier])) {
+                    $shippingFee += $supplements[$palier] * (int) ($item->quantite ?? 1);
+                }
+            }
         }
 
         session([

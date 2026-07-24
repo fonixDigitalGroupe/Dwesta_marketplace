@@ -13,7 +13,10 @@
       "Bash(php -l app/Http/Controllers/Admin/VendeurAbonnementController.php)",
       "Bash(grep -n 'compact\\\\|$role' app/Http/Controllers/Admin/UserController.php)",
       "Bash(php -l app/Http/Controllers/Auth/SocialAuthController.php)",
-      "Bash(grep -n \"function validateAnnonce\\\\|case 'produit'\\\\|TYPE_PRODUIT\\\\|'produit'\\\\|switch\\\\|type_livraison\\\\|return \\\\$\" app/Http/Controllers/AnnonceController.php)"
+      "Bash(grep -n \"function validateAnnonce\\\\|case 'produit'\\\\|TYPE_PRODUIT\\\\|'produit'\\\\|switch\\\\|type_livraison\\\\|return \\\\$\" app/Http/Controllers/AnnonceController.php)",
+      "Bash(grep -rniE '$item->|item\\\\.quantite|item\\\\.quantity|->annonce' app/Services/CartService.php)",
+      "Bash(php -l app/Http/Controllers/CheckoutController.php)",
+      "Bash(php -l app/Http/Controllers/Admin/ShippingRuleController.php)"
     ]
   }
 }

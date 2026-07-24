@@ -1135,6 +1135,7 @@
         const rules = @json($shippingRules);
         const interRegionTariffs = @json($interRegionTariffs ?? []);
         const userRegion = @json($userRegion ?? '');
+        const sellerSupplements = @json($sellerSupplements ?? []);
         let selectedPRRegion = null;
         const CHECKOUT_STATE_KEY = 'dwesta_checkout_state';
 
@@ -1274,7 +1275,7 @@
 
             sellers.forEach(sellerId => {
                 const shp = getSellerShipping(type, sellerId, prRegion);
-                const fee = shp.fee;
+                const fee = shp.fee + (parseFloat(sellerSupplements[sellerId]) || 0);
                 const delayRaw = shp.delay || (type === 'domicile' ? '2-4' : '3-5');
                 const delay = formatDelay(delayRaw) || (type === 'domicile' ? '2 à 4 jours' : '3 à 5 jours');
 
