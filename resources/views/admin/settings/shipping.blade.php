@@ -55,43 +55,6 @@
             </div>
         </div>
 
-        {{-- ===================== SUPPLÉMENTS PAR POIDS (e-commerce) ===================== --}}
-        <div style="background: #f8fafc; border: 1px solid #eff3f6; border-radius: 8px; padding: 18px; margin-bottom: 24px;">
-            <h3 class="section-title" style="margin-bottom: 6px;">Suppléments de livraison par poids (produits e-commerce)</h3>
-            <p style="font-size: 0.8rem; color: #64748b; margin: 0 0 14px;">
-                Montant ajouté au tarif de zone selon le palier de poids choisi par le vendeur. Les articles non e-commerce ne sont pas concernés.
-            </p>
-            <form action="{{ route('admin.shipping.supplements') }}" method="POST">
-                @csrf
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
-                    @php
-                        $suppLabels = [
-                            'ship_supp_petit' => 'Petit (< 1 kg)',
-                            'ship_supp_moyen' => 'Moyen (1–5 kg)',
-                            'ship_supp_volumineux' => 'Volumineux (5–20 kg)',
-                            'ship_supp_lourd' => 'Lourd (> 20 kg)',
-                        ];
-                        $suppKeys = ['petit' => 'ship_supp_petit', 'moyen' => 'ship_supp_moyen', 'volumineux' => 'ship_supp_volumineux', 'lourd' => 'ship_supp_lourd'];
-                    @endphp
-                    @foreach($suppKeys as $palier => $key)
-                        <div>
-                            <label style="display:block; font-size:0.72rem; font-weight:600; color:#94a3b8; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:5px;">{{ $suppLabels[$key] }}</label>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <input type="number" name="{{ $key }}" min="0" step="1" value="{{ (int) ($poidsSupplements[$palier] ?? 0) }}"
-                                    style="width:100%; padding:9px 10px; border:1px solid #dee2e6; border-radius:6px; font-size:0.85rem;">
-                                <span style="font-size:0.8rem; color:#64748b;">F</span>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-                <div style="margin-top: 14px;">
-                    <button type="submit" style="background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%); border:none; color:#fff; padding:9px 18px; border-radius:6px; font-size:0.8rem; font-weight:600; cursor:pointer;">
-                        <i class="fas fa-save"></i> Enregistrer les suppléments
-                    </button>
-                </div>
-            </form>
-        </div>
-
         {{-- ===================== FORMULAIRES (côte à côte) ===================== --}}
         <div class="ship-block">
             <div class="forms-grid">
@@ -126,6 +89,16 @@
                             <select name="delivery_type" required>
                                 <option value="livraison_domicile">Livraison à domicile</option>
                                 <option value="retrait_point_relais">Point Relais</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label class="field-label">Poids / encombrement</label>
+                            <select name="poids_palier">
+                                <option value="">Tous les poids</option>
+                                @foreach(\App\Models\Annonce::POIDS_PALIERS as $val => $label)
+                                    <option value="{{ $val }}">{{ $label }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -209,6 +182,7 @@
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Source</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Destination</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Type</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Poids</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Délai</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Prix</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 90px;">Statut</th>
@@ -232,6 +206,9 @@
                                 <span class="badge {{ $rule->delivery_type == 'livraison_domicile' ? 'badge-domicile' : 'badge-relais' }}">
                                     {{ $rule->delivery_type == 'livraison_domicile' ? 'À Domicile' : 'Point Relais' }}
                                 </span>
+                            </td>
+                            <td style="padding: 12px 15px; font-size: 0.78rem; color: #4338ca; text-align: center; border-right: 1px solid #eff3f6;">
+                                {{ $rule->poids_palier ? ucfirst($rule->poids_palier) : 'Tous' }}
                             </td>
                             <td style="padding: 12px 15px; font-size: 0.8rem; color: #64748b; text-align: center; border-right: 1px solid #eff3f6;">{{ $rule->delivery_delay ?? '-' }}</td>
                             <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #1e293b; text-align: center; border-right: 1px solid #eff3f6;">{{ number_format($rule->price, 0, ',', ' ') }} F</td>
@@ -260,7 +237,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
+                            <td colspan="8" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
                                 Aucune règle de livraison configurée.
                             </td>
                         </tr>

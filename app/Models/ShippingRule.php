@@ -14,6 +14,7 @@ class ShippingRule extends Model
         'destination_country_id',
         'zone_name',
         'delivery_type',
+        'poids_palier',
         'price',
         'delivery_delay',
         'is_active',

@@ -16,7 +16,8 @@
       "Bash(grep -n \"function validateAnnonce\\\\|case 'produit'\\\\|TYPE_PRODUIT\\\\|'produit'\\\\|switch\\\\|type_livraison\\\\|return \\\\$\" app/Http/Controllers/AnnonceController.php)",
       "Bash(grep -rniE '$item->|item\\\\.quantite|item\\\\.quantity|->annonce' app/Services/CartService.php)",
       "Bash(php -l app/Http/Controllers/CheckoutController.php)",
-      "Bash(php -l app/Http/Controllers/Admin/ShippingRuleController.php)"
+      "Bash(php -l app/Http/Controllers/Admin/ShippingRuleController.php)",
+      "Bash(grep -n 'function computeShippingFeeForVendeur\\\\|ShippingRule::active\\\\|->where\\('\\\\''zone_name'\\\\''\\\\|orderByRaw\\\\|return $rule\\\\|foreach \\($cartGrouped\\\\|computeShippingFeeForVendeur\\(\\\\|$supplements\\\\|poidsSupplements\\\\|poids_palier' app/Http/Controllers/CheckoutController.php)"
     ]
   }
 }

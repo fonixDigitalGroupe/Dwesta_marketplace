@@ -341,7 +341,6 @@ Route::middleware('auth')->group(function () {
             Route::prefix('shipping')->name('shipping.')->group(function () {
                 Route::get('/', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'index'])->name('index');
                 Route::post('/', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'store'])->name('store');
-                Route::post('/supplements', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'updateSupplements'])->name('supplements');
                 Route::put('/{shippingRule}', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'update'])->name('update');
                 Route::delete('/{shippingRule}', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'destroy'])->name('destroy');
                 Route::patch('/{shippingRule}/toggle', [\App\Http\Controllers\Admin\ShippingRuleController::class, 'toggle'])->name('toggle');

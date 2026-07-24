@@ -15,42 +15,7 @@ class ShippingRuleController extends Controller
         $countries = \App\Models\Country::active()->orderBy('name')->get();
         $interRegionTariffs = InterRegionTariff::with('country')->orderBy('id', 'desc')->get();
 
-        // Suppléments de livraison par palier de poids (e-commerce)
-        $poidsSupplements = self::poidsSupplements();
-
-        return view('admin.settings.shipping', compact('rules', 'countries', 'interRegionTariffs', 'poidsSupplements'));
-    }
-
-    /**
-     * Suppléments de livraison (FCFA) par palier de poids, depuis les réglages.
-     */
-    public static function poidsSupplements(): array
-    {
-        return [
-            'petit'      => (float) \App\Models\Setting::get('ship_supp_petit', 0),
-            'moyen'      => (float) \App\Models\Setting::get('ship_supp_moyen', 0),
-            'volumineux' => (float) \App\Models\Setting::get('ship_supp_volumineux', 0),
-            'lourd'      => (float) \App\Models\Setting::get('ship_supp_lourd', 0),
-        ];
-    }
-
-    /**
-     * Enregistre les suppléments de livraison par palier.
-     */
-    public function updateSupplements(Request $request)
-    {
-        $validated = $request->validate([
-            'ship_supp_petit'      => 'required|numeric|min:0',
-            'ship_supp_moyen'      => 'required|numeric|min:0',
-            'ship_supp_volumineux' => 'required|numeric|min:0',
-            'ship_supp_lourd'      => 'required|numeric|min:0',
-        ]);
-
-        foreach ($validated as $key => $value) {
-            \App\Models\Setting::set($key, $value, 'number');
-        }
-
-        return redirect()->back()->with('success', 'Suppléments de livraison par poids enregistrés.');
+        return view('admin.settings.shipping', compact('rules', 'countries', 'interRegionTariffs'));
     }
 
     public function store(Request $request)
@@ -60,6 +25,7 @@ class ShippingRuleController extends Controller
             'destination_country_id' => 'required|exists:countries,id',
             'zone_name' => 'nullable|string|max:255',
             'delivery_type' => 'required|in:livraison_domicile,retrait_point_relais',
+            'poids_palier' => ['nullable', \Illuminate\Validation\Rule::in(array_keys(\App\Models\Annonce::POIDS_PALIERS))],
             'price' => 'required|numeric|min:0',
             'delivery_delay' => 'nullable|string|max:100',
         ]);
@@ -76,6 +42,7 @@ class ShippingRuleController extends Controller
             'destination_country_id' => 'required|exists:countries,id',
             'zone_name' => 'nullable|string|max:255',
             'delivery_type' => 'required|in:livraison_domicile,retrait_point_relais',
+            'poids_palier' => ['nullable', \Illuminate\Validation\Rule::in(array_keys(\App\Models\Annonce::POIDS_PALIERS))],
             'price' => 'required|numeric|min:0',
             'delivery_delay' => 'nullable|string|max:100',
             'is_active' => 'nullable|boolean',

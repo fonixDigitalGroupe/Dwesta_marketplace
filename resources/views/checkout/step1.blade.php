@@ -1135,7 +1135,7 @@
         const rules = @json($shippingRules);
         const interRegionTariffs = @json($interRegionTariffs ?? []);
         const userRegion = @json($userRegion ?? '');
-        const sellerSupplements = @json($sellerSupplements ?? []);
+        const sellerPaliers = @json($sellerPaliers ?? []);
         let selectedPRRegion = null;
         const CHECKOUT_STATE_KEY = 'dwesta_checkout_state';
 
@@ -1193,28 +1193,24 @@
 
         function getRule(type, sellerId, region = null) {
             const sellerCountryId = sellerOrigins[sellerId];
+            const palier = sellerPaliers[sellerId] || null;
 
-            // On cherche la règle exacte (Pays Source -> Pays Destination -> Type -> Région)
-            let rule = rules.find(r =>
-                r.delivery_type === type &&
-                r.source_country_id == sellerCountryId &&
-                r.destination_country_id == userCountryId &&
-                r.is_active &&
-                (region ? r.zone_name && r.zone_name.toLowerCase() === region.toLowerCase() : r.zone_name && r.zone_name.toLowerCase() === userRegion.toLowerCase())
-            );
+            const base = r => r.delivery_type === type
+                && r.source_country_id == sellerCountryId
+                && r.destination_country_id == userCountryId
+                && r.is_active;
+            const regionMatch = r => (region
+                ? (r.zone_name && r.zone_name.toLowerCase() === region.toLowerCase())
+                : (r.zone_name && r.zone_name.toLowerCase() === userRegion.toLowerCase()));
+            const nationalMatch = r => (!r.zone_name || r.zone_name.toLowerCase() === 'national' || r.zone_name.toLowerCase() === 'sénégal');
+            const palierExact = r => r.poids_palier === palier;
+            const palierNull = r => !r.poids_palier;
 
-            // Sinon sans région (National)
-            if (!rule) {
-                rule = rules.find(r =>
-                    r.delivery_type === type &&
-                    r.source_country_id == sellerCountryId &&
-                    r.destination_country_id == userCountryId &&
-                    r.is_active &&
-                    (!r.zone_name || r.zone_name.toLowerCase() === 'national' || r.zone_name.toLowerCase() === 'sénégal')
-                );
-            }
-
-            return rule;
+            // Priorité : (région + palier exact) > (région + tous poids) > (national + palier exact) > (national + tous poids)
+            return rules.find(r => base(r) && regionMatch(r) && palierExact(r))
+                || rules.find(r => base(r) && regionMatch(r) && palierNull(r))
+                || rules.find(r => base(r) && nationalMatch(r) && palierExact(r))
+                || rules.find(r => base(r) && nationalMatch(r) && palierNull(r));
         }
 
         // Frais d'un vendeur : même pays -> tarif inter-régions, sinon règle pays -> pays.
@@ -1275,7 +1271,7 @@
 
             sellers.forEach(sellerId => {
                 const shp = getSellerShipping(type, sellerId, prRegion);
-                const fee = shp.fee + (parseFloat(sellerSupplements[sellerId]) || 0);
+                const fee = shp.fee;
                 const delayRaw = shp.delay || (type === 'domicile' ? '2-4' : '3-5');
                 const delay = formatDelay(delayRaw) || (type === 'domicile' ? '2 à 4 jours' : '3 à 5 jours');
 

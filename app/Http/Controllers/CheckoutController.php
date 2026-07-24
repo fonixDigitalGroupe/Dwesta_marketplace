@@ -58,21 +58,13 @@ class CheckoutController extends Controller
         // Préparer les origines des vendeurs pour le calcul JS
         $sellerOrigins = [];
         $sellerRegions = [];
-        $sellerSupplements = [];
-        $supplements = \App\Http\Controllers\Admin\ShippingRuleController::poidsSupplements();
+        $sellerPaliers = [];
         foreach ($cartGrouped as $vendeurId => $items) {
             $vendeur = \App\Models\Vendeur::find($vendeurId);
             $sellerOrigins[$vendeurId] = $this->resolveCountryId($vendeur->user->pays ?? 'Sénégal');
             $sellerRegions[$vendeurId] = $vendeur->user->region ?? null;
-            // Supplément poids = somme des suppléments de chaque article e-commerce du vendeur (choix B)
-            $supp = 0;
-            foreach ($items as $item) {
-                $palier = $item->annonce->poids_palier ?? null;
-                if ($palier && isset($supplements[$palier])) {
-                    $supp += $supplements[$palier] * (int) ($item->quantite ?? 1);
-                }
-            }
-            $sellerSupplements[$vendeurId] = $supp;
+            // Palier d'expédition du vendeur = le plus lourd parmi ses articles
+            $sellerPaliers[$vendeurId] = $this->palierLePlusLourd($items);
         }
         $userCountryId = $this->resolveCountryId($user->pays ?? 'Sénégal');
         $userRegion = $user->region ?: $user->ville;
@@ -88,7 +80,22 @@ class CheckoutController extends Controller
                 ],
             ]);
 
-        return view('checkout.step1', compact('cartGrouped', 'subtotal', 'user', 'requiresPointRelais', 'pointRelais', 'shippingRules', 'sellerOrigins', 'userCountryId', 'sellerRegions', 'userRegion', 'interRegionTariffs', 'sellerSupplements'));
+        return view('checkout.step1', compact('cartGrouped', 'subtotal', 'user', 'requiresPointRelais', 'pointRelais', 'shippingRules', 'sellerOrigins', 'userCountryId', 'sellerRegions', 'userRegion', 'interRegionTariffs', 'sellerPaliers'));
+    }
+
+    /** Ordre de "lourdeur" des paliers. */
+    private const PALIER_ORDRE = ['petit' => 1, 'moyen' => 2, 'volumineux' => 3, 'lourd' => 4];
+
+    /** Renvoie le palier le plus lourd parmi les articles (null si aucun). */
+    private function palierLePlusLourd($items): ?string
+    {
+        $max = null; $maxRang = 0;
+        foreach ($items as $item) {
+            $p = $item->annonce->poids_palier ?? null;
+            $rang = self::PALIER_ORDRE[$p] ?? 0;
+            if ($rang > $maxRang) { $maxRang = $rang; $max = $p; }
+        }
+        return $max;
     }
 
     private function resolveCountryId(?string $countryName)
@@ -107,7 +114,7 @@ class CheckoutController extends Controller
      *  - même pays  : tarif inter-régions (même région vs régions différentes)
      *  - pays diff. : règle pays → pays (ShippingRule)
      */
-    private function computeShippingFeeForVendeur($vendeur, string $mode, ?int $destCountryId, ?string $destRegion): float
+    private function computeShippingFeeForVendeur($vendeur, string $mode, ?int $destCountryId, ?string $destRegion, ?string $palier = null): float
     {
         if (!$vendeur) {
             return 0;
@@ -132,6 +139,7 @@ class CheckoutController extends Controller
         }
 
         // Pays différents (ou pas de tarif national) → règle pays → pays.
+        // On privilégie la règle du palier de poids exact, puis la règle "tous poids" (null).
         $rule = \App\Models\ShippingRule::active()
             ->where('delivery_type', $mode)
             ->where('source_country_id', $sourceCountryId)
@@ -141,6 +149,13 @@ class CheckoutController extends Controller
                     ->orWhereNull('zone_name')
                     ->orWhere('zone_name', '');
             })
+            ->where(function ($q) use ($palier) {
+                $q->whereNull('poids_palier');
+                if ($palier) {
+                    $q->orWhere('poids_palier', $palier);
+                }
+            })
+            ->orderByRaw("CASE WHEN poids_palier = ? THEN 0 ELSE 1 END", [$palier])
             ->orderByRaw("CASE WHEN zone_name = ? THEN 0 ELSE 1 END", [$destRegion])
             ->first();
 
@@ -178,26 +193,18 @@ class CheckoutController extends Controller
 
         $destCountryId = $this->resolveCountryId($destCountryName);
 
-        // On calcule la somme des frais pour chaque vendeur du panier
+        // On calcule la somme des frais pour chaque vendeur du panier.
+        // Le tarif dépend du palier de poids le plus lourd des articles du vendeur.
         $cartGrouped = $this->cartService->getContentGroupedBySeller();
         $shippingFee = 0;
-
-        $supplements = \App\Http\Controllers\Admin\ShippingRuleController::poidsSupplements();
 
         foreach ($cartGrouped as $vendeurId => $items) {
             $vendeur = \App\Models\Vendeur::find($vendeurId);
             if (!$vendeur) {
                 continue;
             }
-            $shippingFee += $this->computeShippingFeeForVendeur($vendeur, $request->mode_livraison, $destCountryId, $region);
-
-            // Supplément poids (choix B : somme des suppléments de chaque article e-commerce)
-            foreach ($items as $item) {
-                $palier = $item->annonce->poids_palier ?? null;
-                if ($palier && isset($supplements[$palier])) {
-                    $shippingFee += $supplements[$palier] * (int) ($item->quantite ?? 1);
-                }
-            }
+            $palier = $this->palierLePlusLourd($items);
+            $shippingFee += $this->computeShippingFeeForVendeur($vendeur, $request->mode_livraison, $destCountryId, $region, $palier);
         }
 
         session([
@@ -370,7 +377,7 @@ class CheckoutController extends Controller
                 $destCountryId = $this->resolveCountryId($destCountryName);
 
                 // Frais selon /admin/shipping : inter-régions (même pays) ou pays → pays.
-                $fraisPort = $this->computeShippingFeeForVendeur($vendeurModel, $mode, $destCountryId, $destRegion);
+                $fraisPort = $this->computeShippingFeeForVendeur($vendeurModel, $mode, $destCountryId, $destRegion, $this->palierLePlusLourd($items));
                 $totalFinal = $totalProduits + $fraisPort;
 
                 $tauxCommission = $vendeurModel && $vendeurModel->abonnementActuel ? $vendeurModel->abonnementActuel->commission : 15;
