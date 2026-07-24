@@ -119,21 +119,17 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function champsProfilManquants(): array
     {
-        $requis = [
-            'prenom'    => 'Prénom',
-            'nom'       => 'Nom',
-            'telephone' => 'Téléphone',
-            'adresse'   => 'Adresse',
-            'ville'     => 'Ville',
-            'pays'      => 'Pays',
-        ];
+        $rempli = fn ($champ) => trim((string) ($this->{$champ} ?? '')) !== '';
 
         $manquants = [];
-        foreach ($requis as $champ => $label) {
-            if (trim((string) ($this->{$champ} ?? '')) === '') {
-                $manquants[] = $label;
-            }
-        }
+
+        if (!$rempli('prenom'))    $manquants[] = 'Prénom';
+        if (!$rempli('nom'))       $manquants[] = 'Nom';
+        if (!$rempli('telephone')) $manquants[] = 'Téléphone';
+        if (!$rempli('adresse'))   $manquants[] = 'Adresse';
+        // La ville est gérée par la région, le pays par la nationalité (on accepte l'un ou l'autre)
+        if (!$rempli('ville') && !$rempli('region'))       $manquants[] = 'Ville / Région';
+        if (!$rempli('pays') && !$rempli('nationalite'))   $manquants[] = 'Pays / Nationalité';
 
         return $manquants;
     }
