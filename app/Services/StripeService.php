@@ -47,6 +47,39 @@ class StripeService
     }
 
     /**
+     * Crée une session Checkout carte pour une commande marketplace (multi-vendeurs).
+     * Le montant est en FCFA et converti en EUR (Stripe ne supporte pas le XOF/XAF).
+     * Le webhook retrouve les commandes via stripe_session_id.
+     */
+    public function createMarketplaceSession(float $amountFcfa, string $successUrl, string $cancelUrl, ?string $email = null)
+    {
+        // 1 EUR = 655.957 FCFA (parité fixe CFA). Minimum Stripe ~0,50 €.
+        $eurCents = max((int) round($amountFcfa / 655.957 * 100), 50);
+
+        return $this->stripe->checkout->sessions->create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => 'Commande Dwesta',
+                        'description' => 'Paiement par carte de votre commande sur Karnou',
+                    ],
+                    'unit_amount' => $eurCents,
+                ],
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => $successUrl . (str_contains($successUrl, '?') ? '&' : '?') . 'session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => $cancelUrl,
+            'metadata' => [
+                'type' => 'marketplace_order',
+            ],
+            'customer_email' => $email,
+        ]);
+    }
+
+    /**
      * Crée une session Checkout pour un abonnement (Style Pay-as-you-go / One-off)
      */
     public function createSubscriptionSession(Vendeur $vendeur, Abonnement $plan, $successUrl, $cancelUrl)

@@ -560,6 +560,29 @@ class CheckoutController extends Controller
                 ]);
 
                 if ($remainingTotal > 0 && $moyenPaiement !== 'gift_card') {
+                    // ===== Paiement par CARTE → Stripe (PayDunya carte nécessite PCI-DSS) =====
+                    // (si une carte cadeau est appliquée, on garde PayDunya qui gère la déduction)
+                    if ($moyenPaiement === 'cb' && !$resolvedGiftCard) {
+                        $stripe = app(\App\Services\StripeService::class);
+                        $stripeSession = $stripe->createMarketplaceSession(
+                            $remainingTotal,
+                            route('checkout.success'),
+                            route('cart.index'),
+                            Auth::user()->email
+                        );
+
+                        foreach ($orders as $o) {
+                            $o->update(['stripe_session_id' => $stripeSession->id]);
+                        }
+
+                        DB::commit();
+
+                        if ($request->expectsJson()) {
+                            return response()->json(['success' => true, 'redirect_url' => $stripeSession->url]);
+                        }
+                        return redirect($stripeSession->url);
+                    }
+
                     // Normalize payment method for PayDunya (card -> cb)
                     $paymentMethod = in_array($moyenPaiement, ['gift_card', 'cb', 'card']) ? 'cb' : $moyenPaiement;
                     // If it's cb (hosted card), we pass null to allow all methods on hosted page, 
