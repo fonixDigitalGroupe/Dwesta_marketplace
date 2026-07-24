@@ -74,13 +74,18 @@ class ShippingRuleController extends Controller
         $validated = $request->validate([
             'country_id' => 'required|exists:countries,id',
             'delivery_type' => 'required|in:livraison_domicile,retrait_point_relais',
+            'poids_palier' => ['nullable', \Illuminate\Validation\Rule::in(array_keys(\App\Models\Annonce::POIDS_PALIERS))],
             'same_region_price' => 'required|numeric|min:0',
             'inter_region_price' => 'required|numeric|min:0',
             'delivery_delay' => 'nullable|string|max:100',
         ]);
 
         InterRegionTariff::updateOrCreate(
-            ['country_id' => $validated['country_id'], 'delivery_type' => $validated['delivery_type']],
+            [
+                'country_id' => $validated['country_id'],
+                'delivery_type' => $validated['delivery_type'],
+                'poids_palier' => $validated['poids_palier'] ?? null,
+            ],
             [
                 'same_region_price' => $validated['same_region_price'],
                 'inter_region_price' => $validated['inter_region_price'],

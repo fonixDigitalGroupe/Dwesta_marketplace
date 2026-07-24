@@ -9,6 +9,7 @@ class InterRegionTariff extends Model
     protected $fillable = [
         'country_id',
         'delivery_type',
+        'poids_palier',
         'same_region_price',
         'inter_region_price',
         'delivery_delay',

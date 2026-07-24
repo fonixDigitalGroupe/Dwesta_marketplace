@@ -1217,8 +1217,13 @@
         function getSellerShipping(type, sellerId, region = null) {
             try {
                 const sellerCountryId = sellerOrigins[sellerId];
-                const irt = (sellerCountryId && userCountryId && sellerCountryId == userCountryId)
-                    ? interRegionTariffs[sellerCountryId + '|' + type] : null;
+                const palier = sellerPaliers[sellerId] || null;
+                let irt = null;
+                if (sellerCountryId && userCountryId && sellerCountryId == userCountryId) {
+                    // Priorité au tarif du palier exact, sinon "tous poids"
+                    irt = (palier ? interRegionTariffs[sellerCountryId + '|' + type + '|' + palier] : null)
+                        || interRegionTariffs[sellerCountryId + '|' + type + '|tous'];
+                }
 
                 if (irt) {
                     const destRegion = (region || userRegion || '').toString().trim().toLowerCase();

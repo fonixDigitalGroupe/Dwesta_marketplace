@@ -69,11 +69,12 @@ class CheckoutController extends Controller
         $userCountryId = $this->resolveCountryId($user->pays ?? 'Sénégal');
         $userRegion = $user->region ?: $user->ville;
 
-        // Tarifs inter-régions (même pays) indexés par "country_id|delivery_type"
+        // Tarifs inter-régions (même pays) indexés par "country_id|delivery_type|palier"
+        // (palier = 'tous' quand la règle s'applique à tous les poids)
         $interRegionTariffs = \App\Models\InterRegionTariff::where('is_active', true)
             ->get()
             ->mapWithKeys(fn($t) => [
-                $t->country_id . '|' . $t->delivery_type => [
+                $t->country_id . '|' . $t->delivery_type . '|' . ($t->poids_palier ?: 'tous') => [
                     'same' => (float) $t->same_region_price,
                     'inter' => (float) $t->inter_region_price,
                     'delay' => $t->delivery_delay,
@@ -127,6 +128,13 @@ class CheckoutController extends Controller
             $tarif = \App\Models\InterRegionTariff::where('country_id', $destCountryId)
                 ->where('delivery_type', $mode)
                 ->where('is_active', true)
+                ->where(function ($q) use ($palier) {
+                    $q->whereNull('poids_palier');
+                    if ($palier) {
+                        $q->orWhere('poids_palier', $palier);
+                    }
+                })
+                ->orderByRaw("CASE WHEN poids_palier = ? THEN 0 ELSE 1 END", [$palier])
                 ->first();
 
             if ($tarif) {

@@ -144,6 +144,16 @@
                         </div>
 
                         <div class="form-row">
+                            <label class="field-label">Poids / encombrement</label>
+                            <select name="poids_palier">
+                                <option value="">Tous les poids</option>
+                                @foreach(\App\Models\Annonce::POIDS_PALIERS as $val => $label)
+                                    <option value="{{ $val }}">{{ $label }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-row">
                             <label class="field-label">Prix même région (FCFA)</label>
                             <input type="number" name="same_region_price" value="0" min="0" required>
                         </div>
@@ -159,7 +169,7 @@
                         </div>
 
                         <div class="form-footer">
-                            <p style="font-size: 0.72rem; color: #94a3b8; margin: 0 0 10px;">Un seul tarif par pays. Ré-enregistrer un pays met à jour son tarif.</p>
+                            <p style="font-size: 0.72rem; color: #94a3b8; margin: 0 0 10px;">Un tarif par pays × mode × palier de poids. Ré-enregistrer la même combinaison met à jour son tarif.</p>
                             <button type="submit" class="btn-amazon-primary" style="width: 100%; justify-content: center; background: #ff9900;">
                                 ENREGISTRER LE TARIF
                             </button>
@@ -258,6 +268,7 @@
                     <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 160px;">Pays</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 120px;">Type</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 110px;">Poids</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Même région</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 130px;">Régions différentes</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6; width: 100px;">Délai</th>
@@ -277,6 +288,7 @@
                                     {{ $tarif->delivery_type == 'livraison_domicile' ? 'À Domicile' : 'Point Relais' }}
                                 </span>
                             </td>
+                            <td style="padding: 12px 15px; font-size: 0.78rem; color: #4338ca; text-align: center; border-right: 1px solid #eff3f6;">{{ $tarif->poids_palier ? ucfirst($tarif->poids_palier) : 'Tous' }}</td>
                             <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #1e293b; text-align: center; border-right: 1px solid #eff3f6;">{{ number_format($tarif->same_region_price, 0, ',', ' ') }} F</td>
                             <td style="padding: 12px 15px; font-size: 0.8rem; font-weight: 700; color: #1e293b; text-align: center; border-right: 1px solid #eff3f6;">{{ number_format($tarif->inter_region_price, 0, ',', ' ') }} F</td>
                             <td style="padding: 12px 15px; font-size: 0.8rem; color: #64748b; text-align: center; border-right: 1px solid #eff3f6;">{{ $tarif->delivery_delay ?? '-' }}</td>
@@ -303,7 +315,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
+                            <td colspan="8" style="padding: 2rem; text-align: center; color: #999; font-size: 0.85rem; border: 1px solid #eee;">
                                 Aucun tarif inter-régions configuré.
                             </td>
                         </tr>
