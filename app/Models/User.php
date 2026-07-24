@@ -114,6 +114,36 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Champs de profil requis pour pouvoir passer une commande (livraison).
+     * Retourne la liste des libellés manquants (vide = profil complet).
+     */
+    public function champsProfilManquants(): array
+    {
+        $requis = [
+            'prenom'    => 'Prénom',
+            'nom'       => 'Nom',
+            'telephone' => 'Téléphone',
+            'adresse'   => 'Adresse',
+            'ville'     => 'Ville',
+            'pays'      => 'Pays',
+        ];
+
+        $manquants = [];
+        foreach ($requis as $champ => $label) {
+            if (trim((string) ($this->{$champ} ?? '')) === '') {
+                $manquants[] = $label;
+            }
+        }
+
+        return $manquants;
+    }
+
+    public function profilComplet(): bool
+    {
+        return count($this->champsProfilManquants()) === 0;
+    }
+
+    /**
      * Utilisateur "staff" (back-office) : possède un rôle admin ou un rôle
      * personnalisé (créé dans /admin/roles), donc ni client/acheteur, ni vendeur,
      * ni rôle logistique (transporteur, livreur, point relais).

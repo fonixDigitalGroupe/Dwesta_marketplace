@@ -38,6 +38,13 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Votre panier est vide.');
         }
 
+        // Profil incomplet → on bloque la commande et on renvoie vers le profil.
+        $manquants = Auth::user()->champsProfilManquants();
+        if (!empty($manquants)) {
+            return redirect()->route('profile.show')
+                ->with('error', 'Veuillez compléter votre profil avant de commander. Informations manquantes : ' . implode(', ', $manquants) . '.');
+        }
+
         $subtotal = $this->cartService->getSubtotal();
         $user = Auth::user();
 
