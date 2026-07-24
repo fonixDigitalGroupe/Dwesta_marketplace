@@ -22,6 +22,7 @@ class Annonce extends Model
         'prix',
         'description',
         'type_livraison',
+        'poids_palier',
         'disponibilite',
         'nb_photos',
         'video_achetee',
@@ -51,6 +52,19 @@ class Annonce extends Model
     const TYPE_SERVICE = 'service';
     const TYPE_IMMOBILIER = 'immobilier';
     const TYPE_VEHICULE = 'vehicule';
+
+    // Paliers de poids/encombrement (base du calcul des frais de livraison)
+    const POIDS_PALIERS = [
+        'petit'       => 'Petit colis (moins de 1 kg)',
+        'moyen'       => 'Colis moyen (1 à 5 kg)',
+        'volumineux'  => 'Volumineux (5 à 20 kg)',
+        'lourd'       => 'Lourd / encombrant (plus de 20 kg)',
+    ];
+
+    public function getPoidsPalierLibelleAttribute(): ?string
+    {
+        return self::POIDS_PALIERS[$this->poids_palier] ?? null;
+    }
 
     // Statuts
     const STATUT_BROUILLON = 'brouillon';

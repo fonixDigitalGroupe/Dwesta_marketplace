@@ -57,6 +57,7 @@ class AnnonceService
                 'promo_expires_at' => $data['promo_expires_at'] ?? null,
                 'description' => $data['description'],
                 'type_livraison' => $data['type_livraison'] ?? null,
+                'poids_palier' => $data['poids_palier'] ?? null,
                 'disponibilite' => $data['disponibilite'] ?? Annonce::DISPONIBILITE_EN_STOCK,
                 'statut' => $data['statut'] ?? Annonce::STATUT_BROUILLON,
                 'publiee_le' => ($data['statut'] ?? Annonce::STATUT_BROUILLON) === Annonce::STATUT_PUBLIEE ? now() : null,

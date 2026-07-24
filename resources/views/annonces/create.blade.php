@@ -1373,6 +1373,21 @@
                                 value="1" required
                                 style="border-radius: 8px; border: 1.5px solid #e0e0e0; padding: 0.6rem 1rem; width: 100%; height: 45px;">
                         </div>
+
+                        <div id="poids-palier-container" class="form-group">
+                            <label for="poids_palier" class="form-label"
+                                style="font-size: 0.9rem; font-weight: 700; color: #000; margin-bottom: 0.5rem;">Poids / encombrement du produit</label>
+                            <select id="poids_palier" name="poids_palier" class="form-input"
+                                style="border-radius: 8px; border: 1.5px solid #e0e0e0; padding: 0.6rem 1rem; width: 100%; height: 45px;">
+                                <option value="">— Choisir —</option>
+                                @foreach(\App\Models\Annonce::POIDS_PALIERS as $val => $label)
+                                    <option value="{{ $val }}">{{ $label }}</option>
+                                @endforeach
+                            </select>
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 0.4rem;">
+                                Cette information sert à calculer des frais de livraison réalistes pour l'acheteur.
+                            </p>
+                        </div>
                     </div>
 
                     <div class="form-actions"><button type="button" class="btn btn-secondary"
@@ -1704,16 +1719,33 @@
         function toggleStockVisibility(categoryId) {
             const container = document.getElementById('quantity-container');
             const input = document.getElementById('quantite');
-            if (!container || !input) return;
+            const poidsContainer = document.getElementById('poids-palier-container');
+            const poidsInput = document.getElementById('poids_palier');
 
             const cat = categoriesData[categoryId];
-            if (cat && (cat.famille === 'Services' || cat.famille === 'Immobilier' || cat.famille === 'Véhicules')) {
-                container.style.display = 'none';
-                input.value = '1'; // Default for non-stock items (services, immobilier, véhicules)
-                input.removeAttribute('required');
-            } else {
-                container.style.display = 'block';
-                input.setAttribute('required', 'required');
+            const nonEcommerce = cat && (cat.famille === 'Services' || cat.famille === 'Immobilier' || cat.famille === 'Véhicules');
+
+            if (container && input) {
+                if (nonEcommerce) {
+                    container.style.display = 'none';
+                    input.value = '1'; // Default for non-stock items (services, immobilier, véhicules)
+                    input.removeAttribute('required');
+                } else {
+                    container.style.display = 'block';
+                    input.setAttribute('required', 'required');
+                }
+            }
+
+            // Le palier de poids ne concerne que les produits e-commerce (livraison colis)
+            if (poidsContainer && poidsInput) {
+                if (nonEcommerce) {
+                    poidsContainer.style.display = 'none';
+                    poidsInput.value = '';
+                    poidsInput.removeAttribute('required');
+                } else {
+                    poidsContainer.style.display = 'block';
+                    poidsInput.setAttribute('required', 'required');
+                }
             }
         }
 

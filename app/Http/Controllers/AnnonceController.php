@@ -573,6 +573,7 @@ class AnnonceController extends Controller
                 $rules['etat'] = ['nullable', 'in:Neuf,Occasion,Reconditionné'];
                 $rules['quantite'] = ['nullable', 'integer', 'min:1'];
                 $rules['prix_moyen_marche'] = ['nullable', 'numeric', 'min:0'];
+                $rules['poids_palier'] = ['required', Rule::in(array_keys(Annonce::POIDS_PALIERS))];
                 break;
 
             case Annonce::TYPE_SERVICE:
