@@ -23,7 +23,18 @@
       "WebFetch(domain:developers.paydunya.com)",
       "Bash(php -l app/Services/StripeService.php)",
       "Bash(php -l app/Http/Controllers/Api/AuthController.php)",
-      "Bash(php -l app/Http/Controllers/Api/AnnonceController.php)"
+      "Bash(php -l app/Http/Controllers/Api/AnnonceController.php)",
+      "Bash(rm -rf ~/.cache/dotslash ~/.cache/google-chrome ~/.cache/tracker3 ~/.cache/ms-playwright-go)",
+      "Bash(sync)",
+      "Bash(npm install *)",
+      "Bash(CI=1 timeout 45 npx expo start)",
+      "Bash(rm -rf node_modules package-lock.json)",
+      "Bash(npx expo *)",
+      "Bash(rm -rf ~/.npm/_npx node_modules package-lock.json)",
+      "Bash(php -l app/Http/Resources/AnnonceResource.php)",
+      "Bash(rm -rf \"app/\\(tabs\\)\" \"app/\\(auth\\)\" \"app/annonce\" src/store src/api)",
+      "Bash(npx tsc *)",
+      "Bash(echo \"--- exit: $? ---\")"
     ]
   }
 }
