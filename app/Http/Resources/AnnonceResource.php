@@ -25,10 +25,10 @@ class AnnonceResource extends JsonResource
             'poids_palier'  => $this->poids_palier,
             'note_moyenne'  => round((float) $this->note_moyenne, 1),
             'nombre_avis'   => (int) $this->nombre_avis,
-            'photo'         => $this->photoPrincipale()?->url,
+            'photo'         => $this->absoluteUrl($this->photoPrincipale()?->url),
             'photos'        => $this->when(
                 $request->routeIs('api.annonces.show'),
-                fn () => $this->photos->map(fn ($p) => $p->url)->values()
+                fn () => $this->photos->map(fn ($p) => $this->absoluteUrl($p->url))->filter()->values()
             ),
             'vendeur'       => [
                 'id'        => $this->vendeur?->id,
@@ -39,5 +39,19 @@ class AnnonceResource extends JsonResource
             'peut_etre_achete' => $this->peutEtreAchete(),
             'cree_le'       => $this->created_at?->toIso8601String(),
         ];
+    }
+
+    /**
+     * Transforme un chemin relatif (/storage/...) en URL absolue pour l'app mobile.
+     */
+    private function absoluteUrl(?string $path): ?string
+    {
+        if (!$path) {
+            return null;
+        }
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+        return url($path);
     }
 }
