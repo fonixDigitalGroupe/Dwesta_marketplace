@@ -31,7 +31,13 @@ class AuthController extends Controller
             'password'  => Hash::make($data['password']),
         ]);
 
-        $user->assignRole('acheteur');
+        // Attribution du rôle acheteur (sans planter si le rôle n'existe pas encore)
+        try {
+            \Spatie\Permission\Models\Role::findOrCreate('acheteur', 'web');
+            $user->assignRole('acheteur');
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('API register: rôle acheteur non attribué', ['error' => $e->getMessage()]);
+        }
 
         return response()->json([
             'token' => $user->createToken('mobile')->plainTextToken,
