@@ -21,7 +21,9 @@
       "Bash(php -l app/Models/User.php)",
       "WebSearch",
       "WebFetch(domain:developers.paydunya.com)",
-      "Bash(php -l app/Services/StripeService.php)"
+      "Bash(php -l app/Services/StripeService.php)",
+      "Bash(php -l app/Http/Controllers/Api/AuthController.php)",
+      "Bash(php -l app/Http/Controllers/Api/AnnonceController.php)"
     ]
   }
 }

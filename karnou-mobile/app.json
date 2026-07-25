@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Karnou",
+    "slug": "karnou-mobile",
+    "scheme": "karnou",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#004aad"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "fr.karnou.mobile"
+    },
+    "android": {
+      "package": "fr.karnou.mobile"
+    },
+    "plugins": ["expo-router", "expo-secure-store"],
+    "extra": {
+      "apiBaseUrl": "https://karnou.com/api"
+    }
+  }
+}
