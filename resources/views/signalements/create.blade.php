@@ -13,7 +13,7 @@
         <i class="fas fa-chevron-left"></i> Retour à l'annonce
     </a>
 
-    <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; overflow: hidden;">
+    <div style="background: #fff; overflow: hidden;">
 
         <!-- Header -->
         <div style="padding: 1.1rem 1.5rem; border-bottom: 1px solid #f0f0f0;">
