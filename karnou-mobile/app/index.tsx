@@ -8,6 +8,7 @@ import { SITE_URL } from '../src/config';
 export default function KarnouWebApp() {
   const webRef = useRef<WebView>(null);
   const [loading, setLoading] = useState(true);
+  const [firstDone, setFirstDone] = useState(false); // true une fois la 1re page chargée
   const [canGoBack, setCanGoBack] = useState(false);
 
   // Bouton retour Android → revient dans l'historique du site
@@ -36,7 +37,10 @@ export default function KarnouWebApp() {
         source={{ uri: SITE_URL }}
         onNavigationStateChange={onNav}
         onLoadStart={() => setLoading(true)}
-        onLoadEnd={() => setLoading(false)}
+        onLoadEnd={() => {
+          setLoading(false);
+          setFirstDone(true);
+        }}
         // Réglages utiles marketplace (paiement, upload photo, cookies/session)
         javaScriptEnabled
         domStorageEnabled
@@ -50,13 +54,19 @@ export default function KarnouWebApp() {
         setSupportMultipleWindows={false}
         renderLoading={() => <View />}
         style={styles.webview}
-        // Permet le "tirer pour rafraîchir" natif sur iOS via ScrollView parent non nécessaire ;
-        // Android utilise pullToRefreshEnabled ci-dessus.
       />
 
-      {loading && (
+      {/* Loader plein écran UNIQUEMENT au tout premier chargement de l'app */}
+      {loading && !firstDone && (
         <View style={styles.loader} pointerEvents="none">
           <ActivityIndicator size="large" color="#004aad" />
+        </View>
+      )}
+
+      {/* Navigations suivantes : petit indicateur discret en haut, pas d'overlay */}
+      {loading && firstDone && (
+        <View style={styles.topBar} pointerEvents="none">
+          <ActivityIndicator size="small" color="#004aad" />
         </View>
       )}
     </SafeAreaView>
@@ -74,6 +84,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.85)',
+    backgroundColor: '#fff',
+  },
+  topBar: {
+    position: 'absolute',
+    top: 8,
+    right: 12,
   },
 });

@@ -34,7 +34,13 @@
       "Bash(php -l app/Http/Resources/AnnonceResource.php)",
       "Bash(rm -rf \"app/\\(tabs\\)\" \"app/\\(auth\\)\" \"app/annonce\" src/store src/api)",
       "Bash(npx tsc *)",
-      "Bash(echo \"--- exit: $? ---\")"
+      "Bash(echo \"--- exit: $? ---\")",
+      "Bash(rm -rf dist)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} en %{time_total}s\\\\n\" https://karnou.com)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" -H \"Accept: application/json\" https://karnou.com/api/annonces)",
+      "Bash(echo \"=== disque ===\"; df -h / | tail -1; echo \"=== RAM ===\"; free -h | head -2; echo \"=== virtualisation \\(KVM\\) dispo ? ===\"; grep -c -E 'vmx|svm' /proc/cpuinfo 2>/dev/null | sed 's/^/flags CPU virt: /'; ls /dev/kvm 2>/dev/null && echo \"KVM: OK\" || echo \"KVM: absent\")",
+      "Read(//proc/**)",
+      "Read(//dev/**)"
     ]
   }
 }
