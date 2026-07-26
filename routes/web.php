@@ -513,6 +513,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/annonces/{annonce}', [AnnonceController::class, 'show'])->name('annonces.show');
 
 // Signalement d'une annonce (accessible sans authentification)
+Route::get('/annonces/{annonce}/signaler', [\App\Http\Controllers\SignalementController::class, 'create'])->name('signalements.create');
 Route::post('/annonces/{annonce}/signaler', [\App\Http\Controllers\SignalementController::class, 'store'])->name('signalements.store');
 
 // Page Pro publique (accessible sans authentification) - DOIT être APRÈS les routes authentifiées pour éviter les conflits

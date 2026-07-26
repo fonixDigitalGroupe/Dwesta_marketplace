@@ -11,6 +11,14 @@ use Illuminate\Validation\Rule;
 class SignalementController extends Controller
 {
     /**
+     * Affiche la page dédiée de signalement d'une annonce.
+     */
+    public function create(Annonce $annonce)
+    {
+        return view('signalements.create', compact('annonce'));
+    }
+
+    /**
      * Enregistre un signalement d'annonce depuis le site public.
      */
     public function store(Request $request, Annonce $annonce)
@@ -33,6 +41,7 @@ class SignalementController extends Controller
             'statut' => 'nouveau',
         ]);
 
-        return back()->with('success', 'Merci, votre signalement a bien été transmis à notre équipe de modération.');
+        return redirect()->route('annonces.show', $annonce)
+            ->with('success', 'Merci, votre signalement a bien été transmis à notre équipe de modération.');
     }
 }
