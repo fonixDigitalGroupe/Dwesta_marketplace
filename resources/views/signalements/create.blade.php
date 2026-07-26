@@ -16,14 +16,14 @@
     <div style="background: #fff; overflow: hidden;">
 
         <!-- Header -->
-        <div style="padding: 1.1rem 1.5rem; border-bottom: 1px solid #f0f0f0;">
+        <div style="padding: 1.1rem 1.5rem;">
             <h1 style="margin: 0; font-family: 'Outfit','Inter',sans-serif; font-size: 1.15rem; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 0.55rem;">
                 <i class="fas fa-flag" style="color: #9ca3af; font-size: 0.95rem;"></i> Signaler cette annonce
             </h1>
         </div>
 
         <!-- Annonce concernée -->
-        <div style="display: flex; align-items: center; gap: 0.9rem; padding: 1rem 1.5rem; background: #fafafa; border-bottom: 1px solid #f0f0f0;">
+        <div style="display: flex; align-items: center; gap: 0.9rem; padding: 1rem 1.5rem; background: #fff;">
             @php($photo = $annonce->photoPrincipale() ?? $annonce->photos->first())
             @if($photo)
                 <img src="{{ $photo->url }}" alt="{{ $annonce->titre }}"
@@ -73,7 +73,7 @@
             </div>
 
             <!-- Footer -->
-            <div style="display: flex; justify-content: flex-end; gap: 0.6rem; padding: 1rem 1.5rem; border-top: 1px solid #f0f0f0; background: #fafafa;">
+            <div style="display: flex; justify-content: flex-end; gap: 0.6rem; padding: 1rem 1.5rem; background: #fff;">
                 <a href="{{ route('annonces.show', $annonce) }}"
                     style="padding: 0.6rem 1.2rem; border: 1px solid #d1d5db; background: #fff; color: #374151; border-radius: 8px; font-size: 0.88rem; font-weight: 600; text-decoration: none;">
                     Annuler
