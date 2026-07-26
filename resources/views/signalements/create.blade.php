@@ -23,7 +23,7 @@
         </div>
 
         <!-- Annonce concernée -->
-        <div style="display: flex; align-items: center; gap: 0.9rem; padding: 1rem 1.5rem; background: #fff;">
+        <div style="display: flex; align-items: center; gap: 0.9rem; padding: 1rem; margin: 0 1.5rem; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px;">
             @php($photo = $annonce->photoPrincipale() ?? $annonce->photos->first())
             @if($photo)
                 <img src="{{ $photo->url }}" alt="{{ $annonce->titre }}"
