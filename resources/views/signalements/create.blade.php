@@ -16,9 +16,9 @@
     <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; overflow: hidden;">
 
         <!-- Header -->
-        <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #f0f0f0;">
-            <h1 style="margin: 0; font-family: 'Outfit','Inter',sans-serif; font-size: 1.35rem; font-weight: 700; color: #1a1a1a; display: flex; align-items: center; gap: 0.6rem;">
-                <i class="fas fa-flag" style="color: #dc2626;"></i> Signaler cette annonce
+        <div style="padding: 1.1rem 1.5rem; border-bottom: 1px solid #f0f0f0;">
+            <h1 style="margin: 0; font-family: 'Outfit','Inter',sans-serif; font-size: 1.15rem; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 0.55rem;">
+                <i class="fas fa-flag" style="color: #9ca3af; font-size: 0.95rem;"></i> Signaler cette annonce
             </h1>
         </div>
 
