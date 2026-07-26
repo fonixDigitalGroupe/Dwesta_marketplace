@@ -223,7 +223,7 @@
                         <input type="radio" name="moyen_paiement" value="cb">
                         <div class="option-content">
                             <div class="option-title">VISA, Mastercard</div>
-                            <div class="option-desc">Paiement par carte bancaire internationale via PayDunya sécurisé.</div>
+                            <div class="option-desc">Paiement par carte bancaire internationale, sécurisé par Stripe.</div>
                         </div>
                         <div class="option-icon" style="gap: 5px; flex-direction: column;">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" style="height: 12px;">
