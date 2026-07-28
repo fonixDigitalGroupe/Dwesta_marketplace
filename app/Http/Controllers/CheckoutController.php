@@ -515,7 +515,8 @@ class CheckoutController extends Controller
                             'order_ids' => implode(',', collect($orders)->pluck('id')->toArray()),
                             'gift_card_id' => $resolvedGiftCard?->id,
                             'gift_card_amount' => $deduction > 0 ? (int) $deduction : null,
-                        ]
+                        ],
+                        trim(Auth::user()->name ?: (Auth::user()->prenom . ' ' . Auth::user()->nom)) ?: null
                     );
 
                     foreach ($orders as $o) {

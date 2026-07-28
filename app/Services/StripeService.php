@@ -51,7 +51,7 @@ class StripeService
      * Le montant est en FCFA et converti en EUR (Stripe ne supporte pas le XOF/XAF).
      * Le webhook retrouve les commandes via stripe_session_id.
      */
-    public function createMarketplaceSession(float $amountFcfa, string $successUrl, string $cancelUrl, ?string $email = null, array $extraMetadata = [])
+    public function createMarketplaceSession(float $amountFcfa, string $successUrl, string $cancelUrl, ?string $email = null, array $extraMetadata = [], ?string $name = null)
     {
         // 1 EUR = 655.957 FCFA (parité fixe CFA). Minimum Stripe ~0,50 €.
         $eurCents = max((int) round($amountFcfa / 655.957 * 100), 50);
@@ -63,7 +63,7 @@ class StripeService
             fn ($v) => $v !== null && $v !== ''
         );
 
-        return $this->stripe->checkout->sessions->create([
+        $params = [
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
@@ -80,8 +80,22 @@ class StripeService
             'success_url' => $successUrl . (str_contains($successUrl, '?') ? '&' : '?') . 'session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => $cancelUrl,
             'metadata' => $metadata,
-            'customer_email' => $email,
-        ]);
+        ];
+
+        // Pour pré-remplir le NOM (et l'email) du titulaire sur la page Stripe,
+        // on crée un Customer avec ces informations et on l'attache à la session.
+        if ($name && $email) {
+            $customer = $this->stripe->customers->create([
+                'name' => $name,
+                'email' => $email,
+            ]);
+            $params['customer'] = $customer->id;
+        } else {
+            // Sinon on pré-remplit au moins l'email.
+            $params['customer_email'] = $email;
+        }
+
+        return $this->stripe->checkout->sessions->create($params);
     }
 
     /**
