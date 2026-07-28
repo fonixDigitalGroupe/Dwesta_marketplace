@@ -563,8 +563,13 @@ class CheckoutController extends Controller
             DB::commit();
             return redirect()->route('checkout.success');
 
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             DB::rollBack();
+            \Illuminate\Support\Facades\Log::error('Checkout process ÉCHEC', [
+                'message' => $e->getMessage(),
+                'exception' => get_class($e),
+                'file' => $e->getFile() . ':' . $e->getLine(),
+            ]);
             return back()->with('error', 'Une erreur est survenue lors de la validation de la commande : ' . $e->getMessage());
         }
     }
