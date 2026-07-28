@@ -856,8 +856,8 @@
 
                         <input type="hidden" name="point_relais_id" id="input_point_relais_id">
                         <input type="hidden" name="adresse_livraison" value="{{ $user->adresse }}">
-                        <input type="hidden" name="gestion_paiement" id="gestion_paiement" value="livraison_buyer">
-                        <input type="hidden" name="moyen_paiement" id="moyen_paiement" value="">
+                        <input type="hidden" name="gestion_paiement" id="gestion_paiement" value="commande">
+                        <input type="hidden" name="moyen_paiement" id="moyen_paiement" value="cb">
                         <input type="hidden" name="phone_number" id="phone_number" value="{{ $user->telephone }}">
                         <input type="hidden" name="applied_gift_card_code" id="applied_gift_card_code" value="">
 
@@ -899,148 +899,6 @@
                 </div>
             </div>
 
-            <!-- 3. MODE DE PAIEMENT -->
-            <div class="box" id="box-payment"
-                style="opacity: 0.5; pointer-events: none; border: 1px solid #eee; border-radius: 4px; overflow: hidden; background: #fff;">
-                <!-- Inactive/Active Header -->
-                <div class="box-header" id="payment-header"
-                    style="background: #fff; padding: 12px 16px; border-bottom: 1px solid #eee;">
-                    <span id="payment-header-text"
-                        style="display: flex; align-items: center; gap: 10px; color: #313133; font-size: 13px; font-weight: 700; text-transform: uppercase;">
-                        <span id="payment-step-num"
-                            style="width: 20px; height: 20px; border-radius: 50%; background: #ccc; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0;">
-                            3
-                        </span>
-                        3. MODE DE PAIEMENT
-                    </span>
-                </div>
-
-                <!-- Done Header (White, was Green) -->
-                <div class="box-header" id="payment-header-done"
-                    style="display: none; background: #fff; padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #eee;"
-                    onclick="editPayment()">
-                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <span
-                            style="display: flex; align-items: center; gap: 10px; color: #313133; font-size: 13px; font-weight: 700; text-transform: uppercase;">
-                            <span
-                                style="width: 20px; height: 20px; border-radius: 50%; background: #4caf50; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">
-                                <i class="fas fa-check"></i>
-                            </span>
-                            3. MODE DE PAIEMENT
-                        </span>
-                        <a href="#" class="modifier-link"
-                            style="color: #004aad; font-size: 13px; font-weight: 600; text-decoration: none;">Modifier
-                            &gt;</a>
-                    </div>
-                </div>
-
-                <div class="box-body" id="payment-body" style="display: none; padding: 15px 20px;">
-                    <!-- Payment Summary (Shown after confirmation) - Matches Image 2 -->
-                    <div id="payment-summary" style="display: none; padding-top: 10px;">
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: flex-start; background: #fff; padding: 5px 0;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <div id="summary-payment-name" style="font-weight: 700; color: #313133; font-size: 14px;">
-                                    Mode de paiement</div>
-                            </div>
-                            <div id="summary-payment-icon" style="margin-left: 15px;">
-                                <i class="fas fa-wallet" style="font-size: 1.4rem; color: #333;"></i>
-                            </div>
-                        </div>
-                        <!-- Retourner à vos achats (Inside the card as requested) -->
-                        <div id="back-to-shop-link"
-                            style="display: none; margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
-                            <a href="{{ route('home') }}"
-                                style="color: #004aad; font-size: 13px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 8px;">
-                                <i class="fas fa-chevron-left"></i> Retourner à vos achats
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Payment Selection Form -->
-                    <div id="payment-options-list">
-                        <div class="payment-section-title">Mobile Money</div>
-
-                        <!-- Orange Money -->
-                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'commande', 'om')">
-                            <input type="radio" name="ui_payment" value="om">
-                            <span class="radio-custom"></span>
-                            <div class="payment-info-wrapper">
-                                <div class="payment-title-row">
-                                    <span class="payment-name">Avec Orange Money</span>
-                                    <div style="margin-left: auto;">
-                                        <img src="{{ asset('images/logoOM.png') }}" alt="Orange Money" class="method-logo"
-                                            style="height: 30px;">
-                                    </div>
-                                </div>
-                                <!-- Description en dessous du titre -->
-                                <div style="font-size: 13px; color: #666; margin-top: 4px;">Paiement rapide et sécurisé via
-                                    votre compte Orange Money.</div>
-                            </div>
-                        </label>
-
-                        <!-- Wave -->
-                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'commande', 'wave')">
-                            <input type="radio" name="ui_payment" value="wave">
-                            <span class="radio-custom"></span>
-                            <div class="payment-info-wrapper">
-                                <div class="payment-title-row">
-                                    <span class="payment-name">Avec Wave</span>
-                                    <div style="margin-left: auto;">
-                                        <img src="{{ asset('images/logowave.png') }}" alt="Wave" class="method-logo">
-                                    </div>
-                                </div>
-                                <div style="font-size: 13px; color: #666; margin-top: 4px;">Payez instantanément avec
-                                    l'application Wave mobile.</div>
-                            </div>
-                        </label>
-
-
-                        <!-- Carte bancaire (VISA / Mastercard) -->
-                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'commande', 'cb')">
-                            <input type="radio" name="ui_payment" value="cb">
-                            <span class="radio-custom"></span>
-                            <div class="payment-info-wrapper">
-                                <div class="payment-title-row">
-                                    <span class="payment-name">Carte bancaire (VISA / Mastercard)</span>
-                                    <div style="margin-left: auto; display: flex; gap: 6px; align-items: center;">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" style="height: 12px;">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" style="height: 18px;">
-                                    </div>
-                                </div>
-                                <div style="font-size: 13px; color: #666; margin-top: 4px;">Paiement sécurisé par carte bancaire internationale via Stripe.</div>
-                            </div>
-                        </label>
-
-
-                        <div class="payment-section-title">Paiement à la livraison</div>
-
-                        <!-- COD -->
-                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'livraison_buyer', 'cod')">
-                            <input type="radio" name="ui_payment" value="cod">
-                            <span class="radio-custom"></span>
-                            <div class="payment-info-wrapper">
-                                <div class="payment-title-row">
-                                    <span class="payment-name">Paiement à la livraison</span>
-                                    <div style="margin-left: auto;">
-                                        <i class="fas fa-handshake" style="font-size: 1.4rem; color: #f68b1e;"></i>
-                                    </div>
-                                </div>
-                                <!-- Description en dessous du titre -->
-                                <div style="font-size: 13px; color: #666; margin-top: 6px;">Payez dès réception de votre
-                                    commande à domicile.</div>
-                            </div>
-                        </label>
-
-                        <div style="margin-top: 40px; display: flex; justify-content: flex-end;">
-                            <button type="button" onclick="confirmPayment()" id="btn-confirm-payment"
-                                class="btn-confirm-final" style="padding: 10px 22px; font-size: 14px;">
-                                Confirmer le mode de paiement
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Right Sidebar -->
@@ -1161,7 +1019,6 @@
             };
 
             if (document.getElementById('delivery-summary').style.display === 'block') state.step = 2;
-            if (document.getElementById('payment-summary').style.display === 'block') state.step = 3;
 
             localStorage.setItem(CHECKOUT_STATE_KEY, JSON.stringify(state));
         }
@@ -1189,14 +1046,6 @@
                 document.getElementById('voucher_code').value = '';
 
                 if (state.step >= 2) confirmDelivery(true);
-                if (state.step >= 3 && state.paymentMode) {
-                    const radio = document.querySelector(`input[name="ui_payment"][value="${state.paymentMode}"]`);
-                    if (radio) {
-                        radio.checked = true;
-                        selectModernPayment(radio.closest('.payment-option-modern'), state.paymentGestion, state.paymentMode, true);
-                    }
-                    confirmPayment(true);
-                }
             } catch (e) { console.error(e); }
         }
 
@@ -1437,64 +1286,15 @@
             document.getElementById('delivery-header').style.display = 'none';
             document.getElementById('delivery-header-done').style.display = 'flex';
 
-            // Unlock Payment
-            const paymentBox = document.getElementById('box-payment');
-            paymentBox.style.opacity = '1';
-            paymentBox.style.pointerEvents = 'auto';
-            document.getElementById('payment-body').style.display = 'block';
+            // Paiement par carte (Stripe) : le bouton de commande est directement disponible
+            const submitBtn = document.getElementById('btn-submit');
+            submitBtn.style.opacity = '1';
+            submitBtn.style.pointerEvents = 'auto';
 
             saveCheckoutState();
             if (!silent) {
-                const box = document.getElementById('box-payment');
-                window.scrollTo({ top: box.offsetTop - 20, behavior: 'smooth' });
+                submitBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
-        }
-
-        function confirmPayment(silent = false) {
-            const selected = document.querySelector('input[name="ui_payment"]:checked');
-            if (!selected) {
-                if (!silent) alert('Veuillez sélectionner un mode de paiement.');
-                return;
-            }
-
-            const label = selected.closest('.payment-option-modern');
-            const baseName = label.querySelector('.payment-name').innerText;
-
-            // Safely extract icon/logo HTML
-            const iconContainer = label.querySelector('div[style*="margin-left: auto"]');
-            const iconHtml = iconContainer ? iconContainer.innerHTML : '<i class="fas fa-wallet"></i>';
-
-            document.getElementById('summary-payment-name').innerText = baseName;
-            document.getElementById('summary-payment-icon').innerHTML = iconHtml;
-
-            document.getElementById('payment-options-list').style.display = 'none';
-            document.getElementById('payment-summary').style.display = 'block';
-            document.getElementById('back-to-shop-link').style.display = 'block';
-
-            // Toggle Headers
-            document.getElementById('payment-header').style.display = 'none';
-            document.getElementById('payment-header-done').style.display = 'block';
-
-            // Final button in sidebar can be truly enabled now
-            document.getElementById('btn-submit').style.opacity = '1';
-            document.getElementById('btn-submit').style.pointerEvents = 'auto';
-
-            saveCheckoutState();
-        }
-
-        function editPayment() {
-            document.getElementById('payment-options-list').style.display = 'block';
-            document.getElementById('payment-summary').style.display = 'none';
-            document.getElementById('back-to-shop-link').style.display = 'none';
-
-            // Toggle Headers
-            document.getElementById('payment-header').style.display = 'block';
-            document.getElementById('payment-header-done').style.display = 'none';
-
-            // Optionally lock final button
-            document.getElementById('btn-submit').style.opacity = '0.5';
-            document.getElementById('btn-submit').style.pointerEvents = 'none';
-            saveCheckoutState();
         }
 
         function editDelivery() {
@@ -1504,17 +1304,6 @@
             document.getElementById('delivery-header').style.display = 'flex';
             document.getElementById('delivery-header-done').style.display = 'none';
 
-            document.getElementById('payment-body').style.display = 'none';
-
-            // Reset Payment Header
-            const paymentHeader = document.getElementById('payment-header');
-            paymentHeader.style.display = 'block';
-            paymentHeader.style.background = '#fff';
-            document.getElementById('payment-header-done').style.display = 'none';
-
-            // Optionally lock final button
-            document.getElementById('btn-submit').style.opacity = '0.5';
-            document.getElementById('btn-submit').style.pointerEvents = 'none';
             saveCheckoutState();
         }
 
