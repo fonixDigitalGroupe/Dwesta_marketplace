@@ -51,10 +51,17 @@ class StripeService
      * Le montant est en FCFA et converti en EUR (Stripe ne supporte pas le XOF/XAF).
      * Le webhook retrouve les commandes via stripe_session_id.
      */
-    public function createMarketplaceSession(float $amountFcfa, string $successUrl, string $cancelUrl, ?string $email = null)
+    public function createMarketplaceSession(float $amountFcfa, string $successUrl, string $cancelUrl, ?string $email = null, array $extraMetadata = [])
     {
         // 1 EUR = 655.957 FCFA (parité fixe CFA). Minimum Stripe ~0,50 €.
         $eurCents = max((int) round($amountFcfa / 655.957 * 100), 50);
+
+        // On fusionne les métadonnées additionnelles (order_ids, carte cadeau…)
+        // en ignorant les valeurs nulles (Stripe n'accepte que des scalaires).
+        $metadata = array_filter(
+            array_merge(['type' => 'marketplace_order'], $extraMetadata),
+            fn ($v) => $v !== null && $v !== ''
+        );
 
         return $this->stripe->checkout->sessions->create([
             'payment_method_types' => ['card'],
@@ -72,9 +79,7 @@ class StripeService
             'mode' => 'payment',
             'success_url' => $successUrl . (str_contains($successUrl, '?') ? '&' : '?') . 'session_id={CHECKOUT_SESSION_ID}',
             'cancel_url' => $cancelUrl,
-            'metadata' => [
-                'type' => 'marketplace_order',
-            ],
+            'metadata' => $metadata,
             'customer_email' => $email,
         ]);
     }

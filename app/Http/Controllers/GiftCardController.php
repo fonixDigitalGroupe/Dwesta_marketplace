@@ -14,12 +14,12 @@ class GiftCardController extends Controller
 {
     protected $creditService;
 
-    protected $payDunyaService;
+    protected $stripeService;
 
-    public function __construct(CreditService $creditService, \App\Services\PayDunyaService $payDunyaService)
+    public function __construct(CreditService $creditService, \App\Services\StripeService $stripeService)
     {
         $this->creditService = $creditService;
-        $this->payDunyaService = $payDunyaService;
+        $this->stripeService = $stripeService;
     }
 
     /**
@@ -113,24 +113,18 @@ class GiftCardController extends Controller
         $user = Auth::user();
 
         try {
-            $session = $this->payDunyaService->createCheckoutSession(
+            $session = $this->stripeService->createGiftCardSession(
+                $user,
                 $amount,
-                "Achat de Carte Cadeau Karnou (" . number_format($amount, 0, ',', ' ') . " FCFA)",
-                route('paydunya.success'),
                 route('gift-cards.index'),
-                [
-                    'user_id' => $user->id,
-                    'amount'  => $amount,
-                    'type'    => 'gift_card_purchase'
-                ],
-                null // aucun canal forcé → tous les moyens (Mobile Money + carte) sur la page PayDunya
+                route('gift-cards.index')
             );
 
             session(['gift_card_amount' => $amount]);
 
-            return redirect()->route('checkout.pay', ['token' => $session->token]);
+            return redirect($session->url);
         } catch (\Exception $e) {
-            return back()->with('error', 'Erreur PayDunya : ' . $e->getMessage());
+            return back()->with('error', 'Erreur Stripe : ' . $e->getMessage());
         }
     }
 
@@ -149,7 +143,7 @@ class GiftCardController extends Controller
     }
 
     /**
-     * Confirmer l'achat et initier PayDunya (Étape 3 : Vers PayDunya/SoftPay)
+     * Confirmer l'achat et initier le paiement Stripe (mode test).
      */
     public function confirm(Request $request)
     {
@@ -163,30 +157,19 @@ class GiftCardController extends Controller
         }
 
         $user = Auth::user();
-        $moyenPaiement = $request->moyen_paiement;
-        
-        try {
-            $session = $this->payDunyaService->createCheckoutSession(
-                $amount,
-                "Achat de Carte Cadeau Dwesta (" . number_format($amount, 0, ',', ' ') . " FCFA)",
-                route('paydunya.success'), 
-                route('gift-cards.index'),
-                [
-                    'user_id' => $user->id,
-                    'amount' => $amount,
-                    'type' => 'gift_card_purchase'
-                ],
-                $moyenPaiement
-            );
 
-            // Redirection vers notre page de paiement personnalisée si Mobile Money
-            if ($moyenPaiement !== 'cb') {
-                return redirect()->route('checkout.pay', ['token' => $session->token]);
-            }
+        try {
+            // Tous les moyens de paiement passent désormais par Stripe (carte, mode test).
+            $session = $this->stripeService->createGiftCardSession(
+                $user,
+                $amount,
+                route('gift-cards.index'),
+                route('gift-cards.index')
+            );
 
             return redirect($session->url);
         } catch (\Exception $e) {
-            return back()->with('error', 'Erreur PayDunya : ' . $e->getMessage());
+            return back()->with('error', 'Erreur Stripe : ' . $e->getMessage());
         }
     }
 

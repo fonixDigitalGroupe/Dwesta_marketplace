@@ -13,7 +13,7 @@ class CreditController extends Controller
 {
     public function __construct(
         private CreditService $creditService,
-        private \App\Services\PayDunyaService $payDunyaService
+        private StripeService $stripeService
     ) {}
 
     /**
@@ -42,20 +42,14 @@ class CreditController extends Controller
         $user = Auth::user();
 
         try {
-            $session = $this->payDunyaService->createCheckoutSession(
-                $pack->prix,
-                "Achat de Pack Crédits " . $pack->nom . " sur Karnou",
-                route('paydunya.success'),
+            $session = $this->stripeService->createCreditPackSession(
+                $user,
+                $pack,
                 route('account.credits.index'),
-                [
-                    'user_id' => $user->id,
-                    'pack_id' => $pack->id,
-                    'type'    => 'credit_pack_purchase'
-                ],
-                null // aucun canal forcé → tous les moyens (Mobile Money + carte) sur la page PayDunya
+                route('account.credits.index')
             );
 
-            return redirect()->route('checkout.pay', ['token' => $session->token]);
+            return redirect($session->url);
         } catch (\Exception $e) {
             return back()->with('error', 'Erreur lors de la redirection vers le paiement : ' . $e->getMessage());
         }

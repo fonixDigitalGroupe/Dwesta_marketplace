@@ -65,7 +65,6 @@ class StripeWebhookController extends Controller
         $type = $metadata->type ?? null;
 
         if ($type === 'marketplace_order') {
-            $orderId = $metadata->order_id;
             // Valider tous les ordres liés à cette session
             $orders = Order::where('stripe_session_id', $session->id)->get();
 
@@ -79,31 +78,57 @@ class StripeWebhookController extends Controller
                     // Génération des tokens logistiques
                     $this->logisticsService->generateLogisticsTokens($order);
 
-                    // Créer la transaction séquestre
+                    // Transaction d'historique pour l'acheteur (pas de wallet).
                     Transaction::create([
                         'order_id' => $order->id,
-                        'user_id' => $order->vendeur->user_id,
+                        'user_id' => $order->user_id,
                         'reference_externe' => $session->payment_intent,
                         'montant' => $order->total_final,
                         'moyen_paiement' => 'cb',
                         'statut' => 'succes',
-                        'wallet_status' => 'pending',
-                        'release_at' => now()->addDays(14),
+                        'wallet_status' => 'none',
                         'metadata' => ['stripe_session_id' => $session->id]
                     ]);
+
+                    // Transaction de revenu pour le vendeur, en séquestre jusqu'à livraison.
+                    if ($order->seller && $order->seller->user_id) {
+                        $revenuVendeur = $order->total_produits - ($order->commission_plateforme ?? 0);
+                        Transaction::create([
+                            'order_id' => $order->id,
+                            'user_id' => $order->seller->user_id,
+                            'reference_externe' => 'REV-' . $order->reference,
+                            'montant' => $revenuVendeur,
+                            'moyen_paiement' => 'wallet',
+                            'statut' => 'succes',
+                            'wallet_status' => 'pending',
+                            'release_at' => now()->addDays(30),
+                            'metadata' => ['type' => 'seller_revenue', 'order_ref' => $order->reference]
+                        ]);
+                    }
                 }
             }
 
-            // Vider le panier de l'utilisateur (on peut récupérer le user via le premier order)
+            // Déduction éventuelle d'une carte cadeau appliquée au checkout.
+            $giftCardId = $metadata->gift_card_id ?? null;
+            $giftCardAmount = (int) ($metadata->gift_card_amount ?? 0);
+            if ($giftCardId && $giftCardAmount > 0) {
+                $giftCard = \App\Models\GiftCard::find($giftCardId);
+                if ($giftCard && $giftCard->status === 'active') {
+                    $giftCard->decrement('balance', $giftCardAmount);
+                    if ($giftCard->balance <= 0) {
+                        $giftCard->update(['status' => 'used', 'redeemed_at' => now()]);
+                    }
+                }
+            }
+
+            // Vider le panier de l'utilisateur (base de données) si disponible.
             if ($orders->count() > 0) {
                 $user = $orders[0]->user;
-                // Note: CartService clear() relies on session. In Webhook, session is not available.
-                // If cart is database-backed, clear it here.
-                if ($user->cart) {
+                if ($user && $user->cart) {
                     $user->cart->items()->delete();
                 }
             }
-        } 
+        }
         
         elseif ($type === 'seller_subscription') {
             $vendeurId = $metadata->vendeur_id;
@@ -146,6 +171,44 @@ class StripeWebhookController extends Controller
                 if (!$exists) {
                     $creditService = app(\App\Services\CreditService::class);
                     $creditService->acheter($user, $pack, $session->id);
+                }
+            }
+        }
+
+        elseif ($type === 'gift_card_purchase') {
+            $userId = $metadata->user_id;
+            $amount = (int) ($metadata->amount ?? 0);
+            $user = \App\Models\User::find($userId);
+
+            // Idempotence : ne pas recréer une carte pour la même session Stripe.
+            $already = \App\Models\GiftCard::where('metadata->stripe_session_id', $session->id)->exists();
+
+            if ($user && $amount > 0 && !$already) {
+                $giftCard = \App\Models\GiftCard::create([
+                    'code' => \App\Models\GiftCard::generateCode(),
+                    'amount' => $amount,
+                    'balance' => $amount,
+                    'status' => 'active',
+                    'buyer_id' => $user->id,
+                    'expiry_date' => now()->addYear(),
+                    'metadata' => ['stripe_session_id' => $session->id]
+                ]);
+
+                \App\Models\CreditTransaction::create([
+                    'user_id' => $user->id,
+                    'type' => 'gift_card_purchase',
+                    'montant' => 0,
+                    'description' => "Achat de carte cadeau : " . number_format($amount, 0, ',', ' ') . " FCFA",
+                    'reference' => $session->id,
+                    'related_type' => \App\Models\GiftCard::class,
+                    'related_id' => $giftCard->id,
+                ]);
+
+                try {
+                    \Illuminate\Support\Facades\Mail::to($user->email)
+                        ->send(new \App\Mail\GiftCardPurchased($user, $giftCard));
+                } catch (\Exception $mailException) {
+                    Log::error('Gift card email failed: ' . $mailException->getMessage());
                 }
             }
         }

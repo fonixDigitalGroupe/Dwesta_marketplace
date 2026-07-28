@@ -1008,7 +1008,7 @@
                                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" style="height: 18px;">
                                     </div>
                                 </div>
-                                <div style="font-size: 13px; color: #666; margin-top: 4px;">Paiement sécurisé par carte bancaire internationale via PayDunya.</div>
+                                <div style="font-size: 13px; color: #666; margin-top: 4px;">Paiement sécurisé par carte bancaire internationale via Stripe.</div>
                             </div>
                         </label>
 
@@ -1134,14 +1134,8 @@
         </div>
     </div>
 
-    {{-- PayDunya PSR SDK REMOVED - Reverting to Standard Redirection --}}
-    {{--
-    <script src="https://paydunya.com/assets/psr/js/psr.paydunya.min.js"></script> --}}
-
     <script>
-        const PAYDUNYA_TOKEN_URL = "{{ route('checkout.paydunya.token') }}";
-
-        /* 
+        /*
            REMOVED REDUNDANT SETUP AT START (Line 1128-1152) 
            Logic moved to a single DOMContentLoaded block at the end of the file.
         */

@@ -418,10 +418,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/etape-1', [CheckoutController::class, 'step1'])->name('step1');
             Route::post('/etape-1', [CheckoutController::class, 'postStep1'])->name('postStep1');
             Route::get('/etape-2', [CheckoutController::class, 'step2'])->name('step2');
-            Route::get('/paydunya-token', [CheckoutController::class, 'paydunyaToken'])->name('paydunya.token');
             Route::post('/process', [CheckoutController::class, 'process'])->name('process');
-            Route::get('/payer/{token}', [CheckoutController::class, 'showPaymentPage'])->name('pay');
-            Route::post('/process-softpay/{token}', [CheckoutController::class, 'processSoftPay'])->name('process-softpay');
             Route::get('/succes', [CheckoutController::class, 'success'])->name('success');
         });
 
@@ -535,13 +532,8 @@ Route::get('/api/campaigns/has-active', [\App\Http\Controllers\CampaignPromoCont
 // Campaign Landing Page
 Route::get('/offres-speciales/{campaign}', [\App\Http\Controllers\CampaignLandingController::class, 'show'])->name('campaign.landing');
 
-// Webhook Stripe (Legacy)
+// Webhook Stripe — seul canal de paiement (mode test)
 Route::post('/webhook/stripe', [\App\Http\Controllers\StripeWebhookController::class, 'handle'])->name('stripe.webhook');
-
-// PayDunya Callback & Return Routes
-Route::get('/paydunya/success', [\App\Http\Controllers\PayDunyaCallbackController::class, 'success'])->name('paydunya.success');
-Route::get('/paydunya/cancel', [\App\Http\Controllers\PayDunyaCallbackController::class, 'cancel'])->name('paydunya.cancel');
-Route::post('/paydunya/callback', [\App\Http\Controllers\PayDunyaCallbackController::class, 'callback'])->name('paydunya.callback');
 
 // Panier
 Route::get('/panier', [CartController::class, 'index'])->name('cart.index');

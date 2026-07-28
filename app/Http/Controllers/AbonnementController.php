@@ -13,11 +13,11 @@ use App\Mail\SubscriptionConfirmed;
 
 class AbonnementController extends Controller
 {
-    protected $payDunyaService;
+    protected $stripeService;
 
-    public function __construct(\App\Services\PayDunyaService $payDunyaService)
+    public function __construct(\App\Services\StripeService $stripeService)
     {
-        $this->payDunyaService = $payDunyaService;
+        $this->stripeService = $stripeService;
     }
 
     /**
@@ -108,8 +108,8 @@ class AbonnementController extends Controller
     }
 
     /**
-     * Initier le paiement directement — crée une session PayDunya et redirige
-     * vers la page de paiement personnalisée (SoftPay), sans page intermédiaire.
+     * Initier le paiement directement — crée une session Stripe Checkout
+     * et redirige l'utilisateur vers la page de paiement Stripe (mode test).
      */
     public function initiate(Request $request)
     {
@@ -158,27 +158,19 @@ class AbonnementController extends Controller
             }
         }
 
-        // Forfait payant : créer une session PayDunya avec wave par défaut
-        // L'utilisateur pourra changer l'opérateur sur la page de paiement
+        // Forfait payant : paiement par carte via Stripe (mode test).
         try {
-            $session = $this->payDunyaService->createCheckoutSession(
-                $abonnement->prix_mensuel,
-                "Abonnement " . $abonnement->nom . " sur Karnou",
-                route('paydunya.success'),
+            $session = $this->stripeService->createSubscriptionSession(
+                $vendeur,
+                $abonnement,
                 route('abonnements.index'),
-                [
-                    'vendeur_id' => $vendeur->id,
-                    'plan_id' => $abonnement->id,
-                    'type' => 'seller_subscription'
-                ],
-                null // Pas d'opérateur forcé — l'utilisateur pourra choisir sur la page de paiement
+                route('abonnements.index')
             );
 
-            // Redirection directe vers la page de paiement personnalisée
-            return redirect()->route('checkout.pay', ['token' => $session->token]);
+            return redirect($session->url);
 
         } catch (\Exception $e) {
-            return back()->with('error', 'Erreur PayDunya : ' . $e->getMessage());
+            return back()->with('error', 'Erreur Stripe : ' . $e->getMessage());
         }
     }
 
@@ -235,32 +227,19 @@ class AbonnementController extends Controller
             }
         }
 
-        // Flux PayDunya pour abonnement payant
+        // Paiement de l'abonnement par carte via Stripe (mode test).
         try {
-            $moyenPaiement = $request->payment_method;
-            
-            $session = $this->payDunyaService->createCheckoutSession(
-                $abonnement->prix_mensuel,
-                "Abonnement " . $abonnement->nom . " sur Karnou",
-                route('paydunya.success'), 
-                route('abonnements.index'), 
-                [
-                    'vendeur_id' => $vendeur->id,
-                    'plan_id' => $abonnement->id,
-                    'type' => 'seller_subscription'
-                ],
-                $moyenPaiement !== 'cb' ? $moyenPaiement : null
+            $session = $this->stripeService->createSubscriptionSession(
+                $vendeur,
+                $abonnement,
+                route('abonnements.index'),
+                route('abonnements.index')
             );
-
-            // Redirection vers notre page de paiement personnalisée si Mobile Money (SoftPay)
-            if ($moyenPaiement !== 'cb') {
-                return redirect()->route('checkout.pay', ['token' => $session->token]);
-            }
 
             return redirect($session->url);
 
         } catch (\Exception $e) {
-            return back()->with('error', 'Erreur PayDunya : ' . $e->getMessage());
+            return back()->with('error', 'Erreur Stripe : ' . $e->getMessage());
         }
     }
 

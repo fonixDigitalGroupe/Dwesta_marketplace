@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-use App\Services\PayDunyaService;
 use Illuminate\Support\Facades\Log;
 
 class VendeurWalletController extends Controller
@@ -72,66 +71,14 @@ class VendeurWalletController extends Controller
 
 
     /**
-     * Demande de retrait via PayDunya
+     * Demande de retrait.
+     *
+     * Les retraits (paiement sortant vers Wave/Orange Money) ne sont pas
+     * réalisables via Stripe Checkout. Depuis la bascule tout-Stripe (mode test),
+     * cette fonctionnalité est désactivée en attendant un canal de payout dédié.
      */
-    public function requestWithdrawal(Request $request, PayDunyaService $payDunya)
+    public function requestWithdrawal(Request $request)
     {
-        $request->validate([
-            'montant' => 'required|numeric|min:200', // PayDunya exige un minimum de 200 FCFA
-            'moyen' => 'required|in:om,wave',
-            'telephone' => 'required|string|min:7' // Format flexible pour les pays limitrophes ou local
-        ], [
-            'montant.min' => 'Le montant minimum de retrait est de 200 FCFA (exigence PayDunya).'
-        ]);
-
-        $user = Auth::user();
-
-        // Solde réellement disponible = ventes libérées moins retraits.
-        $availableBalance = max(0, (float) Transaction::where('user_id', $user->id)
-            ->where('statut', 'succes')
-            ->whereIn('wallet_status', [Transaction::STATUS_AVAILABLE, Transaction::STATUS_WITHDRAWN])
-            ->sum('montant'));
-
-        if ($request->montant > $availableBalance) {
-            return back()->with('error', 'Solde insuffisant.');
-        }
-
-        try {
-            // Appel à PayDunya Disbursement (Payout)
-            $response = $payDunya->disburse($request->montant, $request->telephone, $request->moyen, [
-                'user_id' => $user->id,
-                'vendeur_id' => $user->vendeur->id ?? null
-            ]);
-
-            if (isset($response['response_code']) && $response['response_code'] === '00') {
-                // Le débit est matérialisé par la transaction de retrait ci-dessous
-                // (montant négatif, wallet_status = withdrawn) qui réduit le solde calculé.
-
-                // Création de la transaction
-                Transaction::create([
-                    'user_id' => $user->id,
-                    'reference_externe' => $response['disburse_token'] ?? ('WD-' . strtoupper(Str::random(8))),
-                    'montant' => -$request->montant,
-                    'moyen_paiement' => $request->moyen,
-                    'statut' => 'succes',
-                    'wallet_status' => 'withdrawn',
-                    'metadata' => [
-                        'type' => 'withdrawal',
-                        'requested_at' => now(),
-                        'phone' => $request->telephone,
-                        'paydunya_token' => $response['disburse_token'] ?? null
-                    ]
-                ]);
-
-                return redirect()->route('vendeur.wallet.index')->with('success', 'Votre retrait de ' . number_format($request->montant) . ' FCFA a été traité avec succès via PayDunya.');
-            } else {
-                $errorMsg = $response['response_text'] ?? 'Une erreur est survenue lors du retrait via PayDunya.';
-                return back()->with('error', 'Erreur : ' . $errorMsg);
-            }
-
-        } catch (\Exception $e) {
-            Log::error('PayDunya Withdrawal Exception: ' . $e->getMessage());
-            return back()->with('error', 'Impossible de traiter le retrait pour le moment. Veuillez réessayer plus tard.');
-        }
+        return back()->with('error', 'Les retraits sont temporairement indisponibles : Stripe ne permet pas les versements sortants vers Mobile Money. Un canal de retrait dédié sera réactivé prochainement.');
     }
 }

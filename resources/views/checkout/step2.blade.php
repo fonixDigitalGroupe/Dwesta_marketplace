@@ -3,8 +3,6 @@
 @section('title', 'Mode de Paiement - Étape 2 - Karnou')
 
 @push('styles')
-{{-- PayDunya PSR CSS --}}
-<link rel="stylesheet" type="text/css" href="https://paydunya.com/assets/psr/css/psr.paydunya.min.css">
 <style>
     :root {
         --rk-orange: #f58220;
@@ -154,7 +152,7 @@
                 
                 {{-- MOBILE MONEY SECTION --}}
                 <div class="section-group">
-                    <div class="section-title">Mobile Money @if(config('services.paydunya.mode') === 'test')<span class="badge bg-warning text-dark" style="font-size: 0.6rem; vertical-align: middle;">SANDBOX</span>@endif</div>
+                    <div class="section-title">Mobile Money @if(config('services.stripe.mode') === 'test')<span class="badge bg-warning text-dark" style="font-size: 0.6rem; vertical-align: middle;">TEST</span>@endif</div>
 
                     {{-- ORANGE MONEY --}}
                     <label class="payment-option" onclick="selectOption(this)">
@@ -201,7 +199,7 @@
                     {{-- PHONE NUMBER FIELD (Visible only for mobile money) --}}
                     <div id="phone-field-container" style="display: none; padding: 1.5rem; background: #fffcf5; border-top: 1px solid #ffe8cc; border-bottom: 1px solid #ffe8cc;">
                         <label for="phone_number" style="font-weight: 700; display: block; margin-bottom: 8px; font-size: 0.9rem;">
-                            Numéro de téléphone PayDunya / Mobile Money
+                            Numéro de téléphone (Mobile Money)
                         </label>
                         <div style="display: flex; gap: 10px;">
                             <input type="text" name="phone_number" id="phone_number" 

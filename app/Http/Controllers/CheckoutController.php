@@ -19,13 +19,13 @@ class CheckoutController extends Controller
 {
     protected $cartService;
     protected $logisticsService;
-    protected $payDunyaService;
+    protected $stripeService;
 
-    public function __construct(CartService $cartService, LogisticsService $logisticsService, \App\Services\PayDunyaService $payDunyaService)
+    public function __construct(CartService $cartService, LogisticsService $logisticsService, \App\Services\StripeService $stripeService)
     {
         $this->cartService = $cartService;
         $this->logisticsService = $logisticsService;
-        $this->payDunyaService = $payDunyaService;
+        $this->stripeService = $stripeService;
     }
 
     /**
@@ -249,64 +249,6 @@ class CheckoutController extends Controller
     }
 
     /**
-     * Endpoint pour le PSR Popup PayDunya
-     * Crée une invoice et retourne le token + infos client en JSON
-     */
-    public function paydunyaToken(Request $request)
-    {
-        try {
-            $cartGrouped = $this->cartService->getContentGroupedBySeller();
-            if ($cartGrouped->isEmpty()) {
-                return response()->json(['success' => false, 'error' => 'Panier vide'], 400);
-            }
-
-            $subtotal = $this->cartService->getSubtotal();
-            $shippingFee = session('checkout_shipping_fee', 0);
-            $total = $subtotal + $shippingFee;
-
-            $moyenPaiement = $request->get('payment_method', 'card');
-            $method = in_array($moyenPaiement, ['om', 'wave', 'free']) ? $moyenPaiement : null;
-
-            $user = Auth::user();
-            $phone = str_replace('+', '', $user->telephone ?? '');
-
-            $session = $this->payDunyaService->createCheckoutSession(
-                $total,
-                'Commande Karnou',
-                route('paydunya.success'),
-                route('paydunya.cancel'),
-                ['type' => 'marketplace_order'],
-                $method,
-                [
-                    'name' => $user->name,
-                    'first_name' => $user->prenom,
-                    'last_name' => $user->nom,
-                    'email' => $user->email,
-                    'phone' => $phone,
-                    'address' => $user->adresse,
-                    'city' => $user->ville,
-                    'state' => $user->region,
-                    'zip_code' => $user->code_postal,
-                ]
-            );
-
-            // Stocker le token en session pour onTerminate callback
-            session(['paydunya_pending_token' => $session->token]);
-
-            return response()->json([
-                'success' => true,
-                'token' => $session->token,
-                'mode' => config('services.paydunya.mode') // 'live' or 'test'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 400);
-        }
-    }
-
-    /**
      * Étape 3 : Traitement du paiement et création des commandes
      */
     public function process(Request $request)
@@ -340,7 +282,8 @@ class CheckoutController extends Controller
         $request->validate([
             'gestion_paiement' => 'required|in:commande,livraison_buyer,livraison_receiver',
             'moyen_paiement' => 'nullable|in:om,momo,cb,card,paypal,wave,free,wallet,gift_card,cod',
-            'phone_number' => 'required_if:moyen_paiement,om,wave,free|nullable|string'
+            // Le téléphone n'est plus requis : tous les paiements passent par Stripe (carte).
+            'phone_number' => 'nullable|string'
         ]);
 
         $cartGrouped = $this->cartService->getContentGroupedBySeller();
@@ -560,86 +503,31 @@ class CheckoutController extends Controller
                 ]);
 
                 if ($remainingTotal > 0 && $moyenPaiement !== 'gift_card') {
-                    // ===== Paiement par CARTE → Stripe (PayDunya carte nécessite PCI-DSS) =====
-                    // (si une carte cadeau est appliquée, on garde PayDunya qui gère la déduction)
-                    if ($moyenPaiement === 'cb' && !$resolvedGiftCard) {
-                        $stripe = app(\App\Services\StripeService::class);
-                        $stripeSession = $stripe->createMarketplaceSession(
-                            $remainingTotal,
-                            route('checkout.success'),
-                            route('cart.index'),
-                            Auth::user()->email
-                        );
-
-                        foreach ($orders as $o) {
-                            $o->update(['stripe_session_id' => $stripeSession->id]);
-                        }
-
-                        DB::commit();
-
-                        if ($request->expectsJson()) {
-                            return response()->json(['success' => true, 'redirect_url' => $stripeSession->url]);
-                        }
-                        return redirect($stripeSession->url);
-                    }
-
-                    // Normalize payment method for PayDunya (card -> cb)
-                    $paymentMethod = in_array($moyenPaiement, ['gift_card', 'cb', 'card']) ? 'cb' : $moyenPaiement;
-                    // If it's cb (hosted card), we pass null to allow all methods on hosted page, 
-                    // unless we specifically want to restrict to card.
-                    $payDunyaMethod = ($paymentMethod === 'cb') ? null : $paymentMethod;
-
-                    $phone = $request->phone_number;
-
-                    $session = $this->payDunyaService->createCheckoutSession(
+                    // ===== Tous les moyens de paiement passent par Stripe (mode test). =====
+                    // Carte, Orange Money, Wave, Free Money : tout est encaissé par carte via Stripe Checkout.
+                    // Une éventuelle carte cadeau appliquée est déduite dans le webhook après paiement.
+                    $stripeSession = $this->stripeService->createMarketplaceSession(
                         $remainingTotal,
-                        $deduction > 0 ? "Commande Dwesta (Carte Cadeau: -{$deduction} FCFA)" : "Commande Dwesta",
-                        route('paydunya.success'),
-                        route('paydunya.cancel'),
+                        route('checkout.success'),
+                        route('cart.index'),
+                        Auth::user()->email,
                         [
-                            'order_ids' => collect($orders)->pluck('id')->toArray(),
-                            'type' => 'marketplace_order',
+                            'order_ids' => implode(',', collect($orders)->pluck('id')->toArray()),
                             'gift_card_id' => $resolvedGiftCard?->id,
-                            'gift_card_amount' => $deduction
-                        ],
-                        $payDunyaMethod,
-                        [
-                            'name' => trim(Auth::user()->name ?: (Auth::user()->prenom . ' ' . Auth::user()->nom)),
-                            'first_name' => Auth::user()->prenom,
-                            'last_name' => Auth::user()->nom,
-                            'email' => Auth::user()->email,
-                            'phone' => preg_match('/^\+?221/', Auth::user()->telephone)
-                                ? (str_starts_with(Auth::user()->telephone, '+') ? Auth::user()->telephone : '+' . Auth::user()->telephone)
-                                : '+221' . ltrim(Auth::user()->telephone, '0'),
-                            'address' => Auth::user()->adresse,
-                            'city' => Auth::user()->ville,
-                            'state' => Auth::user()->region,
-                            'zip_code' => Auth::user()->code_postal,
+                            'gift_card_amount' => $deduction > 0 ? (int) $deduction : null,
                         ]
                     );
 
                     foreach ($orders as $o) {
-                        $o->update(['paydunya_token' => $session->token]);
+                        $o->update(['stripe_session_id' => $stripeSession->id]);
                     }
 
-                    // On redirige vers la page de paiement personnalisée
                     DB::commit();
 
-                    $redirectUrl = $session->url;
-
-                    // Si c'est du Mobile Money, on redirige vers notre page de paiement personnalisée
-                    if ($phone && in_array($moyenPaiement, ['om', 'wave', 'free'])) {
-                        $redirectUrl = route('checkout.pay', ['token' => $session->token]);
-                    }
-
                     if ($request->expectsJson()) {
-                        return response()->json([
-                            'success' => true,
-                            'redirect_url' => $redirectUrl,
-                        ]);
+                        return response()->json(['success' => true, 'redirect_url' => $stripeSession->url]);
                     }
-
-                    return redirect($redirectUrl);
+                    return redirect($stripeSession->url);
                 } else {
                     // Fully paid by Gift Card!
                     foreach ($orders as $o) {
@@ -677,151 +565,6 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Une erreur est survenue lors de la validation de la commande : ' . $e->getMessage());
-        }
-    }
-
-    /**
-     * Page de paiement personnalisée (Style Jumia/Amazon)
-     */
-    public function showPaymentPage($token)
-    {
-        $orders = Order::where('paydunya_token', $token)->get();
-
-        if ($orders->isNotEmpty()) {
-            $order = $orders->first();
-            $total = $orders->sum('total_final');
-            $moyenPaiement = $order->moyen_paiement;
-            $description = "Commande Karnou #" . $order->reference;
-        } else {
-            // Tentative de récupération via PayDunya (ex: Carte cadeau)
-            $paymentData = $this->payDunyaService->verifyPayment($token);
-            if (!$paymentData) {
-                return redirect()->route('home')->with('error', 'Session de paiement invalide ou expirée.');
-            }
-
-            // On essaie de trouver le montant dans différents champs possibles
-            $total = $paymentData['invoice']['total_amount']
-                ?? $paymentData['invoice']['total']
-                ?? $paymentData['total_amount']
-                ?? session('gift_card_amount')
-                ?? 0;
-
-            $customData = $paymentData['custom_data'] ?? [];
-
-            // On essaie de retrouver le moyen de paiement via la session PayDunya
-            $moyenPaiement = 'unknown';
-            if (isset($paymentData['invoice']['channels'])) {
-                $channels = $paymentData['invoice']['channels'];
-                if (in_array('wave-senegal', $channels))
-                    $moyenPaiement = 'wave';
-                elseif (in_array('orange-money-senegal', $channels))
-                    $moyenPaiement = 'om';
-                elseif (in_array('free-money-senegal', $channels))
-                    $moyenPaiement = 'free';
-            }
-
-            // Fallback pour le moyen si session cadeau
-            if ($moyenPaiement === 'unknown') {
-                $moyenPaiement = 'wave';
-            }
-
-            $description = $paymentData['invoice']['description']
-                ?? $paymentData['description']
-                ?? "Achat Karnou";
-        }
-
-        return view('checkout.pay', compact('total', 'moyenPaiement', 'token', 'description'));
-    }
-
-    /**
-     * Traitement final du paiement SoftPay
-     */
-    public function processSoftPay(Request $request, $token)
-    {
-        $orders = Order::where('paydunya_token', $token)->get();
-
-        if ($orders->isNotEmpty()) {
-            $order = $orders->first();
-            $moyenPaiement = $order->moyen_paiement;
-            $buyer = $order->buyer;
-        } else {
-            $paymentData = $this->payDunyaService->verifyPayment($token);
-            if (!$paymentData) {
-                return response()->json(['success' => false, 'message' => 'Session invalide']);
-            }
-
-            $moyenPaiement = 'unknown';
-            if (isset($paymentData['invoice']['channels'])) {
-                $channels = $paymentData['invoice']['channels'];
-                if (in_array('wave-senegal', $channels))
-                    $moyenPaiement = 'wave';
-                elseif (in_array('orange-money-senegal', $channels))
-                    $moyenPaiement = 'om';
-                elseif (in_array('free-money-senegal', $channels))
-                    $moyenPaiement = 'free';
-            }
-
-            $buyer = Auth::user();
-        }
-
-        $phone = $request->phone_number ?: ($buyer?->telephone ?? '');
-        $moyenPaiement = $request->moyen_paiement ?: $moyenPaiement;
-
-        // Si c'est un paiement par carte, on redirige vers le checkout standard PayDunya
-        if ($moyenPaiement === 'cb') {
-            return response()->json([
-                'success' => true,
-                'redirect_url' => "https://paydunya.com/checkout/invoice/{$token}"
-            ]);
-        }
-
-        $customerData = [
-            'name' => trim($buyer?->name ?: ($buyer?->prenom . ' ' . $buyer?->nom)),
-            'email' => $request->email ?: $buyer?->email,
-            'phone' => $phone
-        ];
-
-        try {
-            $softPayResponse = $this->payDunyaService->softPay($token, $moyenPaiement, $customerData);
-
-            if (isset($softPayResponse['success']) && $softPayResponse['success'] === true) {
-                // Pour Wave et Orange Money, on donne l'URL de redirection
-                if (isset($softPayResponse['url'])) {
-                    return response()->json([
-                        'success' => true,
-                        'redirect_url' => $softPayResponse['url']
-                    ]);
-                }
-
-                // Pour Free Money (Push USSD)
-                $successUrl = route('checkout.success', ['info' => $softPayResponse['message'] ?? 'Demande envoyée']);
-
-                // Si c'est une carte cadeau, on redirige vers gift-cards.index avec succès
-                $paymentData = $paymentData ?? $this->payDunyaService->verifyPayment($token);
-                if ($paymentData && ($paymentData['custom_data']['type'] ?? '') === 'gift_card_purchase') {
-                    $successUrl = route('gift-cards.index', ['success' => 'Paiement initié. Votre carte sera générée après confirmation.']);
-                }
-
-                // Si c'est un abonnement, on redirige vers vendeur.show avec succès
-                if ($paymentData && ($paymentData['custom_data']['type'] ?? '') === 'seller_subscription') {
-                    $successUrl = route('vendeur.show', ['success' => 'Paiement de l\'abonnement initié. Il sera activé après confirmation.']);
-                }
-
-                return response()->json([
-                    'success' => true,
-                    'redirect_url' => $successUrl
-                ]);
-            }
-
-            return response()->json([
-                'success' => false,
-                'message' => $softPayResponse['message'] ?? 'Échec de l\'initiation du paiement'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur technique : ' . $e->getMessage()
-            ]);
         }
     }
 

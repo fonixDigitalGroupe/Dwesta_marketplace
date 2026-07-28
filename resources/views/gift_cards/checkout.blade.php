@@ -291,8 +291,9 @@
             </form>
 
             <div style="margin-top: 20px; text-align: center;">
-                <img src="https://paydunya.com/assets/images/logo_transparent.png" alt="PayDunya" style="height: 20px; opacity: 0.6;">
-                <p style="font-size: 0.7rem; color: #aaa; margin-top: 10px;">Paiement sécurisé par PayDunya</p>
+                <p style="font-size: 0.7rem; color: #aaa; margin-top: 10px;">
+                    <i class="fas fa-lock"></i> Paiement sécurisé par Stripe (mode test)
+                </p>
             </div>
         </div>
     </div>
