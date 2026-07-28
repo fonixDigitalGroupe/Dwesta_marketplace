@@ -572,8 +572,12 @@ class CheckoutController extends Controller
     /**
      * Confirmation de commande
      */
-    public function success()
+    public function success(Request $request)
     {
+        // Filet de sécurité : si le webhook n'a pas encore validé le paiement,
+        // on vérifie la session Stripe et on finalise (idempotent).
+        app(\App\Services\StripeFulfillmentService::class)->fulfillById($request->query('session_id'));
+
         // Récupérer les références des commandes pour la vue
         $orderRefs = session('last_order_refs', []);
 

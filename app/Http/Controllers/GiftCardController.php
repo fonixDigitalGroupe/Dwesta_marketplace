@@ -25,10 +25,13 @@ class GiftCardController extends Controller
     /**
      * Voir mes cartes cadeaux
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Filet de sécurité : créer la carte cadeau si le webhook a tardé.
+        app(\App\Services\StripeFulfillmentService::class)->fulfillById($request->query('session_id'));
+
         $user = Auth::user();
-        
+
         // Options de cartes cadeaux dynamiques
         $giftCardOptions = GiftCardOption::where('is_active', true)->orderBy('amount')->get();
 

@@ -27,3 +27,7 @@ Schedule::command('annonces:verifier-options-expiration')
 Schedule::command('annonces:republier-expirees')
     ->daily()
     ->at('05:00');
+
+// Annuler les commandes en attente non payées (paiement Stripe abandonné), toutes les heures
+Schedule::command('orders:cancel-stale --hours=24')
+    ->hourly();

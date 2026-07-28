@@ -23,10 +23,13 @@ class AbonnementController extends Controller
     /**
      * Afficher les offres d'abonnement
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Filet de sécurité : activer l'abonnement si le webhook a tardé.
+        app(\App\Services\StripeFulfillmentService::class)->fulfillById($request->query('session_id'));
+
         $user = Auth::user();
-        
+
         if (!$user->estVendeurVerifie()) {
             return redirect()->route('vendeur.show')
                 ->with('error_banner', 'Votre compte doit être vérifié par l\'administration pour accéder aux abonnements.');

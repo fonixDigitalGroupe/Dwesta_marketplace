@@ -19,8 +19,11 @@ class CreditController extends Controller
     /**
      * Afficher la page Mon Porte-Monnaie / Crédits
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Filet de sécurité : finaliser l'achat de crédits si le webhook a tardé.
+        app(\App\Services\StripeFulfillmentService::class)->fulfillById($request->query('session_id'));
+
         $user = Auth::user();
         $balance = $this->creditService->solde($user);
         $packs = CreditPack::actif()->get();
