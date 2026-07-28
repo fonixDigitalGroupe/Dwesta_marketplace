@@ -967,10 +967,6 @@
                             <div class="payment-info-wrapper">
                                 <div class="payment-title-row">
                                     <span class="payment-name">Carte bancaire (VISA / Mastercard)</span>
-                                    <div style="margin-left: auto; display: flex; gap: 6px; align-items: center;">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" style="height: 12px;">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" style="height: 18px;">
-                                    </div>
                                 </div>
                                 <div style="font-size: 13px; color: #666; margin-top: 4px;">Paiement sécurisé par carte bancaire internationale via Stripe.</div>
                             </div>
@@ -986,9 +982,6 @@
                             <div class="payment-info-wrapper">
                                 <div class="payment-title-row">
                                     <span class="payment-name">Paiement à la livraison</span>
-                                    <div style="margin-left: auto;">
-                                        <i class="fas fa-handshake" style="font-size: 1.4rem; color: #f68b1e;"></i>
-                                    </div>
                                 </div>
                                 <!-- Description en dessous du titre -->
                                 <div style="font-size: 13px; color: #666; margin-top: 6px;">Payez dès réception de votre
