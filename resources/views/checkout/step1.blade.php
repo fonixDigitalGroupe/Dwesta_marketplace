@@ -476,7 +476,7 @@
 
         .btn-confirm {
             width: 100%;
-            background: #004aad;
+            background: #f68b1e;
             color: white;
             border: none;
             border-radius: 4px;
@@ -486,12 +486,12 @@
             cursor: pointer;
             text-transform: uppercase;
             margin-top: 12px;
-            box-shadow: 0 4px 8px rgba(0, 74, 173, 0.25);
+            box-shadow: 0 4px 8px rgba(246, 139, 30, 0.25);
             transition: background 0.2s;
         }
 
         .btn-confirm:hover:not(:disabled) {
-            background: #003a8f;
+            background: #e07b10;
         }
 
         .btn-confirm:disabled {
@@ -683,7 +683,7 @@
         }
 
         .btn-confirm-final {
-            background: #004aad;
+            background: #f68b1e;
             color: white;
             border: none;
             border-radius: 4px;
@@ -693,11 +693,11 @@
             cursor: pointer;
             transition: background 0.2s;
             display: inline-block;
-            box-shadow: 0 2px 4px rgba(0, 74, 173, 0.2);
+            box-shadow: 0 2px 4px rgba(246, 139, 30, 0.2);
         }
 
         .btn-confirm-final:hover {
-            background: #003a8f;
+            background: #e07b10;
         }
 
         /* Header State for Step 3 */
@@ -865,7 +865,7 @@
                         <div style="padding: 16px 0 4px; text-align: right;">
                             <button type="button" onclick="confirmDelivery()" id="btn-confirm-delivery"
                                 class="btn-confirm-delivery"
-                                style="background: #004aad; color: #fff; border: none; padding: 10px 22px; border-radius: 4px; font-weight: 700; font-size: 14px; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 4px rgba(0,74,173,0.2);">
+                                style="background: #f68b1e; color: #fff; border: none; padding: 10px 22px; border-radius: 4px; font-weight: 700; font-size: 14px; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 4px rgba(246,139,30,0.2);">
                                 Confirmer le mode de livraison
                             </button>
                         </div>
