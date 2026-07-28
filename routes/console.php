@@ -28,6 +28,10 @@ Schedule::command('annonces:republier-expirees')
     ->daily()
     ->at('05:00');
 
+// Réconcilier les commandes en attente avec Stripe (filet si webhook manqué), toutes les 10 min
+Schedule::command('orders:reconcile-pending --hours=24')
+    ->everyTenMinutes();
+
 // Annuler les commandes en attente non payées (paiement Stripe abandonné), toutes les heures
 Schedule::command('orders:cancel-stale --hours=24')
     ->hourly();
