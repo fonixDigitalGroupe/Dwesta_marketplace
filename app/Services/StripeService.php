@@ -30,7 +30,7 @@ class StripeService
                         'name' => "Commande " . $order->reference,
                         'description' => "Paiement de votre commande sur Dwesta",
                     ],
-                    'unit_amount' => (int)($order->total_final * 100), // Stripe utilise les centimes
+                    'unit_amount' => max((int)($order->total_final * 100), 50), // Stripe : min 50 centimes
                 ],
                 'quantity' => 1,
             ]],
@@ -112,7 +112,7 @@ class StripeService
                         'name' => "Abonnement {$plan->nom}",
                         'description' => "Accès forfait {$plan->nom} pour 1 mois",
                     ],
-                    'unit_amount' => (int)($plan->prix_mensuel / 655 * 100), // Meme conversion que pour les crédits
+                    'unit_amount' => max((int)($plan->prix_mensuel / 655 * 100), 50), // Stripe : min 50 centimes
                 ],
                 'quantity' => 1,
             ]],
@@ -143,7 +143,7 @@ class StripeService
                         'name' => "Carte Cadeau Dwesta",
                         'description' => "Achat d'une carte cadeau de " . number_format($amount, 0) . " FCFA",
                     ],
-                    'unit_amount' => (int)($amount / 655 * 100), // Conversion approximative FCFA -> EUR
+                    'unit_amount' => max((int)($amount / 655 * 100), 50), // Stripe : min 50 centimes
                 ],
                 'quantity' => 1,
             ]],
@@ -173,7 +173,7 @@ class StripeService
                         'name' => "Pack {$pack->nom}",
                         'description' => "{$pack->credits} crédits" . ($pack->bonus_credits ? " + {$pack->bonus_credits} bonus" : ""),
                     ],
-                    'unit_amount' => (int)($pack->prix / 655 * 100), // Conversion approximative FCFA -> EUR
+                    'unit_amount' => max((int)($pack->prix / 655 * 100), 50), // Stripe : min 50 centimes
                 ],
                 'quantity' => 1,
             ]],
