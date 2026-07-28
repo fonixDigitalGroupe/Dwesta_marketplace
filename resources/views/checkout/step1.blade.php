@@ -959,43 +959,7 @@
 
                     <!-- Payment Selection Form -->
                     <div id="payment-options-list">
-                        <div class="payment-section-title">Mobile Money</div>
-
-                        <!-- Orange Money -->
-                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'commande', 'om')">
-                            <input type="radio" name="ui_payment" value="om">
-                            <span class="radio-custom"></span>
-                            <div class="payment-info-wrapper">
-                                <div class="payment-title-row">
-                                    <span class="payment-name">Avec Orange Money</span>
-                                    <div style="margin-left: auto;">
-                                        <img src="{{ asset('images/logoOM.png') }}" alt="Orange Money" class="method-logo"
-                                            style="height: 30px;">
-                                    </div>
-                                </div>
-                                <!-- Description en dessous du titre -->
-                                <div style="font-size: 13px; color: #666; margin-top: 4px;">Paiement rapide et sécurisé via
-                                    votre compte Orange Money.</div>
-                            </div>
-                        </label>
-
-                        <!-- Wave -->
-                        <label class="payment-option-modern" onclick="selectModernPayment(this, 'commande', 'wave')">
-                            <input type="radio" name="ui_payment" value="wave">
-                            <span class="radio-custom"></span>
-                            <div class="payment-info-wrapper">
-                                <div class="payment-title-row">
-                                    <span class="payment-name">Avec Wave</span>
-                                    <div style="margin-left: auto;">
-                                        <img src="{{ asset('images/logowave.png') }}" alt="Wave" class="method-logo">
-                                    </div>
-                                </div>
-                                <div style="font-size: 13px; color: #666; margin-top: 4px;">Payez instantanément avec
-                                    l'application Wave mobile.</div>
-                            </div>
-                        </label>
-
-
+                        <div class="payment-section-title">Carte bancaire</div>
                         <!-- Carte bancaire (VISA / Mastercard) -->
                         <label class="payment-option-modern" onclick="selectModernPayment(this, 'commande', 'cb')">
                             <input type="radio" name="ui_payment" value="cb">
