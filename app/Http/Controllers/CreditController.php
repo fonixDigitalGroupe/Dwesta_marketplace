@@ -27,7 +27,11 @@ class CreditController extends Controller
         $user = Auth::user();
         $balance = $this->creditService->solde($user);
         $packs = CreditPack::actif()->get();
-        $transactions = CreditTransaction::where('user_id', $user->id)->latest()->paginate(20);
+        // On n'affiche que les achats de crédit dans l'historique.
+        $transactions = CreditTransaction::where('user_id', $user->id)
+            ->where('type', 'achat')
+            ->latest()
+            ->paginate(20);
 
         return view('account.credits.index', compact('balance', 'packs', 'transactions'));
     }

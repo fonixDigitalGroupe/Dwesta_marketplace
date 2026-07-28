@@ -370,10 +370,10 @@
 
             {{-- 📝 Historique des transactions --}}
             @if(isset($transactions))
-                <h2 class="section-title">Historique des utilisations</h2>
+                <h2 class="section-title">Historique des achats de crédits</h2>
 
                 @if($transactions->count() > 0)
-                    <div class="tx-list">
+                    <div class="tx-list" style="max-height: 420px; overflow-y: auto; padding-right: 6px;">
                         @foreach($transactions as $transaction)
                             @php 
                                 $isPositive = $transaction->montant > 0;
