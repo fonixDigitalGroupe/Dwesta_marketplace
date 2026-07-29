@@ -16,9 +16,11 @@
         }
 
         .account-header h1 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #333;
+            font-family: 'Outfit', 'Inter', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.01em;
             margin: 0;
         }
 
@@ -32,48 +34,53 @@
 
         .jumia-card {
             background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 4px;
+            border: 1px solid #ececec;
+            border-radius: 10px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
         .jumia-card-header {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #f0f0f0;
+            padding: 0.85rem 1.15rem;
+            border-bottom: 1px solid #f2f2f2;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .jumia-card-header h2 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #333;
+            font-family: 'Outfit', 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #6b7280;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
             margin: 0;
         }
 
         .jumia-card-body {
-            padding: 1rem;
+            padding: 1.15rem;
             flex: 1;
         }
 
         .jumia-card-body p {
             margin: 0 0 0.5rem 0;
+            font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
-            color: #333;
-            line-height: 1.4;
+            color: #374151;
+            line-height: 1.5;
         }
 
         .jumia-card-body .top-text {
+            font-family: 'Outfit', 'Inter', sans-serif;
             font-weight: 600;
-            margin-bottom: 0.2rem;
+            color: #1a1a1a;
+            margin-bottom: 0.35rem;
         }
 
         .jumia-card-body .sub-text {
-            color: #8e8e93;
+            color: #9ca3af;
             font-size: 0.85rem;
         }
 
