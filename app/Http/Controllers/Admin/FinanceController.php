@@ -44,8 +44,11 @@ class FinanceController extends Controller
             ->join('abonnements', 'vendeur_abonnements.abonnement_id', '=', 'abonnements.id')
             ->sum('abonnements.prix_mensuel');
 
-        // Crédits vendus
-        $creditsRevenue = CreditTransaction::where('type', 'achat')->sum('montant');
+        // Crédits vendus : on somme le PRIX payé (FCFA) des packs, pas le nombre de crédits.
+        $creditsRevenue = CreditTransaction::where('credit_transactions.type', 'achat')
+            ->where('credit_transactions.related_type', \App\Models\CreditPack::class)
+            ->join('credit_packs', 'credit_transactions.related_id', '=', 'credit_packs.id')
+            ->sum('credit_packs.prix');
 
         $stripeOverview = compact(
             'volumeTotal',
@@ -70,7 +73,7 @@ class FinanceController extends Controller
                 break;
 
             case 'credits':
-                $data = CreditTransaction::with('user')
+                $data = CreditTransaction::with(['user', 'related'])
                     ->where('type', 'achat')
                     ->latest()
                     ->paginate(15);

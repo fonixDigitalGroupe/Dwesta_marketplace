@@ -362,7 +362,8 @@
                         <tr>
                             <th>Utilisateur</th>
                             <th>Date</th>
-                            <th>Montant</th>
+                            <th>Montant payé</th>
+                            <th>Crédits</th>
                             <th style="border-right: none;">Description</th>
                         </tr>
                     </thead>
@@ -371,11 +372,12 @@
                             <tr>
                                 <td style="font-weight: 500; color: #0066c0;">{{ $tx->user->name }}</td>
                                 <td>{{ $tx->created_at->format('d/m/Y H:i') }}</td>
-                                <td style="font-weight: 700; color: #09825d;">{{ number_format($tx->montant, 0, ',', ' ') }} FCFA</td>
+                                <td style="font-weight: 700; color: #09825d;">{{ number_format(optional($tx->related)->prix ?? 0, 0, ',', ' ') }} FCFA</td>
+                                <td style="font-weight: 700; color: #6b21a8;">{{ number_format($tx->montant, 0, ',', ' ') }} crédits</td>
                                 <td style="border-right: none;">{{ $tx->description }}</td>
                             </tr>
                         @empty
-                            <tr><td colspan="4" style="padding: 40px; text-align: center; color: #888;">Aucun achat de crédits.</td></tr>
+                            <tr><td colspan="5" style="padding: 40px; text-align: center; color: #888;">Aucun achat de crédits.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
