@@ -7,9 +7,19 @@
     /* Global Reset & Fonts */
     .rakuten-page {
         font-family: "Rakuten Sans", "Rakuten Serif", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        background-color: #ffffff;
+        background-color: #f1f1f2;
         color: #333;
+        padding-top: 1rem;
     }
+    /* Colonnes = cartes blanches sur fond gris */
+    .rk-main-grid > .rk-thumbnails,
+    .rk-main-grid > .rk-main-image,
+    .rk-main-grid > .rk-details {
+        background: #fff;
+        border-radius: 6px;
+    }
+    .rk-main-grid > .rk-thumbnails { padding: 12px; }
+    .rk-main-grid > .rk-details { padding: 1.25rem 1.5rem; }
 
     /* Breadcrumb */
     .rk-breadcrumb {
