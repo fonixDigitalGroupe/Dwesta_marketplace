@@ -871,11 +871,9 @@
                                 <div class="rk-deliv-title">Livraison à domicile</div>
                                 <div class="rk-deliv-sub">
                                     Recevez votre colis directement à votre adresse.
-                                    @auth
-                                        @if(($shippingFees['domicile'] ?? null) !== null)
-                                            <br>Frais : <strong style="color:#f68b1e;">{{ number_format($shippingFees['domicile'], 0, ',', ' ') }} FCFA</strong>
-                                        @endif
-                                    @endauth
+                                    @if(($shippingFees['domicile'] ?? null) !== null)
+                                        <br>Frais : <strong style="color:#f68b1e;">{{ number_format($shippingFees['domicile'], 0, ',', ' ') }} FCFA</strong>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -885,11 +883,9 @@
                                 <div class="rk-deliv-title">Retrait en point relais</div>
                                 <div class="rk-deliv-sub">
                                     Récupérez votre colis dans un point relais proche de chez vous.
-                                    @auth
-                                        @if(($shippingFees['point_relais'] ?? null) !== null)
-                                            <br>Frais : <strong style="color:#f68b1e;">{{ number_format($shippingFees['point_relais'], 0, ',', ' ') }} FCFA</strong>
-                                        @endif
-                                    @endauth
+                                    @if(($shippingFees['point_relais'] ?? null) !== null)
+                                        <br>Frais : <strong style="color:#f68b1e;">{{ number_format($shippingFees['point_relais'], 0, ',', ' ') }} FCFA</strong>
+                                    @endif
                                 </div>
                             </div>
                         </div>

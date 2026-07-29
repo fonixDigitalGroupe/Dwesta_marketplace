@@ -5,8 +5,13 @@
 @section('content')
 <style>
     body { background: #f1f1f2 !important; }
+    @media (max-width: 1024px) {
+        .report-footer { flex-direction: column-reverse; }
+        .report-footer .report-btn-cancel,
+        .report-footer .report-btn-send { width: 100%; }
+    }
 </style>
-<div style="max-width: 640px; margin: 2rem auto; padding: 0 1rem;">
+<div style="max-width: 640px; margin: 0.75rem auto; padding: 0 1rem;">
 
     <a href="{{ route('annonces.show', $annonce) }}"
        style="display: inline-flex; align-items: center; gap: 0.4rem; color: #6b7280; text-decoration: none; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.25rem;">
@@ -17,8 +22,8 @@
 
         <!-- Header -->
         <div style="padding: 1.1rem 1.5rem;">
-            <h1 style="margin: 0; font-family: 'Outfit','Inter',sans-serif; font-size: 1.15rem; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 0.55rem;">
-                <i class="fas fa-flag" style="color: #9ca3af; font-size: 0.95rem;"></i> Signaler cette annonce
+            <h1 style="margin: 0; font-family: 'Outfit','Inter',sans-serif; font-size: 1.15rem; font-weight: 600; color: #374151;">
+                Signaler cette annonce
             </h1>
         </div>
 
@@ -73,14 +78,14 @@
             </div>
 
             <!-- Footer -->
-            <div style="display: flex; justify-content: flex-end; gap: 0.6rem; padding: 1rem 1.5rem; background: #fff;">
-                <a href="{{ route('annonces.show', $annonce) }}"
-                    style="padding: 0.6rem 1.2rem; border: 1px solid #d1d5db; background: #fff; color: #374151; border-radius: 8px; font-size: 0.88rem; font-weight: 600; text-decoration: none;">
+            <div class="report-footer" style="display: flex; justify-content: flex-end; gap: 0.6rem; padding: 1rem 1.5rem; background: #fff;">
+                <a href="{{ route('annonces.show', $annonce) }}" class="report-btn-cancel"
+                    style="padding: 0.6rem 1.2rem; border: 1px solid #d1d5db; background: #fff; color: #374151; border-radius: 8px; font-size: 0.88rem; font-weight: 600; text-decoration: none; text-align: center;">
                     Annuler
                 </a>
-                <button type="submit"
-                    style="padding: 0.6rem 1.4rem; border: none; background: #dc2626; color: #fff; border-radius: 8px; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: background 0.2s;"
-                    onmouseover="this.style.background='#b91c1c'" onmouseout="this.style.background='#dc2626'">
+                <button type="submit" class="report-btn-send"
+                    style="padding: 0.6rem 1.4rem; border: none; background: #f68b1e; color: #fff; border-radius: 8px; font-size: 0.88rem; font-weight: 700; cursor: pointer; transition: background 0.2s;"
+                    onmouseover="this.style.background='#e07b10'" onmouseout="this.style.background='#f68b1e'">
                     Envoyer le signalement
                 </button>
             </div>
