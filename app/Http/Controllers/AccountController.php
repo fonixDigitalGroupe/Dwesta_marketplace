@@ -62,7 +62,8 @@ class AccountController extends Controller
             $query->whereIn('statut', $activeStatuses);
         }
 
-        $orders = $query->paginate(10)->withQueryString();
+        // Toutes les commandes (liste défilante, sans pagination)
+        $orders = $query->get();
 
         return view('account.orders', compact('orders', 'activeCount', 'returnedCount', 'tab'));
     }

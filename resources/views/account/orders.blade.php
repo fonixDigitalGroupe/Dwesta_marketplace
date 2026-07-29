@@ -208,10 +208,6 @@
                     </div>
                 @endforeach
             </div>
-
-            <div style="margin-top: 2rem;">
-                {{ $orders->links() }}
-            </div>
         @endif
     </main>
 </div>
