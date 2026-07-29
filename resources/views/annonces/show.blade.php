@@ -27,13 +27,47 @@
     /* Main Grid */
     .rk-main-grid {
         display: grid;
-        grid-template-columns: 80px 500px 1fr; /* Thumbnails | Main Image | Details */
+        grid-template-columns: 80px 500px 1fr; /* Miniatures | Image | Détails */
         gap: 1.5rem;
         max-width: 1280px;
         margin: 0 auto;
         padding: 0 1rem 1rem 1rem;
         align-items: start;
     }
+    .rk-main-grid.has-delivery {
+        grid-template-columns: 80px 420px 1fr 280px; /* + colonne Livraison */
+    }
+
+    /* Colonne Livraison & Retours (droite) */
+    .rk-delivery-col { align-self: start; }
+    .rk-deliv-card {
+        background: #fff;
+        border: 1px solid #ececec;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+    .rk-deliv-header {
+        padding: 12px 15px;
+        border-bottom: 1px solid #f2f2f2;
+        font-family: 'Outfit','Inter',sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        color: #333;
+    }
+    .rk-deliv-body { padding: 6px 15px; }
+    .rk-deliv-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        padding: 12px 0;
+        border-bottom: 1px solid #f5f5f5;
+    }
+    .rk-deliv-item:last-child { border-bottom: none; }
+    .rk-deliv-item > i { color: #f68b1e; font-size: 1.1rem; width: 22px; text-align: center; margin-top: 2px; flex-shrink: 0; }
+    .rk-deliv-title { font-family: 'Outfit','Inter',sans-serif; font-size: 0.9rem; font-weight: 600; color: #1a1a1a; }
+    .rk-deliv-sub { font-family: 'Inter',sans-serif; font-size: 0.8rem; color: #6b7280; line-height: 1.4; margin-top: 2px; }
 
     /* Gallery Section */
     .rk-thumbnails {
@@ -221,7 +255,8 @@
 
     /* Responsive */
     @media (max-width: 1024px) {
-        .rk-main-grid {
+        .rk-main-grid,
+        .rk-main-grid.has-delivery {
             grid-template-columns: 1fr;
             gap: 2rem;
         }
@@ -575,7 +610,8 @@
         </nav>
     @endif
 
-    <div class="rk-main-grid">
+    @php $estEcommerce = $annonce->category && $annonce->category->famille === \App\Models\Category::FAMILLE_ECOMMERCE; @endphp
+    <div class="rk-main-grid {{ $estEcommerce ? 'has-delivery' : '' }}">
         <!-- Left: Thumbnails -->
         <div class="rk-thumbnails">
             @if($annonce->video)
@@ -775,6 +811,45 @@
             @endif
 
         </div>
+
+        @if($estEcommerce)
+        <!-- Colonne Livraison & Retours -->
+        <div class="rk-delivery-col">
+            <div class="rk-deliv-card">
+                <div class="rk-deliv-header">Livraison &amp; retours</div>
+                <div class="rk-deliv-body">
+                    <div class="rk-deliv-item">
+                        <i class="fas fa-truck"></i>
+                        <div>
+                            <div class="rk-deliv-title">Livraison à domicile</div>
+                            <div class="rk-deliv-sub">Frais calculés selon votre région lors du paiement.</div>
+                        </div>
+                    </div>
+                    <div class="rk-deliv-item">
+                        <i class="fas fa-store"></i>
+                        <div>
+                            <div class="rk-deliv-title">Retrait en point relais</div>
+                            <div class="rk-deliv-sub">Récupérez votre colis dans un point relais proche de chez vous.</div>
+                        </div>
+                    </div>
+                    <div class="rk-deliv-item">
+                        <i class="fas fa-shield-halved"></i>
+                        <div>
+                            <div class="rk-deliv-title">Paiement sécurisé</div>
+                            <div class="rk-deliv-sub">Par carte bancaire (Stripe) ou à la livraison.</div>
+                        </div>
+                    </div>
+                    <div class="rk-deliv-item">
+                        <i class="fas fa-rotate-left"></i>
+                        <div>
+                            <div class="rk-deliv-title">Retour &amp; litige</div>
+                            <div class="rk-deliv-sub">Signalez un souci depuis « Mes commandes » après réception.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 
     <!-- Reviews Section (E-commerce uniquement) -->
