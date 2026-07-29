@@ -45,6 +45,7 @@
         grid-template-areas:
             "image details"
             "thumbs details";
+        grid-template-rows: auto auto;
         gap: 0;
         max-width: 1280px;
         margin: 0 auto;
