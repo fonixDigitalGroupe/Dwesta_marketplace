@@ -475,7 +475,7 @@
     }
     .resize-handle { color: #cbd5e1; font-size: 0.8rem; cursor: pointer; }
     .send-btn {
-        background: #004aad;
+        background: #f68b1e;
         color: #fff;
         border: none;
         padding: 8px 24px;
@@ -484,7 +484,7 @@
         cursor: pointer;
         transition: all 0.2s;
     }
-    .send-btn:hover { background: #003a8c; transform: scale(1.02); }
+    .send-btn:hover { background: #e07b10; transform: scale(1.02); }
 
     /* Responsive */
     @media (max-width: 991px) {
@@ -870,7 +870,7 @@
                                     <span id="selected-file-info" style="color: #004aad; font-weight: 500;"></span>
                                     <span style="opacity: 0.6; margin-left: 8px;">Appuyez sur "Entrée" pour envoyer</span>
                                 </div>
-                                <button type="submit" id="send-button" style="background: #004aad; color: #fff; border: none; padding: 8px 24px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; box-shadow: 0 1px 3px rgba(0,74,173,0.2); display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#003a8c'" onmouseout="this.style.background='#004aad'">
+                                <button type="submit" id="send-button" style="background: #f68b1e; color: #fff; border: none; padding: 8px 24px; border-radius: 4px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; box-shadow: 0 1px 3px rgba(246,139,30,0.25); display: flex; align-items: center; gap: 8px;" onmouseover="this.style.background='#e07b10'" onmouseout="this.style.background='#f68b1e'">
                                     <i class="far fa-paper-plane"></i> Envoyer
                                 </button>
                             </div>
@@ -1000,7 +1000,7 @@
         document.getElementById('image-preview-wrapper').style.display = 'none';
         const sendBtn = document.getElementById('send-button');
         if (sendBtn) {
-            sendBtn.style.background = '#004aad';
+            sendBtn.style.background = '#f68b1e';
             sendBtn.style.boxShadow = 'none';
         }
     }
