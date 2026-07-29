@@ -562,11 +562,11 @@
         <span>Mes commandes</span>
     </a>
 
-    <!-- Boîte de réception -->
+    <!-- Messagerie -->
     <a href="{{ route('conversations.index') }}"
         class="sidebar-item {{ request()->routeIs('conversations.*') ? 'active' : '' }}">
         <i class="fa-regular fa-envelope"></i>
-        <span>Boîte de réception</span>
+        <span>Messagerie</span>
         @if($unreadCount > 0)
             <span class="badge-count">{{ $unreadCount }}</span>
         @endif
