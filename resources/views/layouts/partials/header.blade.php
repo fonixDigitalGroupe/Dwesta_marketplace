@@ -40,32 +40,6 @@
 
                 <div class="header-actions">
 
-                <div class="sell-button-container">
-                    <button type="button" class="sell-button" onclick="toggleSellDropdown()">
-                        <span class="sell-icon" style="display: flex; align-items: center; justify-content: center; margin-right: 6px;">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"></path>
-                            </svg>
-                        </span>
-                        <span>Mettre en vente</span>
-                    </button>
-                    <div class="sell-dropdown" id="layoutSellDropdown">
-                        <a href="{{ route('annonces.create') }}" class="sell-dropdown-item">
-                            <div class="sell-dropdown-item-title">Vendre un produit</div>
-                            <div class="sell-dropdown-item-subtitle">Je dépose une annonce gratuitement</div>
-                        </a>
-                        <a href="{{ route('vendeur.astuces') }}" class="sell-dropdown-item" style="padding-top: 0.25rem;">
-                            <div class="sell-dropdown-item-title" style="font-weight: 400; text-decoration: underline;">Astuces vendeurs</div>
-                        </a>
-                        <div class="sell-dropdown-separator"></div>
-                        <a href="{{ route('eshop.landing') }}" class="sell-dropdown-item">
-                            <div class="sell-dropdown-item-title">Je suis un commerçant</div>
-                            <div class="sell-dropdown-item-subtitle">J'ouvre un e-shop</div>
-                        </a>
-                    </div>
-                </div>
-
                     @auth
                         @php
                             $unreadCount = auth()->user()->unreadMessagesCount();
@@ -152,7 +126,31 @@
                         </div>
                     @endauth
 
-
+                <div class="sell-button-container">
+                    <button type="button" class="sell-button" onclick="toggleSellDropdown()">
+                        <span class="sell-icon" style="display: flex; align-items: center; justify-content: center; margin-right: 6px;">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"></path>
+                            </svg>
+                        </span>
+                        <span>Mettre en vente</span>
+                    </button>
+                    <div class="sell-dropdown" id="layoutSellDropdown">
+                        <a href="{{ route('annonces.create') }}" class="sell-dropdown-item">
+                            <div class="sell-dropdown-item-title">Vendre un produit</div>
+                            <div class="sell-dropdown-item-subtitle">Je dépose une annonce gratuitement</div>
+                        </a>
+                        <a href="{{ route('vendeur.astuces') }}" class="sell-dropdown-item" style="padding-top: 0.25rem;">
+                            <div class="sell-dropdown-item-title" style="font-weight: 400; text-decoration: underline;">Astuces vendeurs</div>
+                        </a>
+                        <div class="sell-dropdown-separator"></div>
+                        <a href="{{ route('eshop.landing') }}" class="sell-dropdown-item">
+                            <div class="sell-dropdown-item-title">Je suis un commerçant</div>
+                            <div class="sell-dropdown-item-subtitle">J'ouvre un e-shop</div>
+                        </a>
+                    </div>
+                </div>
 
                     @inject('cartService', 'App\Services\CartService')
                     <a href="{{ route('cart.index') }}" class="header-link" title="Mon Panier" style="position: relative;">
