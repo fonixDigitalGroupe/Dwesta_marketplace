@@ -77,7 +77,7 @@
     /* Search Bar */
     .search-container {
         flex: 1;
-        margin: 0 0.75rem 0 1.25rem;
+        margin: 0 0.4rem 0 0.75rem;
         max-width: none;
         display: flex;
         align-items: center;
