@@ -665,25 +665,6 @@
                 <div class="rk-description-text" style="color: #555; line-height: 1.6; font-size: 0.95rem;">
                     {!! nl2br(e($annonce->description)) !!}
                 </div>
-
-                <div style="font-weight: 800; color: #1a1a1a; margin-top: 1.5rem; margin-bottom: 0.75rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Caractéristiques techniques</div>
-                <div class="rk-specs-horizontal" style="margin-top: 0.5rem;">
-                    @if($annonce->should_show_etat)
-                        <div class="rk-spec-item">
-                            <span class="rk-spec-label"><i class="fas fa-tag" style="margin-right: 5px;"></i> État :</span>
-                            <span class="rk-spec-value" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
-                        </div>
-                    @endif
-
-                    <!-- Signaler l'annonce (page dédiée) -->
-                    <div class="rk-report" style="margin-left: auto;">
-                        <a href="{{ route('signalements.create', $annonce) }}"
-                        style="text-decoration: none; color: #dc2626; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0; transition: color 0.2s;"
-                        onmouseover="this.style.color='#991b1b'" onmouseout="this.style.color='#dc2626'">
-                        <i class="fas fa-flag"></i> Signaler l'annonce
-                    </a>
-                </div>
-                </div>
             </div>
 
             <!-- Price & Action -->
@@ -728,6 +709,28 @@
                     @endif
                 </div>
             </div> <!-- Close rk-price-box -->
+
+            <!-- Caractéristiques techniques (sous le prix) -->
+            <div class="rk-content-section" style="margin-top: 0.5rem;">
+                <div style="font-weight: 800; color: #1a1a1a; margin-bottom: 0.75rem; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">Caractéristiques techniques</div>
+                <div class="rk-specs-horizontal" style="margin-top: 0.5rem;">
+                    @if($annonce->should_show_etat)
+                        <div class="rk-spec-item">
+                            <span class="rk-spec-label"><i class="fas fa-tag" style="margin-right: 5px;"></i> État :</span>
+                            <span class="rk-spec-value" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
+                        </div>
+                    @endif
+
+                    <!-- Signaler l'annonce (page dédiée) -->
+                    <div class="rk-report" style="margin-left: auto;">
+                        <a href="{{ route('signalements.create', $annonce) }}"
+                        style="text-decoration: none; color: #dc2626; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0; transition: color 0.2s;"
+                        onmouseover="this.style.color='#991b1b'" onmouseout="this.style.color='#dc2626'">
+                        <i class="fas fa-flag"></i> Signaler l'annonce
+                    </a>
+                    </div>
+                </div>
+            </div>
             
             @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
             <!-- Seller Info: Only shown for Pro sellers -->
