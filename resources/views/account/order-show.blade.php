@@ -363,7 +363,13 @@
 
                 @foreach($order->items as $item)
                     <div class="article-card-pro">
-                        <div class="status-badge-pro">
+                        <div class="status-badge-pro" style="background: {{ match($order->statut) {
+                            'paye', 'livre' => '#16a34a',
+                            'pret_expedition', 'en_route', 'disponible' => '#0076ad',
+                            'en_attente' => '#f68b1e',
+                            'annule' => '#9ca3af',
+                            default => '#75757a',
+                        } }};">
                             @switch($order->statut)
                                 @case('en_attente') En attente @break
                                 @case('paye') Confirmée @break
