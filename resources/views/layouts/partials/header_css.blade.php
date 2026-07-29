@@ -98,7 +98,7 @@
         padding: 0.75rem 1rem;
         border: none;
         font-family: 'Outfit', 'Inter', sans-serif;
-        font-size: 1rem;
+        font-size: 1.05rem;
         outline: none;
         background-color: #eeeeee;
     }
@@ -136,7 +136,8 @@
         gap: 0.5rem;
         text-decoration: none;
         color: #333;
-        font-size: 0.9rem;
+        font-family: 'Outfit', 'Inter', sans-serif;
+        font-size: 1rem;
         font-weight: 500;
         position: relative;
     }
@@ -153,8 +154,8 @@
     }
 
     .header-link svg {
-        width: 22px;
-        height: 22px;
+        width: 25px;
+        height: 25px;
         flex-shrink: 0;
     }
 
@@ -183,7 +184,7 @@
         text-decoration: none;
         color: #333;
         font-family: 'Outfit', 'Inter', sans-serif;
-        font-size: 0.9rem;
+        font-size: 1rem;
         font-weight: 500;
         cursor: pointer;
         background: white;
