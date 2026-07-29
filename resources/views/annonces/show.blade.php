@@ -17,8 +17,8 @@
     .rk-main-grid > .rk-details {
         background: #fff;
     }
-    .rk-main-grid > .rk-main-image { border-radius: 6px 0 0 6px; }
-    .rk-main-grid > .rk-thumbnails { padding: 12px; border-radius: 6px 0 0 6px; }
+    .rk-main-grid > .rk-main-image { border-radius: 6px 0 0 0; }
+    .rk-main-grid > .rk-thumbnails { padding: 10px 12px 12px; border-radius: 0 0 0 6px; }
     .rk-main-grid > .rk-details { padding: 1.25rem 1.5rem; border-radius: 0 6px 6px 0; }
     /* Avec colonne livraison : détails plat des deux côtés, marge avant livraison */
     .rk-main-grid.has-delivery > .rk-details { border-radius: 0; }
@@ -45,7 +45,7 @@
         grid-template-areas:
             "image details"
             "thumbs details";
-        gap: 1rem 0;
+        gap: 0;
         max-width: 1280px;
         margin: 0 auto;
         padding: 0 1rem 1rem 1rem;
@@ -667,7 +667,7 @@
         </div>
 
         <!-- Center: Main Image -->
-        <div class="rk-main-image" style="background: #ffffff; border: 1px solid #f2f2f2; border-right: none; border-radius: 6px 0 0 6px; overflow: hidden; position: relative;">
+        <div class="rk-main-image" style="background: #ffffff; border: 1px solid #f2f2f2; border-right: none; border-bottom: none; border-radius: 6px 0 0 0; overflow: hidden; position: relative;">
             @if($annonce->video)
                 <video id="display-video" controls autoplay muted style="width: 100%; height: 100%; max-width: 100%; max-height: 100%; border-radius: 12px; object-fit: contain;">
                     <source src="{{ $annonce->video->url }}" type="video/mp4">
