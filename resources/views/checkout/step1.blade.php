@@ -486,7 +486,7 @@
             cursor: pointer;
             text-transform: uppercase;
             margin-top: 12px;
-            box-shadow: 0 4px 8px rgba(246, 139, 30, 0.25);
+            box-shadow: none;
             transition: background 0.2s;
         }
 
@@ -683,7 +683,7 @@
         }
 
         .btn-confirm-final {
-            background: #f68b1e;
+            background: #004aad;
             color: white;
             border: none;
             border-radius: 4px;
@@ -693,11 +693,11 @@
             cursor: pointer;
             transition: background 0.2s;
             display: inline-block;
-            box-shadow: 0 2px 4px rgba(246, 139, 30, 0.2);
+            box-shadow: none;
         }
 
         .btn-confirm-final:hover {
-            background: #e07b10;
+            background: #003a8f;
         }
 
         /* Header State for Step 3 */
@@ -860,7 +860,7 @@
                         <div style="padding: 16px 0 4px; text-align: right;">
                             <button type="button" onclick="confirmDelivery()" id="btn-confirm-delivery"
                                 class="btn-confirm-delivery"
-                                style="background: #f68b1e; color: #fff; border: none; padding: 10px 22px; border-radius: 4px; font-weight: 700; font-size: 14px; cursor: pointer; transition: background 0.2s; box-shadow: 0 2px 4px rgba(246,139,30,0.2);">
+                                style="background: #004aad; color: #fff; border: none; padding: 10px 22px; border-radius: 4px; font-weight: 700; font-size: 14px; cursor: pointer; transition: background 0.2s; box-shadow: none;">
                                 Confirmer le mode de livraison
                             </button>
                         </div>
