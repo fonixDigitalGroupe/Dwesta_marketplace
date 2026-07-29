@@ -825,11 +825,11 @@
                          </div>
                      </div>
                      @if($annonce->vendeur->type === 'professionnel')
-                     <div style="margin-left: auto; margin-right: -1.5rem;">
+                     <div style="margin-left: auto; margin-right: 1.25rem;">
                         <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" style="display: inline-block; font-size: 0.85rem; color: #fff; background: #2196F3; font-weight: 600; text-decoration: none; padding: 0.5rem 1.1rem; border-radius: 0; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='#2196F3'">Voir la boutique</a>
                      </div>
                      @else
-                     <div style="margin-left: auto; margin-right: -1.5rem;">
+                     <div style="margin-left: auto; margin-right: 1.25rem;">
                         <a href="#" style="display: inline-block; font-size: 0.85rem; color: #fff; background: #2196F3; font-weight: 600; text-decoration: none; padding: 0.5rem 1.1rem; border-radius: 0; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='#2196F3'">Voir le profil</a>
                      </div>
                      @endif
