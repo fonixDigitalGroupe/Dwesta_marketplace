@@ -814,10 +814,6 @@
                                             ></a>
                                     </div>
                                     <div class="sub-box-body" id="pr-status-box">
-                                        <div
-                                            style="width: 40px; height: 40px; background: #fff3e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--jumia-orange);">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                        </div>
                                         <div style="font-size: 13px;">
                                             <strong id="pr-selected-name"
                                                 style="display: block; color: var(--jumia-text);">Point relais non
@@ -842,7 +838,6 @@
                                     <span class="option-price" id="price-domicile-badge" style="display: inline-block;">À
                                         PARTIR DE <span id="price-domicile"></span></span>
                                 </span>
-                                <i class="fas fa-truck" style="margin-left: auto; color: #f68b1e;"></i>
                             </label>
                             <div class="option-date" id="date-domicile"
                                 style="margin-left: 32px; color: #313133; font-size: 14px; margin-top: 4px;">Calcul en
@@ -1042,7 +1037,6 @@
 
                 <p id="voucher-placeholder-text" class="voucher-text"
                     style="font-size: 12px; color: #666; margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee;">
-                    <i class="fas fa-ticket-alt" style="color: var(--jumia-orange);"></i>
                     Vous pourrez ajouter un bon d'achat lors de la sélection de votre mode de paiement.
                 </p>
 
