@@ -442,24 +442,18 @@
                         <div class="summary-card-body">
                             <div class="summary-item-pro">
                                 <div class="summary-label-pro">Mode de paiement</div>
-                                <div class="summary-value-pro" style="display: flex; align-items: center; gap: 8px;">
+                                <div class="summary-value-pro">
                                     @if($order->moyen_paiement === 'om')
-                                        <img src="{{ asset('images/logoOM.png') }}" alt="Orange Money" style="height: 20px; object-fit: contain;">
                                         <span>Orange Money</span>
                                     @elseif($order->moyen_paiement === 'wave')
-                                        <img src="{{ asset('images/logowave.png') }}" alt="Wave" style="height: 20px; object-fit: contain;">
                                         <span>Wave</span>
                                     @elseif($order->moyen_paiement === 'cb')
-                                        <i class="fas fa-credit-card"></i>
                                         <span>Carte Bancaire</span>
                                     @elseif($order->moyen_paiement === 'gift_card')
-                                        <i class="fas fa-gift" style="color: #2e7d32;"></i>
                                         <span style="color: #2e7d32; font-weight: 700;">Carte Cadeau</span>
                                     @elseif($order->moyen_paiement === 'livraison_buyer' || $order->moyen_paiement === 'livraison_receiver')
-                                        <i class="fas fa-handshake"></i>
                                         <span>Paiement à la livraison</span>
                                     @elseif($order->moyen_paiement === 'wallet')
-                                        <i class="fas fa-wallet"></i>
                                         <span>Portefeuille Dwesta</span>
                                     @else
                                         <span>{{ ucfirst(str_replace('_', ' ', $order->moyen_paiement ?? 'Non renseigné')) }}</span>
