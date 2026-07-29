@@ -526,8 +526,8 @@
 
     /* Shop Identity Card (as requested replacement for breadcrumb) */
     .shop-identity-card-mini {
-        max-width: 1280px;
-        margin: 0 auto 1.5rem auto;
+        max-width: 1000px;
+        margin: 0 auto 1.2rem auto;
         background: white;
         padding: 10px 20px;
         display: flex;
