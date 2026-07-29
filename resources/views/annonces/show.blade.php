@@ -314,8 +314,8 @@
         .rk-thumbnails { flex-direction: row; flex-wrap: wrap; }
     }
 
-    /* Mobile : prix + boutons (panier / contacter vendeur) */
-    @media (max-width: 600px) {
+    /* Mobile/tablette : prix + boutons (panier / contacter vendeur) */
+    @media (max-width: 1024px) {
         .rk-price-box {
             flex-direction: column;
             align-items: stretch !important;
