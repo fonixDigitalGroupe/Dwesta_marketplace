@@ -711,14 +711,14 @@
                     @else
                         @if(auth()->check())
                             <button onclick="openQuickChat('{{ route('conversations.create', ['recipient_id' => $annonce->vendeur->user_id, 'annonce_id' => $annonce->id]) }}')" class="rk-btn-cart" 
-                                style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #111; padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem; transition: background 0.2s;"
-                                onmouseover="this.style.background='#000'" onmouseout="this.style.background='#111'">
+                                style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #f68b1e; padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem; transition: background 0.2s;"
+                                onmouseover="this.style.background='#e07b10'" onmouseout="this.style.background='#f68b1e'">
                                 <i class="fas fa-envelope" style="margin-right: 0.75rem;"></i> Contacter le vendeur
                             </button>
                         @else
                             <a href="{{ route('login') }}" class="rk-btn-cart" 
-                                style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #111; padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem; transition: background 0.2s;"
-                                onmouseover="this.style.background='#000'" onmouseout="this.style.background='#111'">
+                                style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; background: #f68b1e; padding: 0.75rem 1.5rem; border-radius: 0; font-size: 0.9rem; transition: background 0.2s;"
+                                onmouseover="this.style.background='#e07b10'" onmouseout="this.style.background='#f68b1e'">
                                 <i class="fas fa-envelope" style="margin-right: 0.75rem;"></i> Contacter le vendeur
                             </a>
                         @endif
