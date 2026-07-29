@@ -1018,11 +1018,6 @@
                 icon.classList.add('far');
             }
             icon.style.color = '#e11d48';
-
-            // Optional: Provide feedback via toast
-            window.dispatchEvent(new CustomEvent('notify', {
-                detail: { message: data.message, type: 'success' }
-            }));
         })
         .catch(error => {
             console.error('Error:', error);
