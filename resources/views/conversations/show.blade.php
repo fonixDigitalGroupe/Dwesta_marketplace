@@ -31,7 +31,7 @@
     /* MINI LAYOUT ADJUSTMENTS */
     @if(request('layout') == 'mini')
     body { background: #fff !important; padding: 0 !important; margin: 0 !important; }
-    .header, .footer, .rk-breadcrumb, .breadcrumb, .partials-profile-sidebar, .sidebar, .account-header, .wa-sidebar { display: none !important; }
+    header, footer, .header, .footer, .rk-footer, .rk-header, .footer-reinsurance, .rk-breadcrumb, .breadcrumb, .partials-profile-sidebar, .sidebar, .account-header, .wa-sidebar { display: none !important; }
     .main-content { padding: 0 !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; height: 100vh !important; }
     .dashboard-container { display: block !important; margin: 0 !important; padding: 0 !important; border: none !important; }
     .wa-container { height: 100vh !important; max-height: 100vh !important; border: none !important; }
