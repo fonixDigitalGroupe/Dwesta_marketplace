@@ -286,30 +286,31 @@
     @media (max-width: 1024px) {
         .rk-main-grid,
         .rk-main-grid.has-delivery {
-            grid-template-columns: 1fr;
+            display: flex !important;
+            flex-direction: column;
+            grid-template-columns: none;
             grid-template-areas: none;
-            gap: 2rem;
+            gap: 0.9rem;
+            padding: 0 0.6rem 1rem;
         }
-        .rk-main-grid > .rk-gallery-col { order: 1; }
-        .rk-main-grid > .rk-details { order: 2; }
-        .rk-main-grid > .rk-delivery-col { order: 3; }
+        .rk-main-grid > .rk-gallery-col { order: 1; align-self: stretch; }
+        .rk-main-grid > .rk-details { order: 2; align-self: stretch; }
+        .rk-main-grid > .rk-delivery-col { order: 3; align-self: stretch; display: block; }
         /* Cartes pleine largeur, coins arrondis, sur mobile */
-        .rk-gallery-col { border-radius: 8px; justify-content: flex-start; }
+        .rk-gallery-col {
+            width: 100%;
+            border-radius: 8px;
+            justify-content: flex-start;
+        }
+        .rk-gallery-col > .rk-main-image { height: 320px; width: 100%; border-radius: 8px 8px 0 0; }
         .rk-main-grid > .rk-details,
         .rk-main-grid.has-delivery > .rk-details {
+            width: 100%;
             border-radius: 8px;
-        }
-        .rk-main-grid.has-delivery > .rk-delivery-col { margin-left: 0; }
-        .rk-thumbnails {
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-        .rk-main-image {
-            height: 300px;
-        }
-        .rk-details {
             padding: 1.25rem;
         }
+        .rk-main-grid.has-delivery > .rk-delivery-col { margin-left: 0; }
+        .rk-thumbnails { flex-direction: row; flex-wrap: wrap; }
     }
 
     /* Mobile : prix + boutons (panier / contacter vendeur) */
