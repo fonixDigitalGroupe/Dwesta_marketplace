@@ -35,7 +35,18 @@
         border-bottom-color: #f68b1e;
     }
 
-    .orders-list { display: flex; flex-direction: column; gap: 1rem; }
+    .orders-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-height: 600px;
+        overflow-y: auto;
+        padding-right: 6px;
+    }
+    /* Barre de défilement discrète */
+    .orders-list::-webkit-scrollbar { width: 8px; }
+    .orders-list::-webkit-scrollbar-thumb { background: #d1d1d1; border-radius: 4px; }
+    .orders-list::-webkit-scrollbar-track { background: transparent; }
     
     .order-card {
         background: #fff;
