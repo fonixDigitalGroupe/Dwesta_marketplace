@@ -160,10 +160,10 @@
     }
 
     .rk-title {
-        font-size: 1.6rem;
+        font-size: 1.25rem;
         font-weight: 700;
         color: #1a1a1a;
-        line-height: 1.3;
+        line-height: 1.35;
         margin-bottom: 0.25rem;
     }
     .rk-brand { font-size: 0.9rem; color: #666; margin-bottom: 0.5rem; }
@@ -526,10 +526,10 @@
 
     /* Shop Identity Card (as requested replacement for breadcrumb) */
     .shop-identity-card-mini {
-        max-width: 1000px;
-        margin: 0 auto 1.2rem auto;
+        max-width: 1280px;
+        margin: 0 auto 1rem auto;
         background: white;
-        padding: 10px 20px;
+        padding: 10px 1rem;
         display: flex;
         align-items: center;
         gap: 20px;
@@ -568,8 +568,8 @@
     }
 
     .shop-name-text-mini {
-        font-size: 1.3rem;
-        font-weight: 800;
+        font-size: 1.05rem;
+        font-weight: 700;
         color: #1a1a1a;
         text-decoration: none;
     }
@@ -748,7 +748,7 @@
             <div class="rk-price-box" style="display: flex; align-items: center; background: #ffffff; padding: 0.5rem 1.25rem; margin-top: 0; border-radius: 0;">
                 <div style="flex: 1; border-right: 1px solid #e0e0e0; padding-right: 1rem;">
                     <div style="font-size: 0.8rem; color: #888; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.5px;">Prix de vente</div>
-                    <div class="rk-main-price" id="main-price" style="display: flex; align-items: baseline; gap: 8px; color: #1a1a1a; font-weight: 700; font-size: 1.6rem; text-shadow: none !important;">
+                    <div class="rk-main-price" id="main-price" style="display: flex; align-items: baseline; gap: 8px; color: #1a1a1a; font-weight: 700; font-size: 1.35rem; text-shadow: none !important;">
                         {{ number_format($annonce->prix_affiche, 0, ',', ' ') }} <span style="font-size: 1rem; color: #1a1a1a;">FCFA</span>
                         @if($annonce->estEnPromo())
                             <span style="font-size: 1rem; color: #999; text-decoration: line-through; font-weight: 400;">
