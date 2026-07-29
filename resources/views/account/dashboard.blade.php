@@ -664,14 +664,16 @@
                     </div>
                 </div>
 
-                <!-- Préférences de communication -->
+                <!-- Localisation -->
                 <div class="jumia-card">
                     <div class="jumia-card-header">
-                        <h2>Préférences de communication</h2>
+                        <h2>Localisation</h2>
                     </div>
                     <div class="jumia-card-body">
-                        <p class="sub-text">Gérez vos communications par e-mail pour rester informé des dernières nouvelles et offres.</p>
-                        <a href="{{ route('profile.show') }}" class="jumia-link">Modifier les préférences de communication</a>
+                        <p class="top-text">Votre localisation actuelle :</p>
+                        <p class="sub-text">{{ $u->ville ?? $u->nationalite ?? 'Non définie' }}{{ $u->region ? ', ' . $u->region : '' }}</p>
+                        <p class="sub-text">{{ $u->adresse ?? 'Aucune adresse enregistrée' }}</p>
+                        <a href="{{ route('profile.show') }}#profile-geolocation-section" class="jumia-link">Gérer ma localisation</a>
                     </div>
                 </div>
             </div>
