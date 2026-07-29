@@ -320,7 +320,7 @@
             flex-direction: column;
             align-items: stretch !important;
             gap: 0.85rem;
-            padding: 1rem !important;
+            padding: 1rem 0 !important;
         }
         /* Bloc prix en pleine largeur (retire le séparateur vertical) */
         .rk-price-box > div:first-child {
