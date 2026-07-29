@@ -44,23 +44,26 @@
         max-width: 1280px;
         margin: 0 auto;
         padding: 0 1rem 1rem 1rem;
-        align-items: start;
+        align-items: stretch;
     }
     .rk-main-grid.has-delivery {
         grid-template-columns: 380px 1fr 280px; /* Galerie | Détails | Livraison */
         grid-template-areas: "gallery details delivery";
     }
     .rk-main-grid > .rk-gallery-col { grid-area: gallery; }
-    .rk-main-grid > .rk-details { grid-area: details; align-self: start; }
-    .rk-main-grid > .rk-delivery-col { grid-area: delivery; }
+    .rk-main-grid > .rk-details { grid-area: details; }
+    .rk-main-grid > .rk-delivery-col { grid-area: delivery; align-self: start; }
     /* Galerie : image en haut, miniatures dessous, dans une seule carte */
     .rk-gallery-col {
         display: flex;
-        flex-direction: column-reverse; /* DOM: miniatures puis image -> image en haut */
+        flex-direction: column;
+        justify-content: flex-start;
         background: #fff;
         border-radius: 6px 0 0 6px;
         overflow: hidden;
     }
+    .rk-gallery-col > .rk-main-image { order: 0; } /* image en haut */
+    .rk-gallery-col > .rk-thumbnails { order: 1; } /* miniatures dessous */
 
     /* Colonne Livraison & Retours (droite) */
     .rk-delivery-col { align-self: start; }
