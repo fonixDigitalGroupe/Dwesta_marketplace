@@ -40,7 +40,7 @@
         .rakuten-radio-item input[type="radio"] {
             width: 18px;
             height: 18px;
-            accent-color: #0076ad;
+            accent-color: #f68b1e;
         }
 
         .rakuten-field-group {
@@ -179,7 +179,7 @@
         }
 
         .btn-rakuten {
-            background: #004aad;
+            background: #f68b1e;
             color: #fff;
             padding: 0.5rem 1.5rem;
             border: none;
