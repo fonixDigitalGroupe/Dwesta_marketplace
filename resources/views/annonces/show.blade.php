@@ -830,12 +830,12 @@
                          </div>
                      </div>
                      @if($annonce->vendeur->type === 'professionnel')
-                     <div style="padding-left: 1rem; border-left: 1px solid #eee;">
-                        <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" style="font-size: 0.8rem; color: #ff8c00; font-weight: 700; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderBottom='1px solid #ff8c00'" onmouseout="this.style.borderBottom='1px solid transparent'">Voir la boutique</a>
+                     <div style="margin-left: auto;">
+                        <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" style="display: inline-block; font-size: 0.85rem; color: #fff; background: #2196F3; font-weight: 600; text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='#2196F3'">Voir la boutique</a>
                      </div>
                      @else
-                     <div style="padding-left: 1rem; border-left: 1px solid #eee;">
-                        <a href="#" style="font-size: 0.8rem; color: #2196F3; font-weight: 700; text-decoration: none; border-bottom: 1px solid transparent; transition: all 0.2s;" onmouseover="this.style.borderBottom='1px solid #2196F3'" onmouseout="this.style.borderBottom='1px solid transparent'">Voir le profil</a>
+                     <div style="margin-left: auto;">
+                        <a href="#" style="display: inline-block; font-size: 0.85rem; color: #fff; background: #2196F3; font-weight: 600; text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='#2196F3'">Voir le profil</a>
                      </div>
                      @endif
                 </div>
@@ -882,7 +882,10 @@
                         <i class="fas fa-flag"></i>
                         <div>
                             <div class="rk-deliv-title">Retour &amp; litige</div>
-                            <div class="rk-deliv-sub"><a href="{{ route('signalements.create', $annonce) }}" style="color:#dc2626; font-weight:600; text-decoration:none;">Signaler l'annonce</a></div>
+                            <div class="rk-deliv-sub">
+                                Un problème avec cette annonce ?
+                                <br><a href="{{ route('signalements.create', $annonce) }}" style="color:#dc2626; font-weight:600; text-decoration:none;">Signaler l'annonce</a>
+                            </div>
                         </div>
                     </div>
                 </div>
