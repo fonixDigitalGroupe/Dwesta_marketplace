@@ -178,12 +178,13 @@
 
         .summary-card-header {
             padding: 12px 15px;
-            border-bottom: 1px solid #ededed;
-            font-size: 0.85rem;
-            font-weight: 700;
+            border-bottom: 1px solid #f2f2f2;
+            font-size: 0.78rem;
+            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.04em;
             background: #ffffff;
-            color: #333;
+            color: #9ca3af;
         }
 
         .summary-card-body {
@@ -195,9 +196,9 @@
         }
 
         .summary-label-pro {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #333;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #6b7280;
             margin-bottom: 6px;
         }
 
