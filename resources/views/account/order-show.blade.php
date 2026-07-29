@@ -40,9 +40,9 @@
         }
 
         .btn-cancel-pro {
-            background: transparent;
+            background: #fde8e8;
             color: #d32f2f;
-            border: 1px solid #d32f2f;
+            border: 1px solid #f5c2c2;
             padding: 6px 12px;
             border-radius: 4px;
             font-size: 0.8rem;
@@ -54,7 +54,7 @@
             text-transform: uppercase;
         }
         .btn-cancel-pro:hover {
-            background: #fdf2f2;
+            background: #fbd5d5;
         }
 
         .section-title-pro {
