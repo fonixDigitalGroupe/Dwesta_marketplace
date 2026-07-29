@@ -843,7 +843,7 @@
                                 <img src="{{ $conversation->annonce->photoPrincipale()->url ?? '' }}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #e5e7eb;">
                                 <div style="flex: 1; min-width: 0;">
                                     <div style="font-weight: 600; font-size: 0.85rem; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;">{{ $conversation->annonce->titre }}</div>
-                                    <div style="font-weight: 700; font-size: 0.9rem; color: #004aad; margin-bottom: 2px;">{{ number_format($conversation->annonce->prix, 0, ',', ' ') }} F CFA</div>
+                                    <div style="font-weight: 700; font-size: 0.9rem; color: #111827; margin-bottom: 2px;">{{ number_format($conversation->annonce->prix, 0, ',', ' ') }} F CFA</div>
                                     <div style="font-size: 0.75rem; color: #64748b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ strip_tags($conversation->annonce->description ?? '') }}</div>
                                 </div>
                                 <div onclick="removeProductPreviewInInput()" style="position: absolute; top: 8px; right: 8px; background: #e2e8f0; color: #475569; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.6rem;">
