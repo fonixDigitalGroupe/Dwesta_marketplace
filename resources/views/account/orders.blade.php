@@ -41,10 +41,10 @@
         background: #fff;
         border: 1px solid #f0f0f2;
         border-radius: 4px;
-        padding: 0.85rem 1.15rem;
+        padding: 0.65rem 1rem;
         display: flex;
         flex-direction: column;
-        gap: 0.25rem;
+        gap: 0.15rem;
     }
     
     .order-card-header {
@@ -57,10 +57,10 @@
     }
 
     .order-card-status-title {
-        font-size: 1.15rem;
-        font-weight: 500;
+        font-size: 1rem;
+        font-weight: 600;
         color: #313133;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.1rem;
     }
 
     .order-card-description {
@@ -108,13 +108,17 @@
     }
 
     .btn-detail {
-        color: #f68b1e;
-        font-weight: 500;
+        background: #f68b1e;
+        color: #fff;
+        font-weight: 600;
         text-decoration: none;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
+        padding: 0.35rem 0.9rem;
+        border-radius: 5px;
+        transition: background 0.2s;
     }
     .btn-detail:hover {
-        text-decoration: underline;
+        background: #e07b10;
     }
 
     .order-footer {
