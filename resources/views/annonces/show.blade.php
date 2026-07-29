@@ -656,7 +656,7 @@
         </div>
 
         <!-- Center: Main Image -->
-        <div class="rk-main-image" style="background: #ffffff; border: 1px solid #f2f2f2; border-right: none; border-bottom: none; border-radius: 6px 0 0 0; overflow: hidden; position: relative;">
+        <div class="rk-main-image" style="background: #ffffff; border: none; border-radius: 6px 0 0 0; overflow: hidden; position: relative;">
             @if($annonce->video)
                 <video id="display-video" controls autoplay muted style="width: 100%; height: 100%; max-width: 100%; max-height: 100%; border-radius: 12px; object-fit: contain;">
                     <source src="{{ $annonce->video->url }}" type="video/mp4">
