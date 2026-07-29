@@ -32,7 +32,7 @@
             border: 1px solid #eeeeee;
             border-radius: 4px;
             padding: 0;
-            height: fit-content;
+            align-self: stretch;
             box-shadow: none;
             margin-left: 2rem;
         }
