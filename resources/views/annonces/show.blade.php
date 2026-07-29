@@ -635,7 +635,9 @@
             <!-- Header: Brand, Title, Stars -->
             <div style="margin-bottom: 1.5rem;">
                 <h1 class="rk-title">{{ $annonce->titre }}</h1>
-                
+
+                @php $estEcommerce = $annonce->category && $annonce->category->famille === \App\Models\Category::FAMILLE_ECOMMERCE; @endphp
+                @if($estEcommerce)
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem;">
                     <div class="rk-stars" style="color: #ff9900; font-size: 0.85rem; display: flex; align-items: center; gap: 3px;">
                         @php
@@ -654,6 +656,7 @@
                     </div>
                     <span style="color: #007185; font-size: 0.85rem; font-weight: 500;">({{ $nbAvis }})</span>
                 </div>
+                @endif
             </div>
 
             <!-- Content: Description & Specs -->
@@ -771,8 +774,8 @@
         </div>
     </div>
 
-    <!-- Reviews Section -->
-    @if($annonce->avisApprouves->count() > 0)
+    <!-- Reviews Section (E-commerce uniquement) -->
+    @if($estEcommerce && $annonce->avisApprouves->count() > 0)
     <div id="avis" class="rk-section-header" style="margin-top: 5rem; border-top: 1px solid #eee; padding-top: 3rem;">
         <h2 class="rk-offers-title">Avis clients</h2>
     </div>
