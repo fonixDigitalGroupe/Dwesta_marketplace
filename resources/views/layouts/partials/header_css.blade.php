@@ -97,12 +97,14 @@
         flex: 1;
         padding: 0.75rem 1rem;
         border: none;
+        font-family: 'Outfit', 'Inter', sans-serif;
         font-size: 1rem;
         outline: none;
         background-color: #eeeeee;
     }
 
     .search-button {
+        font-family: 'Outfit', 'Inter', sans-serif;
         background-color: #ff8c00;
         color: white;
         border: none;
@@ -180,6 +182,7 @@
         gap: 0.5rem;
         text-decoration: none;
         color: #333;
+        font-family: 'Outfit', 'Inter', sans-serif;
         font-size: 0.9rem;
         font-weight: 500;
         cursor: pointer;
