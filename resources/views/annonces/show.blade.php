@@ -613,33 +613,9 @@
 </style>
 
 <div class="rakuten-page">
-    @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
-        <div class="shop-identity-card-mini">
-            <div class="shop-logo-box-mini">
-                @if($annonce->vendeur->pagePro && $annonce->vendeur->pagePro->logo)
-                    <img src="{{ Storage::url($annonce->vendeur->pagePro->logo) }}" alt="Logo">
-                @else
-                    <i class="fas fa-store" style="font-size: 1.5rem; color: #eee;"></i>
-                @endif
-            </div>
-
-            <div class="shop-meta-info-mini">
-                <div class="shop-name-row-mini">
-                    <a href="{{ $annonce->vendeur->getBoutiqueUrl() }}" class="shop-name-text-mini">{{ $annonce->vendeur->identite }}</a>
-                    <span class="tag-pro-mini">PRO</span>
-                </div>
-                <div class="shop-stats-mini">
-                    <span class="shop-rating-stars-mini">
-                        <i class="fas fa-star"></i> {{ number_format($boutique_rating, 1, ',', '') }}/5
-                    </span>
-                    <span>sur {{ number_format($boutique_avis_count, 0, ',', ' ') }} {{ $boutique_avis_count > 1 ? 'avis' : 'avis' }}</span>
-                </div>
-            </div>
-        </div>
-    @else
-        <!-- Breadcrumb (Private sellers) -->
+        <!-- Fil d'ariane -->
         <nav class="rk-breadcrumb">
-            <a href="{{ route('home') }}">Accueil</a> &gt; 
+            <a href="{{ route('home') }}">Accueil</a> &gt;
             @if($annonce->category)
                 <a href="{{ route('categories.show', $annonce->category->slug) }}">{{ $annonce->category->nom }}</a> &gt;
             @endif
@@ -648,7 +624,6 @@
             @endif
             <span>{{ $annonce->titre }}</span>
         </nav>
-    @endif
 
     @php $estEcommerce = $annonce->category && $annonce->category->famille === \App\Models\Category::FAMILLE_ECOMMERCE; @endphp
     <div class="rk-main-grid {{ $estEcommerce ? 'has-delivery' : '' }}">
