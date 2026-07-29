@@ -938,9 +938,7 @@
                                 <div id="summary-payment-name" style="font-weight: 700; color: #313133; font-size: 14px;">
                                     Mode de paiement</div>
                             </div>
-                            <div id="summary-payment-icon" style="margin-left: 15px;">
-                                <i class="fas fa-wallet" style="font-size: 1.4rem; color: #333;"></i>
-                            </div>
+                            <div id="summary-payment-icon" style="display: none;"></div>
                         </div>
                         <!-- Retourner à vos achats (Inside the card as requested) -->
                         <div id="back-to-shop-link"
