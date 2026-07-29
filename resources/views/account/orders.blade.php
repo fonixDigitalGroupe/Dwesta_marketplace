@@ -28,11 +28,11 @@
         transition: all 0.2s;
     }
     .jumia-tab:hover {
-        color: #004aad;
+        color: #f68b1e;
     }
     .jumia-tab.active {
-        color: #004aad;
-        border-bottom-color: #004aad;
+        color: #f68b1e;
+        border-bottom-color: #f68b1e;
     }
 
     .orders-list { display: flex; flex-direction: column; gap: 1rem; }
