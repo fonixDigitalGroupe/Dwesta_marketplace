@@ -24,8 +24,9 @@
 
     /* Breadcrumb */
     .rk-breadcrumb {
-        font-size: 0.8rem;
-        color: #777;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: #555;
         padding: 0.25rem 0 0.6rem 0;
         max-width: 1280px;
         margin: 0 auto;
@@ -624,7 +625,7 @@
             @foreach($trail as $c)
                 &gt; <a href="{{ route('categories.show', $c->slug) }}">{{ $c->nom }}</a>
             @endforeach
-            &gt; <span>{{ $annonce->titre }}</span>
+            &gt; <span style="font-weight: 700; color: #333;">{{ $annonce->titre }}</span>
         </nav>
 
     @php $estEcommerce = $annonce->category && $annonce->category->famille === \App\Models\Category::FAMILLE_ECOMMERCE; @endphp
