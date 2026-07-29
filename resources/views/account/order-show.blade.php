@@ -179,12 +179,13 @@
         .summary-card-header {
             padding: 12px 15px;
             border-bottom: 1px solid #f2f2f2;
-            font-size: 0.78rem;
-            font-weight: 600;
+            font-family: 'Outfit', 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.02em;
             background: #ffffff;
-            color: #9ca3af;
+            color: #333;
         }
 
         .summary-card-body {
@@ -196,16 +197,19 @@
         }
 
         .summary-label-pro {
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: #6b7280;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: #9ca3af;
             margin-bottom: 6px;
         }
 
         .summary-value-pro {
-            font-size: 0.9rem;
-            color: #75757a;
-            line-height: 1.5;
+            font-family: 'Outfit', 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            line-height: 1.4;
         }
 
         .price-summary-pro {
