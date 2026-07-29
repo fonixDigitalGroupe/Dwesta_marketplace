@@ -805,16 +805,20 @@
                          </div>
                           <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                             @if($annonce->vendeur->type === 'professionnel')
-                                <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" class="rk-seller-name" style="color: #1a1a1a; font-weight: 900; font-size: 1.1rem; text-decoration: none; transition: color 0.2s;">
+                                <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" class="rk-seller-name" style="color: #1a1a1a; font-weight: 600; font-size: 1rem; text-decoration: none; transition: color 0.2s;">
                                     {{ $annonce->vendeur->identite }}
                                 </a>
-                                <span style="background: #ffffff; color: #333; font-size: 9px; font-weight: 900; padding: 1px 7px; letter-spacing: 1px; border-radius: 0; text-transform: uppercase; border: 1px solid #ddd;">PRO</span>
+                                <span style="background: #ffffff; color: #333; font-size: 9px; font-weight: 700; padding: 1px 7px; letter-spacing: 1px; border-radius: 0; text-transform: uppercase; border: 1px solid #ddd;">PRO</span>
                             @else
-                                <span class="rk-seller-name" style="color: #1a1a1a; font-weight: 900; font-size: 1.1rem;">
+                                <span class="rk-seller-name" style="color: #1a1a1a; font-weight: 600; font-size: 1rem;">
                                     {{ $annonce->vendeur->identite ?? ($annonce->user->prenom . ' ' . $annonce->user->nom) }}
                                 </span>
-                                <span style="background: #f8f9fa; color: #666; font-size: 9px; font-weight: 900; padding: 1px 7px; letter-spacing: 1px; border-radius: 0; text-transform: uppercase; border: 1px solid #ddd;">Particulier</span>
+                                <span style="background: #f8f9fa; color: #666; font-size: 9px; font-weight: 700; padding: 1px 7px; letter-spacing: 1px; border-radius: 0; text-transform: uppercase; border: 1px solid #ddd;">Particulier</span>
                             @endif
+                         </div>
+                         <div style="display: flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 0.85rem;">
+                            <span style="color: #f68b1e; font-weight: 700;"><i class="fas fa-star"></i> {{ number_format($boutique_rating, 1, ',', '') }}/5</span>
+                            <span style="color: #888;">sur {{ number_format($boutique_avis_count, 0, ',', ' ') }} avis</span>
                          </div>
                      </div>
                      @if($annonce->vendeur->type === 'professionnel')
