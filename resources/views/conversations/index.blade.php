@@ -224,8 +224,8 @@
                             ->where('sender_id', '!=', Auth::id())
                             ->count();
                     @endphp
-                    <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 20px; margin-bottom: 15px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px 16px; margin-bottom: 10px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                             <span style="display: flex; align-items: center; gap: 8px;">
                                 <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 500;">
                                     {{ $lastMsg ? $lastMsg->created_at->translatedFormat('d M') : $conv->created_at->translatedFormat('d M') }}
@@ -236,10 +236,10 @@
                                     </span>
                                 @endif
                             </span>
-                            <a href="{{ route('conversations.show', $conv) }}" style="color: #004aad; font-weight: 600; font-size: 0.9rem; text-decoration: none;">Détails</a>
+                            <a href="{{ route('conversations.show', $conv) }}" style="color: #f68b1e; font-weight: 600; font-size: 0.9rem; text-decoration: none;">Détails</a>
                         </div>
 
-                        <h2 style="font-size: 1.1rem; font-weight: 700; color: #0f172a; margin: 5px 0 10px;">
+                        <h2 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin: 2px 0 5px;">
                             @if($isSystem)
                                 <span>Karnou</span>
                             @else
@@ -247,7 +247,7 @@
                             @endif
                         </h2>
 
-                        <div style="font-size: 0.9rem; color: #475569; line-height: 1.6; margin-bottom: 15px;">
+                        <div style="font-size: 0.9rem; color: #475569; line-height: 1.45; margin-bottom: 8px;">
                             {{ $lastMsg ? Str::limit(strip_tags($lastMsg->content), 300) : 'Démarrer une discussion...' }}
                         </div>
 
