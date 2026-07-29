@@ -40,100 +40,89 @@
     .order-card {
         background: #fff;
         border: 1px solid #f0f0f2;
-        border-radius: 4px;
-        padding: 0.65rem 1rem;
+        border-radius: 6px;
+        padding: 0.85rem 1rem;
         display: flex;
-        flex-direction: column;
-        gap: 0.15rem;
-    }
-    
-    .order-card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.8rem;
-        color: #75757a;
-        margin-bottom: 0.25rem;
+        align-items: flex-start;
+        gap: 1rem;
     }
 
-    .order-card-status-title {
-        font-size: 1rem;
-        font-weight: 600;
-        color: #313133;
-        margin-bottom: 0.1rem;
-    }
-
-    .order-card-description {
-        font-size: 0.88rem;
-        color: #535357;
-        line-height: 1.35;
-        margin-bottom: 0.35rem;
-        max-width: 900px;
-    }
-
-    .product-info-box {
-        border: 1px solid #ececee;
-        border-radius: 4px;
-        padding: 0.5rem 1rem;
-        display: flex;
-        align-self: flex-start;
-        align-items: center;
-        gap: 1.5rem;
-        min-width: 60%;
-    }
-    
-    .order-image-box {
-        width: 60px;
-        height: 60px;
+    .order-thumb {
+        width: 72px;
+        height: 72px;
         flex-shrink: 0;
+        border: 1px solid #eee;
+        border-radius: 6px;
+        background: #fafafa;
         display: flex;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
     }
-    
-    .order-image-box img {
-        max-width: 100%;
-        max-height: 100%;
+    .order-thumb img {
+        width: 100%;
+        height: 100%;
         object-fit: contain;
     }
 
-    .product-details {
+    .order-main {
         flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
     }
 
-    .product-name {
+    .order-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .order-titles { min-width: 0; }
+
+    .order-product-name {
         font-size: 0.95rem;
-        font-weight: 400;
+        font-weight: 500;
         color: #313133;
+        line-height: 1.3;
+    }
+    .order-ref {
+        font-size: 0.82rem;
+        color: #8e8e93;
+        margin-top: 2px;
     }
 
     .btn-detail {
-        background: #f68b1e;
-        color: #fff;
+        color: #f68b1e;
         font-weight: 600;
         text-decoration: none;
-        font-size: 0.8rem;
-        padding: 0.35rem 0.9rem;
-        border-radius: 5px;
-        transition: background 0.2s;
+        font-size: 0.85rem;
+        white-space: nowrap;
+        flex-shrink: 0;
     }
-    .btn-detail:hover {
-        background: #e07b10;
-    }
+    .btn-detail:hover { text-decoration: underline; }
 
-    .order-footer {
+    .order-status-line {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 0.5rem;
-        border-top: 1px solid #f1f1f1;
-        padding-top: 0.5rem;
+        flex-direction: column;
+        gap: 0.35rem;
     }
-
-    .order-price {
-        font-weight: 500;
-        color: #313133;
+    .order-badge {
+        align-self: flex-start;
+        color: #fff;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        padding: 3px 8px;
+        border-radius: 3px;
+    }
+    .order-date {
         font-size: 0.95rem;
+        font-weight: 600;
+        color: #313133;
     }
 </style>
 @endpush
@@ -166,72 +155,44 @@
         @else
             <div class="orders-list">
                 @foreach($orders as $order)
+                    @php
+                        $firstItem = $order->items->first();
+                        $photo = $firstItem && $firstItem->annonce ? $firstItem->annonce->photoPrincipale() : null;
+                        $titre = $firstItem && $firstItem->annonce ? $firstItem->annonce->titre : 'Produit retiré';
+                        if($order->items->count() > 1) {
+                            $titre .= ' (+ ' . ($order->items->count() - 1) . ' autres produits)';
+                        }
+                        $badge = match($order->statut) {
+                            'paye'            => ['Confirmé', '#16a34a'],
+                            'pret_expedition' => ['Prêt pour expédition', '#0076ad'],
+                            'en_route'        => ['En livraison', '#0076ad'],
+                            'disponible'      => ['Disponible au relais', '#0076ad'],
+                            'livre'           => ['Colis livré', '#16a34a'],
+                            'en_attente'      => ['En attente de paiement', '#f68b1e'],
+                            'annule'          => ['Annulé', '#9ca3af'],
+                            default           => [$order->statut_label, '#0076ad'],
+                        };
+                    @endphp
                     <div class="order-card">
-                        <div class="order-card-header">
-                            <span>{{ $order->created_at->translatedFormat('d F') }}</span>
-                            <a href="{{ route('account.orders.show', $order) }}" class="btn-detail">Détails</a>
-                        </div>
-
-                        <div class="order-card-status-title">
-                            @if($order->statut === 'paye')
-                                Confirmé!
-                            @elseif($order->statut === 'pret_expedition')
-                                Prêt pour expédition!
-                            @elseif($order->statut === 'en_route')
-                                En cours de livraison!
-                            @elseif($order->statut === 'livre')
-                                Livré!
-                            @elseif($order->statut === 'en_attente')
-                                En attente de paiement
-                            @elseif($order->statut === 'annule')
-                                Annulé
+                        <div class="order-thumb">
+                            @if($photo)
+                                <img src="{{ Storage::url($photo->chemin) }}" alt="">
                             @else
-                                {{ $order->statut_label }}
+                                <i class="fa-solid fa-image" style="color: #ddd; font-size: 1.5rem;"></i>
                             @endif
                         </div>
-
-                        <div class="order-card-description">
-                            Votre commande {{ $order->reference }} a été {{ $order->statut === 'paye' ? 'confirmée' : ($order->statut === 'livre' ? 'livrée' : 'mise à jour') }}. 
-                            @if($order->statut === 'paye')
-                                Le vendeur prépare actuellement votre colis.
-                            @elseif($order->statut === 'en_route')
-                                Votre colis est en cours d'acheminement vers vous.
-                            @endif
-                            Merci pour votre achat sur Karnou!
-                        </div>
-
-                        <div class="product-info-box">
-                            <div class="order-image-box">
-                                @php 
-                                    $firstItem = $order->items->first();
-                                    $photo = $firstItem && $firstItem->annonce ? $firstItem->annonce->photoPrincipale() : null; 
-                                @endphp
-                                @if($photo)
-                                    <img src="{{ Storage::url($photo->chemin) }}" alt="">
-                                @else
-                                    <i class="fa-solid fa-image" style="color: #ddd; font-size: 1.5rem;"></i>
-                                @endif
-                            </div>
-                            <div class="product-details">
-                                <div class="product-name">
-                                    @php 
-                                        $titre = $firstItem && $firstItem->annonce ? $firstItem->annonce->titre : 'Produit retiré';
-                                        if($order->items->count() > 1) {
-                                            $titre .= ' (+ ' . ($order->items->count() - 1) . ' autres produits)';
-                                        }
-                                    @endphp
-                                    {{ $titre }}
+                        <div class="order-main">
+                            <div class="order-top">
+                                <div class="order-titles">
+                                    <div class="order-product-name">{{ $titre }}</div>
+                                    <div class="order-ref">Commande {{ $order->reference }}</div>
                                 </div>
+                                <a href="{{ route('account.orders.show', $order) }}" class="btn-detail">Détails</a>
                             </div>
-                        </div>
-
-                        <div class="order-footer">
-                            <div class="order-price">
-                                Total : {{ number_format($order->total_final ?? $order->total_produits, 0, ',', ' ') }} FCFA
+                            <div class="order-status-line">
+                                <span class="order-badge" style="background: {{ $badge[1] }};">{{ $badge[0] }}</span>
+                                <span class="order-date">Le {{ $order->created_at->format('d-m-Y') }}</span>
                             </div>
-                            @if($order->statut === 'en_route')
-                                <a href="{{ route('account.orders.tracking', $order) }}" class="btn-detail">Suivre mon colis</a>
-                            @endif
                         </div>
                     </div>
                 @endforeach
