@@ -893,6 +893,13 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="rk-deliv-item">
+                            <i class="fas fa-box-open"></i>
+                            <div>
+                                <div class="rk-deliv-title">Suivi de commande</div>
+                                <div class="rk-deliv-sub">Suivez l'acheminement de votre colis depuis « Mes commandes ».</div>
+                            </div>
+                        </div>
                     @else
                         <div class="rk-deliv-item">
                             <i class="fas fa-truck"></i>
