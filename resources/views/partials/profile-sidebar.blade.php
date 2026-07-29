@@ -17,7 +17,7 @@
         .dashboard-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1.5rem 2rem;
+            padding: 0.4rem 2rem 1.5rem;
             display: grid;
             grid-template-columns: 300px 1fr;
             gap: 1.5rem;
