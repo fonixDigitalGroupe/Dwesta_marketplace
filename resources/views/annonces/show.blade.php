@@ -526,10 +526,11 @@
 
     /* Shop Identity Card (as requested replacement for breadcrumb) */
     .shop-identity-card-mini {
-        max-width: 1280px;
+        max-width: 1248px; /* = 1280 - 2rem : aligné aux marges des conteneurs */
         margin: 0 auto 1rem auto;
         background: white;
-        padding: 10px 1rem;
+        border-radius: 6px;
+        padding: 12px 16px;
         display: flex;
         align-items: center;
         gap: 20px;
