@@ -815,12 +815,13 @@
                                 </span>
                                 <span style="background: #f8f9fa; color: #666; font-size: 9px; font-weight: 700; padding: 1px 7px; letter-spacing: 1px; border-radius: 0; text-transform: uppercase; border: 1px solid #ddd;">Particulier</span>
                             @endif
-                         </div>
-                         <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 0.85rem; flex-wrap: wrap;">
-                            <span style="color: #f68b1e; font-weight: 700;"><i class="fas fa-star"></i> {{ number_format($boutique_rating, 1, ',', '') }}/5</span>
-                            <span style="color: #888;">{{ number_format($boutique_avis_count, 0, ',', ' ') }} avis</span>
-                            <span style="color: #ccc;">•</span>
-                            <span style="color: #888;">{{ number_format($boutique_sales, 0, ',', ' ') }} vente{{ $boutique_sales > 1 ? 's' : '' }}</span>
+
+                            <span style="display: inline-flex; align-items: center; gap: 8px; margin-left: 6px; font-size: 0.85rem; flex-wrap: wrap;">
+                                <span style="color: #f68b1e; font-weight: 700;"><i class="fas fa-star"></i> {{ number_format($boutique_rating, 1, ',', '') }}/5</span>
+                                <span style="color: #888;">{{ number_format($boutique_avis_count, 0, ',', ' ') }} avis</span>
+                                <span style="color: #ccc;">•</span>
+                                <span style="color: #888;">{{ number_format($boutique_sales, 0, ',', ' ') }} vente{{ $boutique_sales > 1 ? 's' : '' }}</span>
+                            </span>
                          </div>
                      </div>
                      @if($annonce->vendeur->type === 'professionnel')
