@@ -303,6 +303,24 @@
                 .gc-status-active { background: rgba(255,255,255,0.92); color: #16a34a; }
                 .gc-status-used { background: rgba(255,255,255,0.92); color: #dc2626; }
                 .gc-status-expired { background: rgba(255,255,255,0.85); color: #6b7280; }
+                .gc-share-btn {
+                    margin-top: 14px;
+                    width: 100%;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    background: #f68b1e;
+                    color: #fff;
+                    border: none;
+                    padding: 11px 16px;
+                    border-radius: 8px;
+                    font-size: 0.9rem;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: background 0.2s;
+                }
+                .gc-share-btn:hover { background: #e07b10; }
                 /* Carte grisée (aucun code saisi) */
                 .gift-card-visual.gc-placeholder { background: linear-gradient(135deg, #e9edf2 0%, #dfe4ea 100%); box-shadow: none; color: #9aa3b0; }
                 .gc-placeholder .gc-brand { color: #b6bdc8; }
@@ -508,7 +526,10 @@ async function checkGiftCardBalance() {
                         ${expiryText ? `<span class="gc-expiry">${expiryText}</span>` : ''}
                         ${data.amount !== data.balance ? `<span class="gc-init">Valeur initiale : ${data.amount.toLocaleString('fr-FR')} FCFA</span>` : ''}
                     </div>
-                </div>`;
+                </div>
+                <button type="button" class="gc-share-btn" onclick="shareGiftCard('${data.code}', ${data.balance})">
+                    <i class="fas fa-share-alt"></i> Partager cette carte
+                </button>`;
         } else {
             resultBox.innerHTML = `<div style="background:#fff3f3; border:1px solid #ffcdd2; border-radius:8px; padding:1rem; color:#c62828; font-size:0.9rem;">
                 <i class="fas fa-times-circle"></i> ${data.message}
@@ -516,6 +537,23 @@ async function checkGiftCardBalance() {
         }
     } catch (e) {
         resultBox.innerHTML = '<div style="color:#721c24; text-align:center; padding:1rem;">Erreur de connexion.</div>';
+    }
+}
+
+async function shareGiftCard(code, balance) {
+    const texte = `🎁 Carte cadeau Karnou\nCode : ${code}\nSolde : ${balance.toLocaleString('fr-FR')} FCFA\nUtilisable sur https://karnou.com`;
+    if (navigator.share) {
+        try {
+            await navigator.share({ title: 'Carte cadeau Karnou', text: texte });
+            return;
+        } catch (err) { /* partage annulé */ return; }
+    }
+    // Repli : copie dans le presse-papiers
+    try {
+        await navigator.clipboard.writeText(texte);
+        alert('Détails de la carte copiés ! Vous pouvez les coller pour les partager.');
+    } catch (err) {
+        prompt('Copiez les détails de la carte :', texte);
     }
 }
 </script>
