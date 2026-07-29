@@ -27,7 +27,7 @@
     /* Main Grid */
     .rk-main-grid {
         display: grid;
-        grid-template-columns: 500px 1fr; /* Image | Détails */
+        grid-template-columns: 400px 1fr; /* Image | Détails */
         grid-template-areas:
             "image details"
             "thumbs details";
@@ -38,7 +38,7 @@
         align-items: start;
     }
     .rk-main-grid.has-delivery {
-        grid-template-columns: 460px 1fr 280px; /* Image | Détails | Livraison */
+        grid-template-columns: 380px 1fr 280px; /* Image | Détails | Livraison */
         grid-template-areas:
             "image details delivery"
             "thumbs details delivery";
@@ -104,8 +104,8 @@
     .rk-thumb img { width: 100%; height: 100%; object-fit: contain; }
 
     .rk-main-image {
-        height: 450px;
-        max-height: 80vh;
+        height: 360px;
+        max-height: 70vh;
         display: flex;
         align-items: center;
         justify-content: center;
