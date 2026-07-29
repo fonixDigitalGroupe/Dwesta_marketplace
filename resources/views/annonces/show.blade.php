@@ -93,7 +93,7 @@
         border-bottom: 1px solid #f5f5f5;
     }
     .rk-deliv-item:last-child { border-bottom: none; }
-    .rk-deliv-item > i { color: #4b5563; font-size: 1.1rem; width: 22px; text-align: center; margin-top: 2px; flex-shrink: 0; }
+    .rk-deliv-item > i { color: #b8bec7; font-size: 1rem; width: 22px; text-align: center; margin-top: 2px; flex-shrink: 0; }
     .rk-deliv-title { font-family: 'Outfit','Inter',sans-serif; font-size: 0.9rem; font-weight: 600; color: #1a1a1a; }
     .rk-deliv-sub { font-family: 'Inter',sans-serif; font-size: 0.8rem; color: #6b7280; line-height: 1.4; margin-top: 2px; }
 
@@ -291,20 +291,24 @@
             gap: 2rem;
         }
         .rk-main-grid > .rk-gallery-col { order: 1; }
-        .rk-main-grid > .rk-details { order: 3; }
-        .rk-main-grid > .rk-delivery-col { order: 4; }
-        .rk-gallery-col { border-radius: 6px; }
+        .rk-main-grid > .rk-details { order: 2; }
+        .rk-main-grid > .rk-delivery-col { order: 3; }
+        /* Cartes pleine largeur, coins arrondis, sur mobile */
+        .rk-gallery-col { border-radius: 8px; justify-content: flex-start; }
+        .rk-main-grid > .rk-details,
+        .rk-main-grid.has-delivery > .rk-details {
+            border-radius: 8px;
+        }
+        .rk-main-grid.has-delivery > .rk-delivery-col { margin-left: 0; }
         .rk-thumbnails {
             flex-direction: row;
-            order: 2;
+            flex-wrap: wrap;
         }
         .rk-main-image {
-            height: 350px;
-            order: 1;
+            height: 300px;
         }
         .rk-details {
-            order: 3;
-            padding-left: 0;
+            padding: 1.25rem;
         }
     }
 
@@ -866,13 +870,6 @@
                         <div>
                             <div class="rk-deliv-title">Retrait en point relais</div>
                             <div class="rk-deliv-sub">Récupérez votre colis dans un point relais proche de chez vous.</div>
-                        </div>
-                    </div>
-                    <div class="rk-deliv-item">
-                        <i class="fas fa-shield-halved"></i>
-                        <div>
-                            <div class="rk-deliv-title">Paiement sécurisé</div>
-                            <div class="rk-deliv-sub">Par carte bancaire (Stripe) ou à la livraison.</div>
                         </div>
                     </div>
                     <div class="rk-deliv-item">
