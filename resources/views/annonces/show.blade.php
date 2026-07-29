@@ -832,11 +832,11 @@
                      </div>
                      @if($annonce->vendeur->type === 'professionnel')
                      <div style="margin-left: auto;">
-                        <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" style="display: inline-block; font-size: 0.85rem; color: #fff; background: #2196F3; font-weight: 600; text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='#2196F3'">Voir la boutique</a>
+                        <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" style="display: inline-block; font-size: 0.85rem; color: #fff; background: #2196F3; font-weight: 600; text-decoration: none; padding: 0.5rem 1.1rem; border-radius: 0; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='#2196F3'">Voir la boutique</a>
                      </div>
                      @else
                      <div style="margin-left: auto;">
-                        <a href="#" style="display: inline-block; font-size: 0.85rem; color: #fff; background: #2196F3; font-weight: 600; text-decoration: none; padding: 0.5rem 1rem; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='#2196F3'">Voir le profil</a>
+                        <a href="#" style="display: inline-block; font-size: 0.85rem; color: #fff; background: #2196F3; font-weight: 600; text-decoration: none; padding: 0.5rem 1.1rem; border-radius: 0; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='#2196F3'">Voir le profil</a>
                      </div>
                      @endif
                 </div>
