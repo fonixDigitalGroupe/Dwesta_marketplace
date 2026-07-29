@@ -798,6 +798,15 @@
                             <span class="rk-spec-value" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
                         </div>
                     @endif
+
+                    @foreach($annonce->filteredAttributes as $attr)
+                        @if($attr->filter && $attr->value !== null && $attr->value !== '')
+                            <div class="rk-spec-item">
+                                <span class="rk-spec-label">{{ $attr->filter->nom }} :</span>
+                                <span class="rk-spec-value" style="font-weight: 700;">{{ $attr->value }}{{ $attr->filter->unit ? ' ' . $attr->filter->unit : '' }}</span>
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
             

@@ -284,6 +284,9 @@ class AnnonceController extends Controller
         $boutique_sales = \App\Models\OrderItem::whereIn('annonce_id', $annonceIds)->count();
         $boutique_avis_count = \App\Models\Avis::whereIn('annonce_id', $annonceIds)->count();
 
+        // Critères/attributs renseignés (pour les caractéristiques techniques)
+        $annonce->load('filteredAttributes.filter');
+
         // Frais de livraison estimés (domicile / point relais) selon l'utilisateur connecté
         $shippingFees = app(\App\Services\LogisticsService::class)->feesForAnnonce($annonce, Auth::user());
 
