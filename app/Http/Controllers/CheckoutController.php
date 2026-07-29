@@ -503,8 +503,7 @@ class CheckoutController extends Controller
                 ]);
 
                 if ($remainingTotal > 0 && $moyenPaiement !== 'gift_card') {
-                    // ===== Tous les moyens de paiement passent par Stripe (mode test). =====
-                    \Illuminate\Support\Facades\Log::info('STRIPE ÉTAPE 1 : avant createMarketplaceSession', ['remaining' => $remainingTotal, 'moyen' => $moyenPaiement]);
+                    // ===== Tous les moyens de paiement passent par Stripe. =====
                     $stripeSession = $this->stripeService->createMarketplaceSession(
                         $remainingTotal,
                         route('checkout.success'),
@@ -518,13 +517,9 @@ class CheckoutController extends Controller
                         trim(Auth::user()->name ?: (Auth::user()->prenom . ' ' . Auth::user()->nom)) ?: null
                     );
 
-                    \Illuminate\Support\Facades\Log::info('STRIPE ÉTAPE 2 : session créée', ['session_id' => $stripeSession->id]);
-
                     foreach ($orders as $o) {
                         $o->update(['stripe_session_id' => $stripeSession->id]);
                     }
-
-                    \Illuminate\Support\Facades\Log::info('STRIPE ÉTAPE 3 : session_id enregistré + redirection', ['url' => $stripeSession->url, 'expectsJson' => $request->expectsJson()]);
 
                     DB::commit();
 

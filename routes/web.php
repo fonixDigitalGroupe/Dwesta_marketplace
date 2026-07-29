@@ -513,13 +513,6 @@ Route::get('/annonces/{annonce}', [AnnonceController::class, 'show'])->name('ann
 Route::get('/annonces/{annonce}/signaler', [\App\Http\Controllers\SignalementController::class, 'create'])->name('signalements.create');
 Route::post('/annonces/{annonce}/signaler', [\App\Http\Controllers\SignalementController::class, 'store'])->name('signalements.store');
 
-// Réinitialisation OPcache (temporaire — vide le cache de code côté web/PHP-FPM)
-Route::get('/__opcache-reset/{token}', function ($token) {
-    abort_unless($token === 'karnou2026', 404);
-    $done = function_exists('opcache_reset') ? (opcache_reset() ? 'OPcache vidé ✅' : 'opcache_reset() a renvoyé false') : 'OPcache non disponible sur ce serveur';
-    return response($done . ' — ' . now());
-});
-
 // Page Pro publique (accessible sans authentification) - DOIT être APRÈS les routes authentifiées pour éviter les conflits
 Route::get('/page-pro/{slug}', [PageProController::class, 'show'])->name('page-pro.show');
 
