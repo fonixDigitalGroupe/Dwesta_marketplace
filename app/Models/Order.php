@@ -20,6 +20,8 @@ class Order extends Model
         'gestion_paiement',
         'moyen_paiement',
         'destination_point_relais_id',
+        'stripe_session_id',
+        'stripe_payment_intent_id',
         'paydunya_token',
         'tracking_token',
         'code_livraison',
