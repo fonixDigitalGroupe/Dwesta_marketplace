@@ -433,7 +433,7 @@
                             
                             <!-- Toggle Button -->
                             <button type="button" id="btn-toggle-map" class="btn-rakuten" style="margin: 0; background: #fff; color: #f68b1e; border: 1px solid #f68b1e; width: auto; padding: 0.5rem 1rem;">
-                                <i class="fa-solid fa-map-location-dot"></i> Préciser ma position sur la carte
+                                Préciser ma position
                             </button>
 
                             <div id="map-collapsible-content" style="display: none; margin-top: 1.5rem;">
