@@ -38,9 +38,28 @@
         }
 
         .rakuten-radio-item input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
             width: 18px;
             height: 18px;
-            accent-color: #f68b1e;
+            border: 2px solid #f68b1e;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            margin: 0;
+        }
+        .rakuten-radio-item input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #f68b1e;
         }
 
         .rakuten-field-group {
