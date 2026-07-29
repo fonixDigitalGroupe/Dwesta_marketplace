@@ -352,18 +352,23 @@
         }
 
         /* Carte vendeur : empilée + bouton pleine largeur */
-        .rk-seller-card {
+        .rk-seller-flex {
             flex-wrap: wrap;
-            row-gap: 0.75rem;
+            row-gap: 0.85rem;
+        }
+        .rk-seller-flex .rk-seller-info {
+            flex: 1 1 calc(100% - 66px) !important;
+            min-width: 0;
         }
         .seller-action-wrap {
             margin: 0 !important;
             width: 100%;
+            flex: 1 1 100%;
         }
         .seller-action-wrap a {
             display: block !important;
             text-align: center;
-            padding: 0.75rem 1rem !important;
+            padding: 0.85rem 1rem !important;
         }
     }
 
@@ -808,7 +813,7 @@
             @if($annonce->vendeur && $annonce->vendeur->type === 'professionnel')
             <!-- Seller Info: Only shown for Pro sellers -->
             <div class="rk-seller-card" style="background: #ffffff; padding: 1.5rem 0; margin-top: 0.5rem; border-radius: 0; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0;">
-                <div style="display: flex; align-items: center; gap: 1.25rem;">
+                <div class="rk-seller-flex" style="display: flex; align-items: center; gap: 1.25rem;">
                      <div class="rk-seller-avatar" style="width: 50px; height: 50px; background: #ffffff; border: 1px solid #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 2px;">
                          @if($annonce->vendeur->type === 'professionnel' && $annonce->vendeur->pagePro && $annonce->vendeur->pagePro->logo)
                             <img src="{{ Storage::url($annonce->vendeur->pagePro->logo) }}" alt="Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
