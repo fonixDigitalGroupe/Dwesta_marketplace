@@ -672,20 +672,20 @@
                 @endif
             @endif
 
-            <!-- Wishlist Button -->
-            <button class="rk-wishlist-btn" 
-                    id="wishlist-btn" 
-                    data-annonce-slug="{{ $annonce->slug }}"
-                    style="position: absolute; top: 15px; right: 15px; background: #ffffff; border: none; border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #e11d48; box-shadow: none; transition: all 0.3s ease; z-index: 20;">
-                <i class="{{ auth()->check() && auth()->user()->favorites()->where('annonce_id', $annonce->id)->exists() ? 'fas' : 'far' }} fa-heart"
-                   style="font-size: 1.3rem; color: #e11d48;"></i>
-            </button>
         </div>
 
         <!-- Right: Details -->
-        <div class="rk-details">
+        <div class="rk-details" style="position: relative;">
+            <!-- Wishlist Button (haut droite) -->
+            <button class="rk-wishlist-btn"
+                    id="wishlist-btn"
+                    data-annonce-slug="{{ $annonce->slug }}"
+                    style="position: absolute; top: 0; right: 0; background: transparent; border: none; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #f68b1e; box-shadow: none; transition: all 0.2s ease; z-index: 20;">
+                <i class="{{ auth()->check() && auth()->user()->favorites()->where('annonce_id', $annonce->id)->exists() ? 'fas' : 'far' }} fa-heart"
+                   style="font-size: 1.4rem; color: #f68b1e;"></i>
+            </button>
             <!-- Header: Brand, Title, Stars -->
-            <div style="margin-bottom: 1.5rem;">
+            <div style="margin-bottom: 1.5rem; padding-right: 44px;">
                 <h1 class="rk-title">{{ $annonce->titre }}</h1>
 
                 @php $estEcommerce = $annonce->category && $annonce->category->famille === \App\Models\Category::FAMILLE_ECOMMERCE; @endphp
@@ -723,8 +723,8 @@
             <div class="rk-price-box" style="display: flex; align-items: center; background: #ffffff; padding: 0.5rem 1.25rem; margin-top: 0; border-radius: 0;">
                 <div style="flex: 1; border-right: 1px solid #e0e0e0; padding-right: 1rem;">
                     <div style="font-size: 0.8rem; color: #888; margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.5px;">Prix de vente</div>
-                    <div class="rk-main-price" id="main-price" style="display: flex; align-items: baseline; gap: 10px; color: #f68b1e; font-weight: 900; font-size: 1.8rem; text-shadow: none !important;">
-                        {{ number_format($annonce->prix_affiche, 0, ',', ' ') }} <span style="font-size: 1rem;">FCFA</span>
+                    <div class="rk-main-price" id="main-price" style="display: flex; align-items: baseline; gap: 8px; color: #1a1a1a; font-weight: 700; font-size: 1.6rem; text-shadow: none !important;">
+                        {{ number_format($annonce->prix_affiche, 0, ',', ' ') }} <span style="font-size: 1rem; color: #1a1a1a;">FCFA</span>
                         @if($annonce->estEnPromo())
                             <span style="font-size: 1rem; color: #999; text-decoration: line-through; font-weight: 400;">
                                 {{ number_format($annonce->prix_original, 0, ',', ' ') }}
