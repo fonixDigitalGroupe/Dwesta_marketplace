@@ -41,10 +41,10 @@
         background: #fff;
         border: 1px solid #f0f0f2;
         border-radius: 4px;
-        padding: 1.25rem;
+        padding: 0.85rem 1.15rem;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.25rem;
     }
     
     .order-card-header {
@@ -66,8 +66,8 @@
     .order-card-description {
         font-size: 0.88rem;
         color: #535357;
-        line-height: 1.4;
-        margin-bottom: 0.75rem;
+        line-height: 1.35;
+        margin-bottom: 0.35rem;
         max-width: 900px;
     }
 
@@ -108,7 +108,7 @@
     }
 
     .btn-detail {
-        color: #004aad;
+        color: #f68b1e;
         font-weight: 500;
         text-decoration: none;
         font-size: 0.85rem;
@@ -121,9 +121,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 0.75rem;
+        margin-top: 0.5rem;
         border-top: 1px solid #f1f1f1;
-        padding-top: 0.75rem;
+        padding-top: 0.5rem;
     }
 
     .order-price {
