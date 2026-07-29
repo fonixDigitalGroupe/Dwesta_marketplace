@@ -231,7 +231,7 @@
         background: white;
         border-radius: 4px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        padding: 20px 16px 24px;
+        padding: 30px 20px 40px;
     }
 
     .sidebar-header {
