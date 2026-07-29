@@ -863,21 +863,41 @@
                         <i class="fas fa-truck"></i>
                         <div>
                             <div class="rk-deliv-title">Livraison à domicile</div>
-                            <div class="rk-deliv-sub">Frais calculés selon votre région lors du paiement.</div>
+                            <div class="rk-deliv-sub">
+                                @auth
+                                    @if(($shippingFees['domicile'] ?? null) !== null)
+                                        Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['domicile'], 0, ',', ' ') }} FCFA</strong>
+                                    @else
+                                        Frais indisponibles pour votre région.
+                                    @endif
+                                @else
+                                    Connectez-vous pour voir les frais estimés.
+                                @endauth
+                            </div>
                         </div>
                     </div>
                     <div class="rk-deliv-item">
                         <i class="fas fa-store"></i>
                         <div>
                             <div class="rk-deliv-title">Retrait en point relais</div>
-                            <div class="rk-deliv-sub">Récupérez votre colis dans un point relais proche de chez vous.</div>
+                            <div class="rk-deliv-sub">
+                                @auth
+                                    @if(($shippingFees['point_relais'] ?? null) !== null)
+                                        Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['point_relais'], 0, ',', ' ') }} FCFA</strong>
+                                    @else
+                                        Frais indisponibles pour votre région.
+                                    @endif
+                                @else
+                                    Connectez-vous pour voir les frais estimés.
+                                @endauth
+                            </div>
                         </div>
                     </div>
                     <div class="rk-deliv-item">
-                        <i class="fas fa-rotate-left"></i>
+                        <i class="fas fa-flag"></i>
                         <div>
                             <div class="rk-deliv-title">Retour &amp; litige</div>
-                            <div class="rk-deliv-sub">Signalez un souci depuis « Mes commandes » après réception.</div>
+                            <div class="rk-deliv-sub"><a href="{{ route('signalements.create', $annonce) }}" style="color:#dc2626; font-weight:600; text-decoration:none;">Signaler l'annonce</a></div>
                         </div>
                     </div>
                 </div>

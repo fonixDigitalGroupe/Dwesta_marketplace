@@ -284,7 +284,10 @@ class AnnonceController extends Controller
         $boutique_sales = \App\Models\OrderItem::whereIn('annonce_id', $annonceIds)->count();
         $boutique_avis_count = \App\Models\Avis::whereIn('annonce_id', $annonceIds)->count();
 
-        return view('annonces.show', compact('annonce', 'peutLaisserAvis', 'recommandations', 'boutique_rating', 'boutique_sales', 'boutique_avis_count'));
+        // Frais de livraison estimés (domicile / point relais) selon l'utilisateur connecté
+        $shippingFees = app(\App\Services\LogisticsService::class)->feesForAnnonce($annonce, Auth::user());
+
+        return view('annonces.show', compact('annonce', 'peutLaisserAvis', 'recommandations', 'boutique_rating', 'boutique_sales', 'boutique_avis_count', 'shippingFees'));
     }
 
     /**
