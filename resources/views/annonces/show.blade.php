@@ -11,18 +11,15 @@
         color: #333;
         padding-top: 1rem;
     }
-    /* Colonnes = cartes blanches sur fond gris, collées (bords internes plats) */
-    .rk-main-grid > .rk-thumbnails,
-    .rk-main-grid > .rk-main-image,
+    /* Cartes blanches sur fond gris, collées (galerie + détails) */
     .rk-main-grid > .rk-details {
         background: #fff;
+        padding: 1.25rem 1.5rem;
+        border-radius: 0 6px 6px 0;
     }
-    .rk-main-grid > .rk-main-image { border-radius: 6px 0 0 0; }
-    .rk-main-grid > .rk-thumbnails { padding: 10px 12px 12px; border-radius: 0 0 0 6px; }
-    .rk-main-grid > .rk-details { padding: 1.25rem 1.5rem; border-radius: 0 6px 6px 0; }
+    .rk-gallery-col .rk-thumbnails { padding: 10px 12px 12px; }
     /* Avec colonne livraison : détails plat des deux côtés, marge avant livraison */
     .rk-main-grid.has-delivery > .rk-details { border-radius: 0; }
-    .rk-main-grid.has-delivery { column-gap: 0; }
     .rk-main-grid.has-delivery > .rk-delivery-col { margin-left: 1.5rem; }
 
     /* Breadcrumb */
@@ -41,11 +38,8 @@
     /* Main Grid */
     .rk-main-grid {
         display: grid;
-        grid-template-columns: 400px 1fr; /* Image | Détails */
-        grid-template-areas:
-            "image details"
-            "thumbs details";
-        grid-template-rows: auto auto;
+        grid-template-columns: 400px 1fr; /* Galerie | Détails */
+        grid-template-areas: "gallery details";
         gap: 0;
         max-width: 1280px;
         margin: 0 auto;
@@ -53,15 +47,20 @@
         align-items: start;
     }
     .rk-main-grid.has-delivery {
-        grid-template-columns: 380px 1fr 280px; /* Image | Détails | Livraison */
-        grid-template-areas:
-            "image details delivery"
-            "thumbs details delivery";
+        grid-template-columns: 380px 1fr 280px; /* Galerie | Détails | Livraison */
+        grid-template-areas: "gallery details delivery";
     }
-    .rk-main-grid > .rk-thumbnails { grid-area: thumbs; }
-    .rk-main-grid > .rk-main-image { grid-area: image; }
-    .rk-main-grid > .rk-details { grid-area: details; }
+    .rk-main-grid > .rk-gallery-col { grid-area: gallery; }
+    .rk-main-grid > .rk-details { grid-area: details; align-self: start; }
     .rk-main-grid > .rk-delivery-col { grid-area: delivery; }
+    /* Galerie : image en haut, miniatures dessous, dans une seule carte */
+    .rk-gallery-col {
+        display: flex;
+        flex-direction: column-reverse; /* DOM: miniatures puis image -> image en haut */
+        background: #fff;
+        border-radius: 6px 0 0 6px;
+        overflow: hidden;
+    }
 
     /* Colonne Livraison & Retours (droite) */
     .rk-delivery-col { align-self: start; }
@@ -287,10 +286,10 @@
             grid-template-areas: none;
             gap: 2rem;
         }
-        .rk-main-grid > .rk-main-image { order: 1; }
-        .rk-main-grid > .rk-thumbnails { order: 2; }
+        .rk-main-grid > .rk-gallery-col { order: 1; }
         .rk-main-grid > .rk-details { order: 3; }
         .rk-main-grid > .rk-delivery-col { order: 4; }
+        .rk-gallery-col { border-radius: 6px; }
         .rk-thumbnails {
             flex-direction: row;
             order: 2;
@@ -643,7 +642,8 @@
 
     @php $estEcommerce = $annonce->category && $annonce->category->famille === \App\Models\Category::FAMILLE_ECOMMERCE; @endphp
     <div class="rk-main-grid {{ $estEcommerce ? 'has-delivery' : '' }}">
-        <!-- Left: Thumbnails -->
+        <!-- Galerie : image + miniatures -->
+        <div class="rk-gallery-col">
         <div class="rk-thumbnails">
             @if($annonce->video)
                 <div class="rk-thumb active" onclick="updateGallery('{{ $annonce->video->url }}', this, 'video')" style="position: relative;">
@@ -688,6 +688,7 @@
             @endif
 
         </div>
+        </div><!-- /rk-gallery-col -->
 
         <!-- Right: Details -->
         <div class="rk-details" style="position: relative;">
