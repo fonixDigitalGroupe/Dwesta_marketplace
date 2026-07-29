@@ -93,7 +93,7 @@
                                         {{ $unreadCount }}
                                     </span>
                                 @endif
-                                <span>{{ auth()->user()->prenom ?? auth()->user()->name }}</span>
+                                <span>Bonjour, {{ auth()->user()->prenom ?? auth()->user()->name }}</span>
                                 <svg class="chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 12px; height: 12px; margin-left: -4px;">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
