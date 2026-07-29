@@ -797,15 +797,6 @@
                             <span class="rk-spec-value" style="color: {{ $annonce->etat_couleur }}; font-weight: 700;">{{ $annonce->etat_libelle }}</span>
                         </div>
                     @endif
-
-                    <!-- Signaler l'annonce (page dédiée) -->
-                    <div class="rk-report" style="margin-left: auto;">
-                        <a href="{{ route('signalements.create', $annonce) }}"
-                        style="text-decoration: none; color: #dc2626; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0; transition: color 0.2s;"
-                        onmouseover="this.style.color='#991b1b'" onmouseout="this.style.color='#dc2626'">
-                        <i class="fas fa-flag"></i> Signaler l'annonce
-                    </a>
-                    </div>
                 </div>
             </div>
             
@@ -864,14 +855,11 @@
                         <div>
                             <div class="rk-deliv-title">Livraison à domicile</div>
                             <div class="rk-deliv-sub">
+                                Recevez votre colis directement à votre adresse.
                                 @auth
                                     @if(($shippingFees['domicile'] ?? null) !== null)
-                                        Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['domicile'], 0, ',', ' ') }} FCFA</strong>
-                                    @else
-                                        Frais indisponibles pour votre région.
+                                        <br>Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['domicile'], 0, ',', ' ') }} FCFA</strong>
                                     @endif
-                                @else
-                                    Connectez-vous pour voir les frais estimés.
                                 @endauth
                             </div>
                         </div>
@@ -881,14 +869,11 @@
                         <div>
                             <div class="rk-deliv-title">Retrait en point relais</div>
                             <div class="rk-deliv-sub">
+                                Récupérez votre colis dans un point relais proche de chez vous.
                                 @auth
                                     @if(($shippingFees['point_relais'] ?? null) !== null)
-                                        Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['point_relais'], 0, ',', ' ') }} FCFA</strong>
-                                    @else
-                                        Frais indisponibles pour votre région.
+                                        <br>Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['point_relais'], 0, ',', ' ') }} FCFA</strong>
                                     @endif
-                                @else
-                                    Connectez-vous pour voir les frais estimés.
                                 @endauth
                             </div>
                         </div>
