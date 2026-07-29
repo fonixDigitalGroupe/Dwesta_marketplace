@@ -125,7 +125,7 @@
 
     /* Tier 1: Réassurance */
     .footer-reinsurance {
-        background: #f3f4f6;
+        background: #fff;
         padding: 2rem 0;
         border-bottom: 1px solid #e5e7eb;
     }
@@ -144,8 +144,8 @@
     }
 
     .reinsurance-icon-box {
-        font-size: 2rem;
-        color: #333;
+        font-size: 1.6rem;
+        color: #c0c5cc;
         display: flex;
         align-items: center;
         justify-content: center;
