@@ -250,8 +250,6 @@
         @include('layouts.partials.footer')
     @endif
 
-    @include('partials.unread-messages-widget')
-
 
     <script>
         // Scripts globaux
