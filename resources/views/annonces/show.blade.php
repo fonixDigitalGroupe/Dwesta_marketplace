@@ -344,9 +344,26 @@
         .rk-btn-cart {
             width: 100% !important;
             margin-left: 0 !important;
-            display: flex;
+            display: flex !important;
             align-items: center;
             justify-content: center;
+            padding: 0.85rem 1rem !important;
+            font-size: 1rem !important;
+        }
+
+        /* Carte vendeur : empilée + bouton pleine largeur */
+        .rk-seller-card {
+            flex-wrap: wrap;
+            row-gap: 0.75rem;
+        }
+        .seller-action-wrap {
+            margin: 0 !important;
+            width: 100%;
+        }
+        .seller-action-wrap a {
+            display: block !important;
+            text-align: center;
+            padding: 0.75rem 1rem !important;
         }
     }
 
@@ -823,11 +840,11 @@
                          </div>
                      </div>
                      @if($annonce->vendeur->type === 'professionnel')
-                     <div style="margin-left: auto; margin-right: 1.25rem;">
+                     <div class="seller-action-wrap" style="margin-left: auto; margin-right: 1.25rem;">
                         <a href="{{ $annonce->vendeur->getBoutiqueUrl() ?? '#' }}" style="display: inline-block; font-size: 0.85rem; color: #fff; background: #2196F3; font-weight: 600; text-decoration: none; padding: 0.5rem 1.1rem; border-radius: 0; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='#2196F3'">Voir la boutique</a>
                      </div>
                      @else
-                     <div style="margin-left: auto; margin-right: 1.25rem;">
+                     <div class="seller-action-wrap" style="margin-left: auto; margin-right: 1.25rem;">
                         <a href="#" style="display: inline-block; font-size: 0.85rem; color: #fff; background: #2196F3; font-weight: 600; text-decoration: none; padding: 0.5rem 1.1rem; border-radius: 0; transition: background 0.2s;" onmouseover="this.style.background='#1976d2'" onmouseout="this.style.background='#2196F3'">Voir le profil</a>
                      </div>
                      @endif
