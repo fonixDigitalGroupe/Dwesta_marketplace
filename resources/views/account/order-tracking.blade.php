@@ -135,7 +135,7 @@
 @endpush
 
 @section('content')
-    <div class="dashboard-container" style="background: #f5f5f5; padding-top: 2rem; padding-bottom: 2rem;">
+    <div class="dashboard-container" style="padding-top: 0.4rem; padding-bottom: 1.5rem;">
         @include('partials.profile-sidebar')
 
         <main class="main-content"
