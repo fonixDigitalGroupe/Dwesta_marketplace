@@ -402,7 +402,7 @@
                                 <td><code style="font-weight: 700; background: #f3f3f3; padding: 2px 5px;">{{ $card->code }}</code></td>
                                 <td>{{ $card->buyer->name }}</td>
                                 <td style="font-weight: 700;">{{ number_format($card->amount, 0, ',', ' ') }} FCFA</td>
-                                <td>{{ $card->user ? $card->user->name : '-' }}</td>
+                                <td>{{ $card->redeemer ? $card->redeemer->name : '-' }}</td>
                                 <td style="border-right: none;">
                                     <span class="badge-finance"
                                         style="background: {{ $card->status == 'active' ? '#f0fdf4' : '#f3f4f6' }};

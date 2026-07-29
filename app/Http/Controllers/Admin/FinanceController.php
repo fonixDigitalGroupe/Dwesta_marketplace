@@ -80,7 +80,7 @@ class FinanceController extends Controller
                 break;
 
             case 'gift-cards':
-                $data = GiftCard::with(['buyer', 'user'])
+                $data = GiftCard::with(['buyer', 'redeemer'])
                     ->latest()
                     ->paginate(15);
                 break;
