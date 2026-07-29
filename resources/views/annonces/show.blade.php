@@ -27,16 +27,26 @@
     /* Main Grid */
     .rk-main-grid {
         display: grid;
-        grid-template-columns: 80px 500px 1fr; /* Miniatures | Image | Détails */
-        gap: 1.5rem;
+        grid-template-columns: 500px 1fr; /* Image | Détails */
+        grid-template-areas:
+            "image details"
+            "thumbs details";
+        gap: 1rem 1.5rem;
         max-width: 1280px;
         margin: 0 auto;
         padding: 0 1rem 1rem 1rem;
         align-items: start;
     }
     .rk-main-grid.has-delivery {
-        grid-template-columns: 80px 420px 1fr 280px; /* + colonne Livraison */
+        grid-template-columns: 460px 1fr 280px; /* Image | Détails | Livraison */
+        grid-template-areas:
+            "image details delivery"
+            "thumbs details delivery";
     }
+    .rk-main-grid > .rk-thumbnails { grid-area: thumbs; }
+    .rk-main-grid > .rk-main-image { grid-area: image; }
+    .rk-main-grid > .rk-details { grid-area: details; }
+    .rk-main-grid > .rk-delivery-col { grid-area: delivery; }
 
     /* Colonne Livraison & Retours (droite) */
     .rk-delivery-col { align-self: start; }
@@ -65,15 +75,16 @@
         border-bottom: 1px solid #f5f5f5;
     }
     .rk-deliv-item:last-child { border-bottom: none; }
-    .rk-deliv-item > i { color: #f68b1e; font-size: 1.1rem; width: 22px; text-align: center; margin-top: 2px; flex-shrink: 0; }
+    .rk-deliv-item > i { color: #4b5563; font-size: 1.1rem; width: 22px; text-align: center; margin-top: 2px; flex-shrink: 0; }
     .rk-deliv-title { font-family: 'Outfit','Inter',sans-serif; font-size: 0.9rem; font-weight: 600; color: #1a1a1a; }
     .rk-deliv-sub { font-family: 'Inter',sans-serif; font-size: 0.8rem; color: #6b7280; line-height: 1.4; margin-top: 2px; }
 
     /* Gallery Section */
     .rk-thumbnails {
         display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.6rem;
     }
     .rk-thumb {
         width: 70px;
@@ -258,8 +269,13 @@
         .rk-main-grid,
         .rk-main-grid.has-delivery {
             grid-template-columns: 1fr;
+            grid-template-areas: none;
             gap: 2rem;
         }
+        .rk-main-grid > .rk-main-image { order: 1; }
+        .rk-main-grid > .rk-thumbnails { order: 2; }
+        .rk-main-grid > .rk-details { order: 3; }
+        .rk-main-grid > .rk-delivery-col { order: 4; }
         .rk-thumbnails {
             flex-direction: row;
             order: 2;
@@ -858,7 +874,7 @@
         <h2 class="rk-offers-title">Avis clients</h2>
     </div>
 
-    <div class="rk-main-grid" style="margin-top: 1rem; grid-template-columns: 300px 1fr; gap: 4rem;">
+    <div class="rk-main-grid" style="margin-top: 1rem; grid-template-columns: 300px 1fr; grid-template-areas: none; gap: 4rem;">
         <!-- Left: Rating Summary (Style Sidebar Page Pro) -->
         <div class="rating-summary-col">
             <div style="background: #f8f9fa; padding: 2rem; border-radius: 12px; position: sticky; top: 100px;">
