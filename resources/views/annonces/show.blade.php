@@ -629,7 +629,7 @@
         </nav>
 
     @php $estEcommerce = $annonce->category && $annonce->category->famille === \App\Models\Category::FAMILLE_ECOMMERCE; @endphp
-    <div class="rk-main-grid {{ $estEcommerce ? 'has-delivery' : '' }}">
+    <div class="rk-main-grid has-delivery">
         <!-- Galerie : image + miniatures -->
         <div class="rk-gallery-col">
         <div class="rk-thumbnails">
@@ -832,40 +832,63 @@
 
         </div>
 
-        @if($estEcommerce)
         <!-- Colonne Livraison & Retours -->
         <div class="rk-delivery-col">
             <div class="rk-deliv-card">
                 <div class="rk-deliv-header">Livraison &amp; retours</div>
                 <div class="rk-deliv-body">
-                    <div class="rk-deliv-item">
-                        <i class="fas fa-truck"></i>
-                        <div>
-                            <div class="rk-deliv-title">Livraison à domicile</div>
-                            <div class="rk-deliv-sub">
-                                Recevez votre colis directement à votre adresse.
-                                @auth
-                                    @if(($shippingFees['domicile'] ?? null) !== null)
-                                        <br>Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['domicile'], 0, ',', ' ') }} FCFA</strong>
-                                    @endif
-                                @endauth
+                    @if($estEcommerce)
+                        <div class="rk-deliv-item">
+                            <i class="fas fa-truck"></i>
+                            <div>
+                                <div class="rk-deliv-title">Livraison à domicile</div>
+                                <div class="rk-deliv-sub">
+                                    Recevez votre colis directement à votre adresse.
+                                    @auth
+                                        @if(($shippingFees['domicile'] ?? null) !== null)
+                                            <br>Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['domicile'], 0, ',', ' ') }} FCFA</strong>
+                                        @endif
+                                    @endauth
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="rk-deliv-item">
-                        <i class="fas fa-store"></i>
-                        <div>
-                            <div class="rk-deliv-title">Retrait en point relais</div>
-                            <div class="rk-deliv-sub">
-                                Récupérez votre colis dans un point relais proche de chez vous.
-                                @auth
-                                    @if(($shippingFees['point_relais'] ?? null) !== null)
-                                        <br>Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['point_relais'], 0, ',', ' ') }} FCFA</strong>
-                                    @endif
-                                @endauth
+                        <div class="rk-deliv-item">
+                            <i class="fas fa-store"></i>
+                            <div>
+                                <div class="rk-deliv-title">Retrait en point relais</div>
+                                <div class="rk-deliv-sub">
+                                    Récupérez votre colis dans un point relais proche de chez vous.
+                                    @auth
+                                        @if(($shippingFees['point_relais'] ?? null) !== null)
+                                            <br>Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['point_relais'], 0, ',', ' ') }} FCFA</strong>
+                                        @endif
+                                    @endauth
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="rk-deliv-item">
+                            <i class="fas fa-truck"></i>
+                            <div>
+                                <div class="rk-deliv-title">Livraison à domicile</div>
+                                <div class="rk-deliv-sub">Non applicable pour ce type d'annonce.</div>
+                            </div>
+                        </div>
+                        <div class="rk-deliv-item">
+                            <i class="fas fa-store"></i>
+                            <div>
+                                <div class="rk-deliv-title">Retrait en point relais</div>
+                                <div class="rk-deliv-sub">Non applicable pour ce type d'annonce.</div>
+                            </div>
+                        </div>
+                        <div class="rk-deliv-item">
+                            <i class="fas fa-comments"></i>
+                            <div>
+                                <div class="rk-deliv-title">Modalités à convenir</div>
+                                <div class="rk-deliv-sub">Contactez directement le vendeur pour organiser la visite, l'essai ou la prestation et convenir des modalités.</div>
+                            </div>
+                        </div>
+                    @endif
                     <div class="rk-deliv-item">
                         <i class="fas fa-flag"></i>
                         <div>
@@ -879,7 +902,6 @@
                 </div>
             </div>
         </div>
-        @endif
     </div>
 
     <!-- Reviews Section (E-commerce uniquement) -->
