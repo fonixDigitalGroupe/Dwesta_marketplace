@@ -280,7 +280,7 @@
 
     .btn-order {
         width: 100%;
-        background: #004aad;
+        background: #f68b1e;
         color: white;
         border: none;
         border-radius: 4px;
@@ -290,14 +290,12 @@
         cursor: pointer;
         text-transform: uppercase;
         margin-top: 12px;
-        box-shadow: 0 4px 8px rgba(0, 74, 173, 0.3);
-        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: none;
+        transition: background 0.2s;
     }
 
     .btn-order:hover {
-        background: #003a8f;
-        transform: translateY(-1px);
-        box-shadow: 0 6px 12px rgba(0, 74, 173, 0.4);
+        background: #e07b10;
     }
 
     .empty-cart {
