@@ -9,7 +9,7 @@
         font-family: "Rakuten Sans", "Rakuten Serif", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         background-color: #f1f1f2;
         color: #333;
-        padding-top: 1rem;
+        padding-top: 0.25rem;
     }
     /* Cartes blanches sur fond gris, collées (galerie + détails) */
     .rk-main-grid > .rk-details {
@@ -26,7 +26,7 @@
     .rk-breadcrumb {
         font-size: 0.8rem;
         color: #777;
-        padding: 0.5rem 0 1rem 0;
+        padding: 0.25rem 0 0.6rem 0;
         max-width: 1280px;
         margin: 0 auto;
         padding-left: 1rem;
@@ -613,16 +613,18 @@
 </style>
 
 <div class="rakuten-page">
-        <!-- Fil d'ariane -->
+        <!-- Fil d'ariane (chemin complet des catégories) -->
+        @php
+            $trail = [];
+            $cat = $annonce->category;
+            while ($cat) { array_unshift($trail, $cat); $cat = $cat->parent; }
+        @endphp
         <nav class="rk-breadcrumb">
-            <a href="{{ route('home') }}">Accueil</a> &gt;
-            @if($annonce->category)
-                <a href="{{ route('categories.show', $annonce->category->slug) }}">{{ $annonce->category->nom }}</a> &gt;
-            @endif
-            @if($annonce->produit && $annonce->produit->marque)
-               <span>{{ $annonce->produit->marque }}</span> &gt;
-            @endif
-            <span>{{ $annonce->titre }}</span>
+            <a href="{{ route('home') }}">Accueil</a>
+            @foreach($trail as $c)
+                &gt; <a href="{{ route('categories.show', $c->slug) }}">{{ $c->nom }}</a>
+            @endforeach
+            &gt; <span>{{ $annonce->titre }}</span>
         </nav>
 
     @php $estEcommerce = $annonce->category && $annonce->category->famille === \App\Models\Category::FAMILLE_ECOMMERCE; @endphp
