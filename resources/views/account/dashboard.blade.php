@@ -653,31 +653,24 @@
                         <p class="top-text">Adresse par défaut :</p>
                         @if($u->adresse)
                             <p class="sub-text">{{ $u->prenom }} {{ $u->nom }}</p>
+                            @if($u->ville)<p class="sub-text">{{ $u->ville }}</p>@endif
                             <p class="sub-text">{{ $u->adresse }}</p>
-                            <p class="sub-text">{{ $u->code_postal }}</p>
-                            <p class="sub-text">{{ $u->telephone }}</p>
+                            <p class="sub-text">{{ $u->ville }}{{ $u->region ? ', ' . $u->region : '' }}</p>
+                            @if($u->telephone)<p class="sub-text">{{ $u->telephone }}</p>@endif
                         @else
                             <p class="sub-text">Aucune adresse enregistrée.</p>
                         @endif
                     </div>
                 </div>
-            </div>
 
-            <div class="jumia-grid" style="grid-template-columns: 1fr;">
-                <!-- Localisation & Préférences -->
+                <!-- Préférences de communication -->
                 <div class="jumia-card">
                     <div class="jumia-card-header">
-                        <h2>Localisation & Préférences</h2>
+                        <h2>Préférences de communication</h2>
                     </div>
                     <div class="jumia-card-body">
-                        <p class="top-text">Votre localisation actuelle :</p>
-                        <p class="sub-text">{{ $u->nationalite ?? 'Non définie' }}</p>
-                        <p class="sub-text" id="user-address">{{ $u->adresse ?? 'Aucune adresse enregistrée' }}</p>
-                        
-
-                        <div style="margin-top: 1rem;" id="manage-location-link-container">
-                            <a href="{{ route('profile.show') }}#profile-geolocation-section" class="jumia-link" style="margin-top: 0; color: #004aad;">Gérer ma localisation et mes préférences</a>
-                        </div>
+                        <p class="sub-text">Gérez vos communications par e-mail pour rester informé des dernières nouvelles et offres.</p>
+                        <a href="{{ route('profile.show') }}" class="jumia-link">Modifier les préférences de communication</a>
                     </div>
                 </div>
             </div>
