@@ -34,8 +34,8 @@
 
         .jumia-card {
             background: #fff;
-            border: 1px solid #ececec;
-            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -51,11 +51,11 @@
 
         .jumia-card-header h2 {
             font-family: 'Outfit', 'Inter', sans-serif;
-            font-size: 0.78rem;
+            font-size: 0.82rem;
             font-weight: 700;
-            color: #6b7280;
+            color: #333;
             text-transform: uppercase;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.02em;
             margin: 0;
         }
 
@@ -74,6 +74,7 @@
 
         .jumia-card-body .top-text {
             font-family: 'Outfit', 'Inter', sans-serif;
+            font-size: 1rem;
             font-weight: 600;
             color: #1a1a1a;
             margin-bottom: 0.35rem;
