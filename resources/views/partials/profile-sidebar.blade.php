@@ -422,10 +422,10 @@
             </div>
 
             {{-- Mes achats --}}
-            <div class="rakuten-group-title">Mes achats</div>
+            <div class="rakuten-group-title">Mes commandes</div>
             <div class="rakuten-card">
                 <a href="{{ route('account.orders') }}" class="rakuten-item">
-                    <span>Tous mes achats</span>
+                    <span>Toutes mes commandes</span>
                     <i class="fa-solid fa-chevron-right chevron"></i>
                 </a>
                 <a href="{{ route('gift-cards.index') }}" class="rakuten-item">
@@ -559,7 +559,7 @@
     <a href="{{ route('account.orders') }}"
         class="sidebar-item {{ request()->routeIs('account.orders') ? 'active' : '' }}">
         <i class="fa-solid fa-shopping-bag"></i>
-        <span>Mes achats</span>
+        <span>Mes commandes</span>
     </a>
 
     <!-- Boîte de réception -->
