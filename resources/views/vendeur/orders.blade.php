@@ -16,10 +16,10 @@
         background: #fff;
         border: 1px solid #f0f0f2;
         border-radius: 4px;
-        padding: 1.25rem;
+        padding: 0.85rem 1.15rem;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.25rem;
     }
     
     .order-card-header {
@@ -32,17 +32,17 @@
     }
 
     .order-card-status-title {
-        font-size: 1.15rem;
-        font-weight: 500;
+        font-size: 1rem;
+        font-weight: 600;
         color: #313133;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.1rem;
     }
 
     .order-card-description {
         font-size: 0.88rem;
         color: #535357;
         line-height: 1.4;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.35rem;
         max-width: 900px;
     }
 
@@ -83,15 +83,15 @@
     }
 
     .jumia-tab:hover {
-        color: #004aad;
+        color: #f68b1e;
     }
     .jumia-tab.active {
-        color: #004aad;
-        border-bottom-color: #004aad;
+        color: #f68b1e;
+        border-bottom-color: #f68b1e;
     }
 
     .btn-detail {
-        color: #004aad;
+        color: #f68b1e;
         font-weight: 500;
         text-decoration: none;
         font-size: 0.85rem;
