@@ -4,7 +4,7 @@
 
 @section('content')
 <style>
-    body { background: #ffffff !important; }
+    body { background: #f1f1f2 !important; }
 </style>
 <div style="max-width: 640px; margin: 2rem auto; padding: 0 1rem;">
 
@@ -13,7 +13,7 @@
         <i class="fas fa-chevron-left"></i> Retour à l'annonce
     </a>
 
-    <div style="background: #fff; overflow: hidden;">
+    <div style="background: #fff; overflow: hidden; border-radius: 10px;">
 
         <!-- Header -->
         <div style="padding: 1.1rem 1.5rem;">

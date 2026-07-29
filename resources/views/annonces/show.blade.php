@@ -873,7 +873,7 @@
                                     Recevez votre colis directement à votre adresse.
                                     @auth
                                         @if(($shippingFees['domicile'] ?? null) !== null)
-                                            <br>Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['domicile'], 0, ',', ' ') }} FCFA</strong>
+                                            <br>Frais : <strong style="color:#f68b1e;">{{ number_format($shippingFees['domicile'], 0, ',', ' ') }} FCFA</strong>
                                         @endif
                                     @endauth
                                 </div>
@@ -887,7 +887,7 @@
                                     Récupérez votre colis dans un point relais proche de chez vous.
                                     @auth
                                         @if(($shippingFees['point_relais'] ?? null) !== null)
-                                            <br>Frais : <strong style="color:#1a1a1a;">{{ number_format($shippingFees['point_relais'], 0, ',', ' ') }} FCFA</strong>
+                                            <br>Frais : <strong style="color:#f68b1e;">{{ number_format($shippingFees['point_relais'], 0, ',', ' ') }} FCFA</strong>
                                         @endif
                                     @endauth
                                 </div>
