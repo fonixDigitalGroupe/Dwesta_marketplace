@@ -1056,32 +1056,72 @@
     </div>
 
     <!-- Modal / Overlay for Point Relais Selection -->
+    <!-- Leaflet (carte des points relais) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+
     <div id="pr-modal"
-        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
-        <div
-            style="background: white; width: 90%; max-width: 600px; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; max-height: 80vh;">
-            <div
-                style="padding: 16px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
-                <strong style="font-size: 18px;">Choisir un point relais</strong>
-                <button onclick="closePRModal()"
-                    style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+        style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div class="pr-modal-box">
+            <div class="pr-modal-header">
+                <strong style="font-size: 17px;">Choisir un point de retrait proche de chez vous</strong>
+                <button onclick="closePRModal()" class="pr-modal-close">&times;</button>
             </div>
-            <div style="overflow-y: auto; padding: 16px;">
-                @foreach($pointRelais as $pr)
-                    <div onclick="selectPoint({{ $pr->id }}, '{{ addslashes($pr->nom) }}', '{{ addslashes($pr->adresse) }}', '{{ $pr->region }}')"
-                        style="padding: 12px; border: 1px solid #eee; border-radius: 4px; margin-bottom: 8px; cursor: pointer; transition: background 0.2s;"
-                        onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='white'">
-                        <div style="font-weight: 700; font-size: 15px;">{{ $pr->nom }}</div>
-                        <div style="font-size: 13px; color: #666;">{{ $pr->adresse }}</div>
-                        <div style="font-size: 12px; color: var(--jumia-orange); margin-top: 4px; font-weight: 700;"
-                            class="pr-fee-display" data-region="{{ $pr->region }}">
-                            Calcul en cours...
-                        </div>
+            <div class="pr-modal-body">
+                <div class="pr-modal-left">
+                    <div class="pr-filters">
+                        <select id="pr-filter-region" onchange="onPRRegionChange()"><option value="">Toutes les régions</option></select>
+                        <select id="pr-filter-ville" onchange="applyPRFilters()"><option value="">Toutes les villes</option></select>
                     </div>
-                @endforeach
+                    <div class="pr-list" id="pr-list">
+                        @foreach($pointRelais as $pr)
+                            <div class="pr-list-item" data-id="{{ $pr->id }}" data-region="{{ $pr->region }}" data-ville="{{ $pr->ville }}"
+                                onclick="focusPR({{ $pr->id }})">
+                                <div style="min-width:0;">
+                                    <div style="font-weight: 700; font-size: 14px;">{{ $pr->nom }}</div>
+                                    <div style="font-size: 12px; color: #666;">{{ $pr->adresse }}</div>
+                                </div>
+                                <div class="pr-fee pr-fee-display" data-region="{{ $pr->region }}">…</div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="pr-modal-right">
+                    <div id="pr-map"></div>
+                </div>
+            </div>
+            <div class="pr-modal-footer">
+                <button type="button" id="pr-confirm-btn" onclick="confirmPRSelection()"
+                    style="width: 100%; background: #f68b1e; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 700; font-size: 15px; cursor: pointer;">
+                    Choisir ce point relais
+                </button>
             </div>
         </div>
     </div>
+
+    <style>
+        .pr-modal-box { background: #fff; width: 96%; max-width: 980px; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; max-height: 88vh; }
+        .pr-modal-header { padding: 14px 18px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+        .pr-modal-close { background: none; border: none; font-size: 26px; line-height: 1; cursor: pointer; color: #666; }
+        .pr-modal-body { display: flex; flex: 1; min-height: 0; }
+        .pr-modal-left { width: 340px; display: flex; flex-direction: column; border-right: 1px solid #eee; min-height: 0; }
+        .pr-filters { display: flex; gap: 8px; padding: 12px; border-bottom: 1px solid #f0f0f0; }
+        .pr-filters select { flex: 1; padding: 7px 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: #fff; }
+        .pr-list { overflow-y: auto; flex: 1; padding: 10px; }
+        .pr-list-item { padding: 10px; border: 1px solid #eee; border-radius: 6px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; transition: all .15s; }
+        .pr-list-item:hover { background: #fafafa; }
+        .pr-list-item.active { border-color: #f68b1e; background: #fff8f0; }
+        .pr-list-item .pr-fee { color: #f68b1e; font-weight: 700; font-size: 12px; white-space: nowrap; align-self: flex-start; }
+        .pr-modal-right { flex: 1; min-width: 0; }
+        #pr-map { width: 100%; height: 100%; min-height: 420px; background: #e5e7eb; }
+        .pr-modal-footer { padding: 12px 18px; border-top: 1px solid #eee; }
+        @media (max-width: 1024px) {
+            .pr-modal-body { flex-direction: column; }
+            .pr-modal-left { width: 100%; max-height: 38vh; }
+            .pr-modal-right { height: 260px; }
+            #pr-map { min-height: 260px; }
+        }
+    </style>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
     <script>
         /*
@@ -1098,6 +1138,18 @@
         const sellerPaliers = @json($sellerPaliers ?? []);
         let selectedPRRegion = null;
         const CHECKOUT_STATE_KEY = 'dwesta_checkout_state';
+
+        // Données des points relais (pour la carte)
+        const prData = @json($pointRelais->map(fn ($p) => [
+            'id' => $p->id,
+            'nom' => $p->nom,
+            'adresse' => $p->adresse,
+            'ville' => $p->ville,
+            'region' => $p->region,
+            'lat' => $p->latitude ? (float) $p->latitude : null,
+            'lng' => $p->longitude ? (float) $p->longitude : null,
+        ]));
+        let prMap = null, prMarkers = {}, prSelectedId = null;
 
         function saveCheckoutState() {
             const state = {
@@ -1331,10 +1383,77 @@
             });
 
             document.getElementById('pr-modal').style.display = 'flex';
+            populatePRFilters();
+            initPRMap();
         };
 
         function closePRModal() {
             document.getElementById('pr-modal').style.display = 'none';
+        }
+
+        // --- Carte des points relais (Leaflet) ---
+        function initPRMap() {
+            if (typeof L === 'undefined') return;
+            if (prMap) { setTimeout(() => prMap.invalidateSize(), 150); return; }
+            const withCoords = prData.filter(p => p.lat && p.lng);
+            const center = withCoords.length ? [withCoords[0].lat, withCoords[0].lng] : [14.6928, -17.4467];
+            prMap = L.map('pr-map').setView(center, 11);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19, attribution: '© OpenStreetMap'
+            }).addTo(prMap);
+            withCoords.forEach(p => {
+                const m = L.marker([p.lat, p.lng]).addTo(prMap);
+                m.bindPopup('<b>' + p.nom + '</b><br>' + p.adresse + (p.ville ? '<br>' + p.ville : ''));
+                m.on('click', () => selectPRItem(p.id));
+                prMarkers[p.id] = m;
+            });
+            setTimeout(() => prMap.invalidateSize(), 150);
+        }
+
+        function populatePRFilters() {
+            const regionSel = document.getElementById('pr-filter-region');
+            if (regionSel.options.length > 1) return; // déjà rempli
+            const regions = [...new Set(prData.map(p => p.region).filter(Boolean))].sort();
+            regions.forEach(r => { const o = document.createElement('option'); o.value = r; o.textContent = r; regionSel.appendChild(o); });
+        }
+
+        function onPRRegionChange() {
+            const r = document.getElementById('pr-filter-region').value;
+            const villeSel = document.getElementById('pr-filter-ville');
+            villeSel.innerHTML = '<option value="">Toutes les villes</option>';
+            const villes = [...new Set(prData.filter(p => !r || p.region === r).map(p => p.ville).filter(Boolean))].sort();
+            villes.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; villeSel.appendChild(o); });
+            applyPRFilters();
+        }
+
+        function applyPRFilters() {
+            const r = document.getElementById('pr-filter-region').value;
+            const v = document.getElementById('pr-filter-ville').value;
+            document.querySelectorAll('.pr-list-item').forEach(el => {
+                const okR = !r || el.dataset.region === r;
+                const okV = !v || el.dataset.ville === v;
+                el.style.display = (okR && okV) ? '' : 'none';
+            });
+        }
+
+        function focusPR(id) {
+            selectPRItem(id);
+            const p = prData.find(x => x.id == id);
+            if (p && p.lat && p.lng && prMap) {
+                prMap.setView([p.lat, p.lng], 15);
+                if (prMarkers[id]) prMarkers[id].openPopup();
+            }
+        }
+
+        function selectPRItem(id) {
+            prSelectedId = id;
+            document.querySelectorAll('.pr-list-item').forEach(el => el.classList.toggle('active', el.dataset.id == id));
+        }
+
+        function confirmPRSelection() {
+            if (!prSelectedId) { alert('Veuillez sélectionner un point relais.'); return; }
+            const p = prData.find(x => x.id == prSelectedId);
+            if (p) selectPoint(p.id, p.nom, p.adresse, p.region);
         }
 
         function selectPoint(id, name, addr, region) {
