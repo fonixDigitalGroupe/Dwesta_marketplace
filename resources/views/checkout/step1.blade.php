@@ -1140,15 +1140,20 @@
         const CHECKOUT_STATE_KEY = 'dwesta_checkout_state';
 
         // Données des points relais (pour la carte)
-        const prData = @json($pointRelais->map(fn ($p) => [
-            'id' => $p->id,
-            'nom' => $p->nom,
-            'adresse' => $p->adresse,
-            'ville' => $p->ville,
-            'region' => $p->region,
-            'lat' => $p->latitude ? (float) $p->latitude : null,
-            'lng' => $p->longitude ? (float) $p->longitude : null,
-        ]));
+        @php
+            $prDataArr = $pointRelais->map(function ($p) {
+                return [
+                    'id' => $p->id,
+                    'nom' => $p->nom,
+                    'adresse' => $p->adresse,
+                    'ville' => $p->ville,
+                    'region' => $p->region,
+                    'lat' => $p->latitude ? (float) $p->latitude : null,
+                    'lng' => $p->longitude ? (float) $p->longitude : null,
+                ];
+            })->values();
+        @endphp
+        const prData = @json($prDataArr);
         let prMap = null, prMarkers = {}, prSelectedId = null;
 
         function saveCheckoutState() {
