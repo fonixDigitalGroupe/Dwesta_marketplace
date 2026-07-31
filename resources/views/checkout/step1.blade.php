@@ -1093,13 +1093,13 @@
                 </div>
                 <div class="pr-modal-right">
                     <div id="pr-map"></div>
+                    <div class="pr-map-footer">
+                        <button type="button" id="pr-confirm-btn" onclick="confirmPRSelection()"
+                            style="width: 100%; background: #f68b1e; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 700; font-size: 15px; cursor: pointer;">
+                            Choisir ce point relais
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="pr-modal-footer">
-                <button type="button" id="pr-confirm-btn" onclick="confirmPRSelection()"
-                    style="width: 100%; background: #f68b1e; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: 700; font-size: 15px; cursor: pointer;">
-                    Choisir ce point relais
-                </button>
             </div>
         </div>
     </div>
@@ -1126,9 +1126,9 @@
         .pr-item-line i { color: #9ca3af; width: 14px; }
         /* Badge tarif (comme l'image) */
         .pr-list-item .pr-fee { background: #fff3e0; color: #f68b1e; font-weight: 700; font-size: 11px; white-space: nowrap; padding: 3px 8px; border-radius: 6px; flex-shrink: 0; }
-        .pr-modal-right { flex: 1; min-width: 0; }
-        #pr-map { width: 100%; height: 100%; min-height: 420px; background: #e5e7eb; }
-        .pr-modal-footer { padding: 12px 18px; border-top: 1px solid #eee; }
+        .pr-modal-right { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        #pr-map { width: 100%; flex: 1; min-height: 380px; background: #e5e7eb; }
+        .pr-map-footer { padding: 12px; border-top: 1px solid #eee; }
         @media (max-width: 1024px) {
             .pr-modal-body { flex-direction: column; }
             .pr-modal-left { width: 100%; max-height: 38vh; }
