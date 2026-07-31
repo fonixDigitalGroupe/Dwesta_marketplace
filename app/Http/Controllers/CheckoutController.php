@@ -600,7 +600,7 @@ class CheckoutController extends Controller
         $gestionPaiement = session('last_gestion_paiement', 'commande');
 
         // Récupérer les vrais objets Order pour l'affichage riche
-        $orders = Order::whereIn('reference', $orderRefs)->with(['seller', 'items.annonce', 'items.variante'])->get();
+        $orders = Order::whereIn('reference', $orderRefs)->with(['seller', 'items.annonce', 'items.variante', 'destinationPointRelais'])->get();
 
         if ($orders->isEmpty()) {
             return redirect()->route('home');

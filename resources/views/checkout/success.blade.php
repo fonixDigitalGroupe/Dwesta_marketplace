@@ -312,10 +312,11 @@
         }
 
         .btn-pro-primary {
-            background: #004aad;
+            background: #f68b1e;
             color: white;
-            box-shadow: 0 2px 5px rgba(0, 74, 173, 0.3);
+            box-shadow: none;
         }
+        .btn-pro-primary:hover { background: #e07b10; }
 
         .btn-pro-primary:hover {
             background: #003a8c;
@@ -617,16 +618,25 @@
                     <div class="info-item" style="margin-bottom: 16px;">
                         <h4>Adresse de livraison</h4>
                         <p style="font-weight: 500;">{{ $orders->first()?->adresse_livraison ?? 'N/A' }}</p>
+                        @php $pr = $orders->first()?->destinationPointRelais; @endphp
+                        @if($pr)
+                            <div style="margin-top: 8px; font-size: 13px; color: #555; line-height: 1.6;">
+                                <div style="font-weight: 600; color: #333;">Coordonnées de l'agence</div>
+                                @if($pr->adresse)<div>{{ $pr->adresse }}</div>@endif
+                                @if($pr->telephone)<div><i class="fas fa-phone" style="color:#9ca3af; width:14px;"></i> {{ $pr->telephone }}</div>@endif
+                                @if($pr->horaires)<div><i class="fas fa-clock" style="color:#9ca3af; width:14px;"></i> {{ $pr->horaires }}</div>@endif
+                            </div>
+                        @endif
                     </div>
 
                     <div class="info-item" style="margin-bottom: 16px;">
                         <h4>Mode de paiement</h4>
                         <p>
                             @if($gestionPaiement === 'commande')
-                                <i class="fas fa-credit-card"></i> Payé par
+                                Payé par
                                 {{ $orders->first()?->moyen_paiement === 'cb' ? 'Carte / Mobile' : ($orders->first()?->moyen_paiement ?? 'N/A') }}
                             @else
-                                <i class="fas fa-hand-holding-usd"></i> Paiement à la livraison
+                                Paiement à la livraison
                             @endif
                         </p>
                     </div>

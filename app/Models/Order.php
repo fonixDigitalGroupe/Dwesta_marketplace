@@ -60,6 +60,11 @@ class Order extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function destinationPointRelais()
+    {
+        return $this->belongsTo(\App\Models\PointRelais::class, 'destination_point_relais_id');
+    }
+
     public function seller()
     {
         return $this->belongsTo(Vendeur::class, 'vendeur_id');
