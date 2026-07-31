@@ -79,6 +79,41 @@ class VendeurWalletController extends Controller
      */
     public function requestWithdrawal(Request $request)
     {
-        return back()->with('error', 'Les retraits sont temporairement indisponibles : Stripe ne permet pas les versements sortants vers Mobile Money. Un canal de retrait dédié sera réactivé prochainement.');
+        $user = Auth::user();
+
+        // Solde disponible (ventes libérées − retraits)
+        $available = (float) Transaction::where('user_id', $user->id)
+            ->where('statut', 'succes')
+            ->whereIn('wallet_status', [Transaction::STATUS_AVAILABLE, Transaction::STATUS_WITHDRAWN])
+            ->sum('montant');
+        $available = max(0, $available);
+
+        $data = $request->validate([
+            'montant'   => 'required|numeric|min:200|max:' . $available,
+            'moyen'     => 'nullable|string|max:50',
+            'telephone' => 'nullable|string|max:30',
+        ], [
+            'montant.max' => 'Le montant demandé dépasse votre solde disponible (' . number_format($available, 0, ',', ' ') . ' FCFA).',
+            'montant.min' => 'Le montant minimum de retrait est de 200 FCFA.',
+        ]);
+
+        // Enregistre le retrait : transaction négative "withdrawn" → soustrait le solde.
+        // Mode test : aucun versement Stripe réel n'est effectué.
+        Transaction::create([
+            'user_id'           => $user->id,
+            'reference_externe' => 'WD-' . strtoupper(Str::random(10)),
+            'montant'           => -abs((float) $data['montant']),
+            'moyen_paiement'    => $data['moyen'] ?? 'stripe',
+            'statut'            => 'succes',
+            'wallet_status'     => Transaction::STATUS_WITHDRAWN,
+            'metadata'          => [
+                'type'      => 'withdrawal',
+                'mode'      => 'test',
+                'telephone' => $data['telephone'] ?? null,
+            ],
+        ]);
+
+        return redirect()->route('vendeur.wallet.index')
+            ->with('success', 'Retrait de ' . number_format((float) $data['montant'], 0, ',', ' ') . ' FCFA effectué. Votre solde a été mis à jour.');
     }
 }

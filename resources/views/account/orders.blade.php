@@ -145,7 +145,7 @@
 
     <main class="main-content">
         <div style="padding-bottom: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee;">
-            <h1 style="font-size: 1.15rem; font-weight: 600; color: #333; margin: 0;">Vos commandes</h1>
+            <h1 style="font-size: 1.15rem; font-weight: 600; color: #333; margin: 0;">Mes achats</h1>
         </div>
 
         <div class="jumia-tabs">

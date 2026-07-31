@@ -422,10 +422,10 @@
             </div>
 
             {{-- Mes achats --}}
-            <div class="rakuten-group-title">Mes commandes</div>
+            <div class="rakuten-group-title">Mes achats</div>
             <div class="rakuten-card">
                 <a href="{{ route('account.orders') }}" class="rakuten-item">
-                    <span>Toutes mes commandes</span>
+                    <span>Tous mes achats</span>
                     <i class="fa-solid fa-chevron-right chevron"></i>
                 </a>
                 <a href="{{ route('gift-cards.index') }}" class="rakuten-item">
@@ -455,7 +455,7 @@
             </div>
 
             {{-- Mes ventes --}}
-            <div class="rakuten-group-title">Mes ventes</div>
+            <div class="rakuten-group-title">Mes commandes</div>
             <div class="rakuten-card">
                 @if(!$user->vendeur)
                     <a href="{{ route('vendeur.create') }}" class="rakuten-item">
@@ -472,7 +472,7 @@
                         <i class="fa-solid fa-chevron-right chevron"></i>
                     </a>
                     <a href="{{ route('vendeur.orders') }}" class="rakuten-item" {{ $isRejected ? 'style=color:#ccc;pointer-events:none' : '' }}>
-                        <span>Mes ventes</span>
+                        <span>Mes commandes</span>
                         <i class="fa-solid fa-chevron-right chevron"></i>
                     </a>
                 @endif
@@ -559,7 +559,7 @@
     <a href="{{ route('account.orders') }}"
         class="sidebar-item {{ request()->routeIs('account.orders') ? 'active' : '' }}">
         <i class="fa-solid fa-shopping-bag"></i>
-        <span>Mes commandes</span>
+        <span>Mes achats</span>
     </a>
 
     <!-- Messagerie -->
@@ -651,7 +651,7 @@
             <a href="{{ route('vendeur.orders') }}"
                 class="sidebar-item {{ request()->routeIs('vendeur.orders*') ? 'active' : '' }}">
                 <i class="fa-solid fa-box-open"></i>
-                <span>Mes ventes</span>
+                <span>Mes commandes</span>
             </a>
         @else
             <div class="inactive-link" title="Compte rejeté">
@@ -660,7 +660,7 @@
             </div>
             <div class="inactive-link" title="Compte rejeté">
                 <i class="fa-solid fa-box-open"></i>
-                <span>Mes ventes</span>
+                <span>Mes commandes</span>
             </div>
         @endif
 
@@ -682,7 +682,7 @@
         </div>
         <div class="inactive-link" title="Réservé aux vendeurs">
             <i class="fa-solid fa-box-open"></i>
-            <span>Mes ventes</span>
+            <span>Mes commandes</span>
         </div>
     @endif
 
