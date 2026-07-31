@@ -424,11 +424,11 @@
                 @php $profilManquants = auth()->check() ? auth()->user()->champsProfilManquants() : []; @endphp
 
                 @if(!empty($profilManquants))
-                    <div style="background: #fff8f0; border: 1px solid #f4c28e; border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; font-size: 0.85rem; color: #8a5a00; line-height: 1.5;">
-                        <i class="fas fa-circle-exclamation" style="color: #e07a00;"></i>
-                        <strong>Complétez votre profil pour commander.</strong><br>
+                    <div style="background: #f4f5f6; border: 1px solid #e2e4e7; border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; font-size: 0.85rem; color: #6b7280; line-height: 1.5;">
+                        <i class="fas fa-circle-exclamation" style="color: #9ca3af;"></i>
+                        <strong style="color: #4b5563;">Complétez votre profil pour commander.</strong><br>
                         Informations manquantes : {{ implode(', ', $profilManquants) }}.
-                        <a href="{{ route('profile.show') }}" style="color: #004aad; font-weight: 700; text-decoration: none;">Compléter mon profil →</a>
+                        <a href="{{ route('profile.show') }}" style="color: #4b5563; font-weight: 700; text-decoration: underline;">Compléter mon profil →</a>
                     </div>
                     <button class="btn-order" type="button" disabled
                         style="opacity: 0.5; cursor: not-allowed;"
