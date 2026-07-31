@@ -1046,11 +1046,6 @@
                     (Complétez les étapes pour continuer)
                 </div>
 
-                <div
-                    style="margin-top: 16px; font-size: 11px; color: #666; border-top: 1px solid #eee; padding-top: 12px; line-height: 1.4;">
-                    En validant votre choix, vous acceptez automatiquement les <a href="#"
-                        style="color: var(--jumia-blue); text-decoration: none;">Conditions générales d'utilisation</a>
-                </div>
             </div>
         </div>
     </div>
