@@ -181,8 +181,8 @@
         }
 
         .option-price {
-            background: #fff3e0;
-            color: #f68b1e;
+            background: #e6f4ea;
+            color: #1a7f37;
             padding: 2px 8px;
             border-radius: 4px;
             font-size: 13px;
