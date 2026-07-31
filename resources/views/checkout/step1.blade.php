@@ -470,8 +470,9 @@
             margin-top: 16px;
             padding-top: 16px;
             border-top: 1px solid var(--jumia-border);
-            font-weight: 800;
-            font-size: 20px;
+            font-weight: 600;
+            font-size: 16px;
+            color: #1a1a1a;
         }
 
         .btn-confirm {
