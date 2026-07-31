@@ -15,14 +15,14 @@
             --mady-red: #bf0000;
             --mady-red-hover: #a00000;
             --mady-blue: #3b82f6; /* Vibrant Blue Kelasi Style */
-            --sidebar-bg: #ffffff; /* Corps de la sidebar en blanc */
-            --sidebar-brand-bg: linear-gradient(180deg, #1e40af 0%, #1e3a8a 100%); /* Header (logo) reste bleu */
-            --sidebar-text: #475569;
-            --sidebar-text-hover: #111827;
-            --sidebar-hover: #f3f4f6;
-            --sidebar-active: rgba(255, 153, 0, 0.12); /* Vibrant Orange active tint */
-            --sidebar-text-active: #ff9900; /* Vibrant Orange active text */
-            --sidebar-accent: #ff9900; /* Vibrant Orange accent marker */
+            --sidebar-bg: #1e3a8a; /* Corps de la sidebar en bleu */
+            --sidebar-brand-bg: linear-gradient(180deg, #1e40af 0%, #1e3a8a 100%); /* Header (logo) bleu */
+            --sidebar-text: #c7d2fe; /* Texte clair sur fond bleu */
+            --sidebar-text-hover: #ffffff;
+            --sidebar-hover: rgba(255, 255, 255, 0.10);
+            --sidebar-active: rgba(255, 255, 255, 0.16); /* Actif : surbrillance claire */
+            --sidebar-text-active: #ffffff; /* Actif : texte blanc */
+            --sidebar-accent: #ffffff; /* Marqueur d'accent blanc */
             --slate-50: #f8fafc;
         }
 
