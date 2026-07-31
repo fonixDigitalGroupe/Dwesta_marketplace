@@ -1112,7 +1112,9 @@
         .pr-modal-body { display: flex; flex: 1; min-height: 0; }
         .pr-modal-left { width: 340px; display: flex; flex-direction: column; border-right: 1px solid #eee; min-height: 0; }
         .pr-filters { display: flex; gap: 8px; padding: 12px; border-bottom: 1px solid #f0f0f0; }
-        .pr-filters select { flex: 1; padding: 7px 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: #fff; }
+        .pr-filters select { padding: 7px 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: #fff; }
+        #pr-filter-pays { flex: 1.4; min-width: 0; }
+        #pr-filter-region { flex: 1; min-width: 0; }
         .pr-list { overflow-y: auto; flex: 1; padding: 10px; }
         .pr-list-item { padding: 12px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: flex-start; gap: 10px; transition: background .15s; }
         .pr-list-item:hover { background: #fafafa; }
@@ -1441,8 +1443,13 @@
             paysSel.dataset.filled = '1';
             const paysList = allPays.length ? allPays : [...new Set(prData.map(p => p.pays).filter(Boolean))].sort();
             paysList.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; paysSel.appendChild(o); });
-            // Présélection du pays de l'utilisateur (correspondance insensible casse/accents)
-            const matchPays = paysList.find(p => norm(p) === norm(userPays));
+            // Présélection du pays de l'utilisateur (insensible casse/accents).
+            // Si absent/non trouvé, on le déduit de la région de l'utilisateur.
+            let matchPays = paysList.find(p => norm(p) === norm(userPays));
+            if (!matchPays && userRegionDefault) {
+                const regEntry = (allRegions || []).find(r => norm(r.name) === norm(userRegionDefault));
+                if (regEntry && regEntry.pays) matchPays = paysList.find(p => norm(p) === norm(regEntry.pays));
+            }
             if (matchPays) paysSel.value = matchPays;
             populatePRRegions(userRegionDefault);
         }
