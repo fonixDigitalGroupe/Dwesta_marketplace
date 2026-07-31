@@ -1172,6 +1172,8 @@
         const prData = @json($prDataArr);
         const userPays = @json($user->pays ?? '');
         const userRegionDefault = @json($user->region ?? '');
+        const allPays = @json($allPays ?? []);
+        const allRegions = @json($allRegions ?? []);
         let prMap = null, prMarkers = {}, prSelectedId = null;
 
         function saveCheckoutState() {
@@ -1437,7 +1439,7 @@
             const paysSel = document.getElementById('pr-filter-pays');
             if (paysSel.dataset.filled) return; // déjà rempli
             paysSel.dataset.filled = '1';
-            const paysList = [...new Set(prData.map(p => p.pays).filter(Boolean))].sort();
+            const paysList = allPays.length ? allPays : [...new Set(prData.map(p => p.pays).filter(Boolean))].sort();
             paysList.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; paysSel.appendChild(o); });
             // Présélection du pays de l'utilisateur s'il existe dans la liste
             if (userPays && paysList.includes(userPays)) paysSel.value = userPays;
@@ -1448,7 +1450,13 @@
             const pays = document.getElementById('pr-filter-pays').value;
             const regionSel = document.getElementById('pr-filter-region');
             regionSel.innerHTML = '<option value="">Toutes les régions</option>';
-            const regions = [...new Set(prData.filter(p => !pays || p.pays === pays).map(p => p.region).filter(Boolean))].sort();
+            let regions;
+            if (allRegions.length) {
+                regions = allRegions.filter(r => !pays || r.pays === pays).map(r => r.name);
+            } else {
+                regions = [...new Set(prData.filter(p => !pays || p.pays === pays).map(p => p.region).filter(Boolean))];
+            }
+            regions = [...new Set(regions.filter(Boolean))].sort();
             regions.forEach(r => { const o = document.createElement('option'); o.value = r; o.textContent = r; regionSel.appendChild(o); });
             if (preselect && regions.includes(preselect)) regionSel.value = preselect;
             applyPRFilters();

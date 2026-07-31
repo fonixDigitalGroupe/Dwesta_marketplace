@@ -88,7 +88,13 @@ class CheckoutController extends Controller
                 ],
             ]);
 
-        return view('checkout.step1', compact('cartGrouped', 'subtotal', 'user', 'requiresPointRelais', 'pointRelais', 'shippingRules', 'sellerOrigins', 'userCountryId', 'sellerRegions', 'userRegion', 'interRegionTariffs', 'sellerPaliers'));
+        // Listes complètes pour les filtres point relais (tous les pays / toutes les régions)
+        $allPays = \App\Models\Country::orderBy('name')->pluck('name')->values();
+        $allRegions = \App\Models\Region::with('country')->orderBy('name')->get()
+            ->map(fn ($r) => ['name' => $r->name, 'pays' => optional($r->country)->name])
+            ->values();
+
+        return view('checkout.step1', compact('cartGrouped', 'subtotal', 'user', 'requiresPointRelais', 'pointRelais', 'shippingRules', 'sellerOrigins', 'userCountryId', 'sellerRegions', 'userRegion', 'interRegionTariffs', 'sellerPaliers', 'allPays', 'allRegions'));
     }
 
     /** Ordre de "lourdeur" des paliers. */
