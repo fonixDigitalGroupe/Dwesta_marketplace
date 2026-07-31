@@ -1064,11 +1064,12 @@
             <div class="pr-modal-body">
                 <div class="pr-modal-left">
                     <div class="pr-filters">
+                        <select id="pr-filter-pays" onchange="onPRPaysChange()"><option value="">Tous les pays</option></select>
                         <select id="pr-filter-region" onchange="applyPRFilters()"><option value="">Toutes les régions</option></select>
                     </div>
                     <div class="pr-list" id="pr-list">
                         @foreach($pointRelais as $pr)
-                            <div class="pr-list-item" data-id="{{ $pr->id }}" data-region="{{ $pr->region }}"
+                            <div class="pr-list-item" data-id="{{ $pr->id }}" data-region="{{ $pr->region }}" data-pays="{{ $pr->pays }}"
                                 onclick="focusPR({{ $pr->id }})">
                                 <span class="pr-radio"></span>
                                 <div class="pr-item-main">
@@ -1161,7 +1162,7 @@
                     'id' => $p->id,
                     'nom' => $p->nom,
                     'adresse' => $p->adresse,
-                    'ville' => $p->ville,
+                    'pays' => $p->pays,
                     'region' => $p->region,
                     'lat' => $p->latitude ? (float) $p->latitude : null,
                     'lng' => $p->longitude ? (float) $p->longitude : null,
@@ -1169,6 +1170,8 @@
             })->values();
         @endphp
         const prData = @json($prDataArr);
+        const userPays = @json($user->pays ?? '');
+        const userRegionDefault = @json($user->region ?? '');
         let prMap = null, prMarkers = {}, prSelectedId = null;
 
         function saveCheckoutState() {
@@ -1431,16 +1434,35 @@
         }
 
         function populatePRFilters() {
-            const regionSel = document.getElementById('pr-filter-region');
-            if (regionSel.options.length > 1) return; // déjà rempli
-            const regions = [...new Set(prData.map(p => p.region).filter(Boolean))].sort();
-            regions.forEach(r => { const o = document.createElement('option'); o.value = r; o.textContent = r; regionSel.appendChild(o); });
+            const paysSel = document.getElementById('pr-filter-pays');
+            if (paysSel.dataset.filled) return; // déjà rempli
+            paysSel.dataset.filled = '1';
+            const paysList = [...new Set(prData.map(p => p.pays).filter(Boolean))].sort();
+            paysList.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; paysSel.appendChild(o); });
+            // Présélection du pays de l'utilisateur s'il existe dans la liste
+            if (userPays && paysList.includes(userPays)) paysSel.value = userPays;
+            populatePRRegions(userRegionDefault);
         }
 
+        function populatePRRegions(preselect = '') {
+            const pays = document.getElementById('pr-filter-pays').value;
+            const regionSel = document.getElementById('pr-filter-region');
+            regionSel.innerHTML = '<option value="">Toutes les régions</option>';
+            const regions = [...new Set(prData.filter(p => !pays || p.pays === pays).map(p => p.region).filter(Boolean))].sort();
+            regions.forEach(r => { const o = document.createElement('option'); o.value = r; o.textContent = r; regionSel.appendChild(o); });
+            if (preselect && regions.includes(preselect)) regionSel.value = preselect;
+            applyPRFilters();
+        }
+
+        function onPRPaysChange() { populatePRRegions(); }
+
         function applyPRFilters() {
+            const pays = document.getElementById('pr-filter-pays').value;
             const r = document.getElementById('pr-filter-region').value;
             document.querySelectorAll('.pr-list-item').forEach(el => {
-                el.style.display = (!r || el.dataset.region === r) ? '' : 'none';
+                const okPays = !pays || el.dataset.pays === pays;
+                const okRegion = !r || el.dataset.region === r;
+                el.style.display = (okPays && okRegion) ? '' : 'none';
             });
         }
 
