@@ -1441,9 +1441,15 @@
             paysSel.dataset.filled = '1';
             const paysList = allPays.length ? allPays : [...new Set(prData.map(p => p.pays).filter(Boolean))].sort();
             paysList.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; paysSel.appendChild(o); });
-            // Présélection du pays de l'utilisateur s'il existe dans la liste
-            if (userPays && paysList.includes(userPays)) paysSel.value = userPays;
+            // Présélection du pays de l'utilisateur (correspondance insensible casse/accents)
+            const matchPays = paysList.find(p => norm(p) === norm(userPays));
+            if (matchPays) paysSel.value = matchPays;
             populatePRRegions(userRegionDefault);
+        }
+
+        // Normalisation : minuscules + sans accents
+        function norm(s) {
+            return (s || '').toString().trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         }
 
         function populatePRRegions(preselect = '') {
@@ -1458,7 +1464,8 @@
             }
             regions = [...new Set(regions.filter(Boolean))].sort();
             regions.forEach(r => { const o = document.createElement('option'); o.value = r; o.textContent = r; regionSel.appendChild(o); });
-            if (preselect && regions.includes(preselect)) regionSel.value = preselect;
+            const matchRegion = regions.find(r => norm(r) === norm(preselect));
+            if (matchRegion) regionSel.value = matchRegion;
             applyPRFilters();
         }
 
