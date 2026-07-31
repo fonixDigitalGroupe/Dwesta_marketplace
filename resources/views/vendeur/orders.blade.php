@@ -10,7 +10,17 @@
         font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    .orders-list { display: flex; flex-direction: column; gap: 1rem; }
+    .orders-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        max-height: 600px;
+        overflow-y: auto;
+        padding-right: 6px;
+    }
+    .orders-list::-webkit-scrollbar { width: 8px; }
+    .orders-list::-webkit-scrollbar-thumb { background: #d1d1d1; border-radius: 4px; }
+    .orders-list::-webkit-scrollbar-track { background: transparent; }
     
     .order-card {
         background: #fff;
