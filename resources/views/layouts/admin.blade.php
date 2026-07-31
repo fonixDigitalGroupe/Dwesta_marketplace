@@ -73,7 +73,7 @@
         .sidebar-toggle-btn {
             background: none;
             border: none;
-            color: #ffffff;
+            color: #374151;
             font-size: 1.15rem;
             cursor: pointer;
             width: 40px;
@@ -240,8 +240,8 @@
         }
 
         .header {
-            background-color: #004aad;
-            border-bottom: 1px solid #003d8f;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
             height: 56px !important;
             min-height: 56px !important;
             max-height: 56px !important;
@@ -294,7 +294,7 @@
         }
 
         .header-link {
-            color: #ffffff;
+            color: #374151;
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -304,7 +304,7 @@
         }
 
         .header-link:hover {
-            color: #dbeafe;
+            color: #004aad;
         }
 
         .sub-header-slot {
@@ -357,11 +357,11 @@
             padding: 0.5rem;
             border-radius: 8px;
             transition: background 0.2s;
-            color: #ffffff;
+            color: #374151;
         }
 
         .user-dropdown-trigger:hover {
-            background-color: rgba(255,255,255,0.15);
+            background-color: rgba(0,0,0,0.06);
         }
 
         .user-dropdown-menu {
@@ -547,8 +547,8 @@
 
                         @if(Route::has('admin.messagerie.index'))
                         <a href="{{ route('admin.messagerie.index') }}" title="Messagerie"
-                           style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; color: #ffffff; text-decoration: none; transition: background 0.2s;"
-                           onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='transparent'">
+                           style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; color: #374151; text-decoration: none; transition: background 0.2s;"
+                           onmouseover="this.style.background='rgba(0,0,0,0.06)'" onmouseout="this.style.background='transparent'">
                             <i class="fas fa-envelope" style="font-size: 1.05rem;"></i>
                             @if(($adminUnreadMessages ?? 0) > 0)
                                 <span style="position: absolute; top: 2px; right: 2px; min-width: 18px; height: 18px; padding: 0 4px; background: #ef4444; color: #fff; font-size: 0.65rem; font-weight: 800; border-radius: 999px; display: flex; align-items: center; justify-content: center; border: 2px solid #fff;">{{ $adminUnreadMessages > 9 ? '9+' : $adminUnreadMessages }}</span>
@@ -563,8 +563,8 @@
                                     <i class="fas fa-user text-sm"></i>
                                 </div>
                                 <span
-                                    style="font-size: 0.875rem; font-weight: 600; color: #ffffff;">{{ auth()->user()->prenom }}</span>
-                                <i class="fas fa-chevron-down" style="font-size: 0.75rem; opacity: 0.7; color: #ffffff;"></i>
+                                    style="font-size: 0.875rem; font-weight: 600; color: #374151;">{{ auth()->user()->prenom }}</span>
+                                <i class="fas fa-chevron-down" style="font-size: 0.75rem; opacity: 0.7; color: #374151;"></i>
                             </div>
                             <div class="user-dropdown-menu" id="userDropdownMenu">
                                 <a href="{{ route('profile.show') }}" class="user-dropdown-item">
