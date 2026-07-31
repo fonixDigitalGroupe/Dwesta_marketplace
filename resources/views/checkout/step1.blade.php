@@ -1064,18 +1064,29 @@
             <div class="pr-modal-body">
                 <div class="pr-modal-left">
                     <div class="pr-filters">
-                        <select id="pr-filter-region" onchange="onPRRegionChange()"><option value="">Toutes les régions</option></select>
-                        <select id="pr-filter-ville" onchange="applyPRFilters()"><option value="">Toutes les villes</option></select>
+                        <select id="pr-filter-region" onchange="applyPRFilters()"><option value="">Toutes les régions</option></select>
                     </div>
                     <div class="pr-list" id="pr-list">
                         @foreach($pointRelais as $pr)
-                            <div class="pr-list-item" data-id="{{ $pr->id }}" data-region="{{ $pr->region }}" data-ville="{{ $pr->ville }}"
+                            <div class="pr-list-item" data-id="{{ $pr->id }}" data-region="{{ $pr->region }}"
                                 onclick="focusPR({{ $pr->id }})">
-                                <div style="min-width:0;">
-                                    <div style="font-weight: 700; font-size: 14px;">{{ $pr->nom }}</div>
-                                    <div style="font-size: 12px; color: #666;">{{ $pr->adresse }}</div>
+                                <span class="pr-radio"></span>
+                                <div class="pr-item-main">
+                                    <div class="pr-item-top">
+                                        <div class="pr-item-name">{{ $pr->nom }}</div>
+                                        <div class="pr-fee pr-fee-display" data-region="{{ $pr->region }}">…</div>
+                                    </div>
+                                    <div class="pr-item-addr">{{ $pr->adresse }}</div>
+                                    @if($pr->region)
+                                        <div class="pr-item-line"><i class="fas fa-location-dot"></i> Proche de : <strong>{{ $pr->region }}</strong></div>
+                                    @endif
+                                    @if($pr->horaires)
+                                        <div class="pr-item-line"><i class="fas fa-clock"></i> {{ $pr->horaires }}</div>
+                                    @endif
+                                    @if($pr->telephone)
+                                        <div class="pr-item-line"><i class="fas fa-phone"></i> {{ $pr->telephone }}</div>
+                                    @endif
                                 </div>
-                                <div class="pr-fee pr-fee-display" data-region="{{ $pr->region }}">…</div>
                             </div>
                         @endforeach
                     </div>
@@ -1102,10 +1113,19 @@
         .pr-filters { display: flex; gap: 8px; padding: 12px; border-bottom: 1px solid #f0f0f0; }
         .pr-filters select { flex: 1; padding: 7px 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: #fff; }
         .pr-list { overflow-y: auto; flex: 1; padding: 10px; }
-        .pr-list-item { padding: 10px; border: 1px solid #eee; border-radius: 6px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; transition: all .15s; }
+        .pr-list-item { padding: 12px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: flex-start; gap: 10px; transition: background .15s; }
         .pr-list-item:hover { background: #fafafa; }
-        .pr-list-item.active { border-color: #f68b1e; background: #fff8f0; }
-        .pr-list-item .pr-fee { color: #f68b1e; font-weight: 700; font-size: 12px; white-space: nowrap; align-self: flex-start; }
+        /* Radio à cocher */
+        .pr-radio { width: 18px; height: 18px; border: 2px solid #f68b1e; border-radius: 50%; flex-shrink: 0; margin-top: 2px; position: relative; }
+        .pr-list-item.active .pr-radio::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 9px; height: 9px; border-radius: 50%; background: #f68b1e; }
+        .pr-item-main { flex: 1; min-width: 0; }
+        .pr-item-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+        .pr-item-name { font-weight: 700; font-size: 14px; color: #1a1a1a; line-height: 1.3; }
+        .pr-item-addr { font-size: 12px; color: #666; margin-top: 3px; }
+        .pr-item-line { font-size: 12px; color: #555; margin-top: 4px; }
+        .pr-item-line i { color: #9ca3af; width: 14px; }
+        /* Badge tarif (comme l'image) */
+        .pr-list-item .pr-fee { background: #fff3e0; color: #f68b1e; font-weight: 700; font-size: 11px; white-space: nowrap; padding: 3px 8px; border-radius: 6px; flex-shrink: 0; }
         .pr-modal-right { flex: 1; min-width: 0; }
         #pr-map { width: 100%; height: 100%; min-height: 420px; background: #e5e7eb; }
         .pr-modal-footer { padding: 12px 18px; border-top: 1px solid #eee; }
@@ -1417,22 +1437,10 @@
             regions.forEach(r => { const o = document.createElement('option'); o.value = r; o.textContent = r; regionSel.appendChild(o); });
         }
 
-        function onPRRegionChange() {
-            const r = document.getElementById('pr-filter-region').value;
-            const villeSel = document.getElementById('pr-filter-ville');
-            villeSel.innerHTML = '<option value="">Toutes les villes</option>';
-            const villes = [...new Set(prData.filter(p => !r || p.region === r).map(p => p.ville).filter(Boolean))].sort();
-            villes.forEach(v => { const o = document.createElement('option'); o.value = v; o.textContent = v; villeSel.appendChild(o); });
-            applyPRFilters();
-        }
-
         function applyPRFilters() {
             const r = document.getElementById('pr-filter-region').value;
-            const v = document.getElementById('pr-filter-ville').value;
             document.querySelectorAll('.pr-list-item').forEach(el => {
-                const okR = !r || el.dataset.region === r;
-                const okV = !v || el.dataset.ville === v;
-                el.style.display = (okR && okV) ? '' : 'none';
+                el.style.display = (!r || el.dataset.region === r) ? '' : 'none';
             });
         }
 
