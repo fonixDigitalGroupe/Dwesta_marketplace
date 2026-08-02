@@ -650,7 +650,7 @@
         .advisory-icon {
             width: 18px;
             height: 18px;
-            background: #000;
+            background: #f68b1e;
             color: white;
             border-radius: 50%;
             display: flex;
