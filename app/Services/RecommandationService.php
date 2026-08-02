@@ -111,16 +111,16 @@ class RecommandationService
         return Annonce::publiees()
             ->where('id', '!=', $annonce->id)
             ->where('categorie_id', $annonce->categorie_id)
-            ->whereHas('vendeur', function ($q) {
-                $q->where('type', 'professionnel');
+            // Annonces boostées via un crédit : option « à la une » active
+            // (peu importe que le vendeur soit professionnel ou particulier).
+            ->whereHas('options', function ($q) {
+                $q->where('a_la_une', 1)
+                    ->where(function ($q2) {
+                        $q2->whereNull('a_la_une_expire_le')
+                            ->orWhere('a_la_une_expire_le', '>', now());
+                    });
             })
             ->with(['photos', 'category', 'vendeur.user', 'vendeur.professionnel', 'options'])
-            ->orderByRaw("CASE WHEN EXISTS (
-                SELECT 1 FROM annonce_options 
-                WHERE annonce_options.annonce_id = annonces.id 
-                AND annonce_options.a_la_une = 1
-                AND (annonce_options.a_la_une_expire_le IS NULL OR annonce_options.a_la_une_expire_le > ?)
-            ) THEN 0 ELSE 1 END", [now()->toDateTimeString()])
             ->orderBy('prix', 'asc')
             ->orderBy('vues', 'desc')
             ->limit($limit)
