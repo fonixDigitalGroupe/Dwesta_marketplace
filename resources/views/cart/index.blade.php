@@ -484,7 +484,7 @@
 <style>
     .saved-products {
         grid-column: 1 / -1;
-        margin-top: 2.5rem;
+        margin-top: 0.5rem;
         background: #fff;
         border-radius: 8px;
         padding: 1.5rem;
