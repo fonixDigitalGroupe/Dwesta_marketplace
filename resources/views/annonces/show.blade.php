@@ -1028,10 +1028,10 @@
 
     <!-- Clients Also Viewed Section -->
     @if(isset($recommandations['aussi_vus']) && $recommandations['aussi_vus']->count() > 0)
-    <div style="background: #fff; padding: 2rem 1rem 3rem 1rem; max-width: 1248px; margin: 1.5rem auto 0 auto; border-radius: 8px;">
-        <div class="rk-section-header" style="background: #fff; margin-top: 0;">
-            <h2 class="rk-offers-title" style="font-size: 1rem;">Articles également vus</h2>
-        </div>
+    <div class="rk-section-header" style="max-width: 1248px; margin: 0.5rem auto 0.75rem auto; padding: 0 1rem; background: transparent;">
+        <h2 class="rk-offers-title" style="margin-top: 0; font-size: 1rem;">Articles également vus</h2>
+    </div>
+    <div style="background: #fff; padding: 1.5rem 1rem 3rem 1rem; max-width: 1248px; margin: 0 auto; border-radius: 8px;">
         <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px;">
             <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-seen', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
             <div class="n1-top-grid" id="carousel-seen">
