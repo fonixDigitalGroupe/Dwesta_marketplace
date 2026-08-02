@@ -42,12 +42,13 @@ class HomeController extends Controller
             return $section;
         });
 
-        // 2. Top des produits les plus consultés (Mélange aléatoire des plus vus, max 20)
+        // 2. Top des produits les plus consultés
+        // On privilégie les plus vus mais on inclut TOUT le catalogue publié
+        // (mélange aléatoire) pour que chaque produit ait une chance d'apparaître.
         $topConsultes = Annonce::publiees()
             ->orderBy('vues', 'desc')
-            ->take(50) // Prend les 50 produits les plus consultés (toutes catégories)
             ->get()
-            ->shuffle() // Mélange aléatoirement
+            ->shuffle() // Mélange aléatoirement sur l'ensemble du catalogue
             ->take(20); // Extrait 20 produits max
 
         // 3. Actualités (Highlights) Bento Grid
