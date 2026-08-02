@@ -1009,7 +1009,7 @@
 
     <!-- Best Offers Section -->
     @if(isset($recommandations['meilleures_offres_pro']) && $recommandations['meilleures_offres_pro']->count() > 0)
-    <div class="rk-section-header" style="max-width: 1248px; margin: 2rem auto 0.75rem auto; padding: 0 1rem; background: transparent;">
+    <div class="rk-section-header" style="max-width: 1248px; margin: 0.5rem auto 0.75rem auto; padding: 0 1rem; background: transparent;">
         <span class="rk-sponsor-label">Sponsorisée</span>
         <h2 class="rk-offers-title" style="margin-top: 0; font-size: 1rem;">Meilleures offres Pros</h2>
     </div>
