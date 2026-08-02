@@ -448,6 +448,11 @@
             </div>
         </section>
 
+        <!-- Bande décorative -->
+        <div class="actualites-container">
+            <div style="height: 48px; background-color: #f3f3f3; border-radius: 20px 0 0 20px; margin: 0 -40px 3rem 0;"></div>
+        </div>
+
         <!-- Avertissement Légal -->
         <section class="legal-warning-section">
             <div class="legal-warning-inner">
