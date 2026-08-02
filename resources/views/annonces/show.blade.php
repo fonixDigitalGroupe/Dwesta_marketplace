@@ -935,7 +935,7 @@
     </div>
 
     <!-- Reviews Section -->
-    <div id="avis" class="rk-section-header" style="max-width: 1248px; margin: 2rem auto 0.75rem auto; padding: 0 1rem; background: transparent;">
+    <div id="avis" class="rk-section-header" style="max-width: 1248px; margin: 0.5rem auto 0.75rem auto; padding: 0 1rem; background: transparent;">
         <h2 class="rk-offers-title" style="margin-top: 0; font-size: 1rem;">Avis et commentaires</h2>
     </div>
 
