@@ -465,11 +465,6 @@
 
                 </form>
 
-                {{-- Help link --}}
-                <p style="margin-top: 1rem; font-size: 0.8rem; color: #f68b1e; text-align: center;">
-                    <i class="far fa-question-circle"></i>
-                    <a href="#" style="color: #f68b1e;">En savoir plus sur nos forfaits vendeur</a>
-                </p>
 
             </div>
         </main>
