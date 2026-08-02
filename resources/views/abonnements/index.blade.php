@@ -97,7 +97,7 @@
         height: 22px;
         flex-shrink: 0;
         margin-top: 2px;
-        accent-color: #004aad;
+        accent-color: #f68b1e;
         cursor: pointer;
     }
 
@@ -153,7 +153,7 @@
         vertical-align: middle;
     }
     .badge-actif   { background: #007600; color: #fff; }
-    .badge-pro     { background: #004aad; color: #fff; }
+    .badge-pro     { background: #f68b1e; color: #fff; }
     .badge-free    { background: #565959; color: #fff; }
     .badge-popular { background: #f68b1e; color: #fff; }
     .badge-locked  { background: #ccc; color: #555; }
@@ -180,7 +180,7 @@
     }
 
     .btn-subscribe {
-        background: #004aad;
+        background: #f68b1e;
         color: #fff;
         border: none;
         border-radius: 6px;
@@ -193,7 +193,7 @@
     }
 
     .btn-subscribe:hover:not(:disabled) {
-        background: #003a8c;
+        background: #e07b10;
     }
 
     .btn-subscribe:disabled {
@@ -293,7 +293,7 @@
                         <div>
                             <strong>Compte Vendeur Particulier.</strong>
                             Les forfaits PRO sont réservés aux professionnels.
-                            <a href="{{ route('vendeur.create') }}" style="color: #004aad; font-weight: 600;">Devenir PRO →</a>
+                            <a href="{{ route('vendeur.create') }}" style="color: #f68b1e; font-weight: 600;">Devenir PRO →</a>
                         </div>
                     </div>
                 @endif
@@ -320,7 +320,6 @@
                         @if($plansFam && $plansFam->count())
                         <div class="abn-section">
                             <div class="abn-section-heading">
-                                <i class="fa-solid {{ $familleMeta[$fam]['icon'] ?? 'fa-tag' }}" style="margin-right: 6px; color: #004aad;"></i>
                                 {{ $familleMeta[$fam]['label'] ?? $fam }}
                             </div>
                             <p class="abn-section-intro">{{ $familleMeta[$fam]['intro'] ?? 'Je souhaite m\'abonner au forfait :' }}</p>
@@ -382,7 +381,7 @@
                                             @if($abonnement->page_pro)
                                                 , Page Boutique Pro incluse
                                             @endif
-                                            · <span style="color: #007185;">Durée : {{ $dureeLabel }}</span>
+                                            · <span style="color: #f68b1e;">Durée : {{ $dureeLabel }}</span>
 
                                             @if($isSubscribed && $abonnementActif)
                                                 <span style="color: #007600; font-weight: 500; display: block; margin-top: 3px;">
@@ -411,7 +410,7 @@
                     <div class="checkout-bar" id="checkout-bar" style="display: none; border: 1px solid #d5d9d9; border-radius: 6px; margin-bottom: 1.25rem;">
                         <div class="checkout-bar-text">
                             Forfait sélectionné :
-                            <strong id="selected-plan-name" style="color: #004aad;">...</strong>
+                            <strong id="selected-plan-name" style="color: #f68b1e;">...</strong>
                         </div>
                         <button type="submit" class="btn-subscribe" id="submit-btn">
                             Continuer vers le paiement →
@@ -440,9 +439,9 @@
                 </form>
 
                 {{-- Help link --}}
-                <p style="margin-top: 1rem; font-size: 0.8rem; color: #007185; text-align: center;">
+                <p style="margin-top: 1rem; font-size: 0.8rem; color: #f68b1e; text-align: center;">
                     <i class="far fa-question-circle"></i>
-                    <a href="#" style="color: #007185;">En savoir plus sur nos forfaits vendeur</a>
+                    <a href="#" style="color: #f68b1e;">En savoir plus sur nos forfaits vendeur</a>
                 </p>
 
             </div>
