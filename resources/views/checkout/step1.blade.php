@@ -1042,7 +1042,7 @@
                     Vous pourrez ajouter un bon d'achat lors de la sélection de votre mode de paiement.
                 </p>
 
-                <button type="submit" class="btn-confirm" id="btn-submit" style="opacity: 1; pointer-events: auto;">
+                <button type="submit" class="btn-confirm" id="btn-submit" disabled style="pointer-events: none;">
                     Confirmer la commande
                 </button>
                 </form> {{-- Entire form ends here, includes all hidden fields --}}
@@ -1388,13 +1388,20 @@
         }
 
         function checkValidity() {
-            // Simplified: button is always active to avoid production blockers
+            updateSubmitState();
+        }
+
+        // Le bouton "Confirmer la commande" n'est actif que si la LIVRAISON
+        // ET le MODE DE PAIEMENT ont été confirmés (leurs résumés sont visibles).
+        function updateSubmitState() {
             const btn = document.getElementById('btn-submit');
-            if (btn) {
-                btn.disabled = false;
-                btn.style.opacity = '1';
-                btn.style.pointerEvents = 'auto';
-            }
+            if (!btn) return;
+            const deliveryDone = document.getElementById('delivery-summary').style.display === 'block';
+            const paymentDone = document.getElementById('payment-summary').style.display === 'block';
+            const ok = deliveryDone && paymentDone;
+            btn.disabled = !ok;
+            btn.style.pointerEvents = ok ? 'auto' : 'none';
+            btn.style.opacity = '1'; // le gris vient de .btn-confirm:disabled
         }
 
         document.getElementById('btn-choose-pr').onclick = function (e) {
@@ -1564,6 +1571,7 @@
             paymentBox.style.pointerEvents = 'auto';
             document.getElementById('payment-body').style.display = 'block';
 
+            updateSubmitState();
             saveCheckoutState();
             if (!silent) {
                 const box = document.getElementById('box-payment');
@@ -1596,9 +1604,8 @@
             document.getElementById('payment-header').style.display = 'none';
             document.getElementById('payment-header-done').style.display = 'block';
 
-            // Final button in sidebar can be truly enabled now
-            document.getElementById('btn-submit').style.opacity = '1';
-            document.getElementById('btn-submit').style.pointerEvents = 'auto';
+            // Livraison + paiement confirmés → bouton actif
+            updateSubmitState();
 
             saveCheckoutState();
         }
@@ -1612,9 +1619,7 @@
             document.getElementById('payment-header').style.display = 'block';
             document.getElementById('payment-header-done').style.display = 'none';
 
-            // Optionally lock final button
-            document.getElementById('btn-submit').style.opacity = '0.5';
-            document.getElementById('btn-submit').style.pointerEvents = 'none';
+            updateSubmitState();
             saveCheckoutState();
         }
 
@@ -1633,9 +1638,7 @@
             paymentHeader.style.background = '#fff';
             document.getElementById('payment-header-done').style.display = 'none';
 
-            // Optionally lock final button
-            document.getElementById('btn-submit').style.opacity = '0.5';
-            document.getElementById('btn-submit').style.pointerEvents = 'none';
+            updateSubmitState();
             saveCheckoutState();
         }
 
@@ -1706,7 +1709,8 @@
                     document.querySelector('button[onclick="applyVoucher()"]').style.opacity = '0.5';
 
                     if (data.newTotal === 0) {
-                        // Fully paid by gift card
+                        // Fully paid by gift card → paiement couvert, on active le bouton
+                        document.getElementById('btn-submit').disabled = false;
                         document.getElementById('btn-submit').style.opacity = '1';
                         document.getElementById('btn-submit').style.pointerEvents = 'auto';
                         document.getElementById('btn-submit').innerText = 'Confirmer la commande (Payé par Carte Cadeau)';
