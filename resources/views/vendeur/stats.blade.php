@@ -4,6 +4,9 @@
 
 @push('styles')
 <style>
+    /* Le contenu épouse sa propre hauteur, ne s'étire pas à la hauteur du sidebar */
+    .main-content { align-self: start; }
+
     .gift-card-page {
         max-width: 900px;
     }
