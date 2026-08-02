@@ -5,7 +5,7 @@
 @push('styles')
     <style>
         body {
-            background-color: #ffffff !important;
+            background-color: #f1f1f2 !important;
             font-family: 'Inter', sans-serif;
             color: #333;
         }
