@@ -940,7 +940,8 @@
     </div>
 
     @if($annonce->avisApprouves->count() > 0)
-    <div class="rk-main-grid" style="margin-top: 1rem; grid-template-columns: 300px 1fr; grid-template-areas: none; gap: 4rem; max-width: 1248px;">
+    <div style="background: #fff; max-width: 1248px; margin: 0 auto; border-radius: 8px; padding: 2rem 2rem 1rem 2rem;">
+    <div class="rk-main-grid" style="margin: 0; grid-template-columns: 300px 1fr; grid-template-areas: none; gap: 4rem; max-width: 100%; padding: 0;">
         <!-- Left: Rating Summary (Style Sidebar Page Pro) -->
         <div class="rating-summary-col">
             <div style="background: #f8f9fa; padding: 2rem; border-radius: 12px; position: sticky; top: 100px;">
@@ -1004,6 +1005,7 @@
                 @endforeach
             </div>
         </div>
+    </div>
     </div>
     @else
     <div style="max-width: 1248px; margin: 0 auto; padding: 2.5rem 1rem; background: #fff; border-radius: 8px; text-align: center; color: #888;">
