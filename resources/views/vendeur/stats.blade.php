@@ -137,7 +137,7 @@
     }
 
     .btn-filter {
-        background: #004aad;
+        background: #f68b1e;
         color: white;
         border: none;
         padding: 0.5rem 1.25rem;
@@ -148,7 +148,7 @@
         height: 38px;
     }
 
-    .btn-filter:hover { background: #003a8c; }
+    .btn-filter:hover { background: #e07b10; }
 
     .btn-reset {
         background: #f68b1e;
@@ -269,15 +269,15 @@
         box-sizing: border-box;
     }
     .karnou-pagination a.kp-link:hover {
-        border-color: #004aad;
-        color: #004aad;
-        background: #f5f8ff;
+        border-color: #f68b1e;
+        color: #f68b1e;
+        background: #fff5ec;
     }
     .karnou-pagination .kp-active {
-        background: #004aad;
-        border-color: #004aad;
+        background: #f68b1e;
+        border-color: #f68b1e;
         color: #fff;
-        box-shadow: 0 2px 6px rgba(0, 74, 173, 0.25);
+        box-shadow: 0 2px 6px rgba(246, 139, 30, 0.25);
         cursor: default;
     }
     .karnou-pagination .kp-disabled {
@@ -470,7 +470,7 @@
             <div id="tab-recent" class="tab-content active">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h3 class="section-title" style="margin-bottom: 0; font-size: 0.7rem;">Dernières transactions</h3>
-                    <a href="{{ route('vendeur.orders') }}" style="font-size: 0.75rem; font-weight: 800; color: #004aad; text-transform: uppercase; text-decoration: none;">Voir tout <i class="fas fa-arrow-right"></i></a>
+                    <a href="{{ route('vendeur.orders') }}" style="font-size: 0.75rem; font-weight: 800; color: #f68b1e; text-transform: uppercase; text-decoration: none;">Voir tout <i class="fas fa-arrow-right"></i></a>
                 </div>
                 <div class="table-scroll">
                     <table class="table-history">
