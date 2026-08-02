@@ -342,13 +342,28 @@
     .table-history th {
         text-align: left;
         padding: 0.75rem 1rem;
-        background: #fff;
-        color: #888;
-        font-weight: 600;
+        background: #f0f2f2;
+        color: #555;
+        font-weight: 700;
         font-size: 0.75rem;
         text-transform: uppercase;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #e0e0e0;
+        position: sticky;
+        top: 0;
+        z-index: 1;
     }
+
+    /* Conteneur de tableau avec défilement vertical */
+    .table-scroll {
+        max-height: 440px;
+        overflow-y: auto;
+        overflow-x: auto;
+        border: 1px solid #eee;
+        border-radius: 8px;
+    }
+    .table-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+    .table-scroll::-webkit-scrollbar-thumb { background: #d1d1d1; border-radius: 4px; }
+    .table-scroll::-webkit-scrollbar-track { background: transparent; }
 
     .table-history td {
         padding: 1.25rem 1rem;
@@ -396,15 +411,11 @@
             <form action="{{ route('vendeur.stats') }}" method="GET" class="stats-filter-form">
                 <div class="filter-group">
                     <label>Date de début</label>
-                    <input type="date" name="date_debut" value="{{ $dateDebut }}">
+                    <input type="date" name="date_debut" value="{{ $dateDebut }}" onchange="this.form.submit()">
                 </div>
                 <div class="filter-group">
                     <label>Date de fin</label>
-                    <input type="date" name="date_fin" value="{{ $dateFin }}">
-                </div>
-                <div class="filter-actions">
-                    <button type="submit" class="btn-filter">Appliquer</button>
-                    <a href="{{ route('vendeur.stats') }}" class="btn-reset">Réinitialiser</a>
+                    <input type="date" name="date_fin" value="{{ $dateFin }}" onchange="this.form.submit()">
                 </div>
             </form>
 
@@ -436,7 +447,6 @@
                 <button class="tab-btn active" onclick="showTab(event, 'tab-recent')">Ventes Récentes</button>
                 <button class="tab-btn" onclick="showTab(event, 'tab-top-sold')">Top Ventes</button>
                 <button class="tab-btn" onclick="showTab(event, 'tab-top-viewed')">Top Vues</button>
-                <button class="tab-btn" onclick="showTab(event, 'tab-status')">États des Ventes</button>
                 <button class="tab-btn" onclick="showTab(event, 'tab-stock')">État du stock</button>
             </div>
 
@@ -446,7 +456,7 @@
                     <h3 class="section-title" style="margin-bottom: 0; font-size: 0.7rem;">Dernières transactions</h3>
                     <a href="{{ route('vendeur.orders') }}" style="font-size: 0.75rem; font-weight: 800; color: #004aad; text-transform: uppercase; text-decoration: none;">Voir tout <i class="fas fa-arrow-right"></i></a>
                 </div>
-                <div style="overflow-x: auto; border: 1px solid #eee; border-radius: 8px;">
+                <div class="table-scroll">
                     <table class="table-history">
                         <thead>
                             <tr>
@@ -518,28 +528,6 @@
                     @empty
                         <div style="text-align: center; padding: 2rem; color: #999;">Aucune vue enregistrée.</div>
                     @endforelse
-                </div>
-            </div>
-
-            <!-- Tab: Status Breakdown -->
-            <div id="tab-status" class="tab-content">
-                <div class="stats-grid" style="grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));">
-                    @php
-                        $availableStatuses = [
-                            'en_attente' => ['label' => 'En attente', 'color' => '#f59e0b', 'bg' => '#fef3c7'],
-                            'paye' => ['label' => 'Payé', 'color' => '#10b981', 'bg' => '#d1fae5'],
-                            'expedie' => ['label' => 'Expédié', 'color' => '#3b82f6', 'bg' => '#dbeafe'],
-                            'livre' => ['label' => 'Livré', 'color' => '#059669', 'bg' => '#ecfdf5'],
-                            'annule' => ['label' => 'Annulé', 'color' => '#ef4444', 'bg' => '#fee2e2'],
-                        ];
-                    @endphp
-
-                    @foreach($availableStatuses as $key => $config)
-                        <div style="background: {{ $config['bg'] }}; padding: 1.25rem; border-radius: 8px; text-align: center; border: 1px solid {{ $config['color'] }}22;">
-                            <div style="font-size: 1.5rem; font-weight: 900; color: {{ $config['color'] }}">{{ $statusBreakdown[$key] ?? 0 }}</div>
-                            <div style="font-size: 0.75rem; font-weight: 800; color: {{ $config['color'] }}; text-transform: uppercase;">{{ $config['label'] }}</div>
-                        </div>
-                    @endforeach
                 </div>
             </div>
 
