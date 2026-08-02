@@ -367,9 +367,13 @@
 
     .table-history td {
         padding: 1.25rem 1rem;
-        border-bottom: 1px solid #f9f9f9;
+        border-bottom: 1px solid #e5e5e5;
+        border-right: 1px solid #eee;
         vertical-align: middle;
     }
+    .table-history td:last-child,
+    .table-history th:last-child { border-right: none; }
+    .table-history th { border-right: 1px solid #e0e0e0; }
 
     .badge-status {
         padding: 3px 10px;
