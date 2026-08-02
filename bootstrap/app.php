@@ -18,6 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
             '/webhook/stripe',
         ]);
 
+        // Suivi de présence : marque l'utilisateur « en ligne » à chaque requête web
+        $middleware->web(append: [
+            \App\Http\Middleware\TrackUserActivity::class,
+        ]);
+
         // Enregistrer les middlewares de Spatie Laravel Permission
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,

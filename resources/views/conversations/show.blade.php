@@ -666,9 +666,9 @@
                         </div>
                         <div style="display: flex; flex-direction: column; justify-content: center;">
                             @php
-                                // Par défaut, on simule que l'utilisateur est en ligne s'il a été actif très récemment.
-                                // À adapter avec votre logique (ex: Cache::has('user-online-' . $otherUser->id))
-                                $isOnline = $otherUser->updated_at && $otherUser->updated_at->diffInMinutes(now()) < 30;
+                                // Présence réelle : le middleware TrackUserActivity met à jour
+                                // une clé de cache à chaque requête de l'utilisateur.
+                                $isOnline = \Illuminate\Support\Facades\Cache::has('user-online-' . $otherUser->id);
                             @endphp
                             <div style="font-size: 1.05rem; font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 6px; line-height: 1.2;">
                                 {{ $otherUser->hasRole('admin') ? 'Karnou' : $otherUser->name }} 
