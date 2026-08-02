@@ -1046,9 +1046,6 @@
                     Confirmer la commande
                 </button>
                 </form> {{-- Entire form ends here, includes all hidden fields --}}
-                <div style="text-align: center; color: #999; font-size: 11px; margin-top: 8px;">
-                    (Complétez les étapes pour continuer)
-                </div>
 
             </div>
         </div>
