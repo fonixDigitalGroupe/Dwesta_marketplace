@@ -283,7 +283,7 @@
 
     .btn-create-ad-outline {
         background-color: transparent;
-        color: #004aad;
+        color: #f68b1e;
         padding: 0.7rem 0;
         font-weight: 700;
         font-size: 0.95rem;
@@ -296,7 +296,7 @@
     }
     
     .btn-create-ad-outline:hover {
-        color: #003a8a;
+        color: #e07b10;
         text-decoration: underline;
     }
 </style>
@@ -318,9 +318,17 @@
 
             <div class="dashboard-grid-container">
                 @if(session('success'))
-                    <div class="alert alert-success" style="background:#d1e7dd; color:#0f5132; border-color:#badbcc; padding:1rem; border-radius:8px; margin-bottom:1.5rem;">
+                    <div id="flash-success" class="alert alert-success" style="background:#d1e7dd; color:#0f5132; border-color:#badbcc; padding:1rem; border-radius:8px; margin-bottom:1.5rem; transition: opacity 0.5s ease;">
                         {{ session('success') }}
                     </div>
+                    <script>
+                        setTimeout(function () {
+                            var el = document.getElementById('flash-success');
+                            if (!el) return;
+                            el.style.opacity = '0';
+                            setTimeout(function () { el.remove(); }, 500);
+                        }, 4000);
+                    </script>
                 @endif
 
                 @if($annonces->count() > 0)
