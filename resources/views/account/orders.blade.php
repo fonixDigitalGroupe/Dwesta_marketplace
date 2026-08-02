@@ -135,6 +135,32 @@
         font-weight: 600;
         color: #313133;
     }
+    .order-review-btn {
+        align-self: flex-start;
+        margin-top: 0.6rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #f68b1e;
+        color: #fff;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 7px 14px;
+        border-radius: 4px;
+        transition: background 0.2s;
+    }
+    .order-review-btn:hover { background: #e07b10; }
+    .order-review-done {
+        align-self: flex-start;
+        margin-top: 0.6rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #16a34a;
+    }
 </style>
 @endpush
 
@@ -204,6 +230,21 @@
                                 <span class="order-badge" style="background: {{ $badge[1] }};">{{ $badge[0] }}</span>
                                 <span class="order-date">Le {{ $order->created_at->format('d-m-Y') }}</span>
                             </div>
+
+                            @if($order->statut === 'livre' && $firstItem && $firstItem->annonce)
+                                @php
+                                    $dejaAvis = \App\Models\Avis::where('annonce_id', $firstItem->annonce->id)
+                                        ->where('user_id', auth()->id())
+                                        ->exists();
+                                @endphp
+                                @if($dejaAvis)
+                                    <span class="order-review-done"><i class="fa-solid fa-check"></i> Avis déjà laissé</span>
+                                @else
+                                    <a href="{{ route('avis.create', $firstItem->annonce) }}" class="order-review-btn">
+                                        <i class="fa-regular fa-star"></i> Laisser un avis
+                                    </a>
+                                @endif
+                            @endif
                         </div>
                     </div>
                 @endforeach
