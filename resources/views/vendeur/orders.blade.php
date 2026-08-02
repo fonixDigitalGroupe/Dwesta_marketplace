@@ -31,6 +31,23 @@
         flex-direction: column;
         gap: 0.25rem;
     }
+    .order-card-new {
+        border-color: #f68b1e;
+        background: #fff8f1;
+    }
+    .order-new-badge {
+        display: inline-block;
+        margin-left: 8px;
+        background: #f68b1e;
+        color: #fff;
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        padding: 2px 7px;
+        border-radius: 3px;
+        vertical-align: middle;
+    }
     
     .order-card-header {
         display: flex;
@@ -153,9 +170,14 @@
 
         <div class="orders-list">
             @forelse($orders as $order)
-                <div class="order-card">
+                <div class="order-card {{ is_null($order->vendeur_vue_le) ? 'order-card-new' : '' }}">
                     <div class="order-card-header">
-                        <span>{{ $order->created_at->translatedFormat('d F') }}</span>
+                        <span>
+                            {{ $order->created_at->translatedFormat('d F') }}
+                            @if(is_null($order->vendeur_vue_le))
+                                <span class="order-new-badge">Nouveau</span>
+                            @endif
+                        </span>
                         <a href="{{ route('vendeur.orders.show', $order->id) }}" class="btn-detail">Détails</a>
                     </div>
 

@@ -28,6 +28,11 @@ class Order extends Model
         'qr_code_token',
         'qr_code_path',
         'notes_vendeur',
+        'vendeur_vue_le',
+    ];
+
+    protected $casts = [
+        'vendeur_vue_le' => 'datetime',
     ];
 
     // Constantes de statut Logistique

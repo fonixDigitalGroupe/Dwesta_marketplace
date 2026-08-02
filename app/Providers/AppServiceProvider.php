@@ -39,6 +39,22 @@ class AppServiceProvider extends ServiceProvider
             return $user->hasRole('admin') ? true : null;
         });
 
+        // Compteur de nouvelles commandes (non encore ouvertes) pour la sidebar vendeur
+        View::composer('partials.profile-sidebar', function ($view) {
+            $nouvellesCommandesCount = 0;
+            $user = auth()->user();
+            if ($user && $user->estVendeur() && Schema::hasColumn('orders', 'vendeur_vue_le')) {
+                $nouvellesCommandesCount = \App\Models\Order::where('vendeur_id', $user->vendeur->id)
+                    ->whereNull('vendeur_vue_le')
+                    ->where(function ($w) {
+                        $w->where('statut', '!=', 'en_attente')
+                            ->orWhere('gestion_paiement', '!=', 'commande');
+                    })
+                    ->count();
+            }
+            $view->with('nouvellesCommandesCount', $nouvellesCommandesCount);
+        });
+
         View::composer('layouts.admin', function ($view) {
             $pendingVendorsCount = Vendeur::where('statut_verification', 'en_attente')->count();
             $pendingLivreursCount = \App\Models\Livreur::where('statut_verification', 'en_attente')->count();

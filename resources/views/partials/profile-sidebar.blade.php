@@ -360,6 +360,22 @@
         .mobile-account-greeting {
             display: none;
         }
+    .sidebar-order-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 5px;
+        margin-left: 6px;
+        background: #f68b1e;
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        border-radius: 9px;
+        line-height: 1;
+        vertical-align: middle;
+    }
     </style>
 @endpush
 
@@ -472,7 +488,7 @@
                         <i class="fa-solid fa-chevron-right chevron"></i>
                     </a>
                     <a href="{{ route('vendeur.orders') }}" class="rakuten-item" {{ $isRejected ? 'style=color:#ccc;pointer-events:none' : '' }}>
-                        <span>Mes commandes</span>
+                        <span>Mes commandes @if(($nouvellesCommandesCount ?? 0) > 0)<span class="sidebar-order-badge">{{ $nouvellesCommandesCount > 9 ? '9+' : $nouvellesCommandesCount }}</span>@endif</span>
                         <i class="fa-solid fa-chevron-right chevron"></i>
                     </a>
                 @endif

@@ -500,6 +500,11 @@ class VendeurController extends Controller
             abort(403, 'Accès non autorisé.');
         }
 
+        // Marquer la commande comme vue par le vendeur (première ouverture)
+        if (is_null($order->vendeur_vue_le)) {
+            $order->forceFill(['vendeur_vue_le' => now()])->save();
+        }
+
         $order->load(['buyer', 'items.annonce.photos']);
 
         return view('vendeur.order-show', compact('order'));
