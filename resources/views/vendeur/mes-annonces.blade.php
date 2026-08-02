@@ -16,7 +16,14 @@
         grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
         gap: 1.5rem;
         margin-bottom: 3rem;
+        max-height: 640px;
+        overflow-y: auto;
+        padding-right: 6px;
     }
+    /* Barre de défilement discrète (comme Mes achats) */
+    .listings-grid::-webkit-scrollbar { width: 8px; }
+    .listings-grid::-webkit-scrollbar-thumb { background: #d1d1d1; border-radius: 4px; }
+    .listings-grid::-webkit-scrollbar-track { background: transparent; }
 
     /* Card Styling */
     .listing-card {
