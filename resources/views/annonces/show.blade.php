@@ -1009,7 +1009,7 @@
 
     <!-- Best Offers Section -->
     @if(isset($recommandations['meilleures_offres_pro']) && $recommandations['meilleures_offres_pro']->count() > 0)
-    <div class="rk-sponsor-section" style="background: #fff; padding-bottom: 2rem; padding-top: 4rem; margin: 0 clamp(16px, 4vw, 40px);">
+    <div class="rk-sponsor-section" style="background: #fff; padding: 4rem 1rem 2rem 1rem; max-width: 1280px; margin: 0 auto;">
         <div class="rk-section-header" style="margin-top: 0; background: #fff;">
             <span class="rk-sponsor-label">Sponsorisée</span>
             <h2 class="rk-offers-title" style="margin-top: 0; font-size: 1rem;">Meilleures offres Pros</h2>
@@ -1024,12 +1024,12 @@
         <button class="carousel-arrow-btn next" onclick="scrollCarousel('carousel-pro', 1)" style="right: 0; border-radius: 50% 0 0 50%; border-right: none;"><i class="fas fa-chevron-right"></i></button>
     </div>
     </div>
-    <div style="max-width: 1280px; margin: 0 auto; border-top: 1px solid #e5e5e5;"></div>
+    <div style="max-width: 1280px; margin: 0 auto; padding: 0 1rem;"><div style="border-top: 1px solid #e5e5e5;"></div></div>
     @endif
 
     <!-- Clients Also Viewed Section -->
     @if(isset($recommandations['aussi_vus']) && $recommandations['aussi_vus']->count() > 0)
-    <div style="background: #fff; padding-bottom: 3rem; padding-top: 2rem;">
+    <div style="background: #fff; padding: 2rem 1rem 3rem 1rem; max-width: 1280px; margin: 0 auto;">
         <div class="rk-section-header" style="background: #fff; margin-top: 0;">
             <h2 class="rk-offers-title" style="font-size: 1rem;">Articles également vus</h2>
         </div>
