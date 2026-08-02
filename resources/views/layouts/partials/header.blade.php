@@ -63,7 +63,7 @@
                                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
                                 @if($unreadCount > 0)
-                                    <span class="hdr-badge" style="position: absolute; top: -5px; left: 10px; background: #e11d48; color: white; border-radius: 50%; width: 17px; height: 17px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 10;">
+                                    <span class="hdr-badge" style="position: absolute; top: -5px; left: 10px; background: #f68b1e; color: white; border-radius: 50%; width: 17px; height: 17px; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; z-index: 10;">
                                         {{ $unreadCount }}
                                     </span>
                                 @endif
