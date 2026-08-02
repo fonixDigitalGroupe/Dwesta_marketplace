@@ -542,8 +542,8 @@
     }
     .rk-offers-title {
         font-size: 1.3rem;
-        font-weight: 800;
-        color: #1a1a1a;
+        font-weight: 600;
+        color: #444;
         margin: 0;
     }
 
