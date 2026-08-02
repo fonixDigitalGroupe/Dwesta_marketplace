@@ -174,7 +174,7 @@
 
     /* Tier 2: Main Links */
     .footer-main {
-        background: transparent;
+        background: #26262b;
         padding: 5rem 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
