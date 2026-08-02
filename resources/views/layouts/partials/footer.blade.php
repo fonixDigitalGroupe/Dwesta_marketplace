@@ -457,8 +457,8 @@
             flex-direction: column;
             text-align: center;
             padding: 1.5rem;
-            background: #f9f9f9;
-            border-radius: 12px;
+            background: transparent;
+            border-radius: 0;
         }
 
         .footer-links-grid {
