@@ -503,6 +503,11 @@
             cursor: not-allowed;
         }
 
+        .btn-confirm-delivery:disabled {
+            background: #ccc !important;
+            cursor: not-allowed;
+        }
+
         .voucher-text {
             font-size: 12px;
             color: #666;
@@ -1373,7 +1378,20 @@
             document.getElementById('shipping-fee').innerText = currentRes.total.toLocaleString() + ' FCFA';
 
             updateTotal(currentRes.total);
+            updateDeliveryConfirmState();
             checkValidity();
+        }
+
+        // On ne peut confirmer la livraison en point relais que si un point
+        // relais a été choisi.
+        function updateDeliveryConfirmState() {
+            const btn = document.getElementById('btn-confirm-delivery');
+            if (!btn) return;
+            const isPR = document.getElementById('radio-pr').checked;
+            const prId = document.getElementById('input_point_relais_id').value;
+            const blocked = isPR && !prId;
+            btn.disabled = blocked;
+            btn.style.pointerEvents = blocked ? 'none' : 'auto';
         }
 
         function updateTotal(fee) {
