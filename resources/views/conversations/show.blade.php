@@ -599,7 +599,7 @@
 @endpush
 
 @section('content')
-<div class="dashboard-container" style="margin-top: 2rem;">
+<div class="dashboard-container" style="margin-top: 0.75rem;">
     @if(request('layout') != 'mini')
         @include('partials.profile-sidebar')
     @endif
