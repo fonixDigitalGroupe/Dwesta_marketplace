@@ -2093,11 +2093,17 @@
 
                 // Image Handling
                 async function handleFiles(files) {
-                    if (uploadedImages.length + files.length > 8) {
-                        alert('Vous ne pouvez pas ajouter plus de 8 photos.');
+                    const remaining = 8 - uploadedImages.length;
+                    if (remaining <= 0) {
+                        alert('Vous avez déjà atteint la limite de 8 photos.');
                         return;
                     }
-                    for (const file of Array.from(files)) {
+                    let list = Array.from(files);
+                    if (list.length > remaining) {
+                        alert('Vous pouvez ajouter encore ' + remaining + ' photo(s). Seules les ' + remaining + ' premières seront prises en compte.');
+                        list = list.slice(0, remaining);
+                    }
+                    for (const file of list) {
                         if (!file.type.startsWith('image/')) continue;
 
                         let toUpload = file;
