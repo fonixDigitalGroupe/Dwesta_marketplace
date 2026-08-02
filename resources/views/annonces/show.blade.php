@@ -934,13 +934,13 @@
         </div>
     </div>
 
-    <!-- Reviews Section (E-commerce uniquement) -->
-    @if($estEcommerce && $annonce->avisApprouves->count() > 0)
-    <div id="avis" class="rk-section-header" style="margin-top: 5rem; border-top: 1px solid #eee; padding-top: 3rem;">
-        <h2 class="rk-offers-title">Avis clients</h2>
+    <!-- Reviews Section -->
+    <div id="avis" class="rk-section-header" style="max-width: 1248px; margin: 2rem auto 0.75rem auto; padding: 0 1rem; background: transparent;">
+        <h2 class="rk-offers-title" style="margin-top: 0; font-size: 1rem;">Avis et commentaires</h2>
     </div>
 
-    <div class="rk-main-grid" style="margin-top: 1rem; grid-template-columns: 300px 1fr; grid-template-areas: none; gap: 4rem;">
+    @if($annonce->avisApprouves->count() > 0)
+    <div class="rk-main-grid" style="margin-top: 1rem; grid-template-columns: 300px 1fr; grid-template-areas: none; gap: 4rem; max-width: 1248px;">
         <!-- Left: Rating Summary (Style Sidebar Page Pro) -->
         <div class="rating-summary-col">
             <div style="background: #f8f9fa; padding: 2rem; border-radius: 12px; position: sticky; top: 100px;">
@@ -1004,6 +1004,12 @@
                 @endforeach
             </div>
         </div>
+    </div>
+    @else
+    <div style="max-width: 1248px; margin: 0 auto; padding: 2.5rem 1rem; background: #fff; border-radius: 8px; text-align: center; color: #888;">
+        <i class="far fa-comment-dots" style="font-size: 2rem; color: #ddd; display: block; margin-bottom: 0.75rem;"></i>
+        <div style="font-size: 0.95rem;">Aucun commentaire pour le moment.</div>
+        <div style="font-size: 0.85rem; color: #aaa; margin-top: 0.25rem;">Soyez le premier à laisser un avis sur cette annonce.</div>
     </div>
     @endif
 
