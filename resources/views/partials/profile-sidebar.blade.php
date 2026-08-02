@@ -633,12 +633,6 @@
         <span style="font-size: 0.95rem; color: #555;">Localisation & Préférences</span>
     </a>
 
-    <a href="{{ route('vendeur.wallet.index') }}"
-        class="sidebar-item {{ request()->routeIs('vendeur.wallet.*') ? 'active' : '' }}"
-        style="padding-left: 16px;">
-        <span style="font-size: 0.95rem; color: #555;">Mon Porte-Monnaie</span>
-    </a>
-
     <!-- Vendeur Section -->
     <div class="sidebar-divider"></div>
 
@@ -688,6 +682,13 @@
         class="sidebar-item {{ request()->routeIs('account.credits.*') ? 'active' : '' }}">
         <i class="fa-solid fa-coins"></i>
         <span>Mes crédits</span>
+    </a>
+
+    <!-- Mon Porte-Monnaie (sous Mes crédits) -->
+    <a href="{{ route('vendeur.wallet.index') }}"
+        class="sidebar-item {{ request()->routeIs('vendeur.wallet.*') ? 'active' : '' }}">
+        <i class="fa-solid fa-wallet"></i>
+        <span>Mon Porte-Monnaie</span>
     </a>
     @else
         <div class="inactive-link" title="Réservé aux vendeurs">
