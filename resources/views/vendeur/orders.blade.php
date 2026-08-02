@@ -33,7 +33,7 @@
     }
     .order-card-new {
         border-color: #f68b1e;
-        background: #fff8f1;
+        background: #fff;
     }
     .order-new-badge {
         display: inline-block;
