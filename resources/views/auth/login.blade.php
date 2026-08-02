@@ -530,7 +530,7 @@
                         Créez votre compte Karnou pour profiter de toutes nos fonctionnalités.
                     </p>
 
-                    <a href="{{ route('register') }}" style="text-decoration: none; display: block; text-align: center;">
+                    <a href="{{ route('register') }}" style="text-decoration: none;">
                         <button type="button" class="btn-primary" style="margin-top: 0;">Créer un compte Karnou</button>
                     </a>
                 </div>
