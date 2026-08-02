@@ -333,8 +333,8 @@
 
     @if($flattenedItems->count() > 0)
         <!-- Main Content -->
-        <div>
-            <div class="cart-main">
+        <div style="display: flex; flex-direction: column;">
+            <div class="cart-main" style="flex: 1;">
                 <div class="cart-header">
                     Panier ({{ $totalItems }})
                 </div>
