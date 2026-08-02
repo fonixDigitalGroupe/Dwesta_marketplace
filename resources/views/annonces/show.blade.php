@@ -1009,11 +1009,11 @@
 
     <!-- Best Offers Section -->
     @if(isset($recommandations['meilleures_offres_pro']) && $recommandations['meilleures_offres_pro']->count() > 0)
-    <div class="rk-sponsor-section" style="background: #fff; padding: 3rem 1rem 2rem 1rem; max-width: 1248px; margin: 1.5rem auto 0 auto; border-radius: 8px;">
-        <div class="rk-section-header" style="margin-top: 0; background: #fff;">
-            <span class="rk-sponsor-label">Sponsorisée</span>
-            <h2 class="rk-offers-title" style="margin-top: 0; font-size: 1rem;">Meilleures offres Pros</h2>
-        </div>
+    <div class="rk-section-header" style="max-width: 1248px; margin: 2rem auto 0.75rem auto; padding: 0 1rem; background: transparent;">
+        <span class="rk-sponsor-label">Sponsorisée</span>
+        <h2 class="rk-offers-title" style="margin-top: 0; font-size: 1rem;">Meilleures offres Pros</h2>
+    </div>
+    <div class="rk-sponsor-section" style="background: #fff; padding: 1.5rem 1rem 2rem 1rem; max-width: 1248px; margin: 0 auto; border-radius: 8px;">
         <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px;">
         <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-pro', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
         <div class="n1-top-grid" id="carousel-pro" style="display: flex; flex-wrap: nowrap; overflow-x: hidden; scroll-behavior: smooth; padding: 20px 0; gap: 15px;">
