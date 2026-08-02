@@ -407,8 +407,6 @@
             <strong>Identification</strong>
         </nav>
 
-        <h1 class="page-title">Identification</h1>
-
         <div class="auth-layout">
             <div class="auth-grid">
                 <!-- ── Left: Login Form ── -->
@@ -531,7 +529,7 @@
                     </p>
 
                     <a href="{{ route('register') }}" style="text-decoration: none;">
-                        <button type="button" class="btn-primary" style="margin-top: 0;">Créer un compte Karnou</button>
+                        <button type="button" class="btn-primary" style="margin-top: 0;">Créer un compte</button>
                     </a>
                 </div>
             </div>
