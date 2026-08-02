@@ -419,18 +419,18 @@
     .n1-top-grid {
         display: flex;
         flex-wrap: nowrap;
-        gap: 15px;
+        gap: 12px;
         overflow-x: hidden;
         scroll-behavior: smooth;
-        padding: 20px 5px;
+        padding: 10px 5px;
     }
 
     .premium-card-flat {
-        flex: 0 0 220px;
+        flex: 0 0 180px;
         background: #fff;
         border: 1px solid #eee;
         border-radius: 12px;
-        padding: 1.1rem;
+        padding: 0.75rem;
         text-decoration: none;
         color: inherit;
         display: flex;
@@ -445,11 +445,11 @@
 
     .card-media-flat {
         width: 100%;
-        height: 160px;
+        height: 115px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1rem;
+        margin-bottom: 0.6rem;
     }
     
     .card-media-flat img {
@@ -465,11 +465,11 @@
     }
     
     .card-title-flat {
-        font-size: 0.85rem;
-        line-height: 1.4;
+        font-size: 0.8rem;
+        line-height: 1.35;
         color: #1a1a1a;
-        margin-bottom: 0.8rem;
-        height: 2.4rem;
+        margin-bottom: 0.5rem;
+        height: 2.1rem;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -1022,7 +1022,7 @@
     <div class="rk-sponsor-section" style="background: #fff; padding: 1.5rem 1rem 2rem 1rem; max-width: 1248px; margin: 0 auto; border-radius: 8px;">
         <div class="rakuten-product-carousel-container" style="max-width: 1280px; margin: 0 auto; background: #fff; position: relative; padding: 0 40px;">
         <button class="carousel-arrow-btn prev" onclick="scrollCarousel('carousel-pro', -1)" style="left: 0; border-radius: 0 50% 50% 0; border-left: none;"><i class="fas fa-chevron-left"></i></button>
-        <div class="n1-top-grid" id="carousel-pro" style="display: flex; flex-wrap: nowrap; overflow-x: hidden; scroll-behavior: smooth; padding: 20px 0; gap: 15px;">
+        <div class="n1-top-grid" id="carousel-pro" style="display: flex; flex-wrap: nowrap; overflow-x: hidden; scroll-behavior: smooth; padding: 10px 0; gap: 12px;">
             @foreach($recommandations['meilleures_offres_pro'] as $rec)
                 @include('partials.product-card-premium', ['annonce' => $rec])
             @endforeach
