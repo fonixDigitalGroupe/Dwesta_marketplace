@@ -93,13 +93,38 @@
 
     /* Custom checkbox */
     .abn-check {
+        appearance: none;
+        -webkit-appearance: none;
         width: 22px;
         height: 22px;
         flex-shrink: 0;
         margin-top: 2px;
-        accent-color: #f68b1e;
         cursor: pointer;
+        border: 2px solid #ccc;
+        border-radius: 50%;
+        background: #fff;
+        position: relative;
     }
+    .abn-check:checked {
+        border-color: #f68b1e;
+    }
+    .abn-check:checked::after {
+        content: '';
+        position: absolute;
+        top: 3px; left: 3px; right: 3px; bottom: 3px;
+        border-radius: 50%;
+        background: #f68b1e;
+    }
+
+    /* Barre de défilement verticale de la liste des forfaits */
+    .abn-plans-scroll {
+        max-height: 560px;
+        overflow-y: auto;
+        padding-right: 6px;
+    }
+    .abn-plans-scroll::-webkit-scrollbar { width: 8px; }
+    .abn-plans-scroll::-webkit-scrollbar-thumb { background: #d1d1d1; border-radius: 4px; }
+    .abn-plans-scroll::-webkit-scrollbar-track { background: transparent; }
 
     .abn-plan-info {
         flex: 1;
@@ -315,6 +340,7 @@
                         ];
                     @endphp
 
+                    <div class="abn-plans-scroll">
                     @foreach($familleOrder as $fam)
                         @php $plansFam = $grouped->get($fam); @endphp
                         @if($plansFam && $plansFam->count())
@@ -405,6 +431,7 @@
                         </div>
                         @endif
                     @endforeach
+                    </div>
 
                     {{-- Barre de validation globale --}}
                     <div class="checkout-bar" id="checkout-bar" style="display: none; border: 1px solid #d5d9d9; border-radius: 6px; margin-bottom: 1.25rem;">
