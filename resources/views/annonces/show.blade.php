@@ -944,10 +944,10 @@
     <div class="rk-main-grid" style="margin: 0; grid-template-columns: 300px 1fr; grid-template-areas: none; gap: 4rem; max-width: 100%; padding: 0;">
         <!-- Left: Rating Summary (Style Sidebar Page Pro) -->
         <div class="rating-summary-col">
-            <div style="background: #f8f9fa; padding: 2rem; border-radius: 12px; position: sticky; top: 100px;">
-                <div style="text-align: center; margin-bottom: 2rem;">
-                    <div style="font-size: 3rem; font-weight: 800; color: #1a1a1a; line-height: 1;">{{ number_format($annonce->note_moyenne, 1) }}</div>
-                    <div class="rk-stars" style="font-size: 1.2rem; margin: 0.5rem 0;">
+            <div style="background: #f8f9fa; padding: 1.25rem; border-radius: 12px; position: sticky; top: 100px;">
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <div style="font-size: 2rem; font-weight: 800; color: #1a1a1a; line-height: 1;">{{ number_format($annonce->note_moyenne, 1) }}</div>
+                    <div class="rk-stars" style="font-size: 1rem; margin: 0.35rem 0;">
                         @for($i=1; $i<=5; $i++)
                             <i class="fas fa-star" style="{{ $i <= $annonce->note_moyenne ? 'color: #ffbc00;' : 'color: #ddd;' }}"></i>
                         @endfor
@@ -967,7 +967,7 @@
                         $total = max(1, $annonce->nombre_avis);
                     @endphp
                     @foreach([5, 4, 3, 2, 1] as $seuil)
-                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.85rem;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 5px; font-size: 0.8rem;">
                             <span style="width: 45px; color: #555; white-space: nowrap;">{{ $seuil }} <i class="fas fa-star" style="color: #ffbc00; font-size: 0.7rem;"></i></span>
                             <div style="flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden;">
                                 <div style="width: {{ ($stats[$seuil] / $total) * 100 }}%; height: 100%; background: #ffbc00;"></div>
