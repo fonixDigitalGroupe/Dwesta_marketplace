@@ -232,6 +232,7 @@
         border-radius: 4px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         padding: 30px 20px 40px;
+        flex: 1; /* Épouse la hauteur de la carte Panier */
     }
 
     .sidebar-header {
