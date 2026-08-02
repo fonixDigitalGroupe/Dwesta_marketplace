@@ -119,11 +119,11 @@ class AvisController extends Controller
                 'note' => $validated['note'],
                 'commentaire' => $validated['commentaire'],
                 'photos' => !empty($photos) ? $photos : null,
-                'statut' => Avis::STATUT_APPROUVE, // Publié directement
+                'statut' => Avis::STATUT_EN_ATTENTE, // En attente de modération
             ]);
 
             return redirect()->route('annonces.show', $annonce)
-                ->with('success', 'Votre avis a été publié avec succès.');
+                ->with('success', 'Votre avis a bien été envoyé. Il sera publié après validation par notre équipe.');
         } catch (\Exception $e) {
             Log::error('Erreur lors de la création de l\'avis: ' . $e->getMessage());
             return back()->withInput()
