@@ -1009,7 +1009,7 @@
 
     <!-- Best Offers Section -->
     @if(isset($recommandations['meilleures_offres_pro']) && $recommandations['meilleures_offres_pro']->count() > 0)
-    <div class="rk-sponsor-section" style="background: #fff; padding: 3rem 1rem 2rem 1rem; max-width: 1280px; margin: 1.5rem auto 0 auto; border-radius: 8px;">
+    <div class="rk-sponsor-section" style="background: #fff; padding: 3rem 1rem 2rem 1rem; max-width: 1248px; margin: 1.5rem auto 0 auto; border-radius: 8px;">
         <div class="rk-section-header" style="margin-top: 0; background: #fff;">
             <span class="rk-sponsor-label">Sponsorisée</span>
             <h2 class="rk-offers-title" style="margin-top: 0; font-size: 1rem;">Meilleures offres Pros</h2>
@@ -1028,7 +1028,7 @@
 
     <!-- Clients Also Viewed Section -->
     @if(isset($recommandations['aussi_vus']) && $recommandations['aussi_vus']->count() > 0)
-    <div style="background: #fff; padding: 2rem 1rem 3rem 1rem; max-width: 1280px; margin: 1.5rem auto 0 auto; border-radius: 8px;">
+    <div style="background: #fff; padding: 2rem 1rem 3rem 1rem; max-width: 1248px; margin: 1.5rem auto 0 auto; border-radius: 8px;">
         <div class="rk-section-header" style="background: #fff; margin-top: 0;">
             <h2 class="rk-offers-title" style="font-size: 1rem;">Articles également vus</h2>
         </div>
