@@ -60,19 +60,21 @@ class HomeController extends Controller
             ->get();
 
         // 4. Nos top produits du moment : Filtrés par état
-        $topNeufs = Annonce::publiees()
+        // Basé sur le statut "publiée" (comme la section top-consultés) pour
+        // disposer de tout le catalogue, tout en respectant chaque état.
+        $topNeufs = Annonce::where('statut', Annonce::STATUT_PUBLIEE)
             ->whereHas('produit', function($q) { $q->where('etat', 'neuf'); })
             ->latest()
             ->take(10)
             ->get();
 
-        $topOccasions = Annonce::publiees()
+        $topOccasions = Annonce::where('statut', Annonce::STATUT_PUBLIEE)
             ->whereHas('produit', function($q) { $q->where('etat', 'occasion'); })
             ->latest()
             ->take(10)
             ->get();
 
-        $topReconditionnes = Annonce::publiees()
+        $topReconditionnes = Annonce::where('statut', Annonce::STATUT_PUBLIEE)
             ->whereHas('produit', function($q) { $q->where('etat', 'reconditionne'); })
             ->latest()
             ->take(10)
