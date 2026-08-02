@@ -460,7 +460,7 @@
     @auth
         @if(isset($favoris) && $favoris->count() > 0)
         <section class="saved-products">
-            <h2 class="saved-products-title">Produits enregistrés</h2>
+            <h2 class="saved-products-title">Mes favoris</h2>
             <div class="saved-products-grid">
                 @foreach($favoris as $fav)
                     <a href="{{ route('annonces.show', $fav->slug) }}" class="saved-card">
@@ -483,6 +483,7 @@
 
 <style>
     .saved-products {
+        grid-column: 1 / -1;
         margin-top: 2.5rem;
         background: #fff;
         border-radius: 8px;
