@@ -137,7 +137,7 @@
         text-decoration: none;
         color: #313133;
         font-family: 'Roboto', Arial, Helvetica, sans-serif;
-        font-size: 0.875rem;
+        font-size: 0.95rem;
         font-weight: 400;
         position: relative;
     }
@@ -154,8 +154,8 @@
     }
 
     .header-link svg {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
         flex-shrink: 0;
     }
 
@@ -184,7 +184,7 @@
         text-decoration: none;
         color: #313133;
         font-family: 'Roboto', Arial, Helvetica, sans-serif;
-        font-size: 0.875rem;
+        font-size: 0.95rem;
         font-weight: 400;
         cursor: pointer;
         background: white;
