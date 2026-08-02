@@ -111,10 +111,10 @@
 
 <style>
     .rk-footer {
-        background: #45454d;
+        background: #313133;
         font-family: 'Outfit', sans-serif;
         color: #d8d8dd;
-        border-top: 1px solid #3a3a42;
+        border-top: 1px solid #2a2a2c;
     }
 
     .footer-container {
@@ -174,7 +174,7 @@
 
     /* Tier 2: Main Links */
     .footer-main {
-        background: #26262b;
+        background: #282828;
         padding: 5rem 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
