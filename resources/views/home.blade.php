@@ -1355,7 +1355,7 @@
     .brand-logo-circle {
         width: 60px;
         height: 60px;
-        border-radius: 50%;
+        border-radius: 8px;
         border: none;
         overflow: hidden;
         display: flex;
@@ -1368,8 +1368,7 @@
         display: block;
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        transform: scale(1.2); /* Zoom léger pour supprimer les bordures de l'image source */
+        object-fit: contain;
         background: transparent;
     }
 
