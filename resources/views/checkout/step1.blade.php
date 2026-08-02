@@ -4,6 +4,9 @@
 
 @push('styles')
     <style>
+        /* Pas de footer sur la page de checkout */
+        .rk-footer { display: none !important; }
+
         :root {
             --jumia-orange: #f68b1e;
             --jumia-blue: #004aad;
