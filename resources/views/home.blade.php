@@ -1815,8 +1815,8 @@
         font-size: 1.15rem;
         font-weight: 800;
         color: #000;
-        margin-bottom: 2rem;
-        min-height: 3rem; /* Aligne les titres */
+        margin-bottom: 1rem;
+        min-height: auto;
     }
     .best-category-list {
         list-style: none;
