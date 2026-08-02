@@ -271,7 +271,7 @@
         }
 
         .btn-primary {
-            background-color: #004aad;
+            background-color: #f68b1e;
             color: #fff;
             border: none;
             padding: 0.5rem 2.5rem;
@@ -289,9 +289,9 @@
         }
 
         .btn-primary:hover {
-            background-color: #003a8a;
+            background-color: #e07b10;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 74, 173, 0.15);
+            box-shadow: 0 4px 12px rgba(246, 139, 30, 0.2);
         }
 
         /* Right column — new account */
