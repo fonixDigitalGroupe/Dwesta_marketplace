@@ -85,7 +85,7 @@
         }
 
         .legal-warning-inner {
-            border: 1px solid #e5e5e5;
+            border: 2px solid #222;
             border-radius: 8px;
             padding: 12px 20px;
             display: flex;
