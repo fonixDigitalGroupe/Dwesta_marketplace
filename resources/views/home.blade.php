@@ -1758,13 +1758,13 @@
     }
     .legal-warning-text {
         flex: 1;
-        font-family: 'Outfit', sans-serif;
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
         font-size: 0.85rem;
         line-height: 1.2;
     }
     .legal-warning-text strong {
         font-size: 1rem;
-        font-weight: 800;
+        font-weight: 700;
     }
     .legal-warning-text span {
         font-size: 0.8rem;
