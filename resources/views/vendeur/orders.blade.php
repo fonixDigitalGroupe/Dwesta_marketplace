@@ -32,7 +32,7 @@
         gap: 0.25rem;
     }
     .order-card-new {
-        border-color: #f68b1e;
+        border-color: #f0f0f2;
         background: #fff;
     }
     .order-new-badge {

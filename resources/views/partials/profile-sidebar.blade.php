@@ -668,6 +668,9 @@
                 class="sidebar-item {{ request()->routeIs('vendeur.orders*') ? 'active' : '' }}">
                 <i class="fa-solid fa-box-open"></i>
                 <span>Mes commandes</span>
+                @if(($nouvellesCommandesCount ?? 0) > 0)
+                    <span class="sidebar-order-badge">{{ $nouvellesCommandesCount > 9 ? '9+' : $nouvellesCommandesCount }}</span>
+                @endif
             </a>
         @else
             <div class="inactive-link" title="Compte rejeté">
