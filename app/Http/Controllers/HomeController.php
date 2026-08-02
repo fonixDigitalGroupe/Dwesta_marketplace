@@ -43,9 +43,9 @@ class HomeController extends Controller
         });
 
         // 2. Top des produits les plus consultés
-        // On privilégie les plus vus mais on inclut TOUT le catalogue publié
-        // (mélange aléatoire) pour que chaque produit ait une chance d'apparaître.
-        $topConsultes = Annonce::publiees()
+        // On se base sur le statut "publiée" (sans exiger publiee_le / non-expiré)
+        // et on mélange tout le catalogue pour que chaque produit ait sa chance.
+        $topConsultes = Annonce::where('statut', Annonce::STATUT_PUBLIEE)
             ->orderBy('vues', 'desc')
             ->get()
             ->shuffle() // Mélange aléatoirement sur l'ensemble du catalogue
