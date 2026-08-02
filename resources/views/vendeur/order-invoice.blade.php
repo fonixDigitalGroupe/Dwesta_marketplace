@@ -25,6 +25,18 @@
     </style>
 </head>
 <body>
+@php
+    // Affiche toujours le numéro avec un indicatif international.
+    // Si le numéro n'en a pas, on préfixe l'indicatif par défaut (+221, Sénégal).
+    $fmtTel = function ($tel) {
+        $tel = trim((string) $tel);
+        if ($tel === '' || $tel === '-') return '-';
+        if (str_starts_with($tel, '+')) return $tel;
+        if (str_starts_with($tel, '00')) return '+' . ltrim(substr($tel, 2));
+        // Retire un éventuel 0 initial local puis préfixe l'indicatif
+        return '+221 ' . ltrim($tel, '0');
+    };
+@endphp
 
     <div class="header">
         <table width="100%">
@@ -54,11 +66,11 @@
                 <strong>{{ $vendeur->identite }}</strong><br>
                 @if($vendeur->professionnel)
                     {{ $vendeur->professionnel->adresse_entreprise ?? '' }}<br>
-                    Tél : {{ $vendeur->professionnel->telephone_entreprise ?? '-' }}<br>
+                    Tél : {{ $fmtTel($vendeur->professionnel->telephone_entreprise ?? null) }}<br>
                     Email : {{ $vendeur->professionnel->email_entreprise ?? '' }}
                 @else
                     {{ $vendeur->user->email }}<br>
-                    Tél : {{ $vendeur->user->telephone ?? '-' }}
+                    Tél : {{ $fmtTel($vendeur->user->telephone ?? null) }}
                 @endif
             </div>
         </div>
@@ -67,7 +79,7 @@
                 <div class="section-title">Client / Destinataire</div>
                 <strong>{{ $order->buyer->prenom }} {{ $order->buyer->nom }}</strong><br>
                 {{ $order->adresse_livraison }}<br>
-                Tél : {{ $order->buyer->telephone ?? '-' }}<br>
+                Tél : {{ $fmtTel($order->buyer->telephone ?? null) }}<br>
                 Email : {{ $order->buyer->email }}
             </div>
         </div>
