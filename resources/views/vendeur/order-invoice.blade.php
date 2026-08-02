@@ -37,9 +37,11 @@
                 </td>
                 <td width="40%" class="qrcode">
                     @php
-                        $qrCode = base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::format('png')->size(100)->errorCorrection('H')->generate($order->reference));
+                        // SVG plutôt que PNG : le backend PNG exige l'extension imagick
+                        // (absente sur le serveur). Le SVG est généré en pur PHP.
+                        $qrCode = base64_encode(\SimpleSoftwareIO\QrCode\Facades\QrCode::format('svg')->size(100)->errorCorrection('H')->generate($order->reference));
                     @endphp
-                    <img src="data:image/png;base64,{{ $qrCode }}" alt="QR Code">
+                    <img src="data:image/svg+xml;base64,{{ $qrCode }}" alt="QR Code">
                 </td>
             </tr>
         </table>
