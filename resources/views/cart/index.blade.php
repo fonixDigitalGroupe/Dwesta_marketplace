@@ -456,7 +456,81 @@
             </a>
         </div>
     @endif
+
+    @auth
+        @if(isset($favoris) && $favoris->count() > 0)
+        <section class="saved-products">
+            <h2 class="saved-products-title">Produits enregistrés</h2>
+            <div class="saved-products-grid">
+                @foreach($favoris as $fav)
+                    <a href="{{ route('annonces.show', $fav->slug) }}" class="saved-card">
+                        <div class="saved-card-media">
+                            @if($fav->photoPrincipale())
+                                <img src="{{ Storage::url($fav->photoPrincipale()->chemin) }}" alt="{{ $fav->titre }}">
+                            @else
+                                <i class="fa-regular fa-image" style="color:#ddd; font-size:1.5rem;"></i>
+                            @endif
+                        </div>
+                        <div class="saved-card-title">{{ $fav->titre }}</div>
+                        <div class="saved-card-price">{{ number_format($fav->prix_affiche, 0, ',', ' ') }} FCFA</div>
+                    </a>
+                @endforeach
+            </div>
+        </section>
+        @endif
+    @endauth
 </div>
+
+<style>
+    .saved-products {
+        margin-top: 2.5rem;
+        background: #fff;
+        border-radius: 8px;
+        padding: 1.5rem;
+    }
+    .saved-products-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin: 0 0 1.25rem 0;
+    }
+    .saved-products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+    .saved-card {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 0.75rem;
+        transition: box-shadow 0.2s;
+    }
+    .saved-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .saved-card-media {
+        height: 110px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.6rem;
+    }
+    .saved-card-media img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    .saved-card-title {
+        font-size: 0.8rem;
+        color: #1a1a1a;
+        line-height: 1.35;
+        height: 2.15rem;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        margin-bottom: 0.4rem;
+    }
+    .saved-card-price { font-size: 0.95rem; font-weight: 800; color: #f68b1e; margin-top: auto; }
+</style>
 
 <script>
     function updateQty(btn, delta) {

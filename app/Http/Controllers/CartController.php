@@ -21,8 +21,18 @@ class CartController extends Controller
     {
         $cartGrouped = $this->cartService->getContentGroupedBySeller();
         $subtotal = $this->cartService->getSubtotal();
-        
-        return view('cart.index', compact('cartGrouped', 'subtotal'));
+
+        // Produits enregistrés / aimés (favoris) de l'utilisateur connecté
+        $favoris = collect();
+        if (auth()->check()) {
+            $favoris = auth()->user()->favorites()
+                ->with(['photos', 'category'])
+                ->latest('favorites.created_at')
+                ->take(12)
+                ->get();
+        }
+
+        return view('cart.index', compact('cartGrouped', 'subtotal', 'favoris'));
     }
 
     /**
