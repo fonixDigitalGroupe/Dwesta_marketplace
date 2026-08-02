@@ -135,10 +135,10 @@
         align-items: center;
         gap: 0.5rem;
         text-decoration: none;
-        color: #333;
-        font-family: 'Outfit', 'Inter', sans-serif;
-        font-size: 1rem;
-        font-weight: 500;
+        color: #313133;
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
+        font-size: 0.875rem;
+        font-weight: 400;
         position: relative;
     }
 
@@ -154,8 +154,8 @@
     }
 
     .header-link svg {
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;
         flex-shrink: 0;
     }
 
@@ -182,10 +182,10 @@
         align-items: center;
         gap: 0.5rem;
         text-decoration: none;
-        color: #333;
-        font-family: 'Outfit', 'Inter', sans-serif;
-        font-size: 1rem;
-        font-weight: 500;
+        color: #313133;
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
+        font-size: 0.875rem;
+        font-weight: 400;
         cursor: pointer;
         background: white;
         border: none;
