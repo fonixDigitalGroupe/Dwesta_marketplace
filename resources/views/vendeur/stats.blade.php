@@ -365,6 +365,18 @@
     .table-scroll::-webkit-scrollbar-thumb { background: #d1d1d1; border-radius: 4px; }
     .table-scroll::-webkit-scrollbar-track { background: transparent; }
 
+    /* Listes de cartes défilantes (Top Ventes / Top Vues / Stock) */
+    .list-scroll {
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 1rem;
+        max-height: 440px;
+        overflow-y: auto;
+    }
+    .list-scroll::-webkit-scrollbar { width: 8px; }
+    .list-scroll::-webkit-scrollbar-thumb { background: #d1d1d1; border-radius: 4px; }
+    .list-scroll::-webkit-scrollbar-track { background: transparent; }
+
     .table-history td {
         padding: 1.25rem 1rem;
         border-bottom: 1px solid #e5e5e5;
@@ -501,7 +513,7 @@
 
             <!-- Tab: Top Ventes -->
             <div id="tab-top-sold" class="tab-content">
-                <div style="border: 1px solid #eee; border-radius: 8px; padding: 1rem;">
+                <div class="list-scroll">
                     @forelse($topSoldAnnonces as $annonce)
                         <div class="mini-product">
                             <img src="{{ $annonce->photoPrincipale() ? asset('storage/' . $annonce->photoPrincipale()->chemin) : asset('images/no-image.png') }}" alt="">
@@ -519,7 +531,7 @@
 
             <!-- Tab: Top Vues -->
             <div id="tab-top-viewed" class="tab-content">
-                <div style="border: 1px solid #eee; border-radius: 8px; padding: 1rem;">
+                <div class="list-scroll">
                     @forelse($topViewedAnnonces as $annonce)
                         <div class="mini-product">
                             <img src="{{ $annonce->photoPrincipale() ? asset('storage/' . $annonce->photoPrincipale()->chemin) : asset('images/no-image.png') }}" alt="">
@@ -554,7 +566,7 @@
                     @endforeach
                 </div>
 
-                <div style="border: 1px solid #eee; border-radius: 8px; padding: 1rem;">
+                <div class="list-scroll">
                     @forelse($stockAnnonces as $annonce)
                         @php
                             $isEcommerce = optional($annonce->category)->famille === \App\Models\Category::FAMILLE_ECOMMERCE;
