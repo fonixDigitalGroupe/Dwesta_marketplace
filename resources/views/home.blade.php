@@ -85,8 +85,9 @@
         }
 
         .legal-warning-inner {
-            border: 4px solid #000;
-            padding: 10px 20px;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
             gap: 15px;
@@ -136,8 +137,8 @@
             }
             
             .legal-warning-inner {
-                border-width: 2px !important;
-                padding: 8px 10px !important;
+                border-width: 1px !important;
+                padding: 10px 12px !important;
                 gap: 10px !important;
             }
             
