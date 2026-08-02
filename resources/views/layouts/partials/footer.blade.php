@@ -111,10 +111,10 @@
 
 <style>
     .rk-footer {
-        background: #fff;
+        background: #45454d;
         font-family: 'Outfit', sans-serif;
-        color: #1a1a1a;
-        border-top: 1px solid #eee;
+        color: #d8d8dd;
+        border-top: 1px solid #3a3a42;
     }
 
     .footer-container {
@@ -125,9 +125,9 @@
 
     /* Tier 1: Réassurance */
     .footer-reinsurance {
-        background: #fff;
+        background: transparent;
         padding: 2rem 0;
-        border-bottom: 1px solid #e5e7eb;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .reinsurance-grid {
@@ -159,7 +159,7 @@
 
     .reinsurance-label {
         font-size: 0.75rem;
-        color: #555;
+        color: #a9a9b2;
         margin-bottom: 2px;
         font-weight: 500;
         text-transform: uppercase;
@@ -168,15 +168,15 @@
     .reinsurance-value {
         font-size: 1rem;
         font-weight: 700;
-        color: #1a1a1a;
+        color: #f0f0f2;
         white-space: nowrap;
     }
 
     /* Tier 2: Main Links */
     .footer-main {
-        background: #f9fafb;
+        background: transparent;
         padding: 5rem 0;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .footer-links-grid {
@@ -193,14 +193,14 @@
     .footer-separator {
         width: 1px;
         height: 150px;
-        background: #eee;
+        background: rgba(255, 255, 255, 0.12);
         margin: 0 2rem;
     }
 
     .footer-col-title {
         font-size: 0.95rem;
         font-weight: 800;
-        color: #111;
+        color: #f0f0f2;
         margin-bottom: 2rem;
         letter-spacing: 0.5px;
     }
@@ -217,21 +217,21 @@
 
     .footer-links-list li a {
         text-decoration: none;
-        color: #1a1a1a;
+        color: #b8b8c0;
         font-size: 0.95rem;
         font-weight: 500;
         transition: color 0.2s;
     }
 
     .footer-links-list li a:hover {
-        color: #004aad;
+        color: #fff;
     }
 
     /* New Redesigned Tiers */
     .footer-connections {
-        border-top: 1px solid #eee;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
         padding: 1.5rem 0;
-        background: #fff;
+        background: transparent;
     }
 
     .connections-wrapper {
@@ -376,7 +376,7 @@
     /* Brand Section */
     .footer-brand-section {
         padding: 3rem 0 1.5rem;
-        background: #fff;
+        background: transparent;
     }
 
     .brand-flex {
@@ -389,7 +389,7 @@
     .brand-logo-final {
         font-size: 1.8rem;
         font-weight: 900;
-        color: #000;
+        color: #fff;
         letter-spacing: -1px;
     }
 
@@ -400,13 +400,13 @@
 
     .brand-links-final a {
         text-decoration: none;
-        color: #666;
+        color: #b8b8c0;
         font-size: 0.9rem;
         font-weight: 500;
     }
 
     .brand-links-final a:hover {
-        color: #000;
+        color: #fff;
     }
 
     .region-btn {
@@ -425,7 +425,7 @@
 
     .footer-copyright-final {
         text-align: center;
-        color: #888;
+        color: #9a9aa2;
         font-size: 0.85rem;
         margin-top: 2rem;
     }
