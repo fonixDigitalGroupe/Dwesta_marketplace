@@ -59,7 +59,7 @@
         .auth-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0;
+            gap: 1.5rem;
             align-items: start;
             width: 100%;
             max-width: 900px;
@@ -70,7 +70,7 @@
             background: #fff;
             padding: 1.25rem 2.5rem 2.5rem 2.5rem;
             border: none;
-            border-radius: 0;
+            border-radius: 8px;
             width: 100%;
         }
 
