@@ -4,7 +4,7 @@
 
 @push('styles')
 <style>
-    body { overflow-x: hidden; background-color: #f2f3f5 !important; }
+    body { overflow-x: hidden; background-color: #fff !important; }
 
     /* ===== HERO BANNER ===== */
     .landing-hero {
