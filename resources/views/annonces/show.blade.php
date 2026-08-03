@@ -483,6 +483,7 @@
         align-items: baseline;
         gap: 4px;
         margin-top: auto;
+        flex-wrap: wrap;
     }
     
     .price-prefix {
@@ -496,6 +497,7 @@
         font-weight: 800;
         font-size: 1rem;
         text-shadow: none !important;
+        white-space: nowrap;
     }
 
 
