@@ -4,6 +4,7 @@
 
 @push('styles')
 <style>
+    body { background-color: #f2f3f5; }
     .category-show-container { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; }
     
     .breadcrumbs { margin-bottom: 1rem; font-size: 0.85rem; color: #666; display: flex; align-items: center; gap: 0.5rem; }
@@ -14,7 +15,7 @@
     /* N1 Grand Presentation Header */
     .n1-grand-banner {
         width: 100%;
-        height: 260px;
+        height: 190px;
         background-color: #ffffff;
         background-image: url('https://images.unsplash.com/photo-1589923188900-85dae523342b?q=80&w=2070&auto=format&fit=crop'); /* Placeholder image representing garden/tools */
         background-size: cover;
