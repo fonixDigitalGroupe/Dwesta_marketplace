@@ -103,12 +103,18 @@ class AccountController extends Controller
     /**
      * Cancel an order.
      */
-    public function cancelOrder(Order $order)
+    public function cancelOrder(Request $request, Order $order)
     {
         // Check if the order belongs to the authenticated user
         if ($order->user_id !== Auth::id()) {
             abort(403, "Vous n'êtes pas autorisé à annuler cette commande.");
         }
+
+        // Motif d'annulation obligatoire (formulaire type signalement)
+        $validated = $request->validate([
+            'motif_annulation' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+        ]);
 
         // Business Rule: Cannot cancel if delivered, shipped, or in dispute/already cancelled
         $nonCancellableStatuses = [
@@ -130,11 +136,29 @@ class AccountController extends Controller
             return back()->with('error', $message);
         }
 
+        // Créer un litige visible par l'admin (traçabilité de l'annulation)
+        $description = '[Annulation client] Motif : ' . $validated['motif_annulation'];
+        if (!empty($validated['description'])) {
+            $description .= ' — ' . $validated['description'];
+        }
+
+        $reportedId = optional($order->vendeur)->user_id;
+        if ($reportedId) {
+            \App\Models\Litige::create([
+                'commande_id' => $order->id,
+                'reporter_id' => Auth::id(),
+                'reported_id' => $reportedId,
+                'motif'       => 'autre',
+                'description' => $description,
+                'statut'      => 'en_cours',
+            ]);
+        }
+
         // Update status to Cancelled
         $order->update([
             'statut' => Order::STATUT_ANNULE
         ]);
 
-        return back()->with('success', 'Votre commande n°' . $order->reference . ' a été annulée avec succès.');
+        return back()->with('success', 'Votre commande n°' . $order->reference . ' a été annulée. Votre demande a été transmise à notre équipe.');
     }
 }
