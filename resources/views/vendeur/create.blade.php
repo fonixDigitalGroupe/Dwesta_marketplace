@@ -4,8 +4,8 @@
 
 @section('content')
     <style>
-        html, body, .dashboard-container, .main-content {
-            background-color: #fff !important;
+        html, body {
+            background-color: #ebebeb !important;
         }
 
         .account-header {
@@ -47,7 +47,7 @@
         }
 
         .type-card:hover {
-            border-color: #004aad;
+            border-color: #6b7280;
             box-shadow: none;
         }
 
@@ -133,7 +133,7 @@
         }
 
         .form-header h2 i {
-            color: #004aad;
+            color: #6b7280;
         }
 
         .form-body {
@@ -187,9 +187,9 @@
         }
 
         .input-field:focus {
-            border-color: #004aad;
+            border-color: #6b7280;
             background: #fff;
-            box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.05);
+            box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.05);
         }
 
         .input-field.is-invalid {
@@ -221,7 +221,7 @@
 
         .file-upload:hover {
             background: #fff;
-            border-color: #004aad;
+            border-color: #6b7280;
         }
 
         .file-upload i {
@@ -246,7 +246,7 @@
         }
 
         .btn-submit {
-            background: #004aad;
+            background: #6b7280;
             color: white;
             border: none;
             padding: 0.85rem 2rem;
@@ -261,7 +261,7 @@
         }
 
         .btn-submit:hover {
-            background: #003a8a;
+            background: #4b5563;
         }
 
         .btn-back {
@@ -277,7 +277,7 @@
         }
 
         .btn-back:hover {
-            color: #004aad;
+            color: #6b7280;
         }
 
         .error-banner-alert {
@@ -457,7 +457,7 @@
                                 @error('document') <div class="error-message" style="text-align: center;">{{ $message }}</div> @enderror
                                 @if($shouldClearField('document', $raisonRejet)) <div class="error-message" style="text-align: center;">veuillez corriger ce champ</div> @endif
                             </div>
-                            <div id="file-name-particulier" style="font-size: 0.85rem; color: #004aad; font-weight: 700; text-align: center; margin-top: 10px;"></div>
+                            <div id="file-name-particulier" style="font-size: 0.85rem; color: #6b7280; font-weight: 700; text-align: center; margin-top: 10px;"></div>
                         </div>
 
                         <button type="submit" class="btn-submit">Soumettre mon dossier</button>
@@ -515,7 +515,7 @@
                             @error('registre_commerce') <div class="error-message" style="text-align: center;">{{ $message }}</div> @enderror
                             @if($shouldClearField('registre_commerce', $raisonRejet)) <div class="error-message" style="text-align: center;">veuillez corriger ce champ</div> @endif
                         </div>
-                        <div id="file-name-pro" style="font-size: 0.85rem; color: #004aad; font-weight: 700; text-align: center; margin-top: 10px;"></div>
+                        <div id="file-name-pro" style="font-size: 0.85rem; color: #6b7280; font-weight: 700; text-align: center; margin-top: 10px;"></div>
                     </div>
 
                     <button type="submit" class="btn-submit">Finaliser mon dossier Pro</button>
