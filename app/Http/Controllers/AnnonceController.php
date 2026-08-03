@@ -77,8 +77,11 @@ class AnnonceController extends Controller
     {
         $user = Auth::user();
 
-        // Tous les utilisateurs connectés peuvent créer une annonce
-        // Si l'utilisateur n'est pas vendeur, on créera automatiquement un compte vendeur lors de la création de l'annonce
+        // L'utilisateur doit avoir renseigné ses informations de vendeur
+        // avant de pouvoir créer une annonce.
+        if ($guard = $this->requireVendeurInfoComplete($user)) {
+            return $guard;
+        }
 
         $type = $request->query('type', 'produit');
 
@@ -101,12 +104,36 @@ class AnnonceController extends Controller
     }
 
     /**
+     * Bloque la création d'annonce tant que l'utilisateur n'a pas renseigné
+     * ses informations de vendeur. Retourne une redirection, ou null si OK.
+     */
+    private function requireVendeurInfoComplete($user)
+    {
+        if (!$user->estVendeur()) {
+            return redirect()->route('vendeur.create')
+                ->with('error_banner', 'Veuillez renseigner vos informations de vendeur avant de publier une annonce.');
+        }
+
+        if (!$user->vendeur->infosCompletes()) {
+            return redirect()->route('vendeur.create', ['update' => 1])
+                ->with('error_banner', 'Complétez vos informations de vendeur (pièce d\'identité ou informations d\'entreprise) avant de publier une annonce.');
+        }
+
+        return null;
+    }
+
+    /**
      * Enregistre une nouvelle annonce
      */
     public function store(Request $request)
     {
         $user = Auth::user();
         $type = $request->input('type');
+
+        // L'utilisateur doit avoir renseigné ses informations de vendeur
+        if ($guard = $this->requireVendeurInfoComplete($user)) {
+            return $guard;
+        }
 
         // 1. Validation de base TOUJOURS en premier
         $validated = $this->validateAnnonce($request, $type);

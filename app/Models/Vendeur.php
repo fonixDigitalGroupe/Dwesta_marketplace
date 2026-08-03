@@ -96,6 +96,26 @@ class Vendeur extends Model
     }
 
     /**
+     * Les informations d'identité du vendeur sont-elles réellement renseignées ?
+     * (Un compte particulier est créé automatiquement avec des valeurs
+     * placeholder "A_COMPLETER" tant que l'utilisateur n'a pas fourni ses infos.)
+     */
+    public function infosCompletes(): bool
+    {
+        if ($this->estProfessionnel()) {
+            $pro = $this->professionnel;
+            return $pro && !empty($pro->nom_entreprise);
+        }
+
+        $part = $this->particulier;
+        if (!$part) {
+            return false;
+        }
+        $numeroOk = !empty($part->numero_document) && $part->numero_document !== 'A_COMPLETER';
+        return $numeroOk && !empty($part->document_path);
+    }
+
+    /**
      * Vérifier si le vendeur est un vendeur officiel (formulaire rempli)
      * Par opposition au vendeur auto-créé lors du dépôt d'annonce
      */
