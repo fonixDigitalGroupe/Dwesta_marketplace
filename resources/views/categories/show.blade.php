@@ -96,10 +96,9 @@
         border-radius: 8px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         padding: 0 10px;
-        margin-bottom: 2rem;
-        width: calc(100% - 20px);
-        margin-left: 10px;
-        margin-right: 10px;
+        margin: 0 auto 2rem auto;
+        width: 100%;
+        max-width: 1120px;
         position: relative; /* Remove sticky if requested, but let's see */
     }
     .n1-horizontal-menu {
