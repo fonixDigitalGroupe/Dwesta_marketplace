@@ -154,7 +154,7 @@
     }
 
     .btn-ok {
-        background: #444; /* Matches Pro Shop */
+        background: #f68b1e;
         color: #fff;
         border: none;
         padding: 5px 12px;
@@ -166,7 +166,7 @@
     }
 
     .btn-ok:hover {
-        background: #003a8a;
+        background: #e07b10;
     }
 
     .filter-count {
