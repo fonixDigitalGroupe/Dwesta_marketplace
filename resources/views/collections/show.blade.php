@@ -20,7 +20,7 @@
     /* === GRAND BANNER === */
     .n1-grand-banner {
         width: 100%;
-        height: 260px;
+        height: 190px;
         background-color: #ffffff;
         background-size: cover;
         background-position: center;

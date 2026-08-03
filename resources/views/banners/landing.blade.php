@@ -4,12 +4,12 @@
 
 @push('styles')
 <style>
-    body { overflow-x: hidden; background-color: #fff !important; }
+    body { overflow-x: hidden; background-color: #f2f3f5 !important; }
 
     /* ===== HERO BANNER ===== */
     .landing-hero {
         width: 100%;
-        height: 260px;
+        height: 190px;
         background-color: #ffffff;
         background-size: cover;
         background-position: center;
