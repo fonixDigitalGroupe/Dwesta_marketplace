@@ -1036,32 +1036,14 @@
                                     KRN-{{ str_pad($user->vendeur->id ?? $user->id, 6, '0', STR_PAD_LEFT) }}
                                 </div>
                             </div>
-                            <div style="text-align:right;">
-                                <div class="card-expiry-label">Membre depuis</div>
-                                <div class="card-expiry-value">{{ $user->created_at->format('M Y') }}</div>
-                            </div>
                         </div>
 
-                        {{-- Row 4: Holder + Plan --}}
+                        {{-- Row 4: Holder --}}
                         <div class="card-row-holder">
                             <div>
                                 <div class="card-holder-label">Titulaire</div>
                                 <div class="card-holder-name">{{ strtoupper($user->name) }}</div>
                             </div>
-                            @php
-                                $activePlan = $user->vendeur?->abonnementActif?->abonnement?->nom ?? null;
-                                $showPlan = $activePlan && stripos($activePlan, 'Basic') === false;
-                            @endphp
-                            @if($showPlan)
-                                <div class="card-secure-badge">
-                                    <i class="fas fa-star" style="font-size:0.5rem; color:#f68b1e;"></i>
-                                    {{ $activePlan }}
-                                </div>
-                            @else
-                                <div class="card-secure-badge">
-                                    <i class="fas fa-lock" style="font-size:0.55rem;"></i> Sécurisé
-                                </div>
-                            @endif
                         </div>
 
                     </div>
