@@ -5,7 +5,7 @@
 @push('styles')
 <style>
     html, body {
-        background-color: white;
+        background-color: #f2f3f5;
     }
 
     /* Hide number input spinners */
@@ -35,8 +35,8 @@
     }
 
     .shop-banner {
-        height: 240px;
-        background-color: #fff;
+        height: 190px;
+        background-color: #f2f3f5;
         background-size: cover; /* Back to cover for full width as requested */
         background-position: center 20%; /* Prioritize top for the text */
         width: 100%;
