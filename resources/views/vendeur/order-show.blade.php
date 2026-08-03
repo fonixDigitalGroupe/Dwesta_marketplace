@@ -249,7 +249,23 @@
                 <div class="info-card-header">Paiement</div>
                 <div class="info-card-body">
                     <div class="info-label">Mode de paiement</div>
-                    <div class="info-value">{{ $order->mode_paiement ?? 'Non renseigné' }}</div>
+                    <div class="info-value">
+                        @if(in_array($order->gestion_paiement, ['livraison_buyer', 'livraison_receiver']) || $order->moyen_paiement === 'cod')
+                            <span style="color: #b45309; font-weight: 700;">Paiement à la livraison</span>
+                        @elseif($order->moyen_paiement === 'om')
+                            Orange Money
+                        @elseif($order->moyen_paiement === 'wave')
+                            Wave
+                        @elseif($order->moyen_paiement === 'cb')
+                            Carte Bancaire
+                        @elseif($order->moyen_paiement === 'gift_card')
+                            Carte Cadeau
+                        @elseif($order->moyen_paiement === 'wallet')
+                            Portefeuille Dwesta
+                        @else
+                            {{ ucfirst(str_replace('_', ' ', $order->moyen_paiement ?? $order->mode_paiement ?? 'Non renseigné')) }}
+                        @endif
+                    </div>
 
                     <div class="info-label">Sous-total produits</div>
                     <div class="info-value">{{ number_format($order->total_produits, 0, ',', ' ') }} FCFA</div>

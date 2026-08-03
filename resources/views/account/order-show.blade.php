@@ -481,7 +481,9 @@
                             <div class="summary-item-pro">
                                 <div class="summary-label-pro">Mode de paiement</div>
                                 <div class="summary-value-pro">
-                                    @if($order->moyen_paiement === 'om')
+                                    @if(in_array($order->gestion_paiement, ['livraison_buyer', 'livraison_receiver']) || $order->moyen_paiement === 'cod')
+                                        <span style="color: #b45309; font-weight: 700;">Paiement à la livraison</span>
+                                    @elseif($order->moyen_paiement === 'om')
                                         <span>Orange Money</span>
                                     @elseif($order->moyen_paiement === 'wave')
                                         <span>Wave</span>
@@ -489,8 +491,6 @@
                                         <span>Carte Bancaire</span>
                                     @elseif($order->moyen_paiement === 'gift_card')
                                         <span style="color: #2e7d32; font-weight: 700;">Carte Cadeau</span>
-                                    @elseif($order->moyen_paiement === 'livraison_buyer' || $order->moyen_paiement === 'livraison_receiver')
-                                        <span>Paiement à la livraison</span>
                                     @elseif($order->moyen_paiement === 'wallet')
                                         <span>Portefeuille Dwesta</span>
                                     @else
