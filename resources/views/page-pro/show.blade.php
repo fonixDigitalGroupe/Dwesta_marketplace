@@ -4,9 +4,6 @@
 
 @push('styles')
 <style>
-    /* Boutique : pas de header du site */
-    .header, .top-banner { display: none !important; }
-
     html, body {
         background-color: white;
     }
