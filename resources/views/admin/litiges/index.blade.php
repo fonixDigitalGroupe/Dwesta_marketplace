@@ -66,6 +66,9 @@
                                 <span style="font-size: 0.75rem; color: #555; background: #f3f4f6; padding: 3px 8px; border-radius: 4px; font-weight: 600; border: 1px solid #e2e8f0;">
                                     {{ ucfirst($litige->motif) }}
                                 </span>
+                                @if($litige->description)
+                                    <div style="margin-top: 6px; font-size: 0.78rem; color: #555; line-height: 1.35; max-width: 320px;">{{ \Illuminate\Support\Str::limit($litige->description, 90) }}</div>
+                                @endif
                                 <div style="margin-top: 6px; font-size: 0.75rem; color: #888;">Le {{ $litige->created_at->format('d/m/Y à H:i') }}</div>
                             </td>
                             <td style="padding: 15px 20px; border-right: 1px solid #e7e7e7; text-align: center;">
