@@ -191,6 +191,11 @@ class SearchController extends Controller
               ->orderByRaw("CASE WHEN EXISTS (SELECT 1 FROM annonce_options WHERE annonce_id = annonces.id AND a_la_une = 1) THEN 0 ELSE 1 END")
               ->orderByRaw("CASE WHEN vendeurs.type = 'professionnel' THEN 0 ELSE 1 END");
 
+        // Pertinence : les annonces dont le TITRE correspond au terme recherché passent en premier
+        if (!empty($searchTerm)) {
+            $query->orderByRaw("CASE WHEN annonces.titre LIKE ? THEN 0 ELSE 1 END", ["%{$searchTerm}%"]);
+        }
+
         switch ($request->sort) {
             case 'price_asc':
                 $query->orderBy('annonces.prix', 'asc');
