@@ -398,11 +398,6 @@
         <div class="n1-grand-banner-content">
             <h1>{{ $category->nom }}</h1>
             <p>{{ $category->description ?? 'Découvrez notre sélection exclusive' }}</p>
-            
-            <div class="n1-banner-search-wrapper">
-                <i class="fas fa-search n1-banner-search-icon"></i>
-                <input type="text" id="n1-page-search" class="n1-banner-search-input" placeholder="Rechercher dans cette catégorie..." oninput="handleInPageSearch(this.value)">
-            </div>
         </div>
     </div>
 
