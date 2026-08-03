@@ -77,7 +77,7 @@
         }
 
         .edit-icon {
-            color: #004aad;
+            color: #f68b1e;
             font-size: 1.1rem;
             text-decoration: none;
         }
@@ -262,7 +262,7 @@
                                     Votre document expire dans <strong>{{ $alerte['jours_restants'] }} jours</strong>.
                                 @endif
                             </p>
-                            <a href="{{ route('vendeur.create', ['update' => 1]) }}" style="color: #004aad; font-weight: 700; font-size: 0.85rem; text-decoration: underline;">Mettre à jour maintenant</a>
+                            <a href="{{ route('vendeur.create', ['update' => 1]) }}" style="color: #f68b1e; font-weight: 700; font-size: 0.85rem; text-decoration: underline;">Mettre à jour maintenant</a>
                         </div>
                     </div>
                 @endforeach
@@ -316,7 +316,7 @@
                         
                         <p class="top-text">Boutique :</p>
                         @if($vendeur->aAccesPagePro())
-                            <a href="{{ route('page-pro.edit') }}" class="sub-text" style="color: #004aad; text-decoration: underline;">Gérer ma Boutique PRO</a>
+                            <a href="{{ route('page-pro.edit') }}" class="sub-text" style="color: #f68b1e; text-decoration: underline;">Gérer ma Boutique PRO</a>
                         @else
                             <p class="sub-text">Non applicable (réservé aux pros)</p>
                         @endif
@@ -334,7 +334,7 @@
             <div class="jumia-card" style="margin-bottom: 1rem;">
                 <div class="jumia-card-header">
                     <h2>Consommation de votre forfait</h2>
-                    <a href="{{ route('abonnements.index') }}" style="font-size: 0.75rem; color: #004aad; font-weight: 700; text-decoration: underline;">Voir les forfaits</a>
+                    <a href="{{ route('abonnements.index') }}" style="font-size: 0.75rem; color: #f68b1e; font-weight: 700; text-decoration: underline;">Voir les forfaits</a>
                 </div>
                 <div class="jumia-card-body">
                     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.5rem;">
