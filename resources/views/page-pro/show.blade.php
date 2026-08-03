@@ -46,13 +46,13 @@
     .shop-identity-card {
         position: sticky;
         top: 0px; /* Adjust if the main site header is also sticky */
-        margin: -60px auto 0 auto; /* Negative margin to overlap banner */
+        margin: -50px auto 0 auto; /* Negative margin to overlap banner */
         width: 100%;
-        max-width: 1250px; /* Increased from 1150px */
+        max-width: 1120px;
         background: white;
         border-radius: 8px;
         box-shadow: 0 1px 4px rgba(0,0,0,0.02);
-        padding: 15px 30px;
+        padding: 10px 28px;
         display: flex;
         align-items: center;
         z-index: 1000;
@@ -62,8 +62,8 @@
     }
 
     .shop-logo-box {
-        width: 80px;
-        height: 80px;
+        width: 64px;
+        height: 64px;
         background: white;
         border: 1px solid #eee;
         border-radius: 4px;
