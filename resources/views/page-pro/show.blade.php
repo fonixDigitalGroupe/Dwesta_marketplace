@@ -867,18 +867,19 @@
         justify-content: space-between;
         align-items: center;
         padding: 8px 15px;
-        border: 1px solid #333;
-        color: #000;
+        border: 1px solid {{ $pagePro->couleur_primaire ?? '#004aad' }};
+        color: {{ $pagePro->couleur_primaire ?? '#004aad' }};
         font-weight: 700;
         font-size: 0.85rem;
         border-radius: 4px;
-        transition: background 0.2s;
+        transition: background 0.2s, color 0.2s;
         text-decoration: none;
         background: #fff;
     }
 
     .btn-voir-produit:hover {
-        background: #f9f9f9;
+        background: {{ $pagePro->couleur_primaire ?? '#004aad' }};
+        color: #fff;
     }
 
     /* About Section (Bottom) */
