@@ -625,25 +625,6 @@
                     </div>
                 </div>
 
-                <!-- Expédition -->
-                @if(!$hideEtat)
-                <div class="sidebar-section">
-                    <div class="sidebar-subtitle">Option d'expédition</div>
-                    <label class="filter-item">
-                        <input type="checkbox" name="shipping[]" value="retrait_point_relais" @if(is_array(request('shipping')) && in_array('retrait_point_relais', request('shipping'))) checked @endif onchange="this.form.submit()">
-                        Retrait en point retrait
-                    </label>
-                    <label class="filter-item">
-                        <input type="checkbox" name="shipping[]" value="retrait_boutique" @if(is_array(request('shipping')) && in_array('retrait_boutique', request('shipping'))) checked @endif onchange="this.form.submit()">
-                        Retrait en boutique
-                    </label>
-                    <label class="filter-item">
-                        <input type="checkbox" name="shipping[]" value="livraison_point_special" @if(is_array(request('shipping')) && in_array('livraison_point_special', request('shipping'))) checked @endif onchange="this.form.submit()">
-                        Livraison en point spécial
-                    </label>
-                </div>
-                @endif
-
                 <!-- Avis client -->
                 <div class="sidebar-section">
                     <div class="sidebar-title">Avis client</div>
