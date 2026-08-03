@@ -395,7 +395,7 @@
         @endif
 
         <div class="n1-grand-banner-content">
-            <h1>{{ $category->nom }}</h1>
+            <h1>{{ \Illuminate\Support\Str::lcfirst($category->nom) }}</h1>
             <p>{{ $category->description ?? 'Découvrez notre sélection exclusive' }}</p>
         </div>
     </div>
