@@ -708,6 +708,11 @@
                         @else
                             Aucun résultat trouvé
                         @endif
+                        @if(!empty($corrections ?? []))
+                            <div style="font-size: 0.82rem; color: #666; margin-top: 2px;">
+                                Recherche corrigée : «&nbsp;{{ implode(' ', array_keys($corrections)) }}&nbsp;» → <strong style="color:#f68b1e;">{{ implode(' ', array_values($corrections)) }}</strong>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 

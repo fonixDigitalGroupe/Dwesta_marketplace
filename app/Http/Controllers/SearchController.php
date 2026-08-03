@@ -17,27 +17,69 @@ class SearchController extends Controller
         $query = Annonce::publiees()->with(['photos', 'category', 'vendeur.user', 'vendeur.professionnel', 'options', 'produit', 'vehicule', 'avisApprouves']);
         $category = null;
 
-        // Recherche textuelle intelligente
+        // Recherche textuelle intelligente (tolérante aux fautes de frappe)
         $searchTerm = $request->q ?? $request->search;
+        $corrections = []; // mot tapé => mot corrigé (pour affichage "vouliez-vous dire")
         if ($searchTerm) {
-            // Nettoyage et découpage du terme en mots-clés (min 2 lettres)
-            $keywords = collect(explode(' ', $searchTerm))
-                ->filter(fn($word) => strlen($word) >= 2)
+            // Découpage en mots (min 2 lettres)
+            $rawWords = collect(explode(' ', $searchTerm))
                 ->map(fn($word) => trim($word))
+                ->filter(fn($word) => mb_strlen($word) >= 2)
+                ->values()
                 ->all();
 
-            if (!empty($keywords)) {
-                $query->where(function($q) use ($keywords) {
-                    foreach ($keywords as $word) {
-                        $q->where(function($sq) use ($word) {
-                            $sq->where('titre', 'LIKE', "%{$word}%")
-                              ->orWhere('description', 'LIKE', "%{$word}%")
-                              ->orWhereHas('category', function($cq) use ($word) {
-                                  $cq->where('nom', 'LIKE', "%{$word}%");
-                              })
-                              ->orWhereHas('vendeur.professionnel', function($vq) use ($word) {
-                                  $vq->where('nom_entreprise', 'LIKE', "%{$word}%");
-                              });
+            // Dictionnaire des mots connus (catégories + mots des titres publiés), mis en cache 1h
+            $dictionary = cache()->remember('search_dictionary_v1', 3600, function () {
+                $words = collect(Category::pluck('nom'));
+                $titles = Annonce::where('statut', 'publiee')->limit(3000)->pluck('titre');
+                foreach ($titles as $t) { $words->push($t); }
+                return $words->filter()
+                    ->flatMap(fn($p) => preg_split('/[\s\-\/]+/', (string) $p))
+                    ->map(fn($w) => $this->normalizeSearch($w))
+                    ->filter(fn($w) => mb_strlen($w) >= 3)
+                    ->unique()->values()->all();
+            });
+
+            // Pour chaque mot : on garde l'original, et si c'est inconnu on tente une correction
+            $keywordVariants = [];
+            foreach ($rawWords as $word) {
+                $norm = $this->normalizeSearch($word);
+                $variants = [$word];
+                $known = $norm !== '' && collect($dictionary)->contains(fn($d) => $d === $norm || str_contains($d, $norm));
+                if (!$known && mb_strlen($norm) >= 4) {
+                    $maxDist = mb_strlen($norm) <= 6 ? 2 : 3;
+                    $best = null; $bestDist = PHP_INT_MAX;
+                    foreach ($dictionary as $d) {
+                        if (abs(mb_strlen($d) - mb_strlen($norm)) > $maxDist) continue;
+                        $dist = levenshtein($norm, $d);
+                        if ($dist < $bestDist) { $bestDist = $dist; $best = $d; }
+                    }
+                    if ($best !== null && $bestDist <= $maxDist) {
+                        $variants[] = $best;
+                        $corrections[$word] = $best;
+                    }
+                }
+                $keywordVariants[] = $variants;
+            }
+
+            if (!empty($keywordVariants)) {
+                $query->where(function($q) use ($keywordVariants) {
+                    foreach ($keywordVariants as $variants) {
+                        // Chaque mot doit correspondre (ET), mais accepte l'original OU sa correction (OU)
+                        $q->where(function($sq) use ($variants) {
+                            foreach ($variants as $i => $word) {
+                                $method = $i === 0 ? 'where' : 'orWhere';
+                                $sq->{$method}(function($vq) use ($word) {
+                                    $vq->where('titre', 'LIKE', "%{$word}%")
+                                       ->orWhere('description', 'LIKE', "%{$word}%")
+                                       ->orWhereHas('category', function($cq) use ($word) {
+                                           $cq->where('nom', 'LIKE', "%{$word}%");
+                                       })
+                                       ->orWhereHas('vendeur.professionnel', function($pq) use ($word) {
+                                           $pq->where('nom_entreprise', 'LIKE', "%{$word}%");
+                                       });
+                                });
+                            }
                         });
                     }
                 });
@@ -242,7 +284,17 @@ class SearchController extends Controller
             })->count(),
         ];
 
-        return view('search.index', compact('annonces', 'sidebarCategories', 'sidebarParent', 'category', 'activeCategory', 'bestMatch', 'countsEtats'));
+        return view('search.index', compact('annonces', 'sidebarCategories', 'sidebarParent', 'category', 'activeCategory', 'bestMatch', 'countsEtats', 'corrections'));
+    }
+
+    /**
+     * Normalise un mot pour la comparaison : minuscules, sans accents ni caractères spéciaux.
+     */
+    private function normalizeSearch($s): string
+    {
+        $s = mb_strtolower(trim((string) $s));
+        $s = \Illuminate\Support\Str::ascii($s); // supprime les accents (é -> e)
+        return preg_replace('/[^a-z0-9]/', '', $s);
     }
 
     /**
