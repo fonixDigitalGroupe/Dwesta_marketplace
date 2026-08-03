@@ -292,6 +292,8 @@
                     fetch(`/api/search/autocomplete?q=${encodeURIComponent(query)}`)
                         .then(res => res.json())
                         .then(data => {
+                            // On n'affiche pas les suggestions de catégorie ("Dans la catégorie : …")
+                            data = data.filter(item => item.type !== 'category');
                             if (data.length > 0) {
                                 resultsContainer.innerHTML = data.map(item => `
                                     <a href="${item.url}" class="autocomplete-item">
