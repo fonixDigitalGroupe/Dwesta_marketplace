@@ -14,7 +14,10 @@ class SearchController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Annonce::publiees()->with(['photos', 'category', 'vendeur.user', 'vendeur.professionnel', 'options', 'produit', 'vehicule', 'avisApprouves']);
+        // On se base sur le statut "publiée" (et non le scope strict publiees() qui
+        // exige publiee_le renseigné et non expiré) afin que toutes les annonces
+        // publiées soient bien trouvables via la recherche.
+        $query = Annonce::where('statut', Annonce::STATUT_PUBLIEE)->with(['photos', 'category', 'vendeur.user', 'vendeur.professionnel', 'options', 'produit', 'vehicule', 'avisApprouves']);
         $category = null;
 
         // Recherche textuelle intelligente (tolérante aux fautes de frappe)
@@ -327,7 +330,7 @@ class SearchController extends Controller
             });
 
         // 2. Suggestions de produits
-        $produits = Annonce::publiees()
+        $produits = Annonce::where('statut', Annonce::STATUT_PUBLIEE)
             ->where('titre', 'LIKE', "%{$term}%")
             ->limit(5)
             ->get(['id', 'titre', 'slug'])
