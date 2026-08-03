@@ -87,7 +87,7 @@
     }
 
     .preview-container {
-        background: #f8fafc;
+        background: #fff;
         border: 1px solid #eee;
         border-radius: 12px;
         padding: 1.5rem;
