@@ -13,11 +13,10 @@
     }
 
     .section-title {
-        font-size: 0.8rem;
-        font-weight: 800;
-        color: #000;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #1f2937;
+        letter-spacing: 0;
         margin-bottom: 1.25rem;
         display: flex;
         align-items: center;
@@ -25,39 +24,41 @@
     }
 
     .section-title i {
-        color: #f68b1e;
+        color: #9ca3af;
+        font-size: 0.95rem;
     }
 
     .form-box {
         background: #fff;
-        border: 1px solid #efefef;
+        border: 1px solid #e6e8eb;
         border-radius: 10px;
         padding: 2rem;
+        box-shadow: 0 1px 3px rgba(16, 24, 40, 0.04);
     }
 
     .form-label {
         display: block;
-        font-size: 0.75rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        color: #666;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #374151;
         margin-bottom: 0.5rem;
     }
 
     .form-control {
         width: 100%;
-        padding: 12px 16px;
-        border: 1px solid #ddd;
+        padding: 11px 14px;
+        border: 1px solid #d5dbe1;
         border-radius: 8px;
-        font-size: 0.95rem;
-        font-weight: 700;
-        transition: all 0.2s;
+        font-size: 0.92rem;
+        font-weight: 500;
+        color: #1f2937;
+        transition: all 0.15s;
         outline: none;
     }
 
     .form-control:focus {
-        border-color: #004aad;
-        box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
+        border-color: #f68b1e;
+        box-shadow: 0 0 0 3px rgba(246, 139, 30, 0.12);
     }
 
     .btn-buy-now {
@@ -65,12 +66,11 @@
         color: #fff;
         border: none;
         border-radius: 8px;
-        padding: 14px 30px;
-        font-weight: 800;
-        font-size: 0.9rem;
-        text-transform: uppercase;
+        padding: 12px 28px;
+        font-weight: 600;
+        font-size: 0.92rem;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: background 0.2s;
         display: inline-flex;
         align-items: center;
         gap: 10px;
@@ -78,7 +78,6 @@
 
     .btn-buy-now:hover {
         background: #e07a10;
-        transform: translateY(-2px);
     }
 
     .preview-grid {
@@ -158,10 +157,13 @@
     @include('partials.profile-sidebar')
 
     <main class="main-content pro-page-edit">
-        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid #eee;">
-            <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Ma Boutique Professionnelle</h1>
-            <a href="{{ route('page-pro.show', $pagePro->slug) }}" target="_blank" style="color: #f68b1e; text-decoration: none; font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
-                Voir ma page
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 1rem; margin-bottom: 2rem; border-bottom: 1px solid #eee;">
+            <div>
+                <h1 style="font-size: 1.3rem; font-weight: 600; color: #111827; margin: 0;">Ma boutique professionnelle</h1>
+                <p style="font-size: 0.85rem; color: #6b7280; margin: 4px 0 0 0;">Gérez l'identité et la présentation de votre boutique.</p>
+            </div>
+            <a href="{{ route('page-pro.show', $pagePro->slug) }}" target="_blank" style="display:inline-flex; align-items:center; gap:6px; color: #374151; text-decoration: none; font-size: 0.85rem; font-weight: 600; border: 1px solid #d5dbe1; padding: 8px 14px; border-radius: 8px; white-space: nowrap;">
+                <i class="fas fa-external-link-alt" style="font-size:0.75rem;"></i> Voir ma page
             </a>
         </div>
 
