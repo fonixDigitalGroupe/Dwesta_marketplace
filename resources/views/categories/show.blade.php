@@ -217,11 +217,11 @@
     }
     .sections-global-title {
         font-family: 'Outfit', sans-serif;
-        font-size: 1.5rem;
+        font-size: 1.15rem;
         font-weight: 600;
         color: #334155;
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
         letter-spacing: -0.01em;
     }
     .n1-top-consulted-carousel {
