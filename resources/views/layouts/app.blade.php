@@ -279,41 +279,9 @@
         const resultsContainer = document.getElementById('autocomplete-results');
         let timeout = null;
 
-        if (searchInput && resultsContainer) {
-            searchInput.addEventListener('input', function () {
-                clearTimeout(timeout);
-                const query = this.value;
-                if (query.length < 2) {
-                    resultsContainer.style.display = 'none';
-                    return;
-                }
-
-                timeout = setTimeout(() => {
-                    fetch(`/api/search/autocomplete?q=${encodeURIComponent(query)}`)
-                        .then(res => res.json())
-                        .then(data => {
-                            // On n'affiche pas les suggestions de catégorie ("Dans la catégorie : …")
-                            data = data.filter(item => item.type !== 'category');
-                            if (data.length > 0) {
-                                resultsContainer.innerHTML = data.map(item => `
-                                    <a href="${item.url}" class="autocomplete-item">
-                                        <span class="type-badge">${item.type === 'category' ? '📁' : '🛍️'}</span>
-                                        <span>${item.label}</span>
-                                    </a>
-                                `).join('');
-                                resultsContainer.style.display = 'block';
-                            } else {
-                                resultsContainer.style.display = 'none';
-                            }
-                        });
-                }, 300);
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!document.querySelector('.search-container').contains(e.target)) {
-                    resultsContainer.style.display = 'none';
-                }
-            });
+        // Suggestions de saisie désactivées : aucune autocomplétion dans la recherche globale.
+        if (resultsContainer) {
+            resultsContainer.style.display = 'none';
         }
     </script>
     <script>
