@@ -275,6 +275,18 @@
 
             {{-- OVERVIEW --}}
             @if($tab == 'overview')
+                @if($overviewTotals)
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 18px;">
+                        <div style="flex: 1; min-width: 200px; border: 1px solid #b7e4c7; background: #e9f7ef; border-radius: 6px; padding: 14px 18px;">
+                            <div style="font-size: 0.7rem; font-weight: 700; color: #14663f; text-transform: uppercase; letter-spacing: 0.5px;">Montant total des ventes</div>
+                            <div style="font-size: 1.4rem; font-weight: 800; color: #16a34a; margin-top: 4px;">{{ number_format($overviewTotals['ventes'], 0, ',', ' ') }} <span style="font-size: 0.8rem; font-weight: 500; color: #888;">FCFA</span></div>
+                        </div>
+                        <div style="flex: 1; min-width: 200px; border: 1px solid #bcd4f6; background: #eaf1fd; border-radius: 6px; padding: 14px 18px;">
+                            <div style="font-size: 0.7rem; font-weight: 700; color: #1e3a8a; text-transform: uppercase; letter-spacing: 0.5px;">Total des commissions</div>
+                            <div style="font-size: 1.4rem; font-weight: 800; color: #2563eb; margin-top: 4px;">{{ number_format($overviewTotals['commissions'], 0, ',', ' ') }} <span style="font-size: 0.8rem; font-weight: 500; color: #888;">FCFA</span></div>
+                        </div>
+                    </div>
+                @endif
                 <table class="table-amazon">
                     <thead>
                         <tr>

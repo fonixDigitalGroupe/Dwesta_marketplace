@@ -128,6 +128,18 @@ class FinanceController extends Controller
                 break;
         }
 
-        return view('admin.finance.index', compact('tab', 'stripeOverview', 'data', 'dateDebut', 'dateFin', 'statutFiltre'));
+        // Totaux (période + statut filtrés) pour l'onglet "Toutes les Transactions"
+        $overviewTotals = null;
+        if ($tab === 'overview') {
+            $baseOverview = Order::whereIn('statut', $paidStatuses)
+                ->when($statutFiltre, fn($q) => $q->where('statut', $statutFiltre))
+                ->whereBetween('created_at', $periode);
+            $overviewTotals = [
+                'ventes'      => (clone $baseOverview)->sum('total_final'),
+                'commissions' => (clone $baseOverview)->sum('commission_plateforme'),
+            ];
+        }
+
+        return view('admin.finance.index', compact('tab', 'stripeOverview', 'data', 'dateDebut', 'dateFin', 'statutFiltre', 'overviewTotals'));
     }
 }
