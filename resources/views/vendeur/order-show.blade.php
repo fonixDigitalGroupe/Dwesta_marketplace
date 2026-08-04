@@ -378,6 +378,50 @@
                         </div>
                     </div>
                 @endif
+
+                {{-- Annulation par le vendeur --}}
+                @if(!in_array($order->statut, ['livre', 'annule', 'litige', 'en_route', 'disponible']))
+                    <div style="margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem;">
+                        <button type="button" onclick="document.getElementById('vendeur-cancel-modal').style.display='flex'"
+                            style="background: none; border: none; color: #dc2626; font-weight: 600; font-size: 0.85rem; cursor: pointer; padding: 0;">
+                            Annuler cette commande
+                        </button>
+                    </div>
+
+                    <div id="vendeur-cancel-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center; padding:1rem;">
+                        <div style="background:#fff; border-radius:10px; max-width:480px; width:100%; padding:1.75rem;">
+                            <h3 style="margin:0 0 0.35rem; font-size:1.1rem; font-weight:700; color:#111827;">Annuler la commande</h3>
+                            <p style="margin:0 0 1.25rem; font-size:0.85rem; color:#6b7280;">Indiquez le motif. Un litige sera ouvert pour le suivi par notre équipe.</p>
+
+                            @if($errors->any())
+                                <div style="background:#fff5f5; border:1px solid #fecaca; color:#b91c1c; padding:0.6rem 0.85rem; border-radius:8px; margin-bottom:1rem; font-size:0.82rem;">
+                                    @foreach($errors->all() as $e)<div>{{ $e }}</div>@endforeach
+                                </div>
+                            @endif
+
+                            <form method="POST" action="{{ route('vendeur.orders.cancel', $order->id) }}">
+                                @csrf
+                                <label style="display:block; font-size:0.82rem; font-weight:600; color:#374151; margin-bottom:0.35rem;">Motif *</label>
+                                <select name="motif_annulation" required style="width:100%; padding:10px 12px; border:1px solid #d5dbe1; border-radius:8px; font-size:0.9rem; margin-bottom:1rem;">
+                                    <option value="" disabled selected>— Choisir un motif —</option>
+                                    <option value="Produit en rupture de stock">Produit en rupture de stock</option>
+                                    <option value="Erreur de prix ou de description">Erreur de prix ou de description</option>
+                                    <option value="Acheteur injoignable">Acheteur injoignable</option>
+                                    <option value="Impossible de livrer à cette adresse">Impossible de livrer à cette adresse</option>
+                                    <option value="Autre">Autre</option>
+                                </select>
+
+                                <label style="display:block; font-size:0.82rem; font-weight:600; color:#374151; margin-bottom:0.35rem;">Détails (facultatif)</label>
+                                <textarea name="description" rows="4" maxlength="1000" placeholder="Précisez…" style="width:100%; padding:10px 12px; border:1px solid #d5dbe1; border-radius:8px; font-size:0.9rem; margin-bottom:1.25rem;"></textarea>
+
+                                <div style="display:flex; gap:0.75rem; justify-content:flex-end;">
+                                    <button type="button" onclick="document.getElementById('vendeur-cancel-modal').style.display='none'" style="padding:10px 18px; border:1px solid #d5dbe1; background:#fff; color:#374151; border-radius:8px; font-weight:600; cursor:pointer;">Retour</button>
+                                    <button type="submit" style="padding:10px 18px; border:none; background:#dc2626; color:#fff; border-radius:8px; font-weight:600; cursor:pointer;">Confirmer l'annulation</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
 

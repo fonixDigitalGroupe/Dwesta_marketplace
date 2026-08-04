@@ -124,6 +124,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/mes-commandes', [VendeurController::class, 'orders'])->name('orders');
             Route::get('/mes-commandes/{order}', [VendeurController::class, 'orderShow'])->name('orders.show');
             Route::get('/mes-commandes/{order}/facture', [VendeurController::class, 'invoice'])->name('orders.invoice');
+            Route::post('/mes-commandes/{order}/annuler', [VendeurController::class, 'cancelOrder'])->name('orders.cancel');
             Route::get('/statistiques', [VendeurController::class, 'stats'])->name('stats');
             Route::put('/{vendeur}/document-particulier', [VendeurController::class, 'updateDocumentParticulier'])->name('update.document.particulier');
             Route::put('/{vendeur}/document-professionnel', [VendeurController::class, 'updateDocumentProfessionnel'])->name('update.document.professionnel');

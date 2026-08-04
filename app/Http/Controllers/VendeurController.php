@@ -511,6 +511,53 @@ class VendeurController extends Controller
     }
 
     /**
+     * Annulation d'une commande par le vendeur (avec motif, crée un litige).
+     */
+    public function cancelOrder(\Illuminate\Http\Request $request, \App\Models\Order $order)
+    {
+        $user = Auth::user();
+        if (!$user->estVendeur() || $order->vendeur_id !== $user->vendeur->id) {
+            abort(403, 'Accès non autorisé.');
+        }
+
+        $validated = $request->validate([
+            'motif_annulation' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        // Commandes déjà livrées / annulées / en litige : non annulables
+        $nonAnnulables = [
+            \App\Models\Order::STATUT_LIVRE,
+            \App\Models\Order::STATUT_ANNULE,
+            \App\Models\Order::STATUT_LITIGE,
+        ];
+        if (in_array($order->statut, $nonAnnulables)) {
+            return back()->with('error', 'Cette commande ne peut plus être annulée.');
+        }
+
+        $description = '[Annulation vendeur] Motif : ' . $validated['motif_annulation'];
+        if (!empty($validated['description'])) {
+            $description .= ' — ' . $validated['description'];
+        }
+
+        // Litige : le vendeur signale, l'acheteur est la partie "reported"
+        if ($order->user_id) {
+            \App\Models\Litige::create([
+                'commande_id' => $order->id,
+                'reporter_id' => $user->id,
+                'reported_id' => $order->user_id,
+                'motif'       => 'autre',
+                'description' => $description,
+                'statut'      => 'en_cours',
+            ]);
+        }
+
+        $order->update(['statut' => \App\Models\Order::STATUT_ANNULE]);
+
+        return back()->with('success', 'La commande n°' . $order->reference . ' a été annulée. Un litige a été ouvert pour le suivi.');
+    }
+
+    /**
      * Génère et télécharge le bordereau d'expédition / facture avec QR Code
      */
     public function invoice(\App\Models\Order $order)
