@@ -263,6 +263,7 @@ Route::middleware('auth')->group(function () {
             Route::prefix('finance')->name('finance.')->group(function () {
                 Route::get('/', [\App\Http\Controllers\Admin\FinanceController::class, 'index'])->name('index');
                 Route::get('/vendeurs', [\App\Http\Controllers\Admin\FinanceController::class, 'vendeursDetail'])->name('vendeurs');
+                Route::get('/vendeurs/{user}', [\App\Http\Controllers\Admin\FinanceController::class, 'vendeurOrders'])->name('vendeurs.orders');
             });
 
             // Gestion des Utilisateurs

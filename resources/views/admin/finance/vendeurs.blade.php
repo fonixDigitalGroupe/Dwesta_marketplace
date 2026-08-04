@@ -54,7 +54,8 @@
                         <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">En séquestre</th>
                         <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Disponible</th>
                         <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Total dû</th>
-                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase;">Déjà retiré</th>
+                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Déjà retiré</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 120px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,10 +68,13 @@
                             <td style="padding: 12px 15px; text-align: right; border-right: 1px solid #eff3f6; color: #b7791f; font-weight: 600;">{{ number_format($r->en_sequestre, 0, ',', ' ') }}</td>
                             <td style="padding: 12px 15px; text-align: right; border-right: 1px solid #eff3f6; color: #16a34a; font-weight: 600;">{{ number_format($r->disponible, 0, ',', ' ') }}</td>
                             <td style="padding: 12px 15px; text-align: right; border-right: 1px solid #eff3f6; font-weight: 800; color: #2563eb;">{{ number_format($r->total_du, 0, ',', ' ') }}</td>
-                            <td style="padding: 12px 15px; text-align: right; color: #888;">{{ number_format($r->deja_retire, 0, ',', ' ') }}</td>
+                            <td style="padding: 12px 15px; text-align: right; border-right: 1px solid #eff3f6; color: #888;">{{ number_format($r->deja_retire, 0, ',', ' ') }}</td>
+                            <td style="padding: 12px 15px; text-align: center;">
+                                <a href="{{ route('admin.finance.vendeurs.orders', $r->user->id) }}" style="display: inline-block; background: #004aad; color: #fff; font-size: 0.75rem; font-weight: 600; padding: 6px 14px; border-radius: 4px; text-decoration: none;">Détail</a>
+                            </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5" style="padding: 2.5rem; text-align: center; color: #999; border: 1px solid #eee;">Aucun montant en portefeuille.</td></tr>
+                        <tr><td colspan="6" style="padding: 2.5rem; text-align: center; color: #999; border: 1px solid #eee;">Aucun montant en portefeuille.</td></tr>
                     @endforelse
                 </tbody>
             </table>

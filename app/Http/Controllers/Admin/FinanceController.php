@@ -227,4 +227,35 @@ class FinanceController extends Controller
 
         return view('admin.finance.vendeurs', compact('rows', 'totalGlobal'));
     }
+
+    /**
+     * Détail des commandes d'un vendeur (clients + statut), filtrable par statut.
+     */
+    public function vendeurOrders(Request $request, \App\Models\User $user)
+    {
+        $vendeur = $user->vendeur;
+        if (!$vendeur) {
+            return redirect()->route('admin.finance.vendeurs')->with('error', 'Ce compte n\'est pas un vendeur.');
+        }
+
+        $statutFiltre = $request->get('statut');
+
+        $ordersQuery = Order::where('vendeur_id', $vendeur->id)->with('buyer');
+
+        // Compteurs par statut (toutes les commandes du vendeur)
+        $countsParStatut = (clone $ordersQuery)
+            ->selectRaw('statut, COUNT(*) as n')
+            ->groupBy('statut')
+            ->pluck('n', 'statut')
+            ->toArray();
+        $totalCommandes = array_sum($countsParStatut);
+
+        $orders = (clone $ordersQuery)
+            ->when($statutFiltre, fn($q) => $q->where('statut', $statutFiltre))
+            ->latest()
+            ->paginate(20)
+            ->withQueryString();
+
+        return view('admin.finance.vendeur-orders', compact('user', 'vendeur', 'orders', 'statutFiltre', 'countsParStatut', 'totalCommandes'));
+    }
 }
