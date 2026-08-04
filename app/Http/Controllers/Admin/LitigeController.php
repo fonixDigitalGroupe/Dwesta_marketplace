@@ -18,7 +18,7 @@ class LitigeController extends Controller
             'ferme'    => Litige::where('statut', 'ferme')->count(),
         ];
 
-        $litiges = Litige::with(['reporter', 'reported', 'order'])
+        $litiges = Litige::with(['reporter', 'reported', 'order.seller.user', 'order.buyer'])
             ->when(in_array($statut, ['en_cours', 'resolu', 'ferme']), fn($q) => $q->where('statut', $statut))
             ->latest()
             ->paginate(15)

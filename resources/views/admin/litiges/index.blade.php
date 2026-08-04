@@ -74,9 +74,11 @@
             <table style="width: 100%; border-collapse: collapse; min-width: 900px; border: 1px solid #eff3f6;">
                 <thead>
                     <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Litige / Motif</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Motif</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Commande</th>
-                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Parties</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Signaleur</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Vendeur</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Client</th>
                         <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 120px;">Statut</th>
                         <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 110px;">Actions</th>
                     </tr>
@@ -85,16 +87,21 @@
                     @forelse($litiges as $litige)
                         <tr style="border-bottom: 1px solid #e7e7e7;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
-                                <div style="font-weight: 700; color: #111;">#{{ $litige->id }} · {{ ucfirst(str_replace('_',' ',$litige->motif)) }}</div>
-                                <div style="font-size: 0.8rem; color: #666; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $litige->description }}</div>
+                                <div style="font-weight: 700; color: #111;">{{ ucfirst(str_replace('_',' ',$litige->motif)) }}</div>
+                                <div style="font-size: 0.8rem; color: #666; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $litige->description }}</div>
                                 <div style="font-size: 0.72rem; color: #999; margin-top: 3px;">{{ $litige->created_at->format('d/m/Y à H:i') }}</div>
                             </td>
                             <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; color: #004aad; font-weight: 600;">
                                 {{ $litige->order?->reference ?? '—' }}
                             </td>
-                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem;">
-                                <div><span style="color:#888;">Par :</span> {{ $litige->reporter->prenom ?? '' }} {{ $litige->reporter->nom ?? '' }}</div>
-                                <div><span style="color:#888;">Contre :</span> {{ $litige->reported->prenom ?? '' }} {{ $litige->reported->nom ?? '' }}</div>
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #111;">
+                                {{ $litige->reporter->prenom ?? '' }} {{ $litige->reporter->nom ?? '' }}
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #111;">
+                                {{ $litige->order?->seller?->user?->prenom ?? '' }} {{ $litige->order?->seller?->user?->nom ?? '—' }}
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem; color: #111;">
+                                {{ $litige->order?->buyer?->prenom ?? '' }} {{ $litige->order?->buyer?->nom ?? '—' }}
                             </td>
                             <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
                                 <span class="lt-badge lt-{{ $litige->statut }}">{{ ucfirst(str_replace('_',' ',$litige->statut)) }}</span>
@@ -104,7 +111,7 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5" style="padding: 2.5rem; text-align: center; color: #999; border: 1px solid #eee;">Aucun litige.</td></tr>
+                        <tr><td colspan="7" style="padding: 2.5rem; text-align: center; color: #999; border: 1px solid #eee;">Aucun litige.</td></tr>
                     @endforelse
                 </tbody>
             </table>
