@@ -196,4 +196,14 @@ class StripeService
     {
         return $this->stripe->checkout->sessions->retrieve($sessionId);
     }
+
+    /**
+     * Rembourse un paiement (Payment Intent). Montant total par défaut.
+     */
+    public function refund(string $paymentIntentId)
+    {
+        return $this->stripe->refunds->create([
+            'payment_intent' => $paymentIntentId,
+        ]);
+    }
 }

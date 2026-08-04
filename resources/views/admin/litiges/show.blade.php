@@ -52,22 +52,44 @@
                     <i class="fas fa-shopping-bag" style="color: #f68b1e;"></i> Commande Associée
                 </h2>
                 
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px;">
+                @php
+                    $o = $litige->order;
+                    $estCod = in_array($o->gestion_paiement, ['livraison_buyer', 'livraison_receiver']) || $o->moyen_paiement === 'cod';
+                    $paiementLabel = $estCod ? 'Paiement à la livraison'
+                        : match($o->moyen_paiement) {
+                            'cb' => 'Carte Bancaire', 'om' => 'Orange Money', 'wave' => 'Wave',
+                            'gift_card' => 'Carte Cadeau', 'wallet' => 'Portefeuille',
+                            default => ucfirst(str_replace('_', ' ', $o->moyen_paiement ?? 'Non renseigné')),
+                        };
+                @endphp
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px;">
                     <div>
                         <div style="font-size: 0.7rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 5px;">Référence</div>
-                        <div style="font-weight: 700; color: #004aad; font-size: 1rem;">#{{ $litige->order->reference }}</div>
+                        <div style="font-weight: 700; color: #004aad; font-size: 1rem;">#{{ $o->reference }}</div>
                     </div>
                     <div>
                         <div style="font-size: 0.7rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 5px;">Montant Total</div>
-                        <div style="font-weight: 700; color: #111; font-size: 1rem;">{{ number_format($litige->order->total_final, 0, ',', ' ') }} FCFA</div>
+                        <div style="font-weight: 700; color: #111; font-size: 1rem;">{{ number_format($o->total_final, 0, ',', ' ') }} FCFA</div>
                     </div>
                     <div>
                         <div style="font-size: 0.7rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 5px;">Statut</div>
                         <div>
                             <span style="font-size: 0.7rem; color: #004aad; background: #f0f7ff; padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase; border: 1px solid #cce3ff;">
-                                {{ $litige->order->statut_label ?? $litige->order->statut }}
+                                {{ $o->statut_label ?? $o->statut }}
                             </span>
                         </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.7rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 5px;">Mode de paiement</div>
+                        <div style="font-weight: 600; color: #111; font-size: 0.9rem;">{{ $paiementLabel }} @if($paidOnline)<span style="color:#16a34a; font-size:0.72rem;">(payé en ligne)</span>@endif</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.7rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 5px;">Mode de livraison</div>
+                        <div style="font-weight: 600; color: #111; font-size: 0.9rem;">{{ ucfirst(str_replace('_', ' ', $o->mode_livraison ?? '-')) }}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.7rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 5px;">Commission plateforme</div>
+                        <div style="font-weight: 600; color: #c40000; font-size: 0.9rem;">{{ number_format($o->commission_plateforme ?? 0, 0, ',', ' ') }} FCFA</div>
                     </div>
                 </div>
 
@@ -102,7 +124,7 @@
                                 placeholder="Expliquez la décision finale (ex: Remboursement validé, Réclamation rejetée...)" required></textarea>
                         </div>
 
-                        <div style="margin-bottom: 25px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div style="margin-bottom: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                             <div>
                                 <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #444; margin-bottom: 8px;">Mise à jour du Statut</label>
                                 <select name="statut" style="width: 100%; padding: 10px; border: 1px solid #adb1b8; border-radius: 3px; background: #fff; outline: none; cursor: pointer;">
@@ -110,6 +132,22 @@
                                     <option value="ferme">Fermé - Rejeté / Sans suite</option>
                                 </select>
                             </div>
+                            <div>
+                                <label style="display: block; font-size: 0.85rem; font-weight: 700; color: #444; margin-bottom: 8px;">Action financière</label>
+                                <select name="action_financiere" style="width: 100%; padding: 10px; border: 1px solid #adb1b8; border-radius: 3px; background: #fff; outline: none; cursor: pointer;">
+                                    <option value="aucune">Aucune</option>
+                                    <option value="retour_vendeur">Retour au vendeur (rembourser le client si payé en ligne)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 25px; font-size: 0.8rem; color: #666; background: #f9fafb; border: 1px solid #eee; border-radius: 4px; padding: 10px 14px; line-height: 1.5;">
+                            <strong>Retour au vendeur :</strong>
+                            @if($paidOnline)
+                                le client a payé en ligne → il sera <strong>remboursé</strong> et le montant sera <strong>déduit du vendeur</strong>. La commande passera en « annulée ».
+                            @else
+                                le client n'a <strong>pas encore payé</strong> (paiement à la livraison) → <strong>aucun remboursement</strong>, la commande sera simplement annulée.
+                            @endif
                         </div>
 
                         <button type="submit" 
