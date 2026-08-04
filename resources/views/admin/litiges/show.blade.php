@@ -2,17 +2,25 @@
 
 @section('title', 'Détails du Litige #' . $litige->id)
 
+@push('styles')
+<style>.main-content { background-color: #f8f9fa !important; }</style>
+@endpush
+
 @section('content')
-<div style="max-width: 1200px; margin: 0 auto;">
-    
+<div style="max-width: 1200px; margin: -50px auto 0;">
+  <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
+
     <!-- Header -->
-    <div style="margin-bottom: 2rem; border-bottom: 1px solid #e7e7e7; padding-bottom: 1rem; display: flex; justify-content: space-between; align-items: flex-end;">
-        <div>
-            <h1 style="font-size: 1.5rem; color: #111; font-weight: 700; margin-bottom: 0.25rem;">Litige #{{ $litige->id }}</h1>
-            <p style="font-size: 0.9rem; color: #555;">Signalé le {{ $litige->created_at->format('d/m/Y à H:i') }}</p>
+    <div style="margin-bottom: 1.5rem; border-bottom: 1px solid #eff3f6; padding-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-gavel" style="color: #475569;"></i>
+            <div>
+                <h1 style="font-size: 1.2rem; color: #111; font-weight: 700; margin: 0;">Litige #{{ $litige->id }}</h1>
+                <p style="font-size: 0.82rem; color: #666; margin: 2px 0 0;">Signalé le {{ $litige->created_at->format('d/m/Y à H:i') }}</p>
+            </div>
         </div>
-        <a href="{{ route('admin.litiges.index') }}" 
-           style="font-size: 0.85rem; color: #004aad; text-decoration: none; font-weight: 600;">
+        <a href="{{ route('admin.litiges.index') }}"
+           style="font-size: 0.82rem; color: #004aad; text-decoration: none; font-weight: 600;">
             &larr; Retour à la liste
         </a>
     </div>
@@ -150,10 +158,10 @@
                             @endif
                         </div>
 
-                        <button type="submit" 
-                            style="width: 100%; background: linear-gradient(to bottom, #f7dfa5, #f0c14b); border: 1px solid #a88734; border-radius: 3px; padding: 12px; font-weight: 600; color: #111; cursor: pointer; box-shadow: 0 1px 0 rgba(255,255,255,.4) inset;"
-                            onmouseover="this.style.background='linear-gradient(to bottom, #f5d78e, #eeb933)'; this.style.borderColor='#846a29'"
-                            onmouseout="this.style.background='linear-gradient(to bottom, #f7dfa5, #f0c14b)'; this.style.borderColor='#a88734'">
+                        <button type="submit"
+                            style="width: 100%; background: #004aad; border: none; border-radius: 6px; padding: 12px; font-weight: 700; color: #fff; cursor: pointer; transition: background 0.2s;"
+                            onmouseover="this.style.background='#003a8a'"
+                            onmouseout="this.style.background='#004aad'">
                             Valider et clôturer le litige
                         </button>
                     </form>
@@ -212,5 +220,6 @@
 
     </div>
 
+  </div>
 </div>
 @endsection
