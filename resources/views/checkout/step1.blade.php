@@ -942,12 +942,14 @@
                     <!-- Payment Summary (Shown after confirmation) - Matches Image 2 -->
                     <div id="payment-summary" style="display: none; padding-top: 10px;">
                         <div
-                            style="display: flex; justify-content: space-between; align-items: flex-start; background: #fff; padding: 5px 0;">
+                            style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 5px 0;">
                             <div style="display: flex; align-items: center; gap: 8px;">
                                 <div id="summary-payment-name" style="font-weight: 700; color: #313133; font-size: 14px;">
                                     Mode de paiement</div>
+                                <span id="summary-payment-icon" style="display: none;"></span>
                             </div>
-                            <div id="summary-payment-icon" style="display: none;"></div>
+                            <a href="#" onclick="editPayment(); return false;" class="modifier-link"
+                                style="color: #004aad; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;">Modifier &gt;</a>
                         </div>
                         <!-- Retourner à vos achats (Inside the card as requested) -->
                         <div id="back-to-shop-link"
