@@ -167,14 +167,14 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
 
             {{-- Solde Karnou retirable --}}
-            <div style="border: 1px solid #e7e7e7; border-radius: 4px; padding: 20px; background: #f9fbff;">
-                <div style="font-size: 0.72rem; color: #555; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 12px;">
+            <div style="border: 1px solid #b7e4c7; border-radius: 4px; padding: 20px; background: #e9f7ef;">
+                <div style="font-size: 0.72rem; color: #14663f; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 12px;">
                     Solde Karnou (retirable)
                 </div>
                 @php
                     $soldeKarnou = $stripeOverview['commissionsTotal'] + $stripeOverview['creditsRevenue'] + $stripeOverview['subscriptionsRevenue'];
                 @endphp
-                <div style="font-size: 2rem; font-weight: 800; color: #09825d; line-height: 1; margin-bottom: 6px;">
+                <div style="font-size: 2rem; font-weight: 800; color: #16a34a; line-height: 1; margin-bottom: 6px;">
                     {{ number_format($soldeKarnou, 0, ',', ' ') }}
                     <span style="font-size: 0.9rem; font-weight: 500; color: #888;">FCFA</span>
                 </div>
@@ -196,11 +196,11 @@
             </div>
 
             {{-- Montant à payer aux vendeurs --}}
-            <div style="border: 1px solid #e7e7e7; border-radius: 4px; padding: 20px; background: #fffbf7;">
-                <div style="font-size: 0.72rem; color: #555; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 12px;">
+            <div style="border: 1px solid #bcd4f6; border-radius: 4px; padding: 20px; background: #eaf1fd;">
+                <div style="font-size: 0.72rem; color: #1e3a8a; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 12px;">
                     À payer aux Vendeurs
                 </div>
-                <div style="font-size: 2rem; font-weight: 800; color: #c45500; line-height: 1; margin-bottom: 6px;">
+                <div style="font-size: 2rem; font-weight: 800; color: #2563eb; line-height: 1; margin-bottom: 6px;">
                     {{ number_format($stripeOverview['vendeursMontantTotal'], 0, ',', ' ') }}
                     <span style="font-size: 0.9rem; font-weight: 500; color: #888;">FCFA</span>
                 </div>
