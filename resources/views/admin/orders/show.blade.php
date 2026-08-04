@@ -135,9 +135,6 @@
         <!-- Action Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
             <div style="display: flex; align-items: center; gap: 15px;">
-                <a href="{{ route('admin.orders.index') }}" class="btn-amazon-secondary" style="padding: 6px 12px;">
-                    <i class="fas fa-chevron-left"></i> Retour
-                </a>
                 <h1 style="font-size: 1.25rem; font-weight: 500; color: #111; margin: 0;">
                     Détails de la Commande : {{ $order->reference }}
                 </h1>
