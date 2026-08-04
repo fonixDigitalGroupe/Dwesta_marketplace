@@ -1,110 +1,116 @@
 @extends('layouts.admin')
 
-@section('title', 'Gestion des Litiges')
+@section('title', 'Litiges')
+
+@push('styles')
+    <style>
+        .main-content { background-color: #f8f9fa !important; }
+        .lt-tab {
+            padding: 8px 14px; text-decoration: none; font-size: 0.82rem; color: #555;
+            font-weight: 600; border-radius: 999px; border: 1px solid #e0e2e6; background: #fff;
+        }
+        .lt-tab.active { color: #fff; background: #c45500; border-color: #c45500; }
+        .lt-badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .lt-en_cours { background: #fef2f2; color: #991b1b; }
+        .lt-resolu { background: #f0fdf4; color: #166534; }
+        .lt-ferme { background: #f3f4f6; color: #374151; }
+    </style>
+@endpush
 
 @section('content')
 <div style="max-width: 1200px; margin: 0 auto;">
-    
-    <!-- Header -->
-    <div style="margin-bottom: 2rem; border-bottom: 1px solid #e7e7e7; padding-bottom: 1rem;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-            <div>
-                <h1 style="font-size: 1.5rem; color: #111; font-weight: 700; margin-bottom: 0.25rem;">Gestion des Litiges</h1>
-                <p style="font-size: 0.9rem; color: #555;">Supervisez et résolvez les conflits entre acheteurs et vendeurs.</p>
-            </div>
-            <div style="font-size: 0.85rem; color: #555; background: #f6f6f6; padding: 6px 12px; border-radius: 4px; border: 1px solid #e7e7e7;">
-                <strong>{{ $litiges->total() }}</strong> litige(s) au total
-            </div>
-        </div>
-    </div>
+    <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px; margin-top: -50px;">
 
-    <!-- Table Container -->
-    <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-        
-        <!-- Table Header Controls -->
-        <div style="padding: 15px 20px; border-bottom: 1px solid #e7e7e7; background: #fafafa; display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 10px; font-size: 0.85rem; color: #111;">
-                <span>Afficher</span>
-                <select onchange="window.location.href = '{{ request()->url() }}?per_page=' + this.value" 
-                    style="padding: 5px 10px; border: 1px solid #adb1b8; border-radius: 3px; background: #fff; outline: none; cursor: pointer;">
-                    <option value="8" {{ request('per_page', 8) == 8 ? 'selected' : '' }}>8</option>
-                    <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                </select>
-                <span>par page</span>
+        <!-- Top Action Bar -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eff3f6;">
+            <div style="display: flex; align-items: center; gap: 8px; color: #475569; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; height: 28px;">
+                <i class="fas fa-gavel" style="font-size: 0.8rem;"></i>
+                <span style="line-height: 1;">Litiges</span>
             </div>
         </div>
 
-        <!-- Table -->
-        <div style="overflow-x: auto;">
-            @if($litiges->count() > 0)
-                <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                    <thead>
-                        <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
-                            <th style="padding: 12px 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #111; letter-spacing: 0.03em; border-right: 1px solid #e7e7e7; width: 80px;">ID</th>
-                            <th style="padding: 12px 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #111; letter-spacing: 0.03em; border-right: 1px solid #e7e7e7;">Signalé par / Contre</th>
-                            <th style="padding: 12px 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #111; letter-spacing: 0.03em; border-right: 1px solid #e7e7e7;">Motif</th>
-                            <th style="padding: 12px 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #111; letter-spacing: 0.03em; border-right: 1px solid #e7e7e7; width: 120px; text-align: center;">Statut</th>
-                            <th style="padding: 12px 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #111; letter-spacing: 0.03em; text-align: right; width: 120px;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($litiges as $litige)
-                        <tr style="border-bottom: 1px solid #e7e7e7; transition: background 0.15s;" onmouseover="this.style.background='#f7faff'" onmouseout="this.style.background='transparent'">
-                            <td style="padding: 15px 20px; border-right: 1px solid #e7e7e7; color: #888; font-weight: 600;">#{{ $litige->id }}</td>
-                            <td style="padding: 15px 20px; border-right: 1px solid #e7e7e7;">
-                                <div style="display: flex; flex-direction: column; gap: 4px;">
-                                    <div style="font-size: 0.85rem;">
-                                        <span style="color: #666;">Par:</span> <strong style="color: #004aad;">{{ $litige->reporter->prenom }} {{ $litige->reporter->nom }}</strong>
-                                    </div>
-                                    <div style="font-size: 0.85rem;">
-                                        <span style="color: #666;">Contre:</span> <strong style="color: #111;">{{ $litige->reported->prenom }} {{ $litige->reported->nom }}</strong>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="padding: 15px 20px; border-right: 1px solid #e7e7e7;">
-                                <span style="font-size: 0.75rem; color: #555; background: #f3f4f6; padding: 3px 8px; border-radius: 4px; font-weight: 600; border: 1px solid #e2e8f0;">
-                                    {{ ucfirst($litige->motif) }}
-                                </span>
-                                @if($litige->description)
-                                    <div style="margin-top: 6px; font-size: 0.78rem; color: #555; line-height: 1.35; max-width: 320px;">{{ \Illuminate\Support\Str::limit($litige->description, 90) }}</div>
-                                @endif
-                                <div style="margin-top: 6px; font-size: 0.75rem; color: #888;">Le {{ $litige->created_at->format('d/m/Y à H:i') }}</div>
-                            </td>
-                            <td style="padding: 15px 20px; border-right: 1px solid #e7e7e7; text-align: center;">
-                                @if($litige->statut === 'en_cours')
-                                    <span style="font-size: 0.7rem; color: #c45500; background: #fff8f3; padding: 4px 10px; border-radius: 12px; font-weight: 700; text-transform: uppercase; border: 1px solid #fbd8b4;">
-                                        En cours
-                                    </span>
-                                @else
-                                    <span style="font-size: 0.7rem; color: #166534; background: #f0fdf4; padding: 4px 10px; border-radius: 12px; font-weight: 700; text-transform: uppercase; border: 1px solid #bbf7d0;">
-                                        Résolu
-                                    </span>
-                                @endif
-                            </td>
-                            <td style="padding: 15px 20px; text-align: right;">
-                                <a href="{{ route('admin.litiges.show', $litige) }}" title="Détails"
-                                   style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 6px; color: #111; text-decoration: none; transition: background 0.2s;"
-                                   onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='transparent'"><i class="fas fa-eye" style="font-size: 0.95rem;"></i></a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @else
-                <div style="padding: 60px 20px; text-align: center; color: #555; background: #fafafa;">
-                    <i class="fas fa-handshake" style="font-size: 3rem; color: #16a34a; margin-bottom: 15px; opacity: 0.3;"></i>
-                    <p style="font-size: 1rem; font-weight: 700; color: #111; margin-bottom: 5px;">Aucun litige</p>
-                    <p style="font-size: 0.85rem;">Aucun conflit n'est actuellement signalé sur la plateforme.</p>
-                </div>
-            @endif
-        </div>
-
-        @if($litiges->hasPages())
-        <div style="padding: 20px; border-top: 1px solid #e7e7e7; background: #fafafa;">
-            {{ $litiges->links() }}
-        </div>
+        @if(session('success'))
+            <div style="background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 0.85rem;">{{ session('success') }}</div>
         @endif
+        @if(session('error'))
+            <div style="background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; padding: 12px 16px; border-radius: 6px; margin-bottom: 16px; font-size: 0.85rem;">{{ session('error') }}</div>
+        @endif
+
+        <!-- Statistiques -->
+        <div style="display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #dc2626; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fas fa-triangle-exclamation"></i></div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $counts['en_cours'] }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">En cours</div>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fas fa-check-circle"></i></div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $counts['resolu'] }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Résolus</div>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 180px; display: flex; align-items: center; gap: 12px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px 18px;">
+                <div style="width: 40px; height: 40px; border-radius: 8px; background: #fff; color: #6b7280; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;"><i class="fas fa-folder-closed"></i></div>
+                <div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #111; line-height: 1;">{{ $counts['ferme'] }}</div>
+                    <div style="font-size: 0.75rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 4px;">Fermés</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtres statut -->
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
+            <a href="{{ route('admin.litiges.index', ['statut' => 'en_cours']) }}" class="lt-tab {{ $statut === 'en_cours' ? 'active' : '' }}">En cours ({{ $counts['en_cours'] }})</a>
+            <a href="{{ route('admin.litiges.index', ['statut' => 'resolu']) }}" class="lt-tab {{ $statut === 'resolu' ? 'active' : '' }}">Résolus ({{ $counts['resolu'] }})</a>
+            <a href="{{ route('admin.litiges.index', ['statut' => 'ferme']) }}" class="lt-tab {{ $statut === 'ferme' ? 'active' : '' }}">Fermés ({{ $counts['ferme'] }})</a>
+            <a href="{{ route('admin.litiges.index', ['statut' => 'tous']) }}" class="lt-tab {{ $statut === 'tous' ? 'active' : '' }}">Tous</a>
+        </div>
+
+        <!-- Tableau -->
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; min-width: 900px; border: 1px solid #eff3f6;">
+                <thead>
+                    <tr style="background: #d1d5db; border-bottom: 1px solid #cbd0d6;">
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Litige / Motif</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Commande</th>
+                        <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7;">Parties</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #e7e7e7; width: 120px;">Statut</th>
+                        <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 110px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($litiges as $litige)
+                        <tr style="border-bottom: 1px solid #e7e7e7;" onmouseover="this.style.background='#f9f9f9'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6;">
+                                <div style="font-weight: 700; color: #111;">#{{ $litige->id }} · {{ ucfirst(str_replace('_',' ',$litige->motif)) }}</div>
+                                <div style="font-size: 0.8rem; color: #666; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $litige->description }}</div>
+                                <div style="font-size: 0.72rem; color: #999; margin-top: 3px;">{{ $litige->created_at->format('d/m/Y à H:i') }}</div>
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; color: #004aad; font-weight: 600;">
+                                {{ $litige->order?->reference ?? '—' }}
+                            </td>
+                            <td style="padding: 12px 15px; border-right: 1px solid #eff3f6; font-size: 0.82rem;">
+                                <div><span style="color:#888;">Par :</span> {{ $litige->reporter->prenom ?? '' }} {{ $litige->reporter->nom ?? '' }}</div>
+                                <div><span style="color:#888;">Contre :</span> {{ $litige->reported->prenom ?? '' }} {{ $litige->reported->nom ?? '' }}</div>
+                            </td>
+                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
+                                <span class="lt-badge lt-{{ $litige->statut }}">{{ ucfirst(str_replace('_',' ',$litige->statut)) }}</span>
+                            </td>
+                            <td style="padding: 12px 15px; text-align: right;">
+                                <a href="{{ route('admin.litiges.show', $litige) }}" style="background: #004aad; color: #fff; font-size: 0.75rem; font-weight: 600; padding: 6px 14px; border-radius: 4px; text-decoration: none;">Détail</a>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="5" style="padding: 2.5rem; text-align: center; color: #999; border: 1px solid #eee;">Aucun litige.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 20px;">{{ $litiges->links() }}</div>
     </div>
 </div>
 @endsection

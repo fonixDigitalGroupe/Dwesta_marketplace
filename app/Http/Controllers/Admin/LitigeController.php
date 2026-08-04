@@ -8,10 +8,23 @@ use Illuminate\Http\Request;
 
 class LitigeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $litiges = Litige::with(['reporter', 'reported'])->latest()->paginate(8);
-        return view('admin.litiges.index', compact('litiges'));
+        $statut = $request->get('statut', 'en_cours');
+
+        $counts = [
+            'en_cours' => Litige::where('statut', 'en_cours')->count(),
+            'resolu'   => Litige::where('statut', 'resolu')->count(),
+            'ferme'    => Litige::where('statut', 'ferme')->count(),
+        ];
+
+        $litiges = Litige::with(['reporter', 'reported', 'order'])
+            ->when(in_array($statut, ['en_cours', 'resolu', 'ferme']), fn($q) => $q->where('statut', $statut))
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
+
+        return view('admin.litiges.index', compact('litiges', 'counts', 'statut'));
     }
 
     public function show(Litige $litige)
