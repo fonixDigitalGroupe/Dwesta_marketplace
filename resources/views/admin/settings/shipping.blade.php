@@ -113,7 +113,7 @@
                         </div>
 
                         <div class="form-footer">
-                            <button type="submit" class="btn-amazon-primary" style="width: 100%; justify-content: center; background: #ff9900;">
+                            <button type="submit" class="btn-amazon-primary" style="width: 100%; justify-content: center; background: #004aad;">
                                 AJOUTER LA RÈGLE
                             </button>
                         </div>
@@ -170,7 +170,7 @@
 
                         <div class="form-footer">
                             <p style="font-size: 0.72rem; color: #94a3b8; margin: 0 0 10px;">Un tarif par pays × mode × palier de poids. Ré-enregistrer la même combinaison met à jour son tarif.</p>
-                            <button type="submit" class="btn-amazon-primary" style="width: 100%; justify-content: center; background: #ff9900;">
+                            <button type="submit" class="btn-amazon-primary" style="width: 100%; justify-content: center; background: #004aad;">
                                 ENREGISTRER LE TARIF
                             </button>
                         </div>
