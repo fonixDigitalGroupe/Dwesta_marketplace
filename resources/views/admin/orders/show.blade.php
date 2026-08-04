@@ -168,7 +168,23 @@
                 <div class="info-row"><span class="info-label">Référence</span> <span class="info-value">{{ $order->reference }}</span></div>
                 <div class="info-row"><span class="info-label">Date de création</span> <span class="info-value">{{ $order->created_at->format('d/m/Y à H:i') }}</span></div>
                 <div class="info-row"><span class="info-label">Mode d'expédition</span> <span class="info-value">{{ ucfirst(str_replace('_', ' ', $order->mode_livraison)) }}</span></div>
-                <div class="info-row"><span class="info-label">Mode de paiement</span> <span class="info-value">{{ $order->mode_paiement }}</span></div>
+                <div class="info-row"><span class="info-label">Mode de paiement</span> <span class="info-value">
+                    @if(in_array($order->gestion_paiement, ['livraison_buyer', 'livraison_receiver']) || $order->moyen_paiement === 'cod')
+                        Paiement à la livraison
+                    @elseif($order->moyen_paiement === 'cb')
+                        Carte Bancaire
+                    @elseif($order->moyen_paiement === 'om')
+                        Orange Money
+                    @elseif($order->moyen_paiement === 'wave')
+                        Wave
+                    @elseif($order->moyen_paiement === 'gift_card')
+                        Carte Cadeau
+                    @elseif($order->moyen_paiement === 'wallet')
+                        Portefeuille
+                    @else
+                        {{ ucfirst(str_replace('_', ' ', $order->moyen_paiement ?? $order->mode_paiement ?? 'Non renseigné')) }}
+                    @endif
+                </span></div>
                 <div class="info-row"><span class="info-label">Dernière mise à jour</span> <span class="info-value">{{ $order->updated_at->format('d/m/Y à H:i') }}</span></div>
             </div>
 
