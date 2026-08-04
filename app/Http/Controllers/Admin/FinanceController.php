@@ -142,7 +142,16 @@ class FinanceController extends Controller
 
         // Total de l'onglet courant (période filtrée) : abonnements, crédits, cartes cadeaux, retraits
         $tabTotal = null;
-        if ($tab === 'subscriptions') {
+        if ($tab === 'commissions') {
+            $tabTotal = [
+                'label' => 'Total des commissions',
+                'value' => Order::where('commission_plateforme', '>', 0)
+                    ->whereIn('statut', $paidStatuses)
+                    ->when($statutFiltre, fn($q) => $q->where('statut', $statutFiltre))
+                    ->whereBetween('created_at', $periode)
+                    ->sum('commission_plateforme'),
+            ];
+        } elseif ($tab === 'subscriptions') {
             $tabTotal = [
                 'label' => 'Total des abonnements',
                 'value' => VendeurAbonnement::whereBetween('vendeur_abonnements.created_at', $periode)
