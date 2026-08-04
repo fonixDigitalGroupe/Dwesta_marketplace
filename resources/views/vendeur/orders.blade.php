@@ -10,6 +10,28 @@
         font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
+    .jumia-tabs {
+        display: flex;
+        gap: 24px;
+        border-bottom: 1px solid #eeeeee;
+        margin-bottom: 1.5rem;
+    }
+    .jumia-tab {
+        color: #75757a;
+        font-weight: 500;
+        font-size: 0.85rem;
+        text-decoration: none;
+        text-transform: uppercase;
+        padding: 0 0 10px 0;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;
+    }
+    .jumia-tab:hover { color: #f68b1e; }
+    .jumia-tab.active {
+        color: #f68b1e;
+        border-bottom-color: #f68b1e;
+    }
+
     .orders-list {
         display: flex;
         flex-direction: column;
@@ -161,11 +183,20 @@
     @include('partials.profile-sidebar')
 
     <main class="main-content">
-        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #eee;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee;">
             <h1 style="font-size: 1.1rem; font-weight: 600; color: #333; margin: 0;">Mes commandes</h1>
             <div style="font-size: 0.85rem; color: #666;">
                 {{ $orders->total() }} commande(s) trouvée(s)
             </div>
+        </div>
+
+        <div class="jumia-tabs">
+            <a href="?tab=active" class="jumia-tab {{ ($tab ?? 'active') !== 'returned' ? 'active' : '' }}">
+                EN COURS / LIVRÉES ({{ $activeCount ?? 0 }})
+            </a>
+            <a href="?tab=returned" class="jumia-tab {{ ($tab ?? '') === 'returned' ? 'active' : '' }}">
+                ANNULÉES ({{ $returnedCount ?? 0 }})
+            </a>
         </div>
 
         <div class="orders-list">

@@ -457,14 +457,27 @@ class VendeurController extends Controller
         // reste "en_attente" : elle ne doit PAS apparaître chez le vendeur tant
         // qu'elle n'est pas payée. On garde les "en_attente" uniquement pour le
         // paiement à la livraison (gestion_paiement != 'commande').
-        $orders = $vendeur->orders()
+        // Base : commandes visibles (paiement confirmé ou COD, pas les cartes non payées)
+        $baseQuery = $vendeur->orders()
             ->where(function ($w) {
                 $w->where('statut', '!=', 'en_attente')
                     ->orWhere('gestion_paiement', '!=', 'commande');
-            })
+            });
+
+        $activeStatuses   = ['en_attente', 'paye', 'pret_expedition', 'en_route', 'disponible', 'livre'];
+        $returnedStatuses = ['annule', 'litige'];
+
+        $activeCount   = (clone $baseQuery)->whereIn('statut', $activeStatuses)->count();
+        $returnedCount = (clone $baseQuery)->whereIn('statut', $returnedStatuses)->count();
+
+        $tab = request()->query('tab', 'active');
+
+        $orders = (clone $baseQuery)
+            ->whereIn('statut', $tab === 'returned' ? $returnedStatuses : $activeStatuses)
             ->with(['buyer', 'items.annonce'])
             ->latest()
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
         // Stats rapides (sur toutes les commandes visibles, pas seulement la page)
         $allOrders = $vendeur->orders()
@@ -479,7 +492,7 @@ class VendeurController extends Controller
             'delivered' => (clone $allOrders)->where('statut', 'livre')->count(),
         ];
 
-        return view('vendeur.orders', compact('vendeur', 'orders', 'stats'));
+        return view('vendeur.orders', compact('vendeur', 'orders', 'stats', 'tab', 'activeCount', 'returnedCount'));
     }
 
     /**
