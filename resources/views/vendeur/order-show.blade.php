@@ -345,8 +345,14 @@
                     @endforeach
                 </div>
 
-                @if($order->statut === 'paye')
+                @php
+                    $estCod = in_array($order->gestion_paiement, ['livraison_buyer', 'livraison_receiver']) || $order->moyen_paiement === 'cod';
+                @endphp
+                @if($order->statut === 'paye' || ($order->statut === 'en_attente' && $estCod))
                     <div style="margin-top: 1.25rem; border-top: 1px solid #eee; padding-top: 1rem; background: #fffbf5; border: 1px solid #f68b1e; border-radius: 4px; padding: 1rem;">
+                        @if($order->statut === 'en_attente' && $estCod)
+                            <div style="font-size: 0.82rem; color: #b45309; margin-bottom: 0.75rem;">Commande en paiement à la livraison — vous pouvez la préparer dès maintenant.</div>
+                        @endif
                         <form method="POST" action="{{ route('logistics.markAsReady', $order) }}">
                             @csrf
                             <button type="submit" style="width: 100%; background: #f68b1e; color: #fff; border: none; padding: 0.75rem 1rem; border-radius: 4px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
