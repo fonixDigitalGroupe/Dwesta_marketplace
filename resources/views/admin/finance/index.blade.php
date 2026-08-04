@@ -291,14 +291,17 @@
                             <div style="font-size: 1.05rem; font-weight: 800; color: {{ $c[3] }};">{{ number_format($c[1], 0, ',', ' ') }}</div>
                         </div>
                     @endforeach
-                @elseif(!empty($tabTotal))
-                    <div style="border: 1px solid #b7e4c7; background: #e9f7ef; border-radius: 6px; padding: 6px 14px;">
-                        <div style="font-size: 0.6rem; font-weight: 700; color: #14663f; text-transform: uppercase;">{{ $tabTotal['label'] }}</div>
-                        <div style="font-size: 1.05rem; font-weight: 800; color: #16a34a;">{{ number_format($tabTotal['value'], 0, ',', ' ') }}</div>
-                    </div>
                 @endif
             </div>
         </div>
+
+        {{-- Total (autres onglets) : sous les dates --}}
+        @if(!empty($tabTotal))
+            <div style="display: inline-block; border: 1px solid #b7e4c7; background: #e9f7ef; border-radius: 6px; padding: 6px 14px; margin-bottom: 18px;">
+                <div style="font-size: 0.6rem; font-weight: 700; color: #14663f; text-transform: uppercase;">{{ $tabTotal['label'] }}</div>
+                <div style="font-size: 1.05rem; font-weight: 800; color: #16a34a;">{{ number_format($tabTotal['value'], 0, ',', ' ') }}</div>
+            </div>
+        @endif
 
         <div class="finance-content">
 
