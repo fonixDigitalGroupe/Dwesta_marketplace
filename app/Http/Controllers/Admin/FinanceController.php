@@ -140,6 +140,37 @@ class FinanceController extends Controller
             ];
         }
 
-        return view('admin.finance.index', compact('tab', 'stripeOverview', 'data', 'dateDebut', 'dateFin', 'statutFiltre', 'overviewTotals'));
+        // Total de l'onglet courant (période filtrée) : abonnements, crédits, cartes cadeaux, retraits
+        $tabTotal = null;
+        if ($tab === 'subscriptions') {
+            $tabTotal = [
+                'label' => 'Total des abonnements',
+                'value' => VendeurAbonnement::whereBetween('vendeur_abonnements.created_at', $periode)
+                    ->join('abonnements', 'vendeur_abonnements.abonnement_id', '=', 'abonnements.id')
+                    ->sum('abonnements.prix_mensuel'),
+            ];
+        } elseif ($tab === 'credits') {
+            $tabTotal = [
+                'label' => 'Total des crédits vendus',
+                'value' => CreditTransaction::where('credit_transactions.type', 'achat')
+                    ->where('credit_transactions.related_type', \App\Models\CreditPack::class)
+                    ->whereBetween('credit_transactions.created_at', $periode)
+                    ->join('credit_packs', 'credit_transactions.related_id', '=', 'credit_packs.id')
+                    ->sum('credit_packs.prix'),
+            ];
+        } elseif ($tab === 'gift-cards') {
+            $tabTotal = [
+                'label' => 'Total des cartes cadeaux',
+                'value' => GiftCard::whereBetween('created_at', $periode)->sum('amount'),
+            ];
+        } elseif ($tab === 'withdrawals') {
+            $tabTotal = [
+                'label' => 'Total des retraits',
+                'value' => abs(Transaction::where('wallet_status', 'withdrawn')
+                    ->whereBetween('created_at', $periode)->sum('montant')),
+            ];
+        }
+
+        return view('admin.finance.index', compact('tab', 'stripeOverview', 'data', 'dateDebut', 'dateFin', 'statutFiltre', 'overviewTotals', 'tabTotal'));
     }
 }

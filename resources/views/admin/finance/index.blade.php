@@ -273,6 +273,15 @@
 
         <div class="finance-content">
 
+            @if(!empty($tabTotal))
+                <div style="margin-bottom: 18px;">
+                    <div style="display: inline-block; border: 1px solid #b7e4c7; background: #e9f7ef; border-radius: 6px; padding: 14px 22px;">
+                        <div style="font-size: 0.7rem; font-weight: 700; color: #14663f; text-transform: uppercase; letter-spacing: 0.5px;">{{ $tabTotal['label'] }}</div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: #16a34a; margin-top: 4px;">{{ number_format($tabTotal['value'], 0, ',', ' ') }} <span style="font-size: 0.8rem; font-weight: 500; color: #888;">FCFA</span></div>
+                    </div>
+                </div>
+            @endif
+
             {{-- OVERVIEW --}}
             @if($tab == 'overview')
                 @if($overviewTotals)
