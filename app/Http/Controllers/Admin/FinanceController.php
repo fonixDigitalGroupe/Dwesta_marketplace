@@ -25,6 +25,9 @@ class FinanceController extends Controller
             : now()->endOfMonth()->endOfDay();
         $periode = [$dateDebut, $dateFin];
 
+        // Filtre de statut (appliqué aux onglets basés sur les commandes)
+        $statutFiltre = $request->get('statut');
+
         // =========================================================
         // Financial Overview: toutes les métriques Stripe
         // =========================================================
@@ -101,6 +104,7 @@ class FinanceController extends Controller
                 $data = Order::with(['seller.user', 'buyer'])
                     ->where('commission_plateforme', '>', 0)
                     ->whereIn('statut', $paidStatuses)
+                    ->when($statutFiltre, fn($q) => $q->where('statut', $statutFiltre))
                     ->whereBetween('created_at', $periode)
                     ->latest()
                     ->paginate(15)->withQueryString();
@@ -117,12 +121,13 @@ class FinanceController extends Controller
             default: // overview
                 $data = Order::with(['seller', 'buyer'])
                     ->whereIn('statut', $paidStatuses)
+                    ->when($statutFiltre, fn($q) => $q->where('statut', $statutFiltre))
                     ->whereBetween('created_at', $periode)
                     ->latest()
                     ->paginate(20)->withQueryString();
                 break;
         }
 
-        return view('admin.finance.index', compact('tab', 'stripeOverview', 'data', 'dateDebut', 'dateFin'));
+        return view('admin.finance.index', compact('tab', 'stripeOverview', 'data', 'dateDebut', 'dateFin', 'statutFiltre'));
     }
 }

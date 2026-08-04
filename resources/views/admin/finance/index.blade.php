@@ -252,6 +252,23 @@
                 <label style="font-size: 0.7rem; font-weight: 700; color: #666; text-transform: uppercase;">Date de fin</label>
                 <input type="date" name="date_fin" value="{{ $dateFin->format('Y-m-d') }}" onchange="this.form.submit()" style="padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem;">
             </div>
+            @if(in_array($tab, ['overview', 'commissions']))
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 0.7rem; font-weight: 700; color: #666; text-transform: uppercase;">Statut</label>
+                    @php
+                        $statutsDispo = [
+                            'paye' => 'Payé', 'pret_expedition' => 'Prêt', 'en_route' => 'En route',
+                            'disponible' => 'Disponible', 'livre' => 'Livré',
+                        ];
+                    @endphp
+                    <select name="statut" onchange="this.form.submit()" style="padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem;">
+                        <option value="">Tous les statuts</option>
+                        @foreach($statutsDispo as $val => $lbl)
+                            <option value="{{ $val }}" {{ ($statutFiltre ?? '') === $val ? 'selected' : '' }}>{{ $lbl }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endif
         </form>
 
         <div class="finance-content">
