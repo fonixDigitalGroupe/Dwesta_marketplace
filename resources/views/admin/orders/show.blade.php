@@ -153,6 +153,12 @@
                 <span class="status-badge-premium" style="{{ $badgeStyle }}">
                     {{ $order->statut_label }}
                 </span>
+                @if(isset($litiges) && $litiges->count() > 0)
+                    <a href="{{ route('admin.litiges.show', $litiges->first()->id) }}"
+                        style="display: inline-block; margin-left: 12px; background: #c40000; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 8px 16px; border-radius: 4px; text-decoration: none;">
+                        <i class="fas fa-gavel"></i> Gérer le litige
+                    </a>
+                @endif
             </div>
         </div>
 
