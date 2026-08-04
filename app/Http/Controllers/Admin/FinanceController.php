@@ -16,6 +16,15 @@ class FinanceController extends Controller
     {
         $tab = $request->get('tab', 'overview');
 
+        // Filtre de période (par défaut : 1er au dernier jour du mois courant)
+        $dateDebut = $request->filled('date_debut')
+            ? \Carbon\Carbon::parse($request->date_debut)->startOfDay()
+            : now()->startOfMonth()->startOfDay();
+        $dateFin = $request->filled('date_fin')
+            ? \Carbon\Carbon::parse($request->date_fin)->endOfDay()
+            : now()->endOfMonth()->endOfDay();
+        $periode = [$dateDebut, $dateFin];
+
         // =========================================================
         // Financial Overview: toutes les métriques Stripe
         // =========================================================
@@ -68,46 +77,52 @@ class FinanceController extends Controller
         switch ($tab) {
             case 'subscriptions':
                 $data = VendeurAbonnement::with(['vendeur.user', 'abonnement'])
+                    ->whereBetween('created_at', $periode)
                     ->latest()
-                    ->paginate(15);
+                    ->paginate(15)->withQueryString();
                 break;
 
             case 'credits':
                 $data = CreditTransaction::with(['user', 'related'])
                     ->where('type', 'achat')
+                    ->whereBetween('created_at', $periode)
                     ->latest()
-                    ->paginate(15);
+                    ->paginate(15)->withQueryString();
                 break;
 
             case 'gift-cards':
                 $data = GiftCard::with(['buyer', 'redeemer'])
+                    ->whereBetween('created_at', $periode)
                     ->latest()
-                    ->paginate(15);
+                    ->paginate(15)->withQueryString();
                 break;
 
             case 'commissions':
                 $data = Order::with(['seller.user', 'buyer'])
                     ->where('commission_plateforme', '>', 0)
                     ->whereIn('statut', $paidStatuses)
+                    ->whereBetween('created_at', $periode)
                     ->latest()
-                    ->paginate(15);
+                    ->paginate(15)->withQueryString();
                 break;
 
             case 'withdrawals':
                 $data = Transaction::with('user')
                     ->where('wallet_status', 'withdrawn')
+                    ->whereBetween('created_at', $periode)
                     ->latest()
-                    ->paginate(15);
+                    ->paginate(15)->withQueryString();
                 break;
 
             default: // overview
                 $data = Order::with(['seller', 'buyer'])
                     ->whereIn('statut', $paidStatuses)
+                    ->whereBetween('created_at', $periode)
                     ->latest()
-                    ->paginate(20);
+                    ->paginate(20)->withQueryString();
                 break;
         }
 
-        return view('admin.finance.index', compact('tab', 'stripeOverview', 'data'));
+        return view('admin.finance.index', compact('tab', 'stripeOverview', 'data', 'dateDebut', 'dateFin'));
     }
 }
