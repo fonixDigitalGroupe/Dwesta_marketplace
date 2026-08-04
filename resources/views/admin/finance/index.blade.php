@@ -288,13 +288,13 @@
                     @foreach($ovCards as $c)
                         <div style="border: 1px solid {{ $c[5] }}; background: {{ $c[4] }}; border-radius: 6px; padding: 6px 14px;">
                             <div style="font-size: 0.6rem; font-weight: 700; color: {{ $c[2] }}; text-transform: uppercase;">{{ $c[0] }}</div>
-                            <div style="font-size: 1.05rem; font-weight: 800; color: {{ $c[3] }};">{{ number_format($c[1], 0, ',', ' ') }} <span style="font-size: 0.72rem; font-weight: 500; color: #888;">FCFA</span></div>
+                            <div style="font-size: 1.05rem; font-weight: 800; color: {{ $c[3] }};">{{ number_format($c[1], 0, ',', ' ') }}</div>
                         </div>
                     @endforeach
                 @elseif(!empty($tabTotal))
                     <div style="border: 1px solid #b7e4c7; background: #e9f7ef; border-radius: 6px; padding: 6px 14px;">
                         <div style="font-size: 0.6rem; font-weight: 700; color: #14663f; text-transform: uppercase;">{{ $tabTotal['label'] }}</div>
-                        <div style="font-size: 1.05rem; font-weight: 800; color: #16a34a;">{{ number_format($tabTotal['value'], 0, ',', ' ') }} <span style="font-size: 0.72rem; font-weight: 500; color: #888;">FCFA</span></div>
+                        <div style="font-size: 1.05rem; font-weight: 800; color: #16a34a;">{{ number_format($tabTotal['value'], 0, ',', ' ') }}</div>
                     </div>
                 @endif
             </div>
