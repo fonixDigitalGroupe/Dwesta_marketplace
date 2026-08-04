@@ -137,6 +137,17 @@ class FinanceController extends Controller
             $overviewTotals = [
                 'ventes'      => (clone $baseOverview)->sum('total_final'),
                 'commissions' => (clone $baseOverview)->sum('commission_plateforme'),
+                'abonnements' => VendeurAbonnement::whereBetween('vendeur_abonnements.created_at', $periode)
+                    ->join('abonnements', 'vendeur_abonnements.abonnement_id', '=', 'abonnements.id')
+                    ->sum('abonnements.prix_mensuel'),
+                'credits'     => CreditTransaction::where('credit_transactions.type', 'achat')
+                    ->where('credit_transactions.related_type', \App\Models\CreditPack::class)
+                    ->whereBetween('credit_transactions.created_at', $periode)
+                    ->join('credit_packs', 'credit_transactions.related_id', '=', 'credit_packs.id')
+                    ->sum('credit_packs.prix'),
+                'giftcards'   => GiftCard::whereBetween('created_at', $periode)->sum('amount'),
+                'retraits'    => abs(Transaction::where('wallet_status', 'withdrawn')
+                    ->whereBetween('created_at', $periode)->sum('montant')),
             ];
         }
 
