@@ -321,14 +321,27 @@
             <div class="info-card-header">Suivi de la commande</div>
             <div class="info-card-body">
                 @php
-                    $steps = [
-                        ['key' => 'en_attente',      'label' => 'En attente de paiement'],
-                        ['key' => 'paye',            'label' => 'Payé — À préparer'],
-                        ['key' => 'pret_expedition', 'label' => 'Prêt pour expédition'],
-                        ['key' => 'en_route',        'label' => 'En cours de livraison'],
-                        ['key' => 'disponible',      'label' => 'Disponible au point relais'],
-                        ['key' => 'livre',           'label' => 'Livré'],
-                    ];
+                    $estCod = in_array($order->gestion_paiement, ['livraison_buyer', 'livraison_receiver']) || $order->moyen_paiement === 'cod';
+
+                    if ($estCod) {
+                        // Paiement à la livraison : pas d'étape "Payé" (le paiement se fait à la réception)
+                        $steps = [
+                            ['key' => 'en_attente',      'label' => 'Commande confirmée'],
+                            ['key' => 'pret_expedition', 'label' => 'Prêt pour expédition'],
+                            ['key' => 'en_route',        'label' => 'En cours de livraison'],
+                            ['key' => 'disponible',      'label' => 'Disponible au point relais'],
+                            ['key' => 'livre',           'label' => 'Livré (payé à la réception)'],
+                        ];
+                    } else {
+                        $steps = [
+                            ['key' => 'en_attente',      'label' => 'En attente de paiement'],
+                            ['key' => 'paye',            'label' => 'Payé — À préparer'],
+                            ['key' => 'pret_expedition', 'label' => 'Prêt pour expédition'],
+                            ['key' => 'en_route',        'label' => 'En cours de livraison'],
+                            ['key' => 'disponible',      'label' => 'Disponible au point relais'],
+                            ['key' => 'livre',           'label' => 'Livré'],
+                        ];
+                    }
                     $statuses   = array_column($steps, 'key');
                     $currentIdx = array_search($order->statut, $statuses);
                 @endphp
@@ -345,9 +358,6 @@
                     @endforeach
                 </div>
 
-                @php
-                    $estCod = in_array($order->gestion_paiement, ['livraison_buyer', 'livraison_receiver']) || $order->moyen_paiement === 'cod';
-                @endphp
                 @if($order->statut === 'paye' || ($order->statut === 'en_attente' && $estCod))
                     <div style="margin-top: 1.25rem; border-top: 1px solid #eee; padding-top: 1rem; background: #fffbf5; border: 1px solid #f68b1e; border-radius: 4px; padding: 1rem;">
                         @if($order->statut === 'en_attente' && $estCod)
