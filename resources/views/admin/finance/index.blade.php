@@ -197,8 +197,9 @@
 
             {{-- Montant à payer aux vendeurs --}}
             <div style="border: 1px solid #bcd4f6; border-radius: 4px; padding: 20px; background: #eaf1fd;">
-                <div style="font-size: 0.72rem; color: #1e3a8a; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 12px;">
-                    À payer aux Vendeurs
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <span style="font-size: 0.72rem; color: #1e3a8a; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">À payer aux Vendeurs</span>
+                    <a href="{{ route('admin.finance.vendeurs') }}" style="font-size: 0.72rem; font-weight: 700; color: #2563eb; text-decoration: none;">Détail &gt;</a>
                 </div>
                 <div style="font-size: 2rem; font-weight: 800; color: #2563eb; line-height: 1; margin-bottom: 6px;">
                     {{ number_format($stripeOverview['vendeursMontantTotal'], 0, ',', ' ') }}

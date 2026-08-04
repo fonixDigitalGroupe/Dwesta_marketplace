@@ -193,4 +193,38 @@ class FinanceController extends Controller
 
         return view('admin.finance.index', compact('tab', 'stripeOverview', 'data', 'dateDebut', 'dateFin', 'statutFiltre', 'overviewTotals', 'tabTotal'));
     }
+
+    /**
+     * Détail de ce qui est dû à chaque vendeur (portefeuille séquestre).
+     */
+    public function vendeursDetail(Request $request)
+    {
+        // Montants en portefeuille par vendeur : en séquestre (pending) + disponible (available)
+        $rows = Transaction::selectRaw('user_id,
+                SUM(CASE WHEN wallet_status = ? THEN montant ELSE 0 END) as en_sequestre,
+                SUM(CASE WHEN wallet_status = ? THEN montant ELSE 0 END) as disponible,
+                SUM(CASE WHEN wallet_status IN (?, ?) THEN montant ELSE 0 END) as total_du,
+                SUM(CASE WHEN wallet_status = ? THEN ABS(montant) ELSE 0 END) as deja_retire',
+                [
+                    Transaction::STATUS_PENDING,
+                    Transaction::STATUS_AVAILABLE,
+                    Transaction::STATUS_PENDING, Transaction::STATUS_AVAILABLE,
+                    Transaction::STATUS_WITHDRAWN,
+                ])
+            ->whereIn('wallet_status', [Transaction::STATUS_PENDING, Transaction::STATUS_AVAILABLE, Transaction::STATUS_WITHDRAWN])
+            ->whereNotNull('user_id')
+            ->groupBy('user_id')
+            ->get()
+            ->map(function ($r) {
+                $r->user = \App\Models\User::find($r->user_id);
+                return $r;
+            })
+            ->filter(fn ($r) => $r->user !== null)
+            ->sortByDesc('total_du')
+            ->values();
+
+        $totalGlobal = $rows->sum('total_du');
+
+        return view('admin.finance.vendeurs', compact('rows', 'totalGlobal'));
+    }
 }
