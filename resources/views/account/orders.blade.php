@@ -246,7 +246,7 @@
                                 <span class="order-date">Le {{ $order->created_at->format('d-m-Y') }}</span>
                             </div>
 
-                            @if($order->statut === 'en_attente')
+                            @if(!in_array($order->statut, ['livre', 'annule', 'litige', 'paye']) && empty($order->stripe_payment_intent_id))
                                 <form action="{{ route('account.orders.pay', $order->id) }}" method="POST" style="margin-top:0.6rem;">
                                     @csrf
                                     <button type="submit" class="order-pay-btn">

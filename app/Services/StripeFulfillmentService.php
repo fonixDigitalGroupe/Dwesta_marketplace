@@ -79,9 +79,12 @@ class StripeFulfillmentService
         $orders = Order::where('stripe_session_id', $session->id)->get();
 
         foreach ($orders as $order) {
-            if ($order->statut === 'en_attente') {
+            // Idempotence : on ne traite le paiement qu'une fois (pas encore de payment_intent).
+            // Fonctionne aussi pour une commande COD payée en cours de route :
+            // on enregistre le paiement sans faire régresser le statut logistique.
+            if (empty($order->stripe_payment_intent_id)) {
                 $order->update([
-                    'statut' => 'paye',
+                    'statut' => $order->statut === 'en_attente' ? 'paye' : $order->statut,
                     'stripe_payment_intent_id' => $session->payment_intent,
                 ]);
 

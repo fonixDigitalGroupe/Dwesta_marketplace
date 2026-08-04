@@ -329,7 +329,7 @@
                         Total : {{ number_format($order->total_final ?? $order->total_produits, 0, ',', ' ') }} FCFA
                     </div>
                 </div>
-                @if($order->statut === 'en_attente')
+                @if(!in_array($order->statut, ['livre', 'annule', 'litige', 'paye']) && empty($order->stripe_payment_intent_id))
                     <div style="margin-top: 1.25rem;">
                         <form action="{{ route('account.orders.pay', $order->id) }}" method="POST">
                             @csrf
@@ -337,7 +337,7 @@
                                 <i class="fa-solid fa-credit-card"></i> Payer maintenant par carte
                             </button>
                         </form>
-                        <div style="font-size:0.78rem; color:#6b7280; margin-top:6px; text-align:center;">Vous pouvez régler cette commande en ligne à tout moment.</div>
+                        <div style="font-size:0.78rem; color:#6b7280; margin-top:6px; text-align:center;">Vous pouvez régler cette commande en ligne à tout moment, même une fois disponible au point relais.</div>
                     </div>
                 @endif
 

@@ -114,7 +114,10 @@ class AccountController extends Controller
             abort(403, "Vous n'êtes pas autorisé à payer cette commande.");
         }
 
-        if ($order->statut !== Order::STATUT_EN_ATTENTE) {
+        // Payable en ligne tant que la commande n'est pas livrée/annulée/en litige
+        // ET qu'elle n'a pas déjà été réglée par carte.
+        $nonPayables = [Order::STATUT_LIVRE, Order::STATUT_ANNULE, Order::STATUT_LITIGE];
+        if (in_array($order->statut, $nonPayables) || !empty($order->stripe_payment_intent_id)) {
             return back()->with('error', 'Cette commande ne peut plus être payée en ligne (statut : ' . $order->statut_label . ').');
         }
 
