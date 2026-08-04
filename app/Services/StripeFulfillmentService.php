@@ -86,6 +86,9 @@ class StripeFulfillmentService
                 $order->update([
                     'statut' => $order->statut === 'en_attente' ? 'paye' : $order->statut,
                     'stripe_payment_intent_id' => $session->payment_intent,
+                    // Le paiement en ligne remplace le paiement à la livraison
+                    'moyen_paiement' => 'cb',
+                    'gestion_paiement' => 'commande',
                 ]);
 
                 $this->logisticsService->generateLogisticsTokens($order);
