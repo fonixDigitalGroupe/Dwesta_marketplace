@@ -554,7 +554,38 @@ class VendeurController extends Controller
 
         $order->update(['statut' => \App\Models\Order::STATUT_ANNULE]);
 
-        return back()->with('success', 'La commande n°' . $order->reference . ' a été annulée. Un litige a été ouvert pour le suivi.');
+        // Notifier l'acheteur via la messagerie
+        if ($order->user_id) {
+            $sellerId = $user->id;
+            $buyerId  = $order->user_id;
+
+            $conversation = \App\Models\Conversation::where(function ($q) use ($sellerId, $buyerId) {
+                $q->where('user1_id', $sellerId)->where('user2_id', $buyerId);
+            })->orWhere(function ($q) use ($sellerId, $buyerId) {
+                $q->where('user1_id', $buyerId)->where('user2_id', $sellerId);
+            })->first();
+
+            if (!$conversation) {
+                $conversation = \App\Models\Conversation::create([
+                    'user1_id' => $sellerId,
+                    'user2_id' => $buyerId,
+                ]);
+            }
+
+            $msg = "Bonjour, votre commande n°{$order->reference} a été annulée par le vendeur.\n"
+                 . "Motif : {$validated['motif_annulation']}";
+            if (!empty($validated['description'])) {
+                $msg .= "\nDétails : {$validated['description']}";
+            }
+            $msg .= "\nSi un paiement a été effectué, il vous sera remboursé. Notre équipe suit ce dossier.";
+
+            $conversation->messages()->create([
+                'sender_id' => $sellerId,
+                'content'   => $msg,
+            ]);
+        }
+
+        return back()->with('success', 'La commande n°' . $order->reference . ' a été annulée. Un message a été envoyé à l\'acheteur et un litige ouvert pour le suivi.');
     }
 
     /**
