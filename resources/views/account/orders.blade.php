@@ -150,6 +150,21 @@
         border-radius: 4px;
         transition: background 0.2s;
     }
+    .order-pay-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #f68b1e;
+        color: #fff;
+        border: none;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .order-pay-btn:hover { background: #e07b10; }
     .order-review-btn:hover { background: #e07b10; }
     .order-review-done {
         align-self: flex-start;
@@ -230,6 +245,15 @@
                                 <span class="order-badge" style="background: {{ $badge[1] }};">{{ $badge[0] }}</span>
                                 <span class="order-date">Le {{ $order->created_at->format('d-m-Y') }}</span>
                             </div>
+
+                            @if($order->statut === 'en_attente')
+                                <form action="{{ route('account.orders.pay', $order->id) }}" method="POST" style="margin-top:0.6rem;">
+                                    @csrf
+                                    <button type="submit" class="order-pay-btn">
+                                        <i class="fa-solid fa-credit-card"></i> Payer maintenant
+                                    </button>
+                                </form>
+                            @endif
 
                             @if($order->statut === 'livre' && $firstItem && $firstItem->annonce)
                                 @php

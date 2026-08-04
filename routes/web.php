@@ -104,6 +104,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/mes-achats/{order}', [\App\Http\Controllers\AccountController::class, 'orderShow'])->name('account.orders.show');
         Route::get('/mes-achats/{order}/suivi', [\App\Http\Controllers\AccountController::class, 'orderTracking'])->name('account.orders.tracking');
         Route::post('/mes-achats/{order}/annuler', [\App\Http\Controllers\AccountController::class, 'cancelOrder'])->name('account.orders.cancel');
+        Route::post('/mes-achats/{order}/payer', [\App\Http\Controllers\AccountController::class, 'payOrder'])->name('account.orders.pay');
         Route::get('/mes-avis', [\App\Http\Controllers\AvisController::class, 'mesAvis'])->name('account.avis');
 
         // Mon Porte-Monnaie (Crédits)

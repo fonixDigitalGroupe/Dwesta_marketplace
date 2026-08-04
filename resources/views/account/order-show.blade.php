@@ -329,8 +329,20 @@
                         Total : {{ number_format($order->total_final ?? $order->total_produits, 0, ',', ' ') }} FCFA
                     </div>
                 </div>
-                @if(in_array($order->statut, ['en_attente', 'paye', 'pret_expedition']))
+                @if($order->statut === 'en_attente')
                     <div style="margin-top: 1.25rem;">
+                        <form action="{{ route('account.orders.pay', $order->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" style="width:100%; background:#f68b1e; color:#fff; border:none; padding:0.85rem 1rem; border-radius:6px; font-weight:700; font-size:0.92rem; cursor:pointer;">
+                                <i class="fa-solid fa-credit-card"></i> Payer maintenant par carte
+                            </button>
+                        </form>
+                        <div style="font-size:0.78rem; color:#6b7280; margin-top:6px; text-align:center;">Vous pouvez régler cette commande en ligne à tout moment.</div>
+                    </div>
+                @endif
+
+                @if(in_array($order->statut, ['en_attente', 'paye', 'pret_expedition']))
+                    <div style="margin-top: 1rem;">
                         <button type="button" class="btn-cancel-pro" onclick="document.getElementById('cancel-modal').style.display='flex'">Annuler la commande</button>
                     </div>
 

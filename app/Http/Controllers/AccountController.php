@@ -103,6 +103,45 @@ class AccountController extends Controller
     /**
      * Cancel an order.
      */
+    /**
+     * Permet à l'acheteur de finaliser le paiement en ligne (Stripe) d'une
+     * commande encore en attente (ex. choisie en paiement à la livraison),
+     * à tout moment depuis "Mes achats".
+     */
+    public function payOrder(Order $order)
+    {
+        if ($order->user_id !== Auth::id()) {
+            abort(403, "Vous n'êtes pas autorisé à payer cette commande.");
+        }
+
+        if ($order->statut !== Order::STATUT_EN_ATTENTE) {
+            return back()->with('error', 'Cette commande ne peut plus être payée en ligne (statut : ' . $order->statut_label . ').');
+        }
+
+        try {
+            $stripe = app(\App\Services\StripeService::class);
+            $buyer = $order->buyer;
+            $nom = $buyer ? trim(($buyer->prenom ?? '') . ' ' . ($buyer->nom ?? '')) : null;
+
+            $session = $stripe->createMarketplaceSession(
+                (float) ($order->total_final ?? $order->total_produits),
+                route('checkout.success'),
+                route('account.orders.show', $order),
+                $buyer->email ?? null,
+                ['order_ids' => (string) $order->id],
+                $nom ?: null
+            );
+
+            // Le fulfillment retrouve la commande via stripe_session_id
+            $order->update(['stripe_session_id' => $session->id]);
+
+            return redirect($session->url);
+        } catch (\Throwable $e) {
+            \Log::error('payOrder Stripe error', ['order' => $order->id, 'error' => $e->getMessage()]);
+            return back()->with('error', "Le paiement en ligne est momentanément indisponible. Réessayez plus tard.");
+        }
+    }
+
     public function cancelOrder(Request $request, Order $order)
     {
         // Check if the order belongs to the authenticated user
