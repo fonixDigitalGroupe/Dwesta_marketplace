@@ -241,61 +241,61 @@
             <a href="{{ route('admin.finance.index', ['tab' => 'withdrawals']) }}" class="tab-link {{ $tab == 'withdrawals' ? 'active' : '' }}">Retraits</a>
         </div>
 
-        {{-- Filtre de période (par défaut : mois en cours) --}}
-        <form method="GET" action="{{ route('admin.finance.index') }}" style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin-bottom: 20px;">
-            <input type="hidden" name="tab" value="{{ $tab }}">
-            <div style="display: flex; flex-direction: column; gap: 4px;">
-                <label style="font-size: 0.7rem; font-weight: 700; color: #666; text-transform: uppercase;">Date de début</label>
-                <input type="date" name="date_debut" value="{{ $dateDebut->format('Y-m-d') }}" onchange="this.form.submit()" style="padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem;">
-            </div>
-            <div style="display: flex; flex-direction: column; gap: 4px;">
-                <label style="font-size: 0.7rem; font-weight: 700; color: #666; text-transform: uppercase;">Date de fin</label>
-                <input type="date" name="date_fin" value="{{ $dateFin->format('Y-m-d') }}" onchange="this.form.submit()" style="padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem;">
-            </div>
-            @if(in_array($tab, ['overview', 'commissions']))
-                <div style="display: flex; flex-direction: column; gap: 4px;">
-                    <label style="font-size: 0.7rem; font-weight: 700; color: #666; text-transform: uppercase;">Statut</label>
-                    @php
-                        $statutsDispo = [
-                            'paye' => 'Payé', 'pret_expedition' => 'Prêt', 'en_route' => 'En route',
-                            'disponible' => 'Disponible', 'livre' => 'Livré',
-                        ];
-                    @endphp
-                    <select name="statut" onchange="this.form.submit()" style="padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem;">
-                        <option value="">Tous les statuts</option>
-                        @foreach($statutsDispo as $val => $lbl)
-                            <option value="{{ $val }}" {{ ($statutFiltre ?? '') === $val ? 'selected' : '' }}>{{ $lbl }}</option>
-                        @endforeach
-                    </select>
+        {{-- Filtres + statistiques sur la même ligne --}}
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 18px;">
+            <form method="GET" action="{{ route('admin.finance.index') }}" style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; margin: 0;">
+                <input type="hidden" name="tab" value="{{ $tab }}">
+                <div style="display: flex; flex-direction: column; gap: 3px;">
+                    <label style="font-size: 0.65rem; font-weight: 700; color: #666; text-transform: uppercase;">Date de début</label>
+                    <input type="date" name="date_debut" value="{{ $dateDebut->format('Y-m-d') }}" onchange="this.form.submit()" style="padding: 5px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.8rem;">
                 </div>
-            @endif
-        </form>
+                <div style="display: flex; flex-direction: column; gap: 3px;">
+                    <label style="font-size: 0.65rem; font-weight: 700; color: #666; text-transform: uppercase;">Date de fin</label>
+                    <input type="date" name="date_fin" value="{{ $dateFin->format('Y-m-d') }}" onchange="this.form.submit()" style="padding: 5px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.8rem;">
+                </div>
+                @if(in_array($tab, ['overview', 'commissions']))
+                    <div style="display: flex; flex-direction: column; gap: 3px;">
+                        <label style="font-size: 0.65rem; font-weight: 700; color: #666; text-transform: uppercase;">Statut</label>
+                        @php
+                            $statutsDispo = [
+                                'paye' => 'Payé', 'pret_expedition' => 'Prêt', 'en_route' => 'En route',
+                                'disponible' => 'Disponible', 'livre' => 'Livré',
+                            ];
+                        @endphp
+                        <select name="statut" onchange="this.form.submit()" style="padding: 5px 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.8rem;">
+                            <option value="">Tous les statuts</option>
+                            @foreach($statutsDispo as $val => $lbl)
+                                <option value="{{ $val }}" {{ ($statutFiltre ?? '') === $val ? 'selected' : '' }}>{{ $lbl }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+            </form>
+
+            {{-- Statistiques (compactes) --}}
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                @if($tab == 'overview' && $overviewTotals)
+                    <div style="border: 1px solid #b7e4c7; background: #e9f7ef; border-radius: 6px; padding: 6px 14px;">
+                        <div style="font-size: 0.6rem; font-weight: 700; color: #14663f; text-transform: uppercase;">Ventes</div>
+                        <div style="font-size: 1.05rem; font-weight: 800; color: #16a34a;">{{ number_format($overviewTotals['ventes'], 0, ',', ' ') }} <span style="font-size: 0.72rem; font-weight: 500; color: #888;">FCFA</span></div>
+                    </div>
+                    <div style="border: 1px solid #bcd4f6; background: #eaf1fd; border-radius: 6px; padding: 6px 14px;">
+                        <div style="font-size: 0.6rem; font-weight: 700; color: #1e3a8a; text-transform: uppercase;">Commissions</div>
+                        <div style="font-size: 1.05rem; font-weight: 800; color: #2563eb;">{{ number_format($overviewTotals['commissions'], 0, ',', ' ') }} <span style="font-size: 0.72rem; font-weight: 500; color: #888;">FCFA</span></div>
+                    </div>
+                @elseif(!empty($tabTotal))
+                    <div style="border: 1px solid #b7e4c7; background: #e9f7ef; border-radius: 6px; padding: 6px 14px;">
+                        <div style="font-size: 0.6rem; font-weight: 700; color: #14663f; text-transform: uppercase;">{{ $tabTotal['label'] }}</div>
+                        <div style="font-size: 1.05rem; font-weight: 800; color: #16a34a;">{{ number_format($tabTotal['value'], 0, ',', ' ') }} <span style="font-size: 0.72rem; font-weight: 500; color: #888;">FCFA</span></div>
+                    </div>
+                @endif
+            </div>
+        </div>
 
         <div class="finance-content">
 
-            @if(!empty($tabTotal))
-                <div style="margin-bottom: 18px;">
-                    <div style="display: inline-block; border: 1px solid #b7e4c7; background: #e9f7ef; border-radius: 6px; padding: 14px 22px;">
-                        <div style="font-size: 0.7rem; font-weight: 700; color: #14663f; text-transform: uppercase; letter-spacing: 0.5px;">{{ $tabTotal['label'] }}</div>
-                        <div style="font-size: 1.4rem; font-weight: 800; color: #16a34a; margin-top: 4px;">{{ number_format($tabTotal['value'], 0, ',', ' ') }} <span style="font-size: 0.8rem; font-weight: 500; color: #888;">FCFA</span></div>
-                    </div>
-                </div>
-            @endif
-
             {{-- OVERVIEW --}}
             @if($tab == 'overview')
-                @if($overviewTotals)
-                    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 18px;">
-                        <div style="flex: 1; min-width: 200px; border: 1px solid #b7e4c7; background: #e9f7ef; border-radius: 6px; padding: 14px 18px;">
-                            <div style="font-size: 0.7rem; font-weight: 700; color: #14663f; text-transform: uppercase; letter-spacing: 0.5px;">Montant total des ventes</div>
-                            <div style="font-size: 1.4rem; font-weight: 800; color: #16a34a; margin-top: 4px;">{{ number_format($overviewTotals['ventes'], 0, ',', ' ') }} <span style="font-size: 0.8rem; font-weight: 500; color: #888;">FCFA</span></div>
-                        </div>
-                        <div style="flex: 1; min-width: 200px; border: 1px solid #bcd4f6; background: #eaf1fd; border-radius: 6px; padding: 14px 18px;">
-                            <div style="font-size: 0.7rem; font-weight: 700; color: #1e3a8a; text-transform: uppercase; letter-spacing: 0.5px;">Total des commissions</div>
-                            <div style="font-size: 1.4rem; font-weight: 800; color: #2563eb; margin-top: 4px;">{{ number_format($overviewTotals['commissions'], 0, ',', ' ') }} <span style="font-size: 0.8rem; font-weight: 500; color: #888;">FCFA</span></div>
-                        </div>
-                    </div>
-                @endif
                 <table class="table-amazon">
                     <thead>
                         <tr>
