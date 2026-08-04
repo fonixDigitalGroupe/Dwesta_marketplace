@@ -68,7 +68,12 @@ class LogisticsController extends Controller
             abort(403, 'Vous n\'êtes pas autorisé à modifier cette commande.');
         }
 
-        if ($order->statut !== Order::STATUT_PAYE) {
+        // Autorisé pour les commandes payées OU en attente de paiement à la livraison (COD).
+        $estCod = in_array($order->gestion_paiement, ['livraison_buyer', 'livraison_receiver']) || $order->moyen_paiement === 'cod';
+        $preparable = $order->statut === Order::STATUT_PAYE
+            || ($order->statut === Order::STATUT_EN_ATTENTE && $estCod);
+
+        if (!$preparable) {
             return back()->with('error', 'La commande ne peut pas être mise en préparation (statut actuel : ' . $order->statut_label . ').');
         }
 

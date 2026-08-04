@@ -230,7 +230,10 @@
                         <div class="order-price">
                             Total : {{ number_format($order->total_produits, 0, ',', ' ') }} FCFA
                         </div>
-                        @if($order->statut === 'paye')
+                        @php
+                            $estCod = in_array($order->gestion_paiement, ['livraison_buyer', 'livraison_receiver']) || $order->moyen_paiement === 'cod';
+                        @endphp
+                        @if($order->statut === 'paye' || ($order->statut === 'en_attente' && $estCod))
                             <form method="POST" action="{{ route('logistics.markAsReady', $order) }}">
                                 @csrf
                                 <button type="submit" class="btn-validate">
