@@ -86,14 +86,14 @@
         .gm-overlay.open { display: block; }
         .gm-compose-box {
             position: fixed; bottom: 0; right: 24px; width: 500px; max-width: calc(100vw - 24px);
-            background: #fff; border-radius: 14px 14px 0 0; box-shadow: 0 12px 40px rgba(0,0,0,0.30);
+            background: #fff; border-radius: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.10);
             z-index: 9999; display: none; flex-direction: column; overflow: hidden;
         }
         .gm-compose-box.open { display: flex; animation: gmRise 0.25s ease; }
         @keyframes gmRise { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         .gm-compose-head {
-            background: linear-gradient(180deg, #ff9900 0%, #e77600 100%);
+            background: #4b5563;
             color: #fff; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center;
             font-size: 0.92rem; font-weight: 700; letter-spacing: 0.01em;
         }
