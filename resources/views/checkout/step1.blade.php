@@ -948,8 +948,6 @@
                                     Mode de paiement</div>
                                 <span id="summary-payment-icon" style="display: none;"></span>
                             </div>
-                            <a href="#" onclick="editPayment(); return false;" class="modifier-link"
-                                style="color: #004aad; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap;">Modifier &gt;</a>
                         </div>
                         <!-- Retourner à vos achats (Inside the card as requested) -->
                         <div id="back-to-shop-link"
