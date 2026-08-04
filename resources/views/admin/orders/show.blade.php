@@ -108,8 +108,30 @@
 
 @section('content')
 <div style="max-width: 1200px; margin: 0 auto; margin-top: -50px;">
+
+    @if(isset($litiges) && $litiges->count() > 0)
+        <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 6px; padding: 18px 22px; margin-bottom: 18px;">
+            <div style="display: flex; align-items: center; gap: 8px; font-weight: 700; color: #991b1b; font-size: 0.95rem; margin-bottom: 12px;">
+                <i class="fas fa-triangle-exclamation"></i> Litige(s) / Motif d'annulation
+            </div>
+            @foreach($litiges as $litige)
+                <div style="background: #fff; border: 1px solid #fee2e2; border-radius: 6px; padding: 12px 15px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
+                        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: #b91c1c;">Motif : {{ ucfirst(str_replace('_', ' ', $litige->motif)) }}</span>
+                        <span style="font-size: 0.75rem; color: #888;">{{ $litige->created_at->format('d/m/Y H:i') }} · statut : {{ ucfirst(str_replace('_',' ',$litige->statut)) }}</span>
+                    </div>
+                    <div style="font-size: 0.88rem; color: #374151; line-height: 1.5;">{{ $litige->description }}</div>
+                    <div style="font-size: 0.75rem; color: #888; margin-top: 8px;">
+                        Signalé par : <strong>{{ $litige->reporter->prenom ?? '' }} {{ $litige->reporter->nom ?? '' }}</strong>
+                        @if($litige->reported) — concerne : {{ $litige->reported->prenom ?? '' }} {{ $litige->reported->nom ?? '' }} @endif
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
     <div style="background: #fff; border: 1px solid #e7e7e7; padding: 25px;">
-        
+
         <!-- Action Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
             <div style="display: flex; align-items: center; gap: 15px;">

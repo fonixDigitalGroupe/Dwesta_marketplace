@@ -50,7 +50,13 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         $order->load(['buyer', 'seller.user', 'items.annonce.photos', 'transactions']);
-        
-        return view('admin.orders.show', compact('order'));
+
+        // Litiges liés (motif / raison d'annulation) pour affichage admin
+        $litiges = \App\Models\Litige::where('commande_id', $order->id)
+            ->with(['reporter', 'reported'])
+            ->latest()
+            ->get();
+
+        return view('admin.orders.show', compact('order', 'litiges'));
     }
 }
