@@ -246,14 +246,12 @@
             <input type="hidden" name="tab" value="{{ $tab }}">
             <div style="display: flex; flex-direction: column; gap: 4px;">
                 <label style="font-size: 0.7rem; font-weight: 700; color: #666; text-transform: uppercase;">Date de début</label>
-                <input type="date" name="date_debut" value="{{ $dateDebut->format('Y-m-d') }}" style="padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem;">
+                <input type="date" name="date_debut" value="{{ $dateDebut->format('Y-m-d') }}" onchange="this.form.submit()" style="padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem;">
             </div>
             <div style="display: flex; flex-direction: column; gap: 4px;">
                 <label style="font-size: 0.7rem; font-weight: 700; color: #666; text-transform: uppercase;">Date de fin</label>
-                <input type="date" name="date_fin" value="{{ $dateFin->format('Y-m-d') }}" style="padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem;">
+                <input type="date" name="date_fin" value="{{ $dateFin->format('Y-m-d') }}" onchange="this.form.submit()" style="padding: 7px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 0.85rem;">
             </div>
-            <button type="submit" style="background: #004aad; color: #fff; border: none; padding: 8px 18px; border-radius: 4px; font-size: 0.82rem; font-weight: 700; cursor: pointer; height: 35px;">Filtrer</button>
-            <a href="{{ route('admin.finance.index', ['tab' => $tab]) }}" style="color: #666; font-size: 0.8rem; text-decoration: underline; padding-bottom: 8px;">Mois en cours</a>
         </form>
 
         <div class="finance-content">
