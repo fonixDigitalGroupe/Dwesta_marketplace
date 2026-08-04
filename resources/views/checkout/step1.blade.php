@@ -1589,12 +1589,22 @@
             paymentBox.style.pointerEvents = 'auto';
             document.getElementById('payment-body').style.display = 'block';
 
+            // Resynchroniser l'en-tête du paiement (évite : résumé visible sans bouton Modifier)
+            syncPaymentHeader();
+
             updateSubmitState();
             saveCheckoutState();
             if (!silent) {
                 const box = document.getElementById('box-payment');
                 window.scrollTo({ top: box.offsetTop - 20, behavior: 'smooth' });
             }
+        }
+
+        // Synchronise l'en-tête du paiement selon l'état réel (résumé visible => en-tête "done" avec Modifier)
+        function syncPaymentHeader() {
+            const summaryVisible = document.getElementById('payment-summary').style.display === 'block';
+            document.getElementById('payment-header').style.display = summaryVisible ? 'none' : 'block';
+            document.getElementById('payment-header-done').style.display = summaryVisible ? 'block' : 'none';
         }
 
         function confirmPayment(silent = false) {
