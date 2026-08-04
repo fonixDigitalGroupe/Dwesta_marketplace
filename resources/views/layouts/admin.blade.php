@@ -715,7 +715,8 @@
         };
     </script>
     @stack('scripts')
-    @include('partials.admin-unread-widget')
+    {{-- Popup "Nouveau message" retiré à la demande --}}
+    {{-- @include('partials.admin-unread-widget') --}}
 </body>
 
 </html>
