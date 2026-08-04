@@ -108,10 +108,6 @@
                style="padding: 10px 5px; text-decoration: none; font-size: 0.85rem; color: {{ $status === 'annule' ? '#c45500' : '#555' }}; font-weight: {{ $status === 'annule' ? '700' : '400' }}; border-bottom: 2px solid {{ $status === 'annule' ? '#c45500' : 'transparent' }};">
                 Annulés
             </a>
-            <a href="{{ route('admin.orders.index', ['status' => 'litige']) }}" 
-               style="padding: 10px 5px; text-decoration: none; font-size: 0.85rem; color: {{ $status === 'litige' ? '#c45500' : '#555' }}; font-weight: {{ $status === 'litige' ? '700' : '400' }}; border-bottom: 2px solid {{ $status === 'litige' ? '#c45500' : 'transparent' }};">
-                Litiges
-            </a>
         </div>
 
         <!-- Barre de filtre / recherche (style banners) -->
