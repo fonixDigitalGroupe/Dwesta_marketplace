@@ -148,7 +148,9 @@ export default function KarnouWebApp() {
   // recherche, boutique pro, checkout/paiement (Stripe). Sinon navigation instantanée.
   const isHeavyUrl = (url: string) => {
     if (!url) return false;
+    // Spinner centré : recherche, boutique pro, checkout/paiement, ET fiche annonce (clic produit)
     return /\/(recherche|search|page-pro|checkout|abonnements\/checkout|paiement)/i.test(url)
+      || /\/annonces\/(?!create)[^/]+/i.test(url)
       || /stripe\.com|checkout\.stripe|paydunya|wave|orange/i.test(url);
   };
 
