@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback } from 'react';
-import { ActivityIndicator, BackHandler, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, BackHandler, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView, WebViewNavigation } from 'react-native-webview';
@@ -56,17 +56,17 @@ export default function KarnouWebApp() {
         style={styles.webview}
       />
 
-      {/* Loader plein écran UNIQUEMENT au tout premier chargement de l'app */}
+      {/* Écran de lancement UNIQUEMENT au tout premier chargement : "Karnou" en gris */}
       {loading && !firstDone && (
         <View style={styles.loader} pointerEvents="none">
-          <ActivityIndicator size="large" color="#004aad" />
+          <Text style={styles.brand}>Karnou</Text>
         </View>
       )}
 
       {/* Navigations suivantes : petit indicateur discret en haut, pas d'overlay */}
       {loading && firstDone && (
         <View style={styles.topBar} pointerEvents="none">
-          <ActivityIndicator size="small" color="#004aad" />
+          <ActivityIndicator size="small" color="#9ca3af" />
         </View>
       )}
     </SafeAreaView>
@@ -85,6 +85,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+  },
+  brand: {
+    fontSize: 34,
+    fontWeight: '800',
+    color: '#9ca3af',
+    letterSpacing: 0.5,
   },
   topBar: {
     position: 'absolute',
