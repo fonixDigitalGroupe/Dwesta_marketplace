@@ -14,6 +14,7 @@ export default function KarnouWebApp() {
   const [minSplash, setMinSplash] = useState(false);  // true après 5s minimum d'écran de lancement
   const [canGoBack, setCanGoBack] = useState(false);
   const [currentUrl, setCurrentUrl] = useState(SITE_URL);
+  const [heavyLoad, setHeavyLoad] = useState(false); // page "lourde" => spinner centré ; sinon barre rapide
   const insets = useSafeAreaInsets();
 
   // Onglets de la barre de navigation mobile (le panier reste dans le header du site)
@@ -143,8 +144,9 @@ export default function KarnouWebApp() {
         source={{ uri: SITE_URL }}
         onNavigationStateChange={onNav}
         onLoadStart={(e) => {
-          // Affiche le loader uniquement pour les pages lourdes (le splash gère le 1er chargement)
-          if (firstDone && isHeavyUrl(e.nativeEvent.url)) {
+          // Loader sur toutes les pages : spinner centré si "lourde", sinon barre rapide en haut.
+          if (firstDone) {
+            setHeavyLoad(isHeavyUrl(e.nativeEvent.url));
             setLoading(true);
           }
         }}
@@ -207,10 +209,16 @@ export default function KarnouWebApp() {
       )}
 
       {/* Chargements de page suivants : un panier animé (gris) */}
-      {loading && !splashVisible && (
+      {/* Pages lourdes : spinner centré (façon Jumia) */}
+      {loading && !splashVisible && heavyLoad && (
         <View style={styles.loader} pointerEvents="none">
           <ActivityIndicator size="large" color="#f68b1e" />
         </View>
+      )}
+
+      {/* Pages légères : loader rapide = fine barre orange en haut */}
+      {loading && !splashVisible && !heavyLoad && (
+        <View style={styles.topProgress} pointerEvents="none" />
       )}
 
       {/* Barre de navigation mobile (cachée pendant le splash) */}
@@ -270,6 +278,14 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#9ca3af',
     letterSpacing: 0.5,
+  },
+  topProgress: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    backgroundColor: '#f68b1e',
   },
   tabbar: {
     flexDirection: 'row',
