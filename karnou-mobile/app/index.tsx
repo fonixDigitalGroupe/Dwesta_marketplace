@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { Animated, BackHandler, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Animated, BackHandler, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native';
@@ -196,15 +196,7 @@ export default function KarnouWebApp() {
       {/* Chargements de page suivants : un panier animé (gris) */}
       {loading && !splashVisible && (
         <View style={styles.loader} pointerEvents="none">
-          <Animated.View
-            style={{
-              opacity: pulse,
-              transform: [{ scale: pulse.interpolate({ inputRange: [0.4, 1], outputRange: [0.85, 1.1] }) }],
-            }}
-          >
-            <Ionicons name="cart" size={40} color="#d1975a" />
-          </Animated.View>
-          <Text style={styles.loaderBrand}>Karnou</Text>
+          <ActivityIndicator size="large" color="#f68b1e" />
         </View>
       )}
 
