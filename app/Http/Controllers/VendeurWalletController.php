@@ -48,7 +48,7 @@ class VendeurWalletController extends Controller
         // Historique récent
         $recentTransactions = Transaction::where('user_id', $user->id)
             ->latest()
-            ->paginate(10);
+            ->get();
 
         return view('vendeur.wallet.index', compact('user', 'availableBalance', 'pendingBalance', 'pendingTransactions', 'recentTransactions'));
     }

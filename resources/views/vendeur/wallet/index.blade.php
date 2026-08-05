@@ -1068,7 +1068,7 @@
             <h2 style="font-size: 1rem; font-weight: 700; color: #374151; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
                 <i class="fas fa-list-ul"></i> Historique des transactions
             </h2>
-            <div id="tx-section" style="overflow-x: auto; border-radius: 0; box-shadow: none; background: white; border: 1px solid #e5e7eb;">
+            <div id="tx-section" style="overflow-x: auto; overflow-y: auto; max-height: 440px; border-radius: 0; box-shadow: none; background: white; border: 1px solid #e5e7eb;">
                     <table class="tx-table">
                         <thead>
                             <tr>
@@ -1142,11 +1142,6 @@
                     </table>
                 </div>
 
-                @if($recentTransactions->hasPages())
-                    <div style="padding: 1rem 1.5rem; border-top: 1px solid #f3f4f6;">
-                        {{ $recentTransactions->links() }}
-                    </div>
-                @endif
             </div>
 
         </main>
