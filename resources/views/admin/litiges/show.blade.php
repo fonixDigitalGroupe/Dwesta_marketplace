@@ -314,20 +314,58 @@
         <div style="display: flex; flex-direction: column; gap: 20px;">
 
             <!-- Reported -->
+            @php
+                $rdid = $litige->reported->id ?? null;
+                if ($litige->order && $litige->order->seller && $litige->order->seller->user_id === $rdid) {
+                    $roleDefendeur = 'Vendeur';
+                } elseif ($litige->order && $litige->order->user_id === $rdid) {
+                    $roleDefendeur = 'Client';
+                } else {
+                    $roleDefendeur = 'Agence';
+                }
+                $roleIconD = match($roleDefendeur) {
+                    'Vendeur' => 'fa-shopping-cart',
+                    'Client'  => 'fa-user',
+                    'Agence'  => 'fa-building',
+                    default   => 'fa-user',
+                };
+            @endphp
             <div style="background: #fff; border: 1px solid #e7e7e7; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                <h3 style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #f1f1f1; padding-bottom: 10px;">Contre (Défendeur)</h3>
+                <h3 style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #f1f1f1; padding-bottom: 10px;">Contre ({{ $roleDefendeur }})</h3>
                 <div style="display: flex; align-items: center; gap: 15px;">
-                    <div style="width: 50px; height: 50px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; color: #dc2626; border: 1px solid #e7e7e7;">
-                        {{ substr($litige->reported->prenom, 0, 1) }}{{ substr($litige->reported->nom, 0, 1) }}
+                    <div style="width: 50px; height: 50px; border-radius: 50%; background: #fdeeee; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #dc2626; border: 1px solid #f7d5d5;">
+                        <i class="fas {{ $roleIconD }}"></i>
                     </div>
                     <div>
                         <div style="font-weight: 700; color: #111; font-size: 0.95rem;">{{ $litige->reported->prenom }} {{ $litige->reported->nom }}</div>
                         <div style="font-size: 0.8rem; color: #666;">{{ $litige->reported->email }}</div>
                     </div>
                 </div>
-                <a href="{{ route('admin.users.index') }}?search={{ $litige->reported->email }}" style="display: block; margin-top: 15px; text-align: center; font-size: 0.75rem; color: #004aad; font-weight: 600; text-decoration: none; padding: 8px; border: 1px solid #adb1b8; border-radius: 3px; background: #f7f8fa;">
-                    Voir profil utilisateur
-                </a>
+
+                @if(in_array($roleDefendeur, ['Vendeur', 'Client']))
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #f1f1f1; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px;">
+                        <div>
+                            <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Téléphone</div>
+                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reported->telephone ?? '—' }}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Pays</div>
+                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reported->nationalite ?? $litige->reported->pays ?? '—' }}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Région</div>
+                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reported->region ?? '—' }}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Ville</div>
+                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reported->ville ?? '—' }}</div>
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Adresse</div>
+                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reported->adresse ?? '—' }}</div>
+                        </div>
+                    </div>
+                @endif
             </div>
 
         </div>
