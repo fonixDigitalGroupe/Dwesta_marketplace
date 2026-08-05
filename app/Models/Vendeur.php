@@ -165,6 +165,21 @@ class Vendeur extends Model
     }
 
     /**
+     * Le vendeur a-t-il un abonnement actif pour une famille donnée
+     * (Services, Immobilier, Véhicules) ? Sinon il ne peut pas y publier.
+     */
+    public function aAbonnementActifPourFamille(string $famille): bool
+    {
+        return $this->abonnements()
+            ->where('actif', true)
+            ->where('date_fin', '>=', now())
+            ->whereHas('abonnement', function ($q) use ($famille) {
+                $q->where('famille', $famille);
+            })
+            ->exists();
+    }
+
+    /**
      * Vérifier si le vendeur a un forfait payant (Basic ou Expert) actif
      */
     public function aForfaitPayantActif(): bool

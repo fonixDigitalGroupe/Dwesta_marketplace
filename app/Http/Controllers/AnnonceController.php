@@ -363,6 +363,13 @@ class AnnonceController extends Controller
                 ->with('error', 'Vous n\'avez pas accès à cette annonce.');
         }
 
+        // Modification : la famille (Services/Immobilier/Véhicules) exige un abonnement actif
+        $familleCat = optional($annonce->category)->famille;
+        if ($familleCat && in_array($familleCat, \App\Models\Abonnement::famillesRequierentAbonnement(), true)
+            && !$user->vendeur->aAbonnementActifPourFamille($familleCat)) {
+            return back()->withInput()->with('error', "Pour modifier une annonce de la famille « {$familleCat} », un abonnement {$familleCat} actif est requis. Rendez-vous dans « Mes abonnements ».");
+        }
+
         $validated = $this->validateAnnonce($request, $annonce->type, $annonce);
 
         try {

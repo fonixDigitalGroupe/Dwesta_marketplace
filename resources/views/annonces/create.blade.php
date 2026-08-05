@@ -1242,11 +1242,29 @@
                                     'Véhicules' => '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="13" width="22" height="8" rx="2"></rect><path d="M7 13V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7"></path></svg>'
                                 ];
                             @endphp
+                            @php
+                                $vendeurCourant = auth()->user()?->vendeur;
+                                $famillesAbo = \App\Models\Abonnement::famillesRequierentAbonnement();
+                            @endphp
                             @foreach($categories->where('parent_id', null) as $categorie)
-                                <div class="category-badge-item main-cat-badge" data-id="{{ $categorie->id }}"
-                                    onclick="selectMainCategory(this, {{ $categorie->id }})">
-                                    {{ $categorie->nom }}
-                                </div>
+                                @php
+                                    $famille = $categorie->famille;
+                                    $requiertAbo = in_array($famille, $famillesAbo);
+                                    $bloque = $requiertAbo && !($vendeurCourant && $vendeurCourant->aAbonnementActifPourFamille($famille));
+                                @endphp
+                                @if($bloque)
+                                    <div class="category-badge-item main-cat-badge is-locked" data-id="{{ $categorie->id }}"
+                                        title="Abonnement {{ $famille }} requis"
+                                        onclick="if(confirm('Un abonnement « {{ $famille }} » actif est requis pour publier dans cette famille. Voir les forfaits ?')) window.location.href='{{ route('abonnements.index') }}';"
+                                        style="opacity: 0.55; cursor: not-allowed;">
+                                        {{ $categorie->nom }} <i class="fas fa-lock" style="font-size: 0.8em; margin-left: 4px;"></i>
+                                    </div>
+                                @else
+                                    <div class="category-badge-item main-cat-badge" data-id="{{ $categorie->id }}"
+                                        onclick="selectMainCategory(this, {{ $categorie->id }})">
+                                        {{ $categorie->nom }}
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
 
