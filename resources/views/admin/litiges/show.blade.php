@@ -53,6 +53,32 @@
                         <div style="font-size: 0.8rem; color: #666;">{{ $litige->reporter->email }}</div>
                     </div>
                 </div>
+
+                @if(in_array($roleSignaleur, ['Vendeur', 'Client']))
+                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #f1f1f1; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px;">
+                        <div>
+                            <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Téléphone</div>
+                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reporter->telephone ?? '—' }}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Pays</div>
+                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reporter->pays ?? '—' }}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Région</div>
+                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reporter->region ?? '—' }}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Ville</div>
+                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reporter->ville ?? '—' }}</div>
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Adresse</div>
+                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reporter->adresse ?? '—' }}</div>
+                        </div>
+                    </div>
+                @endif
+
                 <a href="{{ route('admin.users.index') }}?search={{ $litige->reporter->email }}" style="display: inline-block; margin-top: 15px; font-size: 0.75rem; color: #004aad; font-weight: 600; text-decoration: none;">Voir profil utilisateur &rarr;</a>
             </div>
 
