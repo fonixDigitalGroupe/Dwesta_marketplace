@@ -80,13 +80,26 @@ export default function KarnouWebApp() {
     setCanGoBack(navState.canGoBack);
   };
 
+  // Le loader n'apparaît que pour les actions "lourdes" :
+  // recherche, boutique pro, checkout/paiement (Stripe). Sinon navigation instantanée.
+  const isHeavyUrl = (url: string) => {
+    if (!url) return false;
+    return /\/(recherche|search|page-pro|checkout|abonnements\/checkout|paiement)/i.test(url)
+      || /stripe\.com|checkout\.stripe|paydunya|wave|orange/i.test(url);
+  };
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <WebView
         ref={webRef}
         source={{ uri: SITE_URL }}
         onNavigationStateChange={onNav}
-        onLoadStart={() => setLoading(true)}
+        onLoadStart={(e) => {
+          // Affiche le loader uniquement pour les pages lourdes (le splash gère le 1er chargement)
+          if (firstDone && isHeavyUrl(e.nativeEvent.url)) {
+            setLoading(true);
+          }
+        }}
         onLoadEnd={() => {
           setLoading(false);
           setFirstDone(true);
