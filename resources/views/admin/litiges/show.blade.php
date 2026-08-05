@@ -168,8 +168,7 @@
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
-                <div style="flex: 1; min-width: 340px; overflow-x: auto; border: 1px solid #e7e7e7; border-radius: 4px;">
+                <div style="overflow-x: auto; border: 1px solid #e7e7e7; border-radius: 4px;">
                     <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
                         <thead>
                             <tr style="background: #f0f2f2;">
@@ -207,58 +206,11 @@
                         </tbody>
                     </table>
                 </div>
-
-                {{-- Historique / suivi de la commande --}}
-                @php
-                    $estCodH = in_array($o->gestion_paiement, ['livraison_buyer', 'livraison_receiver']) || $o->moyen_paiement === 'cod';
-                    if ($estCodH) {
-                        $steps = [
-                            'en_attente' => 'Commande confirmée',
-                            'pret_expedition' => 'Prêt pour expédition',
-                            'en_route' => 'En cours de livraison',
-                            'disponible' => 'Disponible au point relais',
-                            'livre' => 'Livré',
-                        ];
-                    } else {
-                        $steps = [
-                            'en_attente' => 'En attente de paiement',
-                            'paye' => 'Payé — À préparer',
-                            'pret_expedition' => 'Prêt pour expédition',
-                            'en_route' => 'En cours de livraison',
-                            'disponible' => 'Disponible au point relais',
-                            'livre' => 'Livré',
-                        ];
-                    }
-                    $stKeys = array_keys($steps);
-                    $curIdx = array_search($o->statut, $stKeys);
-                @endphp
-                <div style="width: 260px; flex-shrink: 0; background: #fafbfc; border: 1px solid #eef0f2; border-radius: 6px; padding: 16px 18px;">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 14px;">Historique de la commande</div>
-                    <div style="display: flex; flex-direction: column; gap: 0;">
-                        @foreach($steps as $key => $label)
-                            @php
-                                $done = $curIdx !== false && array_search($key, $stKeys) < $curIdx;
-                                $current = $o->statut === $key;
-                            @endphp
-                            <div style="display: flex; align-items: center; gap: 12px; padding: 6px 0;">
-                                <span style="width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; background: {{ $done ? '#16a34a' : ($current ? '#f68b1e' : '#fff') }}; border: 2px solid {{ $done ? '#16a34a' : ($current ? '#f68b1e' : '#d1d5db') }};"></span>
-                                <span style="font-size: 0.88rem; color: {{ $done || $current ? '#111' : '#9ca3af' }}; font-weight: {{ $current ? '700' : '500' }};">{{ $label }}</span>
-                            </div>
-                        @endforeach
-                        @if(in_array($o->statut, ['annule', 'litige']))
-                            <div style="display: flex; align-items: center; gap: 12px; padding: 6px 0;">
-                                <span style="width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; background: #dc2626; border: 2px solid #dc2626;"></span>
-                                <span style="font-size: 0.88rem; color: #991b1b; font-weight: 700;">{{ $o->statut === 'litige' ? 'Litige en cours' : 'Annulée' }}</span>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-                </div>
             </div>
             @endif
 
             <!-- Resolution Card -->
-            <div style="background: #fff; border: 1px solid {{ $litige->statut === 'en_cours' ? '#adb1b8' : '#bbf7d0' }}; padding: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); {{ $litige->statut === 'en_cours' ? 'border-top: 4px solid #004aad;' : 'background: #f0fdf4;' }}">
+            <div style="background: #fff; border: 1px solid {{ $litige->statut === 'en_cours' ? '#e7e7e7' : '#bbf7d0' }}; border-radius: 8px; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); {{ $litige->statut === 'en_cours' ? '' : 'background: #f0fdf4;' }}">
                 @if($litige->statut === 'en_cours')
                     <h2 style="font-size: 1.1rem; font-weight: 700; color: #111; margin-bottom: 20px;">Décision & Résolution Administrative</h2>
                     <form action="{{ route('admin.litiges.resolve', $litige) }}" method="POST">
@@ -289,15 +241,6 @@
                                     <option value="retour_vendeur">Retour au vendeur (rembourser le client si payé en ligne)</option>
                                 </select>
                             </div>
-                        </div>
-
-                        <div style="margin-bottom: 25px; font-size: 0.8rem; color: #666; background: #f9fafb; border: 1px solid #eee; border-radius: 4px; padding: 10px 14px; line-height: 1.5;">
-                            <strong>Retour au vendeur :</strong>
-                            @if($paidOnline)
-                                le client a payé en ligne → il sera <strong>remboursé</strong> et le montant sera <strong>déduit du vendeur</strong>. La commande passera en « annulée ».
-                            @else
-                                le client n'a <strong>pas encore payé</strong> (paiement à la livraison) → <strong>aucun remboursement</strong>, la commande sera simplement annulée.
-                            @endif
                         </div>
 
                         <button type="submit"
