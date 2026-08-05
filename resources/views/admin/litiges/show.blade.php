@@ -168,7 +168,8 @@
                     </div>
                 </div>
 
-                <div style="overflow-x: auto; border: 1px solid #e7e7e7; border-radius: 4px;">
+                <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 340px; overflow-x: auto; border: 1px solid #e7e7e7; border-radius: 4px;">
                     <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
                         <thead>
                             <tr style="background: #f0f2f2;">
@@ -231,7 +232,7 @@
                     $stKeys = array_keys($steps);
                     $curIdx = array_search($o->statut, $stKeys);
                 @endphp
-                <div style="margin-top: 20px; padding-top: 18px; border-top: 1px solid #f1f1f1;">
+                <div style="width: 260px; flex-shrink: 0; background: #fafbfc; border: 1px solid #eef0f2; border-radius: 6px; padding: 16px 18px;">
                     <div style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 14px;">Historique de la commande</div>
                     <div style="display: flex; flex-direction: column; gap: 0;">
                         @foreach($steps as $key => $label)
@@ -251,6 +252,7 @@
                             </div>
                         @endif
                     </div>
+                </div>
                 </div>
             </div>
             @endif
