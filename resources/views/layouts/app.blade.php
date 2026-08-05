@@ -44,7 +44,7 @@
         @endif
 
         .top-banner {
-            background-color: #262626;
+            background-color: #004aad;
             height: 40px;
             width: 100%;
             display: flex;
@@ -96,7 +96,8 @@
             pointer-events: auto;
         }
         .ticker-item:hover {
-            color: #f68b1e;
+            color: #ffffff;
+            opacity: 0.85;
         }
         .en-profiter {
             margin-left: 12px;
