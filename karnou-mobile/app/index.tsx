@@ -3,6 +3,7 @@ import { ActivityIndicator, Animated, BackHandler, StyleSheet, Text, View } from
 import { useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView, WebViewNavigation } from 'react-native-webview';
+import { Ionicons } from '@expo/vector-icons';
 import { SITE_URL } from '../src/config';
 
 export default function KarnouWebApp() {
@@ -42,13 +43,13 @@ export default function KarnouWebApp() {
     return () => anims.forEach((a) => a.stop());
   }, [carts]);
 
-  // Positions (autour du texte) + sens du mouvement de chaque panier
+  // Positions rapprochées du texte + sens du mouvement de chaque panier
   const cartConfig = [
-    { top: '22%', left: '12%', dy: -18 },
-    { top: '30%', right: '14%', dy: 16 },
-    { bottom: '26%', left: '18%', dy: 14 },
-    { bottom: '20%', right: '16%', dy: -16 },
-    { top: '16%', left: '46%', dy: -14 },
+    { top: '38%', left: '28%', dy: -14 },
+    { top: '40%', right: '28%', dy: 12 },
+    { bottom: '40%', left: '34%', dy: 12 },
+    { bottom: '38%', right: '32%', dy: -12 },
+    { top: '34%', left: '48%', dy: -12 },
   ];
 
   // Bouton retour Android → revient dans l'historique du site
@@ -100,7 +101,7 @@ export default function KarnouWebApp() {
       {loading && !firstDone && (
         <View style={styles.splash} pointerEvents="none">
           {cartConfig.map((c, i) => (
-            <Animated.Text
+            <Animated.View
               key={i}
               style={[
                 styles.cart,
@@ -109,15 +110,15 @@ export default function KarnouWebApp() {
                   left: c.left as any,
                   right: c.right as any,
                   bottom: c.bottom as any,
-                  opacity: carts[i].interpolate({ inputRange: [0, 0.5, 1], outputRange: [0.35, 1, 0.35] }),
+                  opacity: carts[i].interpolate({ inputRange: [0, 0.5, 1], outputRange: [0.4, 1, 0.4] }),
                   transform: [
                     { translateY: carts[i].interpolate({ inputRange: [0, 1], outputRange: [0, c.dy] }) },
                   ],
                 },
               ]}
             >
-              🛒
-            </Animated.Text>
+              <Ionicons name="cart" size={26} color="#ffffff" />
+            </Animated.View>
           ))}
           <Animated.Text style={[styles.brand, { opacity: pulse }]}>Karnou</Animated.Text>
         </View>
