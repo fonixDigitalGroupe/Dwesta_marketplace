@@ -67,7 +67,12 @@ class PagePro extends Model
      */
     public function incrementerVues(): void
     {
-        $this->increment('vues');
+        // Ne jamais faire planter l'affichage de la boutique (ex. base en lecture seule).
+        try {
+            $this->increment('vues');
+        } catch (\Throwable $e) {
+            \Log::warning('PagePro incrementerVues échec: ' . $e->getMessage());
+        }
     }
 
     /**
