@@ -14,8 +14,9 @@
         .st-en_attente { background:#fff7ed; color:#c2410c; }
         .st-annule { background:#f3f4f6; color:#374151; }
         .st-litige { background:#fef2f2; color:#991b1b; }
-        .fstab { padding: 7px 14px; border-radius: 999px; text-decoration: none; font-size: 0.8rem; font-weight: 600; color: #555; border: 1px solid #e0e2e6; background: #fff; }
-        .fstab.active { background: #004aad; color: #fff; border-color: #004aad; }
+        .fstab { padding: 10px 5px; text-decoration: none; font-size: 0.85rem; color: #555; font-weight: 400; border-bottom: 2px solid transparent; transition: all 0.2s; }
+        .fstab:hover { color: #c45500; }
+        .fstab.active { color: #c45500; font-weight: 700; border-bottom-color: #c45500; }
     </style>
 @endpush
 
@@ -39,7 +40,7 @@
         </div>
 
         <!-- Filtres par statut -->
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
+        <div class="amazon-tabs-container">
             <a href="{{ route('admin.finance.vendeurs.orders', $user->id) }}" class="fstab {{ !$statutFiltre ? 'active' : '' }}">Tous ({{ $totalCommandes }})</a>
             @foreach($labels as $val => $lbl)
                 @if(($countsParStatut[$val] ?? 0) > 0)
@@ -56,8 +57,7 @@
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Référence / Date</th>
                         <th style="padding: 10px 15px; text-align: left; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Client</th>
                         <th style="padding: 10px 15px; text-align: right; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Total</th>
-                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; border-right: 1px solid #eff3f6;">Statut</th>
-                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase; width: 90px;">Voir</th>
+                        <th style="padding: 10px 15px; text-align: center; font-size: 0.75rem; font-weight: 700; color: #111; text-transform: uppercase;">Statut</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,15 +72,12 @@
                                 <div style="font-size: 0.78rem; color: #888;">{{ $order->buyer->email ?? '-' }}</div>
                             </td>
                             <td style="padding: 12px 15px; text-align: right; border-right: 1px solid #eff3f6; font-weight: 700; color: #111;">{{ number_format($order->total_final ?? $order->total_produits, 0, ',', ' ') }} FCFA</td>
-                            <td style="padding: 12px 15px; text-align: center; border-right: 1px solid #eff3f6;">
-                                <span class="status-badge st-{{ $order->statut }}">{{ $labels[$order->statut] ?? $order->statut }}</span>
-                            </td>
                             <td style="padding: 12px 15px; text-align: center;">
-                                <a href="{{ route('admin.orders.show', $order) }}" style="color: #004aad; text-decoration: none; font-weight: 600; font-size: 0.8rem;">Voir</a>
+                                <span class="status-badge st-{{ $order->statut }}">{{ $labels[$order->statut] ?? $order->statut }}</span>
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5" style="padding: 2.5rem; text-align: center; color: #999; border: 1px solid #eee;">Aucune commande pour ce filtre.</td></tr>
+                        <tr><td colspan="4" style="padding: 2.5rem; text-align: center; color: #999; border: 1px solid #eee;">Aucune commande pour ce filtre.</td></tr>
                     @endforelse
                 </tbody>
             </table>
