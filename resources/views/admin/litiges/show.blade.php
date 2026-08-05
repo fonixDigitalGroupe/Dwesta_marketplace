@@ -45,8 +45,16 @@
             <div style="background: #fff; border: 1px solid #e7e7e7; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                 <h3 style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #f1f1f1; padding-bottom: 10px;">Signalé par ({{ $roleSignaleur }})</h3>
                 <div style="display: flex; align-items: center; gap: 15px;">
-                    <div style="width: 50px; height: 50px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; color: #004aad; border: 1px solid #e7e7e7;">
-                        {{ substr($litige->reporter->prenom, 0, 1) }}{{ substr($litige->reporter->nom, 0, 1) }}
+                    @php
+                        $roleIcon = match($roleSignaleur) {
+                            'Vendeur' => 'fa-shopping-cart',
+                            'Client'  => 'fa-user',
+                            'Agence'  => 'fa-building',
+                            default   => 'fa-user',
+                        };
+                    @endphp
+                    <div style="width: 50px; height: 50px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #004aad; border: 1px solid #e7e7e7;">
+                        <i class="fas {{ $roleIcon }}"></i>
                     </div>
                     <div>
                         <div style="font-weight: 700; color: #111; font-size: 0.95rem;">{{ $litige->reporter->prenom }} {{ $litige->reporter->nom }}</div>
