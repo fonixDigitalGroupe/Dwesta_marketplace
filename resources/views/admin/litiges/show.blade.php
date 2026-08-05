@@ -101,29 +101,43 @@
                     </div>
                 </div>
 
-                <div style="background: #f9f9f9; border-radius: 4px; overflow: hidden; border: 1px solid #e7e7e7;">
-                    @foreach($litige->order->items as $item)
-                        @php $photo = $item->annonce?->photoPrincipale(); @endphp
-                        <div style="padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; gap: 12px;">
-                            <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
-                                <span style="font-weight: 700; color: #555; font-size: 0.85rem;">x{{ $item->quantite }}</span>
-                                <div style="width: 48px; height: 48px; border: 1px solid #eee; border-radius: 6px; background: #fafafa; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;">
-                                    @if($photo)
-                                        <img src="{{ \Illuminate\Support\Facades\Storage::url($photo->chemin) }}" alt="" style="width: 100%; height: 100%; object-fit: contain;">
-                                    @else
-                                        <i class="fa-regular fa-image" style="color: #ccc;"></i>
-                                    @endif
-                                </div>
-                                <div style="min-width: 0;">
-                                    <div style="font-size: 0.9rem; color: #111; font-weight: 500;">{{ $item->annonce->titre ?? 'Article' }}</div>
-                                    @if($item->annonce)
-                                        <a href="{{ route('annonces.show', $item->annonce->slug) }}" target="_blank" style="font-size: 0.75rem; color: #004aad; text-decoration: none; font-weight: 600;">Voir le détail <i class="fas fa-external-link-alt" style="font-size: 0.65rem;"></i></a>
-                                    @endif
-                                </div>
-                            </div>
-                            <span style="font-weight: 700; color: #111; font-size: 0.9rem; white-space: nowrap;">{{ number_format($item->prix_unitaire * $item->quantite, 0, ',', ' ') }} FCFA</span>
-                        </div>
-                    @endforeach
+                <div style="overflow-x: auto; border: 1px solid #e7e7e7; border-radius: 4px;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                        <thead>
+                            <tr style="background: #f0f2f2;">
+                                <th style="padding: 9px 12px; text-align: left; font-size: 0.7rem; text-transform: uppercase; color: #555; border-bottom: 1px solid #e0e0e0; width: 60px;">Image</th>
+                                <th style="padding: 9px 12px; text-align: left; font-size: 0.7rem; text-transform: uppercase; color: #555; border-bottom: 1px solid #e0e0e0;">Nom</th>
+                                <th style="padding: 9px 12px; text-align: center; font-size: 0.7rem; text-transform: uppercase; color: #555; border-bottom: 1px solid #e0e0e0;">Qté</th>
+                                <th style="padding: 9px 12px; text-align: right; font-size: 0.7rem; text-transform: uppercase; color: #555; border-bottom: 1px solid #e0e0e0;">Prix unitaire</th>
+                                <th style="padding: 9px 12px; text-align: right; font-size: 0.7rem; text-transform: uppercase; color: #555; border-bottom: 1px solid #e0e0e0;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($litige->order->items as $item)
+                                @php $photo = $item->annonce?->photoPrincipale(); @endphp
+                                <tr style="border-bottom: 1px solid #f0f0f0;">
+                                    <td style="padding: 10px 12px;">
+                                        <div style="width: 44px; height: 44px; border: 1px solid #eee; border-radius: 6px; background: #fafafa; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                            @if($photo)
+                                                <img src="{{ \Illuminate\Support\Facades\Storage::url($photo->chemin) }}" alt="" style="width: 100%; height: 100%; object-fit: contain;">
+                                            @else
+                                                <i class="fa-regular fa-image" style="color: #ccc;"></i>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td style="padding: 10px 12px; color: #111;">
+                                        <div style="font-weight: 500;">{{ $item->annonce->titre ?? 'Article' }}</div>
+                                        @if($item->annonce)
+                                            <a href="{{ route('annonces.show', $item->annonce->slug) }}" target="_blank" style="font-size: 0.75rem; color: #004aad; text-decoration: none; font-weight: 600;">Voir le détail <i class="fas fa-external-link-alt" style="font-size: 0.65rem;"></i></a>
+                                        @endif
+                                    </td>
+                                    <td style="padding: 10px 12px; text-align: center; font-weight: 600;">{{ $item->quantite }}</td>
+                                    <td style="padding: 10px 12px; text-align: right;">{{ number_format($item->prix_unitaire, 0, ',', ' ') }} FCFA</td>
+                                    <td style="padding: 10px 12px; text-align: right; font-weight: 700;">{{ number_format($item->prix_unitaire * $item->quantite, 0, ',', ' ') }} FCFA</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
 
                 {{-- Historique / suivi de la commande --}}
