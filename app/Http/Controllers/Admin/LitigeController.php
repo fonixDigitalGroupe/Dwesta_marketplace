@@ -29,7 +29,7 @@ class LitigeController extends Controller
 
     public function show(Litige $litige)
     {
-        $litige->load(['reporter', 'reported', 'order.items.annonce', 'order.seller.user', 'order.buyer']);
+        $litige->load(['reporter', 'reported', 'order.items.annonce.photos', 'order.seller.user', 'order.buyer']);
 
         // Le client a-t-il payé en ligne ? (remboursement possible)
         $paidOnline = $litige->order && !empty($litige->order->stripe_payment_intent_id);
