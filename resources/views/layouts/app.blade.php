@@ -38,28 +38,28 @@
     <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
 
     {{-- Données structurées (aide Google à afficher titre, description et sitelinks) --}}
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Karnou",
-      "url": "{{ url('/') }}",
-      "logo": "{{ asset('images/logo.png') }}"
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Karnou",
-      "url": "{{ url('/') }}",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "{{ url('/recherche') }}?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
-    }
-    </script>
+    @php
+        $ldOrganization = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Organization',
+            'name' => 'Karnou',
+            'url' => url('/'),
+            'logo' => asset('images/logo.png'),
+        ];
+        $ldWebsite = [
+            '@context' => 'https://schema.org',
+            '@type' => 'WebSite',
+            'name' => 'Karnou',
+            'url' => url('/'),
+            'potentialAction' => [
+                '@type' => 'SearchAction',
+                'target' => url('/recherche') . '?q={search_term_string}',
+                'query-input' => 'required name=search_term_string',
+            ],
+        ];
+    @endphp
+    <script type="application/ld+json">{!! json_encode($ldOrganization, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+    <script type="application/ld+json">{!! json_encode($ldWebsite, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
