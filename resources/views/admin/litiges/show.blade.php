@@ -370,24 +370,7 @@
 
             {{-- Parties de la commande : toujours Client puis Vendeur (même si répétition) --}}
             @if($litige->order)
-                @php $cli = $litige->order->buyer; $ven = $litige->order->seller?->user; @endphp
-                @if($cli)
-                    <div style="background: #fff; border: 1px solid #e7e7e7; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                        <h3 style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #f1f1f1; padding-bottom: 10px;">Client</h3>
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <div style="width: 46px; height: 46px; border-radius: 50%; background: #eef6ff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #2563eb; border: 1px solid #dbeafe;"><i class="fas fa-user"></i></div>
-                            <div>
-                                <div style="font-weight: 700; color: #111; font-size: 0.95rem;">{{ $cli->prenom }} {{ $cli->nom }}</div>
-                                <div style="font-size: 0.8rem; color: #666;">{{ $cli->email }}</div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f1f1; font-size: 0.82rem; color: #333; line-height: 1.7;">
-                            <div><span style="color:#888;">Tél :</span> {{ $cli->telephone ?? '—' }}</div>
-                            <div><span style="color:#888;">Pays :</span> {{ $cli->nationalite ?? $cli->pays ?? '—' }} · <span style="color:#888;">Région :</span> {{ $cli->region ?? '—' }}</div>
-                            <div><span style="color:#888;">Adresse :</span> {{ $cli->adresse ?? '—' }}</div>
-                        </div>
-                    </div>
-                @endif
+                @php $ven = $litige->order->seller?->user; @endphp
                 @if($ven)
                     <div style="background: #fff; border: 1px solid #e7e7e7; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                         <h3 style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #f1f1f1; padding-bottom: 10px;">Vendeur</h3>
