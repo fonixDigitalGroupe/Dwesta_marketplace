@@ -540,7 +540,7 @@
 
         /* Bleu Karnou — retrait */
         .btn-w-primary {
-            background: linear-gradient(135deg, #004aad 0%, #0066ee 100%);
+            background: linear-gradient(135deg, #f68b1e 0%, #ffa64d 100%);
         }
 
         /* Rouge profond — PDF */
@@ -1022,7 +1022,10 @@
                             <div class="card-balance-section" style="text-align:right;">
                                 <div class="card-balance-label">Solde disponible</div>
                                 <div class="card-balance-amount">
-                                    <sup>FCFA</sup>{{ number_format($availableBalance, 0, ',', ' ') }}
+                                    {{ number_format($availableBalance, 0, ',', ' ') }}
+                                </div>
+                                <div style="margin-top:6px; font-size:0.72rem; opacity:0.85;">
+                                    En séquestre : {{ number_format($pendingBalance, 0, ',', ' ') }}
                                 </div>
                             </div>
                         </div>
@@ -1050,43 +1053,14 @@
                 </div>
             </div>
 
-            {{-- ══ Financial Summary Panel ══ --}}
-            <div class="fin-summary">
-                <div class="fin-summary-inner">
-
-                    {{-- En séquestre --}}
-                    <div class="fin-stat">
-                        <div class="fin-stat-label">En séquestre</div>
-                        @if($pendingBalance > 0)
-                            <div class="fin-stat-value amber" data-count="{{ $pendingBalance }}">
-                                {{ number_format($pendingBalance, 0, ',', ' ') }}<span class="fin-unit">FCFA</span></div>
-                        @else
-                            <div class="fin-stat-value muted">—<span class="fin-unit">FCFA</span></div>
-                        @endif
-                    </div>
-
-                    {{-- Solde disponible --}}
-                    <div class="fin-stat">
-                        <div class="fin-stat-label">Solde disponible</div>
-                        <div class="fin-stat-value green" data-count="{{ $availableBalance }}">
-                            {{ number_format($availableBalance, 0, ',', ' ') }}<span class="fin-unit">FCFA</span></div>
-                    </div>
-
-                    {{-- Transactions --}}
-                    <div class="fin-stat">
-                        <div class="fin-stat-label">Transactions</div>
-                        <div class="fin-stat-value blue" data-count="{{ $recentTransactions->total() }}">
-                            {{ $recentTransactions->total() }}</div>
-                    </div>
-
-                </div>
-            </div>
-
             <div class="wallet-actions">
                 <button class="btn-action btn-w-primary"
                     onclick="window.location.href='{{ route('vendeur.wallet.withdraw.show') }}'">
                     <i class="fas fa-paper-plane"></i> Effectuer un retrait
                 </button>
+                <div style="font-size: 0.78rem; color: #888; margin-top: 8px; text-align: center;">
+                    Les retraits sont traités via Stripe.
+                </div>
             </div>
 
 
