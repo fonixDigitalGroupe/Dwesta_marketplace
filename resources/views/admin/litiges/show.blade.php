@@ -148,6 +148,15 @@
                     <div>
                         <div style="font-size: 0.7rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 5px;">Mode de paiement</div>
                         <div style="font-weight: 600; color: #111; font-size: 0.9rem;">{{ $paiementLabel }} @if($paidOnline)<span style="color:#16a34a; font-size:0.72rem;">(payé en ligne)</span>@endif</div>
+                        @if(!empty($cardInfo) && $cardInfo['last4'])
+                            <div style="margin-top: 6px; display: inline-flex; align-items: center; gap: 6px; background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 6px; padding: 4px 10px; font-size: 0.8rem; color: #111;">
+                                <i class="fas fa-credit-card" style="color: #64748b;"></i>
+                                {{ ucfirst($cardInfo['brand'] ?? 'Carte') }} •••• {{ $cardInfo['last4'] }}
+                                @if($cardInfo['refunded'])
+                                    <span style="color:#16a34a; font-weight:700; font-size:0.72rem;">· Remboursé</span>
+                                @endif
+                            </div>
+                        @endif
                     </div>
                     <div>
                         <div style="font-size: 0.7rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 5px;">Mode de livraison</div>

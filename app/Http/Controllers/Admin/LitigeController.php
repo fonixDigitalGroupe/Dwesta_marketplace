@@ -34,7 +34,13 @@ class LitigeController extends Controller
         // Le client a-t-il payé en ligne ? (remboursement possible)
         $paidOnline = $litige->order && !empty($litige->order->stripe_payment_intent_id);
 
-        return view('admin.litiges.show', compact('litige', 'paidOnline'));
+        // Infos carte (marque, 4 derniers chiffres, remboursement) depuis Stripe
+        $cardInfo = null;
+        if ($paidOnline) {
+            $cardInfo = app(\App\Services\StripeService::class)->getCardInfo($litige->order->stripe_payment_intent_id);
+        }
+
+        return view('admin.litiges.show', compact('litige', 'paidOnline', 'cardInfo'));
     }
 
     public function resolve(Request $request, Litige $litige)

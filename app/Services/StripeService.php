@@ -206,4 +206,28 @@ class StripeService
             'payment_intent' => $paymentIntentId,
         ]);
     }
+
+    /**
+     * Infos carte (marque, 4 derniers chiffres) + statut de remboursement,
+     * récupérées depuis Stripe à partir d'un Payment Intent. Jamais le numéro complet.
+     */
+    public function getCardInfo(string $paymentIntentId): ?array
+    {
+        try {
+            $pi = $this->stripe->paymentIntents->retrieve($paymentIntentId, ['expand' => ['latest_charge']]);
+            $charge = $pi->latest_charge ?? null;
+            $card = $charge->payment_method_details->card ?? null;
+
+            return [
+                'brand'           => $card->brand ?? null,
+                'last4'           => $card->last4 ?? null,
+                'status'          => $pi->status ?? null,
+                'refunded'        => $charge->refunded ?? false,
+                'amount_refunded' => isset($charge->amount_refunded) ? $charge->amount_refunded / 100 : 0, // en EUR
+            ];
+        } catch (\Throwable $e) {
+            \Log::warning('getCardInfo failed', ['pi' => $paymentIntentId, 'error' => $e->getMessage()]);
+            return null;
+        }
+    }
 }
