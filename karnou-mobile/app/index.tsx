@@ -114,7 +114,16 @@ export default function KarnouWebApp() {
         originWhitelist={['*']}
         startInLoadingState
         pullToRefreshEnabled
-        setSupportMultipleWindows={false}
+        javaScriptCanOpenWindowsAutomatically
+        setSupportMultipleWindows={true}
+        onOpenWindow={(e) => {
+          // Ex. paiement Stripe qui tente d'ouvrir une nouvelle fenêtre :
+          // on redirige la WebView principale vers cette URL (reste dans l'app).
+          const url = e.nativeEvent.targetUrl;
+          if (url && webRef.current) {
+            webRef.current.injectJavaScript(`window.location.href = ${JSON.stringify(url)}; true;`);
+          }
+        }}
         renderLoading={() => <View />}
         style={styles.webview}
       />
