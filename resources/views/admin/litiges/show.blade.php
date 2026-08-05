@@ -62,7 +62,7 @@
                         </div>
                         <div>
                             <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Pays</div>
-                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reporter->pays ?? '—' }}</div>
+                            <div style="font-size: 0.85rem; color: #111;">{{ $litige->reporter->nationalite ?? $litige->reporter->pays ?? '—' }}</div>
                         </div>
                         <div>
                             <div style="font-size: 0.68rem; font-weight: 700; color: #888; text-transform: uppercase;">Région</div>
@@ -78,8 +78,6 @@
                         </div>
                     </div>
                 @endif
-
-                <a href="{{ route('admin.users.index') }}?search={{ $litige->reporter->email }}" style="display: inline-block; margin-top: 15px; font-size: 0.75rem; color: #004aad; font-weight: 600; text-decoration: none;">Voir profil utilisateur &rarr;</a>
             </div>
 
             <!-- Description Card -->
