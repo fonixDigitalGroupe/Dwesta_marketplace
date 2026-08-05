@@ -40,15 +40,18 @@
             <a href="{{ route('admin.finance.vendeurs') }}" style="color: #004aad; font-size: 0.8rem; text-decoration: none; font-weight: 600;">&larr; Retour</a>
         </div>
 
-        <!-- Filtres par statut -->
-        <div class="amazon-tabs-container">
-            <a href="{{ route('admin.finance.vendeurs.orders', $user->id) }}" class="fstab {{ !$statutFiltre ? 'active' : '' }}">Tous ({{ $totalCommandes }})</a>
-            @foreach($labels as $val => $lbl)
-                @if(($countsParStatut[$val] ?? 0) > 0)
-                    <a href="{{ route('admin.finance.vendeurs.orders', ['user' => $user->id, 'statut' => $val]) }}" class="fstab {{ $statutFiltre === $val ? 'active' : '' }}">{{ $lbl }} ({{ $countsParStatut[$val] }})</a>
-                @endif
-            @endforeach
-        </div>
+        <!-- Filtre par statut -->
+        <form method="GET" action="{{ route('admin.finance.vendeurs.orders', $user->id) }}" style="margin-bottom: 20px; display: flex; flex-direction: column; gap: 4px; max-width: 260px;">
+            <label style="font-size: 0.7rem; font-weight: 700; color: #666; text-transform: uppercase;">Statut</label>
+            <select name="statut" onchange="this.form.submit()" style="padding: 8px 10px; border: 1px solid #d5dbe1; border-radius: 6px; font-size: 0.85rem;">
+                <option value="">Tous les statuts ({{ $totalCommandes }})</option>
+                @foreach($labels as $val => $lbl)
+                    @if(($countsParStatut[$val] ?? 0) > 0)
+                        <option value="{{ $val }}" {{ $statutFiltre === $val ? 'selected' : '' }}>{{ $lbl }} ({{ $countsParStatut[$val] }})</option>
+                    @endif
+                @endforeach
+            </select>
+        </form>
 
         <!-- Tableau -->
         <div style="overflow-x: auto;">
