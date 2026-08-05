@@ -8,6 +8,7 @@ import { SITE_URL } from '../src/config';
 export default function KarnouWebApp() {
   const webRef = useRef<WebView>(null);
   const [loading, setLoading] = useState(true);
+  const [firstDone, setFirstDone] = useState(false); // true une fois la 1re page chargée
   const [canGoBack, setCanGoBack] = useState(false);
 
   // Bouton retour Android → revient dans l'historique du site
@@ -38,6 +39,7 @@ export default function KarnouWebApp() {
         onLoadStart={() => setLoading(true)}
         onLoadEnd={() => {
           setLoading(false);
+          setFirstDone(true);
         }}
         // Réglages utiles marketplace (paiement, upload photo, cookies/session)
         javaScriptEnabled
@@ -54,11 +56,11 @@ export default function KarnouWebApp() {
         style={styles.webview}
       />
 
-      {/* Loader affiché à CHAQUE chargement de page : cercle gris + "Karnou" */}
+      {/* Loader à chaque chargement : "Karnou" + cercle au démarrage, juste le cercle ensuite */}
       {loading && (
         <View style={styles.loader} pointerEvents="none">
-          <ActivityIndicator size="large" color="#9ca3af" style={{ marginBottom: 16 }} />
-          <Text style={styles.brand}>Karnou</Text>
+          <ActivityIndicator size="large" color="#9ca3af" style={firstDone ? undefined : { marginBottom: 16 }} />
+          {!firstDone && <Text style={styles.brand}>Karnou</Text>}
         </View>
       )}
     </SafeAreaView>
