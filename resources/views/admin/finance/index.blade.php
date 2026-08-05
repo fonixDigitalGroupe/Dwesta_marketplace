@@ -164,7 +164,7 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e7e7e7;">
             <h2 style="font-size: 1.1rem; font-weight: 500; color: #111; margin: 0;">Compte Karnou</h2>
         </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div id="compte-karnou-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
 
             {{-- Solde Karnou retirable --}}
             <div style="border: 1px solid #b7e4c7; border-radius: 4px; padding: 20px; background: #e9f7ef;">
@@ -222,7 +222,30 @@
                 </div>
             </div>
         </div>
+
+        {{-- Flèche pour masquer/afficher la carte --}}
+        <div style="text-align: center; margin-top: 12px;">
+            <button type="button" onclick="toggleCompteKarnou()" id="compte-karnou-toggle"
+                style="background: #f3f4f6; border: 1px solid #e5e7eb; color: #555; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;"
+                title="Masquer / afficher">
+                <i class="fas fa-chevron-up"></i>
+            </button>
+        </div>
     </div>
+
+    <script>
+        function toggleCompteKarnou() {
+            var body = document.getElementById('compte-karnou-body');
+            var icon = document.querySelector('#compte-karnou-toggle i');
+            if (body.style.display === 'none') {
+                body.style.display = 'grid';
+                icon.className = 'fas fa-chevron-up';
+            } else {
+                body.style.display = 'none';
+                icon.className = 'fas fa-chevron-down';
+            }
+        }
+    </script>
 
     <!-- ===== DÉTAILS FINANCIERS ===== -->
     <div style="background: #fff; border: 1px solid #e7e7e7; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); padding: 20px; margin-top: 20px;">
