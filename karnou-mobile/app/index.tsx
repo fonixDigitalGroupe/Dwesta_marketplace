@@ -155,7 +155,7 @@ export default function KarnouWebApp() {
               transform: [{ scale: pulse.interpolate({ inputRange: [0.4, 1], outputRange: [0.85, 1.1] }) }],
             }}
           >
-            <Ionicons name="cart" size={40} color="#9ca3af" />
+            <Ionicons name="cart" size={40} color="#d1975a" />
           </Animated.View>
         </View>
       )}
