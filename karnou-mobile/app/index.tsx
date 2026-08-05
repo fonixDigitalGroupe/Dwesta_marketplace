@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { ActivityIndicator, Animated, BackHandler, StyleSheet, Text, View } from 'react-native';
+import { Animated, BackHandler, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView, WebViewNavigation } from 'react-native-webview';
@@ -133,10 +133,17 @@ export default function KarnouWebApp() {
         </View>
       )}
 
-      {/* Chargements de page suivants : juste le cercle */}
+      {/* Chargements de page suivants : un panier animé (gris) */}
       {loading && !splashVisible && (
         <View style={styles.loader} pointerEvents="none">
-          <ActivityIndicator size="large" color="#9ca3af" />
+          <Animated.View
+            style={{
+              opacity: pulse,
+              transform: [{ scale: pulse.interpolate({ inputRange: [0.4, 1], outputRange: [0.85, 1.1] }) }],
+            }}
+          >
+            <Ionicons name="cart" size={40} color="#9ca3af" />
+          </Animated.View>
         </View>
       )}
     </SafeAreaView>
