@@ -14,6 +14,7 @@
         .st-en_attente { background:#fff7ed; color:#c2410c; }
         .st-annule { background:#f3f4f6; color:#374151; }
         .st-litige { background:#fef2f2; color:#991b1b; }
+        .amazon-tabs-container { display: flex; gap: 20px; border-bottom: 1px solid #f0f0f0; margin-bottom: 20px; flex-wrap: wrap; }
         .fstab { padding: 10px 5px; text-decoration: none; font-size: 0.85rem; color: #555; font-weight: 400; border-bottom: 2px solid transparent; transition: all 0.2s; }
         .fstab:hover { color: #c45500; }
         .fstab.active { color: #c45500; font-weight: 700; border-bottom-color: #c45500; }
