@@ -112,6 +112,52 @@
                         </div>
                     @endforeach
                 </div>
+
+                {{-- Historique / suivi de la commande --}}
+                @php
+                    $estCodH = in_array($o->gestion_paiement, ['livraison_buyer', 'livraison_receiver']) || $o->moyen_paiement === 'cod';
+                    if ($estCodH) {
+                        $steps = [
+                            'en_attente' => 'Commande confirmée',
+                            'pret_expedition' => 'Prêt pour expédition',
+                            'en_route' => 'En cours de livraison',
+                            'disponible' => 'Disponible au point relais',
+                            'livre' => 'Livré',
+                        ];
+                    } else {
+                        $steps = [
+                            'en_attente' => 'En attente de paiement',
+                            'paye' => 'Payé — À préparer',
+                            'pret_expedition' => 'Prêt pour expédition',
+                            'en_route' => 'En cours de livraison',
+                            'disponible' => 'Disponible au point relais',
+                            'livre' => 'Livré',
+                        ];
+                    }
+                    $stKeys = array_keys($steps);
+                    $curIdx = array_search($o->statut, $stKeys);
+                @endphp
+                <div style="margin-top: 20px; padding-top: 18px; border-top: 1px solid #f1f1f1;">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 14px;">Historique de la commande</div>
+                    <div style="display: flex; flex-direction: column; gap: 0;">
+                        @foreach($steps as $key => $label)
+                            @php
+                                $done = $curIdx !== false && array_search($key, $stKeys) < $curIdx;
+                                $current = $o->statut === $key;
+                            @endphp
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 6px 0;">
+                                <span style="width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; background: {{ $done ? '#16a34a' : ($current ? '#f68b1e' : '#fff') }}; border: 2px solid {{ $done ? '#16a34a' : ($current ? '#f68b1e' : '#d1d5db') }};"></span>
+                                <span style="font-size: 0.88rem; color: {{ $done || $current ? '#111' : '#9ca3af' }}; font-weight: {{ $current ? '700' : '500' }};">{{ $label }}</span>
+                            </div>
+                        @endforeach
+                        @if(in_array($o->statut, ['annule', 'litige']))
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 6px 0;">
+                                <span style="width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; background: #dc2626; border: 2px solid #dc2626;"></span>
+                                <span style="font-size: 0.88rem; color: #991b1b; font-weight: 700;">{{ $o->statut === 'litige' ? 'Litige en cours' : 'Annulée' }}</span>
+                            </div>
+                        @endif
+                    </div>
+                </div>
             </div>
             @endif
 
