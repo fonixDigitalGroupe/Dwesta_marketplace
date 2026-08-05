@@ -1,2 +1,9 @@
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /vendeur
+Disallow: /mon-compte
+Disallow: /mes-achats
+Disallow: /checkout
+Disallow: /panier
+
+Sitemap: https://karnou.com/sitemap.xml

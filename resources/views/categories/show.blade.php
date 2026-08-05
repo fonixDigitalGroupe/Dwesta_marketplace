@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', $category->nom . ' - Karnou')
+@section('title', $category->nom . ' - Achat et vente en ligne | Karnou')
+@section('meta_description', 'Achetez et vendez ' . \Illuminate\Support\Str::lower($category->nom) . ' au Sénégal et en Afrique sur Karnou : neuf, occasion et reconditionné au meilleur prix, paiement sécurisé et livraison rapide.')
+@section('meta_keywords', $category->nom . ', ' . \Illuminate\Support\Str::lower($category->nom) . ' Sénégal, acheter ' . \Illuminate\Support\Str::lower($category->nom) . ', Karnou, e-commerce Afrique')
 
 @push('styles')
 <style>

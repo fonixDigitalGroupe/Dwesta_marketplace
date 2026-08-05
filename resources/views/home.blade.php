@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Votre marketplace en ligne')
+@section('title', 'Karnou - Achat et vente en ligne au Sénégal et en Afrique (neuf, occasion, reconditionné)')
+@section('meta_description', "Karnou rassemble le plus grand choix de produits au meilleur prix au Sénégal et en Afrique : e-commerce, services, immobilier et véhicules. Neuf, occasion ou reconditionné, paiement sécurisé et livraison rapide.")
+@section('meta_keywords', "Karnou, e-commerce Sénégal, e-commerce Afrique, achat en ligne, vente en ligne, marketplace Afrique, Centrafrique, neuf occasion reconditionné, Dakar, boutique en ligne")
 
 @push('styles')
     <style>

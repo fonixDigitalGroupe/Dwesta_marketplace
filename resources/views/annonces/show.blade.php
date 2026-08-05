@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', $annonce->titre)
+@section('title', $annonce->titre . ' | Karnou')
+@section('meta_description', \Illuminate\Support\Str::limit(strip_tags($annonce->description ?? ($annonce->titre . ' au meilleur prix sur Karnou.')), 155))
+@section('meta_keywords', $annonce->titre . ', ' . ($annonce->category->nom ?? '') . ', acheter en ligne, Karnou, Sénégal, Afrique')
 
 @section('content')
 <style>
