@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { ActivityIndicator, Animated, BackHandler, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Animated, BackHandler, Dimensions, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TouchableOpacity } from 'react-native';
@@ -68,6 +68,21 @@ export default function KarnouWebApp() {
     anim.start();
     return () => anim.stop();
   }, [pulse]);
+
+  // Barre de progression indéterminée (loader rapide des pages légères)
+  const SCREEN_W = Dimensions.get('window').width;
+  const barX = useRef(new Animated.Value(-0.4)).current;
+  useEffect(() => {
+    let anim: Animated.CompositeAnimation | null = null;
+    if (loading && !splashVisible && !heavyLoad) {
+      barX.setValue(-0.4);
+      anim = Animated.loop(
+        Animated.timing(barX, { toValue: 1, duration: 900, useNativeDriver: true })
+      );
+      anim.start();
+    }
+    return () => { if (anim) anim.stop(); };
+  }, [loading, splashVisible, heavyLoad, barX]);
 
   // Paniers 🛒 qui flottent autour de "Karnou"
   const carts = useRef(
@@ -216,9 +231,16 @@ export default function KarnouWebApp() {
         </View>
       )}
 
-      {/* Pages légères : loader rapide = fine barre orange en haut */}
+      {/* Pages légères : loader rapide = fine barre orange animée en haut */}
       {loading && !splashVisible && !heavyLoad && (
-        <View style={styles.topProgress} pointerEvents="none" />
+        <View style={styles.topProgressTrack} pointerEvents="none">
+          <Animated.View
+            style={[
+              styles.topProgressBar,
+              { transform: [{ translateX: barX.interpolate({ inputRange: [-0.4, 1], outputRange: [-SCREEN_W * 0.4, SCREEN_W] }) }] },
+            ]}
+          />
+        </View>
       )}
 
       {/* Barre de navigation mobile (cachée pendant le splash) */}
@@ -279,12 +301,18 @@ const styles = StyleSheet.create({
     color: '#9ca3af',
     letterSpacing: 0.5,
   },
-  topProgress: {
+  topProgressTrack: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     height: 3,
+    backgroundColor: 'rgba(246,139,30,0.15)',
+    overflow: 'hidden',
+  },
+  topProgressBar: {
+    width: '40%',
+    height: '100%',
     backgroundColor: '#f68b1e',
   },
   tabbar: {
