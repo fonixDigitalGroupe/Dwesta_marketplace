@@ -109,7 +109,7 @@ export default function KarnouWebApp() {
       if (!document.getElementById(id)) {
         var s = document.createElement('style');
         s.id = id;
-        s.innerHTML = '.rk-footer{display:none !important;}';
+        s.innerHTML = '.rk-footer{display:none !important;} .sell-button-container{display:none !important;} .auth-dropdown-container{display:none !important;}';
         document.head.appendChild(s);
       }
     })(); true;
