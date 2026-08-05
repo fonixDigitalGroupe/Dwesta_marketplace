@@ -10,7 +10,16 @@ export default function KarnouWebApp() {
   const webRef = useRef<WebView>(null);
   const [loading, setLoading] = useState(true);
   const [firstDone, setFirstDone] = useState(false); // true une fois la 1re page chargée
+  const [minSplash, setMinSplash] = useState(false);  // true après 5s minimum d'écran de lancement
   const [canGoBack, setCanGoBack] = useState(false);
+
+  // L'écran de lancement reste affiché au moins 5 secondes
+  useEffect(() => {
+    const t = setTimeout(() => setMinSplash(true), 5000);
+    return () => clearTimeout(t);
+  }, []);
+
+  const splashVisible = !(firstDone && minSplash); // splash tant que : pas chargé OU < 5s
 
   // Animation de pulsation du texte "Karnou" sur l'écran de lancement
   const pulse = useRef(new Animated.Value(0.4)).current;
@@ -97,8 +106,8 @@ export default function KarnouWebApp() {
         style={styles.webview}
       />
 
-      {/* Écran de lancement (1er chargement) : fond orange + "Karnou" animé, sans cercle */}
-      {loading && !firstDone && (
+      {/* Écran de lancement : fond orange + "Karnou" animé (≥ 5s, jusqu'au chargement) */}
+      {splashVisible && (
         <View style={styles.splash} pointerEvents="none">
           {cartConfig.map((c, i) => (
             <Animated.View
@@ -125,7 +134,7 @@ export default function KarnouWebApp() {
       )}
 
       {/* Chargements de page suivants : juste le cercle */}
-      {loading && firstDone && (
+      {loading && !splashVisible && (
         <View style={styles.loader} pointerEvents="none">
           <ActivityIndicator size="large" color="#9ca3af" />
         </View>
