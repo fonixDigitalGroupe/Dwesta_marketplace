@@ -44,7 +44,7 @@
         @endif
 
         .top-banner {
-            background-color: #004aad;
+            background-color: #262626;
             height: 40px;
             width: 100%;
             display: flex;
@@ -80,8 +80,8 @@
             justify-content: center;
             width: 100%;
             height: 100%;
-            font-size: 1rem;
-            font-weight: 700;
+            font-size: 0.82rem;
+            font-weight: 600;
             color: rgba(255,255,255,1);
             text-decoration: none;
             text-align: center;
