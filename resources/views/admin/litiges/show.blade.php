@@ -29,7 +29,33 @@
         
         <!-- Left Column: Details & Resolution -->
         <div style="display: flex; flex-direction: column; gap: 25px;">
-            
+
+            @php
+                $rid = $litige->reporter->id ?? null;
+                if ($litige->order && $litige->order->seller && $litige->order->seller->user_id === $rid) {
+                    $roleSignaleur = 'Vendeur';
+                } elseif ($litige->order && $litige->order->user_id === $rid) {
+                    $roleSignaleur = 'Client';
+                } else {
+                    $roleSignaleur = 'Agence';
+                }
+            @endphp
+
+            <!-- Signalé par (Demandeur) -->
+            <div style="background: #fff; border: 1px solid #e7e7e7; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <h3 style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #f1f1f1; padding-bottom: 10px;">Signalé par ({{ $roleSignaleur }})</h3>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="width: 50px; height: 50px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; color: #004aad; border: 1px solid #e7e7e7;">
+                        {{ substr($litige->reporter->prenom, 0, 1) }}{{ substr($litige->reporter->nom, 0, 1) }}
+                    </div>
+                    <div>
+                        <div style="font-weight: 700; color: #111; font-size: 0.95rem;">{{ $litige->reporter->prenom }} {{ $litige->reporter->nom }}</div>
+                        <div style="font-size: 0.8rem; color: #666;">{{ $litige->reporter->email }}</div>
+                    </div>
+                </div>
+                <a href="{{ route('admin.users.index') }}?search={{ $litige->reporter->email }}" style="display: inline-block; margin-top: 15px; font-size: 0.75rem; color: #004aad; font-weight: 600; text-decoration: none;">Voir profil utilisateur &rarr;</a>
+            </div>
+
             <!-- Description Card -->
             <div style="background: #fff; border: 1px solid #e7e7e7; padding: 25px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                 <h2 style="font-size: 1.1rem; font-weight: 700; color: #111; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #f1f1f1; display: flex; align-items: center; gap: 10px;">
@@ -254,23 +280,6 @@
 
         <!-- Right Column: Parties Prenantes -->
         <div style="display: flex; flex-direction: column; gap: 20px;">
-            
-            <!-- Reporter -->
-            <div style="background: #fff; border: 1px solid #e7e7e7; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                <h3 style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #f1f1f1; padding-bottom: 10px;">Signalé par (Demandeur)</h3>
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <div style="width: 50px; height: 50px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 700; color: #004aad; border: 1px solid #e7e7e7;">
-                        {{ substr($litige->reporter->prenom, 0, 1) }}{{ substr($litige->reporter->nom, 0, 1) }}
-                    </div>
-                    <div>
-                        <div style="font-weight: 700; color: #111; font-size: 0.95rem;">{{ $litige->reporter->prenom }} {{ $litige->reporter->nom }}</div>
-                        <div style="font-size: 0.8rem; color: #666;">{{ $litige->reporter->email }}</div>
-                    </div>
-                </div>
-                <a href="{{ route('admin.users.index') }}?search={{ $litige->reporter->email }}" style="display: block; margin-top: 15px; text-align: center; font-size: 0.75rem; color: #004aad; font-weight: 600; text-decoration: none; padding: 8px; border: 1px solid #adb1b8; border-radius: 3px; background: #f7f8fa;">
-                    Voir profil utilisateur
-                </a>
-            </div>
 
             <!-- Reported -->
             <div style="background: #fff; border: 1px solid #e7e7e7; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
