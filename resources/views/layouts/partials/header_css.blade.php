@@ -414,10 +414,10 @@
     .badge-style {
         background: #dbdbdb;
         color: #444;
-        padding: 5px 12px;
+        padding: 4px 11px;
         border-radius: 50px;
         font-weight: 500;
-        font-size: 0.85rem;
+        font-size: 0.78rem;
         text-decoration: none;
         white-space: nowrap;
         transition: all 0.2s;
@@ -426,9 +426,9 @@
         align-items: center;
     }
     .badge-style:hover {
-        background: #004aad;
+        background: #f68b1e;
         color: #fff;
-        box-shadow: 0 3px 8px rgba(0,74,173,0.25);
+        box-shadow: 0 3px 8px rgba(246,139,30,0.25);
         transform: translateY(-1px);
     }
     /* Sidebar category item — name + chevron on same row */
