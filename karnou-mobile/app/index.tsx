@@ -24,6 +24,33 @@ export default function KarnouWebApp() {
     return () => anim.stop();
   }, [pulse]);
 
+  // Paniers 🛒 qui flottent autour de "Karnou"
+  const carts = useRef(
+    [0, 1, 2, 3, 4].map(() => new Animated.Value(0))
+  ).current;
+  useEffect(() => {
+    const anims = carts.map((v, i) =>
+      Animated.loop(
+        Animated.sequence([
+          Animated.delay(i * 300),
+          Animated.timing(v, { toValue: 1, duration: 1600, useNativeDriver: true }),
+          Animated.timing(v, { toValue: 0, duration: 1600, useNativeDriver: true }),
+        ])
+      )
+    );
+    anims.forEach((a) => a.start());
+    return () => anims.forEach((a) => a.stop());
+  }, [carts]);
+
+  // Positions (autour du texte) + sens du mouvement de chaque panier
+  const cartConfig = [
+    { top: '22%', left: '12%', dy: -18 },
+    { top: '30%', right: '14%', dy: 16 },
+    { bottom: '26%', left: '18%', dy: 14 },
+    { bottom: '20%', right: '16%', dy: -16 },
+    { top: '16%', left: '46%', dy: -14 },
+  ];
+
   // Bouton retour Android → revient dans l'historique du site
   useFocusEffect(
     useCallback(() => {
@@ -72,6 +99,26 @@ export default function KarnouWebApp() {
       {/* Écran de lancement (1er chargement) : fond orange + "Karnou" animé, sans cercle */}
       {loading && !firstDone && (
         <View style={styles.splash} pointerEvents="none">
+          {cartConfig.map((c, i) => (
+            <Animated.Text
+              key={i}
+              style={[
+                styles.cart,
+                {
+                  top: c.top as any,
+                  left: c.left as any,
+                  right: c.right as any,
+                  bottom: c.bottom as any,
+                  opacity: carts[i].interpolate({ inputRange: [0, 0.5, 1], outputRange: [0.35, 1, 0.35] }),
+                  transform: [
+                    { translateY: carts[i].interpolate({ inputRange: [0, 1], outputRange: [0, c.dy] }) },
+                  ],
+                },
+              ]}
+            >
+              🛒
+            </Animated.Text>
+          ))}
           <Animated.Text style={[styles.brand, { opacity: pulse }]}>Karnou</Animated.Text>
         </View>
       )}
@@ -114,6 +161,10 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: '#ffffff',
     letterSpacing: 1,
+  },
+  cart: {
+    position: 'absolute',
+    fontSize: 30,
   },
   topBar: {
     position: 'absolute',
