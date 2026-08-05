@@ -77,24 +77,26 @@
         }
 
         .btn-verify {
-            width: 100%;
-            background-color: #004aad;
+            display: block;
+            width: auto;
+            min-width: 180px;
+            margin: 0 auto 1.25rem auto;
+            background-color: #f68b1e;
             color: #fff;
             border: none;
-            padding: 1rem;
-            border-radius: 10px;
-            font-size: 1rem;
+            padding: 0.6rem 1.75rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-bottom: 1.5rem;
             letter-spacing: 0.3px;
         }
 
         .btn-verify:hover {
-            background-color: #003a8a;
+            background-color: #e07b10;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,74,173,0.15);
+            box-shadow: 0 4px 12px rgba(246,139,30,0.2);
         }
 
         .breadcrumbs {
