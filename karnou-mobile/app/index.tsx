@@ -1,5 +1,5 @@
-import { useRef, useState, useCallback } from 'react';
-import { ActivityIndicator, BackHandler, StyleSheet, Text, View } from 'react-native';
+import { useRef, useState, useCallback, useEffect } from 'react';
+import { ActivityIndicator, Animated, BackHandler, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView, WebViewNavigation } from 'react-native-webview';
@@ -10,6 +10,19 @@ export default function KarnouWebApp() {
   const [loading, setLoading] = useState(true);
   const [firstDone, setFirstDone] = useState(false); // true une fois la 1re page chargée
   const [canGoBack, setCanGoBack] = useState(false);
+
+  // Animation de pulsation du texte "Karnou" sur l'écran de lancement
+  const pulse = useRef(new Animated.Value(0.4)).current;
+  useEffect(() => {
+    const anim = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulse, { toValue: 1, duration: 750, useNativeDriver: true }),
+        Animated.timing(pulse, { toValue: 0.4, duration: 750, useNativeDriver: true }),
+      ])
+    );
+    anim.start();
+    return () => anim.stop();
+  }, [pulse]);
 
   // Bouton retour Android → revient dans l'historique du site
   useFocusEffect(
@@ -56,11 +69,17 @@ export default function KarnouWebApp() {
         style={styles.webview}
       />
 
-      {/* Loader à chaque chargement : "Karnou" + cercle au démarrage, juste le cercle ensuite */}
-      {loading && (
+      {/* Écran de lancement (1er chargement) : fond orange + "Karnou" animé, sans cercle */}
+      {loading && !firstDone && (
+        <View style={styles.splash} pointerEvents="none">
+          <Animated.Text style={[styles.brand, { opacity: pulse }]}>Karnou</Animated.Text>
+        </View>
+      )}
+
+      {/* Chargements de page suivants : juste le cercle */}
+      {loading && firstDone && (
         <View style={styles.loader} pointerEvents="none">
-          <ActivityIndicator size="large" color="#9ca3af" style={firstDone ? undefined : { marginBottom: 16 }} />
-          {!firstDone && <Text style={styles.brand}>Karnou</Text>}
+          <ActivityIndicator size="large" color="#9ca3af" />
         </View>
       )}
     </SafeAreaView>
@@ -80,11 +99,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
   },
+  splash: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f68b1e',
+  },
   brand: {
-    fontSize: 34,
+    fontSize: 40,
     fontWeight: '800',
-    color: '#9ca3af',
-    letterSpacing: 0.5,
+    color: '#ffffff',
+    letterSpacing: 1,
   },
   topBar: {
     position: 'absolute',
