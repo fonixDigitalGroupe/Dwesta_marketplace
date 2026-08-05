@@ -20,7 +20,7 @@ export default function KarnouWebApp() {
   const base = SITE_URL.replace(/\/$/, '');
   const TABS = [
     { label: 'Accueil', icon: 'home', activeIcon: 'home', path: '/' },
-    { label: 'Catégories', icon: 'grid-outline', activeIcon: 'grid', path: '/recherche' },
+    { label: 'Catégories', icon: 'grid-outline', activeIcon: 'grid', path: '__categories__' },
     { label: 'Vendre', icon: 'add-circle-outline', activeIcon: 'add-circle', path: '/annonces/create' },
     { label: 'Favoris', icon: 'heart-outline', activeIcon: 'heart', path: '/favoris' },
     { label: 'Compte', icon: 'person-outline', activeIcon: 'person', path: '/mon-compte' },
@@ -28,8 +28,21 @@ export default function KarnouWebApp() {
 
   const pathOf = (u: string) => (u || '').replace(/^https?:\/\/[^/]+/, '').split('?')[0] || '/';
   const currentPath = pathOf(currentUrl);
-  const isActive = (p: string) => (p === '/' ? currentPath === '/' : currentPath.startsWith(p));
-  const goTo = (p: string) => {
+  const isActive = (p: string) => (p === '/' ? currentPath === '/' : p !== '__categories__' && currentPath.startsWith(p));
+
+  // Ouvre le menu "toutes les catégories" du site (tiroir)
+  const openCategoriesJS = `
+    (function(){
+      var b = document.querySelector('.mobile-menu-btn') || document.querySelector('.cat-nav-item');
+      if (b) { b.click(); }
+    })(); true;
+  `;
+
+  const onTab = (p: string) => {
+    if (p === '__categories__') {
+      webRef.current?.injectJavaScript(openCategoriesJS);
+      return;
+    }
     const url = base + p;
     webRef.current?.injectJavaScript(`window.location.href = ${JSON.stringify(url)}; true;`);
   };
@@ -109,7 +122,7 @@ export default function KarnouWebApp() {
       if (!document.getElementById(id)) {
         var s = document.createElement('style');
         s.id = id;
-        s.innerHTML = '.rk-footer{display:none !important;} .sell-button-container{display:none !important;} .auth-dropdown-container{display:none !important;}';
+        s.innerHTML = '.rk-footer{display:none !important;} .sell-button-container,.sell-button{display:none !important;} .auth-dropdown-container{display:none !important;}';
         document.head.appendChild(s);
       }
     })(); true;
@@ -206,7 +219,7 @@ export default function KarnouWebApp() {
           {TABS.map((t) => {
             const active = isActive(t.path);
             return (
-              <TouchableOpacity key={t.path} style={styles.tab} onPress={() => goTo(t.path)} activeOpacity={0.7}>
+              <TouchableOpacity key={t.path} style={styles.tab} onPress={() => onTab(t.path)} activeOpacity={0.7}>
                 <Ionicons name={(active ? t.activeIcon : t.icon) as any} size={24} color={active ? '#f68b1e' : '#6b7280'} />
                 <Text style={[styles.tabLabel, { color: active ? '#f68b1e' : '#6b7280' }]}>{t.label}</Text>
               </TouchableOpacity>
