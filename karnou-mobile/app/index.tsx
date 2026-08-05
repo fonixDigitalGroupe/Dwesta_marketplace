@@ -59,6 +59,7 @@ export default function KarnouWebApp() {
       {/* Écran de lancement UNIQUEMENT au tout premier chargement : "Karnou" en gris */}
       {loading && !firstDone && (
         <View style={styles.loader} pointerEvents="none">
+          <ActivityIndicator size="large" color="#9ca3af" style={{ marginBottom: 16 }} />
           <Text style={styles.brand}>Karnou</Text>
         </View>
       )}
