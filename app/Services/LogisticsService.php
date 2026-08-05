@@ -126,7 +126,17 @@ class LogisticsService
         }
 
         $order->update(['statut' => $newStatus]);
-        
+
+        // À la livraison : les fonds du vendeur ne sont plus en séquestre → disponibles
+        if ($newStatus === Order::STATUT_LIVRE) {
+            \App\Models\Transaction::where('order_id', $order->id)
+                ->where('wallet_status', \App\Models\Transaction::STATUS_PENDING)
+                ->update([
+                    'wallet_status' => \App\Models\Transaction::STATUS_AVAILABLE,
+                    'release_at'    => now(),
+                ]);
+        }
+
         return $order;
     }
 }
