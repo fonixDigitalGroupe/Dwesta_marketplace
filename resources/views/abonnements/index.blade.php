@@ -284,6 +284,17 @@
     @media (max-width: 600px) {
         .abn-plan-price { display: none; }
         .checkout-bar { flex-direction: column; gap: 0.75rem; }
+
+        /* Cadres du tableau des forfaits en pleine largeur sur mobile */
+        .abn-page {
+            padding: 1rem 0.4rem 3rem;
+            max-width: 100%;
+        }
+        .abn-section {
+            margin-left: 0;
+            margin-right: 0;
+            border-radius: 6px;
+        }
     }
 </style>
 @endpush
