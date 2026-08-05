@@ -630,7 +630,8 @@
             <!-- Registration Form -->
             <div class="auth-card">
                 
-                <form method="POST" action="{{ route('register') }}" id="register-form">
+                <form method="POST" action="{{ route('register') }}" id="register-form"
+                    onsubmit="var b=document.getElementById('register-submit-btn'); if(b){ b.classList.add('is-loading'); var l=b.querySelector('.btn-label'); if(l) l.textContent='Envoi du code…'; }">
                     @csrf
                     
                     <h2 class="section-header" style="border-bottom: none; margin-bottom: 1.5rem;">Informations d'authentification</h2>
@@ -675,7 +676,10 @@
                     --}}
 
                     <div style="text-align: left; margin-top: 1.5rem;">
-                        <button type="submit" class="btn-primary">continuer</button>
+                        <button type="submit" class="btn-primary" id="register-submit-btn">
+                            <span class="btn-loading"></span>
+                            <span class="btn-label">Continuer</span>
+                        </button>
                     </div>
 
                     <div class="divider-container">Ou inscrivez-vous avec</div>

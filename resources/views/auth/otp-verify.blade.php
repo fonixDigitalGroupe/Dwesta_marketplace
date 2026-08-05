@@ -222,7 +222,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('otp.verify.post') }}" method="POST" id="otp-form">
+            <form action="{{ route('otp.verify.post') }}" method="POST" id="otp-form" onsubmit="startBtnLoader('otp-verify-btn', 'Vérification…')">
                 @csrf
                 <div class="otp-input-container">
                     <input type="text" name="otp[]" class="otp-digit" maxlength="1" pattern="\d*" inputmode="numeric" required autofocus>
@@ -231,14 +231,14 @@
                     <input type="text" name="otp[]" class="otp-digit" maxlength="1" pattern="\d*" inputmode="numeric" required>
                 </div>
 
-                <button type="submit" class="btn-verify">Vérifier mon compte</button>
+                <button type="submit" class="btn-verify" id="otp-verify-btn">Vérifier mon compte</button>
             </form>
 
             <div class="resend-container">
-                Vous n'avez pas reçu le code ? 
-                <form action="{{ route('otp.resend') }}" method="POST" style="display: inline;">
+                Vous n'avez pas reçu le code ?
+                <form action="{{ route('otp.resend') }}" method="POST" style="display: inline;" onsubmit="startBtnLoader('otp-resend-btn', 'Envoi…')">
                     @csrf
-                    <button type="submit" class="resend-link" style="background: none; border: none; padding: 0; cursor: pointer; font: inherit;">
+                    <button type="submit" class="resend-link" id="otp-resend-btn" style="background: none; border: none; padding: 0; cursor: pointer; font: inherit;">
                         Renvoyer un code
                     </button>
                 </form>
@@ -246,6 +246,26 @@
             </div> <!-- end otp-card -->
         </div> <!-- end auth-wrapper -->
     </main>
+
+    <style>
+        @keyframes karnou-spin { to { transform: rotate(360deg); } }
+        .karnou-mini-spin {
+            display: inline-block; width: 15px; height: 15px; margin-right: 8px;
+            border: 2px solid rgba(255,255,255,0.5); border-top-color: #fff;
+            border-radius: 50%; animation: karnou-spin 0.7s linear infinite; vertical-align: middle;
+        }
+        .resend-link .karnou-mini-spin { border-color: rgba(246,139,30,0.4); border-top-color: #f68b1e; }
+    </style>
+    <script>
+        function startBtnLoader(id, label) {
+            var btn = document.getElementById(id);
+            if (!btn || btn.dataset.loading === '1') return;
+            btn.dataset.loading = '1';
+            btn.disabled = true;
+            btn.style.opacity = '0.85';
+            btn.innerHTML = '<span class="karnou-mini-spin"></span>' + label;
+        }
+    </script>
 @endsection
 
 @push('scripts')
