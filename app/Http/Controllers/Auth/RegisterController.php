@@ -46,12 +46,19 @@ class RegisterController extends Controller
         ]]);
 
         // Envoi de l'OTP sans créer d'utilisateur DB
-        if (!$phoneMode) {
-            \Illuminate\Support\Facades\Notification::route('mail', $request->email)
-                ->notify(new EmailOtpNotification($otp));
-        } else {
-            \Illuminate\Support\Facades\Notification::route('mail', 'sms-simulation@karnou.com') // Simulation dev
-                ->notify(new \App\Notifications\SmsOtpNotification($otp));
+        try {
+            if (!$phoneMode) {
+                \Illuminate\Support\Facades\Notification::route('mail', $request->email)
+                    ->notify(new EmailOtpNotification($otp));
+            } else {
+                \Illuminate\Support\Facades\Notification::route('mail', 'sms-simulation@karnou.com') // Simulation dev
+                    ->notify(new \App\Notifications\SmsOtpNotification($otp));
+            }
+        } catch (\Throwable $e) {
+            \Log::error('Envoi OTP échec: ' . $e->getMessage());
+            return back()->withInput()->with('error',
+                "Impossible d'envoyer le code de vérification à cette adresse e-mail. "
+                . "Vérifiez qu'elle est correcte et valide, puis réessayez.");
         }
 
         return redirect()->route('otp.verify');
