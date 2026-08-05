@@ -80,6 +80,19 @@ export default function KarnouWebApp() {
     setCanGoBack(navState.canGoBack);
   };
 
+  // Masque le footer du site uniquement dans l'app (le site web garde son footer)
+  const hideFooterJS = `
+    (function () {
+      var id = 'karnou-app-style';
+      if (!document.getElementById(id)) {
+        var s = document.createElement('style');
+        s.id = id;
+        s.innerHTML = '.rk-footer{display:none !important;}';
+        document.head.appendChild(s);
+      }
+    })(); true;
+  `;
+
   // Le loader n'apparaît que pour les actions "lourdes" :
   // recherche, boutique pro, checkout/paiement (Stripe). Sinon navigation instantanée.
   const isHeavyUrl = (url: string) => {
@@ -100,9 +113,12 @@ export default function KarnouWebApp() {
             setLoading(true);
           }
         }}
+        injectedJavaScript={hideFooterJS}
         onLoadEnd={() => {
           setLoading(false);
           setFirstDone(true);
+          // Réinjecte à chaque page (navigation interne du site)
+          webRef.current?.injectJavaScript(hideFooterJS);
         }}
         // Réglages utiles marketplace (paiement, upload photo, cookies/session)
         javaScriptEnabled
