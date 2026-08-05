@@ -589,9 +589,17 @@
                                 'Véhicules' => '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="13" width="22" height="8" rx="2"></rect><path d="M7 13V6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7"></path></svg>'
                             ];
                         @endphp
+                        @php
+                            $vendeurCourant = auth()->user()?->vendeur;
+                            $famillesAbo = \App\Models\Abonnement::famillesRequierentAbonnement();
+                        @endphp
                         @foreach($categories->where('parent_id', null) as $categorie)
-                            <div class="category-badge-item main-cat-badge {{ $rootCatId == $categorie->id ? 'selected' : '' }}" data-id="{{ $categorie->id }}"
-                                onclick="selectMainCategory(this, {{ $categorie->id }})">
+                            @php
+                                $famille = $categorie->famille;
+                                $bloque = in_array($famille, $famillesAbo) && !($vendeurCourant && $vendeurCourant->aAbonnementActifPourFamille($famille));
+                            @endphp
+                            <div class="category-badge-item main-cat-badge {{ $rootCatId == $categorie->id ? 'selected' : '' }} {{ $bloque ? 'is-locked' : '' }}" data-id="{{ $categorie->id }}"
+                                @if($bloque) title="Abonnement {{ $famille }} requis" style="opacity:0.55; cursor:not-allowed;" onclick="if(confirm('Un abonnement « {{ $famille }} » actif est requis. Voir les forfaits ?')) window.location.href='{{ route('abonnements.index') }}';" @else onclick="selectMainCategory(this, {{ $categorie->id }})" @endif>
                                 <span class="category-badge-icon">
                                     @if($categorie->icone) {!! $categorie->icone !!}
                                     @else {!! $icons[$categorie->nom] ?? '...' !!}
