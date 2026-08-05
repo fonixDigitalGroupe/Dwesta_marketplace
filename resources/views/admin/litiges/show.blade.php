@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-<div style="max-width: 1200px; margin: -50px auto 0;">
+<div style="max-width: 1360px; margin: -50px auto 0;">
   <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
 
     <!-- Header -->
@@ -25,7 +25,7 @@
         </a>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 350px; gap: 30px; align-items: start;">
+    <div style="display: grid; grid-template-columns: 1fr 320px; gap: 30px; align-items: start;">
         
         <!-- Left Column: Details & Resolution -->
         <div style="display: flex; flex-direction: column; gap: 25px;">
@@ -105,7 +105,7 @@
 
                 <div>
                     <span style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase;">Détails (Message)</span>
-                    <div style="margin-top: 10px; padding: 20px; background: #fafafa; border: 1px solid #e7e7e7; border-radius: 4px; font-size: 0.95rem; color: #333; line-height: 1.6;">
+                    <div style="margin-top: 10px; padding: 20px; background: #fff; border: 1px solid #e7e7e7; border-radius: 4px; font-size: 0.95rem; color: #333; line-height: 1.6;">
                         {{ $litige->description }}
                     </div>
                 </div>
@@ -367,6 +367,45 @@
                     </div>
                 @endif
             </div>
+
+            {{-- Parties de la commande : toujours Client puis Vendeur (même si répétition) --}}
+            @if($litige->order)
+                @php $cli = $litige->order->buyer; $ven = $litige->order->seller?->user; @endphp
+                @if($cli)
+                    <div style="background: #fff; border: 1px solid #e7e7e7; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <h3 style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #f1f1f1; padding-bottom: 10px;">Client</h3>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 46px; height: 46px; border-radius: 50%; background: #eef6ff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #2563eb; border: 1px solid #dbeafe;"><i class="fas fa-user"></i></div>
+                            <div>
+                                <div style="font-weight: 700; color: #111; font-size: 0.95rem;">{{ $cli->prenom }} {{ $cli->nom }}</div>
+                                <div style="font-size: 0.8rem; color: #666;">{{ $cli->email }}</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f1f1; font-size: 0.82rem; color: #333; line-height: 1.7;">
+                            <div><span style="color:#888;">Tél :</span> {{ $cli->telephone ?? '—' }}</div>
+                            <div><span style="color:#888;">Pays :</span> {{ $cli->nationalite ?? $cli->pays ?? '—' }} · <span style="color:#888;">Région :</span> {{ $cli->region ?? '—' }}</div>
+                            <div><span style="color:#888;">Adresse :</span> {{ $cli->adresse ?? '—' }}</div>
+                        </div>
+                    </div>
+                @endif
+                @if($ven)
+                    <div style="background: #fff; border: 1px solid #e7e7e7; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <h3 style="font-size: 0.75rem; font-weight: 700; color: #888; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #f1f1f1; padding-bottom: 10px;">Vendeur</h3>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 46px; height: 46px; border-radius: 50%; background: #fff8f0; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #f68b1e; border: 1px solid #fde3c4;"><i class="fas fa-shopping-cart"></i></div>
+                            <div>
+                                <div style="font-weight: 700; color: #111; font-size: 0.95rem;">{{ $ven->prenom }} {{ $ven->nom }}</div>
+                                <div style="font-size: 0.8rem; color: #666;">{{ $ven->email }}</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f1f1; font-size: 0.82rem; color: #333; line-height: 1.7;">
+                            <div><span style="color:#888;">Tél :</span> {{ $ven->telephone ?? '—' }}</div>
+                            <div><span style="color:#888;">Pays :</span> {{ $ven->nationalite ?? $ven->pays ?? '—' }} · <span style="color:#888;">Région :</span> {{ $ven->region ?? '—' }}</div>
+                            <div><span style="color:#888;">Adresse :</span> {{ $ven->adresse ?? '—' }}</div>
+                        </div>
+                    </div>
+                @endif
+            @endif
 
         </div>
 
