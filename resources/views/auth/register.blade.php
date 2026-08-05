@@ -224,7 +224,7 @@
 
         /* Button */
         .btn-primary {
-            background-color: #004aad;
+            background-color: #f68b1e;
             color: #fff;
             border: none;
             padding: 0.5rem 2.5rem;
@@ -239,9 +239,9 @@
         }
 
         .btn-primary:hover {
-            background-color: #003a8a;
+            background-color: #e07b10;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,74,173,0.15);
+            box-shadow: 0 4px 12px rgba(246,139,30,0.2);
         }
 
         /* Button loading state */
@@ -636,7 +636,7 @@
                     <h2 class="section-header" style="border-bottom: none; margin-bottom: 1.5rem;">Informations d'authentification</h2>
 
                     <p style="text-align: left; color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">
-                        Utilisez votre e-mail ou votre téléphone pour créer un compte.
+                        Utilisez votre e-mail pour créer un compte.
                     </p>
 
                     <!-- Section 1: Authentication -->
@@ -648,11 +648,6 @@
                             <div class="input-toggle-wrapper">
                                 <input type="email" name="email" id="email" class="floating-input" placeholder=" " value="{{ old('email') }}">
                                 <label for="email" class="floating-label">E-mail</label>
-                                <button type="button" class="icon-toggle" onclick="toggleRegisterMode('phone')" title="Utiliser mon téléphone" style="border: none; background: none; cursor: pointer; z-index: 10; padding: 10px; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
-                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                    </svg>
-                                </button>
                             </div>
                             <div id="email-exists-warning" class="email-warning">
                                 Un compte est déjà associé à cette adresse e-mail. <br>
@@ -661,37 +656,6 @@
                             @error('email') <div class="error-msg">{{ $message }}</div> @enderror
                         </div>
 
-                        <!-- Phone Mode (login via phone) -->
-                        <div class="form-group" id="reg-phone-group" style="display: none;">
-                            <input type="hidden" name="reg_login_phone" id="reg-phone-value">
-                            <div style="position: relative; overflow: hidden;">
-                                <div class="phone-input-group" style="padding-right: 48px;">
-                                    @php $defaultDial = $countries->firstWhere('code', 'CF') ?? $countries->first(); @endphp
-                                    <div class="custom-dial" id="reg-dial-code-wrapper">
-                                        <input type="hidden" id="reg-dial-code-select" value="{{ $defaultDial->phone_code }}">
-                                        <div class="custom-dial-btn" onclick="toggleDialDropdown('reg-dial-code-wrapper')">
-                                            <span id="reg-dial-code-display">{{ $defaultDial->flag }} {{ $defaultDial->phone_code }}</span>
-                                            <svg width="10" height="10" viewBox="0 0 10 6" fill="none" style="margin-left:4px;flex-shrink:0;"><path d="M1 1l4 4 4-4" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                        </div>
-                                        <ul class="custom-dial-list" id="reg-dial-code-wrapper-list" style="display:none;">
-                                            @foreach($countries as $country)
-                                                <li onclick="selectRegDial('{{ $country->phone_code }}', '{{ $country->flag }} {{ $country->phone_code }}')">
-                                                    {{ $country->flag }} {{ $country->phone_code }}
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                    <input type="tel" id="reg-phone-number" class="phone-number-input" placeholder="Numéro de téléphone">
-                                </div>
-                                <button type="button" class="icon-toggle" onclick="toggleRegisterMode('email')" title="Utiliser mon e-mail" style="border:none; background:none; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); cursor: pointer; z-index: 10; padding: 8px;">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none;">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                        <polyline points="22,6 12,13 2,6"></polyline>
-                                    </svg>
-                                </button>
-                            </div>
-                            @error('reg_login_phone') <div class="error-msg">{{ $message }}</div> @enderror
-                        </div>
 
 
                         {{-- TEMPORAIREMENT MASQUÉ --
