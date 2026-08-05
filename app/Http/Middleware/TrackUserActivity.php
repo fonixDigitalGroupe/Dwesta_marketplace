@@ -17,9 +17,15 @@ class TrackUserActivity
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check()) {
-            $key = 'user-online-' . Auth::id();
-            // Présence valable 3 minutes ; renouvelée à chaque requête.
-            Cache::put($key, now()->timestamp, now()->addMinutes(3));
+            // Ne jamais faire échouer la requête si le cache/DB est indisponible
+            // (ex. base en lecture seule / droits MySQL manquants).
+            try {
+                $key = 'user-online-' . Auth::id();
+                // Présence valable 3 minutes ; renouvelée à chaque requête.
+                Cache::put($key, now()->timestamp, now()->addMinutes(3));
+            } catch (\Throwable $e) {
+                // silencieux
+            }
         }
 
         return $next($request);

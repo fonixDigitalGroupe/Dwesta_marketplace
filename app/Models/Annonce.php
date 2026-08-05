@@ -338,7 +338,13 @@ class Annonce extends Model
      */
     public function incrementerVues(): void
     {
-        $this->increment('vues');
+        // Le compteur de vues ne doit jamais faire planter l'affichage de la page
+        // (ex. base en lecture seule / droits MySQL manquants).
+        try {
+            $this->increment('vues');
+        } catch (\Throwable $e) {
+            \Log::warning('incrementerVues échec: ' . $e->getMessage());
+        }
     }
 
     /**
