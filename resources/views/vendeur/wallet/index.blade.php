@@ -1089,20 +1089,6 @@
                 </button>
             </div>
 
-            {{-- Pending funds info --}}
-            @if($pendingBalance > 0)
-                <div class="pending-box" style="margin-bottom: 1.5rem;">
-                    <i class="fas fa-info-circle"></i>
-                    <div>
-                        <strong>{{ number_format($pendingBalance, 0, ',', ' ') }} FCFA en attente de libération</strong><br>
-                        Ces fonds sont sécurisés en séquestre et seront libérés automatiquement après confirmation des
-                        livraisons.
-                        @if($pendingTransactions->count() > 0)
-                            (Prochaine libération : {{ $pendingTransactions->first()->release_at?->format('d/m/Y') ?? '—' }})
-                        @endif
-                    </div>
-                </div>
-            @endif
 
             {{-- ══ TRANSACTIONS TABLE ══ --}}
             <h2 style="font-size: 1rem; font-weight: 700; color: #374151; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
