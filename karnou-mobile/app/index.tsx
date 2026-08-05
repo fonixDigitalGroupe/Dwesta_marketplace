@@ -167,6 +167,7 @@ export default function KarnouWebApp() {
             <Ionicons name="cart" size={40} color="#d1975a" />
           </Animated.View>
           <Text style={styles.loaderBrand}>Karnou</Text>
+          <View style={styles.loaderUnderline} />
         </View>
       )}
     </SafeAreaView>
@@ -212,6 +213,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#9ca3af',
     letterSpacing: 0.5,
+  },
+  loaderUnderline: {
+    marginTop: 4,
+    width: 46,
+    height: 3,
+    borderRadius: 2,
+    backgroundColor: '#004aad',
   },
   topBar: {
     position: 'absolute',
