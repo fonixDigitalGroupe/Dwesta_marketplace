@@ -4,8 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Karnou Marketplace')</title>
+    <title>@yield('title', 'Karnou - Achat et vente en ligne au Sénégal et en Afrique')</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    {{-- Favicon (logo du projet) --}}
+    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
+    <link rel="shortcut icon" href="{{ asset('images/logo.png') }}" type="image/png">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+
+    {{-- SEO --}}
+    @php
+        $seoDescription = trim($__env->yieldContent('meta_description', "Karnou : la marketplace d'achat et de vente en ligne au Sénégal et en Afrique. Neuf, occasion et reconditionné — e-commerce, services, immobilier et véhicules, au meilleur prix, paiement sécurisé et livraison rapide."));
+        $seoKeywords = $__env->yieldContent('meta_keywords', "Karnou, e-commerce Sénégal, e-commerce Afrique, achat en ligne Sénégal, vente en ligne, marketplace Afrique, Centrafrique, neuf occasion reconditionné, boutique en ligne Dakar, acheter vendre Sénégal");
+        $seoTitle = trim($__env->yieldContent('title', 'Karnou - Achat et vente en ligne au Sénégal et en Afrique'));
+    @endphp
+    <meta name="description" content="{{ $seoDescription }}">
+    <meta name="keywords" content="{{ $seoKeywords }}">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Karnou">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Open Graph / Réseaux sociaux --}}
+    <meta property="og:site_name" content="Karnou">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:title" content="{{ $seoTitle }}">
+    <meta property="og:description" content="{{ $seoDescription }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('images/logo.png') }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $seoTitle }}">
+    <meta name="twitter:description" content="{{ $seoDescription }}">
+    <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
+
+    {{-- Données structurées (aide Google à afficher titre, description et sitelinks) --}}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Karnou",
+      "url": "{{ url('/') }}",
+      "logo": "{{ asset('images/logo.png') }}"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Karnou",
+      "url": "{{ url('/') }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ url('/recherche') }}?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
