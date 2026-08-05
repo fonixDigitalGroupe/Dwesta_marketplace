@@ -15,12 +15,21 @@ class ReleaseDeliveredFunds extends Command
     {
         $deliveredOrderIds = Order::where('statut', Order::STATUT_LIVRE)->pluck('id');
 
-        $count = Transaction::whereIn('order_id', $deliveredOrderIds)
+        $transactions = Transaction::whereIn('order_id', $deliveredOrderIds)
             ->where('wallet_status', Transaction::STATUS_PENDING)
-            ->update([
+            ->get();
+
+        $count = 0;
+        foreach ($transactions as $tx) {
+            $tx->update([
                 'wallet_status' => Transaction::STATUS_AVAILABLE,
                 'release_at'    => now(),
             ]);
+            if ($tx->user) {
+                $tx->user->increment('credit_balance', $tx->montant);
+            }
+            $count++;
+        }
 
         $this->info("{$count} transaction(s) libérée(s) (en séquestre → disponible) pour les commandes livrées.");
 

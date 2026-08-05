@@ -127,14 +127,22 @@ class LogisticsService
 
         $order->update(['statut' => $newStatus]);
 
-        // À la livraison : les fonds du vendeur ne sont plus en séquestre → disponibles
+        // À la livraison : les fonds du vendeur ne sont plus en séquestre → disponibles.
+        // Même logique que l'app partenaire (PWA/mobile) : on incrémente aussi credit_balance.
         if ($newStatus === Order::STATUT_LIVRE) {
-            \App\Models\Transaction::where('order_id', $order->id)
+            $transactions = \App\Models\Transaction::where('order_id', $order->id)
                 ->where('wallet_status', \App\Models\Transaction::STATUS_PENDING)
-                ->update([
+                ->get();
+
+            foreach ($transactions as $tx) {
+                $tx->update([
                     'wallet_status' => \App\Models\Transaction::STATUS_AVAILABLE,
                     'release_at'    => now(),
                 ]);
+                if ($tx->user) {
+                    $tx->user->increment('credit_balance', $tx->montant);
+                }
+            }
         }
 
         return $order;
