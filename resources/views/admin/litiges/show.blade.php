@@ -7,7 +7,7 @@
 @endpush
 
 @section('content')
-<div style="max-width: 1360px; margin: -50px auto 0;">
+<div style="max-width: 1500px; margin: -50px auto 0;">
   <div style="background: #fff; border: 1px solid #eff3f6; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); padding: 24px;">
 
     <!-- Header -->
@@ -25,7 +25,7 @@
         </a>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 320px; gap: 30px; align-items: start;">
+    <div style="display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: start;">
         
         <!-- Left Column: Details & Resolution -->
         <div style="display: flex; flex-direction: column; gap: 25px;">
