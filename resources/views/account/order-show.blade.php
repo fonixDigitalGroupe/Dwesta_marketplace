@@ -328,7 +328,7 @@
                         Effectuée le {{ $order->created_at->format('d-m-Y') }}<br>
                         Total : {{ number_format($order->total_final ?? $order->total_produits, 0, ',', ' ') }} FCFA
                         @if($order->estLivraisonDomicile() && $order->code_livraison && !in_array($order->statut, ['livre', 'annule']))
-                            <br><span style="color: #888; font-size: 0.85rem;">Code de confirmation : {{ $order->code_livraison }}</span>
+                            <br><span style="color: #888; font-size: 0.85rem;">Code de confirmation : <span style="color: #000; font-weight: 700;">{{ $order->code_livraison }}</span></span>
                         @endif
                     </div>
                 </div>
