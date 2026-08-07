@@ -176,6 +176,9 @@
                     {{ $order->items->count() }} article(s)<br>
                     Effectuée le {{ $order->created_at->format('d-m-Y') }}<br>
                     Total : <strong>{{ number_format($order->total_final ?? $order->total_produits, 0, ',', ' ') }} FCFA</strong>
+                    @if($order->code_ramassage && !in_array($order->statut, ['en_route', 'disponible', 'livre', 'annule', 'litige']))
+                        <br><span style="color: #888; font-size: 0.85rem;">Code de ramassage : <span style="color: #000; font-weight: 700;">{{ $order->code_ramassage }}</span></span>
+                    @endif
                 </div>
             </div>
 
@@ -376,16 +379,6 @@
                             <i class="fa-solid fa-circle-check"></i>
                             Commande acceptée — en attente de ramassage
                         </div>
-                    </div>
-                @endif
-
-                {{-- Code de ramassage à remettre au livreur/transporteur --}}
-                @if($order->code_ramassage && !in_array($order->statut, ['en_route', 'disponible', 'livre', 'annule', 'litige']))
-                    <div style="margin-top: 1.25rem; background: #fffbf5; border: 1px solid #f68b1e; border-radius: 8px; padding: 1rem; text-align: center;">
-                        <div style="font-size: 0.82rem; color: #92400e; margin-bottom: 0.4rem;">
-                            🔑 Code de ramassage — à communiquer au livreur/transporteur au moment de la prise en charge
-                        </div>
-                        <div style="font-size: 1.9rem; font-weight: 800; letter-spacing: 8px; color: #b45309;">{{ $order->code_ramassage }}</div>
                     </div>
                 @endif
 
