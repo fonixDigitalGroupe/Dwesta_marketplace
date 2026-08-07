@@ -231,7 +231,7 @@
                                     {{ $lastMsg ? $lastMsg->created_at->translatedFormat('d M') : $conv->created_at->translatedFormat('d M') }}
                                 </span>
                                 @if($unreadCount > 0)
-                                    <span style="background: #16a34a; color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap;">
+                                    <span style="background: #f68b1e; color: #fff; font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap;">
                                         {{ $unreadCount }} nouveau{{ $unreadCount > 1 ? 'x' : '' }}
                                     </span>
                                 @endif
