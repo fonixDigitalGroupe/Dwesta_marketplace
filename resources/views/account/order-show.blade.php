@@ -329,6 +329,15 @@
                         Total : {{ number_format($order->total_final ?? $order->total_produits, 0, ',', ' ') }} FCFA
                     </div>
                 </div>
+
+                @if($order->estLivraisonDomicile() && $order->code_livraison && !in_array($order->statut, ['livre', 'annule']))
+                    <div style="margin-top: 1rem; background: #fffbf5; border: 1px solid #f68b1e; border-radius: 8px; padding: 0.9rem 1rem; text-align: center;">
+                        <div style="font-size: 0.78rem; color: #92400e; margin-bottom: 0.35rem;">
+                            🔑 Code de confirmation de livraison — à remettre au livreur au moment de la remise du colis
+                        </div>
+                        <div style="font-size: 1.7rem; font-weight: 800; letter-spacing: 8px; color: #b45309;">{{ $order->code_livraison }}</div>
+                    </div>
+                @endif
                 @if(!in_array($order->statut, ['livre', 'annule', 'litige', 'paye']) && empty($order->stripe_payment_intent_id))
                     <div style="margin-top: 1.25rem;">
                         <form action="{{ route('account.orders.pay', $order->id) }}" method="POST">
@@ -548,17 +557,6 @@
                                     @endif
                                 </div>
                             </div>
-
-                            @if($order->estLivraisonDomicile() && $order->code_livraison && !in_array($order->statut, ['livre', 'annule']))
-                                <div class="summary-item-pro">
-                                    <div style="background: #fffbf5; border: 1px solid #f68b1e; border-radius: 8px; padding: 0.9rem; text-align: center;">
-                                        <div style="font-size: 0.78rem; color: #92400e; margin-bottom: 0.35rem;">
-                                            🔑 Code de confirmation de livraison — à remettre au livreur au moment de la remise du colis
-                                        </div>
-                                        <div style="font-size: 1.7rem; font-weight: 800; letter-spacing: 8px; color: #b45309;">{{ $order->code_livraison }}</div>
-                                    </div>
-                                </div>
-                            @endif
 
                             <div class="summary-item-pro">
                                 <div class="summary-label-pro">Détails d'expédition</div>
