@@ -131,10 +131,13 @@
                     </td>
                     <td><span class="badge badge-orange">Prêt</span></td>
                     <td style="text-align: right;">
-                        <form action="{{ route('livreur.pickup', $order) }}" method="POST" style="margin: 0;">
+                        <form action="{{ route('livreur.pickup', $order) }}" method="POST" style="margin: 0; display: inline-flex; gap: 0.4rem; align-items: center; justify-content: flex-end;">
                             @csrf
-                            <button type="submit" class="action-btn primary" title="Accepter la course">
-                                <i class="fas fa-motorcycle"></i> Accepter
+                            <input type="text" name="code_ramassage" inputmode="numeric" maxlength="4" required
+                                placeholder="Code" title="Code de ramassage (4 chiffres) remis par le vendeur"
+                                style="width: 70px; padding: 0.4rem 0.5rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.85rem; text-align: center; letter-spacing: 2px;">
+                            <button type="submit" class="action-btn primary" title="Confirmer le ramassage avec le code du vendeur">
+                                <i class="fas fa-motorcycle"></i> Ramasser
                             </button>
                         </form>
                     </td>

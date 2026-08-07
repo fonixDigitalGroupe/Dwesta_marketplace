@@ -195,10 +195,12 @@
                     </td>
                     <td><span class="badge badge-orange">Pret Vendeur</span></td>
                     <td style="text-align: right;">
-                        <form action="{{ route('scan.process') }}" method="POST" style="margin: 0;">
+                        <form action="{{ route('transporteur.pickup', $order) }}" method="POST" style="margin: 0; display: inline-flex; gap: 0.4rem; align-items: center; justify-content: flex-end;">
                             @csrf
-                            <input type="hidden" name="token" value="{{ $order->tracking_token }}">
-                            <button type="submit" class="action-btn primary" title="Prendre en charge (Simuler Scan)">
+                            <input type="text" name="code_ramassage" inputmode="numeric" maxlength="4" required
+                                placeholder="Code" title="Code de ramassage (4 chiffres) remis par le vendeur"
+                                style="width: 70px; padding: 0.4rem 0.5rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.85rem; text-align: center; letter-spacing: 2px;">
+                            <button type="submit" class="action-btn primary" title="Confirmer le ramassage avec le code du vendeur">
                                 <i class="fas fa-dolly"></i> Ramasser
                             </button>
                         </form>
@@ -248,9 +250,12 @@
                     </td>
                     <td><span class="badge badge-blue">En Transit</span></td>
                     <td style="text-align: right;">
-                        <form action="{{ route('transporteur.dropoff', $order) }}" method="POST" style="margin: 0;">
+                        <form action="{{ route('transporteur.dropoff', $order) }}" method="POST" style="margin: 0; display: inline-flex; gap: 0.4rem; align-items: center; justify-content: flex-end;">
                             @csrf
-                            <button type="submit" class="action-btn success" title="Simuler dépôt Point Relais">
+                            <input type="text" name="code_point_relais" inputmode="numeric" maxlength="4" required
+                                placeholder="Code" title="Code à 4 chiffres affiché par le point relais"
+                                style="width: 70px; padding: 0.4rem 0.5rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.85rem; text-align: center; letter-spacing: 2px;">
+                            <button type="submit" class="action-btn success" title="Confirmer le dépôt avec le code du point relais">
                                 <i class="fas fa-check"></i> Déposer au Relais
                             </button>
                         </form>

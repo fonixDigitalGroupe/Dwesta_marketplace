@@ -361,6 +361,12 @@ class CheckoutController extends Controller
                     'gestion_paiement' => $gestionPaiement,
                     'moyen_paiement' => $moyenPaiement,
                     'destination_point_relais_id' => $pointRelaisId,
+                    // Code de ramassage (4 chiffres) : le vendeur le remet au
+                    // livreur/transporteur pour confirmer la prise en charge.
+                    'code_ramassage' => Order::genererCode(),
+                    // Code point relais (4 chiffres) : détenu par le relais, saisi
+                    // par le transporteur pour valider le dépôt du colis au relais.
+                    'code_point_relais' => $mode === 'retrait_point_relais' ? Order::genererCode() : null,
                 ]);
 
                 foreach ($items as $item) {
@@ -418,7 +424,9 @@ class CheckoutController extends Controller
                             . "Articles commandés :\n{$itemsList}\n"
                             . "Total : " . number_format($order->total_final, 0, ',', ' ') . " FCFA\n"
                             . "Mode de paiement : {$modePaiementLabel}\n"
-                            . "Adresse de livraison : {$order->adresse_livraison}";
+                            . "Adresse de livraison : {$order->adresse_livraison}\n\n"
+                            . "🔑 Code de ramassage : **{$order->code_ramassage}**\n"
+                            . "Communiquez ce code au livreur/transporteur uniquement au moment de la prise en charge du colis. Il servira à confirmer le ramassage.";
 
                         Message::create([
                             'conversation_id' => $conversation->id,

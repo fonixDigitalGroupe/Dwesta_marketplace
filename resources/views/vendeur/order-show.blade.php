@@ -379,6 +379,16 @@
                     </div>
                 @endif
 
+                {{-- Code de ramassage à remettre au livreur/transporteur --}}
+                @if($order->code_ramassage && !in_array($order->statut, ['en_route', 'disponible', 'livre', 'annule', 'litige']))
+                    <div style="margin-top: 1.25rem; background: #fffbf5; border: 1px solid #f68b1e; border-radius: 8px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 0.82rem; color: #92400e; margin-bottom: 0.4rem;">
+                            🔑 Code de ramassage — à communiquer au livreur/transporteur au moment de la prise en charge
+                        </div>
+                        <div style="font-size: 1.9rem; font-weight: 800; letter-spacing: 8px; color: #b45309;">{{ $order->code_ramassage }}</div>
+                    </div>
+                @endif
+
                 {{-- Annulation par le vendeur --}}
                 @if(!in_array($order->statut, ['livre', 'annule', 'litige', 'en_route', 'disponible']))
                     <div style="margin-top: 1rem; border-top: 1px solid #eee; padding-top: 1rem;">

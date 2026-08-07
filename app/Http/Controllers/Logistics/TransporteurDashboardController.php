@@ -50,7 +50,7 @@ class TransporteurDashboardController extends Controller
     /**
      * Prendre en charge une commande
      */
-    public function pickup(Order $order)
+    public function pickup(Order $order, Request $request)
     {
         $transporteur = Auth::user()->transporteur;
 
@@ -58,12 +58,20 @@ class TransporteurDashboardController extends Controller
             return back()->with('error', 'Cette commande n\'est pas prête pour l\'expédition.');
         }
 
+        $request->validate(['code_ramassage' => 'required|string'], [
+            'code_ramassage.required' => 'Veuillez saisir le code de ramassage remis par le vendeur.',
+        ]);
+
+        if (trim($request->code_ramassage) !== (string) $order->code_ramassage) {
+            return back()->with('error', 'Code de ramassage incorrect. Demandez au vendeur le code à 4 chiffres.');
+        }
+
         $order->update([
             'transporteur_id' => $transporteur->id,
             'statut' => Order::STATUT_EN_ROUTE,
         ]);
 
-        return redirect()->route('transporteur.dashboard')->with('success', 'Commande prise en charge. Bonne route !');
+        return redirect()->route('transporteur.dashboard')->with('success', 'Ramassage confirmé. Bonne route !');
     }
 
     /**
@@ -71,11 +79,18 @@ class TransporteurDashboardController extends Controller
      */
     public function dropoff(Order $order, Request $request)
     {
-        // Dans une vraie app, on scannerait un QR code ici
+        $request->validate(['code_point_relais' => 'required|string'], [
+            'code_point_relais.required' => 'Veuillez saisir le code affiché par le point relais.',
+        ]);
+
+        if (trim($request->code_point_relais) !== (string) $order->code_point_relais) {
+            return back()->with('error', 'Code point relais incorrect. Demandez au point relais le code à 4 chiffres de la commande.');
+        }
+
         $order->update([
             'statut' => Order::STATUT_DISPONIBLE,
         ]);
 
-        return redirect()->route('transporteur.dashboard')->with('success', 'Colis déposé au point relais.');
+        return redirect()->route('transporteur.dashboard')->with('success', 'Dépôt au point relais confirmé.');
     }
 }

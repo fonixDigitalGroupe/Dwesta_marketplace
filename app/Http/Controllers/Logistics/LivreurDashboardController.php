@@ -98,7 +98,7 @@ class LivreurDashboardController extends Controller
     /**
      * Prendre en charge une livraison (Pickup)
      */
-    public function pickup(Order $order)
+    public function pickup(Order $order, Request $request)
     {
         $livreur = Auth::user()->livreur;
 
@@ -106,12 +106,20 @@ class LivreurDashboardController extends Controller
             return back()->with('error', 'Cette commande n\'est pas prête pour la livraison.');
         }
 
+        $request->validate(['code_ramassage' => 'required|string'], [
+            'code_ramassage.required' => 'Veuillez saisir le code de ramassage remis par le vendeur.',
+        ]);
+
+        if (trim($request->code_ramassage) !== (string) $order->code_ramassage) {
+            return back()->with('error', 'Code de ramassage incorrect. Demandez au vendeur le code à 4 chiffres.');
+        }
+
         $order->update([
             'livreur_id' => $livreur->id,
             'statut' => Order::STATUT_EN_ROUTE,
         ]);
 
-        return redirect()->route('livreur.dashboard')->with('success', 'Livraison acceptée. En route vers le client !');
+        return redirect()->route('livreur.dashboard')->with('success', 'Ramassage confirmé. En route vers le client !');
     }
 
     /**
@@ -119,7 +127,15 @@ class LivreurDashboardController extends Controller
      */
     public function delivered(Order $order, Request $request)
     {
-        // Dans une vraie app, on demanderait une signature ou photo
+        // Le client remet son code de confirmation de livraison à 4 chiffres.
+        $request->validate(['code_livraison' => 'required|string'], [
+            'code_livraison.required' => 'Veuillez saisir le code de livraison remis par le client.',
+        ]);
+
+        if (trim($request->code_livraison) !== (string) $order->code_livraison) {
+            return back()->with('error', 'Code de livraison incorrect. Demandez au client le code à 4 chiffres.');
+        }
+
         $order->update([
             'statut' => Order::STATUT_LIVRE,
         ]);

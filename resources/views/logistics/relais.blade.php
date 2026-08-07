@@ -172,6 +172,7 @@
                     <th>N° Suivi</th>
                     <th>Date Expédition</th>
                     <th>Destinataire</th>
+                    <th>Code dépôt</th>
                     <th>Statut</th>
                     <th style="text-align: right;">Action</th>
                 </tr>
@@ -182,6 +183,13 @@
                     <td><strong>{{ $order->reference }}</strong></td>
                     <td>{{ $order->updated_at->format('d/m/Y H:i') }}</td>
                     <td>{{ $order->buyer->prenom }} {{ $order->buyer->nom }}</td>
+                    <td>
+                        @if($order->code_point_relais)
+                            <span title="Communiquez ce code au transporteur pour valider le dépôt" style="font-weight: 800; letter-spacing: 3px; color: #b45309; background: #fffbf5; border: 1px solid #f68b1e; border-radius: 6px; padding: 0.2rem 0.5rem;">{{ $order->code_point_relais }}</span>
+                        @else
+                            <span style="color: #cbd5e1;">—</span>
+                        @endif
+                    </td>
                     <td><span class="badge badge-blue">En Transit</span></td>
                     <td style="text-align: right;">
                         <form action="{{ route('scan.process') }}" method="POST" style="margin: 0;">

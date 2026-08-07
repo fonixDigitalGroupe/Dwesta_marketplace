@@ -25,6 +25,8 @@ class Order extends Model
         'paydunya_token',
         'tracking_token',
         'code_livraison',
+        'code_ramassage',
+        'code_point_relais',
         'qr_code_token',
         'qr_code_path',
         'notes_vendeur',
@@ -83,5 +85,36 @@ class Order extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function transporteur()
+    {
+        return $this->belongsTo(\App\Models\Transporteur::class, 'transporteur_id');
+    }
+
+    public function livreur()
+    {
+        return $this->belongsTo(\App\Models\Livreur::class, 'livreur_id');
+    }
+
+    /**
+     * Génère un code de confirmation à 4 chiffres (ex. "0473").
+     */
+    public static function genererCode(): string
+    {
+        return str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Vrai si la commande est livrée à domicile (vs. retrait point relais).
+     */
+    public function estLivraisonDomicile(): bool
+    {
+        return in_array($this->mode_livraison, ['livraison_domicile', 'domicile'], true);
+    }
+
+    public function estPointRelais(): bool
+    {
+        return !$this->estLivraisonDomicile() && ($this->destination_point_relais_id || str_contains((string) $this->mode_livraison, 'relais'));
     }
 }

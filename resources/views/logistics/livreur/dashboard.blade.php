@@ -190,9 +190,12 @@
                     </td>
                     <td><span class="badge badge-blue">En Route</span></td>
                     <td style="text-align: right;">
-                        <form action="{{ route('livreur.delivered', $order) }}" method="POST" style="margin: 0;">
+                        <form action="{{ route('livreur.delivered', $order) }}" method="POST" style="margin: 0; display: inline-flex; gap: 0.4rem; align-items: center; justify-content: flex-end;">
                             @csrf
-                            <button type="submit" class="action-btn success" title="Marquer comme livré">
+                            <input type="text" name="code_livraison" inputmode="numeric" maxlength="4" required
+                                placeholder="Code" title="Code de livraison (4 chiffres) remis par le client"
+                                style="width: 70px; padding: 0.4rem 0.5rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 0.85rem; text-align: center; letter-spacing: 2px;">
+                            <button type="submit" class="action-btn success" title="Confirmer la livraison avec le code du client">
                                 <i class="fas fa-check-circle"></i> Livré
                             </button>
                         </form>
