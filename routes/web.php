@@ -247,6 +247,12 @@ Route::middleware('auth')->group(function () {
                 Route::put('/{litige}', [\App\Http\Controllers\Admin\LitigeController::class, 'resolve'])->name('resolve');
             });
 
+            // Annulations de course (partenaires)
+            Route::prefix('annulations')->name('annulations.')->group(function () {
+                Route::get('/', [\App\Http\Controllers\Admin\AnnulationCourseController::class, 'index'])->name('index');
+                Route::post('/{annulation}/traiter', [\App\Http\Controllers\Admin\AnnulationCourseController::class, 'traiter'])->name('traiter');
+            });
+
             // Gestion Annonces (Articles)
             Route::prefix('annonces')->name('annonces.')->group(function () {
                 Route::get('/', [\App\Http\Controllers\Admin\AnnonceController::class, 'index'])->name('index');
