@@ -176,7 +176,7 @@
                     {{ $order->items->count() }} article(s)<br>
                     Effectuée le {{ $order->created_at->format('d-m-Y') }}<br>
                     Total : <strong>{{ number_format($order->total_final ?? $order->total_produits, 0, ',', ' ') }} FCFA</strong>
-                    @if($order->code_ramassage && !in_array($order->statut, ['en_route', 'disponible', 'livre', 'annule', 'litige']))
+                    @if($order->code_ramassage && !in_array($order->statut, ['livre', 'annule', 'litige']))
                         <br><span style="color: #888; font-size: 0.85rem;">Code de ramassage : <span style="color: #000; font-weight: 700;">{{ $order->code_ramassage }}</span></span>
                     @endif
                 </div>
