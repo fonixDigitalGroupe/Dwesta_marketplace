@@ -32,10 +32,14 @@
                 @can('moderate_products')<li><a href="{{ route('admin.annonces.index') }}" class="{{ request()->routeIs('admin.annonces.*') ? 'active' : '' }}"><i class="fas fa-clipboard-list"></i> <span>Articles</span></a></li>@endcan
                 @can('manage_orders')<li><a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}"><i class="fas fa-shopping-basket"></i> <span>Commandes</span>@if(($activeOrdersCount ?? 0) > 0)<span class="sidebar-badge">{{ $activeOrdersCount > 9 ? '9+' : $activeOrdersCount }}</span>@endif</a></li>@endcan
                 @can('moderate_products')<li><a href="{{ route('admin.moderation.index') }}" class="{{ request()->routeIs('admin.moderation.*') ? 'active' : '' }}"><i class="fas fa-shield-alt"></i> <span>Modération</span>@if(($pendingModerationCount ?? 0) > 0)<span class="sidebar-badge">{{ $pendingModerationCount > 9 ? '9+' : $pendingModerationCount }}</span>@endif</a></li>@endcan
+                @can('manage_disputes')
                 @php $litigesEnCours = \App\Models\Litige::where('statut', 'en_cours')->count(); @endphp
                 <li><a href="{{ route('admin.litiges.index') }}" class="{{ request()->routeIs('admin.litiges.*') ? 'active' : '' }}"><i class="fas fa-gavel"></i> <span>Litiges</span>@if($litigesEnCours > 0)<span class="sidebar-badge">{{ $litigesEnCours > 9 ? '9+' : $litigesEnCours }}</span>@endif</a></li>
+                @endcan
+                @can('manage_cancellations')
                 @php $annulNouvelles = \Illuminate\Support\Facades\Schema::hasTable('annulations_courses') ? \App\Models\AnnulationCourse::where('statut', 'nouveau')->count() : 0; @endphp
                 <li><a href="{{ route('admin.annulations.index') }}" class="{{ request()->routeIs('admin.annulations.*') ? 'active' : '' }}"><i class="fas fa-ban"></i> <span>Annulations</span>@if($annulNouvelles > 0)<span class="sidebar-badge">{{ $annulNouvelles > 9 ? '9+' : $annulNouvelles }}</span>@endif</a></li>
+                @endcan
             </ul>
         </div>
 

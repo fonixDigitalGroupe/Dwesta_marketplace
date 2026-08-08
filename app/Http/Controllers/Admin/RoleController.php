@@ -19,6 +19,8 @@ class RoleController extends Controller
             'manage_users'         => 'Clients',
             'moderate_products'    => 'Articles',
             'manage_orders'        => 'Commandes',
+            'manage_disputes'      => 'Litiges',
+            'manage_cancellations' => 'Annulations',
             'view_finances'        => 'Détails financiers',
             'manage_withdrawals'   => 'Retraits',
             'manage_messagerie'    => 'Messagerie',
