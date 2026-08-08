@@ -17,10 +17,18 @@
     "android": {
       "package": "fr.karnou.mobile"
     },
-    "plugins": ["expo-router", "expo-secure-store"],
+    "plugins": [
+      "expo-router",
+      "expo-secure-store"
+    ],
     "extra": {
       "siteUrl": "https://karnou.com",
-      "apiBaseUrl": "https://karnou.com/api"
-    }
+      "apiBaseUrl": "https://karnou.com/api",
+      "router": {},
+      "eas": {
+        "projectId": "bfff1975-fb3e-452a-8594-836c187c585b"
+      }
+    },
+    "owner": "fonix"
   }
 }
