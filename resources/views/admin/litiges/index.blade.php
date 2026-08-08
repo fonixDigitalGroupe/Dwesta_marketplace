@@ -5,11 +5,16 @@
 @push('styles')
     <style>
         .main-content { background-color: #f8f9fa !important; }
-        .lt-tab {
-            padding: 8px 14px; text-decoration: none; font-size: 0.82rem; color: #555;
-            font-weight: 600; border-radius: 999px; border: 1px solid #e0e2e6; background: #fff;
+        .lt-tabs-container {
+            display: flex; gap: 20px; border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 20px; padding-bottom: 0; flex-wrap: wrap;
         }
-        .lt-tab.active { color: #fff; background: #c45500; border-color: #c45500; }
+        .lt-tab {
+            padding: 10px 5px; text-decoration: none; font-size: 0.85rem; color: #555;
+            font-weight: 400; border-bottom: 2px solid transparent; transition: all 0.2s;
+        }
+        .lt-tab:hover { color: #c45500; }
+        .lt-tab.active { color: #c45500; font-weight: 700; border-bottom-color: #c45500; }
         .lt-badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
         .lt-en_cours { background: #fef2f2; color: #991b1b; }
         .lt-resolu { background: #f0fdf4; color: #166534; }
@@ -62,7 +67,7 @@
         </div>
 
         <!-- Filtres statut -->
-        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;">
+        <div class="lt-tabs-container">
             <a href="{{ route('admin.litiges.index', ['statut' => 'en_cours']) }}" class="lt-tab {{ $statut === 'en_cours' ? 'active' : '' }}">En cours ({{ $counts['en_cours'] }})</a>
             <a href="{{ route('admin.litiges.index', ['statut' => 'resolu']) }}" class="lt-tab {{ $statut === 'resolu' ? 'active' : '' }}">Résolus ({{ $counts['resolu'] }})</a>
             <a href="{{ route('admin.litiges.index', ['statut' => 'ferme']) }}" class="lt-tab {{ $statut === 'ferme' ? 'active' : '' }}">Fermés ({{ $counts['ferme'] }})</a>
